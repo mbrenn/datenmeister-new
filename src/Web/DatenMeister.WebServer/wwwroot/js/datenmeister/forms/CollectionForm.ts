@@ -22,7 +22,7 @@ import * as ActionField from "../fields/ActionField.js";
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 import * as QueryEngine from "../modules/QueryEngine.js";
-import {filterByProperty} from "../modules/QueryEngine.js";
+import {QueryFilterParameter} from "./Interfaces.js";
 
 export class CollectionFormHtmlElements
 {
@@ -77,6 +77,52 @@ export class CollectionFormHtmlElements
      * or other possible side information
      */
     statusContainer?: JQuery;
+}
+
+
+/**
+ * Creates a query builder with the provided filters, ordering, and limit options.
+ *
+ * @param {QueryFilterParameter} query - The query filter parameter containing filter properties, ordering, and free-text filter.
+ * @param {number} [limit] - An optional limit for the number of results. If undefined, a default limit is applied. If less than 0, no limit is applied.
+ * @return {QueryEngine.QueryBuilder} - An instance of the QueryEngine's QueryBuilder configured with the specified parameters.
+ */
+export function createQueryBuilder(query: QueryFilterParameter, limit?: number) {
+    // Option 2, via Query Engine
+    const builder = new QueryEngine.QueryBuilder();
+    
+    if(query.queryWorkspace !== undefined && query.queryUrl !== undefined)
+    {
+        QueryEngine.referenceExistingNode(builder, query.queryWorkspace, query.queryUrl);
+        return builder;
+    }
+    else {
+        QueryEngine.addDynamicSource(builder, "input");
+
+        for (const property in query.filterByProperties) {
+            QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
+        }
+
+        if (query.orderBy !== undefined) {
+            QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
+        }
+
+        if (query.filterByFreetext) {
+            QueryEngine.filterByFreetext(builder, query.filterByFreetext);
+        }
+    }
+
+    // Imposes only a limit in case it is not defined or positive
+    // in case the given limit < 0, then no limit is applied
+    if(limit === undefined) {
+        QueryEngine.limit(builder, 101);
+    }
+    if(limit > 0)
+    {
+        QueryEngine.limit(builder, limit);
+    }
+    
+    return builder;
 }
 
 /*
@@ -370,58 +416,30 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
             if (!tabs.hasOwnProperty(n)) {
                 continue;
             }
-            
+
             const tab = tabs[n] as Mof.DmObject;
-            
+
             // The function which is capable to create the content of the tab
             // This function must be indirectly created since it works in the enumeration value
-            const tabCreationFunction = async function(tab:DmObject, form: JQuery) {
+            const tabCreationFunction = async function (tab: DmObject, form: JQuery) {
                 const parameter = {} as ClientItems.IGetRootElementsParameter;
                 const viewNodeUrl = tab.get(_TableForm.viewNode, ObjectType.Single) as DmObject;
                 if (viewNodeUrl !== undefined) {
                     parameter.viewNode = viewNodeUrl.uri;
                 }
-                
+
                 const callbackLoadItems = async (query: IForm.QueryFilterParameter) => {
-                    
-                    // Option 1, via direct Http Request
-                    /*
-                    {
-                        parameter.filterByFreetext = query.filterByFreetext;
-                        parameter.filterByProperties = query.filterByProperties;
-                        parameter.orderBy = query.orderBy;
-                        parameter.orderByDescending = query.orderByDescending;
+                    const builder = createQueryBuilder(query);
 
-                        // Load the object for the specific form
-                        return await ClientItems.getRootElements(
-                            tthis.workspace, tthis.extentUri, parameter);
-                    }*/
-                    
-                    // Option 2, via Query Engine
-                    {                     
-                        const builder = new QueryEngine.QueryBuilder();
-                        QueryEngine.getElementsOfExtent(builder, tthis.workspace, tthis.extentUri);
-                        
-                        for (const property in query.filterByProperties) {                            
-                            QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
-                        }
-                        
-                        if(query.orderBy !== undefined) {
-                            QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
-                        }
-
-                        if(query.filterByFreetext)
+                    const queryResult = await ClientElements.queryObject(
+                        builder.queryStatement,
                         {
-                            QueryEngine.filterByFreetext(builder, query.filterByFreetext);
-                        }
-                        
-                        QueryEngine.limit(builder, 101);
-                        
-                        const queryResult = await ClientElements.queryObject(builder.queryStatement);
-                        return {
-                            message: queryResult.result.length >= 101 ? "Capped to 100 elements" : "",
-                            elements: queryResult.result.slice(0,100) as Array<DmObject>
-                        }
+                            dynamicSourceWorkspaceId: tthis.workspace,
+                            dynamicSourceItemUri: tthis.extentUri
+                        });
+                    return {
+                        message: queryResult.result.length >= 101 ? "Capped to 100 elements" : "",
+                        elements: queryResult.result.slice(0, 100) as Array<DmObject>
                     }
                 };
 
@@ -431,7 +449,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                     tableForm.pageNavigation = this;
                     tableForm.callbackLoadItems = async (x) => {
                         const result = await callbackLoadItems(x);
-                        tthis.htmlElements.messageContainer.text(result.message);
+                        tableForm.setInfoText(result.message);
                         return result.elements;
                     }
                     tableForm.formElement = tab;

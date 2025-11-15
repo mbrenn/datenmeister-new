@@ -24,7 +24,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _Actions.TheOne.__CreateFormByMetaClass) == true;
+            _Actions.TheOne.Forms.__CreateFormByMetaClass) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
@@ -32,11 +32,11 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
         await Task.Run(() =>
         {
             var formMethods = new FormMethods(actionLogic.WorkspaceLogic);
-            var metaClass = action.getOrDefault<IElement>(_Actions._CreateFormByMetaClass.metaClass);
+            var metaClass = action.getOrDefault<IElement>(_Actions._Forms._CreateFormByMetaClass.metaClass);
             var creationMode =
-                action.getOrDefault<string>(_Actions._CreateFormByMetaClass.creationMode);
+                action.getOrDefault<string>(_Actions._Forms._CreateFormByMetaClass.creationMode);
             var targetContainer =
-                action.getOrDefault<IObject>(_Actions._CreateFormByMetaClass.targetContainer);
+                action.getOrDefault<IObject>(_Actions._Forms._CreateFormByMetaClass.targetContainer);
             var targetReflection = targetContainer == null
                 ? formMethods.GetUserFormExtent().elements()
                 : DefaultClassifierHints.GetDefaultReflectiveCollection(targetContainer);

@@ -9,12 +9,15 @@ export class Settings {
     showWorkspaceInBreadcrumb = false;
     showExtentInBreadcrumb = false;
     showCancelButton = true;
-    showButtonRow = true;
+    hideButtonRow = false;
     hideAtStartup = false;
     setButtonText = "Set";
     headline:string|undefined = undefined;
 }
 
+/**
+ * Creates a webcontrol which allows the user to select a specific item
+ */
 export class SelectItemControl {
 
     // Defines the dropdown element in which the user can select the extent
@@ -125,7 +128,7 @@ export class SelectItemControl {
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
             "<div class='dm-sic-items'></div>" +
             "</td></tr>" +
-            (this.settings.showButtonRow
+            (this.settings.hideButtonRow !== true
                 ?
                 "<tr><td></td><td class='selected'>" +
                 (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +

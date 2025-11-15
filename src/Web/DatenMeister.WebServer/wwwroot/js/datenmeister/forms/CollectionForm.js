@@ -18,6 +18,42 @@ import { ElementBreadcrumb } from "../controls/ElementBreadcrumb.js";
 import * as QueryEngine from "../modules/QueryEngine.js";
 export class CollectionFormHtmlElements {
 }
+/**
+ * Creates a query builder with the provided filters, ordering, and limit options.
+ *
+ * @param {QueryFilterParameter} query - The query filter parameter containing filter properties, ordering, and free-text filter.
+ * @param {number} [limit] - An optional limit for the number of results. If undefined, a default limit is applied. If less than 0, no limit is applied.
+ * @return {QueryEngine.QueryBuilder} - An instance of the QueryEngine's QueryBuilder configured with the specified parameters.
+ */
+export function createQueryBuilder(query, limit) {
+    // Option 2, via Query Engine
+    const builder = new QueryEngine.QueryBuilder();
+    if (query.queryWorkspace !== undefined && query.queryUrl !== undefined) {
+        QueryEngine.referenceExistingNode(builder, query.queryWorkspace, query.queryUrl);
+        return builder;
+    }
+    else {
+        QueryEngine.addDynamicSource(builder, "input");
+        for (const property in query.filterByProperties) {
+            QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
+        }
+        if (query.orderBy !== undefined) {
+            QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
+        }
+        if (query.filterByFreetext) {
+            QueryEngine.filterByFreetext(builder, query.filterByFreetext);
+        }
+    }
+    // Imposes only a limit in case it is not defined or positive
+    // in case the given limit < 0, then no limit is applied
+    if (limit === undefined) {
+        QueryEngine.limit(builder, 101);
+    }
+    if (limit > 0) {
+        QueryEngine.limit(builder, limit);
+    }
+    return builder;
+}
 /*
     Creates a form containing a collection of root items of an extent
     The input for this type is a collection of elements
@@ -229,38 +265,15 @@ export class CollectionFormCreator {
                     parameter.viewNode = viewNodeUrl.uri;
                 }
                 const callbackLoadItems = async (query) => {
-                    // Option 1, via direct Http Request
-                    /*
-                    {
-                        parameter.filterByFreetext = query.filterByFreetext;
-                        parameter.filterByProperties = query.filterByProperties;
-                        parameter.orderBy = query.orderBy;
-                        parameter.orderByDescending = query.orderByDescending;
-
-                        // Load the object for the specific form
-                        return await ClientItems.getRootElements(
-                            tthis.workspace, tthis.extentUri, parameter);
-                    }*/
-                    // Option 2, via Query Engine
-                    {
-                        const builder = new QueryEngine.QueryBuilder();
-                        QueryEngine.getElementsOfExtent(builder, tthis.workspace, tthis.extentUri);
-                        for (const property in query.filterByProperties) {
-                            QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
-                        }
-                        if (query.orderBy !== undefined) {
-                            QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
-                        }
-                        if (query.filterByFreetext) {
-                            QueryEngine.filterByFreetext(builder, query.filterByFreetext);
-                        }
-                        QueryEngine.limit(builder, 101);
-                        const queryResult = await ClientElements.queryObject(builder.queryStatement);
-                        return {
-                            message: queryResult.result.length >= 101 ? "Capped to 100 elements" : "",
-                            elements: queryResult.result.slice(0, 100)
-                        };
-                    }
+                    const builder = createQueryBuilder(query);
+                    const queryResult = await ClientElements.queryObject(builder.queryStatement, {
+                        dynamicSourceWorkspaceId: tthis.workspace,
+                        dynamicSourceItemUri: tthis.extentUri
+                    });
+                    return {
+                        message: queryResult.result.length >= 101 ? "Capped to 100 elements" : "",
+                        elements: queryResult.result.slice(0, 100)
+                    };
                 };
                 const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
                 if (formFactory !== undefined) {
@@ -268,7 +281,7 @@ export class CollectionFormCreator {
                     tableForm.pageNavigation = this;
                     tableForm.callbackLoadItems = async (x) => {
                         const result = await callbackLoadItems(x);
-                        tthis.htmlElements.messageContainer.text(result.message);
+                        tableForm.setInfoText(result.message);
                         return result.elements;
                     };
                     tableForm.formElement = tab;

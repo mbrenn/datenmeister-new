@@ -1,4 +1,3 @@
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 
@@ -15,10 +14,6 @@ public class CommonTypes
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DateTime");
-
-        public static DateTime_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
     }
 
     public class Default
@@ -28,10 +23,6 @@ public class CommonTypes
         public class Package_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package");
-
-            public static Package_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @name
             {
@@ -108,10 +99,6 @@ public class CommonTypes
         {
             public IElement GetWrappedElement() => innerDmElement;
 
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1");
-
-            public static XmiExportContainer_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
             public string? @xmi
             {
                 get =>
@@ -127,10 +114,6 @@ public class CommonTypes
         public class XmiImportContainer_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#73c8c24e-6040-4700-b11d-c60f2379523a");
-
-            public static XmiImportContainer_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @xmi
             {
@@ -168,10 +151,6 @@ public class CommonTypes
         {
             public IElement GetWrappedElement() => innerDmElement;
 
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportSettings");
-
-            public static ImportSettings_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
             public string? @filePath
             {
                 get =>
@@ -204,10 +183,6 @@ public class CommonTypes
         {
             public IElement GetWrappedElement() => innerDmElement;
 
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportException");
-
-            public static ImportException_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
             public string? @message
             {
                 get =>
@@ -227,10 +202,6 @@ public class CommonTypes
         public class CommandLineApplication_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#CommonTypes.OSIntegration.CommandLineApplication");
-
-            public static CommandLineApplication_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @name
             {
@@ -255,10 +226,6 @@ public class CommonTypes
         public class EnvironmentalVariable_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#OSIntegration.EnvironmentalVariable");
-
-            public static EnvironmentalVariable_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @name
             {
@@ -289,10 +256,6 @@ public class Actions
     public class ActionSet_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#Actions.ActionSet");
-
-        public static ActionSet_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // DatenMeister.Core.Models.Actions.Action_Wrapper
         public DatenMeister.Core.Models.Actions.Action_Wrapper? @action
@@ -339,10 +302,6 @@ public class Actions
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#Actions.LoggingWriterAction");
-
-        public static LoggingWriterAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @message
         {
             get =>
@@ -369,111 +328,11 @@ public class Actions
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82",
-        TypeKind = TypeKind.WrappedClass)]
-    public class CommandExecutionAction_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82");
-
-        public static CommandExecutionAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @command
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("command");
-            set => 
-                innerDmElement.set("command", value);
-        }
-
-        public string? @arguments
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("arguments");
-            set => 
-                innerDmElement.set("arguments", value);
-        }
-
-        public string? @workingDirectory
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("workingDirectory");
-            set => 
-                innerDmElement.set("workingDirectory", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-        public bool @isDisabled
-        {
-            get =>
-                innerDmElement.getOrDefault<bool>("isDisabled");
-            set => 
-                innerDmElement.set("isDisabled", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb",
-        TypeKind = TypeKind.WrappedClass)]
-    public class PowershellExecutionAction_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb");
-
-        public static PowershellExecutionAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @script
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("script");
-            set => 
-                innerDmElement.set("script", value);
-        }
-
-        public string? @workingDirectory
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("workingDirectory");
-            set => 
-                innerDmElement.set("workingDirectory", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-        public bool @isDisabled
-        {
-            get =>
-                innerDmElement.getOrDefault<bool>("isDisabled");
-            set => 
-                innerDmElement.set("isDisabled", value);
-        }
-
-    }
-
     [TypeUri(Uri = "dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee",
         TypeKind = TypeKind.WrappedClass)]
     public class LoadExtentAction_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee");
-
-        public static LoadExtentAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // Not found
         public object? @configuration
@@ -516,10 +375,6 @@ public class Actions
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#c870f6e8-2b70-415c-afaf-b78776b42a09");
-
-        public static DropExtentAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @workspaceId
         {
             get =>
@@ -559,10 +414,6 @@ public class Actions
     public class CreateWorkspaceAction_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe");
-
-        public static CreateWorkspaceAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @workspaceId
         {
@@ -604,10 +455,6 @@ public class Actions
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#db6cc8eb-011c-43e5-b966-cc0e3a1855e8");
-
-        public static DropWorkspaceAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @workspaceId
         {
             get =>
@@ -639,10 +486,6 @@ public class Actions
     public class CopyElementsAction_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#8b576580-0f75-4159-ad16-afb7c2268aed");
-
-        public static CopyElementsAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @sourcePath
         {
@@ -716,10 +559,6 @@ public class Actions
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#3c3595a4-026e-4c07-83ec-8a90607b8863");
-
-        public static ExportToXmiAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @sourcePath
         {
             get =>
@@ -768,10 +607,6 @@ public class Actions
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#b70b736b-c9b0-4986-8d92-240fcabc95ae");
-
-        public static ClearCollectionAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @workspaceId
         {
             get =>
@@ -811,10 +646,6 @@ public class Actions
     public class TransformItemsAction_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#Actions.ItemTransformationActionHandler");
-
-        public static TransformItemsAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper
         public DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper? @metaClass
@@ -893,10 +724,6 @@ public class Actions
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Actions.EchoAction");
-
-        public static EchoAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @shallSuccess
         {
             get =>
@@ -929,70 +756,12 @@ public class Actions
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74");
-
-        public static DocumentOpenAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @filePath
         {
             get =>
                 innerDmElement.getOrDefault<string?>("filePath");
             set => 
                 innerDmElement.set("filePath", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-        public bool @isDisabled
-        {
-            get =>
-                innerDmElement.getOrDefault<bool>("isDisabled");
-            set => 
-                innerDmElement.set("isDisabled", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass",
-        TypeKind = TypeKind.WrappedClass)]
-    public class CreateFormByMetaClass_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass");
-
-        public static CreateFormByMetaClass_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // Not found
-        public object? @metaClass
-        {
-            get =>
-                innerDmElement.getOrDefault<object?>("metaClass");
-            set => 
-                innerDmElement.set("metaClass", value);
-        }
-
-        public string? @creationMode
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("creationMode");
-            set => 
-                innerDmElement.set("creationMode", value);
-        }
-
-        // Not found
-        public object? @targetContainer
-        {
-            get =>
-                innerDmElement.getOrDefault<object?>("targetContainer");
-            set => 
-                innerDmElement.set("targetContainer", value);
         }
 
         public string? @name
@@ -1020,10 +789,6 @@ public class Actions
         public class SimpleReportAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#Actions.SimpleReportAction");
-
-            public static SimpleReportAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @path
             {
@@ -1094,10 +859,6 @@ public class Actions
         {
             public IElement GetWrappedElement() => innerDmElement;
 
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#Actions.AdocReportAction");
-
-            public static AdocReportAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
             public string? @filePath
             {
                 get =>
@@ -1150,10 +911,6 @@ public class Actions
         public class HtmlReportAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#Actions.HtmlReportAction");
-
-            public static HtmlReportAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @filePath
             {
@@ -1210,10 +967,6 @@ public class Actions
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#Actions.Action");
-
-        public static Action_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -1237,10 +990,6 @@ public class Actions
     public class MoveOrCopyAction_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Actions.MoveOrCopyAction");
-
-        public static MoveOrCopyAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @copyMode
         {
@@ -1275,10 +1024,6 @@ public class Actions
     public class MoveUpDownAction_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54");
-
-        public static MoveUpDownAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // Not found
         public object? @element
@@ -1323,10 +1068,6 @@ public class Actions
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1");
-
-        public static StoreExtentAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @workspaceId
         {
             get =>
@@ -1366,10 +1107,6 @@ public class Actions
     public class ImportXmiAction_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d");
-
-        public static ImportXmiAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @workspaceId
         {
@@ -1419,10 +1156,6 @@ public class Actions
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#b631bb00-ab11-4a8a-a148-e28abc398503");
-
-        public static DeletePropertyFromCollectionAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @propertyName
         {
             get =>
@@ -1468,10 +1201,6 @@ public class Actions
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1");
-
-        public static MoveOrCopyActionResult_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @targetUrl
         {
             get =>
@@ -1497,10 +1226,6 @@ public class Actions
         public class NavigationDefineActionParameter_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd");
-
-            public static NavigationDefineActionParameter_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @actionName
             {
@@ -1534,10 +1259,6 @@ public class Actions
         {
             public IElement GetWrappedElement() => innerDmElement;
 
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5");
-
-            public static LoadExtentActionResult_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
             public string? @workspaceId
             {
                 get =>
@@ -1556,6 +1277,22 @@ public class Actions
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#124e202d-e8b3-4d39-bbc2-4c95896e811b",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CreateFormUponViewResult_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @resultingPackageUrl
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("resultingPackageUrl");
+                set => 
+                    innerDmElement.set("resultingPackageUrl", value);
+            }
+
+        }
+
     }
 
     [TypeUri(Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d",
@@ -1563,10 +1300,6 @@ public class Actions
     public class ActionResult_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d");
-
-        public static ActionResult_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // Not found
         public object? @isSuccess
@@ -1595,10 +1328,6 @@ public class Actions
         public class ClientAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998");
-
-            public static ClientAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @actionName
             {
@@ -1633,10 +1362,6 @@ public class Actions
         public class AlertClientAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971");
-
-            public static AlertClientAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @messageText
             {
@@ -1680,10 +1405,6 @@ public class Actions
         {
             public IElement GetWrappedElement() => innerDmElement;
 
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#3251783f-2683-4c24-bad5-828930028462");
-
-            public static NavigateToExtentClientAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
             public string? @workspaceId
             {
                 get =>
@@ -1707,10 +1428,6 @@ public class Actions
         public class NavigateToItemClientAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4");
-
-            public static NavigateToItemClientAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @workspaceId
             {
@@ -1740,38 +1457,241 @@ public class Actions
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a",
-        TypeKind = TypeKind.WrappedClass)]
-    public class ConsoleWriteAction_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class Forms
     {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a");
-
-        public static ConsoleWriteAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @text
+        [TypeUri(Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CreateFormUponViewAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<string?>("text");
-            set => 
-                innerDmElement.set("text", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper
+            public DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper? @query
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("query");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("query", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("query", value);
+                    }
+                }
+            }
+
+            public string? @targetPackageUri
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("targetPackageUri");
+                set => 
+                    innerDmElement.set("targetPackageUri", value);
+            }
+
+            public string? @targetPackageWorkspace
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("targetPackageWorkspace");
+                set => 
+                    innerDmElement.set("targetPackageWorkspace", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    innerDmElement.set("isDisabled", value);
+            }
+
         }
 
-        public string? @name
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CreateFormByMetaClass_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // Not found
+            public object? @metaClass
+            {
+                get =>
+                    innerDmElement.getOrDefault<object?>("metaClass");
+                set => 
+                    innerDmElement.set("metaClass", value);
+            }
+
+            public string? @creationMode
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("creationMode");
+                set => 
+                    innerDmElement.set("creationMode", value);
+            }
+
+            // Not found
+            public object? @targetContainer
+            {
+                get =>
+                    innerDmElement.getOrDefault<object?>("targetContainer");
+                set => 
+                    innerDmElement.set("targetContainer", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    innerDmElement.set("isDisabled", value);
+            }
+
         }
 
-        public bool @isDisabled
+    }
+
+    public class OSIntegration
+    {
+        [TypeUri(Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CommandExecutionAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<bool>("isDisabled");
-            set => 
-                innerDmElement.set("isDisabled", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @command
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("command");
+                set => 
+                    innerDmElement.set("command", value);
+            }
+
+            public string? @arguments
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("arguments");
+                set => 
+                    innerDmElement.set("arguments", value);
+            }
+
+            public string? @workingDirectory
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("workingDirectory");
+                set => 
+                    innerDmElement.set("workingDirectory", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    innerDmElement.set("isDisabled", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb",
+            TypeKind = TypeKind.WrappedClass)]
+        public class PowershellExecutionAction_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @script
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("script");
+                set => 
+                    innerDmElement.set("script", value);
+            }
+
+            public string? @workingDirectory
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("workingDirectory");
+                set => 
+                    innerDmElement.set("workingDirectory", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    innerDmElement.set("isDisabled", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ConsoleWriteAction_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @text
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("text");
+                set => 
+                    innerDmElement.set("text", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    innerDmElement.set("isDisabled", value);
+            }
+
         }
 
     }
@@ -1785,10 +1705,6 @@ public class DataViews
     public class DataView_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.DataView");
-
-        public static DataView_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @name
         {
@@ -1843,322 +1759,12 @@ public class DataViews
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode");
-
-        public static ViewNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
                 innerDmElement.getOrDefault<string?>("name");
             set => 
                 innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class SelectByExtentNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode");
-
-        public static SelectByExtentNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @extentUri
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("extentUri");
-            set => 
-                innerDmElement.set("extentUri", value);
-        }
-
-        public string? @workspaceId
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("workspaceId");
-            set => 
-                innerDmElement.set("workspaceId", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class FlattenNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode");
-
-        public static FlattenNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
-        {
-            get
-            {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
-            }
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class RowFilterByPropertyValueNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode");
-
-        public static RowFilterByPropertyValueNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
-        {
-            get
-            {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
-            }
-        }
-
-        public string? @property
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("property");
-            set => 
-                innerDmElement.set("property", value);
-        }
-
-        public string? @value
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("value");
-            set => 
-                innerDmElement.set("value", value);
-        }
-
-        // Not found
-        public object? @comparisonMode
-        {
-            get =>
-                innerDmElement.getOrDefault<object?>("comparisonMode");
-            set => 
-                innerDmElement.set("comparisonMode", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class RowFilterByMetaclassNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode");
-
-        public static RowFilterByMetaclassNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
-        {
-            get
-            {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
-            }
-        }
-
-        // Not found
-        public object? @metaClass
-        {
-            get =>
-                innerDmElement.getOrDefault<object?>("metaClass");
-            set => 
-                innerDmElement.set("metaClass", value);
-        }
-
-        public bool @includeInherits
-        {
-            get =>
-                innerDmElement.getOrDefault<bool>("includeInherits");
-            set => 
-                innerDmElement.set("includeInherits", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class SelectByFullNameNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode");
-
-        public static SelectByFullNameNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
-        {
-            get
-            {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
-            }
-        }
-
-        public string? @path
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("path");
-            set => 
-                innerDmElement.set("path", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class DynamicSourceNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode");
-
-        public static DynamicSourceNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @nodeName
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("nodeName");
-            set => 
-                innerDmElement.set("nodeName", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class SelectByPathNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode");
-
-        public static SelectByPathNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @workspaceId
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("workspaceId");
-            set => 
-                innerDmElement.set("workspaceId", value);
-        }
-
-        public string? @path
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("path");
-            set => 
-                innerDmElement.set("path", value);
         }
 
     }
@@ -2168,10 +1774,6 @@ public class DataViews
     public class QueryStatement_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement");
-
-        public static QueryStatement_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
         public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @nodes
@@ -2203,18 +1805,6 @@ public class DataViews
                 innerDmElement.set("resultNode", value);
         }
 
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a",
-        TypeKind = TypeKind.WrappedClass)]
-    public class SelectFromAllWorkspacesNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a");
-
-        public static SelectFromAllWorkspacesNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -2225,263 +1815,581 @@ public class DataViews
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db",
-        TypeKind = TypeKind.WrappedClass)]
-    public class SelectByWorkspaceNode_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class Row
     {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db");
-
-        public static SelectByWorkspaceNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @workspaceId
+        [TypeUri(Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowFilterByFreeTextAnywhere_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<string?>("workspaceId");
-            set => 
-                innerDmElement.set("workspaceId", value);
-        }
+            public IElement GetWrappedElement() => innerDmElement;
 
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7",
-        TypeKind = TypeKind.WrappedClass)]
-    public class ColumnFilterExcludeNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7");
-
-        public static ColumnFilterExcludeNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @columnNamesComma
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("columnNamesComma");
-            set => 
-                innerDmElement.set("columnNamesComma", value);
-        }
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
-        {
-            get
+            public string? @freeText
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                get =>
+                    innerDmElement.getOrDefault<string?>("freeText");
+                set => 
+                    innerDmElement.set("freeText", value);
             }
-            set 
+
+            // Not found
+            public object? @input
             {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
+                get =>
+                    innerDmElement.getOrDefault<object?>("input");
+                set => 
                     innerDmElement.set("input", value);
-                }
             }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
         }
 
-        public string? @name
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowFilterByPropertyValueNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @property
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("property");
+                set => 
+                    innerDmElement.set("property", value);
+            }
+
+            public string? @value
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("value");
+                set => 
+                    innerDmElement.set("value", value);
+            }
+
+            // Not found
+            public object? @comparisonMode
+            {
+                get =>
+                    innerDmElement.getOrDefault<object?>("comparisonMode");
+                set => 
+                    innerDmElement.set("comparisonMode", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowOrderByNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @propertyName
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("propertyName");
+                set => 
+                    innerDmElement.set("propertyName", value);
+            }
+
+            public bool @orderDescending
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("orderDescending");
+                set => 
+                    innerDmElement.set("orderDescending", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowFilterOnPositionNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public int @amount
+            {
+                get =>
+                    innerDmElement.getOrDefault<int>("amount");
+                set => 
+                    innerDmElement.set("amount", value);
+            }
+
+            public int @position
+            {
+                get =>
+                    innerDmElement.getOrDefault<int>("position");
+                set => 
+                    innerDmElement.set("position", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowFlattenNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowFilterByMetaclassNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            // Not found
+            public object? @metaClass
+            {
+                get =>
+                    innerDmElement.getOrDefault<object?>("metaClass");
+                set => 
+                    innerDmElement.set("metaClass", value);
+            }
+
+            public bool @includeInherits
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("includeInherits");
+                set => 
+                    innerDmElement.set("includeInherits", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
         }
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
-        TypeKind = TypeKind.WrappedClass)]
-    public class ColumnFilterIncludeOnlyNode_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class Column
     {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d");
-
-        public static ColumnFilterIncludeOnlyNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @columnNamesComma
+        [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ColumnFilterIncludeOnlyNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<string?>("columnNamesComma");
-            set => 
-                innerDmElement.set("columnNamesComma", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @columnNamesComma
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("columnNamesComma");
+                set => 
+                    innerDmElement.set("columnNamesComma", value);
+            }
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
         }
 
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+        [TypeUri(Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ColumnFilterExcludeNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get
-            {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
-            }
-        }
+            public IElement GetWrappedElement() => innerDmElement;
 
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
+            public string? @columnNamesComma
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("columnNamesComma");
+                set => 
+                    innerDmElement.set("columnNamesComma", value);
+            }
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
         }
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f",
-        TypeKind = TypeKind.WrappedClass)]
-    public class RowFilterOnPositionNode_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class Source
     {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f");
-
-        public static RowFilterOnPositionNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SelectByExtentNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @extentUri
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                get =>
+                    innerDmElement.getOrDefault<string?>("extentUri");
+                set => 
+                    innerDmElement.set("extentUri", value);
             }
-            set 
+
+            public string? @workspaceId
             {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
+                get =>
+                    innerDmElement.getOrDefault<string?>("workspaceId");
+                set => 
+                    innerDmElement.set("workspaceId", value);
             }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
         }
 
-        public int @amount
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SelectByPathNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<int>("amount");
-            set => 
-                innerDmElement.set("amount", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @workspaceId
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("workspaceId");
+                set => 
+                    innerDmElement.set("workspaceId", value);
+            }
+
+            public string? @path
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("path");
+                set => 
+                    innerDmElement.set("path", value);
+            }
+
         }
 
-        public int @position
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class DynamicSourceNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<int>("position");
-            set => 
-                innerDmElement.set("position", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @nodeName
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("nodeName");
+                set => 
+                    innerDmElement.set("nodeName", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SelectByWorkspaceNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @workspaceId
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("workspaceId");
+                set => 
+                    innerDmElement.set("workspaceId", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SelectByFullNameNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @path
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("path");
+                set => 
+                    innerDmElement.set("path", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SelectFromAllWorkspacesNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
         }
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9",
-        TypeKind = TypeKind.WrappedClass)]
-    public class RowOrderByNode_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class Node
     {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9");
-
-        public static RowOrderByNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+        [TypeUri(Uri = "dm:///_internal/types/internal#e80d4c64-a68e-44a7-893d-1a5100a80370",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ReferenceViewNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @workspaceId
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                get =>
+                    innerDmElement.getOrDefault<string?>("workspaceId");
+                set => 
+                    innerDmElement.set("workspaceId", value);
             }
-            set 
+
+            public string? @itemUri
             {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
+                get =>
+                    innerDmElement.getOrDefault<string?>("itemUri");
+                set => 
+                    innerDmElement.set("itemUri", value);
             }
-        }
 
-        public string? @propertyName
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("propertyName");
-            set => 
-                innerDmElement.set("propertyName", value);
-        }
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
 
-        public bool @orderDescending
-        {
-            get =>
-                innerDmElement.getOrDefault<bool>("orderDescending");
-            set => 
-                innerDmElement.set("orderDescending", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628",
-        TypeKind = TypeKind.WrappedClass)]
-    public class RowFilterByFreeTextAnywhere_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628");
-
-        public static RowFilterByFreeTextAnywhere_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @freeText
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("freeText");
-            set => 
-                innerDmElement.set("freeText", value);
-        }
-
-        // Not found
-        public object? @input
-        {
-            get =>
-                innerDmElement.getOrDefault<object?>("input");
-            set => 
-                innerDmElement.set("input", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
         }
 
     }
@@ -2495,10 +2403,6 @@ public class Reports
     public class ReportDefinition_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition");
-
-        public static ReportDefinition_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @name
         {
@@ -2545,10 +2449,6 @@ public class Reports
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstanceSource");
-
-        public static ReportInstanceSource_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -2580,10 +2480,6 @@ public class Reports
     public class ReportInstance_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstance");
-
-        public static ReportInstance_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @name
         {
@@ -2643,10 +2539,6 @@ public class Reports
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance");
-
-        public static AdocReportInstance_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -2704,10 +2596,6 @@ public class Reports
     public class HtmlReportInstance_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance");
-
-        public static HtmlReportInstance_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @cssFile
         {
@@ -2782,10 +2670,6 @@ public class Reports
     public class SimpleReportConfiguration_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.SimpleReportConfiguration");
-
-        public static SimpleReportConfiguration_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @name
         {
@@ -2880,10 +2764,6 @@ public class Reports
         {
             public IElement GetWrappedElement() => innerDmElement;
 
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportElement");
-
-            public static ReportElement_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
             public string? @name
             {
                 get =>
@@ -2899,10 +2779,6 @@ public class Reports
         public class ReportHeadline_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline");
-
-            public static ReportHeadline_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @title
             {
@@ -2927,10 +2803,6 @@ public class Reports
         public class ReportParagraph_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph");
-
-            public static ReportParagraph_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @paragraph
             {
@@ -2988,10 +2860,6 @@ public class Reports
         public class ReportTable_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable");
-
-            public static ReportTable_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @cssClass
             {
@@ -3067,10 +2935,6 @@ public class Reports
         {
             public IElement GetWrappedElement() => innerDmElement;
 
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportLoop");
-
-            public static ReportLoop_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
             // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
             public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @viewNode
             {
@@ -3135,10 +2999,6 @@ public class ExtentLoaderConfigs
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig");
-
-        public static ExtentLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -3178,10 +3038,6 @@ public class ExtentLoaderConfigs
     public class ExcelLoaderConfig_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig");
-
-        public static ExcelLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public bool @fixRowCount
         {
@@ -3348,10 +3204,6 @@ public class ExtentLoaderConfigs
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig");
-
-        public static ExcelReferenceLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public bool @fixRowCount
         {
             get =>
@@ -3516,10 +3368,6 @@ public class ExtentLoaderConfigs
     public class ExcelImportLoaderConfig_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig");
-
-        public static ExcelImportLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @extentPath
         {
@@ -3694,10 +3542,6 @@ public class ExtentLoaderConfigs
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig");
-
-        public static ExcelExtentLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @filePath
         {
             get =>
@@ -3754,10 +3598,6 @@ public class ExtentLoaderConfigs
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig");
-
-        public static InMemoryLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public bool @isLinkedList
         {
             get =>
@@ -3805,10 +3645,6 @@ public class ExtentLoaderConfigs
     public class XmlReferenceLoaderConfig_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmlReferenceLoaderConfig");
-
-        public static XmlReferenceLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @filePath
         {
@@ -3866,10 +3702,6 @@ public class ExtentLoaderConfigs
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig");
-
-        public static ExtentFileLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @filePath
         {
             get =>
@@ -3918,10 +3750,6 @@ public class ExtentLoaderConfigs
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
-
-        public static XmiStorageLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @filePath
         {
             get =>
@@ -3969,10 +3797,6 @@ public class ExtentLoaderConfigs
     public class CsvExtentLoaderConfig_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig");
-
-        public static CsvExtentLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // DatenMeister.Core.Models.ExtentLoaderConfigs.CsvSettings_Wrapper
         public DatenMeister.Core.Models.ExtentLoaderConfigs.CsvSettings_Wrapper? @settings
@@ -4043,10 +3867,6 @@ public class ExtentLoaderConfigs
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings");
-
-        public static CsvSettings_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @encoding
         {
             get =>
@@ -4104,10 +3924,6 @@ public class ExtentLoaderConfigs
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition");
-
-        public static ExcelHierarchicalColumnDefinition_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -4152,10 +3968,6 @@ public class ExtentLoaderConfigs
     public class ExcelHierarchicalLoaderConfig_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalLoaderConfig");
-
-        public static ExcelHierarchicalLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition_Wrapper
         public DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition_Wrapper? @hierarchicalColumns
@@ -4351,10 +4163,6 @@ public class ExtentLoaderConfigs
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a");
-
-        public static ExcelColumn_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @header
         {
             get =>
@@ -4378,10 +4186,6 @@ public class ExtentLoaderConfigs
     public class EnvironmentalVariableLoaderConfig_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#10151dfc-f18b-4a58-9434-da1be1e030a3");
-
-        public static EnvironmentalVariableLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @name
         {
@@ -4426,10 +4230,6 @@ public class Forms
     public class FieldData_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData");
-
-        public static FieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public bool @isAttached
         {
@@ -4488,10 +4288,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder");
-
-        public static SortingOrder_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -4515,10 +4311,6 @@ public class Forms
     public class AnyDataFieldData_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData");
-
-        public static AnyDataFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public bool @isAttached
         {
@@ -4576,10 +4368,6 @@ public class Forms
     public class CheckboxFieldData_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData");
-
-        public static CheckboxFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public int @lineHeight
         {
@@ -4645,10 +4433,6 @@ public class Forms
     public class ActionFieldData_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData");
-
-        public static ActionFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @actionName
         {
@@ -4732,10 +4516,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData");
-
-        public static DateTimeFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public bool @hideDate
         {
             get =>
@@ -4816,10 +4596,6 @@ public class Forms
     public class FormAssociation_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation");
-
-        public static FormAssociation_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @name
         {
@@ -4957,10 +4733,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData");
-
-        public static DropDownFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         // DatenMeister.Core.Models.Forms.ValuePair_Wrapper
         public DatenMeister.Core.Models.Forms.ValuePair_Wrapper? @values
         {
@@ -5048,10 +4820,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair");
-
-        public static ValuePair_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         // Not found
         public object? @value
         {
@@ -5076,10 +4844,6 @@ public class Forms
     public class MetaClassElementFieldData_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData");
-
-        public static MetaClassElementFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public bool @isAttached
         {
@@ -5137,10 +4901,6 @@ public class Forms
     public class ReferenceFieldData_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData");
-
-        public static ReferenceFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public bool @isSelectionInline
         {
@@ -5255,10 +5015,6 @@ public class Forms
     public class SubElementFieldData_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData");
-
-        public static SubElementFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // Not found
         public object? @metaClass
@@ -5396,10 +5152,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData");
-
-        public static TextFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public int @lineHeight
         {
             get =>
@@ -5488,10 +5240,6 @@ public class Forms
     public class EvalTextFieldData_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData");
-
-        public static EvalTextFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @evalCellProperties
         {
@@ -5590,10 +5338,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData");
-
-        public static SeparatorLineFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public int @Height
         {
             get =>
@@ -5609,10 +5353,6 @@ public class Forms
     public class FileSelectionFieldData_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData");
-
-        public static FileSelectionFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @defaultExtension
         {
@@ -5703,10 +5443,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement");
-
-        public static DefaultTypeForNewElement_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -5739,10 +5475,6 @@ public class Forms
     public class FullNameFieldData_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData");
-
-        public static FullNameFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public bool @isAttached
         {
@@ -5800,10 +5532,6 @@ public class Forms
     public class CheckboxListTaggingFieldData_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData");
-
-        public static CheckboxListTaggingFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // DatenMeister.Core.Models.Forms.ValuePair_Wrapper
         public DatenMeister.Core.Models.Forms.ValuePair_Wrapper? @values
@@ -5899,10 +5627,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData");
-
-        public static NumberFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @format
         {
             get =>
@@ -5976,10 +5700,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.Form");
-
-        public static Form_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -6051,10 +5771,6 @@ public class Forms
     public class RowForm_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm");
-
-        public static RowForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @buttonApplyText
         {
@@ -6180,10 +5896,6 @@ public class Forms
     public class TableForm_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm");
-
-        public static TableForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @property
         {
@@ -6427,10 +6139,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm");
-
-        public static CollectionForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         // DatenMeister.Core.Models.Forms.Form_Wrapper
         public DatenMeister.Core.Models.Forms.Form_Wrapper? @tab
         {
@@ -6553,10 +6261,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm");
-
-        public static ObjectForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         // DatenMeister.Core.Models.Forms.Form_Wrapper
         public DatenMeister.Core.Models.Forms.Form_Wrapper? @tab
         {
@@ -6658,10 +6362,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode");
-
-        public static ViewMode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -6693,10 +6393,6 @@ public class Forms
     public class DropDownByCollection_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection");
-
-        public static DropDownByCollection_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @defaultWorkspace
         {
@@ -6771,10 +6467,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00");
-
-        public static UriReferenceFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         // Not found
         public object? @defaultWorkspace
         {
@@ -6801,10 +6493,6 @@ public class Forms
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0");
-
-        public static NavigateToFieldsForTestAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -6828,10 +6516,6 @@ public class Forms
     public class DropDownByQueryData_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2");
-
-        public static DropDownByQueryData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper
         public DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper? @query
@@ -6915,10 +6599,6 @@ public class AttachedExtent
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration");
-
-        public static AttachedExtentConfiguration_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -6971,10 +6651,6 @@ public class Management
     public class Extent_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent");
-
-        public static Extent_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @name
         {
@@ -7099,10 +6775,6 @@ public class Management
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace");
-
-        public static Workspace_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @id
         {
             get =>
@@ -7148,10 +6820,6 @@ public class Management
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel");
-
-        public static CreateNewWorkspaceModel_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @id
         {
             get =>
@@ -7175,10 +6843,6 @@ public class Management
     public class ExtentTypeSetting_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentTypeSetting");
-
-        public static ExtentTypeSetting_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @name
         {
@@ -7204,10 +6868,6 @@ public class Management
     public class ExtentProperties_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties");
-
-        public static ExtentProperties_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @name
         {
@@ -7332,10 +6992,6 @@ public class Management
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentPropertyDefinition");
-
-        public static ExtentPropertyDefinition_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @name
         {
             get =>
@@ -7368,10 +7024,6 @@ public class Management
     public class ExtentSettings_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentSettings");
-
-        public static ExtentSettings_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // DatenMeister.Core.Models.Management.ExtentTypeSetting_Wrapper
         public DatenMeister.Core.Models.Management.ExtentTypeSetting_Wrapper? @extentTypeSettings
@@ -7427,10 +7079,6 @@ public class FastViewFilters
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyComparisonFilter");
-
-        public static PropertyComparisonFilter_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @Property
         {
             get =>
@@ -7464,10 +7112,6 @@ public class FastViewFilters
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyContainsFilter");
-
-        public static PropertyContainsFilter_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
         public string? @Property
         {
             get =>
@@ -7495,10 +7139,6 @@ public class DynamicRuntimeProvider
     public class DynamicRuntimeLoaderConfig_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DynamicRuntimeProvider.DynamicRuntimeLoaderConfig");
-
-        public static DynamicRuntimeLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @runtimeClass
         {
@@ -7559,10 +7199,6 @@ public class DynamicRuntimeProvider
         {
             public IElement GetWrappedElement() => innerDmElement;
 
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#f264ab67-ab6a-4462-8088-d3d6c9e2763a");
-
-            public static NumberProviderSettings_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
             public string? @name
             {
                 get =>
@@ -7594,10 +7230,6 @@ public class DynamicRuntimeProvider
         public class NumberRepresentation_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.DynamicRuntimeProviders.Examples.NumberRepresentation");
-
-            public static NumberRepresentation_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @binary
             {
@@ -7644,10 +7276,6 @@ public class Verifier
     public class VerifyEntry_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#d19d742f-9bba-4bef-b310-05ef96153768");
-
-        public static VerifyEntry_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @workspaceId
         {

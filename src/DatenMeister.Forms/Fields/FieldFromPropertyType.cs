@@ -176,16 +176,16 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                     IElement queryByExtent;
                     if (workspace != null)
                     {
-                        queryByExtent = factory.create(_DataViews.TheOne.__SelectByWorkspaceNode);
-                        queryByExtent.set(_DataViews._SelectByWorkspaceNode.workspaceId, workspace.id);
+                        queryByExtent = factory.create(_DataViews.TheOne.Source.__SelectByWorkspaceNode);
+                        queryByExtent.set(_DataViews._Source._SelectByWorkspaceNode.workspaceId, workspace.id);
                     }
                     else
                     {
-                        queryByExtent = factory.create(_DataViews.TheOne.__SelectFromAllWorkspacesNode);    
+                        queryByExtent = factory.create(_DataViews.TheOne.Source.__SelectFromAllWorkspacesNode);    
                     }
                     
-                    var queryFlatten = factory.create(_DataViews.TheOne.__FlattenNode);
-                    var queryByMetaClass = factory.create(_DataViews.TheOne.__RowFilterByMetaclassNode);
+                    var queryFlatten = factory.create(_DataViews.TheOne.Row.__RowFlattenNode);
+                    var queryByMetaClass = factory.create(_DataViews.TheOne.Row.__RowFilterByMetaclassNode);
                         
                     queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByExtent);
                     queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByMetaClass);
@@ -194,11 +194,11 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                         
                     dropDownByQueryData.set(_Forms._DropDownByQueryData.query, queryStatement);
                         
-                    queryFlatten.set(_DataViews._FlattenNode.input, queryByExtent);
+                    queryFlatten.set(_DataViews._Row._RowFlattenNode.input, queryByExtent);
                         
-                    queryByMetaClass.set(_DataViews._RowFilterByMetaclassNode.input, queryFlatten);
-                    queryByMetaClass.set(_DataViews._RowFilterByMetaclassNode.metaClass, propertyType);
-                    queryByMetaClass.set(_DataViews._RowFilterByMetaclassNode.includeInherits, true);
+                    queryByMetaClass.set(_DataViews._Row._RowFilterByMetaclassNode.input, queryFlatten);
+                    queryByMetaClass.set(_DataViews._Row._RowFilterByMetaclassNode.metaClass, propertyType);
+                    queryByMetaClass.set(_DataViews._Row._RowFilterByMetaclassNode.includeInherits, true);
                         
                     dropDownByQueryData.set(_Forms._SubElementFieldData.name, propertyName);
                     dropDownByQueryData.set(_Forms._SubElementFieldData.title, propertyName);

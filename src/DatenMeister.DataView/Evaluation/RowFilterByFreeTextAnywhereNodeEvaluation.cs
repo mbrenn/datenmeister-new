@@ -11,14 +11,14 @@ public class RowFilterByFreeTextAnywhereNodeEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DataViews.TheOne.__RowFilterByFreeTextAnywhere);
+               metaClass.equals(_DataViews.TheOne.Row.__RowFilterByFreeTextAnywhere);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
         var input = evaluation.GetInputNode(viewNode);
         
-        var wrappedViewNode = new DataViews.RowFilterByFreeTextAnywhere_Wrapper(viewNode);
+        var wrappedViewNode = new DataViews.Row.RowFilterByFreeTextAnywhere_Wrapper(viewNode);
         var freeText = wrappedViewNode.freeText;
 
         if (string.IsNullOrEmpty(freeText))

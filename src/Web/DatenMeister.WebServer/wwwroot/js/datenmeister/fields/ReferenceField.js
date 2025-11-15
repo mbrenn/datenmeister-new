@@ -1,7 +1,8 @@
-import { ObjectType } from "../Mof.js";
+import * as Mof from "../Mof.js";
 import { injectNameByUri } from "../DomHelper.js";
 import * as ClientItem from "../client/Items.js";
 import * as SIC from "../controls/SelectItemControl.js";
+import * as DomHelper from "../DomHelper.js";
 export class Control {
     /** Initializes a new instance
      *
@@ -16,7 +17,7 @@ export class Control {
     async createDomByValue(value) {
         this._list.empty();
         const tthis = this;
-        const asDmObject = value;
+        const asMofDmObject = value;
         if (this.configuration.isNewItem) {
             // Unfortunately, for non-saved items, the user cannot select a reference since we 
             // will not find the reference again
@@ -24,7 +25,7 @@ export class Control {
             this._list.append(div);
         }
         else {
-            const isSelectionInline = this.field?.get('isSelectionInline', ObjectType.Boolean);
+            const isSelectionInline = this.field?.get('isSelectionInline', Mof.ObjectType.Boolean);
             if (!isSelectionInline) {
                 if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
                     const div = $("<div><em class='dm-undefined'>undefined</em></div>");
@@ -32,7 +33,7 @@ export class Control {
                 }
                 else {
                     const div = $("<div />");
-                    let _ = injectNameByUri(div, asDmObject.workspace, asDmObject.uri);
+                    let _ = injectNameByUri(div, asMofDmObject.workspace, asMofDmObject.uri);
                     this._list.append(div);
                 }
             }
@@ -67,16 +68,19 @@ export class Control {
     async createSelectFields(containerChangeCell, value) {
         const tthis = this;
         containerChangeCell.empty();
-        const isSelectionInline = this.field?.get('isSelectionInline', ObjectType.Boolean);
+        const isSelectionInline = this.field?.get('isSelectionInline', Mof.ObjectType.Boolean);
         const selectItem = new SIC.SelectItemControl();
         const settings = new SIC.Settings();
         settings.showWorkspaceInBreadcrumb = true;
         settings.showExtentInBreadcrumb = true;
-        settings.showButtonRow = !isSelectionInline;
+        settings.hideButtonRow = isSelectionInline;
         // Depending on whether we are having a inline item, we react upon an explicit click via 'set' button
         // or directly while the user is navigating
         const eventType = isSelectionInline ? selectItem.itemClicked : selectItem.itemSelected;
         eventType.addListener(async (selectedItem) => {
+            if (tthis.referenceSetCall !== undefined) {
+                await this.referenceSetCall(selectedItem);
+            }
             await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
                 property: tthis.propertyName,
                 referenceUri: selectedItem.uri,
@@ -91,13 +95,13 @@ export class Control {
         await selectItem.initAsync(containerChangeCell, settings);
         if (value !== undefined && value !== null &&
             (typeof value === "object" || typeof value === "function")) {
-            const valueAsDmObject = value;
-            await selectItem.setItemByUri(valueAsDmObject.workspace, valueAsDmObject.uri);
+            const valueAsMofDmObject = value;
+            await selectItem.setItemByUri(valueAsMofDmObject.workspace, valueAsMofDmObject.uri);
         }
         else {
             // No value is selected, so retrieve the default items
-            const workspaceId = this.field?.get('defaultWorkspace', ObjectType.Single);
-            const itemUri = this.field?.get('defaultItemUri', ObjectType.Single);
+            const workspaceId = this.field?.get('defaultWorkspace', Mof.ObjectType.Single);
+            const itemUri = this.field?.get('defaultItemUri', Mof.ObjectType.Single);
             if (workspaceId !== undefined && workspaceId !== null) {
                 if (itemUri === null || itemUri === undefined) {
                     await selectItem.setWorkspaceById(workspaceId);
@@ -120,6 +124,7 @@ export class Control {
 export class Field extends Control {
     async createDom(dmElement) {
         this.element = dmElement;
+        this.referenceSetCall = this.callbackSetReference;
         this._list.empty();
         this.fieldName = this.field.get('name');
         let value = dmElement.get(this.fieldName);
@@ -143,13 +148,16 @@ export class Field extends Control {
                 this._list.text(value.toString());
             }
             else {
-                this._list.text(value.get('name'));
+                await DomHelper.injectNameByObject(this._list, value);
             }
         }
         else {
             return await this.createDomByValue(value);
         }
         return this._list;
+    }
+    async callbackSetReference(selectedElement) {
+        this.element.set(this.fieldName, Mof.DmObject.createFromItemWithNameAndId(selectedElement));
     }
     async evaluateDom(dmElement) {
     }

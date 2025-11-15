@@ -8,20 +8,20 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.DataView.Evaluation;
 
-public class FlattenNodeEvaluation : IDataViewNodeEvaluation
+public class RowFlattenNodeEvaluation : IDataViewNodeEvaluation
 {
-    private static readonly ILogger Logger = new ClassLogger(typeof(FlattenNodeEvaluation));
+    private static readonly ILogger Logger = new ClassLogger(typeof(RowFlattenNodeEvaluation));
 
     public bool IsResponsible(IElement node)
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DataViews.TheOne.__FlattenNode);
+               metaClass.equals(_DataViews.TheOne.Row.__RowFlattenNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._FlattenNode.input);
+        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._Row._RowFlattenNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");

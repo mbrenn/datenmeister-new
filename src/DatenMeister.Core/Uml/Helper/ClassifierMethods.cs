@@ -15,7 +15,7 @@ public static class ClassifierMethods
     /// <summary>
     /// Logger for the classifier methods
     /// </summary>
-    public static ILogger ClassLogger = new ClassLogger(typeof(ClassifierMethods));
+    public static readonly ILogger ClassLogger = new ClassLogger(typeof(ClassifierMethods));
 
     /// <summary>
     /// Returns a list of all properties within the classifier.
@@ -41,12 +41,10 @@ public static class ClassifierMethods
             {
                 // Checks, if a property with the same name was already selected
                 var name = item.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
-                if (alreadyIn.Contains(name))
+                if (!alreadyIn.Add(name))
                 {
                     continue;
                 }
-
-                alreadyIn.Add(name);
 
                 yield return item;
             }

@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using DatenMeister.Actions;
 using DatenMeister.Core;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
@@ -29,6 +30,18 @@ public class AboutModel : PageModel
         {
             var extentSettings = GiveMe.Scope.ScopeStorage.Get<ExtentSettings>();
             return extentSettings.extentTypeSettings.Select(x => x.name).ToList();
+        }
+    }
+
+    public static List<string> ActionHandlers
+    {
+        get
+        {
+            var actionLogicState = GiveMe.Scope.ScopeStorage.Get<ActionLogicState>();
+            return actionLogicState.ActionHandlers
+                .Select(x => x.ToString())
+                .Where(x=> !string.IsNullOrEmpty(x))
+                .ToList()!;
         }
     }
 

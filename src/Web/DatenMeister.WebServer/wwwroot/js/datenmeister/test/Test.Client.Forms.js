@@ -31,6 +31,9 @@ class Y {
     createFormByCollection(parent, configuration, refresh) {
         return Promise.resolve(undefined);
     }
+    setInfoText(message) {
+        throw new Error("Method not implemented.");
+    }
 }
 export function includeTests() {
     describe('Forms', () => {

@@ -9,20 +9,20 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.DataView.Evaluation;
 
-public class FilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
+public class RowFilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
 {
-    private static readonly ILogger Logger = new ClassLogger(typeof(FilterByPropertyValueNodeEvaluation));
+    private static readonly ILogger Logger = new ClassLogger(typeof(RowFilterByPropertyValueNodeEvaluation));
 
     public bool IsResponsible(IElement node)
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DataViews.TheOne.__RowFilterByPropertyValueNode);
+               metaClass.equals(_DataViews.TheOne.Row.__RowFilterByPropertyValueNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._FlattenNode.input);
+        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._Row._RowFilterByPropertyValueNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");
@@ -31,14 +31,14 @@ public class FilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
 
         var input = evaluation.GetElementsForViewNode(inputNode);
 
-        var property = viewNode.getOrDefault<string>(_DataViews._RowFilterByPropertyValueNode.property);
+        var property = viewNode.getOrDefault<string>(_DataViews._Row._RowFilterByPropertyValueNode.property);
         if (property == null)
         {
             Logger.Warn("Property not found");
             return new PureReflectiveSequence();
         }
 
-        var propertyValue = viewNode.getOrDefault<string>(_DataViews._RowFilterByPropertyValueNode.value);
+        var propertyValue = viewNode.getOrDefault<string>(_DataViews._Row._RowFilterByPropertyValueNode.value);
         if (propertyValue == null)
         {
             Logger.Warn("Property Value not found");
@@ -46,8 +46,8 @@ public class FilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
         }
 
         var comparisonMode =
-            viewNode.getOrNull<_DataViews.___ComparisonMode>(_DataViews
-                ._RowFilterByPropertyValueNode.comparisonMode);
+            viewNode.getOrNull<_DataViews.___ComparisonMode>(
+                _DataViews._Row._RowFilterByPropertyValueNode.comparisonMode);
         if (comparisonMode == null)
         {
             Logger.Warn("Comparison not found");

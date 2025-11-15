@@ -2,6 +2,7 @@
 using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -168,6 +169,10 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
     {
         public MofObjectAsJson Query { get; set; } = new();
 
+        public string DynamicSourceWorkspaceId { get; set; } = string.Empty;
+        
+        public string DynamicSourceItemUri { get; set; } = string.Empty;
+
         public int? Timeout = 0;
     }
 
@@ -191,6 +196,29 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
         if (parameter.Timeout > 0 && parameter.Timeout != null)
         {
             viewLogic.MaximumExecutionTiming = TimeSpan.FromSeconds(parameter.Timeout.Value);
+        }
+        
+        // Gets the dynamic source, if set
+        if (!string.IsNullOrEmpty(parameter.DynamicSourceWorkspaceId) &&
+            !string.IsNullOrEmpty(parameter.DynamicSourceItemUri))
+        {
+
+            var foundItem = workspaceLogic.FindExtentAndCollection(
+                parameter.DynamicSourceWorkspaceId,
+                parameter.DynamicSourceItemUri).collection;
+            if (foundItem == null)
+            {
+                throw new InvalidOperationException(
+                    $"Item not found: Workspace ID: {parameter.DynamicSourceWorkspaceId}ItemUri: {parameter.DynamicSourceItemUri}");
+            }
+            
+            viewLogic.AddDynamicSource("input", foundItem);
+        }
+        
+        // Check, if the viewnode is a query statement, if that is the case, get the content of the resultNode
+        if (resultNode.getMetaClass()?.equals(_DataViews.TheOne.__QueryStatement) == true)
+        {
+            resultNode = resultNode.getOrDefault<IElement>(_DataViews._QueryStatement.resultNode);
         }
              
         var resultingNodes = viewLogic.GetElementsForViewNode(resultNode);

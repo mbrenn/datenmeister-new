@@ -57,13 +57,17 @@ export function findBySearchString(searchString) {
         "api/elements/find_by_searchstring?search=" +
         encodeURIComponent(searchString));
 }
-export async function queryObject(query, timeout) {
-    const json = Mof.createJsonFromObject(query);
-    const parameters = {
-        query: json
-    };
-    if (timeout !== undefined && timeout !== null && timeout > 0) {
-        parameters.timeout = timeout;
+/**
+ * Calls the server to query the object according the provided parameters
+ * @param query The query that is being used to query the object
+ * @param parameters Additional parameters, the query object will be included into that element
+ */
+export async function queryObject(query, parameters) {
+    if (parameters === undefined) {
+        parameters = {};
+    }
+    if (parameters.query === undefined || parameters.query === null) {
+        parameters.query = Mof.createJsonFromObject(query);
     }
     const result = await ApiConnection.post(Settings.baseUrl +
         "api/elements/query_object", parameters);

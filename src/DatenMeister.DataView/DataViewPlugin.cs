@@ -47,19 +47,20 @@ public class DataViewPlugin(
     {
         var result = new DataViewNodeFactories();
         result.Add(new DynamicSourceNodeEvaluation());            
-        result.Add(new FilterByPropertyValueNodeEvaluation());
-        result.Add(new FilterByMetaclassNodeEvaluation());
-        result.Add(new FlattenNodeEvaluation());
+        result.Add(new RowFilterByPropertyValueNodeEvaluation());
+        result.Add(new RowFilterByMetaclassNodeEvaluation());
+        result.Add(new RowFlattenNodeEvaluation());
         result.Add(new SelectByPathNodeEvaluation());
         result.Add(new SelectByFullNameNodeEvaluation());
         result.Add(new SelectByExtentNodeEvaluation());
         result.Add(new SelectFromAllWorkspacesNodeEvaluation());
         result.Add(new SelectByWorkspaceNodeEvaluation());
-        result.Add(new FilterColumnsExcludeEvaluation());
-        result.Add(new FilterColumnsIncludeOnlyEvaluation());
+        result.Add(new ColumnFilterExcludeEvaluation());
+        result.Add(new ColumnFilterIncludeOnlyEvaluation());
         result.Add(new RowFilterOnPositionEvaluation());
         result.Add(new RowFilterNodeEvaluation());
         result.Add(new RowFilterByFreeTextAnywhereNodeEvaluation());
+        result.Add(new NodeReferenceNodeEvaluation());
 
         return result;
     }

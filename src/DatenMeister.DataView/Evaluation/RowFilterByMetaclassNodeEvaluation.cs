@@ -9,20 +9,20 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.DataView.Evaluation;
 
-public class FilterByMetaclassNodeEvaluation : IDataViewNodeEvaluation
+public class RowFilterByMetaclassNodeEvaluation : IDataViewNodeEvaluation
 {
-    private static readonly ILogger Logger = new ClassLogger(typeof(FilterByMetaclassNodeEvaluation));
+    private static readonly ILogger Logger = new ClassLogger(typeof(RowFilterByMetaclassNodeEvaluation));
 
     public bool IsResponsible(IElement node)
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DataViews.TheOne.__RowFilterByMetaclassNode);
+               metaClass.equals(_DataViews.TheOne.Row.__RowFilterByMetaclassNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._RowFilterByMetaclassNode.input);
+        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._Row._RowFilterByMetaclassNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");
@@ -31,8 +31,8 @@ public class FilterByMetaclassNodeEvaluation : IDataViewNodeEvaluation
 
         var input = evaluation.GetElementsForViewNode(inputNode);
 
-        var type = viewNode.getOrDefault<IElement>(_DataViews._RowFilterByMetaclassNode.metaClass);
-        var includeInherits = viewNode.getOrDefault<bool>(_DataViews._RowFilterByMetaclassNode.includeInherits);
+        var type = viewNode.getOrDefault<IElement>(_DataViews._Row._RowFilterByMetaclassNode.metaClass);
+        var includeInherits = viewNode.getOrDefault<bool>(_DataViews._Row._RowFilterByMetaclassNode.includeInherits);
         if (type == null)
         {
             return new TemporaryReflectiveSequence(input.WhenMetaClassIsNotSet());

@@ -13,7 +13,7 @@ public class SelectByWorkspaceNodeEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DataViews.TheOne.__SelectByWorkspaceNode);
+               metaClass.equals(_DataViews.TheOne.Source.__SelectByWorkspaceNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
@@ -22,7 +22,7 @@ public class SelectByWorkspaceNodeEvaluation : IDataViewNodeEvaluation
             throw new InvalidOperationException("WorkspaceLogic is null");
 
         var workspaceId =
-            viewNode.getOrDefault<string>(_DataViews._SelectByWorkspaceNode.workspaceId);
+            viewNode.getOrDefault<string>(_DataViews._Source._SelectByWorkspaceNode.workspaceId);
         var workspace = evaluation.WorkspaceLogic.GetWorkspace(workspaceId)
                         ?? throw new InvalidOperationException($"Workspace {workspaceId} not found");
 

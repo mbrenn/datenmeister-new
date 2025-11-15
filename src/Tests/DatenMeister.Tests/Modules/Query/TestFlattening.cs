@@ -15,6 +15,8 @@ namespace DatenMeister.Tests.Modules.Query;
 [TestFixture]
 public class TestFlattening
 {
+    public const string TestExtentUri = "dm:///test";
+
     [Test]
     public async Task TestFlatteningOfTypesExtent()
     {
@@ -26,10 +28,10 @@ public class TestFlattening
         var resultingNodes =
             viewLogic.GetElementsForViewNode(queryFlattening).OfType<IElement>().ToList();
         Assert.That(resultingNodes.Count, Is.GreaterThan(1));
-        Assert.That(resultingNodes.Any (x =>x.equals(_DataViews.TheOne.__SelectByWorkspaceNode)));
+        Assert.That(resultingNodes.Any (x =>x.equals(_DataViews.TheOne.Source.__SelectByWorkspaceNode)));
     }
 
-    private static async Task<(IDatenMeisterScope scope, IElement queryByMetaClass)> SetupExtentAndQuery()
+    public static async Task<(IDatenMeisterScope scope, IElement queryByMetaClass)> SetupExtentAndQuery()
     {
         IDatenMeisterScope? scope = null;
         try
@@ -37,12 +39,11 @@ public class TestFlattening
             scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             // Create the Target Extent
-
             var extentManager = scope.Resolve<ExtentManager>();
 
             var loaderConfig =
                 InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
-            loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
+            loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, TestExtentUri);
             loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
                 WorkspaceNames.WorkspaceData);
 
@@ -54,7 +55,7 @@ public class TestFlattening
 
             // Create the data!
             var viewNode = factory.create(_DataViews.TheOne.__ViewNode);
-            var selectWorkspace = factory.create(_DataViews.TheOne.__SelectByWorkspaceNode);
+            var selectWorkspace = factory.create(_DataViews.TheOne.Source.__SelectByWorkspaceNode);
             extent.elements().add(viewNode);
             extent.elements().add(selectWorkspace);
 
@@ -62,12 +63,12 @@ public class TestFlattening
             var dropDownByQueryData = factory.create(_Forms.TheOne.__DropDownByQueryData);
             var queryStatement = factory.create(_DataViews.TheOne.__QueryStatement);
 
-            var queryByExtent = factory.create(_DataViews.TheOne.__SelectByExtentNode);
-            queryByExtent.set(_DataViews._SelectByExtentNode.workspaceId, "Types");
-            queryByExtent.set(_DataViews._SelectByExtentNode.extentUri, WorkspaceNames.UriExtentInternalTypes);
+            var queryByExtent = factory.create(_DataViews.TheOne.Source.__SelectByExtentNode);
+            queryByExtent.set(_DataViews._Source._SelectByExtentNode.workspaceId, "Types");
+            queryByExtent.set(_DataViews._Source._SelectByExtentNode.extentUri, WorkspaceNames.UriExtentInternalTypes);
             
-            var queryFlatten = factory.create(_DataViews.TheOne.__FlattenNode);
-            var queryByMetaClass = factory.create(_DataViews.TheOne.__RowFilterByMetaclassNode);
+            var queryFlatten = factory.create(_DataViews.TheOne.Row.__RowFlattenNode);
+            var queryByMetaClass = factory.create(_DataViews.TheOne.Row.__RowFilterByMetaclassNode);
 
             queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByExtent);
             queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByMetaClass);
@@ -76,7 +77,7 @@ public class TestFlattening
 
             dropDownByQueryData.set(_Forms._DropDownByQueryData.query, queryStatement);
 
-            queryFlatten.set(_DataViews._FlattenNode.input, queryByExtent);
+            queryFlatten.set(_DataViews._Row._RowFlattenNode.input, queryByExtent);
             return (scope, queryFlatten);
         }
         catch

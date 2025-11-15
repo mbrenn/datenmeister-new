@@ -14,10 +14,10 @@ public class OtherActionTests
         var actionLogic = ActionSetTests.CreateActionLogic();
         ActionSetTests.CreateExtents(actionLogic);
 
-        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__ConsoleWriteAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.OSIntegration.__ConsoleWriteAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_Actions._ConsoleWriteAction.text] = "Hello World"
+                [_Actions._OSIntegration._ConsoleWriteAction.text] = "Hello World"
             });
         
         await actionLogic.ExecuteAction(action);

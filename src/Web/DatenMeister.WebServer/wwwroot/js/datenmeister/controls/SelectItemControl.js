@@ -9,12 +9,15 @@ export class Settings {
         this.showWorkspaceInBreadcrumb = false;
         this.showExtentInBreadcrumb = false;
         this.showCancelButton = true;
-        this.showButtonRow = true;
+        this.hideButtonRow = false;
         this.hideAtStartup = false;
         this.setButtonText = "Set";
         this.headline = undefined;
     }
 }
+/**
+ * Creates a webcontrol which allows the user to select a specific item
+ */
 export class SelectItemControl {
     constructor() {
         this.loadedWorkspaces = new Array();
@@ -77,7 +80,7 @@ export class SelectItemControl {
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
             "<div class='dm-sic-items'></div>" +
             "</td></tr>" +
-            (this.settings.showButtonRow
+            (this.settings.hideButtonRow !== true
                 ?
                     "<tr><td></td><td class='selected'>" +
                         (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +

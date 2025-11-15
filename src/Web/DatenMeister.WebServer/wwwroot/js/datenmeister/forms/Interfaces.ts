@@ -71,6 +71,12 @@ export interface ICollectionFormElement extends IPageForm {
      */
     callbackLoadItems: (query: QueryFilterParameter) => Promise<Array<Mof.DmObject>>;
 
+    /**
+     * Sets the info text by the loading which shall be shown to the user
+     * @param message Message to be shown
+     */
+    setInfoText(message: string): void;
+
     createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean): Promise<void>
 }
 
@@ -89,4 +95,13 @@ export class QueryFilterParameter {
     orderByDescending?: boolean; // Flag, whether ordering shall be done by descending
     filterByProperties?: Array<string>; // Property filters. Key is Propertyname, Value is textfilter
     filterByFreetext?: string; // Additional freetext
+
+    /**
+     * Defines the url to be used for the query. If not defined, the query will not be used
+     */
+    queryUrl?: string;
+    /**
+     * Defines the workspace to be used for the query. If not defined, the default workspace is used.
+     */
+    queryWorkspace?: string;
 }

@@ -3,6 +3,7 @@ import * as ApiConnection from "../ApiConnection.js"
 import * as Settings from "../Settings.js"
 import * as Mof from "../Mof.js";
 import { convertToMofObjects } from "./Items.js"
+import {param} from "jquery";
 
 export function getAllWorkspaces(): Promise<ItemWithNameAndId[]> {
     return load(undefined, undefined);
@@ -95,24 +96,53 @@ export interface IFindBySearchStringResult {
     reference: ItemWithNameAndId;
 }
 
+/**
+ * Defines the interface to query objects from the server via a specific QueryStatement
+ */
 export interface IQueryObjectParameter {
-    query: Mof.JsonFromMofObject;
-    timeout?: number; // Timeout in seconds
+    /**
+     * The query itself to be used
+     */
+    query?: Mof.JsonFromMofObject;
+    /**
+     * The workspace of the dynamic source which will be added as 'input'
+     */
+    dynamicSourceWorkspaceId?: string;
+    
+    /**
+     * The item Uri of the dynamic source which will be added as 'input'    
+     */
+    dynamicSourceItemUri?: string;
+
+    /**
+     * Defines the timeout in seconds. If the query is not finished in the given time, the query will be aborted.
+     */
+    timeout?: number;
 }
 
+/**
+ * Defines the result of the query being sent to the server
+ */
 export interface IQueryObjectResult {
-    result: Array<Mof.DmObject>;
+    /**
+     * Enumeration of found elements
+     */
+    result: Array<Mof.DmObject>;    
 }
 
-export async function queryObject(query: Mof.DmObject, timeout?: number): Promise<IQueryObjectResult> {
-    const json = Mof.createJsonFromObject(query);
+/**
+ * Calls the server to query the object according the provided parameters
+ * @param query The query that is being used to query the object
+ * @param parameters Additional parameters, the query object will be included into that element
+ */
+export async function queryObject(query: Mof.DmObject, parameters?: IQueryObjectParameter): Promise<IQueryObjectResult> {
 
-    const parameters: IQueryObjectParameter = {
-        query: json
-    };
+    if (parameters === undefined) {
+        parameters = {};
+    }
 
-    if (timeout !== undefined && timeout !== null && timeout > 0) {
-        parameters.timeout = timeout;
+    if (parameters.query === undefined || parameters.query === null) {
+        parameters.query = Mof.createJsonFromObject(query);
     }
 
     const result = await ApiConnection.post<any>(

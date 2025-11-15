@@ -8,22 +8,22 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.DataView.Evaluation;
 
-public class FilterColumnsIncludeOnlyEvaluation : IDataViewNodeEvaluation
+public class ColumnFilterIncludeOnlyEvaluation : IDataViewNodeEvaluation
 {
-    private static readonly ILogger Logger = new ClassLogger(typeof(FilterColumnsIncludeOnlyEvaluation));
+    private static readonly ILogger Logger = new ClassLogger(typeof(ColumnFilterIncludeOnlyEvaluation));
 
     public bool IsResponsible(IElement node)
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DataViews.TheOne.__ColumnFilterIncludeOnlyNode);
+               metaClass.equals(_DataViews.TheOne.Column.__ColumnFilterIncludeOnlyNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
         var input = evaluation.GetInputNode(viewNode);
 
-        var wrappedViewNode = new DataViews.ColumnFilterIncludeOnlyNode_Wrapper(viewNode);
+        var wrappedViewNode = new DataViews.Column.ColumnFilterIncludeOnlyNode_Wrapper(viewNode);
         var columnNames = wrappedViewNode.columnNamesComma;
         if (string.IsNullOrEmpty(columnNames))
         {

@@ -12,7 +12,7 @@ public class MofObjectShadow(string uri) : IElement, IKnowsUri
     /// <summary>
     /// Gets the uri, which describes the given element
     /// </summary>
-    public string Uri { get; } = uri;
+    public string Uri { get; set; } = uri;
 
     public bool equals(object? other)
         => MofObject.AreEqual(this, other as IObject);

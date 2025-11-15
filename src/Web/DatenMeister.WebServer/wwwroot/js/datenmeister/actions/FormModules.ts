@@ -7,6 +7,8 @@ import * as Navigation from "../Navigator.js";
 import {IFormNavigation} from "../forms/Interfaces";
 import {DmObject} from "../Mof.js";
 import {SubmitMethod} from "../forms/Forms";
+import {ItemWithNameAndId} from "../ApiModels";
+import {param} from "jquery";
 
 export function loadModules() {
     FormActions.addModule(new FormsCreateByMetaClassAction());
@@ -18,7 +20,7 @@ class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase 
         super("Forms.Create.ByMetaClass");
         this.actionVerb = "Create by MetaClass";
         this.skipSaving = true;
-        this.defaultMetaClassUri = _DatenMeister._Actions.__CreateFormByMetaClass_Uri;
+        this.defaultMetaClassUri = _DatenMeister._Actions._Forms.__CreateFormByMetaClass_Uri;
     }
     async loadForm() {
         return await FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
@@ -51,4 +53,9 @@ class NavigateToItemClientAction extends FormActions.ItemFormActionModuleBase {
         });
     }
 }
-//# sourceMappingURL=FormModules.js.map
+export async function createFormUponView(viewParameter: Mof.DmObject)
+{
+    await ActionClient.executeActionDirectly(
+        "CreateFormUponView", 
+        {parameter : viewParameter});    
+}

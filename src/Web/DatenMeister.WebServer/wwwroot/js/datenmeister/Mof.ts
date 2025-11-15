@@ -267,6 +267,15 @@ export class DmObject {
 
         return result;
     }
+
+    /**
+     * Creates a reference from item with name and id structure
+     * @param item Item which contains the information about the reference
+     */
+    static createFromItemWithNameAndId(item: ItemWithNameAndId)
+    {
+        return this.createFromReference(item.workspace, item.uri);
+    }
 }
 
 export class DmObjectWithSync extends DmObject

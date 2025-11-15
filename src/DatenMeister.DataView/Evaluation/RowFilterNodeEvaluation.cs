@@ -12,15 +12,15 @@ public class RowFilterNodeEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DataViews.TheOne.__RowOrderByNode);
+               metaClass.equals(_DataViews.TheOne.Row.__RowOrderByNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
         var input = evaluation.GetInputNode(viewNode);
 
-        var property = viewNode.getOrDefault<string>(_DataViews._RowOrderByNode.propertyName);
-        var orderByDescending = viewNode.getOrDefault<bool>(_DataViews._RowOrderByNode.orderDescending);
+        var property = viewNode.getOrDefault<string>(_DataViews._Row._RowOrderByNode.propertyName);
+        var orderByDescending = viewNode.getOrDefault<bool>(_DataViews._Row._RowOrderByNode.orderDescending);
 
         return new RowOrderByProperties(input, 
         [orderByDescending ? "!" + property : property]);

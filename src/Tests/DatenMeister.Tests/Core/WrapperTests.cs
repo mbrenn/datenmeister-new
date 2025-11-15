@@ -43,12 +43,12 @@ public class WrapperTests
         {
             name = "Test"
         };
-        
+
         Assert.That(wrapper.isDisabled, Is.False);
         wrapper.isDisabled = true;
 
         Assert.That(wrapper.name, Is.EqualTo("Test"));
-        Assert.That(wrapper.isDisabled, Is.True); 
+        Assert.That(wrapper.isDisabled, Is.True);
     }
 
     [Test]
@@ -56,7 +56,7 @@ public class WrapperTests
     {
         var extent = new MofUriExtent(new InMemoryProvider(), "dm:///a", null);
         var factory = new MofFactory(extent);
-        var configuration  = factory.create(_Reports.TheOne.__SimpleReportConfiguration);
+        var configuration = factory.create(_Reports.TheOne.__SimpleReportConfiguration);
         var configurationWrapper =
             new DatenMeister.Core.Models.Reports.SimpleReportConfiguration_Wrapper(configuration)
             {
@@ -69,7 +69,7 @@ public class WrapperTests
         {
             isDisabled = true
         };
-        
+
         Assert.That(wrapper.isDisabled, Is.True);
         wrapper.isDisabled = true;
 
@@ -78,10 +78,28 @@ public class WrapperTests
         Assert.That(wrapper.isDisabled, Is.True);
 
         Assert.That(wrapper.configuration, Is.Null);
-        
+
         wrapper.configuration = configurationWrapper;
         Assert.That(wrapper.configuration, Is.Not.Null);
         Assert.That(wrapper.configuration.name, Is.EqualTo("Test"));
         Assert.That(wrapper.configuration.showDescendents, Is.True);
+    }
+
+    [Test]
+    public void TestFactoryWrapper()
+    {
+        var extent = new MofUriExtent(new InMemoryProvider(), "dm:///a", null);
+        var factory = new MofFactory(extent);
+
+        var createdElement = DatenMeister.Core.Models.Reports.SimpleReportConfiguration_Wrapper.Create(factory);
+        
+        Assert.That(createdElement.GetWrappedElement().getMetaClass()?.equals(_Reports.TheOne.__SimpleReportConfiguration), Is.True);
+        Assert.That(createdElement.GetWrappedElement().getMetaClass()?.equals(_Reports.TheOne.__AdocReportInstance), Is.False);
+        
+        createdElement.name = "Test";
+        Assert.That(createdElement.name, Is.EqualTo("Test"));
+        Assert.That(
+            createdElement.GetWrappedElement().getOrDefault<string>(_Reports._SimpleReportConfiguration.name),
+            Is.EqualTo("Test"));
     }
 }

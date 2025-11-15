@@ -1,3 +1,4 @@
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 
@@ -13,6 +14,10 @@ public class Root
     public class ZipFileExtractAction_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#bb766314-6b49-48a6-b80b-08d61c549ff6");
+
+        public static ZipFileExtractAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @sourcePath
         {
@@ -53,6 +58,10 @@ public class Root
     public class ZipFileExtractActionResult_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#a03dae8c-4f44-4d08-9cf8-e98627d05e2f");
+
+        public static ZipFileExtractActionResult_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public bool @success
         {

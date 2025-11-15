@@ -1,3 +1,4 @@
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 
@@ -13,6 +14,10 @@ public class Root
     public class MassImportDefinitionAction_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#b5e9f945-6c33-4b26-837b-38a5ad2f65fc");
+
+        public static MassImportDefinitionAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // Not found
         public object? @item

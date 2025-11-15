@@ -1,3 +1,4 @@
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 
@@ -13,6 +14,10 @@ public class ExcelModels
     public class Workbook_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Excel.Models.Workbook");
+
+        public static Workbook_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // Not found
         public object? @tables
@@ -30,6 +35,10 @@ public class ExcelModels
     public class Table_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Excel.Models.Table");
+
+        public static Table_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // Not found
         public object? @name

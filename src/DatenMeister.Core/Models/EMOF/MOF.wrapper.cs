@@ -1,3 +1,4 @@
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 
@@ -16,6 +17,10 @@ public class MOF
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Identifiers-URIExtent");
+
+            public static URIExtent_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
         }
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Identifiers-Extent",
@@ -23,6 +28,10 @@ public class MOF
         public class Extent_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Identifiers-Extent");
+
+            public static Extent_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         }
 
@@ -39,6 +48,10 @@ public class MOF
         public class Tag_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFExtension-Tag");
+
+            public static Tag_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             // DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper
             public DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper? @tagOwner
@@ -136,6 +149,10 @@ public class MOF
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Extension-Tag");
+
+            public static Tag_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
             public string? @name
             {
                 get =>
@@ -173,6 +190,10 @@ public class MOF
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence");
+
+            public static ReflectiveSequence_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
         }
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection",
@@ -180,6 +201,10 @@ public class MOF
         public class ReflectiveCollection_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection");
+
+            public static ReflectiveCollection_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         }
 
@@ -197,6 +222,10 @@ public class MOF
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Factory");
+
+            public static Factory_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
         }
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Element",
@@ -205,6 +234,10 @@ public class MOF
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Element");
+
+            public static Element_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
         }
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Argument",
@@ -212,6 +245,10 @@ public class MOF
         public class Argument_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument");
+
+            public static Argument_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             public string? @name
             {
@@ -238,6 +275,10 @@ public class MOF
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Extent");
+
+            public static Extent_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
         }
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Link",
@@ -245,6 +286,10 @@ public class MOF
         public class Link_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Link");
+
+            public static Link_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             // Not found
             public object? @firstElement
@@ -293,6 +338,10 @@ public class MOF
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception");
+
+            public static Exception_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
             // Not found
             public object? @objectInError
             {
@@ -331,6 +380,10 @@ public class MOF
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Reflection-Factory");
+
+            public static Factory_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
             // DatenMeister.Core.Models.EMOF.UML.Packages.Package_Wrapper
             public DatenMeister.Core.Models.EMOF.UML.Packages.Package_Wrapper? @package
             {
@@ -360,6 +413,10 @@ public class MOF
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Reflection-Type");
+
+            public static Type_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
         }
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Object",
@@ -368,6 +425,10 @@ public class MOF
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Reflection-Object");
+
+            public static Object_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
         }
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Element",
@@ -375,6 +436,10 @@ public class MOF
         public class Element_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Reflection-Element");
+
+            public static Element_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             // DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper
             public DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper? @metaclass

@@ -330,4 +330,20 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
             storage.IndexBuiltEvent.Set();
         }
     }
+
+    /// <summary>
+    /// Finds the class model by the given url within one of the meta workspaces of that given workspace
+    /// </summary>
+    /// <param name="workspace">Workspace to be evaluated</param>
+    /// <param name="url">Url to be checked</param>
+    /// <returns>The found class model or null, if not found</returns>
+    public ClassModel? FindClassModelByUrl(string workspace, string url)
+    {
+        var workspaceModel = TypeIndexStore.Current?.FindWorkspace(workspace);
+        var metaclassWorkspaces = workspaceModel?.MetaclassWorkspaces;
+        return metaclassWorkspaces
+            ?.Select(x => TypeIndexStore.Current?.FindWorkspace(x))
+            .Select(x => x?.FindClassByUri(url))
+            .FirstOrDefault(x => x != null);
+    }
 }

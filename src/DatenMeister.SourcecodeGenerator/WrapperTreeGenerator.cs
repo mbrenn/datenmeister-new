@@ -70,7 +70,7 @@ public class WrapperTreeGenerator : WalkPackageClass
         Result.AppendLine($"{stack.Indentation}public class {name}_Wrapper : IElementWrapper");
         Result.AppendLine($"{stack.Indentation}{{");
         
-        Result.AppendLine($"{stack.Indentation}    private IElement _wrappedElement;");
+        Result.AppendLine($"{stack.Indentation}    private readonly IElement _wrappedElement;");
         Result.AppendLine();
         Result.AppendLine($"{stack.Indentation}    public {name}_Wrapper(IElement innerDmElement)");
         Result.AppendLine($"{stack.Indentation}    {{");
@@ -79,7 +79,7 @@ public class WrapperTreeGenerator : WalkPackageClass
         Result.AppendLine();
         Result.AppendLine($"{stack.Indentation}    public {name}_Wrapper(IFactory factory)");
         Result.AppendLine($"{stack.Indentation}    {{");
-        Result.AppendLine($"{stack.Indentation}        _wrappedElement = Create(factory);");
+        Result.AppendLine($"{stack.Indentation}        _wrappedElement = factory.create(_metaClass);");
         Result.AppendLine($"{stack.Indentation}    }}");
         Result.AppendLine();
         Result.AppendLine($"{stack.Indentation}    public IElement GetWrappedElement() => _wrappedElement;");

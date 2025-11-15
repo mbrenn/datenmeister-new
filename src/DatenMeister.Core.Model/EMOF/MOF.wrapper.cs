@@ -12,9 +12,21 @@ public class MOF
     {
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Identifiers-URIExtent",
             TypeKind = TypeKind.WrappedClass)]
-        public class URIExtent_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class URIExtent_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public URIExtent_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public URIExtent_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Identifiers-URIExtent");
 
@@ -24,9 +36,21 @@ public class MOF
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Identifiers-Extent",
             TypeKind = TypeKind.WrappedClass)]
-        public class Extent_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Extent_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Extent_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Extent_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Identifiers-Extent");
 
@@ -44,9 +68,21 @@ public class MOF
     {
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFExtension-Tag",
             TypeKind = TypeKind.WrappedClass)]
-        public class Tag_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Tag_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Tag_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Tag_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFExtension-Tag");
 
@@ -57,18 +93,18 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement?>("tagOwner");
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("tagOwner");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper(foundElement);
                 }
                 set 
                 {
                     if(value is IElementWrapper wrappedElement)
                     {
-                        innerDmElement.set("tagOwner", wrappedElement.GetWrappedElement());
+                        _wrappedElement.set("tagOwner", wrappedElement.GetWrappedElement());
                     }
                     else
                     {
-                        innerDmElement.set("tagOwner", value);
+                        _wrappedElement.set("tagOwner", value);
                     }
                 }
             }
@@ -78,18 +114,18 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement?>("ownedComment");
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("ownedComment");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.CommonStructure.Comment_Wrapper(foundElement);
                 }
                 set 
                 {
                     if(value is IElementWrapper wrappedElement)
                     {
-                        innerDmElement.set("ownedComment", wrappedElement.GetWrappedElement());
+                        _wrappedElement.set("ownedComment", wrappedElement.GetWrappedElement());
                     }
                     else
                     {
-                        innerDmElement.set("ownedComment", value);
+                        _wrappedElement.set("ownedComment", value);
                     }
                 }
             }
@@ -99,18 +135,18 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement?>("ownedElement");
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("ownedElement");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper(foundElement);
                 }
                 set 
                 {
                     if(value is IElementWrapper wrappedElement)
                     {
-                        innerDmElement.set("ownedElement", wrappedElement.GetWrappedElement());
+                        _wrappedElement.set("ownedElement", wrappedElement.GetWrappedElement());
                     }
                     else
                     {
-                        innerDmElement.set("ownedElement", value);
+                        _wrappedElement.set("ownedElement", value);
                     }
                 }
             }
@@ -120,18 +156,18 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement?>("owner");
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("owner");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper(foundElement);
                 }
                 set 
                 {
                     if(value is IElementWrapper wrappedElement)
                     {
-                        innerDmElement.set("owner", wrappedElement.GetWrappedElement());
+                        _wrappedElement.set("owner", wrappedElement.GetWrappedElement());
                     }
                     else
                     {
-                        innerDmElement.set("owner", value);
+                        _wrappedElement.set("owner", value);
                     }
                 }
             }
@@ -144,9 +180,21 @@ public class MOF
     {
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Extension-Tag",
             TypeKind = TypeKind.WrappedClass)]
-        public class Tag_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Tag_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Tag_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Tag_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Extension-Tag");
 
@@ -155,26 +203,26 @@ public class MOF
             public string? @name
             {
                 get =>
-                    innerDmElement.getOrDefault<string?>("name");
+                    _wrappedElement.getOrDefault<string?>("name");
                 set => 
-                    innerDmElement.set("name", value);
+                    _wrappedElement.set("name", value);
             }
 
             public string? @value
             {
                 get =>
-                    innerDmElement.getOrDefault<string?>("value");
+                    _wrappedElement.getOrDefault<string?>("value");
                 set => 
-                    innerDmElement.set("value", value);
+                    _wrappedElement.set("value", value);
             }
 
             // Not found
             public object? @element
             {
                 get =>
-                    innerDmElement.getOrDefault<object?>("element");
+                    _wrappedElement.getOrDefault<object?>("element");
                 set => 
-                    innerDmElement.set("element", value);
+                    _wrappedElement.set("element", value);
             }
 
         }
@@ -185,9 +233,21 @@ public class MOF
     {
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence",
             TypeKind = TypeKind.WrappedClass)]
-        public class ReflectiveSequence_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class ReflectiveSequence_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public ReflectiveSequence_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public ReflectiveSequence_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence");
 
@@ -197,9 +257,21 @@ public class MOF
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection",
             TypeKind = TypeKind.WrappedClass)]
-        public class ReflectiveCollection_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class ReflectiveCollection_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public ReflectiveCollection_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public ReflectiveCollection_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection");
 
@@ -217,9 +289,21 @@ public class MOF
     {
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Factory",
             TypeKind = TypeKind.WrappedClass)]
-        public class Factory_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Factory_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Factory_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Factory_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Factory");
 
@@ -229,9 +313,21 @@ public class MOF
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Element",
             TypeKind = TypeKind.WrappedClass)]
-        public class Element_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Element_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Element_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Element_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Element");
 
@@ -241,9 +337,21 @@ public class MOF
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Argument",
             TypeKind = TypeKind.WrappedClass)]
-        public class Argument_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Argument_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Argument_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Argument_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument");
 
@@ -252,27 +360,39 @@ public class MOF
             public string? @name
             {
                 get =>
-                    innerDmElement.getOrDefault<string?>("name");
+                    _wrappedElement.getOrDefault<string?>("name");
                 set => 
-                    innerDmElement.set("name", value);
+                    _wrappedElement.set("name", value);
             }
 
             // Not found
             public object? @value
             {
                 get =>
-                    innerDmElement.getOrDefault<object?>("value");
+                    _wrappedElement.getOrDefault<object?>("value");
                 set => 
-                    innerDmElement.set("value", value);
+                    _wrappedElement.set("value", value);
             }
 
         }
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Extent",
             TypeKind = TypeKind.WrappedClass)]
-        public class Extent_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Extent_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Extent_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Extent_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Extent");
 
@@ -282,9 +402,21 @@ public class MOF
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Link",
             TypeKind = TypeKind.WrappedClass)]
-        public class Link_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Link_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Link_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Link_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Link");
 
@@ -294,18 +426,18 @@ public class MOF
             public object? @firstElement
             {
                 get =>
-                    innerDmElement.getOrDefault<object?>("firstElement");
+                    _wrappedElement.getOrDefault<object?>("firstElement");
                 set => 
-                    innerDmElement.set("firstElement", value);
+                    _wrappedElement.set("firstElement", value);
             }
 
             // Not found
             public object? @secondElement
             {
                 get =>
-                    innerDmElement.getOrDefault<object?>("secondElement");
+                    _wrappedElement.getOrDefault<object?>("secondElement");
                 set => 
-                    innerDmElement.set("secondElement", value);
+                    _wrappedElement.set("secondElement", value);
             }
 
             // DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Association_Wrapper
@@ -313,18 +445,18 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement?>("association");
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("association");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Association_Wrapper(foundElement);
                 }
                 set 
                 {
                     if(value is IElementWrapper wrappedElement)
                     {
-                        innerDmElement.set("association", wrappedElement.GetWrappedElement());
+                        _wrappedElement.set("association", wrappedElement.GetWrappedElement());
                     }
                     else
                     {
-                        innerDmElement.set("association", value);
+                        _wrappedElement.set("association", value);
                     }
                 }
             }
@@ -333,9 +465,21 @@ public class MOF
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Exception",
             TypeKind = TypeKind.WrappedClass)]
-        public class Exception_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Exception_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Exception_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Exception_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception");
 
@@ -345,26 +489,26 @@ public class MOF
             public object? @objectInError
             {
                 get =>
-                    innerDmElement.getOrDefault<object?>("objectInError");
+                    _wrappedElement.getOrDefault<object?>("objectInError");
                 set => 
-                    innerDmElement.set("objectInError", value);
+                    _wrappedElement.set("objectInError", value);
             }
 
             // Not found
             public object? @elementInError
             {
                 get =>
-                    innerDmElement.getOrDefault<object?>("elementInError");
+                    _wrappedElement.getOrDefault<object?>("elementInError");
                 set => 
-                    innerDmElement.set("elementInError", value);
+                    _wrappedElement.set("elementInError", value);
             }
 
             public string? @description
             {
                 get =>
-                    innerDmElement.getOrDefault<string?>("description");
+                    _wrappedElement.getOrDefault<string?>("description");
                 set => 
-                    innerDmElement.set("description", value);
+                    _wrappedElement.set("description", value);
             }
 
         }
@@ -375,9 +519,21 @@ public class MOF
     {
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Factory",
             TypeKind = TypeKind.WrappedClass)]
-        public class Factory_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Factory_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Factory_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Factory_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Reflection-Factory");
 
@@ -388,18 +544,18 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement?>("package");
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("package");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.Packages.Package_Wrapper(foundElement);
                 }
                 set 
                 {
                     if(value is IElementWrapper wrappedElement)
                     {
-                        innerDmElement.set("package", wrappedElement.GetWrappedElement());
+                        _wrappedElement.set("package", wrappedElement.GetWrappedElement());
                     }
                     else
                     {
-                        innerDmElement.set("package", value);
+                        _wrappedElement.set("package", value);
                     }
                 }
             }
@@ -408,9 +564,21 @@ public class MOF
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Type",
             TypeKind = TypeKind.WrappedClass)]
-        public class Type_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Type_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Type_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Type_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Reflection-Type");
 
@@ -420,9 +588,21 @@ public class MOF
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Object",
             TypeKind = TypeKind.WrappedClass)]
-        public class Object_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Object_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Object_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Object_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Reflection-Object");
 
@@ -432,9 +612,21 @@ public class MOF
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Element",
             TypeKind = TypeKind.WrappedClass)]
-        public class Element_Wrapper(IElement innerDmElement) : IElementWrapper
+        public class Element_Wrapper : IElementWrapper
         {
-            public IElement GetWrappedElement() => innerDmElement;
+            private readonly IElement _wrappedElement;
+
+            public Element_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public Element_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/model/mof#_MOF-Reflection-Element");
 
@@ -445,18 +637,18 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement?>("metaclass");
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("metaclass");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper(foundElement);
                 }
                 set 
                 {
                     if(value is IElementWrapper wrappedElement)
                     {
-                        innerDmElement.set("metaclass", wrappedElement.GetWrappedElement());
+                        _wrappedElement.set("metaclass", wrappedElement.GetWrappedElement());
                     }
                     else
                     {
-                        innerDmElement.set("metaclass", value);
+                        _wrappedElement.set("metaclass", value);
                     }
                 }
             }

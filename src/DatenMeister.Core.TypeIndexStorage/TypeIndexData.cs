@@ -37,15 +37,4 @@ public class TypeIndexData
 
     public WorkspaceModel? GetWorkspace(string workspace) 
         => Workspaces.FirstOrDefault(x => x.WorkspaceId == workspace);
-
-    /// <summary>
-    /// Finds the class model by the given uri within the given workspace
-    /// </summary>
-    /// <param name="workspaceId">Id of the workspace</param>
-    /// <param name="uri">Uri of the class to be queried</param>
-    /// <returns>The classmodel or null, if not found</returns>
-    public ClassModel? FindClassModel(string workspaceId, string uri)
-    {
-        return FindWorkspace(workspaceId)?.FindClassByUri(uri);
-    }
 }

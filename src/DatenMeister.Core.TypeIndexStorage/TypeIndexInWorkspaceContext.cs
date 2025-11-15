@@ -27,6 +27,6 @@ public class TypeIndexInWorkspaceContext(TypeIndexLogic logic, string workspace)
     /// <returns>The found classmodel or null, if not found</returns>
     public ClassModel? FindClassModel(string uri)
     {
-        return Logic.FindClassModelByUrl(Workspace, uri);
+        return Logic.FindClassModelByUrlWithinMetaWorkspaces(Workspace, uri);
     }
 }

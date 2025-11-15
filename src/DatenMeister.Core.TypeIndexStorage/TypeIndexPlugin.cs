@@ -2,6 +2,8 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Plugins;
 
+#pragma warning disable CS0162 // Unreachable code detected
+
 namespace DatenMeister.Core.TypeIndexAssembly;
 
 
@@ -15,25 +17,27 @@ public class TypeIndexPlugin(IScopeStorage scopeStorage, IWorkspaceLogic workspa
     /// <summary>
     /// Gets or sets a configuration flag which may deactivate the full plugin on source-level
     /// </summary>
-    public const bool IsActive = false;
+    public const bool IsActive = true;
 
     public Task Start(PluginLoadingPosition position)
     {
-        if (IsActive)
+        if (!IsActive)
         {
-            switch (position)
-            {
-                case PluginLoadingPosition.BeforeBootstrapping:
-                    ScopeStorage.Add(new TypeIndexStore());
-                    break;
+            return Task.CompletedTask;
+        }
 
-                case PluginLoadingPosition.AfterLoadingOfExtents:
-                    // We have now loaded everything and let's start the indexing
-                    var logic = new TypeIndexLogic(WorkspaceLogic, ScopeStorage);
-                    _ = logic.CreateIndexFirstTime();
-                    logic.StartListening();
-                    break;
-            }
+        switch (position)
+        {
+            case PluginLoadingPosition.BeforeBootstrapping:
+                ScopeStorage.Add(new TypeIndexStore());
+                break;
+
+            case PluginLoadingPosition.AfterLoadingOfExtents:
+                // We have now loaded everything and let's start the indexing
+                var logic = new TypeIndexLogic(WorkspaceLogic, ScopeStorage);
+                _ = logic.CreateIndexFirstTime();
+                logic.StartListening();
+                break;
         }
 
         return Task.CompletedTask;

@@ -48,4 +48,12 @@ public class TypeIndexStore
         IndexBuiltEvent.WaitOne();
         return Current ?? throw new InvalidOperationException("Current is null. This should not happen");
     }
+    
+    /// <summary>
+    /// Waits until the index store is available.
+    /// </summary>
+    public void WaitForAvailabilityOfIndexStore()
+    {
+        IndexNotBuildingEvent.WaitOne();
+    }
 }

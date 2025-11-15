@@ -230,8 +230,6 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
     /// <param name="element">The element reflecting the class</param>
     private ClassModel CreateClassModel(WorkspaceModel workspaceModel, IElement element)
     {
-        Logger.Info("Adding class " + element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name));
-        
         // Add the class itself
         var classModel = new ClassModel
         {
@@ -251,7 +249,6 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
                 if (general is IKnowsUri uriGeneral)
                 {
                     classModel.Generalizations.Add(uriGeneral.Uri);
-                    Console.WriteLine(uriGeneral.Uri);
                 }
             }
         }
@@ -272,7 +269,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
 
     private AttributeModel CreateAttributeModel(IElement attribute)
     {
-        var attributeModel = new AttributeModel()
+        var attributeModel = new AttributeModel
         {
             Name = attribute.getOrDefault<string>(_UML._Classification._Property.name),
             TypeUrl =
@@ -336,7 +333,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
     /// <param name="workspace">Workspace to be evaluated</param>
     /// <param name="url">Url to be checked</param>
     /// <returns>The found class model or null, if not found</returns>
-    public ClassModel? FindClassModelByUrl(string workspace, string url)
+    public ClassModel? FindClassModelByUrlWithinMetaWorkspaces(string workspace, string url)
     {
         var workspaceModel = TypeIndexStore.Current?.FindWorkspace(workspace);
         var metaclassWorkspaces = workspaceModel?.MetaclassWorkspaces;
@@ -344,5 +341,17 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
             ?.Select(x => TypeIndexStore.Current?.FindWorkspace(x))
             .Select(x => x?.FindClassByUri(url))
             .FirstOrDefault(x => x != null);
+    }
+
+    /// <summary>
+    /// Finds the class model by the given url within one of the meta workspaces of that given workspace
+    /// </summary>
+    /// <param name="workspace">Workspace to be evaluated</param>
+    /// <param name="url">Url to be checked</param>
+    /// <returns>The found class model or null, if not found</returns>
+    public ClassModel? FindClassModelByUrlWithinWorkspace(string workspace, string url)
+    {
+        var workspaceModel = TypeIndexStore.Current?.FindWorkspace(workspace);
+        return workspaceModel?.FindClassByUri(url);
     }
 }

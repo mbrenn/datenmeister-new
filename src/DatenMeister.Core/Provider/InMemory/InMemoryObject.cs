@@ -5,6 +5,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
+using DatenMeister.Core.TypeIndexAssembly.Model;
 
 namespace DatenMeister.Core.Provider.InMemory;
 
@@ -30,8 +31,12 @@ public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMoveme
 
     private string? _id;
 
-    public IProvider Provider { get; }
-        
+    public IProvider Provider { get; set; }
+
+    public IProviderWithTypeIndex ProviderWithTypeIndex
+        => Provider as IProviderWithTypeIndex
+           ?? throw new InvalidOperationException("Provider is not of type IProviderWithTypeIndex");
+
     /// <inheritdoc />
     public string? MetaclassUri { get; set; }
 
@@ -213,7 +218,7 @@ public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMoveme
     public static MofElement CreateEmpty(string metaClass, IExtent? uriExtent = null)
     {
         var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
-        var element = (MofElement?) factory.create(null);
+        var element = (MofElement?)factory.create(null);
         if (element == null) throw new InvalidOperationException("factory.create returned null");
 
         if (!string.IsNullOrEmpty(metaClass)) element.SetMetaClass(metaClass);
@@ -300,5 +305,15 @@ public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMoveme
     public override int GetHashCode()
     {
         return base.GetHashCode();
+    }
+
+    public ClassModel? GetClassModel()
+    {
+        if (string.IsNullOrEmpty(MetaclassUri))
+        {
+            return null;
+        }
+
+        return ProviderWithTypeIndex?.TypeIndex?.FindClassModel(MetaclassUri);
     }
 }

@@ -43,16 +43,17 @@ public class TestFindModels
                              ?? throw new InvalidOperationException("TypeIndexStore not found");
         typeIndexStore.WaitForAvailabilityOfIndexStore();
 
-        var inMemoryConfig = ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper.Create(
-            InMemoryObject.TemporaryFactory);
-        inMemoryConfig.name = "test";
-        inMemoryConfig.extentUri = "dm:///test";
-        inMemoryConfig.workspaceId = WorkspaceNames.WorkspaceData;
-        
+        var inMemoryConfig = new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+        {
+            name = "test",
+            extentUri = "dm:///test",
+            workspaceId = WorkspaceNames.WorkspaceData
+        };
+
         var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
-        var found =( await extentManager.LoadExtent(inMemoryConfig.GetWrappedElement())).Extent;
+        var found = (await extentManager.LoadExtent(inMemoryConfig.GetWrappedElement())).Extent;
         Assert.That(found, Is.Not.Null);
-        
+
         // Ok, we got the extent, now we query it whether it knows the right class model
         var foundAsExtent = found as MofUriExtent;
         Assert.That(foundAsExtent, Is.Not.Null);
@@ -60,11 +61,12 @@ public class TestFindModels
         var inMemoryProvider = foundAsExtent!.Provider as InMemoryProvider;
         Assert.That(inMemoryProvider, Is.Not.Null);
 
-        var classModel = inMemoryProvider!.FindClassModel(_CommonTypes.TheOne.OSIntegration.__CommandLineApplication.Uri);
+        var classModel =
+            inMemoryProvider!.FindClassModel(_CommonTypes.TheOne.OSIntegration.__CommandLineApplication.Uri);
         Assert.That(classModel, Is.Not.Null);
         Assert.That(classModel!.Name, Is.EqualTo("CommandLineApplication"));
     }
-    
+
     [Test]
     public async Task TestFindByObject()
     {
@@ -73,9 +75,31 @@ public class TestFindModels
                              ?? throw new InvalidOperationException("TypeIndexStore not found");
         typeIndexStore.WaitForAvailabilityOfIndexStore();
         
-        var typesWorkspace = typeIndexStore.GetCurrentIndexStore().FindWorkspace(WorkspaceNames.WorkspaceTypes);
+        var inMemoryConfig = new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+        {
+            name = "test",
+            extentUri = "dm:///test",
+            workspaceId = WorkspaceNames.WorkspaceData
+        };
+        
+        var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
+        var found = (await extentManager.LoadExtent(inMemoryConfig.GetWrappedElement())).Extent;
+        Assert.That(found, Is.Not.Null);
+        
+        var factory = new MofFactory(found);
+        var element = new CommonTypes.OSIntegration.CommandLineApplication_Wrapper(factory)
+        {
+            name = "Test",
+            applicationPath = "path"
+        };
+        
+        found.elements().add(element.GetWrappedElement());
+        
+        // Now check that the InMemoryObject is working correctly
+        var asInMemoryObject = (element.GetWrappedElement() as MofElement)?.ProviderObject as InMemoryObject;
+        Assert.That(asInMemoryObject, Is.Not.Null);
+
+        var classModel = asInMemoryObject!.GetClassModel();
+        Assert.That(classModel!.Name, Is.EqualTo("CommandLineApplication"));
     }
-    
-    
-    
 }

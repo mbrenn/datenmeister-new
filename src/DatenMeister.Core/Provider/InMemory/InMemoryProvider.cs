@@ -16,10 +16,15 @@ internal enum IndexCache
     Instance
 }
     
+public interface IProviderWithTypeIndex : IProvider
+{
+    TypeIndexInWorkspaceContext? TypeIndex { get; set; }
+}
+
 /// <summary>
 /// Stores all elements in the memory
 /// </summary>
-public class InMemoryProvider : IProvider, ICanUpdateCacheId
+public class InMemoryProvider : IProviderWithTypeIndex, ICanUpdateCacheId
 {
     /// <summary>
     /// Defines a configuration variable whether the index cache itself shall be used.
@@ -75,7 +80,7 @@ public class InMemoryProvider : IProvider, ICanUpdateCacheId
     /// <summary>
     /// Stores the context to retrieve information about types from the typeindex logic.
     /// </summary>
-    internal TypeIndexInWorkspaceContext? TypeIndex { get; set; }
+    public TypeIndexInWorkspaceContext? TypeIndex { get; set; }
 
     /// <inheritdoc />
     public IProviderObject CreateElement(string? metaClassUri) =>

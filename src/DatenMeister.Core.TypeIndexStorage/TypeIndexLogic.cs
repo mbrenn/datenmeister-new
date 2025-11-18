@@ -11,14 +11,15 @@ using DatenMeister.Core.TypeIndexAssembly.Model;
 
 namespace DatenMeister.Core.TypeIndexAssembly;
 
-public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
 {
     private static readonly ILogger Logger = new ClassLogger(typeof(TypeIndexLogic));
     
     /// <summary>
     /// Stores the scope storage
     /// </summary>
-    private IScopeStorage ScopeStorage { get; set; } = scopeStorage;
+    private IScopeStorage ScopeStorage { get; set; } 
+        = workspaceLogic.ScopeStorage ?? throw new InvalidOperationException("ScopeStorage is null");
     
     /// <summary>
     /// Stores the workspace logic

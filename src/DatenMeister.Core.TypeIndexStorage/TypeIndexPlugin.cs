@@ -34,7 +34,7 @@ public class TypeIndexPlugin(IScopeStorage scopeStorage, IWorkspaceLogic workspa
 
             case PluginLoadingPosition.AfterLoadingOfExtents:
                 // We have now loaded everything and let's start the indexing
-                var logic = new TypeIndexLogic(WorkspaceLogic, ScopeStorage);
+                var logic = new TypeIndexLogic(WorkspaceLogic);
                 _ = logic.CreateIndexFirstTime();
                 logic.StartListening();
                 break;

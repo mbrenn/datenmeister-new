@@ -19,6 +19,8 @@ public class TypeIndexPlugin(IScopeStorage scopeStorage, IWorkspaceLogic workspa
     /// </summary>
     public const bool IsActive = true;
 
+    public const bool IsListeningActive = true;
+
     public Task Start(PluginLoadingPosition position)
     {
         if (!IsActive)
@@ -36,7 +38,10 @@ public class TypeIndexPlugin(IScopeStorage scopeStorage, IWorkspaceLogic workspa
                 // We have now loaded everything and let's start the indexing
                 var logic = new TypeIndexLogic(WorkspaceLogic);
                 _ = logic.CreateIndexFirstTime();
-                logic.StartListening();
+                
+                if(IsListeningActive)
+                    _ = logic.StartListening();
+                
                 break;
         }
 

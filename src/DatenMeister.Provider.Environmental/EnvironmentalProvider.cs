@@ -19,7 +19,13 @@ public class EnvironmentalProvider : IProviderLoader
 {
     public IWorkspaceLogic? WorkspaceLogic { get; set; }
     public IScopeStorage? ScopeStorage { get; set; }
-        
+
+    /// <summary>
+    /// Loads a provider with the given configuration and extent creation flags.
+    /// </summary>
+    /// <param name="configuration">The configuration defining the provider's settings and behavior.</param>
+    /// <param name="extentCreationFlags">The flags indicating how the extent should be created or loaded.</param>
+    /// <return>Returns information about the loaded provider, including the provider instance and configuration information.</return>
     public async Task<LoadedProviderInfo> LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
     {
         return await Task.Run(() =>

@@ -19,8 +19,20 @@ public class TypeIndexPlugin(IScopeStorage scopeStorage, IWorkspaceLogic workspa
     /// </summary>
     public const bool IsActive = true;
 
+    /// <summary>
+    /// Gets a configuration flag indicating whether the listening mechanism is active
+    /// </summary>
     public const bool IsListeningActive = true;
 
+    /// <summary>
+    /// Starts the plugin execution based on the specified loading position.
+    /// </summary>
+    /// <param name="position">
+    /// The position in the plugin loading sequence where this method is invoked.
+    /// </param>
+    /// <returns>
+    /// A task that represents the asynchronous operation of starting the plugin.
+    /// </returns>
     public Task Start(PluginLoadingPosition position)
     {
         if (!IsActive)

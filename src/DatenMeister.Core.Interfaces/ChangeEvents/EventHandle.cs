@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Core.Runtime.ChangeEvents;
+﻿namespace DatenMeister.Core.Interfaces.ChangeEvents;
 
 /// <summary>
 /// Just an abstract class to represent an object handle.

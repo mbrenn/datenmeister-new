@@ -2,6 +2,7 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.ChangeEvents;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
@@ -16,6 +17,12 @@ public class WorkspaceLogic : IWorkspaceLogic
     private static readonly ClassLogger Logger = new(typeof(WorkspaceLogic));
 
     private readonly ChangeEventManager? _changeEventManager;
+
+    /// <summary>
+    /// Gets the Change Event MAnager
+    /// </summary>
+    public IChangeEventManager ChangeEventManager =>
+        _changeEventManager ?? throw new InvalidOperationException("ChangeEventManager is null");
 
     private readonly WorkspaceData _workspaceData;
 
@@ -120,7 +127,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     /// Adds a workspace and assigns the meta workspace for the given workspace
     /// The meta workspace can also be the same as the added workspace
     /// </summary>
-    /// <param name="workspace">Workspace to be added</param>
+    /// <param name="workspace">Workspace to be added. It usually returns the parameter itself</param>
     public IWorkspace AddWorkspace(IWorkspace workspace)
     {
         if (workspace == null) throw new ArgumentNullException(nameof(workspace));
@@ -207,7 +214,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     /// <param name="id">Id of the workspace to be deleted</param>
     public void RemoveWorkspace(string id)
     {
-       IWorkspace? workspaceToBeDeleted;
+        IWorkspace? workspaceToBeDeleted;
         lock (_workspaceData)
         {
             workspaceToBeDeleted = GetWorkspace(id);

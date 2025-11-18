@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.Interfaces.MOF.Identifiers;
+﻿using DatenMeister.Core.Interfaces.ChangeEvents;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Runtime.Workspaces;

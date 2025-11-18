@@ -1,4 +1,3 @@
-using System.Formats.Asn1;
 using BurnSystems.Logging;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
@@ -11,10 +10,15 @@ using DatenMeister.Core.TypeIndexAssembly.Model;
 
 namespace DatenMeister.Core.TypeIndexAssembly;
 
+/// <summary>
+/// Handles logic for type indexing within specified workspaces.
+/// Facilitates the management, updating, and querying of indexed types,
+/// including interactions with workspace and metadata for type resolution.
+/// </summary>
 public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
 {
     private static readonly ILogger Logger = new ClassLogger(typeof(TypeIndexLogic));
-    
+
     /// <summary>
     /// Stores the scope storage
     /// </summary>
@@ -40,7 +44,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     {
         Logger.Info("Trigger first indexing");
 
-        await TriggerUpdateOfIndex();
+        await TriggerUpdateOfIndex(true);
     }
 
     public TimeSpan IndexWaitTime { get; set; } = TimeSpan.FromSeconds(5);
@@ -49,61 +53,145 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     
     private DateTime _lastTriggerTime = DateTime.MinValue;
     
-    private bool _isIndexing = false;
-    
-    private bool _triggerOccuredDuringIndexing = false;
+    private bool _triggerOccuredDuringIndexing;
+
+    private CancellationTokenSource _cancellationTokenSource = new();
 
     /// <summary>
     /// In case there is an update of the type index, the method can be called
     /// It starts a listening of 5 seconds and then triggers the update of the index
     /// in case no other call has been requested
     /// </summary>
-    private async Task TriggerUpdateOfIndex()
+    private async Task TriggerUpdateOfIndex(bool firstRun = false)
     {
         lock (TypeIndexStore.IndexNotBuildingEvent)
         {
             if (!TypeIndexStore.IndexNotBuildingEvent.WaitOne(0))
             {
                 Logger.Info("We received a trigger, but the index is already being built.");
-            }
-
-            // We reset the event, so we are sure 
-            TypeIndexStore.IndexNotBuildingEvent.Reset();
-        }
-
-        while (true)
-        {
-            if (_isIndexing)
-            {
+                
+                // We reset the event, so we are sure 
+                TypeIndexStore.IndexNotBuildingEvent.Reset();
                 _triggerOccuredDuringIndexing = true;
                 return;
             }
-        
-            // Perform the updates
-            Logger.Info("Trigger update of index");
-            await Task.Run(PerformIndexing);
-
-            // After the updates are performed, check whether the trigger has been called during the indexing
-            if (_triggerOccuredDuringIndexing)
-            {
-                _triggerOccuredDuringIndexing = false;
-                // Do it again
-                continue;
-            }
-
-            break;
+            
+            // Now, we know that we can trigger the update itself.
+            
+            // First, mark that we are updating the index
+            TypeIndexStore.IndexNotBuildingEvent.Reset();
+            _lastTriggerTime = DateTime.Now;
         }
         
-        TypeIndexStore.IndexNotBuildingEvent.Set();
+        // We leave the lock here, because we are protected now and can request the updating. 
+        // This is in case we are heaving the first run
+        if (firstRun)
+        {
+            while (true)
+            {
+                // Perform the updates
+                Logger.Info("Trigger update of index");
+                await Task.Run(PerformIndexing);
+
+                // After the updates are performed, check whether the trigger has been called during the indexing
+                if (_triggerOccuredDuringIndexing)
+                {
+                    _triggerOccuredDuringIndexing = false;
+                    // Do it again
+                    continue;
+                }
+
+                TypeIndexStore.IndexNotBuildingEvent.Set();
+
+                break;
+            }
+        }
+        else
+        {
+            // In case we are not in the first run, we trigger the 5-second time period
+            _lastTriggerTime = DateTime.Now;
+
+            var token = _cancellationTokenSource.Token;
+            _ = Task.Run(async () =>
+            {
+                try{
+
+                    while (true)
+                    {
+                        TimeSpan timeToWait;
+                        lock (TypeIndexStore.IndexNotBuildingEvent)
+                        {
+                            var elapsed = DateTime.Now - _lastTriggerTime;
+                            if (elapsed >= IndexWaitTime)
+                            {
+                                // Quiet period finished, proceed to execution
+                                break;
+                            }
+
+                            timeToWait = IndexWaitTime - elapsed;
+                        }
+
+                        Logger.Info($"Waiting for {timeToWait.TotalSeconds} seconds");
+
+                        await Task.Delay(timeToWait, token);
+                        if (token.IsCancellationRequested)
+                        {
+                            Logger.Info("Cancellation requested");
+                            return;
+                        }
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    // Task was cancelled, which is expected
+                    return;
+                }
+
+                // Now run the indexing until the trigger has not been run
+                while (true)
+                {
+                    PerformIndexing();
+                    if (!_triggerOccuredDuringIndexing)
+                    {
+                        _triggerOccuredDuringIndexing = false;
+                        break;
+                    }
+                }
+
+                // Only, if everything is done, we set the indexing
+                TypeIndexStore.IndexNotBuildingEvent.Set();
+            }, token);
+
+        }
     }
 
     /// <summary>
     /// This method will be called before requesting the first indexing.
     /// It adds the listening of changes within potential type extents
     /// </summary>
-    public void StartListening()
+    public async Task StartListening()
     {
-        // Gets notified in case the Workspace Logic
+        // Go through all known workspaces which are having metaworkspaces
+        await Task.Run(() =>
+        {
+            TypeIndexStore.WaitForAvailabilityOfIndexStore();
+
+            Logger.Info("Start listening for changes");
+            foreach (var workspace in
+                     TypeIndexStore.Current?.Workspaces.Where(x =>
+                         TypeIndexStore.Current.IsWorkspaceMetaClass(x.WorkspaceId))
+                     ?? throw new InvalidOperationException("Current is null"))
+            {
+                WorkspaceLogic.ChangeEventManager.RegisterFor(
+                    WorkspaceLogic.GetWorkspace(workspace.WorkspaceId)
+                    ?? throw new InvalidOperationException("Workspace not found"),
+                    (changedWorkspace, changedExtent, changedElement) =>
+                    {
+                        Logger.Info($"Change in workspace {changedWorkspace.id} detected");
+                    }
+                );
+            }
+        });
     }
 
     /// <summary>
@@ -111,9 +199,14 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     /// </summary>
     public void StopListening()
     {
-        
+        _cancellationTokenSource.Cancel();
     }
-    
+
+    /// <summary>
+    /// Executes the indexing process for type data within the configured workspaces.
+    /// This method builds the type index data by processing workspace information and updates the current index state.
+    /// It is invoked internally during index updates and manages synchronization to ensure thread-safe index building.
+    /// </summary>
     private void PerformIndexing()
     {
         using var stopWatchLogger = new StopWatchLogger(Logger, "Performing indexing");
@@ -121,12 +214,8 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         var storage = TypeIndexStore;
         lock (storage.SyncIndexBuild)
         {
-            _isIndexing = true;
             storage.Next = new TypeIndexData();
-
             BuildWorkspace(storage.Next);
-
-            _isIndexing = false;
             _lastIndexTime = DateTime.Now;
             
             SwapNextAndCurrentTypeData();
@@ -171,7 +260,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                     continue;
                 }
 
-                Logger.Info("Building classes within workspace: " + workspace.id);
+                using var __ = new StopWatchLogger(Logger, $"Building classes within workspace: {workspace.id}");
 
                 // Now we go through the metaclasses
                 var workspaceModel = indexData.GetWorkspace(workspace.id)
@@ -186,12 +275,43 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                     {
                         Uri = (extent as IUriExtent)?.contextURI() ?? string.Empty
                     };
+                    
                     workspaceModel.Extents.Add(extentInfo);
                     
                     // Now we go through the elements and try to find the classes
                     foreach (var element in extent.elements().OfType<IElement>())
                     {
                         AddClassesToWorkspace(workspaceModel, element);
+                    }
+                }
+                
+                AddInheritedAttributesFromGeneralizations(workspaceModel);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Adds inherited attributes to classes within the specified workspace model
+    /// by traversing their generalizations. For each generalization, attributes
+    /// from the generalized class are copied and marked as inherited within the
+    /// derived class.
+    /// </summary>
+    /// <param name="workspaceModel">
+    /// The workspace model containing the classes and their generalizations to process.
+    /// </param>
+    private static void AddInheritedAttributesFromGeneralizations(WorkspaceModel workspaceModel)
+    {
+        // After we are done with the complete workspace, we add the attributes from the generalizations
+        foreach (var classModel in workspaceModel.ClassModels)
+        {
+            foreach (var generalization in classModel.Generalizations)
+            {
+                var generalizedClassModel = workspaceModel.FindClassByUri(generalization);
+                if (generalizedClassModel != null)
+                {
+                    foreach (var attribute in generalizedClassModel.Attributes)
+                    {
+                        classModel.Attributes.Add(attribute with {IsInherited = true});
                     }
                 }
             }
@@ -220,16 +340,15 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         // Check, if we are a classifier
         if (element.getMetaClass()?.equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
         {
-            workspaceModel.ClassModels.Add(CreateClassModel(workspaceModel, element));
+            workspaceModel.ClassModels.Add(CreateClassModel(element));
         }
     }
 
     /// <summary>
     /// Adds the specific class to the workspacemodel, so it can be easily looked up. 
     /// </summary>
-    /// <param name="workspaceModel">Workspace Model to which the element will be added</param>
     /// <param name="element">The element reflecting the class</param>
-    private ClassModel CreateClassModel(WorkspaceModel workspaceModel, IElement element)
+    private ClassModel CreateClassModel(IElement element)
     {
         // Add the class itself
         var classModel = new ClassModel
@@ -244,7 +363,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         var generalizations = element.getOrDefault<IReflectiveCollection?>(_UML._StructuredClassifiers._Class.generalization);
         if (generalizations != null)
         {
-            foreach ( var generalization in generalizations.OfType<IElement>())
+            foreach (var generalization in generalizations.OfType<IElement>())
             {
                 var general = generalization.getOrDefault<IElement?>(_UML._Classification._Generalization.general);
                 if (general is IKnowsUri uriGeneral)
@@ -253,7 +372,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                 }
             }
         }
-        
+
         // Now get the properties / attributes
         var ownedAttributes = element.getOrDefault<IReflectiveCollection?>(
             _UML._StructuredClassifiers._Class.ownedAttribute);
@@ -268,6 +387,11 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         return classModel;
     }
 
+    /// <summary>
+    /// Creates an attribute model out the attributes of an UML attribute
+    /// </summary>
+    /// <param name="attribute">Attribute to be evaluated</param>
+    /// <returns>The created attribute</returns>
     private AttributeModel CreateAttributeModel(IElement attribute)
     {
         var attributeModel = new AttributeModel

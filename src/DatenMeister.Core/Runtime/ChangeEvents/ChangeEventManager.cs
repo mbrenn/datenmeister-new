@@ -1,5 +1,6 @@
 ﻿using BurnSystems.Logging;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.ChangeEvents;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
@@ -11,7 +12,7 @@ namespace DatenMeister.Core.Runtime.ChangeEvents;
 /// This class handles all events occuring due to changes, insertion or deletions of the objects
 /// within the extent
 /// </summary>
-public class ChangeEventManager
+public class ChangeEventManager : IChangeEventManager
 {
     private static readonly ClassLogger ClassLogger = new(typeof(ChangeEventManager));
 

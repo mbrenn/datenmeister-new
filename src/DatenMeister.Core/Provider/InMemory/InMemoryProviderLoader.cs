@@ -45,7 +45,7 @@ public class InMemoryProviderLoader : IProviderLoader
             if (WorkspaceLogic != null && ScopeStorage != null)
             {
                 innerProvider.TypeIndex = new TypeIndexInWorkspaceContext(
-                    new TypeIndexLogic(WorkspaceLogic, ScopeStorage),
+                    new TypeIndexLogic(WorkspaceLogic),
                     configuration.getOrDefault<string?>(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId) ??
                     WorkspaceNames.WorkspaceData);
             }

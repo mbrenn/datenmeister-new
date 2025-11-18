@@ -6,6 +6,7 @@ using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
 using DatenMeister.Core.Provider;
+using DatenMeister.Core.TypeIndexAssembly.Model;
 using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Core.EMOF.Implementation;
@@ -411,6 +412,20 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     {
         _extent?.ChangeEventManager?.SendChangeEvent(this);
         _extent?.SignalUpdateOfContent();
+    }
+
+    /// <summary>
+    /// Finds the class model by looking into the type index.
+    /// </summary>
+    /// <returns>The found class model or null, if not found</returns>
+    public ClassModel? GetClassModel()
+    {
+        if (Extent is not MofUriExtent mofUriExtent) return null;
+        
+        var metaClassUri = ProviderObject.MetaclassUri;
+        return string.IsNullOrEmpty(metaClassUri)
+            ? null 
+            : mofUriExtent.FindModel(metaClassUri);
     }
 }
 

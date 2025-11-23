@@ -8,5 +8,5 @@ public class WorkspaceFileData
     /// <summary>
     /// Stores the workspaces
     /// </summary>
-    public List<WorkspaceInfo> workspaces { get; set; } = new();
+    public List<WorkspaceInfo> workspaces { get; set; } = [];
 }

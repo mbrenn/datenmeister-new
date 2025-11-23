@@ -8,7 +8,7 @@ namespace DatenMeister.Core.Provider.DotNet;
 /// </summary>
 public class DotNetProvider : IProvider
 {
-    private readonly List<DotNetProviderObject> _elements = new();
+    private readonly List<DotNetProviderObject> _elements = [];
 
     /// <summary>
     /// Stores the capabilities of the provider

@@ -67,13 +67,13 @@ public class MofReflectiveSequence(MofObject mofObject, string property) : IRefl
             {
                 IEnumerable<object> asEnumerable => asEnumerable,
                     
-                null => new object[] { },
+                null => [],
                     
-                _ => new[] {value}
+                _ => [value]
             };
         }
 
-        return Array.Empty<object>();
+        return [];
     }
 
     /// <inheritdoc />

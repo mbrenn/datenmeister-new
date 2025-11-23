@@ -13,7 +13,7 @@ public class ResolveHookContainer
     /// <summary>
     ///     Stores the resolvehooks
     /// </summary>
-    public List<IResolveHook> ResolveHooks { get; } = new();
+    public List<IResolveHook> ResolveHooks { get; } = [];
 
     /// <summary>
     ///     Adds a resolve hook

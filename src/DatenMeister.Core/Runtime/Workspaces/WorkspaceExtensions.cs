@@ -323,7 +323,7 @@ public static class WorkspaceExtensions
             case IReflectiveCollection collection:
                 return (collection, collection.GetUriExtentOf() as IUriExtent);
             case IElement element:
-                return (new TemporaryReflectiveCollection(new[] { element }), element.GetUriExtentOf());
+                return (new TemporaryReflectiveCollection([element]), element.GetUriExtentOf());
         }
 
         return (null, null);

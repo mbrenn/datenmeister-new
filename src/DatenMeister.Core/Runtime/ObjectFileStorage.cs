@@ -14,7 +14,7 @@ public class ObjectFileStorage<T> where T : class
     /// all possibly inherited types need to be returned within this overloadable method
     /// </summary>
     /// <returns>The types that might be serialized/deserialized</returns>
-    public virtual Type[] GetAdditionalTypes() => new Type[] { };
+    public virtual Type[] GetAdditionalTypes() => [];
 
     public T? Load(string filePath)
     {

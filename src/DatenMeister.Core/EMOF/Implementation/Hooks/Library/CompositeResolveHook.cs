@@ -15,7 +15,7 @@ public class CompositeResolveHook : IResolveHook
         {
             IExtent extent => extent.elements(),
             IReflectiveCollection reflectiveCollection => reflectiveCollection,
-            IObject element => new TemporaryReflectiveCollection(new[] { element }),
+            IObject element => new TemporaryReflectiveCollection([element]),
             _ => null
         };
 

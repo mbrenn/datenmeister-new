@@ -315,7 +315,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
         IWorkspace? workspace,
         HashSet<IWorkspace>? alreadyVisited = null)
     {
-        alreadyVisited ??= new HashSet<IWorkspace>();
+        alreadyVisited ??= [];
         if (workspace != null && alreadyVisited.Contains(workspace))
         {
             return null;

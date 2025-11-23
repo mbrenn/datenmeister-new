@@ -20,17 +20,17 @@ public class Workspace(string id, string annotation = "") : IWorkspace, IObject,
 {
     private static readonly ClassLogger Logger = new(typeof(Workspace));
 
-    private readonly List<IExtent> _extent = new();
+    private readonly List<IExtent> _extent = [];
 
     // ReSharper disable once CollectionNeverUpdated.Local
-    private readonly List<ITag> _properties = new();
+    private readonly List<ITag> _properties = [];
 
     private readonly Lock _syncObject = new();
 
     /// <summary>
     ///     Adds plugins which allow additional extents to an extent
     /// </summary>
-    public readonly List<IEnumerable<IExtent>> ExtentFactory = new();
+    public readonly List<IEnumerable<IExtent>> ExtentFactory = [];
 
     /// <summary>
     /// Gets or sets the information whether the workspace is a dynamic workspace
@@ -103,7 +103,7 @@ public class Workspace(string id, string annotation = "") : IWorkspace, IObject,
     /// Stores a list of meta workspaces that are associated to the given workspace
     /// The metaworkspaces are requested to figure out meta classes
     /// </summary>
-    public List<IWorkspace> MetaWorkspaces { get; } = new();
+    public List<IWorkspace> MetaWorkspaces { get; } = [];
     
     public string id { get; } = id ?? throw new ArgumentNullException(nameof(id));
 

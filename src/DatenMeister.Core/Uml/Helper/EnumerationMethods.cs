@@ -32,7 +32,7 @@ public class EnumerationMethods
         var values = GetEnumValueObjects(enumeration);
         if (values == null)
         {
-            return Array.Empty<string>();
+            return [];
         }
 
         return values.OfType<IObject>()

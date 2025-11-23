@@ -31,7 +31,7 @@ public class DotNetConverter
     /// Stores a list of already visited elements, so a recursion is avoided, when a conversion from .Net Object to Mof Object is executed.
     /// This also assumes that the converter is not re-entrant
     /// </summary>
-    private readonly HashSet<object> _visitedElements = new();
+    private readonly HashSet<object> _visitedElements = [];
 
     /// <summary>
     /// Stores the resolver to find metaclasses by .Net Types

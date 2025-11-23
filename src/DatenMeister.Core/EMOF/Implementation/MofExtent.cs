@@ -431,7 +431,7 @@ public class MofExtent :
         IWorkspace? workspace,
         HashSet<IWorkspace>? alreadyVisited = null)
     {
-        alreadyVisited ??= new HashSet<IWorkspace>();
+        alreadyVisited ??= [];
         if (workspace != null && alreadyVisited.Contains(workspace))
         {
             return null;

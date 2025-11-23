@@ -27,7 +27,7 @@ public static class ClassifierMethods
     public static IEnumerable<IElement> GetPropertiesOfClassifier(IObject classifier, HashSet<string>? alreadyIn = null, bool followGeneralizations = true)
     {
         if (classifier == null) throw new ArgumentNullException(nameof(classifier));
-        alreadyIn ??= new HashSet<string>();
+        alreadyIn ??= [];
 
         var propertyOwnedAttribute = _UML._StructuredClassifiers._StructuredClassifier.ownedAttribute;
 
@@ -107,7 +107,7 @@ public static class ClassifierMethods
     /// <returns>Enumeration of elements</returns>
     public static IEnumerable<IElement> GetGeneralizations(IObject classifier, HashSet<IElement>? alreadyVisited = null)
     {
-        alreadyVisited ??= new HashSet<IElement>();
+        alreadyVisited ??= [];
         var propertyGeneralization = _UML._Classification._Classifier.generalization;
         var propertyGeneral = _UML._Classification._Generalization.general;
 
@@ -165,7 +165,7 @@ public static class ClassifierMethods
         HashSet<IElement>? visitedElements = null,
         bool withoutItself = false)
     {
-        visitedElements ??= new HashSet<IElement>();
+        visitedElements ??= [];
         var extent = (element as IHasExtent)?.Extent;
         var workspace = extent?.GetWorkspace();
         if (extent == null)

@@ -18,7 +18,7 @@ public class ChangeEventManager : IChangeEventManager
     /// <summary>
     /// Stores the handles that would like to get informed about changes
     /// </summary>
-    private readonly List<RegisteredEventHandle> _handles = new();
+    private readonly List<RegisteredEventHandle> _handles = [];
 
     /// <summary>
     /// Defines the locking for the change events

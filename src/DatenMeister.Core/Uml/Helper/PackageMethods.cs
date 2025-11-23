@@ -115,7 +115,7 @@ public static class PackageMethods
         if (rootElements == null) throw new ArgumentNullException(nameof(rootElements));
 
         var elementNames = packagePath
-            .Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries)
+            .Split(["::"], StringSplitOptions.RemoveEmptyEntries)
             .Select(x => x.Trim()).ToList();
 
         var id = "_package";

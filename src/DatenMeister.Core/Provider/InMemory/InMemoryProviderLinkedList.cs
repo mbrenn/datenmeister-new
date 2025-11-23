@@ -13,7 +13,7 @@ public class InMemoryProviderLinkedList : IProviderWithTypeIndex, ICanUpdateCach
     /// <summary>
     /// Stores the elements of the current provider
     /// </summary>
-    private readonly LinkedList<InMemoryObject> _elements = new();
+    private readonly LinkedList<InMemoryObject> _elements = [];
         
     /// <summary>
     /// Stores the instances for the objects within the cache

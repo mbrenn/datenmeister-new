@@ -342,7 +342,7 @@ public class XmiProvider : IProvider, IHasUriResolver, IProviderSupportFunctions
             }
         }
 
-        return _cache.TryGetValue(id, out var element2) ? element2 : null;
+        return _cache.GetValueOrDefault(id);
     }
 
     public static XElement GetMetaNodeFromFile(string filePath)

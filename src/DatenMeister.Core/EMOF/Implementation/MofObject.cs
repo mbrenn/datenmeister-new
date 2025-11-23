@@ -367,9 +367,19 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         _extent?.ChangeEventManager?.SendChangeEvent(this);
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Returns an enumeration of all properties being set.
+    /// At first, look into the the associated class model, because we just want to read those.
+    /// If there is no class model, check within the provider object.
+    /// </summary>
+    /// <returns>Returns all set properties</returns>
     public IEnumerable<string> getPropertiesBeingSet()
-        => ProviderObject.GetProperties();
+    {
+        var classModel = GetClassModel();
+        return classModel != null 
+            ? classModel.Attributes.Select(x => x.Name) 
+            : ProviderObject.GetProperties();
+    }
 
 #if DEBUG
     private int _stackDepth;

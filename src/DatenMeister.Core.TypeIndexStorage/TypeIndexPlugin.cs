@@ -7,7 +7,7 @@ using DatenMeister.Plugins;
 namespace DatenMeister.Core.TypeIndexAssembly;
 
 
-[PluginLoading(PluginLoadingPosition.BeforeBootstrapping|PluginLoadingPosition.AfterLoadingOfExtents)]
+[PluginLoading(PluginLoadingPosition.BeforeBootstrapping|PluginLoadingPosition.AfterLoadingOfExtents|PluginLoadingPosition.AfterShutdownStarted)]
 public class TypeIndexPlugin(IScopeStorage scopeStorage, IWorkspaceLogic workspaceLogic) : IDatenMeisterPlugin
 {
     public IScopeStorage ScopeStorage { get; set; } = scopeStorage;
@@ -23,6 +23,8 @@ public class TypeIndexPlugin(IScopeStorage scopeStorage, IWorkspaceLogic workspa
     /// Gets a configuration flag indicating whether the listening mechanism is active
     /// </summary>
     public const bool IsListeningActive = true;
+
+    private TypeIndexLogic? _logic;
 
     /// <summary>
     /// Starts the plugin execution based on the specified loading position.
@@ -48,12 +50,16 @@ public class TypeIndexPlugin(IScopeStorage scopeStorage, IWorkspaceLogic workspa
 
             case PluginLoadingPosition.AfterLoadingOfExtents:
                 // We have now loaded everything and let's start the indexing
-                var logic = new TypeIndexLogic(WorkspaceLogic);
-                _ = logic.CreateIndexFirstTime();
+                _logic = new TypeIndexLogic(WorkspaceLogic);
+                _ = _logic.CreateIndexFirstTime();
                 
                 if(IsListeningActive)
-                    _ = logic.StartListening();
+                    _ = _logic.StartListening();
                 
+                break;
+            case PluginLoadingPosition.AfterShutdownStarted:
+                _logic?.StopListening();
+
                 break;
         }
 

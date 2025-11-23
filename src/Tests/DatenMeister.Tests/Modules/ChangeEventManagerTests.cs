@@ -40,10 +40,23 @@ public class ChangeEventManagerTests
         var element = factory.create(null);
         extent.elements().add(element);
 
-        var counter = new CounterClass {ElementCount = 0, ExtentCount = 0, WorkspaceCount = 0};
-        manager.RegisterFor(element, _ => counter.ElementCount++);
-        manager.RegisterFor(extent, (_, _) => counter.ExtentCount++);
-        manager.RegisterFor(data, (_, _, _) => counter.WorkspaceCount++);
+        var counter = new CounterClass { ElementCount = 0, ExtentCount = 0, WorkspaceCount = 0 };
+        manager.RegisterFor(element, _ =>
+        {
+            counter.ElementCount++;
+            return Task.CompletedTask;
+        });
+        manager.RegisterFor(extent, (_, _) =>
+        {
+            counter.ExtentCount++;
+            return Task.CompletedTask;
+
+        });
+        manager.RegisterFor(data, (_, _, _) =>
+        {
+            counter.WorkspaceCount++;
+            return Task.CompletedTask;
+        });
 
         element.set("Test", 1);
 

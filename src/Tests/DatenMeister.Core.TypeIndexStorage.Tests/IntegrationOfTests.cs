@@ -1,9 +1,11 @@
 using System.Reflection;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
+using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
+using NUnit.Framework;
 
 namespace DatenMeister.Core.TypeIndexStorage.Tests;
 
@@ -29,7 +31,12 @@ public class IntegrationOfTests
         }
 
         ExtentConfigurationLoader.BreakOnFailedWorkspaceLoading = false;
-        return await GiveMe.DatenMeister(integrationSettings);
+        var dm = await GiveMe.DatenMeister(integrationSettings);
+        var typeIndexStore = dm.ScopeStorage.TryGet<TypeIndexStore>();
+        Assert.That(typeIndexStore, Is.Not.Null);
+        typeIndexStore!.IndexWaitTime = TimeSpan.FromSeconds(0.5);
+        
+        return dm;
     }
                 
     /// <summary>

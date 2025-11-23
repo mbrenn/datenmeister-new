@@ -11,11 +11,11 @@ namespace DatenMeister.Core.Interfaces.ChangeEvents;
 /// </summary>
 public interface IChangeEventManager
 {
-    EventHandle RegisterFor(IObject value, Action<IObject?> valueAction);
+    EventHandle RegisterFor(IObject value, Func<IObject?, Task> valueAction);
     
-    EventHandle RegisterFor(IExtent extent, Action<IExtent, IObject?> extentAction);
+    EventHandle RegisterFor(IExtent extent, Func<IExtent, IObject?, Task> extentAction);
     
-    EventHandle RegisterFor(IWorkspace workspace, Action<IWorkspace, IExtent?, IObject?> workspaceAction);
+    EventHandle RegisterFor(IWorkspace workspace, Func<IWorkspace, IExtent?, IObject?, Task> workspaceAction);
     
     void Unregister(EventHandle eventHandle);
 }

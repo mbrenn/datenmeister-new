@@ -7,6 +7,41 @@ namespace DatenMeister.Core.TypeIndexAssembly;
 /// </summary>
 public class TypeIndexStore
 {
+    private int _triggersReceived;
+
+    /// <summary>
+    /// Defines the index wait time after which the storage will be updated
+    /// </summary>
+    public TimeSpan IndexWaitTime { get; set; } = TimeSpan.FromSeconds(5);
+
+    /// <summary>
+    /// Gets or sets the number of update-triggers that had been received.
+    /// This is mainly used for testing purposes
+    /// </summary>
+    public int TriggersReceived
+    {
+        get => _triggersReceived;
+        set => _triggersReceived = value;
+    }
+
+    /// <summary>
+    /// Increment the number of update-triggers that had been received.
+    /// </summary>
+    public void IncrementTriggers()
+    {
+        Interlocked.Increment(ref _triggersReceived);
+    }
+    
+    /// <summary>
+    /// Gets or sets the date when the last trigger for the update was being requested
+    /// </summary>
+    public DateTime LastTriggerTime { get; set; } = DateTime.MinValue;
+
+    /// <summary>
+    /// Gets or sets the value whether a trigger to update the model occured during the indexing
+    /// </summary>
+    public bool TriggerOccuredDuringIndexing { get; set; }
+    
     /// <summary>
     /// Gets or sets the current data for the TypeIndexing
     /// </summary>
@@ -25,13 +60,13 @@ public class TypeIndexStore
     /// <summary>
     /// This event is set, when the index is finished to be built. 
     /// </summary>
-    public EventWaitHandle IndexBuiltEvent { get; } = new(false, EventResetMode.ManualReset);
+    public EventWaitHandle IndexFirstBuiltEvent { get; } = new(false, EventResetMode.ManualReset);
     
     /// <summary>
     /// This event is set while the index is not being built. It can be used
     /// to be absolutely sure that the index has the most recent state. 
     /// </summary>
-    public EventWaitHandle IndexNotBuildingEvent { get; } = new(true, EventResetMode.ManualReset);
+    public EventWaitHandle IndexIsUpToDateEvent { get; } = new(true, EventResetMode.ManualReset);
     
     /// <summary>
     /// Defines the monitor for the building of the index.
@@ -45,7 +80,7 @@ public class TypeIndexStore
     /// <returns>The current type index data</returns>
     public TypeIndexData GetCurrentIndexStore()
     {
-        IndexBuiltEvent.WaitOne();
+        IndexFirstBuiltEvent.WaitOne();
         return Current ?? throw new InvalidOperationException("Current is null. This should not happen");
     }
     
@@ -54,6 +89,6 @@ public class TypeIndexStore
     /// </summary>
     public void WaitForAvailabilityOfIndexStore()
     {
-        IndexNotBuildingEvent.WaitOne();
+        IndexIsUpToDateEvent.WaitOne();
     }
 }

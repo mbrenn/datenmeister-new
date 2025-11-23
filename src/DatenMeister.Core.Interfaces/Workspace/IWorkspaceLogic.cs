@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.Interfaces.MOF.Identifiers;
+﻿using DatenMeister.Core.Interfaces.ChangeEvents;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 
 namespace DatenMeister.Core.Interfaces.Workspace;
@@ -17,7 +18,17 @@ public interface IWorkspaceLogic : IUriResolver
     ///     Gets the workspaces of the workspace logic
     /// </summary>
     IEnumerable<IWorkspace> Workspaces { get; }
+    
+    /// <summary>
+    /// Gets the Change Event Manager for that workspace
+    /// </summary>
+    IChangeEventManager ChangeEventManager { get; }
 
+    /// <summary>
+    /// Adds a workspace to the workspace logic
+    /// </summary>
+    /// <param name="workspace">Workspace to be added</param>
+    /// <returns>The parameter of workspace to support concatenation of function calls </returns>
     IWorkspace AddWorkspace(IWorkspace workspace);
 
     /// <summary>

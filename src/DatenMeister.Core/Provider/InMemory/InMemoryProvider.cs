@@ -1,5 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Interfaces.Provider;
+using DatenMeister.Core.TypeIndexAssembly;
+using DatenMeister.Core.TypeIndexAssembly.Model;
 
 // ReSharper disable HeuristicUnreachableCode
 
@@ -14,10 +16,15 @@ internal enum IndexCache
     Instance
 }
     
+public interface IProviderWithTypeIndex : IProvider
+{
+    TypeIndexInWorkspaceContext? TypeIndex { get; set; }
+}
+
 /// <summary>
 /// Stores all elements in the memory
 /// </summary>
-public class InMemoryProvider : IProvider, ICanUpdateCacheId
+public class InMemoryProvider : IProviderWithTypeIndex, ICanUpdateCacheId
 {
     /// <summary>
     /// Defines a configuration variable whether the index cache itself shall be used.
@@ -49,6 +56,7 @@ public class InMemoryProvider : IProvider, ICanUpdateCacheId
     /// Stores the instances for the objects within the cache
     /// </summary>
     private readonly Dictionary<string, InMemoryObject> _instanceCache = new();
+    
         
     /// <summary>
     ///     Stores the capabilities of the provider
@@ -68,6 +76,11 @@ public class InMemoryProvider : IProvider, ICanUpdateCacheId
     ///     Gets the used temporary provider
     /// </summary>
     public static IProvider TemporaryProvider => (InMemoryProvider) TemporaryExtent.Provider;
+    
+    /// <summary>
+    /// Stores the context to retrieve information about types from the typeindex logic.
+    /// </summary>
+    public TypeIndexInWorkspaceContext? TypeIndex { get; set; }
 
     /// <inheritdoc />
     public IProviderObject CreateElement(string? metaClassUri) =>
@@ -278,6 +291,17 @@ public class InMemoryProvider : IProvider, ICanUpdateCacheId
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Finds the classmodel to that fitting workspace by looking into the the TypeIndexLogic.
+    /// If type index logic is not initialized, null is returned 
+    /// </summary>
+    /// <param name="metaClassUri">The uri of the metaclass being requested.</param>
+    /// <returns>The found class model or null in case it is not found or not initialized</returns>
+    public ClassModel? FindClassModel(string metaClassUri)
+    {
+        return TypeIndex?.FindClassModel(metaClassUri);
     }
 }
 

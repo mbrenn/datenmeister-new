@@ -3,7 +3,7 @@ namespace DatenMeister.Core.TypeIndexAssembly.Model;
 /// <summary>
 /// Stores the properties of the class being evaluated 
 /// </summary>
-public class ClassModel
+public record ClassModel
 {
     /// <summary>
     /// Stores the id of the class

@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core.Interfaces.Provider;
+using DatenMeister.Core.TypeIndexAssembly;
 
 #pragma warning disable CS0162 // Unreachable code detected (Compile-Time Configurations)
 
@@ -7,7 +8,7 @@ namespace DatenMeister.Core.Provider.InMemory;
 /// <summary>
 /// Stores all elements in the memory
 /// </summary>
-public class InMemoryProviderLinkedList : IProvider, ICanUpdateCacheId
+public class InMemoryProviderLinkedList : IProviderWithTypeIndex, ICanUpdateCacheId
 {
     /// <summary>
     /// Stores the elements of the current provider
@@ -31,6 +32,16 @@ public class InMemoryProviderLinkedList : IProvider, ICanUpdateCacheId
     /// <inheritdoc />
     public IProviderObject CreateElement(string? metaClassUri) =>
         new InMemoryObject(this, metaClassUri);
+    
+
+    public IProvider Provider => ProviderWithTypeIndex;
+    
+    public IProviderWithTypeIndex ProviderWithTypeIndex { get; set; }
+
+    /// <summary>
+    /// Stores the context to retrieve information about types from the typeindex logic.
+    /// </summary>
+    public TypeIndexInWorkspaceContext? TypeIndex { get; set; }
 
     /// <inheritdoc />
     public void AddElement(IProviderObject? valueAsObject, int index = -1)

@@ -10,6 +10,8 @@ using DatenMeister.Core.Provider;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Proxies;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.TypeIndexAssembly;
+using DatenMeister.Core.TypeIndexAssembly.Model;
 
 namespace DatenMeister.Core.EMOF.Implementation;
 
@@ -408,4 +410,22 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     }
 
     public string Uri => contextURI();
+    
+    private TypeIndexLogic? _cachedTypeIndexLogic;
+
+    /// <summary>
+    /// Finds the model within the Type Indexing by the given meta class url
+    /// </summary>
+    /// <param name="metaClassUrl">Url of the metaclass</param>
+    /// <returns>Found model or null in case it was not found</returns>
+    public ClassModel? FindModel(string metaClassUrl)
+    {
+        if (_cachedWorkspaceLogic == null || Workspace == null)
+        {
+            return null;
+        }
+
+        _cachedTypeIndexLogic ??= new TypeIndexLogic(_cachedWorkspaceLogic);
+        return _cachedTypeIndexLogic.FindClassModelByUrlWithinMetaWorkspaces(Workspace.id, metaClassUrl);
+    }
 }

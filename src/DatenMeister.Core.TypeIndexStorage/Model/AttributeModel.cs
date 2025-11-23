@@ -3,7 +3,7 @@
 /// <summary>
 /// Stores the information about the attribute within the class
 /// </summary>
-public class AttributeModel
+public record AttributeModel
 {
     /// <summary>
     /// Gets or sets the Id of the attribute as given within the extent
@@ -40,6 +40,11 @@ public class AttributeModel
     /// Multiplier >1 or *
     /// </summary>
     public bool IsMultiple { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the flag whether the attribute is inherited from a parent class
+    /// </summary>
+    public bool IsInherited { get; set; }
 
 
 }

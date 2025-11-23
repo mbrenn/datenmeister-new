@@ -1,17 +1,17 @@
 ﻿using BurnSystems.Logging;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.ChangeEvents;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
-using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.Runtime.ChangeEvents;
 
 /// <summary>
-/// This class handles all events occuring due to changes, insertion or deletions of the objects
+/// This class handles all events occuring due to changes, insertion, or deletions of the objects
 /// within the extent
 /// </summary>
-public class ChangeEventManager
+public class ChangeEventManager : IChangeEventManager
 {
     private static readonly ClassLogger ClassLogger = new(typeof(ChangeEventManager));
 
@@ -26,10 +26,37 @@ public class ChangeEventManager
     private readonly ReaderWriterLockSlim _lock = new(LockRecursionPolicy.NoRecursion);
 
     /// <summary>
-    /// Has to be called, when the given object has changed
+    /// Sends the change event and waits until it is finished
+    /// </summary>
+    /// <param name="value">Element which got changed</param>
+    public void SendChangeEvent(IObject value)
+    {
+        SendChangeEventAsync(value).Wait();    
+    }
+    
+    /// <summary>
+    /// Sends the change event and waits until it is finished
+    /// </summary>
+    /// <param name="extent">Extent which got changed</param>
+    public void SendChangeEvent(IExtent extent)
+    {
+        SendChangeEventAsync(extent).Wait();    
+    }
+    
+    /// <summary>
+    /// Sends the change event and waits until it is finished
+    /// </summary>
+    /// <param name="workspace">Workspace which got changed</param>
+    public void SendChangeEvent(IWorkspace workspace)
+    {
+        SendChangeEventAsync(workspace).Wait();    
+    }
+    
+    /// <summary>
+    /// Has to be called when the given object has changed
     /// </summary>
     /// <param name="value">Object that was changed</param>
-    public void SendChangeEvent(IObject value)
+    public async Task SendChangeEventAsync(IObject value)
     {
         var extent = value.GetExtentOf();
         var workspace = extent?.GetWorkspace();
@@ -57,15 +84,19 @@ public class ChangeEventManager
         // After having collected the items, call them
         foreach (var handle in handles)
         {
-            handle.ValueAction?.Invoke(value);
-            if (extent != null)
+            if (handle.ValueAction != null)
             {
-                handle.ExtentAction?.Invoke(extent, value);
+                await handle.ValueAction(value);
             }
 
-            if (extent != null && workspace != null)
+            if (extent != null && handle.ExtentAction != null)
             {
-                handle.WorkspaceAction?.Invoke(workspace, extent, value);
+                await handle.ExtentAction(extent, value);
+            }
+
+            if (extent != null && workspace != null && handle.WorkspaceAction != null)
+            {
+                await handle.WorkspaceAction(workspace, extent, value);
             }
         }
     }
@@ -74,7 +105,7 @@ public class ChangeEventManager
     /// Has to be called, when the given extent has changed
     /// </summary>
     /// <param name="extent">Extent that was changed</param>
-    public void SendChangeEvent(IExtent extent)
+    public async Task SendChangeEventAsync(IExtent extent)
     {
         var workspace = extent.GetWorkspace();
 
@@ -99,11 +130,14 @@ public class ChangeEventManager
         // After having collected the items, call them
         foreach (var handle in handles)
         {
-            handle.ExtentAction?.Invoke(extent, null);
-
-            if (workspace != null)
+            if (extent != null && handle.ExtentAction != null)
             {
-                handle.WorkspaceAction?.Invoke(workspace, extent, null);
+                await handle.ExtentAction(extent, null);
+            }
+
+            if (extent != null && workspace != null && handle.WorkspaceAction != null)
+            {
+                await handle.WorkspaceAction(workspace, extent, null);
             }
         }
     }
@@ -112,7 +146,7 @@ public class ChangeEventManager
     /// Sends a change event that a workspace has been changed
     /// </summary>
     /// <param name="workspace">Changed workspace</param>
-    public void SendChangeEvent(IWorkspace workspace)
+    public async Task SendChangeEventAsync(IWorkspace workspace)
     {
         RegisteredEventHandle[] handles;
 
@@ -134,11 +168,14 @@ public class ChangeEventManager
         // After having collected the items, call them
         foreach (var handle in handles)
         {
-            handle.WorkspaceAction?.Invoke(workspace, null, null);
+            if (handle.WorkspaceAction != null)
+            {
+                await handle.WorkspaceAction(workspace, null, null);
+            }
         }
     }
 
-    public EventHandle RegisterFor(IObject value, Action<IObject?> valueAction)
+    public EventHandle RegisterFor(IObject value, Func<IObject?, Task> valueAction)
     {
         try
         {
@@ -160,8 +197,9 @@ public class ChangeEventManager
             _lock.ExitWriteLock();
         }
     }
-
-    public EventHandle RegisterFor(IExtent extent, Action<IExtent, IObject?> extentAction)
+    
+    
+    public EventHandle RegisterFor(IExtent extent, Func<IExtent, IObject?, Task> extentAction)
     {
         try
         {
@@ -185,7 +223,7 @@ public class ChangeEventManager
         }
     }
 
-    public EventHandle RegisterFor(IWorkspace workspace, Action<IWorkspace, IExtent?, IObject?> workspaceAction)
+    public EventHandle RegisterFor(IWorkspace workspace, Func<IWorkspace, IExtent?, IObject?, Task> workspaceAction)
     {
         try
         {
@@ -209,6 +247,10 @@ public class ChangeEventManager
         }
     }
 
+    /// <summary>
+    /// Removes the event from the list of registered events
+    /// </summary>
+    /// <param name="eventHandle"></param>
     public void Unregister(EventHandle eventHandle)
     {
         try

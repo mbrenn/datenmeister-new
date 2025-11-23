@@ -101,4 +101,22 @@ public class WrapperTests
             createdElement.GetWrappedElement().getOrDefault<string>(_Reports._SimpleReportConfiguration.name),
             Is.EqualTo("Test"));
     }
+
+    [Test]
+    public void TestFactoryWrapperByConstructor()
+    {
+        var extent = new MofUriExtent(new InMemoryProvider(), "dm:///a", null);
+        var factory = new MofFactory(extent);
+
+        var createdElement = new DatenMeister.Core.Models.Reports.SimpleReportConfiguration_Wrapper(factory);
+        
+        Assert.That(createdElement.GetWrappedElement().getMetaClass()?.equals(_Reports.TheOne.__SimpleReportConfiguration), Is.True);
+        Assert.That(createdElement.GetWrappedElement().getMetaClass()?.equals(_Reports.TheOne.__AdocReportInstance), Is.False);
+        
+        createdElement.name = "Test";
+        Assert.That(createdElement.name, Is.EqualTo("Test"));
+        Assert.That(
+            createdElement.GetWrappedElement().getOrDefault<string>(_Reports._SimpleReportConfiguration.name),
+            Is.EqualTo("Test"));
+    }
 }

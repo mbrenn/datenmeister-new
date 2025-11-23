@@ -10,9 +10,21 @@ public class Root
 {
     [TypeUri(Uri = "dm:///_internal/types/internal#b5e9f945-6c33-4b26-837b-38a5ad2f65fc",
         TypeKind = TypeKind.WrappedClass)]
-    public class MassImportDefinitionAction_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class MassImportDefinitionAction_Wrapper : IElementWrapper
     {
-        public IElement GetWrappedElement() => innerDmElement;
+        private readonly IElement _wrappedElement;
+
+        public MassImportDefinitionAction_Wrapper(IElement innerDmElement)
+        {
+            _wrappedElement = innerDmElement;
+        }
+
+        public MassImportDefinitionAction_Wrapper(IFactory factory)
+        {
+            _wrappedElement = factory.create(_metaClass);
+        }
+
+        public IElement GetWrappedElement() => _wrappedElement;
 
         private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#b5e9f945-6c33-4b26-837b-38a5ad2f65fc");
 
@@ -22,33 +34,33 @@ public class Root
         public object? @item
         {
             get =>
-                innerDmElement.getOrDefault<object?>("item");
+                _wrappedElement.getOrDefault<object?>("item");
             set => 
-                innerDmElement.set("item", value);
+                _wrappedElement.set("item", value);
         }
 
         public string? @text
         {
             get =>
-                innerDmElement.getOrDefault<string?>("text");
+                _wrappedElement.getOrDefault<string?>("text");
             set => 
-                innerDmElement.set("text", value);
+                _wrappedElement.set("text", value);
         }
 
         public string? @name
         {
             get =>
-                innerDmElement.getOrDefault<string?>("name");
+                _wrappedElement.getOrDefault<string?>("name");
             set => 
-                innerDmElement.set("name", value);
+                _wrappedElement.set("name", value);
         }
 
         public bool @isDisabled
         {
             get =>
-                innerDmElement.getOrDefault<bool>("isDisabled");
+                _wrappedElement.getOrDefault<bool>("isDisabled");
             set => 
-                innerDmElement.set("isDisabled", value);
+                _wrappedElement.set("isDisabled", value);
         }
 
     }

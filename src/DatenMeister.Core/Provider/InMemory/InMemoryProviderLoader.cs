@@ -7,6 +7,7 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.TypeIndexAssembly;
 
 namespace DatenMeister.Core.Provider.InMemory;
 
@@ -38,7 +39,16 @@ public class InMemoryProviderLoader : IProviderLoader
         }
         else
         {
-            provider = new InMemoryProvider();
+            var innerProvider =new InMemoryProvider();
+            provider = innerProvider;
+
+            if (WorkspaceLogic != null && ScopeStorage != null)
+            {
+                innerProvider.TypeIndex = new TypeIndexInWorkspaceContext(
+                    new TypeIndexLogic(WorkspaceLogic),
+                    configuration.getOrDefault<string?>(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId) ??
+                    WorkspaceNames.WorkspaceData);
+            }
         }
             
         return await Task.FromResult(new LoadedProviderInfo(provider));

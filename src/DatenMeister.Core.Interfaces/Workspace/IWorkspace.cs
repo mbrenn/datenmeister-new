@@ -7,11 +7,6 @@ namespace DatenMeister.Core.Interfaces.Workspace;
 public interface IWorkspace : IUriResolver
 {
     /// <summary>
-    /// Clears the cache, so a new instance can be created
-    /// </summary>
-    void ClearCache();
-
-    /// <summary>
     /// Gets a list of extents
     /// </summary>
     IEnumerable<IExtent> extent { get; }

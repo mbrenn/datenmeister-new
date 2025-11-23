@@ -25,23 +25,18 @@ public class Workspace(string id, string annotation = "") : IWorkspace, IObject,
     // ReSharper disable once CollectionNeverUpdated.Local
     private readonly List<ITag> _properties = new();
 
-    private readonly object _syncObject = new();
+    private readonly Lock _syncObject = new();
 
     /// <summary>
     ///     Adds plugins which allow additional extents to an extent
     /// </summary>
-    public List<IEnumerable<IExtent>> ExtentFactory = new();
+    public readonly List<IEnumerable<IExtent>> ExtentFactory = new();
 
     /// <summary>
     /// Gets or sets the information whether the workspace is a dynamic workspace
     /// If it is so, then it is skipped during resolvings
     /// </summary>
     public bool IsDynamicWorkspace { get; set; }
-
-    /// <summary>
-    ///     Gets a list the cache which stores the filled types
-    /// </summary>
-    internal List<object> FilledTypeCache { get; } = new();
 
     public string annotation { get; set; } = annotation;
 
@@ -137,15 +132,6 @@ public class Workspace(string id, string annotation = "") : IWorkspace, IObject,
             return result;
         }
     }
-
-    public void ClearCache()
-    {
-        lock (_syncObject)
-        {
-            FilledTypeCache.Clear();
-        }
-    }
-
     /// <summary>
     ///     Adds a meta workspace
     /// </summary>
@@ -218,11 +204,11 @@ public class Workspace(string id, string annotation = "") : IWorkspace, IObject,
         return false;
     }
 
-    public bool RemoveExtent(IExtent extent)
+    public bool RemoveExtent(IExtent extentToGetRemoved)
     {
         lock (_syncObject)
         {
-            return _extent.Remove(extent);
+            return _extent.Remove(extentToGetRemoved);
         }
     }
 

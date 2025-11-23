@@ -67,9 +67,22 @@ public class WrapperTreeGenerator : WalkPackageClass
 
         Result.AppendLine($"{stack.Indentation}[TypeUri(Uri = \"{classInstance.GetUri()}\",");
         Result.AppendLine($"{stack.Indentation}    TypeKind = TypeKind.WrappedClass)]");
-        Result.AppendLine($"{stack.Indentation}public class {name}_Wrapper(IElement innerDmElement) : IElementWrapper");
+        Result.AppendLine($"{stack.Indentation}public class {name}_Wrapper : IElementWrapper");
         Result.AppendLine($"{stack.Indentation}{{");
-        Result.AppendLine($"{stack.Indentation}    public IElement GetWrappedElement() => innerDmElement;");
+        
+        Result.AppendLine($"{stack.Indentation}    private readonly IElement _wrappedElement;");
+        Result.AppendLine();
+        Result.AppendLine($"{stack.Indentation}    public {name}_Wrapper(IElement innerDmElement)");
+        Result.AppendLine($"{stack.Indentation}    {{");
+        Result.AppendLine($"{stack.Indentation}        _wrappedElement = innerDmElement;");
+        Result.AppendLine($"{stack.Indentation}    }}");
+        Result.AppendLine();
+        Result.AppendLine($"{stack.Indentation}    public {name}_Wrapper(IFactory factory)");
+        Result.AppendLine($"{stack.Indentation}    {{");
+        Result.AppendLine($"{stack.Indentation}        _wrappedElement = factory.create(_metaClass);");
+        Result.AppendLine($"{stack.Indentation}    }}");
+        Result.AppendLine();
+        Result.AppendLine($"{stack.Indentation}    public IElement GetWrappedElement() => _wrappedElement;");
         Result.AppendLine();
         Result.AppendLine($"{stack.Indentation}    private static readonly MofObjectShadow _metaClass = new (\"{asElement.GetUri()}\");");
         Result.AppendLine();
@@ -161,12 +174,12 @@ public class WrapperTreeGenerator : WalkPackageClass
             case TypingClassification.Primitive:
                 Result.AppendLine($"{stack.Indentation}    get =>");
                 Result.AppendLine(
-                    $"{stack.Indentation}        innerDmElement.getOrDefault<{typeByCsName}>(\"{name}\");");
+                    $"{stack.Indentation}        _wrappedElement.getOrDefault<{typeByCsName}>(\"{name}\");");
                 break;
             case TypingClassification.Class:
                 Result.AppendLine($"{stack.Indentation}    get");
                 Result.AppendLine($"{stack.Indentation}    {{");
-                Result.AppendLine($"{stack.Indentation}        var foundElement = innerDmElement.getOrDefault<IElement?>(\"{name}\");");
+                Result.AppendLine($"{stack.Indentation}        var foundElement = _wrappedElement.getOrDefault<IElement?>(\"{name}\");");
                 Result.AppendLine($"{stack.Indentation}        return foundElement == null ? null : new {typeByCsName}(foundElement);");
                 Result.AppendLine($"{stack.Indentation}    }}");
                 break;
@@ -178,22 +191,22 @@ public class WrapperTreeGenerator : WalkPackageClass
         {
             case TypingClassification.Unknown:
                 Result.AppendLine($"{stack.Indentation}    set => ");
-                Result.AppendLine($"{stack.Indentation}        innerDmElement.set(\"{name}\", value);");
+                Result.AppendLine($"{stack.Indentation}        _wrappedElement.set(\"{name}\", value);");
                 break;
             case TypingClassification.Primitive:
                 Result.AppendLine($"{stack.Indentation}    set => ");
-                Result.AppendLine($"{stack.Indentation}        innerDmElement.set(\"{name}\", value);");
+                Result.AppendLine($"{stack.Indentation}        _wrappedElement.set(\"{name}\", value);");
                 break;
             case TypingClassification.Class:
                 Result.AppendLine($"{stack.Indentation}    set ");
                 Result.AppendLine($"{stack.Indentation}    {{");
                 Result.AppendLine($"{stack.Indentation}        if(value is IElementWrapper wrappedElement)");
                 Result.AppendLine($"{stack.Indentation}        {{");
-                Result.AppendLine($"{stack.Indentation}            innerDmElement.set(\"{name}\", wrappedElement.GetWrappedElement());");
+                Result.AppendLine($"{stack.Indentation}            _wrappedElement.set(\"{name}\", wrappedElement.GetWrappedElement());");
                 Result.AppendLine($"{stack.Indentation}        }}");
                 Result.AppendLine($"{stack.Indentation}        else");
                 Result.AppendLine($"{stack.Indentation}        {{");
-                Result.AppendLine($"{stack.Indentation}            innerDmElement.set(\"{name}\", value);");
+                Result.AppendLine($"{stack.Indentation}            _wrappedElement.set(\"{name}\", value);");
                 Result.AppendLine($"{stack.Indentation}        }}");
                 Result.AppendLine($"{stack.Indentation}    }}");
                 break;

@@ -48,6 +48,32 @@ public class TestLoadClassesAndTheirProperties
 
         var rowFlattenNode = typesWorkspace!.FindClassByUri(_DataViews.TheOne.Row.__RowFlattenNode.Uri);
         Assert.That(rowFlattenNode,Is.Not.Null);
+        
+        Assert.That(rowFlattenNode!.Generalizations.Count, Is.GreaterThan(0));
+        Assert.That(rowFlattenNode.Generalizations.Any(x=>x == _DataViews.TheOne.__ViewNode.Uri));
+    }
+
+    [Test]
+    public async Task TestGeneralizationsOfProperties()
+    {
+        await using var dm = await IntegrationOfTests.GetDatenMeisterScope();
+        var typeIndexStore = dm.ScopeStorage.TryGet<TypeIndexStore>()
+                             ?? throw new InvalidOperationException("TypeIndexStore not found");
+        
+        var typesWorkspace = typeIndexStore.GetCurrentIndexStore().FindWorkspace(WorkspaceNames.WorkspaceTypes);
+
+        var rowFlattenNode = typesWorkspace!.FindClassByUri(_DataViews.TheOne.Row.__RowFlattenNode.Uri);
+        Assert.That(rowFlattenNode,Is.Not.Null);
+        
+        // Test that the direct attributes can be found
+        var rowFlattenNodeAttribute = rowFlattenNode!.Attributes.FirstOrDefault(x => x.Name == _DataViews._Row._RowFlattenNode.input);
+        var inheritedAttribute = rowFlattenNode.Attributes.FirstOrDefault(x => x.Name == _DataViews._Row._RowFlattenNode.name);
+        
+        Assert.That(rowFlattenNodeAttribute, Is.Not.Null);
+        Assert.That(rowFlattenNodeAttribute!.IsInherited, Is.False);
+        
+        Assert.That(inheritedAttribute, Is.Not.Null);
+        Assert.That(inheritedAttribute!.IsInherited, Is.True);
     }
     
     [Test]

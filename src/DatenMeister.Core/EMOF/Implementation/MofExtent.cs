@@ -34,7 +34,7 @@ public class MofExtent :
     /// <summary>
     /// Stores a list of other extents that shall also be considered as meta extents
     /// </summary>
-    private readonly List<IExtent> _metaExtents = new();
+    private readonly List<IExtent> _metaExtents = [];
 
     /// <summary>
     /// STores the object for synchronization issues
@@ -683,5 +683,4 @@ public class MofExtent :
         _itemCountCached = -1;
         IsModified = isModified;
     }
-
 }

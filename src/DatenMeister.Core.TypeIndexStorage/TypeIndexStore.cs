@@ -7,7 +7,8 @@ namespace DatenMeister.Core.TypeIndexAssembly;
 /// </summary>
 public class TypeIndexStore
 {
-    private int _triggersReceived;
+    private int _numberOfTriggersReceived;
+    private int _numberOrReIndexes;
 
     /// <summary>
     /// Defines the index wait time after which the storage will be updated
@@ -20,8 +21,8 @@ public class TypeIndexStore
     /// </summary>
     public int TriggersReceived
     {
-        get => _triggersReceived;
-        set => _triggersReceived = value;
+        get => _numberOfTriggersReceived;
+        set => _numberOfTriggersReceived = value;
     }
 
     /// <summary>
@@ -29,7 +30,25 @@ public class TypeIndexStore
     /// </summary>
     public void IncrementTriggers()
     {
-        Interlocked.Increment(ref _triggersReceived);
+        Interlocked.Increment(ref _numberOfTriggersReceived);
+    }
+
+    /// <summary>
+    /// Gets or sets the number of update-triggers that had been received.
+    /// This is mainly used for testing purposes
+    /// </summary>
+    public int NumberOfReindexes
+    {
+        get => _numberOrReIndexes;
+        set => _numberOrReIndexes = value;
+    }
+
+    /// <summary>
+    /// Increment the number of update-triggers that had been received.
+    /// </summary>
+    public void IncrementReindexes()
+    {
+        Interlocked.Increment(ref _numberOrReIndexes);
     }
     
     /// <summary>

@@ -59,6 +59,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         lock (TypeIndexStore.IndexIsUpToDateEvent)
         {
             TypeIndexStore.IncrementTriggers();
+            TypeIndexStore.LastTriggerTime = DateTime.Now;
                 
             if (!TypeIndexStore.IndexIsUpToDateEvent.WaitOne(0))
             {
@@ -74,7 +75,6 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             
             // First, mark that we are updating the index
             TypeIndexStore.IndexIsUpToDateEvent.Reset();
-            TypeIndexStore.LastTriggerTime = DateTime.Now;
         }
         
         // We leave the lock here, because we are protected now and can request the updating. 
@@ -122,7 +122,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                                 break;
                             }
 
-                            timeToWait = TypeIndexStore.IndexWaitTime - elapsed;
+                            timeToWait = TypeIndexStore.IndexWaitTime - elapsed + TimeSpan.FromMilliseconds(100);
                         }
 
                         Logger.Info($"Waiting for {timeToWait.TotalSeconds} seconds");
@@ -179,7 +179,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                 WorkspaceLogic.ChangeEventManager.RegisterFor(
                     WorkspaceLogic.GetWorkspace(workspace.WorkspaceId)
                     ?? throw new InvalidOperationException("Workspace not found"),
-                    async (changedWorkspace, changedExtent, changedElement) =>
+                    async (changedWorkspace, _, _) =>
                     {
                         Logger.Info($"Change in workspace {changedWorkspace.id} detected");
                         await TriggerUpdateOfIndex();
@@ -195,6 +195,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     public void StopListening()
     {
         _cancellationTokenSource.Cancel();
+        
         // We also reset the information that the index is being built since it might be out of date
         TypeIndexStore.IndexIsUpToDateEvent.Reset();
     }
@@ -206,15 +207,24 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     /// </summary>
     private void PerformIndexing()
     {
-        using var stopWatchLogger = new StopWatchLogger(Logger, "Performing indexing");
+        using var stopWatchLogger = new StopWatchLogger(Logger,
+            $"Performing indexing. Count: {TypeIndexStore.NumberOfReindexes}");
         
         var storage = TypeIndexStore;
         lock (storage.SyncIndexBuild)
         {
+            // First, reset the trigger. It may have been set before 
+            TypeIndexStore.TriggerOccuredDuringIndexing = false;
+            
+            // Add statistical information being used for testing 
+            TypeIndexStore.IncrementReindexes();
+            
+            // Now, create the new index and swap it
             storage.Next = new TypeIndexData();
             BuildWorkspace(storage.Next);            
             SwapNextAndCurrentTypeData();
             
+            // Indicate that we have create the first built event
             storage.IndexFirstBuiltEvent.Set();
         }
     }

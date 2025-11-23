@@ -91,7 +91,7 @@
   </Target>
   
   <Target Name="Update Commit ID" BeforeTargets="BeforeBuild">
-    <Exec Command="py ../../../scripts/create_git_commit_file.py" />
+    <Exec Command="python3 ../../../scripts/create_git_commit_file.py" />
     <ItemGroup>
       <Compile Remove="Commit.cs" />
       <Compile Include="Commit.cs" />

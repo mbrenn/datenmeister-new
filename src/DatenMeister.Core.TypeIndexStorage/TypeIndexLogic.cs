@@ -408,9 +408,18 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             Url = (attribute as IKnowsUri)?.Uri ?? string.Empty,
             Id = (attribute as IHasId)?.Id ?? string.Empty
         };
-        
-        var multiplier = attribute.getOrDefault<int>(_UML._Classification._Property.upperValue);
-        attributeModel.IsMultiple = multiplier is not (0 or 1);
+
+        if (attribute.isSet(_UML._Classification._Property.upperValue))
+        {
+            var multiplier = attribute.getOrDefault<string>(_UML._Classification._Property.upperValue);
+            attributeModel.IsMultiple = multiplier is not ("0" or "1");
+        }
+
+        if (attribute.isSet(_UML._Classification._Property.upper))
+        {
+            var multiplier = attribute.getOrDefault<string>(_UML._Classification._Property.upper);
+            attributeModel.IsMultiple = multiplier is not ("0" or "1");
+        }
 
         var defaultValue = attribute.getOrDefault<object?>(_UML._Classification._Property.defaultValue);
         if (defaultValue != null)

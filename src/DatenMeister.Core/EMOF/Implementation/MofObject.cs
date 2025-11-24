@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 using DatenMeister.Core.EMOF.Implementation.Uml;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
@@ -246,7 +247,32 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
             ProviderObject.DeleteProperty(property);
             return;
         }
+        
+        // Check, if we find the classmodel
+        var attributeModel = GetClassModel()?.FindAttribute(property);
+        if (attributeModel != null)
+        {
+            switch (attributeModel.IsMultiple)
+            {
+                case true:
+                    if (!DotNetHelper.IsOfEnumeration(value))
+                    {
+                        var list = new[] { value };
+                        value = list;
+                    }
 
+                    break;
+                case false:
+                    if (DotNetHelper.IsOfEnumeration(value))
+                    {
+                        throw new InvalidOperationException(
+                            "Array was tried to be set, but Uml-Type just allowed to set a sinclue value");
+                    }
+
+                    break;
+            }
+        }
+        
         // Value is not a default value, so it needs to be stored into the database
         if (DotNetHelper.IsOfEnumeration(value))
         {

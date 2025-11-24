@@ -460,8 +460,8 @@ public class Bootstrapper
         BootstrapMode mode,
         FilePaths? paths = null)
     {
-        if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
-        if (workspace == null) throw new ArgumentNullException(nameof(workspace));
+        ArgumentNullException.ThrowIfNull(workspaceLogic);
+        ArgumentNullException.ThrowIfNull(workspace);
 
         string xmlPrimitiveTypes;
         string xmlMof;
@@ -559,9 +559,9 @@ public class Bootstrapper
         IWorkspace dataLayer,
         BootstrapMode mode)
     {
-        if (workspace == null) throw new ArgumentNullException(nameof(workspace));
-        if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
-        if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
+        ArgumentNullException.ThrowIfNull(workspace);
+        ArgumentNullException.ThrowIfNull(workspaceLogic);
+        ArgumentNullException.ThrowIfNull(dataLayer);
 
         return PerformFullBootstrap(workspaceLogic, dataLayer, mode, filePaths);
     }

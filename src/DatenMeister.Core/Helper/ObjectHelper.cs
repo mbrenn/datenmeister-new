@@ -119,7 +119,7 @@ public static class ObjectHelper
     /// <returns>The content of the element or default(T) if not known</returns>
     public static T get<T>(this IObject value, string property, bool noReferences = false)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(value);
 
         if (typeof(T) == typeof(object) && value is MofExtent)
         {
@@ -342,7 +342,7 @@ public static class ObjectHelper
         this IObject value,
         IEnumerable<string> properties)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(value);
 
         var result = new Dictionary<object, object?>();
 
@@ -538,7 +538,7 @@ public static class ObjectHelper
     /// <returns>The found extent</returns>
     public static IExtent? GetExtentOf(this IObject value)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(value);
 
         // If the given object is already an extent... happy life
         if (value is IExtent asExtent)

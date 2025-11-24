@@ -15,7 +15,7 @@ public abstract class Aggregator<TAggregate, TItem> : IAggregator
     /// <returns>The aggregated value</returns>
     public void Add(object value)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(value);
 
         if (!_isStarted)
         {

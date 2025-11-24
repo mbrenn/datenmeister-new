@@ -250,8 +250,8 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         // Value is not a default value, so it needs to be stored into the database
         if (DotNetHelper.IsOfEnumeration(value))
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-                
+            ArgumentNullException.ThrowIfNull(value);
+
             var valueAsEnumeration = (IEnumerable<object>) value;
             ProviderObject.EmptyListForProperty(property);
             foreach (var child in valueAsEnumeration)

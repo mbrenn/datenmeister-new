@@ -123,10 +123,7 @@ public class WalkPackageClass
     /// <param name="namespaces">Namespaces to be used within the file</param>
     protected void WriteUsages(IEnumerable<string> namespaces)
     {
-        if (namespaces == null)
-        {
-            throw new ArgumentNullException(nameof(namespaces));
-        }
+        ArgumentNullException.ThrowIfNull(namespaces);
 
         foreach (var space in namespaces)
         {

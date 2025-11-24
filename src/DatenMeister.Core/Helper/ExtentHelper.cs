@@ -90,7 +90,7 @@ public static class ExtentHelper
     /// <param name="elements">Elements in which all elements shall be removed</param>
     public static void RemoveAll(this IReflectiveCollection elements)
     {
-        if (elements == null) throw new ArgumentNullException(nameof(elements));
+        ArgumentNullException.ThrowIfNull(elements);
 
         foreach (var element in elements.ToList())
         {

@@ -112,7 +112,7 @@ public static class PackageMethods
         IElement? metaClass = null,
         bool flagCreate = true)
     {
-        if (rootElements == null) throw new ArgumentNullException(nameof(rootElements));
+        ArgumentNullException.ThrowIfNull(rootElements);
 
         var elementNames = packagePath
             .Split(["::"], StringSplitOptions.RemoveEmptyEntries)

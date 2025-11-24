@@ -154,8 +154,8 @@ public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMoveme
 
     public bool MoveElementUp(string property, object value)
     {
-        if (property == null) throw new ArgumentNullException(nameof(property));
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(property);
+        ArgumentNullException.ThrowIfNull(value);
 
         CheckValue(value);
         var result = GetListOfProperty(property);
@@ -176,8 +176,8 @@ public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMoveme
 
     public bool MoveElementDown(string property, object value)
     {
-        if (property == null) throw new ArgumentNullException(nameof(property));
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(property);
+        ArgumentNullException.ThrowIfNull(value);
 
         CheckValue(value);
         var result = GetListOfProperty(property);

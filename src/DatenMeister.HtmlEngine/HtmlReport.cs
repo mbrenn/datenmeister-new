@@ -31,7 +31,7 @@ public class HtmlReport : IDisposable, IHtmlReport
     /// <param name="stream">Stream to be used</param>
     public HtmlReport(Stream stream)
     {
-        if (stream == null) throw new ArgumentNullException(nameof(stream));
+        ArgumentNullException.ThrowIfNull(stream);
         _streamWriter = new StreamWriter(stream, Encoding.UTF8);
     }
 
@@ -41,7 +41,7 @@ public class HtmlReport : IDisposable, IHtmlReport
     /// <param name="stream">Stream to be used</param>
     public HtmlReport(StreamWriter stream)
     {
-        if (stream == null) throw new ArgumentNullException(nameof(stream));
+        ArgumentNullException.ThrowIfNull(stream);
         _streamWriter = stream;
     }
 

@@ -29,8 +29,7 @@ public class RandomFunctions
             throw new ArgumentException(@"length must not be negative", nameof(length));
         if (length > int.MaxValue / 8) // 250 million chars ought to be enough for anybody
             throw new ArgumentException(@"length is too big", nameof(length));
-        if (characterSet == null)
-            throw new ArgumentNullException(nameof(characterSet));
+        ArgumentNullException.ThrowIfNull(characterSet);
         var characterArray = characterSet.Distinct().ToArray();
         if (characterArray.Length == 0)
             throw new ArgumentException(@"characterSet must not be empty", nameof(characterSet));

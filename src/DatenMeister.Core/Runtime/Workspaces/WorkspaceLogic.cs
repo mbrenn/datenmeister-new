@@ -100,7 +100,7 @@ public class WorkspaceLogic : IWorkspaceLogic
 
     public IEnumerable<IUriExtent> GetExtentsForWorkspace(IWorkspace dataLayer)
     {
-        if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
+        ArgumentNullException.ThrowIfNull(dataLayer);
 
         lock (_workspaceData)
         {
@@ -130,7 +130,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     /// <param name="workspace">Workspace to be added. It usually returns the parameter itself</param>
     public IWorkspace AddWorkspace(IWorkspace workspace)
     {
-        if (workspace == null) throw new ArgumentNullException(nameof(workspace));
+        ArgumentNullException.ThrowIfNull(workspace);
 
         lock (_workspaceData)
         {

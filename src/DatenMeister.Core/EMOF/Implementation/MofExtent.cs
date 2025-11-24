@@ -639,7 +639,7 @@ public class MofExtent :
     /// <returns>The converted object or an exception if the object cannot be converted</returns>
     public static object? ConvertForSetting(IObject recipient, object? childValue)
     {
-        if (recipient == null) throw new ArgumentNullException(nameof(recipient));
+        ArgumentNullException.ThrowIfNull(recipient);
 
         if (recipient is MofObject mofObject)
         {

@@ -69,9 +69,9 @@ public class GroupByReflectiveCollection : TemporaryReflectiveCollection
         IEnumerable<Func<IAggregator>> aggregatorFunc,
         IEnumerable<string> aggregatedColumns)
     {
-        if (aggregateColumns == null) throw new ArgumentNullException(nameof(aggregateColumns));
-        if (aggregatorFunc == null) throw new ArgumentNullException(nameof(aggregatorFunc));
-        if (aggregatedColumns == null) throw new ArgumentNullException(nameof(aggregatedColumns));
+        ArgumentNullException.ThrowIfNull(aggregateColumns);
+        ArgumentNullException.ThrowIfNull(aggregatorFunc);
+        ArgumentNullException.ThrowIfNull(aggregatedColumns);
 
         var listAggregateColumns = aggregateColumns.ToList();
         var listAggregatedColumns = aggregatedColumns.ToList();

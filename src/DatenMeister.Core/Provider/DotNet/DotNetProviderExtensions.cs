@@ -47,10 +47,7 @@ public static class DotNetProviderExtensions
         object value,
         string? id = null)
     {
-        if (value == null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
         var metaclass = provider.TypeLookup.ToElement(value.GetType());
         if (metaclass == null)

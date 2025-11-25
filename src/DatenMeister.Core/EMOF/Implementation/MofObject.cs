@@ -222,7 +222,8 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
                 return result;
             }
             case IEnumerable<object> _:
-                return new MofReflectiveSequence(container, property);
+                var attributeModel = container.GetClassModel()?.FindAttribute(property);
+                return new MofReflectiveSequence(container, property, attributeModel);
             case UriReference valueAsUriReference when noReferences:
                 return valueAsUriReference;
             case UriReference valueAsUriReference:
@@ -241,7 +242,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     public void set(string property, object? value)
     {
         // Checks if the value is a default value. If yes, it can be removed...
-        if (MofHelper.IsDefaultValue(this, property, value))
+        if (MofHelper.IsDefaultValueOfAttributeType(this, property, value))
         {
             ProviderObject.DeleteProperty(property);
             return;
@@ -249,6 +250,8 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         
         // Check, if we find the classmodel
         var attributeModel = GetClassModel()?.FindAttribute(property);
+        
+        // Evaluate the multiplicity of the attribute
         if (attributeModel != null)
         {
             switch (attributeModel.IsMultiple)
@@ -275,13 +278,13 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         // Value is not a default value, so it needs to be stored into the database
         if (DotNetHelper.IsOfEnumeration(value))
         {
-            ArgumentNullException.ThrowIfNull(value);
-
-            var valueAsEnumeration = (IEnumerable<object>) value;
+            var valueAsEnumeration = value as IEnumerable<object?>;
+            ArgumentNullException.ThrowIfNull(valueAsEnumeration);
+            
             ProviderObject.EmptyListForProperty(property);
             foreach (var child in valueAsEnumeration)
             {
-                var valueForSetting = MofExtent.ConvertForSetting(this, child);
+                var valueForSetting = MofExtent.ConvertForSetting(this, child, attributeModel);
                 if (valueForSetting == null)
                 {
                     // Null elements will not be set
@@ -301,7 +304,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         }
         else
         {
-            var valueForSetting = MofExtent.ConvertForSetting(this, value);
+            var valueForSetting = MofExtent.ConvertForSetting(this, value, attributeModel);
             ProviderObject.SetProperty(property, valueForSetting);
 
             // Checks, if the element that has been set is not associated to a container.

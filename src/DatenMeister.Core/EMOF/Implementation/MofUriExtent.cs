@@ -87,7 +87,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     /// </summary>
     public IList<string> AlternativeUris
     {
-        get => new ReflectiveList<string>(new MofReflectiveSequence(GetMetaObject(), AlternativeUrlsProperty));
+        get => new ReflectiveList<string>(new MofReflectiveSequence(GetMetaObject(), AlternativeUrlsProperty, null));
         set => set(AlternativeUrlsProperty, value);
     }
 

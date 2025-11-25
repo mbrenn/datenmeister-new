@@ -173,7 +173,9 @@ public static class PackageMethods
             if (children == null)
             {
                 childElement.set(childProperty, Array.Empty<object>());
-                children = new MofReflectiveSequence((MofObject) childElement, childProperty);
+                var asMofObject = childElement as MofObject ?? throw new InvalidOperationException("Not an MofObject");
+                children = new MofReflectiveSequence(asMofObject, childProperty,
+                    asMofObject.GetClassModel()?.FindAttribute(childProperty));
             }
 
             rootElements = children;

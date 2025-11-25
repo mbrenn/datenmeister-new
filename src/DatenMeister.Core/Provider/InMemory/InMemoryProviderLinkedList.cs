@@ -29,6 +29,8 @@ public class InMemoryProviderLinkedList : IProviderWithTypeIndex, ICanUpdateCach
         IsTemporaryStorage = true
     };
 
+    private IProviderWithTypeIndex? _providerWithTypeIndex;
+
     /// <inheritdoc />
     public IProviderObject CreateElement(string? metaClassUri) =>
         new InMemoryObject(this, metaClassUri);
@@ -38,8 +40,8 @@ public class InMemoryProviderLinkedList : IProviderWithTypeIndex, ICanUpdateCach
 
     public IProviderWithTypeIndex ProviderWithTypeIndex
     {
-        get => field ?? throw new InvalidOperationException("Provider is not of type IProviderWithTypeIndex");
-        set;
+        get => _providerWithTypeIndex ?? throw new InvalidOperationException("Provider is not of type IProviderWithTypeIndex");
+        set => _providerWithTypeIndex = value;
     }
 
     /// <summary>

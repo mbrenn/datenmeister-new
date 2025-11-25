@@ -15,6 +15,7 @@ using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.TypeIndexAssembly.Model;
 
 namespace DatenMeister.Core.EMOF.Implementation;
 
@@ -242,7 +243,7 @@ public class MofExtent :
                 nullObject.EmptyListForProperty(property);
                 foreach (var child in (IEnumerable<object>) value)
                 {
-                    var valueForSetting = ConvertForSetting(this, child);
+                    var valueForSetting = ConvertForSetting(this, child, null);
                     if (valueForSetting != null)
                     {
                         nullObject.AddToProperty(property, valueForSetting);
@@ -251,7 +252,7 @@ public class MofExtent :
             }
             else
             {
-                var valueForSetting = ConvertForSetting(this, value);
+                var valueForSetting = ConvertForSetting(this, value, null);
                 nullObject.SetProperty(property, valueForSetting);
             }
         }
@@ -525,18 +526,19 @@ public class MofExtent :
     /// An arbitrary object shall be stored into the database
     /// </summary>
     /// <param name="value">Value to be converted</param>
+    /// <param name="attributeModel">Attribute model being used to convert the value</param>
     /// <returns>The converted object or an exception if the object cannot be converted</returns>
-    public object? ConvertForSetting(object value)
-        => ConvertForSetting(value, this, null);
+    public object? ConvertForSetting(object value, AttributeModel? attributeModel)
+        => ConvertForSetting(value, this, attributeModel);
 
     /// <summary>
     /// Converts the given value to an element that can be used be for the provider object
     /// </summary>
     /// <param name="value">Value to be set</param>
     /// <param name="extent">Extent being used to create the factory or being used for .Net TypeLookup</param>
-    /// <param name="container">Container which will host the newly created object</param>
+    /// <param name="attributeModel">Attribute model being used to convert the value</param>
     /// <returns>The converted object being ready for Provider</returns>
-    public static object? ConvertForSetting(object? value, MofExtent? extent, MofObject? container)
+    public static object? ConvertForSetting(object? value, MofExtent? extent, AttributeModel? attributeModel)
     {
         if (value == null)
         {
@@ -612,7 +614,7 @@ public class MofExtent :
         {
             return ((IEnumerable) value)
                 .Cast<object>()
-                .Select(innerValue => ConvertForSetting(innerValue, extent, container)).ToList();
+                .Select(innerValue => ConvertForSetting(innerValue, extent, attributeModel)).ToList();
         }
 
         if (DotNetHelper.IsOfProviderObject(value))
@@ -627,7 +629,7 @@ public class MofExtent :
                 "This element was not created by a factory. So a setting by .Net Object is not possible");
         }
 
-        return ConvertForSetting(DotNetConverter.ConvertToMofObject(asUriExtent, value), extent, container);
+        return ConvertForSetting(DotNetConverter.ConvertToMofObject(asUriExtent, value), extent, attributeModel);
     }
 
     /// <summary>
@@ -637,13 +639,13 @@ public class MofExtent :
     /// <param name="recipient">The Mofobject for which the element will be created</param>
     /// <param name="childValue">Value to be converted</param>
     /// <returns>The converted object or an exception if the object cannot be converted</returns>
-    public static object? ConvertForSetting(IObject recipient, object? childValue)
+    public static object? ConvertForSetting(IObject recipient, object? childValue, AttributeModel? attributeModel)
     {
         ArgumentNullException.ThrowIfNull(recipient);
 
         if (recipient is MofObject mofObject)
         {
-            var result = ConvertForSetting(childValue, mofObject.ReferencedExtent, mofObject);
+            var result = ConvertForSetting(childValue, mofObject.ReferencedExtent, attributeModel);
 
             if (result is IProviderObject && childValue is MofObject childValueAsObject)
             {
@@ -658,7 +660,7 @@ public class MofExtent :
 
         if (recipient is MofExtent extent)
         {
-            var result = ConvertForSetting(childValue, extent, null);
+            var result = ConvertForSetting(childValue, extent, attributeModel);
 
             if (result is IProviderObject && childValue is MofObject childValueAsObject)
             {

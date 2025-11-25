@@ -11,18 +11,20 @@ public static class MofHelper
     /// <summary>
     /// Checks whether the value at the given property for the element is the default value.
     /// This infers that the value does not have to be set within the underlying database.
+    /// The default value is just being retrieved by the attribute type and is not using the Uml information
+    /// behind. 
     /// </summary>
     /// <param name="element">Element to be queried</param>
     /// <param name="property">Property to which the element would be set</param>
     /// <param name="value">Value to be checked</param>
-    /// <returns>true, if the value is a dafault value</returns>
-    public static bool IsDefaultValue(IObject element, string property, object? value)
+    /// <returns>true, if the value is a default value</returns>
+    public static bool IsDefaultValueOfAttributeType(IObject element, string property, object? value)
     {
         switch (value)
         {
             case null:
             case int intValue when intValue == 0:
-            case bool boolValue when boolValue == false:
+            case bool boolValue when !boolValue:
             case string stringValue when string.IsNullOrEmpty(stringValue):
                 return true;
             default:
@@ -35,7 +37,7 @@ public static class MofHelper
     /// </summary>
     /// <param name="type">Type, whose default value is queried</param>
     /// <returns>The default value</returns>
-    public static object? GetDefaultValue(Type type)
+    public static object? GetDefaultValueByAttributeType(Type type)
     {
         if (type == typeof(string))
         {

@@ -165,33 +165,6 @@ public class MofFactory : IFactory
         return created;
     }
 
-    /// <summary>
-    /// Creates an element by getting a dotnet value.
-    /// </summary>
-    /// <param name="value">Value to be converted</param>
-    /// <param name="id">Id of the element that shall be set</param>
-    /// <returns>The created .Net object</returns>
-    public IObject createFrom(object value, string? id = "")
-    {
-        if (Extent == null)
-        {
-            throw new InvalidOperationException("Extent must set to convert a .Net Type value");
-        }
-
-        var result = Extent.ConvertForSetting(value) as IProviderObject;
-        if (result == null)
-        {
-            throw new InvalidOperationException("Object could not be converted to an I");
-        }
-
-        if (!string.IsNullOrEmpty(id))
-        {
-            result.Id = id;
-        }
-
-        return new MofElement(result, Extent);
-    }
-
     /// <inheritdoc />
     public IObject createFromString(IElement dataType, string value)
         => throw new NotImplementedException();

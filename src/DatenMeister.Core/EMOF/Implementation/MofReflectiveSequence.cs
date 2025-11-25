@@ -4,6 +4,7 @@ using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Provider;
+using DatenMeister.Core.TypeIndexAssembly.Model;
 
 namespace DatenMeister.Core.EMOF.Implementation;
 
@@ -11,7 +12,7 @@ namespace DatenMeister.Core.EMOF.Implementation;
 /// Implements a reflective sequence as given by the MOF specification.
 /// The sequence needs to be correlated to a Mof Object
 /// </summary>
-public class MofReflectiveSequence(MofObject mofObject, string property) : IReflectiveSequence, IHasExtent
+public class MofReflectiveSequence(MofObject mofObject, string property, AttributeModel? attributeModel) : IReflectiveSequence, IHasExtent
 {
     /// <summary>
     /// Gets the name of the property
@@ -33,6 +34,11 @@ public class MofReflectiveSequence(MofObject mofObject, string property) : IRefl
 
     /// <inheritdoc />
     public IEnumerator<object> GetEnumerator() => Enumerate().GetEnumerator();
+
+    /// <summary>
+    /// Stores the attribute model, if available.
+    /// </summary>
+    private readonly AttributeModel? _attributeModel = attributeModel;
 
     /// <summary>
     /// Performs an enumeration of all members of the collection
@@ -79,7 +85,7 @@ public class MofReflectiveSequence(MofObject mofObject, string property) : IRefl
     /// <inheritdoc />
     public bool add(object? value)
     {
-        var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
+        var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value, _attributeModel);
         if (valueToBeAdded != null)
         {
             var result = MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded);
@@ -169,7 +175,7 @@ public class MofReflectiveSequence(MofObject mofObject, string property) : IRefl
     /// <inheritdoc />
     public void add(int index, object value)
     {
-        var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
+        var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value, _attributeModel);
         if (valueToBeAdded == null) return;
 
         MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded, index);

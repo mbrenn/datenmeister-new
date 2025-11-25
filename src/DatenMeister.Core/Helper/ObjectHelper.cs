@@ -188,8 +188,10 @@ public static class ObjectHelper
         {
             if (!(value is IHasMofExtentMetaObject metaObject))
                 throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
-                
-            return (T) (object) new MofReflectiveSequence(metaObject.GetMetaObject(), property)
+
+            var asMetaObject = metaObject.GetMetaObject();
+            return (T)(object)new MofReflectiveSequence(asMetaObject, property,
+                asMetaObject.GetClassModel()?.FindAttribute(property))
             {
                 NoReferences = noReferences
             };
@@ -199,8 +201,10 @@ public static class ObjectHelper
         {
             if (!(value is IHasMofExtentMetaObject metaObject))
                 throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
-                
-            return (T) (object) new MofReflectiveSequence(metaObject.GetMetaObject(), property)
+
+            var asMetaObject = metaObject.GetMetaObject();
+            return (T)(object)new MofReflectiveSequence(asMetaObject, property,
+                asMetaObject.GetClassModel()?.FindAttribute(property))
             {
                 NoReferences = noReferences
             };
@@ -319,7 +323,9 @@ public static class ObjectHelper
     /// <param name="toBeAdded"></param>
     public static void AddCollectionItem(this IObject value, string property, object toBeAdded)
     {
-        var reflection = new MofReflectiveSequence((MofObject) value, property);
+        var asMofObject = value as MofObject ?? throw new InvalidOperationException("The given value is not an MofObject");
+        var reflection =
+            new MofReflectiveSequence(asMofObject, property, asMofObject.GetClassModel()?.FindAttribute(property));
         reflection.add(toBeAdded);
     }
 
@@ -333,7 +339,9 @@ public static class ObjectHelper
     /// <returns>true, if removal has been successful</returns>
     public static bool RemoveCollectionItem(this IObject value, string property, object toBeRemoved)
     {
-        var reflection = new MofReflectiveSequence((MofObject) value, property);
+        var asMofObject = value as MofObject ?? throw new InvalidOperationException("The given value is not an MofObject");
+        var reflection =
+            new MofReflectiveSequence(asMofObject, property, asMofObject.GetClassModel()?.FindAttribute(property));
         return reflection.remove(toBeRemoved);
     }
        

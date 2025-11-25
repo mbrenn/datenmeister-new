@@ -87,7 +87,7 @@ public class TestFindModels
             applicationPath = "path"
         };
         
-        found.elements().add(element.GetWrappedElement());
+        found!.elements().add(element.GetWrappedElement());
         
         // Now check that the InMemoryObject is working correctly
         var asInMemoryObject = (element.GetWrappedElement() as MofElement) as MofObject;
@@ -149,7 +149,7 @@ public class TestFindModels
         var found = (await extentManager.LoadExtent(inMemoryConfig.GetWrappedElement())).Extent;
         Assert.That(found, Is.Not.Null);
         
-        var factory = new MofFactory(found);
+        var factory = new MofFactory(found!);
         var element = new CommonTypes.OSIntegration.CommandLineApplication_Wrapper(factory)
         {
             name = "Test",

@@ -10,7 +10,6 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
-using DatenMeister.Core.Provider;
 
 // ReSharper disable InconsistentNaming
 

@@ -1,8 +1,6 @@
 ﻿// #define DEBUG_PARSE_WORKSPACES
 
 using System.Collections;
-using System.Text;
-using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;

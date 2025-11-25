@@ -1,5 +1,4 @@
 ﻿using BurnSystems.TimeCache;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Uml.Helper;

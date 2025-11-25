@@ -5,7 +5,6 @@ using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
-using DatenMeister.Core.Provider;
 
 namespace DatenMeister.Core.EMOF.Implementation;
 

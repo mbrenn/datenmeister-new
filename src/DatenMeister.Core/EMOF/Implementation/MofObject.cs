@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Text;
 using DatenMeister.Core.EMOF.Implementation.Uml;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;

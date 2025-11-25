@@ -35,8 +35,12 @@ public class InMemoryProviderLinkedList : IProviderWithTypeIndex, ICanUpdateCach
     
 
     public IProvider Provider => ProviderWithTypeIndex;
-    
-    public IProviderWithTypeIndex ProviderWithTypeIndex { get; set; }
+
+    public IProviderWithTypeIndex ProviderWithTypeIndex
+    {
+        get => field ?? throw new InvalidOperationException("Provider is not of type IProviderWithTypeIndex");
+        set;
+    }
 
     /// <summary>
     /// Stores the context to retrieve information about types from the typeindex logic.

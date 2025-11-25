@@ -7,7 +7,6 @@
 using System.Text;
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;

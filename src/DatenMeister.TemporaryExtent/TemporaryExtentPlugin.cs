@@ -1,8 +1,6 @@
 ﻿using BurnSystems.Logging;
-using DatenMeister.Core;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
-using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Plugins;
 
 namespace DatenMeister.TemporaryExtent;

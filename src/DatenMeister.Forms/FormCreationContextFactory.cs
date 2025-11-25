@@ -1,8 +1,6 @@
-using DatenMeister.Core;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
-using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms.CollectionForms;
 using DatenMeister.Forms.Fields;
 using DatenMeister.Forms.FormFactory;

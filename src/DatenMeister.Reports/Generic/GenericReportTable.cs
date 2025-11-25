@@ -1,5 +1,4 @@
-﻿using System.Dynamic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
@@ -9,7 +8,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
-using DatenMeister.HtmlEngine;
 using DatenMeister.TextTemplates;
 
 namespace DatenMeister.Reports.Generic;

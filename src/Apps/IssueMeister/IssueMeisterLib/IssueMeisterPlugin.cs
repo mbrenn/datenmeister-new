@@ -1,8 +1,6 @@
-﻿using DatenMeister.Core;
-using DatenMeister.Core.Interfaces;
+﻿using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
-using DatenMeister.Forms;
 using DatenMeister.Forms.Helper;
 using DatenMeister.Plugins;
 using DatenMeister.Types;

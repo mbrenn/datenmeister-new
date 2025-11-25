@@ -1,5 +1,4 @@
-﻿using System.Xml.Schema;
-using DatenMeister.Core.Runtime.Workspaces;
+﻿using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.TypeIndexAssembly;
 using NUnit.Framework;
 

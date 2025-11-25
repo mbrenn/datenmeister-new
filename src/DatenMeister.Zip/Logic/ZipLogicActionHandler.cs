@@ -1,7 +1,6 @@
 ﻿using System.IO.Compression;
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Zip.Model;

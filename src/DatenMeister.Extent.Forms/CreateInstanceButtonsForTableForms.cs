@@ -1,13 +1,9 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
-using DatenMeister.Forms.FormModifications;
-using DatenMeister.Forms.Helper;
 using DatenMeister.Forms.TableForms;
 using FormCreationContext = DatenMeister.Forms.FormCreationContext;
 

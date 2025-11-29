@@ -156,7 +156,7 @@ public class TestFindModels
             applicationPath = "path"
         };
         
-        found.elements().add(element.GetWrappedElement());
+        found!.elements().add(element.GetWrappedElement());
         
         // Now check that the InMemoryObject is working correctly
         var asInMemoryObject = (element.GetWrappedElement() as MofElement)?.ProviderObject as InMemoryObject;

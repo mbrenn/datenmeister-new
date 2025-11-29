@@ -13,5 +13,5 @@ public interface IElementValidator
     /// </summary>
     /// <param name="element">Element to be verified</param>
     /// <returns>The result of the validation</returns>
-    ValidatorResult? ValidateElement(IObject element);
+    LinkedListNode<ValidatorResult>? ValidateElement(IObject element);
 }

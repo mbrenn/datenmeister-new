@@ -335,7 +335,8 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         {
             // Ok, we have packaged element, gets all of them and return them
             var packagedElements = 
-                element.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement).OfType<IElement>();
+                element.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement)
+                    .OfType<IElement>().ToList();
             foreach (var packagedElement in packagedElements)
             {
                 AddClassesToWorkspace(workspaceModel, packagedElement);
@@ -363,9 +364,11 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             FullName = NamedElementMethods.GetFullName(element),
             Uri = (element as IKnowsUri)?.Uri ?? string.Empty
         };
-        
+
         // Get th Generalizations of the class
-        var generalizations = element.getOrDefault<IReflectiveCollection?>(_UML._StructuredClassifiers._Class.generalization);
+        var generalizations =
+            element.getOrDefault<IReflectiveCollection?>(_UML._StructuredClassifiers._Class.generalization)
+                ?.ToList();
         if (generalizations != null)
         {
             foreach (var generalization in generalizations.OfType<IElement>())
@@ -379,8 +382,10 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         }
 
         // Now get the properties / attributes
-        var ownedAttributes = element.getOrDefault<IReflectiveCollection?>(
-            _UML._StructuredClassifiers._Class.ownedAttribute);
+        var ownedAttributes =
+            element.getOrDefault<IReflectiveCollection?>(
+                    _UML._StructuredClassifiers._Class.ownedAttribute)
+                ?.ToList();
         if (ownedAttributes != null)
         {
             foreach (var attribute in ownedAttributes.OfType<IElement>())

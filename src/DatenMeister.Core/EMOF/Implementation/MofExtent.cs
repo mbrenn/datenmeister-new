@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Xml.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
@@ -26,6 +27,11 @@ public class MofExtent :
     IExtent, IHasWorkspace, IObjectAllProperties, IHasExtent,
     IHasMofExtentMetaObject, IHasExtentConfiguration
 {
+    /// <summary>
+    /// Stores the logging instance
+    /// </summary>
+    public static readonly ILogger logger = new ClassLogger(typeof(MofExtent));
+    
     private static readonly MofExtent XmlMetaExtent =
         new MofUriExtent(new XmiProvider(), null)
         {
@@ -567,7 +573,7 @@ public class MofExtent :
 
         if (DotNetHelper.IsOfUriExtent(value))
         {
-            if (!(value is IUriExtent ofUriExtent))
+            if (value is not IUriExtent ofUriExtent)
                 throw new InvalidOperationException("Should not exist");
 
             return new UriReference(ofUriExtent.contextURI());
@@ -579,9 +585,15 @@ public class MofExtent :
                 throw new InvalidOperationException("Extent is null but MofObject given");
 
             var asMofObject = (MofObject) value;
+            var isComposite = attributeModel?.IsComposite;
 
             if (asMofObject.Extent == null)
             {
+                if (isComposite == false)
+                {
+                    logger.Info("We are NOT composite, but would like to get added without knowing the extent");
+                }
+                
                 if (asMofObject.ProviderObject.Provider == extent.Provider)
                 {
                     // if the given value is created by the provider, but has not been allocated

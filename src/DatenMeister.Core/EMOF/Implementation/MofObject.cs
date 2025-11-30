@@ -232,8 +232,12 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
             case UriReference valueAsUriReference:
             {
                 var extentResolver = container.Extent as IUriResolver ?? container.ReferencedExtent as IUriResolver;
-                var resolved = extentResolver?.Resolve(valueAsUriReference.Uri, ResolveType.Default, false,
-                    valueAsUriReference.Workspace);
+                var resolved =
+                    extentResolver?.Resolve(
+                        valueAsUriReference.Uri,
+                        ResolveType.Default,
+                        false,
+                        valueAsUriReference.Workspace);
                 return resolved ?? new MofObjectShadow(valueAsUriReference.Uri);
             }
             default:

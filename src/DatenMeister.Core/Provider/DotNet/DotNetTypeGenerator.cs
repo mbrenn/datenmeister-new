@@ -188,31 +188,31 @@ public class DotNetTypeGenerator
         if (property == typeof(string))
         {
             var stringType = UriResolver.Resolve(CoreTypeNames.StringType,
-                ResolveType.NoMetaWorkspaces);
+                ResolveType.IncludeWorkspace);
             umlProperty.set(_UML._CommonStructure._TypedElement.type, stringType);
         }
         else if (property == typeof(int) || property == typeof(long) || property == typeof(short))
         {
             var integerType = UriResolver.Resolve(CoreTypeNames.IntegerType,
-                ResolveType.NoMetaWorkspaces);
+                ResolveType.IncludeWorkspace);
             umlProperty.set(_UML._CommonStructure._TypedElement.type, integerType);
         }
         else if (property == typeof(bool))
         {
             var booleanType = UriResolver.Resolve(CoreTypeNames.BooleanType,
-                ResolveType.NoMetaWorkspaces);
+                ResolveType.IncludeWorkspace);
             umlProperty.set(_UML._CommonStructure._TypedElement.type, booleanType);
         }
         else if (property == typeof(double) || property == typeof(float))
         {
             var realType = UriResolver.Resolve(CoreTypeNames.RealType,
-                ResolveType.NoMetaWorkspaces);
+                ResolveType.IncludeWorkspace);
             umlProperty.set(_UML._CommonStructure._TypedElement.type, realType);
         }
         else if (property == typeof(DateTime))
         {
             var dateTimeType = UriResolver.Resolve(CoreTypeNames.DateTimeType,
-                ResolveType.NoMetaWorkspaces);
+                ResolveType.IncludeWorkspace);
             umlProperty.set(_UML._CommonStructure._TypedElement.type, dateTimeType);
         }
         else if (property.IsEnum)
@@ -220,7 +220,7 @@ public class DotNetTypeGenerator
             var typeUri = (_targetExtent as MofExtent)?.TypeLookup.ToElement(property);
             if (typeUri != null)
             {
-                var enumType = UriResolver.Resolve(typeUri, ResolveType.NoMetaWorkspaces);
+                var enumType = UriResolver.Resolve(typeUri, ResolveType.IncludeWorkspace);
                 umlProperty.set(_UML._CommonStructure._TypedElement.type, enumType);
             }
             else
@@ -255,7 +255,7 @@ public class DotNetTypeGenerator
 
                 if (propertyMofType != null)
                 {
-                    var enumType = UriResolver.Resolve(propertyMofType, ResolveType.NoMetaWorkspaces);
+                    var enumType = UriResolver.Resolve(propertyMofType, ResolveType.IncludeWorkspace);
                     umlProperty.set(_UML._CommonStructure._TypedElement.type, enumType);
                 }
                 else

@@ -36,7 +36,7 @@ public class SelectByPathNodeEvaluation : IDataViewNodeEvaluation
             throw new InvalidOperationException($"Workspace is not found: {workspaceId}");
         }
 
-        var found = workspace.Resolve(path, ResolveType.NoMetaWorkspaces, true);
+        var found = workspace.Resolve(path, ResolveType.IncludeWorkspace, true);
 
         if (found is IElement element)
         {

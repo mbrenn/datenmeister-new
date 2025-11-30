@@ -30,7 +30,7 @@ public class ClearCollectionActionHandler : IActionHandler
                 throw new InvalidOperationException(message);
             }
 
-            var sourceElement = workspace.Resolve(path, ResolveType.NoMetaWorkspaces);
+            var sourceElement = workspace.Resolve(path, ResolveType.IncludeWorkspace);
             if (sourceElement == null)
             {
                 var message = $"path is not found ${path}";

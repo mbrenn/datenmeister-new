@@ -156,7 +156,7 @@ public class ExtentTypeFormModification
                     foreach (var rootMetaClass in foundExtentType.rootElementMetaClasses)
                     {
                         var resolvedMetaClass =
-                            workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
+                            workspaceLogic.ResolveElement(rootMetaClass, ResolveType.IncludeMetaWorkspaces);
 
                         if (resolvedMetaClass == null)
                         {
@@ -243,7 +243,7 @@ public class ExtentTypeFormModification
                         foreach (var rootMetaClass in foundExtentType.rootElementMetaClasses)
                         {
                             var resolvedMetaClass =
-                                workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
+                                workspaceLogic.ResolveElement(rootMetaClass, ResolveType.IncludeMetaWorkspaces);
 
                             if (resolvedMetaClass == null)
                             {

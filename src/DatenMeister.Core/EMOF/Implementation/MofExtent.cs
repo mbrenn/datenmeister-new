@@ -404,7 +404,7 @@ public class MofExtent :
     /// <returns>Resolved .Net Type as IElement</returns>
     public Type? ResolveDotNetType(string metaclassUri, ResolveType resolveType)
     {
-        if (resolveType != ResolveType.OnlyMetaClasses)
+        if (resolveType.HasFlagFast(ResolveType.IncludeExtent))
         {
             var result = TypeLookup.ToType(metaclassUri);
             if (result != null)
@@ -414,12 +414,15 @@ public class MofExtent :
         }
 
         // Now look into the explicit extents
-        foreach (var metaExtent in MetaExtents.Cast<MofUriExtent>())
+        if (resolveType.HasFlagFast(ResolveType.IncludeMetaWorkspaces))
         {
-            var element = metaExtent.TypeLookup.ToType(metaclassUri);
-            if (element != null)
+            foreach (var metaExtent in MetaExtents.Cast<MofUriExtent>())
             {
-                return element;
+                var element = metaExtent.TypeLookup.ToType(metaclassUri);
+                if (element != null)
+                {
+                    return element;
+                }
             }
         }
 
@@ -545,7 +548,7 @@ public class MofExtent :
     /// <param name="extent">Extent being used to create the factory or being used for .Net TypeLookup</param>
     /// <param name="attributeModel">Attribute model being used to convert the value</param>
     /// <returns>The converted object being ready for Provider</returns>
-    public static object? ConvertForSetting(object? value, MofExtent? extent, AttributeModel? attributeModel)
+    private static object? ConvertForSetting(object? value, MofExtent? extent, AttributeModel? attributeModel)
     {
         var isComposite = attributeModel?.IsComposite;
         
@@ -617,7 +620,7 @@ public class MofExtent :
                 return result.ProviderObject;
             }
 
-            // It is a reference,
+            // We regard it as a reference since no composition is requested
             var asElement = asMofObject as IElement ??
                             throw new InvalidOperationException("Given element is not of type IElement");
             var uriExtentOfItem = (MofUriExtent)asMofObject.Extent;
@@ -643,14 +646,15 @@ public class MofExtent :
         }
 
         // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
-        if (!(extent is IUriExtent asUriExtent))
+        if (extent is not IUriExtent asUriExtent)
         {
             throw new InvalidOperationException(
                 "This element was not created by a factory. So a setting by .Net Object is not possible");
         }
 
         // In case we have a pure .Net Object perform the conversion directly
-        return ConvertForSetting(DotNetConverter.ConvertToMofObject(asUriExtent, value), extent, attributeModel);
+        return ConvertForSetting(
+            DotNetConverter.ConvertToMofObject(asUriExtent, value), extent, attributeModel);
     }
 
     /// <summary>

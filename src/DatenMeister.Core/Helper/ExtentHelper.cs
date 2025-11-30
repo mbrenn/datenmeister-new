@@ -215,7 +215,7 @@ public static class ExtentHelper
         IWorkspaceLogic workspaceLogic, string workspaceId, string path)
     {
         var workspace = workspaceLogic.GetWorkspace(workspaceId);
-        var sourceElement = workspace?.Resolve(path, ResolveType.NoMetaWorkspaces);
+        var sourceElement = workspace?.Resolve(path, ResolveType.IncludeWorkspace);
 
         return sourceElement is not IObject asElement ? null : asElement;
     }

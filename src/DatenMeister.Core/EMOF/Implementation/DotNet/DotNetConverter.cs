@@ -80,7 +80,7 @@ public class DotNetConverter
         var metaClassUri = _extent.GetMetaClassUri(value.GetType());
         var metaClass = metaClassUri == null
             ? null
-            : _extent.ResolveElement(metaClassUri, ResolveType.OnlyMetaClasses);
+            : _extent.ResolveElement(metaClassUri, ResolveType.IncludeMetaWorkspaces);
 
         return ConvertToMofObject(value, metaClass, requestedId);
     }

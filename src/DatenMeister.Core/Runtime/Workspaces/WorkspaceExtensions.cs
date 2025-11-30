@@ -20,7 +20,7 @@ public static class WorkspaceExtensions
     {
         if (element is MofObjectShadow shadowObject)
         {
-            return workspace.Resolve(shadowObject.Uri, ResolveType.NoMetaWorkspaces) as IElement;
+            return workspace.Resolve(shadowObject.Uri, ResolveType.IncludeWorkspace) as IElement;
         }
 
         return element;
@@ -33,7 +33,7 @@ public static class WorkspaceExtensions
             ? workspaceLogic.GetDefaultWorkspace()
             : workspaceLogic.GetWorkspace(workspaceId);
 
-        return workspace?.Resolve(uri, ResolveType.NoMetaWorkspaces, true, workspaceId);
+        return workspace?.Resolve(uri, ResolveType.IncludeWorkspace, true, workspaceId);
     }
 
     public static IObject? FindObject(this IWorkspaceLogic workspaceLogic, string workspaceId, string uri)
@@ -259,7 +259,7 @@ public static class WorkspaceExtensions
             .SelectMany(x => x.extent)
             .OfType<IUriExtent>()
             .Select(x => 
-                x.GetUriResolver().Resolve(extentUri, ResolveType.NoMetaWorkspaces, false) as IUriExtent)
+                x.GetUriResolver().Resolve(extentUri, ResolveType.IncludeWorkspace, false) as IUriExtent)
             .FirstOrDefault(x => x != null);
     }
 
@@ -313,7 +313,7 @@ public static class WorkspaceExtensions
             .SelectMany(x => x.extent)
             .OfType<IUriExtent>()
             .Select(x =>
-                x.GetUriResolver().Resolve(extentUri, ResolveType.NoMetaWorkspaces | ResolveType.NoWorkspace, false))
+                x.GetUriResolver().Resolve(extentUri, ResolveType.IncludeExtent | ResolveType.IncludeWorkspace, false))
             .FirstOrDefault(x => x != null);
 
         switch (foundExtent)

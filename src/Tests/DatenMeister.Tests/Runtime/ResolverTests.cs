@@ -144,7 +144,7 @@ public class ResolverTests
 
 
         var resolvedChildShadow = extent.GetUriResolver()
-            .ResolveElement(asShadow, ResolveType.NoMetaWorkspaces | ResolveType.NoWorkspace, false);
+            .ResolveElement(asShadow, ResolveType.IncludeExtent, false);
         Assert.That(resolvedChildShadow, Is.Not.Null);
         Assert.That(resolvedChildShadow, Is.EqualTo(firstChild));
     }

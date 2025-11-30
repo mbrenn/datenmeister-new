@@ -42,7 +42,7 @@ public class ExportToXmiActionHandler : IActionHandler
                 throw new InvalidOperationException(message);
             }
 
-            var sourceElement = workspace.Resolve(sourcePath, ResolveType.NoMetaWorkspaces);
+            var sourceElement = workspace.Resolve(sourcePath, ResolveType.IncludeWorkspace);
             if (sourceElement == null)
             {
                 var message = $"sourcePath is not found {sourcePath}";

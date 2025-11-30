@@ -59,8 +59,8 @@ public class CopyElementsActionHandler : IActionHandler
                 throw new InvalidOperationException(message);
             }
 
-            var sourceElement = sourceWorkspace.Resolve(sourcePath, ResolveType.NoMetaWorkspaces);
-            var targetElement = targetWorkspace.Resolve(targetPath, ResolveType.NoMetaWorkspaces);
+            var sourceElement = sourceWorkspace.Resolve(sourcePath, ResolveType.IncludeWorkspace);
+            var targetElement = targetWorkspace.Resolve(targetPath, ResolveType.IncludeWorkspace);
 
             if (sourceElement == null)
             {

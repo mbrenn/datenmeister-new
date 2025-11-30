@@ -165,8 +165,8 @@ public class AllDescendentsQuery
                 MofObject.ConvertToMofObject(
                     asMofObject,
                     property,
-                    asMofObject.ProviderObject.GetProperty(
-                        property),
+                    asMofObject.ProviderObject.GetProperty(property),
+                    asMofObject.GetClassModel()?.FindAttribute(property),
                     noReferences: true);
 
             if (value is IObject valueAsObject)

@@ -222,7 +222,8 @@ public class MofExtent :
             return MofObject.ConvertToMofObject(
                 new MofObject(nullObject, this),
                 property,
-                nullObject.GetProperty(property));
+                nullObject.GetProperty(property),
+                null /* No Attribute Model available for extents*/);
         }
 
         return MetaXmiElement.get(property);

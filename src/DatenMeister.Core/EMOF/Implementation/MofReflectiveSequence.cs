@@ -51,7 +51,7 @@ public class MofReflectiveSequence(MofObject mofObject, string property, Attribu
         foreach (var item in result)
         {
             var convertedObject =
-                MofObject.ConvertToMofObject(MofObject, PropertyName, item, noReferences || NoReferences);
+                MofObject.ConvertToMofObject(MofObject, PropertyName, item, _attributeModel, noReferences || NoReferences);
             if (convertedObject != null)
             {
                 yield return convertedObject;
@@ -187,7 +187,7 @@ public class MofReflectiveSequence(MofObject mofObject, string property, Attribu
     public object get(int index)
     {
         var providerObject = GetPropertyAsEnumerable().ElementAt(index);
-        return MofObject.ConvertToMofObject(MofObject, PropertyName, providerObject) ?? string.Empty;
+        return MofObject.ConvertToMofObject(MofObject, PropertyName, providerObject, _attributeModel) ?? string.Empty;
     }
 
     /// <inheritdoc />
@@ -227,7 +227,7 @@ public class MofReflectiveSequence(MofObject mofObject, string property, Attribu
         MofObject.ProviderObject.RemoveFromProperty(PropertyName, valueToBeRemoved);
         add(index, value);
 
-        var result = MofObject.ConvertToMofObject(MofObject, PropertyName, valueToBeRemoved);
+        var result = MofObject.ConvertToMofObject(MofObject, PropertyName, valueToBeRemoved, _attributeModel);
 
         MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
         return result;

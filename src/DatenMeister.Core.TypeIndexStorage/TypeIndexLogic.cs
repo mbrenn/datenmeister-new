@@ -33,7 +33,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     /// <summary>
     /// Gets the TypeIndexStore
     /// </summary>
-    private TypeIndexStore TypeIndexStore => ScopeStorage.Get<TypeIndexStore>();
+    public TypeIndexStore TypeIndexStore { get;  } = workspaceLogic.ScopeStorage.Get<TypeIndexStore>();
 
     /// <summary>
     /// Called by the plugin after all the types have been loaded.

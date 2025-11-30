@@ -4,6 +4,7 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
+using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.DataView;
 
@@ -106,7 +107,7 @@ public class DataViewEvaluation
                 var asList = result.ToList();
                 if (asList.Count > 100)
                 {
-                    Logger.Info($"Result of dataview evaluation is {asList.Count} elements");
+                    Logger.Info($"Result of dataview evaluation {NamedElementMethods.GetFullName(viewNode)} is {asList.Count} elements");
                 }
             }
             

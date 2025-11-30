@@ -23,7 +23,8 @@ public class SettingsProviderHelper(IWorkspaceLogic workspaceLogic, IScopeStorag
 
         var settings = scopeStorage.Get<ExtentSettings>();
         var settingsObject = new DotNetProviderObject(dotNetProvider, settings);
-        settingsExtent.elements().add(settingsObject);
+        var mofObject = new MofElement(settingsObject, settingsExtent);
+        settingsExtent.elements().add(mofObject);
 
         return Task.CompletedTask;
     }

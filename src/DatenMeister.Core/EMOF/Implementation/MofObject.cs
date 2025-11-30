@@ -245,15 +245,15 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     /// <inheritdoc />
     public void set(string property, object? value)
     {
+        // Check, if we find the classmodel
+        var attributeModel = GetClassModel()?.FindAttribute(property);
+        
         // Checks if the value is a default value. If yes, it can be removed...
         if (MofHelper.IsDefaultValueOfAttributeType(this, property, value))
         {
             ProviderObject.DeleteProperty(property);
             return;
         }
-
-        // Check, if we find the classmodel
-        var attributeModel = GetClassModel()?.FindAttribute(property);
 
         // Evaluate the multiplicity of the attribute
         if (attributeModel != null)
@@ -279,9 +279,10 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
             }
         }
 
-        // Value is not a default value, so it needs to be stored into the database
+        // Check, if the value is an enumeration containing of multiple values
         if (DotNetHelper.IsOfEnumeration(value))
         {
+            // In case, it is, we add each item individually
             var valueAsEnumeration = value as IEnumerable<object?>;
             ArgumentNullException.ThrowIfNull(valueAsEnumeration);
 
@@ -308,6 +309,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         }
         else
         {
+            // It is just a single object
             var valueForSetting = MofExtent.ConvertForSetting(this, value, attributeModel);
             ProviderObject.SetProperty(property, valueForSetting);
 
@@ -466,6 +468,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     /// </summary>
     private  const bool UseClassModelCache = true;
 
+#pragma warning disable CS0162 // Unreachable code detected
     /// <summary>
     /// Finds the class model by looking into the type index.
     /// </summary>
@@ -482,6 +485,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
                 ? _cachedClassModel ??= mofUriExtent.FindModel(metaClassUri)
                 : mofUriExtent.FindModel(metaClassUri);
     }
+#pragma warning restore CS0162 // Unreachable code detected
 }
 
 public class MofObjectEqualityComparer : IEqualityComparer<IObject?>

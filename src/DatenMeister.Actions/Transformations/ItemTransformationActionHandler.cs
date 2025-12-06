@@ -41,7 +41,7 @@ public class ItemTransformationActionHandler : IActionHandler
                 throw new InvalidOperationException(message);
             }
 
-            var sourceElement = sourceWorkspace.Resolve(path, ResolveType.NoMetaWorkspaces);
+            var sourceElement = sourceWorkspace.Resolve(path, ResolveType.IncludeWorkspace);
 
             if (sourceElement == null)
             {

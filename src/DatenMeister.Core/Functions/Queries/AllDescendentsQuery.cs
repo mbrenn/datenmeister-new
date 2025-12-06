@@ -48,6 +48,8 @@ public class AllDescendentsQuery
     ///     return this object itself
     /// </summary>
     /// <param name="element">Element being queried</param>
+    /// <param name="descendentMode">The mode to go through the descendents. It also allows to include the
+    /// enumerated objects themselves</param>
     /// <returns>An enumeration of all object and its descendents</returns>
     public static IEnumerable<IObject> GetDescendents(
         IObject element,
@@ -165,8 +167,8 @@ public class AllDescendentsQuery
                 MofObject.ConvertToMofObject(
                     asMofObject,
                     property,
-                    asMofObject.ProviderObject.GetProperty(
-                        property),
+                    asMofObject.ProviderObject.GetProperty(property),
+                    asMofObject.GetClassModel()?.FindAttribute(property),
                     noReferences: true);
 
             if (value is IObject valueAsObject)

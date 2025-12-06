@@ -64,12 +64,12 @@ public class TypeIndexStore
     /// <summary>
     /// Gets or sets the current data for the TypeIndexing
     /// </summary>
-    internal TypeIndexData? Current { get; set; }
+    public TypeIndexData? Current { get; set; }
     
     /// <summary>
     /// Gets or sets the next data for the TypeIndexing which will be swapped to the current data
     /// </summary>
-    public TypeIndexData? Next { get; set; }
+    internal TypeIndexData? Next { get; set; }
     
     /// <summary>
     /// Defines the monitor for the swapping if the index data

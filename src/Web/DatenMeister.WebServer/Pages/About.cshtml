@@ -78,6 +78,18 @@ Welcome to the About-Page
             </ul>
         </td>
     </tr>
+    <tr>
+        <td>Type Index Logic</td>
+        <td>
+            <div>Dependencies of Workspaces:</div>
+            <ul>
+                @foreach (var dependency in AboutModel.WorkspaceDependencies)
+                {
+                    <li>@dependency</li>
+                }
+            </ul>
+        </td>
+    </tr>
 </table>
 
 <script type="text/ecmascript">

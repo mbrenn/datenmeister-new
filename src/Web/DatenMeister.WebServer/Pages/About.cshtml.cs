@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using DatenMeister.Actions;
 using DatenMeister.Core;
+using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
@@ -64,6 +65,25 @@ public class AboutModel : PageModel
             var formPlugin = GiveMe.Scope.ScopeStorage.Get<FormsState>();
             return formPlugin.FormModificationPlugins
                 .Select(x => $"{x} ({x.Name})")
+                .ToList();
+        }
+    }
+
+    public static List<string> WorkspaceDependencies
+    {
+        get
+        {
+            var typeIndexLogic = new TypeIndexLogic(GiveMe.Scope.WorkspaceLogic);
+            var indexStore = typeIndexLogic.TypeIndexStore.Current;
+            if (indexStore == null)
+            {
+                return ["Index Store in build up"];
+            }
+
+            return indexStore.Workspaces
+                .Select(
+                    x => $"{x.WorkspaceId}: {x.MetaclassWorkspaces.Aggregate(
+                        (y, z) => $"{y}, {z}")}")
                 .ToList();
         }
     }

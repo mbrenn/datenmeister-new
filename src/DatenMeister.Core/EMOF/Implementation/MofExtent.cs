@@ -222,7 +222,8 @@ public class MofExtent :
             return MofObject.ConvertToMofObject(
                 new MofObject(nullObject, this),
                 property,
-                nullObject.GetProperty(property));
+                nullObject.GetProperty(property),
+                null /* No Attribute Model available for extents*/);
         }
 
         return MetaXmiElement.get(property);
@@ -403,7 +404,7 @@ public class MofExtent :
     /// <returns>Resolved .Net Type as IElement</returns>
     public Type? ResolveDotNetType(string metaclassUri, ResolveType resolveType)
     {
-        if (resolveType != ResolveType.OnlyMetaClasses)
+        if (resolveType.HasFlagFast(ResolveType.IncludeExtent))
         {
             var result = TypeLookup.ToType(metaclassUri);
             if (result != null)
@@ -413,12 +414,15 @@ public class MofExtent :
         }
 
         // Now look into the explicit extents
-        foreach (var metaExtent in MetaExtents.Cast<MofUriExtent>())
+        if (resolveType.HasFlagFast(ResolveType.IncludeMetaWorkspaces))
         {
-            var element = metaExtent.TypeLookup.ToType(metaclassUri);
-            if (element != null)
+            foreach (var metaExtent in MetaExtents.Cast<MofUriExtent>())
             {
-                return element;
+                var element = metaExtent.TypeLookup.ToType(metaclassUri);
+                if (element != null)
+                {
+                    return element;
+                }
             }
         }
 
@@ -544,8 +548,10 @@ public class MofExtent :
     /// <param name="extent">Extent being used to create the factory or being used for .Net TypeLookup</param>
     /// <param name="attributeModel">Attribute model being used to convert the value</param>
     /// <returns>The converted object being ready for Provider</returns>
-    public static object? ConvertForSetting(object? value, MofExtent? extent, AttributeModel? attributeModel)
+    private static object? ConvertForSetting(object? value, MofExtent? extent, AttributeModel? attributeModel)
     {
+        var isComposite = attributeModel?.IsComposite;
+        
         if (value == null)
         {
             return null;
@@ -585,9 +591,8 @@ public class MofExtent :
                 throw new InvalidOperationException("Extent is null but MofObject given");
 
             var asMofObject = (MofObject) value;
-            var isComposite = attributeModel?.IsComposite;
 
-            if (asMofObject.Extent == null)
+            if (asMofObject.Extent == null || isComposite == true)
             {
                 if (isComposite == false)
                 {
@@ -600,7 +605,12 @@ public class MofExtent :
                     // to an object until now, it can be used directly.
                     return asMofObject.ProviderObject;
                 }
-
+                
+                // We are having (1) a composite object or (2) no information about composition strategy
+                // In case of (1), we clone the item, since we have to. The id is reused since the item is not
+                // added anywhere
+                // In case of (2), we clone the item, since we assume that it needs to be copied
+                
                 // If the object to be added is not connected to an extent, we have to copy 
                 // the element to the right provider type, but we keep the id
                 var result = (MofElement) ObjectCopier.Copy(
@@ -610,7 +620,7 @@ public class MofExtent :
                 return result.ProviderObject;
             }
 
-            // It is a reference
+            // We regard it as a reference since no composition is requested
             var asElement = asMofObject as IElement ??
                             throw new InvalidOperationException("Given element is not of type IElement");
             var uriExtentOfItem = (MofUriExtent)asMofObject.Extent;
@@ -631,17 +641,20 @@ public class MofExtent :
 
         if (DotNetHelper.IsOfProviderObject(value))
         {
-            return value;
+            throw new InvalidOperationException(
+                "Setting of IProviderObjects is not supported. Create a MofObject containing that element");
         }
 
         // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
-        if (!(extent is IUriExtent asUriExtent))
+        if (extent is not IUriExtent asUriExtent)
         {
             throw new InvalidOperationException(
                 "This element was not created by a factory. So a setting by .Net Object is not possible");
         }
 
-        return ConvertForSetting(DotNetConverter.ConvertToMofObject(asUriExtent, value), extent, attributeModel);
+        // In case we have a pure .Net Object perform the conversion directly
+        return ConvertForSetting(
+            DotNetConverter.ConvertToMofObject(asUriExtent, value), extent, attributeModel);
     }
 
     /// <summary>
@@ -650,42 +663,45 @@ public class MofExtent :
     /// </summary>
     /// <param name="recipient">The Mofobject for which the element will be created</param>
     /// <param name="childValue">Value to be converted</param>
+    /// <param name="attributeModel">The attribute model describing the properties of the attribute</param>
     /// <returns>The converted object or an exception if the object cannot be converted</returns>
     public static object? ConvertForSetting(IObject recipient, object? childValue, AttributeModel? attributeModel)
     {
         ArgumentNullException.ThrowIfNull(recipient);
 
-        if (recipient is MofObject mofObject)
+        switch (recipient)
         {
-            var result = ConvertForSetting(childValue, mofObject.ReferencedExtent, attributeModel);
-
-            if (result is IProviderObject && childValue is MofObject childValueAsObject)
+            case MofObject mofObject:
             {
-                // Sets the extent of the newly added object which will be associated to the mofObject
-                // This value must be set, so the new information is propagated to the MofObjects
-                childValueAsObject.ReferencedExtent = mofObject.Extent ?? mofObject.ReferencedExtent;
-                childValueAsObject.Extent = mofObject.Extent;
+                var result = ConvertForSetting(childValue, mofObject.ReferencedExtent, attributeModel);
+
+                if (result is IProviderObject && childValue is MofObject childValueAsObject)
+                {
+                    // Sets the extent of the newly added object which will be associated to the mofObject
+                    // This value must be set, so the new information is propagated to the MofObjects
+                    childValueAsObject.ReferencedExtent = mofObject.Extent ?? mofObject.ReferencedExtent;
+                    childValueAsObject.Extent = mofObject.Extent;
+                }
+
+                return result;
             }
-
-            return result;
-        }
-
-        if (recipient is MofExtent extent)
-        {
-            var result = ConvertForSetting(childValue, extent, attributeModel);
-
-            if (result is IProviderObject && childValue is MofObject childValueAsObject)
+            case MofExtent extent:
             {
-                // Sets the extent of the newly added object which will be associated to the mofObject
-                // This value must be set, so the new information is propagated to the MofObjects
-                childValueAsObject.ReferencedExtent = extent;
-                childValueAsObject.Extent = extent;
+                var result = ConvertForSetting(childValue, extent, attributeModel);
+
+                if (result is IProviderObject && childValue is MofObject childValueAsObject)
+                {
+                    // Sets the extent of the newly added object which will be associated to the mofObject
+                    // This value must be set, so the new information is propagated to the MofObjects
+                    childValueAsObject.ReferencedExtent = extent;
+                    childValueAsObject.Extent = extent;
+                }
+
+                return result;
             }
-
-            return result;
+            default:
+                throw new InvalidOperationException("Type of ${value.GetType()} is not known");
         }
-
-        throw new NotImplementedException("Type of ${value.GetType()} is not known");
     }
 
     /// <summary>

@@ -139,7 +139,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
         }*/
 
         // We have to find it
-        var result = ResolveInternal(workspace, uri, resolveType);
+        var result = ResolveInternal(uri, resolveType, workspace);
         if (result == null && traceFailing)
         {
             Logger.Debug($"URI not resolved: {uri} from Extent: {contextURI()}");
@@ -202,38 +202,59 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
         return uri.Substring(pos + 1);
     }
 
-    private object? ResolveInternal(string? workspace, string uri, ResolveType resolveType)
+    private object? ResolveInternal(string uri, ResolveType resolveType, string? workspace)
     {
         var currentWorkspace = Workspace;
         if (!string.IsNullOrEmpty(currentWorkspace?.id) && !string.IsNullOrEmpty(workspace) && currentWorkspace.id != workspace)
         {
-            // Wrong workspace, we need to jump directly into the workspace
-
+            // Wrong workspace, we need to jump directly into the right workspace
             return _cachedWorkspaceLogic?.GetWorkspace(workspace)
                 ?.Resolve(uri, resolveType, false, workspace);
         }
 
-        if (!resolveType.HasFlagFast(ResolveType.OnlyMetaClasses))
+        if (resolveType.HasFlagFast(ResolveType.IncludeExtent)
+            || resolveType.HasFlagFast(ResolveType.IncludeWorkspace))
         {
             var result = _navigator.element(uri);
             if (result != null)
             {
                 return result;
             }
+        }
 
-            if ((resolveType & ResolveType.NoWorkspace) == 0)
+        if (resolveType.HasFlagFast(ResolveType.IncludeWorkspace))
+        {
+            var workspaceResult = Workspace?.Resolve(uri, resolveType, false);
+            if (workspaceResult != null)
             {
-                var workspaceResult = Workspace?.Resolve(uri, resolveType, false);
-                if (workspaceResult != null)
-                {
-                    return workspaceResult;
-                }
+                return workspaceResult;
             }
         }
 
         var alreadyVisited = new HashSet<IWorkspace>();
 
-        if ((resolveType & (ResolveType.NoWorkspace | ResolveType.NoMetaWorkspaces)) == 0)
+        if (resolveType.HasFlagFast(ResolveType.IncludeTypeWorkspace)
+            && _cachedWorkspaceLogic != null)
+        {
+            var typesWorkspace = _cachedWorkspaceLogic.TryGetTypesWorkspace();
+            if (typesWorkspace != null)
+            {
+                foreach (var result in
+                         typesWorkspace.extent
+                             .OfType<IUriExtent>()
+                             .Select(extent => extent.GetUriResolver().Resolve(uri, ResolveType.IncludeWorkspace, false))
+                             .Where(result => result != null))
+                {
+                    return result;
+                }
+                
+                alreadyVisited.Add(typesWorkspace);
+            }
+
+        }
+        
+        
+        if (resolveType.HasFlagFast(ResolveType.IncludeMetaWorkspaces))
         {
             // Now look into the explicit extents, if no specific constraint is given
             foreach (var element in
@@ -252,25 +273,8 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
             }
         }
 
-        if (resolveType.HasFlagFast(ResolveType.AlsoTypeWorkspace)
-            && _cachedWorkspaceLogic != null)
-        {
-            var typesWorkspace = _cachedWorkspaceLogic.TryGetTypesWorkspace();
-            if (typesWorkspace != null)
-            {
-                foreach (var result in
-                         typesWorkspace.extent
-                             .OfType<IUriExtent>()
-                             .Select(extent => extent.GetUriResolver().Resolve(uri, ResolveType.NoWorkspace, false))
-                             .Where(result => result != null))
-                {
-                    return result;
-                }
-            }
-        }
-
         // If still not found, do a full search in every extent in every workspace
-        if (resolveType.HasFlagFast(ResolveType.Default) && _cachedWorkspaceLogic != null)
+        if (resolveType.HasFlagFast(ResolveType.IncludeAll) && _cachedWorkspaceLogic != null)
         {
             foreach (var innerWorkspace in _cachedWorkspaceLogic.Workspaces)
             {

@@ -412,7 +412,7 @@ public static class DotNetHelper
 
         if (typeUri != null && !string.IsNullOrEmpty(typeUri))
         {
-            valueType = extent.ResolveElement(typeUri, ResolveType.OnlyMetaClasses);
+            valueType = extent.ResolveElement(typeUri, ResolveType.IncludeMetaWorkspaces);
         }
 
         var instanceValue = factory.create(valueType);

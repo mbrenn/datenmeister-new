@@ -33,42 +33,32 @@ public enum ResolveType
     /// Default resolving process in which all extents in current workspace but also meta workspaces are resolved.
     /// If nothing was found, a full search will be started
     /// </summary>
-    Default = IncludeExtent | IncludeWorkspace | IncludeMetaWorkspaces | IncludeAll,
+    Default = IncludeExtent | IncludeWorkspace | IncludeMetaWorkspaces,
 
     /// <summary>
-    /// Resolving in which the current workspace will not be looked. The type
-    /// will only be looked within the meta workspaces and extents. Useful to look for meta classes
-    /// </summary>
-    [Obsolete]
-    OnlyMetaClasses = 0x02,
-
-    /// <summary>
-    /// Resolving in which the current extent is resolved solely
-    /// </summary>
-    [Obsolete]
-    NoWorkspace = 0x04,
-
-    /// <summary>
-    /// Performs the resolving process only in the current workspace
-    /// </summary>
-    [Obsolete]
-    NoMetaWorkspaces = 0x08,
-
-    /// <summary>
-    ///     Searches only in the meta-workspaces and does not look in the Data and other 'first-level' workspaces.
-    /// </summary>
-    [Obsolete]
-    OnlyMetaWorkspaces = 0x20,
+    /// Resolves only within the extent
+    /// </summary> 
+    IncludeExtent = 0x01,
     
-    IncludeExtent = 0x40,
-    IncludeWorkspace = 0x80,
+    /// <summary>
+    /// Resolves also within the workspace
+    /// </summary>
+    IncludeWorkspace = 0x02,
     
     /// <summary>
     /// Searches also within the workspace within the types
     /// </summary>
-    IncludeTypeWorkspace = 0x100,
-    IncludeMetaWorkspaces = 0x200,
-    IncludeAll = 0x400
+    IncludeTypeWorkspace = 0x04,
+    
+    /// <summary>
+    /// Resolves also within the meta workspaces. The workspace itself is not included
+    /// </summary>
+    IncludeMetaWorkspaces = 0x08,
+    
+    /// <summary>
+    /// We parse through everything! That is the most time-consuming resolving process. We should really avoid that. 
+    /// </summary>
+    IncludeAll = 0x10
 }
 
 public static class ResolveTypeExtensions

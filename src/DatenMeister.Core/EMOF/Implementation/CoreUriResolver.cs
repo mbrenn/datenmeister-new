@@ -67,7 +67,7 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
                 foreach (var result in
                          typesWorkspace.extent
                              .OfType<IUriExtent>()
-                             .Select(extent => extent.GetUriResolver().Resolve(uri, ResolveType.IncludeWorkspace, false))
+                             .Select(extent => extent.TryGetUriResolver()?.Resolve(uri, ResolveType.IncludeWorkspace, false))
                              .Where(result => result != null))
                 {
                     return result;
@@ -135,7 +135,7 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
             {
                 foreach (var metaExtent in mofExtent.MetaExtents)
                 {
-                    var result = metaExtent.GetUriResolver().Resolve(uri, ResolveType.IncludeExtent, false);
+                    var result = metaExtent.TryGetUriResolver()?.Resolve(uri, ResolveType.IncludeExtent, false);
                     if (result != null) return result;
                 }
             }

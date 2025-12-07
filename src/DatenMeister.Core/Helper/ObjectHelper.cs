@@ -702,6 +702,8 @@ public static class ObjectHelper
     public static IUriResolver GetUriResolver(this IExtent element) =>
         (element as IUriResolver) ?? throw new InvalidOperationException("element is not of type IUriResolver");
 
+    public static IUriResolver? TryGetUriResolver(this IExtent element) => element as IUriResolver;
+
     /// <summary>
     /// Gets all possible properties of the given element.
     /// If the element has a metaclass (or some other Classifier), the properties

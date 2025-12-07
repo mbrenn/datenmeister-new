@@ -70,7 +70,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     /// It starts a listening of 5 seconds and then triggers the update of the index
     /// in case no other call has been requested
     /// </summary>
-    private async Task TriggerUpdateOfIndex(bool firstRun = false)
+    public async Task TriggerUpdateOfIndex(bool firstRun = false)
     {
         lock (TypeIndexStore.IndexIsUpToDateEvent)
         {
@@ -151,7 +151,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                 }
                 catch (OperationCanceledException)
                 {
-                    // Task was cancelled, which is expected
+                    // Task was cancelled, so we completely quit
                     return;
                 }
 
@@ -219,7 +219,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     /// This method builds the type index data by processing workspace information and updates the current index state.
     /// It is invoked internally during index updates and manages synchronization to ensure thread-safe index building.
     /// </summary>
-    private void PerformIndexing()
+    public void PerformIndexing()
     {
         using var stopWatchLogger = new StopWatchLogger(Logger,
             $"Performing indexing. Count: {TypeIndexStore.NumberOfReindexes}");
@@ -266,6 +266,52 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
 
                 indexData.Workspaces.Add(model);
             }
+
+            // Checks whether the workspaces are neighbors
+            foreach (var workspaceModel in indexData.Workspaces)
+            {
+                foreach (var otherWorkspaceModel in indexData.Workspaces.Where(x=> x != workspaceModel))
+                {
+                    if (!IsMetaWorkspace(workspaceModel, otherWorkspaceModel)
+                        && !IsMetaWorkspace(otherWorkspaceModel, workspaceModel))
+                    {
+                        workspaceModel.NeighborWorkspaces.Add(otherWorkspaceModel.WorkspaceId);
+                    }
+                }
+            }
+            
+            
+            // Now we need to understand the neighboring workspaces which are not dependent to each other
+            // A workspace is dependent to each other in case it has a metaworkspace (one level or multiple)
+            // or is a metaworkspace of the other
+            bool IsMetaWorkspace(WorkspaceModel focus, WorkspaceModel other, HashSet<string>? visited = null)
+            {
+                // Infinite Loop breaker! 
+                visited ??= new HashSet<string>();
+                if (!visited.Add(focus.WorkspaceId))
+                {
+                    return false;
+                }
+                
+                // First, check that the source is not a direct or indirect workspace of the target
+                if (focus.MetaclassWorkspaces.Any(x => x == other.WorkspaceId))
+                {
+                    return true;
+                }
+
+                // Checks recursively that the workspace is might be contained by that workspace
+                foreach (var metaWorkspace in focus.MetaclassWorkspaces)
+                {
+                    var metaWorkspaceOfFocus = indexData.FindWorkspace(metaWorkspace);
+                    if (metaWorkspaceOfFocus != null && IsMetaWorkspace(metaWorkspaceOfFocus, other, visited))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            
         }
 
         using (var _ = new StopWatchLogger(Logger, "Building classes"))

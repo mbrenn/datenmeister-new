@@ -33,7 +33,7 @@ public enum ResolveType
     /// Default resolving process in which all extents in current workspace but also meta workspaces are resolved.
     /// If nothing was found, a full search will be started
     /// </summary>
-    Default = IncludeExtent | IncludeWorkspace | IncludeMetaWorkspaces,
+    Default = IncludeExtent | IncludeWorkspace | IncludeMetaWorkspaces | IncludeNeighboringWorkspaces,
 
     /// <summary>
     /// Resolves only within the extent

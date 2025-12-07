@@ -181,7 +181,7 @@ public static class ObjectHelper
         if (typeof(T) == typeof(IElement))
         {
             var asSingle = (value.GetAsSingle(property, noReferences, ObjectType.Element) as IElement)!;
-            return asSingle is MofObjectShadow ? default : (T) asSingle;
+            return asSingle is not IElement ? default : (T) asSingle;
         }
 
         if (typeof(T) == typeof(IReflectiveCollection))

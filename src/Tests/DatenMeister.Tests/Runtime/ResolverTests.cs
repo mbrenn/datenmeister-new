@@ -13,6 +13,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.DataView;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
@@ -254,16 +255,22 @@ public class ResolverTests
         var scopeStorage = new ScopeStorage();
         ResolveHookContainer.AddDefaultHooks(scopeStorage);
         var workspaceLogic = new WorkspaceLogic(scopeStorage);
+        var mapper = scopeStorage.Get<ProviderToProviderLoaderMapper>();
+            
+        mapper.AddMapping(
+            _ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig,
+            _ => new InMemoryProviderLoader());
         
         workspaceLogic.AddWorkspace(new Workspace("data1", "Test"));
         workspaceLogic.AddWorkspace(new Workspace("data2", "Test"));
 
         var factory = InMemoryObject.TemporaryFactory;
         var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
+
         var configuration = new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(factory)
         {
             name = "Data1",
-            extentUri = "dm:///data1",
+            extentUri = "dm:///data1/",
             workspaceId = "data1"
         };
         var data1 = await extentManager.LoadExtent(configuration.GetWrappedElement());
@@ -272,59 +279,64 @@ public class ResolverTests
         var configuration2 = new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(factory)
         {
             name = "Data2",
-            extentUri = "dm:///data2",
+            extentUri = "dm:///data2/",
             workspaceId = "data2"
         };
         var data2 = await extentManager.LoadExtent(configuration2.GetWrappedElement());
         Assert.That(data2.Extent, Is.Not.Null);
+        
+        var typeIndexLogic = new TypeIndexLogic(workspaceLogic);
+        typeIndexLogic.PerformIndexing();
 
-        var factory1 = new MofFactory(data1.Extent);
-        var factory2 = new MofFactory(data2.Extent);
+        var factory1 = new MofFactory(data1.Extent!);
+        var factory2 = new MofFactory(data2.Extent!);
 
         var item1 = factory1.create(null);
+        (item1 as ICanSetId)!.Id = "item1";
         item1.set("name", "item1");
-        data1.Extent.elements().add(item1);
+        data1.Extent!.elements().add(item1);
         var item2 = factory2.create(null);
+        (item2 as ICanSetId)!.Id = "item2";
         item2.set("name", "item2");
-        data2.Extent.elements().add(item2);
+        data2.Extent!.elements().add(item2);
         
         // Now, we do the test that we don't find it when just looking into the current workspace
-        var item2FromCurrent = data1.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.IncludeWorkspace) as IElement;
+        var item2FromCurrent = data1.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.IncludeWorkspace) as MofObject;
         Assert.That(item2FromCurrent, Is.Null);
         
         // Now, we do the test that we don't find it when just looking into the current extent
-        item2FromCurrent = data1.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.IncludeExtent) as IElement;
+        item2FromCurrent = data1.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.IncludeExtent) as MofObject;
         Assert.That(item2FromCurrent, Is.Null);
         
         // Now, we do the test that we don't find it when just looking into the metaworkspaces
-        item2FromCurrent = data1.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.IncludeMetaWorkspaces) as IElement;
+        item2FromCurrent = data1.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.IncludeMetaWorkspaces) as MofObject;
         Assert.That(item2FromCurrent, Is.Null);
         
         // Now, we do the test that we don't find it when just looking into the metaworkspaces
-        item2FromCurrent = data1.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.IncludeAll) as IElement;
+        item2FromCurrent = data1.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.IncludeAll) as MofObject;
         Assert.That(item2FromCurrent, Is.Not.Null);
-        Assert.That(item2FromCurrent.getOrDefault<string>("name"), Is.EqualTo("item2"));
+        Assert.That(item2FromCurrent!.getOrDefault<string>("name"), Is.EqualTo("item2"));
         
         // Now, we do the test that we don't find it when just looking into the metaworkspaces
-        item2FromCurrent = data1.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.IncludeNeighboringWorkspaces) as IElement;
+        item2FromCurrent = data1.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.IncludeNeighboringWorkspaces) as MofObject;
         Assert.That(item2FromCurrent, Is.Not.Null);
-        Assert.That(item2FromCurrent.getOrDefault<string>("name"), Is.EqualTo("item2"));
+        Assert.That(item2FromCurrent!.getOrDefault<string>("name"), Is.EqualTo("item2"));
         
         // Now do the resolver tests
-        var item1FoundFrom1 = data1.Extent.GetUriResolver().Resolve("dm:///data1/#item1", ResolveType.Default) as IElement;
-        var item2FoundFrom2 = data2.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.Default) as IElement;
-        var item2FoundFrom1 = data1.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.Default) as IElement;
-        var item1FoundFrom2 = data2.Extent.GetUriResolver().Resolve("dm:///data1/#item1", ResolveType.Default) as IElement;
+        var item1FoundFrom1 = data1.Extent.GetUriResolver().Resolve("dm:///data1/#item1", ResolveType.Default) as MofObject;
+        var item2FoundFrom2 = data2.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.Default) as MofObject;
+        var item2FoundFrom1 = data1.Extent.GetUriResolver().Resolve("dm:///data2/#item2", ResolveType.Default) as MofObject;
+        var item1FoundFrom2 = data2.Extent.GetUriResolver().Resolve("dm:///data1/#item1", ResolveType.Default) as MofObject;
         
         Assert.That(item1FoundFrom1,Is.Not.Null);
-        Assert.That(item1FoundFrom1.getOrDefault<string>("name"), Is.EqualTo("item1"));
+        Assert.That(item1FoundFrom1!.getOrDefault<string>("name"), Is.EqualTo("item1"));
         Assert.That(item2FoundFrom2,Is.Not.Null);
-        Assert.That(item2FoundFrom2.getOrDefault<string>("name"), Is.EqualTo("item2"));
+        Assert.That(item2FoundFrom2!.getOrDefault<string>("name"), Is.EqualTo("item2"));
         
         Assert.That(item1FoundFrom2,Is.Not.Null);
-        Assert.That(item1FoundFrom2.getOrDefault<string>("name"), Is.EqualTo("item1"));
+        Assert.That(item1FoundFrom2!.getOrDefault<string>("name"), Is.EqualTo("item1"));
         Assert.That(item2FoundFrom1,Is.Not.Null);
-        Assert.That(item2FoundFrom1.getOrDefault<string>("name"), Is.EqualTo("item2"));
+        Assert.That(item2FoundFrom1!.getOrDefault<string>("name"), Is.EqualTo("item2"));
     }
 
     public class TestResolveHookClass : IResolveHook

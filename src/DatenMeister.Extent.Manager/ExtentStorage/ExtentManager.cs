@@ -874,14 +874,9 @@ public class ExtentManager
         }
 
         var metaWorkspaces = workspace.MetaWorkspaces;
-        foreach (var metaWorkspace in metaWorkspaces)
+        foreach (var metaWorkspace in metaWorkspaces
+                     .Where(metaWorkspace => metaWorkspace.id != workspaceId))
         {
-            if (metaWorkspace.id == workspaceId)
-            {
-                // Skip the self reference
-                continue;
-            }
-
             if (workspaceList.Any(x => x == metaWorkspace.id))
             {
                 return true;

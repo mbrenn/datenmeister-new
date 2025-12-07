@@ -76,7 +76,7 @@ pipeline {
             steps
             {
                 dotnetTest logger: 'trx;LogFileName=test.trx', project: 'src/Tests/DatenMeister.Tests/DatenMeister.Tests.csproj', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.core.typeindexstorage.trx', project: 'src/Tests/DatenMeister.Core.TypeIndexStorage.Tests/DatenMeister.Core.TypeIndexStorage.Tests.csproj' continueOnError: true
+                dotnetTest logger: 'trx;LogFileName=test.core.typeindexstorage.trx', project: 'src/Tests/DatenMeister.Core.TypeIndexStorage.Tests/DatenMeister.Core.TypeIndexStorage.Tests.csproj', continueOnError: true
                 dotnetTest logger: 'trx;LogFileName=test.web.trx', project: 'src/Tests/DatenMeister.Tests.Web/DatenMeister.Tests.Web.csproj', continueOnError: true
                 dotnetTest logger: 'trx;LogFileName=test.provider.json.trx', project: 'src/Tests/DatenMeister.Provider.Json.Test/DatenMeister.Provider.Json.Test.csproj', continueOnError: true
 

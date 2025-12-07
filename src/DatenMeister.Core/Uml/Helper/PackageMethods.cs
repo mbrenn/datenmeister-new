@@ -2,6 +2,7 @@
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
@@ -268,6 +269,7 @@ public static class PackageMethods
     /// <param name="loadingRequired">true, if the loading is required and shall throw an exception
     /// in case the loading failed. </param>
     public static IObject? ImportByManifest(
+        IScopeStorage scopeStorage,
         Type manifestType,
         string manifestName,
         string? sourcePackageName,
@@ -283,7 +285,7 @@ public static class PackageMethods
             throw new InvalidOperationException($"The stream for {manifestName} could not be opened");
         }
 
-        return ImportByStream(stream, sourcePackageName, targetExtent, targetPackageName, loadingRequired);
+        return ImportByStream(scopeStorage, stream, sourcePackageName, targetExtent, targetPackageName, loadingRequired);
     }
 
     /// <summary>
@@ -297,6 +299,7 @@ public static class PackageMethods
     /// <param name="loadingRequired">true, if the loading is required and shall throw an exception
     /// in case the loading failed. </param>
     public static IObject? ImportByStream(
+        IScopeStorage scopeStorage,
         Stream stream,
         string? sourcePackageName,
         IExtent targetExtent,
@@ -305,7 +308,7 @@ public static class PackageMethods
     {
         var document = XDocument.Load(stream);
         var pseudoProvider = new XmiProvider(document);
-        var pseudoExtent = new MofUriExtent(pseudoProvider, null)
+        var pseudoExtent = new MofUriExtent(pseudoProvider, scopeStorage)
         {
             Workspace = (Workspace?) targetExtent.GetWorkspace()
         };

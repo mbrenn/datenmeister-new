@@ -196,8 +196,11 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
         }
 
         var result =
-            (ReferencedExtent as IUriResolver)
-            ?.Resolve(uri, ResolveType.IncludeMetaWorkspaces | ResolveType.IncludeTypeWorkspace, traceFailing) as IElement
+            (ReferencedExtent as IUriResolver)?.Resolve(
+                uri,
+                ResolveType.IncludeMetaWorkspaces | ResolveType.IncludeTypeWorkspace |
+                ResolveType.IncludeMetaOfMetaWorkspaces,
+                traceFailing) as IElement
             ?? new MofObjectShadow(uri);
 
         _cachedMetaClass = result;

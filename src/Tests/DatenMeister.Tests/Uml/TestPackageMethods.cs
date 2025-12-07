@@ -19,6 +19,7 @@ public class TestPackageMethods
         var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
 
         PackageMethods.ImportByManifest(
+            scope.ScopeStorage,
             typeof(TestPackageMethods),
             "DatenMeister.Tests.Xmi.PackageTest.xmi",
             "Internal",

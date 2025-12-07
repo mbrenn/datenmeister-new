@@ -1,10 +1,12 @@
-﻿using BurnSystems.Logging;
+﻿using System.Collections;
+using BurnSystems.Logging;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.TypeIndexAssembly;
+using DatenMeister.Core.TypeIndexAssembly.Model;
 
 namespace DatenMeister.Core.EMOF.Implementation;
 
@@ -76,6 +78,7 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
                 alreadyVisited.Add(typesWorkspace);
             }
         }
+        
         // Checks, if we need to look into the metaworkspaces
         if (resolveType.HasFlagFast(ResolveType.IncludeNeighboringWorkspaces))
         {
@@ -83,20 +86,28 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
             if (workspaceLogic != null && workspace != null)
             {
                 var typeIndexLogic = new TypeIndexLogic(workspaceLogic);
-                var metaClasses =
+                var neighborWorkspaces =
                     typeIndexLogic.TypeIndexStore.Current?.FindWorkspace(workspace.id)?.NeighborWorkspaces;
 
-                if (metaClasses != null)
+                if (neighborWorkspaces != null)
                 {
                     // Now look into the explicit metaworkspaces, if no specific constraint is given
-                    foreach (var element in
-                             metaClasses.SelectMany(x => workspaceLogic.GetWorkspace(x)?.extent ?? [])
-                                 .OfType<IUriExtent>()
-                                 .Select(metaExtent => metaExtent.element(uri))
-                                 .Where(element => element != null))
+                    foreach (var neighborWorkspace in neighborWorkspaces)
                     {
-                        return element;
+                        var instance = workspaceLogic.GetWorkspace(neighborWorkspace);
+                        if (instance == null) continue;
+                        if (!alreadyVisited.Add(instance)) continue;
+                        
+                        foreach (var element in instance.extent
+                                     .OfType<IUriExtent>()
+                                     .Select(metaExtent => metaExtent.element(uri))
+                                     .Where(element => element != null))
+                        {
+                            return element;
+                        }
+                        
                     }
+                    
                 }
             }
             else
@@ -113,19 +124,24 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
             if (workspaceLogic != null && workspace != null)
             {
                 var typeIndexLogic = new TypeIndexLogic(workspaceLogic);
-                var metaClasses =
+                var metaWorkspaces =
                     typeIndexLogic.TypeIndexStore.Current?.FindWorkspace(workspace.id)?.MetaclassWorkspaces;
 
-                if (metaClasses != null)
+                if (metaWorkspaces != null)
                 {
-                    // Now look into the explicit metaworkspaces, if no specific constraint is given
-                    foreach (var element in
-                             metaClasses.SelectMany(x => workspaceLogic.GetWorkspace(x)?.extent ?? [])
-                                 .OfType<IUriExtent>()
-                                 .Select(metaExtent => metaExtent.element(uri))
-                                 .Where(element => element != null))
+                    foreach (var metaWorkspace in metaWorkspaces)
                     {
-                        return element;
+                        var instance = workspaceLogic.GetWorkspace(metaWorkspace);
+                        if (instance == null) continue;
+                        if (!alreadyVisited.Add(instance)) continue;
+
+                        foreach (var element in instance.extent
+                                     .OfType<IUriExtent>()
+                                     .Select(metaExtent => metaExtent.element(uri))
+                                     .Where(element => element != null))
+                        {
+                            return element;
+                        }
                     }
                 }
             }
@@ -141,6 +157,64 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
             }
         }
 
+        // Checks, if we need to look into the metaworkspaces and its metaworkspaces
+        if (resolveType.HasFlagFast(ResolveType.IncludeMetaOfMetaWorkspaces)
+            && workspaceLogic != null && workspace != null)
+        {
+            var typeIndexLogic = new TypeIndexLogic(workspaceLogic);
+            var currentStore = typeIndexLogic.TypeIndexStore.Current;
+            var foundWorkspace = currentStore?.FindWorkspace(workspace.id);
+             
+            if (foundWorkspace != null)
+            {
+                // Initialize with the first roots
+                var metaWorkspaces = foundWorkspace.MetaclassWorkspaces;
+                var queue = new Queue<WorkspaceModel>();
+                var found = new List<WorkspaceModel>();
+                foreach (var metaWorkspace in metaWorkspaces)
+                {
+                    var foundMetaWorkspace = currentStore?.FindWorkspace(metaWorkspace);
+                    if (foundMetaWorkspace != null)
+                    {
+                        queue.Enqueue(foundMetaWorkspace);
+                    }
+                }
+
+                // Adds the dependencies until the root is found
+                while (queue.Count > 0)
+                {
+                    var metaWorkspace = queue.Dequeue();
+                    found.Add(metaWorkspace);
+                    metaWorkspaces = metaWorkspace.MetaclassWorkspaces;
+                    foreach (var metaWorkspaceItem in metaWorkspaces)
+                    {
+                        var foundMetaWorkspace = currentStore?.FindWorkspace(metaWorkspaceItem);
+                        if (foundMetaWorkspace != null)
+                        {
+                            queue.Enqueue(foundMetaWorkspace);
+                        }
+                    }
+                }
+
+                found = found.Distinct().ToList();
+
+                foreach (var metaWorkspace in found)
+                {
+                    var instance = workspaceLogic.GetWorkspace(metaWorkspace.WorkspaceId);
+                    if (instance == null) continue;
+                    if (!alreadyVisited.Add(instance)) continue;
+                    
+                    foreach (var element in instance.extent
+                                 .OfType<IUriExtent>()
+                                 .Select(metaExtent => metaExtent.element(uri))
+                                 .Where(element => element != null))
+                    {
+                        return element;
+                    }
+                }
+            }
+        }
+
         // If still not found, do a full search in every extent in every workspace
         if (resolveType.HasFlagFast(ResolveType.IncludeAll)
             && workspaceLogic != null)
@@ -148,10 +222,7 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
             foreach (var innerWorkspace in workspaceLogic.Workspaces)
             {
                 if ((innerWorkspace as Workspace)?.IsDynamicWorkspace == true) continue;
-                if (alreadyVisited.Contains(innerWorkspace))
-                {
-                    continue;
-                }
+                if (!alreadyVisited.Add(innerWorkspace)) continue;
 
                 // Check, if there is an extent with the name
                 var extent = innerWorkspace.FindExtent(uri);

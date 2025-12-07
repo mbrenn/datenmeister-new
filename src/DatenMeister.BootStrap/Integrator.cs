@@ -229,6 +229,7 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
         var internalUserExtent = localTypeSupport.InternalTypes;
 
         PackageMethods.ImportByStream(
+            scopeStorage,
             XmiResources.GetDatenMeisterTypesStream(),
             null,
             internalUserExtent,
@@ -236,6 +237,7 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
 
         var formMethods = scope.Resolve<FormMethods>();
         PackageMethods.ImportByStream(
+            scopeStorage,
             XmiResources.GetDatenMeisterFormsStream(),
             null,
             formMethods.GetInternalFormExtent(),

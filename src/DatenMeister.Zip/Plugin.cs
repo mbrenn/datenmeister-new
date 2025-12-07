@@ -30,7 +30,7 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
         var localTypeSupport = new LocalTypeSupport(workspaceLogic, scopeStorage);
         var localTypeExtent = localTypeSupport.GetInternalTypeExtent();
         PackageMethods.ImportByStream(
-            GetXmiStreamForTypes(), null, localTypeExtent, "DatenMeister.Zip");
+            scopeStorage, GetXmiStreamForTypes(), null, localTypeExtent, "DatenMeister.Zip");
     }
 
     private static Stream GetXmiStreamForTypes()

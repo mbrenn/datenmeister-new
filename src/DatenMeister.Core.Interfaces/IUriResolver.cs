@@ -33,7 +33,11 @@ public enum ResolveType
     /// Default resolving process in which all extents in current workspace but also meta workspaces are resolved.
     /// If nothing was found, a full search will be started
     /// </summary>
-    Default = IncludeExtent | IncludeWorkspace | IncludeMetaWorkspaces | IncludeNeighboringWorkspaces,
+    Default = IncludeExtent 
+              | IncludeWorkspace 
+              | IncludeMetaWorkspaces
+              | IncludeNeighboringWorkspaces
+              | IncludeMetaOfMetaWorkspaces,
 
     /// <summary>
     /// Resolves only within the extent
@@ -61,9 +65,14 @@ public enum ResolveType
     IncludeMetaWorkspaces = 0x10,
     
     /// <summary>
+    /// Does not include only the meta workspace, it also includes the meta workspaces of the meta workspaces...
+    /// </summary>
+    IncludeMetaOfMetaWorkspaces = 0x20,
+    
+    /// <summary>
     /// We parse through everything! That is the most time-consuming resolving process. We should really avoid that. 
     /// </summary>
-    IncludeAll = 0x20
+    IncludeAll = 0x40
 }
 
 public static class ResolveTypeExtensions

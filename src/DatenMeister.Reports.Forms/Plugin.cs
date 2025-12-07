@@ -24,11 +24,11 @@ internal class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage
             
             // First, import the types
             PackageMethods.ImportByStream(
-                GetXmiStreamForTypes(), null, localTypeExtent, "DatenMeister.Reports.Forms");
+                scopeStorage, GetXmiStreamForTypes(), null, localTypeExtent, "DatenMeister.Reports.Forms");
             
             // After that, import the forms
             PackageMethods.ImportByStream(
-                GetXmiStreamForForms(), null, targetExtent, "DatenMeister.Reports.Forms");
+                scopeStorage, GetXmiStreamForForms(), null, targetExtent, "DatenMeister.Reports.Forms");
 
             // Adds the javascript
             var pluginLogic = new PageRegistrationLogic(scopeStorage.Get<PageRegistrationData>());

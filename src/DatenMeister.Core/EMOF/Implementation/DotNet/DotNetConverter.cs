@@ -69,12 +69,10 @@ public class DotNetConverter
         }
 
         // Check, if the element already existed
-        if (_visitedElements.Contains(value))
+        if (!_visitedElements.Add(value))
         {
             return null;
         }
-
-        _visitedElements.Add(value);
 
         // Gets the uri of the lookup up type
         var metaClassUri = _extent.GetMetaClassUri(value.GetType());

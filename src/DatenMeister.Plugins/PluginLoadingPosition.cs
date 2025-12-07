@@ -22,15 +22,20 @@ public enum PluginLoadingPosition
     ///     are explicitly loaded
     /// </summary>
     AfterInitialization = 4,
-
+    
     /// <summary>
     ///     After initialization of the AfterBootstrapping has occured. After that event, some internal objects are created
     ///     upon some DatenMeister internal states
     /// </summary>
     AfterLoadingOfExtents = 8,
+    
+    /// <summary>
+    /// Here, the last actions can be started after everything is set-up. No internal data may be modified anymore
+    /// </summary>
+    AfterFinalizationOfIntegration = 16,
         
     /// <summary>
     /// When there is a shutdown request, the plugins can stop there work and background tasks
     /// </summary>
-    AfterShutdownStarted = 16
+    AfterShutdownStarted = 32
 }

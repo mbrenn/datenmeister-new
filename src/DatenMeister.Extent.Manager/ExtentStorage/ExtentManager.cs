@@ -121,6 +121,7 @@ public class ExtentManager
             }
 
             await LoadExtentWithoutAddingInternal(configuration, extentCreationFlags, extentInformation);
+            
             configuration = extentInformation.Configuration;
             var uriExtent = extentInformation.Extent;
             if (extentInformation.IsExtentAddedToWorkspace)
@@ -293,6 +294,11 @@ public class ExtentManager
         }
         catch (Exception e)
         {
+            if (e is ProviderLoaderNotFoundException)
+            {
+                throw;
+            }
+            
             extentInformation.LoadingState = ExtentLoadingState.Failed;
             extentInformation.FailLoadingMessage = e.ToString();
             extentInformation.IsExtentAddedToWorkspace = true;

@@ -6,6 +6,22 @@ using DatenMeister.Core.Uml.Helper;
 namespace DatenMeister.Extent.Manager.ExtentStorage;
 
 /// <summary>
+/// This exception is thrown, when the provider loader cannot be found
+/// </summary>
+public class ProviderLoaderNotFoundException : InvalidOperationException
+{
+    public ProviderLoaderNotFoundException()
+    {
+        
+    }
+
+    public ProviderLoaderNotFoundException(string message) : base(message)
+    {
+        
+    }
+}
+
+/// <summary>
 /// Maps the extent storage type to a configuration type which is used by the logic to find out the best type
 /// which can be used to satisfy a load request.
 /// </summary>
@@ -77,7 +93,7 @@ public class ProviderToProviderLoaderMapper
             {
                 Logger.Error(
                     $"ExtentStorage for the given type was not found:  {NamedElementMethods.GetFullName(metaClass)}");
-                throw new InvalidOperationException(
+                throw new ProviderLoaderNotFoundException(
                     $"ExtentStorage for the given type was not found:  {NamedElementMethods.GetFullName(metaClass)}");
             }
 

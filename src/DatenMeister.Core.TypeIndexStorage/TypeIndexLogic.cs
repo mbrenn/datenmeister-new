@@ -50,6 +50,22 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
     /// <summary>
+    /// Checks, if the index is active. If yes, wait until the index has been updated.
+    /// If the index is not active, then return false but also do not wait
+    /// </summary>
+    /// <returns>true, if the index is up-to-date</returns>
+    public bool WaitForUpToDateIfIndexIsActive()
+    {
+        if (TypeIndexStore.TriggersReceived > 0)
+        {
+            TypeIndexStore.GetCurrentIndexStore();
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// In case there is an update of the type index, the method can be called
     /// It starts a listening of 5 seconds and then triggers the update of the index
     /// in case no other call has been requested
@@ -61,6 +77,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             TypeIndexStore.IncrementTriggers();
             TypeIndexStore.LastTriggerTime = DateTime.Now;
                 
+            // Check, if the index is currently in build up
             if (!TypeIndexStore.IndexIsUpToDateEvent.WaitOne(0))
             {
                 Logger.Info("We received a trigger, but the index is already being built.");
@@ -70,9 +87,6 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                 TypeIndexStore.TriggerOccuredDuringIndexing = true;
                 return;
             }
-            
-            // Now, we know that we can trigger the update itself.
-            
             // First, mark that we are updating the index
             TypeIndexStore.IndexIsUpToDateEvent.Reset();
         }

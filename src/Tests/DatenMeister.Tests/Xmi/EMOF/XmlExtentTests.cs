@@ -295,7 +295,7 @@ public class XmlExtentTests
         var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
 
         var xmlProvider = new XmiProvider();
-        var extent = new MofUriExtent(xmlProvider, "dm:///test/", null);
+        var extent = new MofUriExtent(xmlProvider, "dm:///test/", builder.ScopeStorage);
         dataLayerLogic.AddExtent(dataLayerLogic.GetTypesWorkspace(), extent);
 
         var factory = new MofFactory(extent);
@@ -308,9 +308,9 @@ public class XmlExtentTests
 
         var retrievedElement = extent.elements().ElementAt(0) as IElement;
         Assert.That(retrievedElement, Is.Not.Null);
-        Assert.That(retrievedElement!.getMetaClass(), Is.Not.Null);
+        var foundMetaClass = retrievedElement!.metaclass;
+        Assert.That(retrievedElement.getMetaClass(), Is.Not.Null);
         Assert.That(retrievedElement.metaclass, Is.Not.Null);
-        var foundMetaClass = retrievedElement.metaclass;
         Assert.That(foundMetaClass!.Equals(interfaceClass), Is.True);
     }
 

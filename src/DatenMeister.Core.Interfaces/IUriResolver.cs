@@ -46,19 +46,24 @@ public enum ResolveType
     IncludeWorkspace = 0x02,
     
     /// <summary>
+    /// Includes the workspaces which are on the same level as the current workspace
+    /// </summary>
+    IncludeNeighboringWorkspaces = 0x04,
+    
+    /// <summary>
     /// Searches also within the workspace within the types
     /// </summary>
-    IncludeTypeWorkspace = 0x04,
+    IncludeTypeWorkspace = 0x08,
     
     /// <summary>
     /// Resolves also within the meta workspaces. The workspace itself is not included
     /// </summary>
-    IncludeMetaWorkspaces = 0x08,
+    IncludeMetaWorkspaces = 0x10,
     
     /// <summary>
     /// We parse through everything! That is the most time-consuming resolving process. We should really avoid that. 
     /// </summary>
-    IncludeAll = 0x10
+    IncludeAll = 0x20
 }
 
 public static class ResolveTypeExtensions

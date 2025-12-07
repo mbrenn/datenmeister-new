@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Extent.Manager.ExtentStorage;
@@ -14,10 +15,10 @@ public static class XmiExtensions
     /// </summary>
     /// <param name="uri">Uri being used</param>
     /// <returns>The created xmi extent</returns>
-    public static IUriExtent CreateXmiExtent(string uri)
+    public static IUriExtent CreateXmiExtent(string uri, IScopeStorage? scopeStorage = null)
     {
         var xmlProvider = new XmiProvider();
-        return new MofUriExtent(xmlProvider, uri, null);
+        return new MofUriExtent(xmlProvider, uri, scopeStorage);
     }
 
     /// <summary>

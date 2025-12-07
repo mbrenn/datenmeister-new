@@ -5,6 +5,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
@@ -42,6 +43,7 @@ public class DatenMeisterTests
         TheLog.ClearProviders();
         TheLog.AddProvider(new ConsoleProvider());
         TheLog.AddProvider(new DebugProvider());
+        TheLog.FilterThreshold = LogLevel.Trace;
 
         integrationSettings ??= GetIntegrationSettings(dropDatabase);
 
@@ -51,7 +53,10 @@ public class DatenMeisterTests
         }
 
         ExtentConfigurationLoader.BreakOnFailedWorkspaceLoading = false;
-        return await GiveMe.DatenMeister(integrationSettings);
+        var result = await GiveMe.DatenMeister(integrationSettings);
+        var typeIndexLogic = new TypeIndexLogic(result.WorkspaceLogic);
+        typeIndexLogic.TypeIndexStore.WaitForAvailabilityOfIndexStore();
+        return result;
     }
 
     public static (IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) GetDmInfrastructure()

@@ -417,7 +417,7 @@ public class ExtentTests
         var userTypes = localTypeSupport.GetUserTypeExtent();
         var factory = new MofFactory(userTypes);
 
-        var extent = new MofUriExtent(new InMemoryProvider(), null);
+        var extent = new MofUriExtent(new InMemoryProvider(), dm.ScopeStorage);
 
         type = factory.create(_UML.TheOne.StructuredClassifiers.__Class);
         var property1 = factory.create(_UML.TheOne.Classification.__Property);

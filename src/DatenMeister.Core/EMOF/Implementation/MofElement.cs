@@ -183,7 +183,7 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
 
     public IElement? getMetaClass(bool traceFailing = true)
     {
-        if (_cachedMetaClass != null)
+        if (_cachedMetaClass != null && _cachedMetaClass is not MofObjectShadow)
         {
             return _cachedMetaClass;
         }

@@ -82,12 +82,9 @@ public class Workspace(string id, string annotation = "") : IWorkspace, IObject,
     public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
     {
         var result = extent
-            .Select(theExtent =>
-                (theExtent as IUriResolver)?.Resolve(
-                    uri, 
-                    (resolveType | ResolveType.IncludeExtent) & ~ResolveType.IncludeWorkspace, 
-                    false,
-                    workspace))
+            .Select(theExtent => theExtent is MofUriExtent mofUriExtent
+                ? mofUriExtent.Navigator.element(uri)
+                : (theExtent as IUriExtent)?.element(uri))
             .FirstOrDefault(found => found != null);
         if (result == null && traceFailing) Logger.Trace($"URI not resolved: {uri}");
 

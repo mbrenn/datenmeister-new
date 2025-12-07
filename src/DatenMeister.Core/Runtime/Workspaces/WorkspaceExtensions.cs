@@ -307,26 +307,18 @@ public static class WorkspaceExtensions
 
             workspaceId = workspace.id;
         }
+        
+        var coreUriResolver = new CoreUriResolver(workspaceLogic);
 
-        var foundExtent = workspaceLogic.Workspaces
-            .Where(x => x.id == workspaceId)
-            .SelectMany(x => x.extent)
-            .OfType<IUriExtent>()
-            .Select(x =>
-                x.GetUriResolver().Resolve(extentUri, ResolveType.IncludeExtent | ResolveType.IncludeWorkspace, false))
-            .FirstOrDefault(x => x != null);
+        var foundExtent =  coreUriResolver.Resolve(extentUri, ResolveType.IncludeWorkspace, workspaceLogic.GetWorkspace(workspaceId));
 
-        switch (foundExtent)
+        return foundExtent switch
         {
-            case IUriExtent asExtent:
-                return (asExtent.elements(), asExtent);
-            case IReflectiveCollection collection:
-                return (collection, collection.GetUriExtentOf() as IUriExtent);
-            case IElement element:
-                return (new TemporaryReflectiveCollection([element]), element.GetUriExtentOf());
-        }
-
-        return (null, null);
+            IUriExtent asExtent => (asExtent.elements(), asExtent),
+            IReflectiveCollection collection => (collection, collection.GetUriExtentOf() as IUriExtent),
+            IElement element => (new TemporaryReflectiveCollection([element]), element.GetUriExtentOf()),
+            _ => (null, null)
+        };
     }
 
     /// <summary>

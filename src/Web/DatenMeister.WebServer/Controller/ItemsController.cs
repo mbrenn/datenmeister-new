@@ -50,7 +50,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var metaClass =
             string.IsNullOrEmpty(createParams.MetaClass)
                 ? null
-                : extent.GetUriResolver().Resolve(createParams.MetaClass, ResolveType.OnlyMetaClasses) as IElement;
+                : extent.GetUriResolver().Resolve(createParams.MetaClass, ResolveType.IncludeMetaWorkspaces) as IElement;
 
         var item = factory.create(metaClass);
         var values = createParams.Properties?.v;
@@ -119,7 +119,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             string.IsNullOrEmpty(createItemAsParams.MetaClass)
                 ? null
                 : (item.GetUriResolver() ?? throw new InvalidOperationException("No UriResolver"))
-                .Resolve(createItemAsParams.MetaClass, ResolveType.OnlyMetaClasses) as IElement;
+                .Resolve(createItemAsParams.MetaClass, ResolveType.IncludeMetaWorkspaces) as IElement;
 
         var child = factory.create(metaClass);
         if (createItemAsParams.AsList)

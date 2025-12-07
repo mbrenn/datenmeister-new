@@ -119,7 +119,7 @@ public class FormsControllerInternal
         IElement? resolvedMetaClass = null;
         if (!string.IsNullOrEmpty(metaClass))
         {
-            resolvedMetaClass = WorkspaceLogic.Resolve(metaClass, ResolveType.OnlyMetaWorkspaces) as IElement;
+            resolvedMetaClass = WorkspaceLogic.Resolve(metaClass, ResolveType.IncludeMetaWorkspaces) as IElement;
             if (resolvedMetaClass == null)
             {
                 throw new InvalidOperationException("MetaClass for Form Creation is not found: " + metaClass);
@@ -155,7 +155,7 @@ public class FormsControllerInternal
             throw new InvalidOperationException("Extent is not found");
         }
 
-        if (workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) is not IObject foundElement)
+        if (workspace.Resolve(itemUri, ResolveType.IncludeWorkspace) is not IObject foundElement)
         {
             throw new InvalidOperationException("Element is not found");
         }

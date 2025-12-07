@@ -67,7 +67,7 @@ public class ElementsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeSt
         }
 
         var workspace = workspaceLogic.GetWorkspace(workspaceId);
-        if (workspace?.Resolve(itemUrl, ResolveType.NoMetaWorkspaces) is not IObject foundItem) return null;
+        if (workspace?.Resolve(itemUrl, ResolveType.IncludeWorkspace) is not IObject foundItem) return null;
 
         var packagedItems = DefaultClassifierHints.GetPackagedElements(foundItem);
         return packagedItems

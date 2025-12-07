@@ -49,7 +49,7 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
         else
         {
             foundItem =
-                workspaceLogic.GetWorkspace(workspace)?.Resolve(HttpUtility.UrlDecode(uri), ResolveType.NoMetaWorkspaces)
+                workspaceLogic.GetWorkspace(workspace)?.Resolve(HttpUtility.UrlDecode(uri), ResolveType.IncludeWorkspace)
                     as IObject;
         }
 

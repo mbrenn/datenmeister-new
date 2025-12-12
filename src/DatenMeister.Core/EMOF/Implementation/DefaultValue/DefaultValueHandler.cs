@@ -46,6 +46,7 @@ public static class DefaultValueHandler
     /// <param name="value">Value whose property shall be retrieved</param>
     /// <param name="property">The property that shall be read</param>
     /// <returns>The default value or null, if not set</returns>
+    [Obsolete]
     public static T? ReadDefaultValueOfProperty<T>(IElement value, string property)
     {
         var type = value.getMetaClass();

@@ -35,35 +35,6 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
 
     /// <inheritdoc />
     public IElement? metaclass => getMetaClass();
-
-    public override bool isSet(string property)
-    {
-        if (!IsSlimUmlEvaluation)
-        {
-            // Checks whether we have a derived property 
-            var metaClass = getMetaClass();
-
-            if (metaclass?.GetExtentOf() is MofExtent extent
-                && metaClass != null)
-            {
-                //return true;
-            }
-             
-            /*
-             * We simplify the logic and currently, we do not satisfy the MOF Standard
-             * that only values being different than the default value are to be regarded as being set
-             */ 
-            // Checks whether we are having a default Value
-            var defaultValue = DefaultValueHandler.ReadDefaultValueOfProperty<object>(this, property);
-            if (defaultValue != null)
-            {
-                // If we have a default value, then it is quite sure that the property is set!
-                return true;
-            }
-        }
-
-        return base.isSet(property);
-    }
         
     /// <inheritdoc />
     IElement? IElement.getMetaClass()
@@ -222,7 +193,7 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
     /// <summary>
     /// Sets the extent by which the element was created
     /// </summary>
-    /// <param name="extent">Extent being used to define the the reportCreator</param>
+    /// <param name="extent">Extent being used to define the reportCreator</param>
     /// <returns>this element. </returns>
     public new IElement CreatedBy(MofExtent extent)
     {

@@ -318,8 +318,9 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     /// Finds the model within the Type Indexing by the given meta class url
     /// </summary>
     /// <param name="metaClassUrl">Url of the metaclass</param>
+    /// <param name="lookInMetaWorkspace">true, if the meta workspace shall be searched</param>
     /// <returns>Found model or null in case it was not found</returns>
-    public ClassModel? FindModel(string metaClassUrl)
+    public ClassModel? FindModel(string metaClassUrl, bool lookInMetaWorkspace = true)
     {
         if (_cachedWorkspaceLogic == null || Workspace == null)
         {
@@ -327,6 +328,9 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
         }
 
         _cachedTypeIndexLogic ??= new TypeIndexLogic(_cachedWorkspaceLogic);
-        return _cachedTypeIndexLogic.FindClassModelByUrlWithinMetaWorkspaces(Workspace.id, metaClassUrl);
+
+        return lookInMetaWorkspace 
+            ? _cachedTypeIndexLogic.FindClassModelByUrlWithinMetaWorkspaces(Workspace.id, metaClassUrl)
+            : _cachedTypeIndexLogic.FindClassModelByUrlWithinWorkspace(Workspace.id, metaClassUrl);
     }
 }

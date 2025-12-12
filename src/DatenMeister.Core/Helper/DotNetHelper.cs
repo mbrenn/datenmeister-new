@@ -521,6 +521,11 @@ public static class DotNetHelper
             return (T) (object) AsBoolean(value);
         }
 
+        if (typeof(T) == typeof(int))
+        {
+            return (T) (object) AsInteger(value);
+        }
+
         if (typeof(float) == typeof(T))
         {
             return (T) (object) AsDouble(value);

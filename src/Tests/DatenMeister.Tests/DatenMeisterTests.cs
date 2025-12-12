@@ -55,6 +55,7 @@ public class DatenMeisterTests
         ExtentConfigurationLoader.BreakOnFailedWorkspaceLoading = false;
         var result = await GiveMe.DatenMeister(integrationSettings);
         var typeIndexLogic = new TypeIndexLogic(result.WorkspaceLogic);
+        typeIndexLogic.TypeIndexStore.IndexWaitTime = TimeSpan.FromSeconds(0.1);
         typeIndexLogic.TypeIndexStore.WaitForAvailabilityOfIndexStore();
         return result;
     }

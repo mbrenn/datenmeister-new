@@ -26,7 +26,7 @@ public class DefaultValueStripper
             foreach (var property in (element as IObjectAllProperties)!.getPropertiesBeingSet())
             {
                 // Gets default value 
-                var defaultValue = DefaultValueHandler.ReadDefaultValueOfProperty<object?>(element, property);
+                var defaultValue = DefaultValueHandler.ReadDefaultValueOfProperty(element, property);
                 var setValue = element.getOrDefault<object?>(property);
 
                 if (defaultValue == null || setValue == null)
@@ -47,20 +47,6 @@ public class DefaultValueStripper
                         remove = true;
                     }
                 }
-                    
-                /* Hard coded removals which are now resolved and can be deprecated
-                if (property == "isDerived"
-                    || property == "aggregation"
-                    || property == "isDerivedUnion"
-                    || property == "isReadOnly"
-                    || property == "isOrdered"
-                    || property == "isUnique"
-                    || property == "isStatic"
-                    || property == "isLeaf"
-                   )
-                {
-                    remove = true;
-                }*/
                     
                 if (remove)
                 {

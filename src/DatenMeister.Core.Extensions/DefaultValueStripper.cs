@@ -26,7 +26,7 @@ public class DefaultValueStripper
             foreach (var property in (element as IObjectAllProperties)!.getPropertiesBeingSet())
             {
                 // Gets default value 
-                var defaultValue = DefaultValueHandler.ReadDefaultValueOfProperty(element, property);
+                var defaultValue = DefaultValueHandler.ReadDefaultValueOfProperty<object?>(element, property);
                 var setValue = element.getOrDefault<object?>(property);
 
                 if (defaultValue == null || setValue == null)

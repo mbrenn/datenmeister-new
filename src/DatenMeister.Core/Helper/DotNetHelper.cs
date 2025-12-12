@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
@@ -495,6 +496,52 @@ public static class DotNetHelper
     public static bool IsGuid(string text)
     {
         return Guid.TryParse(text, out _);
+    }
+
+    /// <summary>
+    /// Converts the value to the defined type
+    /// </summary>
+    /// <param name="value">Value to be evaluated</param>
+    /// <typeparam name="T">Type to which that value needs to be converted</typeparam>
+    /// <returns>The converter element. </returns>
+    public static T ConvertTo<T>(object? value)
+    {
+        if (value == null)
+        {
+            return default!;
+        }
+        
+        if (typeof(T) == typeof(string))
+        {
+            return (T) (object) AsString(value)!;
+        }
+
+        if (typeof(T) == typeof(bool))
+        {
+            return (T) (object) AsBoolean(value);
+        }
+
+        if (typeof(float) == typeof(T))
+        {
+            return (T) (object) AsDouble(value);
+        }
+
+        if (typeof(double) == typeof(T))
+        {
+            return (T) (object) AsDouble(value);
+        }
+
+        if (typeof(DateTime) == typeof(T))
+        {
+            return (T) AsDateTime(value);
+        }
+
+        if (value is T valueAsT)
+        {
+            return valueAsT;
+        }
+
+        return default!;
     }
 
     /// <summary>

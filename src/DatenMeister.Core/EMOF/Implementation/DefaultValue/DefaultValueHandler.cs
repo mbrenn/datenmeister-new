@@ -1,4 +1,5 @@
 ﻿using BurnSystems.TimeCache;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Uml.Helper;
@@ -46,18 +47,19 @@ public static class DefaultValueHandler
     /// <param name="value">Value whose property shall be retrieved</param>
     /// <param name="property">The property that shall be read</param>
     /// <returns>The default value or null, if not set</returns>
-    public static object? ReadDefaultValueOfProperty(IElement value, string property)
+    public static T ReadDefaultValueOfProperty<T>(IElement value, string property)
     {
         if (value is MofObject mofObject)
         {
-            return mofObject.GetClassModel()?.FindAttribute(property)?.DefaultValue;
+            return DotNetHelper.ConvertTo<T>(
+                mofObject.GetClassModel()?.FindAttribute(property)?.DefaultValue);
         }
-        
+
         var type = value.getMetaClass();
         if (type == null)
         {
             // No type ==> no default value
-            return null;
+            return default!;
         }
 
         var tuple = new Tuple<IElement, string>(type, property);
@@ -66,19 +68,19 @@ public static class DefaultValueHandler
                 tuple,
                 out var cachedValue))
         {
-            return cachedValue;
+            return DotNetHelper.ConvertTo<T>(cachedValue);
         }
 
         var propertyElement = ClassifierMethods.GetPropertyOfClassifier(type, property);
         if (propertyElement == null)
         {
             // No property ==> No default value
-            return null;
+            return default!;
         }
 
         var result = propertyElement.getOrDefault<object>(_UML._Classification._Property.defaultValue);
         CachedDefaultValues[tuple] = result;
-        return result;
+        return DotNetHelper.ConvertTo<T>(result);
     }
 
     /// <summary>

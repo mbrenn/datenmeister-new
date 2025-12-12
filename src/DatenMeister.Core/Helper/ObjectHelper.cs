@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.DefaultValue;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -281,6 +282,10 @@ public static class ObjectHelper
     {
         if (!value.isSet(property))
         {
+            if (value is IElement asElement)
+            {
+                return DefaultValueHandler.ReadDefaultValueOfProperty<T>(asElement, property);
+            }
             return default;
         }
 
@@ -781,12 +786,8 @@ public static class ObjectHelper
 
         // Second, check whether the element contains to an extent
         var extent = (value as IHasExtent)?.Extent;
-        if (extent is not null)
-        {
-            // Removes the element from the extent 
-            return extent.elements().remove(value);
-        }
-        
-        return false;
+        return extent is not null &&
+               // Removes the element from the extent 
+               extent.elements().remove(value);
     }
 }

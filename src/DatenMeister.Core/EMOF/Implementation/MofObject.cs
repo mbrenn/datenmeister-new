@@ -479,15 +479,16 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     /// <returns>The found class model or null, if not found</returns>
     public ClassModel? GetClassModel()
     {
-        if (Extent is not MofUriExtent mofUriExtent) return null;
+        var extent = Extent as MofUriExtent ?? ReferencedExtent as MofUriExtent;
+        if (extent == null) return null;
 
         var metaClassUri = ProviderObject.MetaclassUri;
 
         return string.IsNullOrEmpty(metaClassUri)
             ? null
             : UseClassModelCache
-                ? _cachedClassModel ??= mofUriExtent.FindModel(metaClassUri)
-                : mofUriExtent.FindModel(metaClassUri);
+                ? _cachedClassModel ??= extent.FindModel(metaClassUri)
+                : extent.FindModel(metaClassUri);
     }
 #pragma warning restore CS0162 // Unreachable code detected
 }

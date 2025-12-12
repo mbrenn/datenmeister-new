@@ -54,7 +54,7 @@ public class WorkspaceTests
         Assert.That(workspaces.Last().id, Is.EqualTo("MOF"));
 
 
-        workspaces = workspaceLogic.GetWorkspacesOrderedByDependability(ResolveType.OnlyMetaWorkspaces).ToList();
+        workspaces = workspaceLogic.GetWorkspacesOrderedByDependability(ResolveType.IncludeMetaWorkspaces).ToList();
 
         Assert.That(workspaces.ElementAt(workspaces.Count - 2).id, Is.EqualTo("UML"));
         Assert.That(workspaces.Last().id, Is.EqualTo("MOF"));

@@ -1,5 +1,4 @@
-﻿using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Implementation;
+﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -229,8 +228,8 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     {
         workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
         extentUri = MvcUrlEncoder.DecodePath(extentUri);
-        if (workspaceId == null) throw new ArgumentNullException(nameof(workspaceId));
-        if (extentUri == null) throw new ArgumentNullException(nameof(extentUri));
+        ArgumentNullException.ThrowIfNull(workspaceId);
+        ArgumentNullException.ThrowIfNull(extentUri);
 
         var viewModeMethods = new ViewModeMethods(_internal.WorkspaceLogic);
         var extent = _internal.WorkspaceLogic.FindExtent(workspaceId, extentUri);

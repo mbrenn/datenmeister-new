@@ -40,7 +40,7 @@ public class InMemoryProvider : IProviderWithTypeIndex, ICanUpdateCacheId
     /// <summary>
     /// Stores the elements of the current provider
     /// </summary>
-    private readonly List<InMemoryObject> _elements = new();
+    private readonly List<InMemoryObject> _elements = [];
 
     /// <summary>
     /// Stores the memory object for local information

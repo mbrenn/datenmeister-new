@@ -4,6 +4,7 @@ using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Provider;
+using DatenMeister.Core.TypeIndexAssembly.Model;
 
 namespace DatenMeister.Core.EMOF.Implementation;
 
@@ -11,7 +12,7 @@ namespace DatenMeister.Core.EMOF.Implementation;
 /// Implements a reflective sequence as given by the MOF specification.
 /// The sequence needs to be correlated to a Mof Object
 /// </summary>
-public class MofReflectiveSequence(MofObject mofObject, string property) : IReflectiveSequence, IHasExtent
+public class MofReflectiveSequence(MofObject mofObject, string property, AttributeModel? attributeModel) : IReflectiveSequence, IHasExtent
 {
     /// <summary>
     /// Gets the name of the property
@@ -35,6 +36,11 @@ public class MofReflectiveSequence(MofObject mofObject, string property) : IRefl
     public IEnumerator<object> GetEnumerator() => Enumerate().GetEnumerator();
 
     /// <summary>
+    /// Stores the attribute model, if available.
+    /// </summary>
+    private readonly AttributeModel? _attributeModel = attributeModel;
+
+    /// <summary>
     /// Performs an enumeration of all members of the collection
     /// </summary>
     /// <param name="noReferences">true, if UriReferences shall be resolved</param>
@@ -45,7 +51,7 @@ public class MofReflectiveSequence(MofObject mofObject, string property) : IRefl
         foreach (var item in result)
         {
             var convertedObject =
-                MofObject.ConvertToMofObject(MofObject, PropertyName, item, noReferences || NoReferences);
+                MofObject.ConvertToMofObject(MofObject, PropertyName, item, _attributeModel, noReferences || NoReferences);
             if (convertedObject != null)
             {
                 yield return convertedObject;
@@ -67,19 +73,19 @@ public class MofReflectiveSequence(MofObject mofObject, string property) : IRefl
             {
                 IEnumerable<object> asEnumerable => asEnumerable,
                     
-                null => new object[] { },
+                null => [],
                     
-                _ => new[] {value}
+                _ => [value]
             };
         }
 
-        return Array.Empty<object>();
+        return [];
     }
 
     /// <inheritdoc />
     public bool add(object? value)
     {
-        var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
+        var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value, _attributeModel);
         if (valueToBeAdded != null)
         {
             var result = MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded);
@@ -169,7 +175,7 @@ public class MofReflectiveSequence(MofObject mofObject, string property) : IRefl
     /// <inheritdoc />
     public void add(int index, object value)
     {
-        var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
+        var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value, _attributeModel);
         if (valueToBeAdded == null) return;
 
         MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded, index);
@@ -181,7 +187,7 @@ public class MofReflectiveSequence(MofObject mofObject, string property) : IRefl
     public object get(int index)
     {
         var providerObject = GetPropertyAsEnumerable().ElementAt(index);
-        return MofObject.ConvertToMofObject(MofObject, PropertyName, providerObject) ?? string.Empty;
+        return MofObject.ConvertToMofObject(MofObject, PropertyName, providerObject, _attributeModel) ?? string.Empty;
     }
 
     /// <inheritdoc />
@@ -221,7 +227,7 @@ public class MofReflectiveSequence(MofObject mofObject, string property) : IRefl
         MofObject.ProviderObject.RemoveFromProperty(PropertyName, valueToBeRemoved);
         add(index, value);
 
-        var result = MofObject.ConvertToMofObject(MofObject, PropertyName, valueToBeRemoved);
+        var result = MofObject.ConvertToMofObject(MofObject, PropertyName, valueToBeRemoved, _attributeModel);
 
         MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
         return result;

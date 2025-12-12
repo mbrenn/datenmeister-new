@@ -10,7 +10,6 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
-using DatenMeister.Core.Provider;
 
 // ReSharper disable InconsistentNaming
 
@@ -255,10 +254,7 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
 
     public virtual string uri(IElement element)
     {
-        if (element == null)
-        {
-            throw new ArgumentNullException(nameof(element));
-        }
+        ArgumentNullException.ThrowIfNull(element);
 
         var elementAsObject = element as IHasId;
         if (elementAsObject == null)

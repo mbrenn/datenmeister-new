@@ -1,6 +1,5 @@
 ﻿using BurnSystems.Logging;
 using DatenMeister.Core.Interfaces;
-using DatenMeister.Core.Models;
 
 namespace DatenMeister.Core;
 

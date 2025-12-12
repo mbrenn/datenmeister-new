@@ -154,8 +154,8 @@ public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMoveme
 
     public bool MoveElementUp(string property, object value)
     {
-        if (property == null) throw new ArgumentNullException(nameof(property));
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(property);
+        ArgumentNullException.ThrowIfNull(value);
 
         CheckValue(value);
         var result = GetListOfProperty(property);
@@ -176,8 +176,8 @@ public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMoveme
 
     public bool MoveElementDown(string property, object value)
     {
-        if (property == null) throw new ArgumentNullException(nameof(property));
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(property);
+        ArgumentNullException.ThrowIfNull(value);
 
         CheckValue(value);
         var result = GetListOfProperty(property);
@@ -275,13 +275,14 @@ public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMoveme
     private List<object> GetListOfProperty(string property)
     {
         List<object>? result = null;
-        if (_values.ContainsKey(property)) result = _values[property] as List<object>;
+        if (_values.TryGetValue(property, out var propertyValue)) 
+            result = propertyValue as List<object>;
 
-        if (result == null)
-        {
-            result = new List<object>();
-            _values[property] = result;
-        }
+        if (result != null)
+            return result;
+        
+        result = [];
+        _values[property] = result;
 
         return result;
     }
@@ -309,11 +310,8 @@ public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMoveme
 
     public ClassModel? GetClassModel()
     {
-        if (string.IsNullOrEmpty(MetaclassUri))
-        {
-            return null;
-        }
-
-        return ProviderWithTypeIndex?.TypeIndex?.FindClassModel(MetaclassUri);
+        return string.IsNullOrEmpty(MetaclassUri)
+            ? null
+            : ProviderWithTypeIndex?.TypeIndex?.FindClassModel(MetaclassUri);
     }
 }

@@ -7,7 +7,14 @@ namespace DatenMeister.Core.TypeIndexAssembly;
 /// </summary>
 public class TypeIndexStore
 {
+    /// <summary>
+    /// Stores the number of triggers that had been received.
+    /// </summary>
     private int _numberOfTriggersReceived;
+    
+    /// <summary>
+    /// Stores the number of re-indexes that had been received.
+    /// </summary>
     private int _numberOrReIndexes;
 
     /// <summary>
@@ -64,12 +71,12 @@ public class TypeIndexStore
     /// <summary>
     /// Gets or sets the current data for the TypeIndexing
     /// </summary>
-    internal TypeIndexData? Current { get; set; }
+    public TypeIndexData? Current { get; set; }
     
     /// <summary>
     /// Gets or sets the next data for the TypeIndexing which will be swapped to the current data
     /// </summary>
-    public TypeIndexData? Next { get; set; }
+    internal TypeIndexData? Next { get; set; }
     
     /// <summary>
     /// Defines the monitor for the swapping if the index data
@@ -82,7 +89,7 @@ public class TypeIndexStore
     public EventWaitHandle IndexFirstBuiltEvent { get; } = new(false, EventResetMode.ManualReset);
     
     /// <summary>
-    /// This event is set while the index is not being built. It can be used
+    /// This event is set while the index is not being built and has been updated. It can be used
     /// to be absolutely sure that the index has the most recent state. 
     /// </summary>
     public EventWaitHandle IndexIsUpToDateEvent { get; } = new(true, EventResetMode.ManualReset);

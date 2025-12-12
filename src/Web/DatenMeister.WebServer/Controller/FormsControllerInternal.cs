@@ -1,11 +1,8 @@
-﻿using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Helper;
+﻿using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
-using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
@@ -122,7 +119,7 @@ public class FormsControllerInternal
         IElement? resolvedMetaClass = null;
         if (!string.IsNullOrEmpty(metaClass))
         {
-            resolvedMetaClass = WorkspaceLogic.Resolve(metaClass, ResolveType.OnlyMetaWorkspaces) as IElement;
+            resolvedMetaClass = WorkspaceLogic.Resolve(metaClass, ResolveType.IncludeMetaWorkspaces) as IElement;
             if (resolvedMetaClass == null)
             {
                 throw new InvalidOperationException("MetaClass for Form Creation is not found: " + metaClass);
@@ -158,7 +155,7 @@ public class FormsControllerInternal
             throw new InvalidOperationException("Extent is not found");
         }
 
-        if (workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) is not IObject foundElement)
+        if (workspace.Resolve(itemUri, ResolveType.IncludeWorkspace) is not IObject foundElement)
         {
             throw new InvalidOperationException("Element is not found");
         }

@@ -32,7 +32,7 @@ public class PureReflectiveSequence : IReflectiveSequence
     /// <summary>
     /// Stores the elements
     /// </summary>
-    private readonly List<object> _elements = new();
+    private readonly List<object> _elements = [];
 
     public IEnumerator<object> GetEnumerator()
     {

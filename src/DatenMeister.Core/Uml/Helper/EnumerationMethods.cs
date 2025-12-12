@@ -1,5 +1,4 @@
-﻿using DatenMeister.Core.Helper;
-using DatenMeister.Core.Interfaces.MOF.Common;
+﻿using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models.EMOF;
 
@@ -32,7 +31,7 @@ public class EnumerationMethods
         var values = GetEnumValueObjects(enumeration);
         if (values == null)
         {
-            return Array.Empty<string>();
+            return [];
         }
 
         return values.OfType<IObject>()

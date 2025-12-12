@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using DatenMeister.Core.Interfaces.MOF.Common;
+﻿using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Runtime.Proxies;
 

@@ -7,7 +7,7 @@ using DatenMeister.Plugins;
 namespace DatenMeister.Core.TypeIndexAssembly;
 
 
-[PluginLoading(PluginLoadingPosition.BeforeBootstrapping|PluginLoadingPosition.AfterLoadingOfExtents|PluginLoadingPosition.AfterShutdownStarted)]
+[PluginLoading(PluginLoadingPosition.BeforeBootstrapping|PluginLoadingPosition.AfterLoadingOfExtents|PluginLoadingPosition.AfterFinalizationOfIntegration|PluginLoadingPosition.AfterShutdownStarted)]
 public class TypeIndexPlugin(IScopeStorage scopeStorage, IWorkspaceLogic workspaceLogic) : IDatenMeisterPlugin
 {
     public IScopeStorage ScopeStorage { get; set; } = scopeStorage;
@@ -41,16 +41,20 @@ public class TypeIndexPlugin(IScopeStorage scopeStorage, IWorkspaceLogic workspa
         {
             return Task.CompletedTask;
         }
-
+        
+        _logic = new TypeIndexLogic(WorkspaceLogic);
+        
         switch (position)
         {
             case PluginLoadingPosition.BeforeBootstrapping:
                 ScopeStorage.Add(new TypeIndexStore());
                 break;
-
             case PluginLoadingPosition.AfterLoadingOfExtents:
+                _ = _logic.CreateIndexFirstTime();
+                break;
+
+            case PluginLoadingPosition.AfterFinalizationOfIntegration:
                 // We have now loaded everything and let's start the indexing
-                _logic = new TypeIndexLogic(WorkspaceLogic);
                 _ = _logic.CreateIndexFirstTime();
                 
                 if(IsListeningActive)

@@ -20,7 +20,7 @@ public static class WorkspaceExtensions
     {
         if (element is MofObjectShadow shadowObject)
         {
-            return workspace.Resolve(shadowObject.Uri, ResolveType.NoMetaWorkspaces) as IElement;
+            return workspace.Resolve(shadowObject.Uri, ResolveType.IncludeWorkspace) as IElement;
         }
 
         return element;
@@ -33,7 +33,7 @@ public static class WorkspaceExtensions
             ? workspaceLogic.GetDefaultWorkspace()
             : workspaceLogic.GetWorkspace(workspaceId);
 
-        return workspace?.Resolve(uri, ResolveType.NoMetaWorkspaces, true, workspaceId);
+        return workspace?.Resolve(uri, ResolveType.IncludeWorkspace, true, workspaceId);
     }
 
     public static IObject? FindObject(this IWorkspaceLogic workspaceLogic, string workspaceId, string uri)
@@ -259,7 +259,7 @@ public static class WorkspaceExtensions
             .SelectMany(x => x.extent)
             .OfType<IUriExtent>()
             .Select(x => 
-                x.GetUriResolver().Resolve(extentUri, ResolveType.NoMetaWorkspaces, false) as IUriExtent)
+                x.GetUriResolver().Resolve(extentUri, ResolveType.IncludeWorkspace, false) as IUriExtent)
             .FirstOrDefault(x => x != null);
     }
 
@@ -307,26 +307,18 @@ public static class WorkspaceExtensions
 
             workspaceId = workspace.id;
         }
+        
+        var coreUriResolver = new CoreUriResolver(workspaceLogic);
 
-        var foundExtent = workspaceLogic.Workspaces
-            .Where(x => x.id == workspaceId)
-            .SelectMany(x => x.extent)
-            .OfType<IUriExtent>()
-            .Select(x =>
-                x.GetUriResolver().Resolve(extentUri, ResolveType.NoMetaWorkspaces | ResolveType.NoWorkspace, false))
-            .FirstOrDefault(x => x != null);
+        var foundExtent =  coreUriResolver.Resolve(extentUri, ResolveType.IncludeWorkspace, workspaceLogic.GetWorkspace(workspaceId));
 
-        switch (foundExtent)
+        return foundExtent switch
         {
-            case IUriExtent asExtent:
-                return (asExtent.elements(), asExtent);
-            case IReflectiveCollection collection:
-                return (collection, collection.GetUriExtentOf() as IUriExtent);
-            case IElement element:
-                return (new TemporaryReflectiveCollection(new[] { element }), element.GetUriExtentOf());
-        }
-
-        return (null, null);
+            IUriExtent asExtent => (asExtent.elements(), asExtent),
+            IReflectiveCollection collection => (collection, collection.GetUriExtentOf() as IUriExtent),
+            IElement element => (new TemporaryReflectiveCollection([element]), element.GetUriExtentOf()),
+            _ => (null, null)
+        };
     }
 
     /// <summary>

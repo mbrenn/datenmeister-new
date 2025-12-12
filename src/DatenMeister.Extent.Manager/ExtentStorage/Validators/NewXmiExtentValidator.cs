@@ -1,9 +1,6 @@
-using BurnSystems.Collections;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
-using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Validators;
 
 namespace DatenMeister.Extent.Manager.ExtentStorage.Validators;
@@ -39,27 +36,28 @@ public class NewXmiExtentValidator : IElementValidator
     /// </summary>
     /// <param name="element">Element to be checked</param>
     /// <returns>The validator result as chained list</returns>
-    public ValidatorResult? ValidateElement(IObject element)
+    public LinkedListNode<ValidatorResult>? ValidateElement(IObject element)
     {
         if (WorkspaceLogic == null)
         {
             throw new InvalidOperationException("WorkspaceLogic not set");
         }
             
-        var chain = new ChainHelper<ValidatorResult>();
+        var chain = new LinkedList<ValidatorResult>();
+        LinkedListNode<ValidatorResult>? lastNode = null;
 
         // Check Uri
         var uri = element.getOrDefault<string>("uri");
         if (!Uri.IsWellFormedUriString(uri, UriKind.Absolute))
         {
-            chain.Add(new ValidatorResult(ValidatorState.Error, "Uri is not a well-formed uri.", "uri"));
+            lastNode = chain.AddLast(new ValidatorResult(ValidatorState.Error, "Uri is not a well-formed uri.", "uri"));
         }
 
         // Check path
         var filepath = element.getOrDefault<string>("filepath");
         if (!Path.IsPathRooted(filepath))
         {
-            chain.Add(
+            lastNode = chain.AddLast(
                 new ValidatorResult(
                     ValidatorState.Recommendation,
                     "The file path is not an absolute path.",
@@ -69,24 +67,24 @@ public class NewXmiExtentValidator : IElementValidator
         var directory = Path.GetDirectoryName(filepath);
         if (!Directory.Exists(directory))
         {
-            chain.Add(new ValidatorResult(ValidatorState.Error, "The directory does not exist.", "filepath"));
+            lastNode = chain.AddLast(new ValidatorResult(ValidatorState.Error, "The directory does not exist.", "filepath"));
         }
 
         var workspace = WorkspaceLogic.GetWorkspace(Workspace);
         if (workspace == null)
         {
-            chain.Add(new ValidatorResult(ValidatorState.Error, "The workspace does not exist anymore."));
-                
+            lastNode = chain.AddLast(new ValidatorResult(ValidatorState.Error,
+                "The workspace does not exist anymore."));
         }
         else if (workspace.extent.OfType<IUriExtent>().Any(x=>x.contextURI() == uri))
         {
-            chain.Add(
+            lastNode = chain.AddLast(
                 new ValidatorResult(
                     ValidatorState.Error,
                     "An extent with given uri is already existing.",
                     "uri"));
         }
 
-        return chain;
+        return lastNode;
     }
 }

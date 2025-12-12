@@ -100,7 +100,7 @@ public class WorkspaceLogic : IWorkspaceLogic
 
     public IEnumerable<IUriExtent> GetExtentsForWorkspace(IWorkspace dataLayer)
     {
-        if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
+        ArgumentNullException.ThrowIfNull(dataLayer);
 
         lock (_workspaceData)
         {
@@ -130,7 +130,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     /// <param name="workspace">Workspace to be added. It usually returns the parameter itself</param>
     public IWorkspace AddWorkspace(IWorkspace workspace)
     {
-        if (workspace == null) throw new ArgumentNullException(nameof(workspace));
+        ArgumentNullException.ThrowIfNull(workspace);
 
         lock (_workspaceData)
         {
@@ -260,7 +260,7 @@ public class WorkspaceLogic : IWorkspaceLogic
         {
             return (GetWorkspace(workspace) as IUriResolver)?.Resolve(
                 uri,
-                resolveType | ResolveType.NoMetaWorkspaces,
+                (resolveType | ResolveType.IncludeExtent) & ~ResolveType.IncludeWorkspace,
                 traceFailing,
                 workspace);
         }
@@ -269,7 +269,7 @@ public class WorkspaceLogic : IWorkspaceLogic
             .Select(
                 innerWorkspace => (innerWorkspace as IUriResolver)?.Resolve(
                     uri,
-                    resolveType | ResolveType.NoMetaWorkspaces,
+                    (resolveType | ResolveType.IncludeExtent) & ~ResolveType.IncludeWorkspace,
                     traceFailing))
             .FirstOrDefault(result => result != null);
     }
@@ -373,7 +373,7 @@ public class WorkspaceLogic : IWorkspaceLogic
                 // Checks, if any of the meta-workspaces of the current workspace is still in this list
                 if (workspaces.All(x => x.MetaWorkspaces.All(y => y != tryWorkspace)))
                 {
-                    if (!resolveType.HasFlag(ResolveType.OnlyMetaWorkspaces) ||
+                    if (resolveType.HasFlagFast(ResolveType.IncludeWorkspace) ||
                         round != 0)
                         // Skips the first round, when only MetaWorkspaces are queried
                         yield return tryWorkspace;

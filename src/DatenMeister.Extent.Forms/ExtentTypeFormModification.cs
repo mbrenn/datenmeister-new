@@ -6,7 +6,6 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
-using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
@@ -157,7 +156,7 @@ public class ExtentTypeFormModification
                     foreach (var rootMetaClass in foundExtentType.rootElementMetaClasses)
                     {
                         var resolvedMetaClass =
-                            workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
+                            workspaceLogic.ResolveElement(rootMetaClass, ResolveType.IncludeMetaWorkspaces);
 
                         if (resolvedMetaClass == null)
                         {
@@ -244,7 +243,7 @@ public class ExtentTypeFormModification
                         foreach (var rootMetaClass in foundExtentType.rootElementMetaClasses)
                         {
                             var resolvedMetaClass =
-                                workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
+                                workspaceLogic.ResolveElement(rootMetaClass, ResolveType.IncludeMetaWorkspaces);
 
                             if (resolvedMetaClass == null)
                             {

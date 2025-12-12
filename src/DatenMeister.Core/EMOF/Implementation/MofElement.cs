@@ -4,7 +4,6 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
-using DatenMeister.Core.Provider;
 
 namespace DatenMeister.Core.EMOF.Implementation;
 
@@ -36,35 +35,6 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
 
     /// <inheritdoc />
     public IElement? metaclass => getMetaClass();
-
-    public override bool isSet(string property)
-    {
-        if (!IsSlimUmlEvaluation)
-        {
-            // Checks whether we have a derived property 
-            var metaClass = getMetaClass();
-
-            if (metaclass?.GetExtentOf() is MofExtent extent
-                && metaClass != null)
-            {
-                //return true;
-            }
-             
-            /*
-             * We simplify the logic and currently, we do not satisfy the MOF Standard
-             * that only values being different than the default value are to be regarded as being set
-             */ 
-            // Checks whether we are having a default Value
-            var defaultValue = DefaultValueHandler.ReadDefaultValueOfProperty<object>(this, property);
-            if (defaultValue != null)
-            {
-                // If we have a default value, then it is quite sure that the property is set!
-                return true;
-            }
-        }
-
-        return base.isSet(property);
-    }
         
     /// <inheritdoc />
     IElement? IElement.getMetaClass()
@@ -160,30 +130,31 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
 
     public override object? get(string property, bool noReferences, ObjectType objectType)
     {
+        var attributeModel = GetClassModel()?.FindAttribute(property);
         // Checks, if we have a dynamic property
         var (isValid, resultValue) = GetDynamicProperty(property);
         if (isValid)
         {
-            return ConvertToMofObject(this, property, resultValue, noReferences);
+            return ConvertToMofObject(this, property, resultValue, attributeModel, noReferences);
         }
             
         // Checks, if the property is set
         if (ProviderObject.IsPropertySet(property))
         {
             var result = ProviderObject.GetProperty(property, objectType);
-            return ConvertToMofObject(this, property, result, noReferences);
+            return ConvertToMofObject(this, property, result, attributeModel, noReferences);
         }
         else
         {
             // If not set, get the default value
-            var result = DefaultValueHandler.ReadDefaultValueOfProperty<object?>(this, property);
-            return ConvertToMofObject(this, property, result, noReferences);
+            var result = GetClassModel()?.FindAttribute(property)?.DefaultValue;
+            return ConvertToMofObject(this, property, result, attributeModel, noReferences);
         }
     }
 
     public IElement? getMetaClass(bool traceFailing = true)
     {
-        if (_cachedMetaClass != null)
+        if (_cachedMetaClass != null && _cachedMetaClass is not MofObjectShadow)
         {
             return _cachedMetaClass;
         }
@@ -196,8 +167,11 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
         }
 
         var result =
-            (ReferencedExtent as IUriResolver)
-            ?.Resolve(uri, ResolveType.OnlyMetaClasses | ResolveType.AlsoTypeWorkspace, traceFailing) as IElement
+            (ReferencedExtent as IUriResolver)?.Resolve(
+                uri,
+                ResolveType.IncludeMetaWorkspaces | ResolveType.IncludeTypeWorkspace |
+                ResolveType.IncludeMetaOfMetaWorkspaces,
+                traceFailing) as IElement
             ?? new MofObjectShadow(uri);
 
         _cachedMetaClass = result;
@@ -219,7 +193,7 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
     /// <summary>
     /// Sets the extent by which the element was created
     /// </summary>
-    /// <param name="extent">Extent being used to define the the reportCreator</param>
+    /// <param name="extent">Extent being used to define the reportCreator</param>
     /// <returns>this element. </returns>
     public new IElement CreatedBy(MofExtent extent)
     {

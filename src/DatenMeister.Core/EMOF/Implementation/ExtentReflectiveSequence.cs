@@ -5,7 +5,7 @@ using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
-using DatenMeister.Core.Provider;
+using DatenMeister.Core.TypeIndexAssembly.Model;
 
 namespace DatenMeister.Core.EMOF.Implementation;
 
@@ -154,7 +154,7 @@ public class ExtentReflectiveSequence : IReflectiveSequence, IHasExtent
                 $"An instance of a primitive type may not be added to the extent root elements: {value}");
         }
 
-        if (_extent.ConvertForSetting(value) is IProviderObject convertedElement)
+        if (_extent.ConvertForSetting(value, null) is IProviderObject convertedElement)
         {
             _extent?.Provider.AddElement(convertedElement, index);
         }

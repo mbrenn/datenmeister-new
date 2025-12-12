@@ -69,7 +69,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     /// Gets or sets the value whether we are having a cached slim evaluation
     /// </summary>
     private bool? _cachedIsSlimEvaluation = null;
-    
+
     /// <summary>
     /// Gets or sets the flag whether slim uml evaluation is activated
     /// </summary>
@@ -87,14 +87,14 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
                 _cachedIsSlimEvaluation = true;
                 return true;
             }
-            
+
             _cachedIsSlimEvaluation =
-                !(((IObject) this).GetExtentOf() as MofExtent)?.SlimUmlEvaluation == false;
+                !(((IObject)this).GetExtentOf() as MofExtent)?.SlimUmlEvaluation == false;
 
             return _cachedIsSlimEvaluation.Value;
         }
     }
-        
+
 
     /// <summary>
     /// Initializes a new instance of the MofObject class.
@@ -125,7 +125,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     /// <inheritdoc />
     public bool equals(object? other)
         => AreEqual(this, other as IObject);
-    
+
     /// <summary>
     /// Verifies if the two elements reference to the same instance
     /// </summary>
@@ -138,18 +138,18 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         {
             return true;
         }
-            
+
         if (first == null || second == null)
         {
             // If one is at least null, it shall be
             return false;
         }
-        
+
         if (first is IKnowsUri firstAsKnowsUri && second is IKnowsUri secondAsKnowsUri)
         {
             return firstAsKnowsUri.Uri == secondAsKnowsUri.Uri;
         }
-        
+
         return ReferenceEquals(first, second);
     }
 
@@ -160,7 +160,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     /// <inheritdoc />
     public object? get(string property)
         => get(property, false, ObjectType.None);
-    
+
     public T getOrDefault<T>(string property)
     {
         return ObjectHelper.getOrDefault<T>(this, property);
@@ -169,16 +169,18 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     // ReSharper disable once InconsistentNaming
     public virtual object? get(string property, bool noReferences, ObjectType objectType)
     {
+        var attributeModel = GetClassModel()?.FindAttribute(property);
+
         // Checks, if we have a dynamic property
         var (isValid, resultValue) = GetDynamicProperty(property);
         if (isValid)
         {
-            return ConvertToMofObject(this, property, resultValue, noReferences);
+            return ConvertToMofObject(this, property, resultValue, attributeModel, noReferences);
         }
-            
+
         // If not, return the item from the database
         var result = ProviderObject.GetProperty(property, objectType);
-        return ConvertToMofObject(this, property, result, noReferences);
+        return ConvertToMofObject(this, property, result, attributeModel, noReferences);
     }
 
     protected virtual (bool, object?) GetDynamicProperty(string property)
@@ -192,12 +194,14 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     /// <param name="container">Container to be added</param>
     /// <param name="property">Property to be set</param>
     /// <param name="value">Value to be converted</param>
+    /// <param name="attributeModel">The model about the attribute to which the transformation shall be performed</param>
     /// <param name="noReferences">True, if references shall be resolved</param>
     /// <returns>The converted object</returns>
     internal static object? ConvertToMofObject(
         MofObject container,
         string property,
         object? value,
+        AttributeModel? attributeModel,
         bool noReferences = false)
     {
         if (value == null)
@@ -222,13 +226,18 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
                 return result;
             }
             case IEnumerable<object> _:
-                return new MofReflectiveSequence(container, property);
+                return new MofReflectiveSequence(container, property, attributeModel);
             case UriReference valueAsUriReference when noReferences:
                 return valueAsUriReference;
             case UriReference valueAsUriReference:
             {
                 var extentResolver = container.Extent as IUriResolver ?? container.ReferencedExtent as IUriResolver;
-                var resolved = extentResolver?.Resolve(valueAsUriReference.Uri, ResolveType.Default, false, valueAsUriReference.Workspace);
+                var resolved =
+                    extentResolver?.Resolve(
+                        valueAsUriReference.Uri,
+                        ResolveType.Default,
+                        false,
+                        valueAsUriReference.Workspace);
                 return resolved ?? new MofObjectShadow(valueAsUriReference.Uri);
             }
             default:
@@ -240,29 +249,57 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     /// <inheritdoc />
     public void set(string property, object? value)
     {
+        // Check, if we find the classmodel
+        var attributeModel = GetClassModel()?.FindAttribute(property);
+        
         // Checks if the value is a default value. If yes, it can be removed...
-        if (MofHelper.IsDefaultValue(this, property, value))
+        if (MofHelper.IsDefaultValueOfAttributeType(this, property, value))
         {
             ProviderObject.DeleteProperty(property);
             return;
         }
 
-        // Value is not a default value, so it needs to be stored into the database
+        // Evaluate the multiplicity of the attribute
+        if (attributeModel != null)
+        {
+            switch (attributeModel.IsMultiple)
+            {
+                case true:
+                    if (!DotNetHelper.IsOfEnumeration(value))
+                    {
+                        var list = new[] { value };
+                        value = list;
+                    }
+
+                    break;
+                case false:
+                    if (DotNetHelper.IsOfEnumeration(value))
+                    {
+                        throw new InvalidOperationException(
+                            "Array was tried to be set, but Uml-Type just allowed to set a sinclue value");
+                    }
+
+                    break;
+            }
+        }
+
+        // Check, if the value is an enumeration containing of multiple values
         if (DotNetHelper.IsOfEnumeration(value))
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-                
-            var valueAsEnumeration = (IEnumerable<object>) value;
+            // In case, it is, we add each item individually
+            var valueAsEnumeration = value as IEnumerable<object?>;
+            ArgumentNullException.ThrowIfNull(valueAsEnumeration);
+
             ProviderObject.EmptyListForProperty(property);
             foreach (var child in valueAsEnumeration)
             {
-                var valueForSetting = MofExtent.ConvertForSetting(this, child);
+                var valueForSetting = MofExtent.ConvertForSetting(this, child, attributeModel);
                 if (valueForSetting == null)
                 {
                     // Null elements will not be set
                     continue;
                 }
-                    
+
                 ProviderObject.AddToProperty(property, valueForSetting);
 
                 // Checks, if the element that has been set is not associated to a container.
@@ -276,7 +313,8 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         }
         else
         {
-            var valueForSetting = MofExtent.ConvertForSetting(this, value);
+            // It is just a single object
+            var valueForSetting = MofExtent.ConvertForSetting(this, value, attributeModel);
             ProviderObject.SetProperty(property, valueForSetting);
 
             // Checks, if the element that has been set is not associated to a container.
@@ -287,8 +325,8 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
                 SetContainer(ProviderObject, valueForSetting);
             }
 
-            if (value is MofObject ofMofObject 
-                && valueForSetting is UriReference 
+            if (value is MofObject ofMofObject
+                && valueForSetting is UriReference
                 && ofMofObject.ReferencedExtent is IUriExtent asUriExtent)
             {
                 _referencedExtent?.AddMetaExtent(asUriExtent);
@@ -307,7 +345,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     {
         if (childAsProviderObject is IProviderObject childProviderObject)
         {
-            if (/*!childProviderObject.IsRoot() && */ !childProviderObject.HasContainer())
+            if ( /*!childProviderObject.IsRoot() && */ !childProviderObject.HasContainer())
             {
                 SetContainer(parentProviderObject, childProviderObject);
             }
@@ -338,7 +376,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
             {
                 break;
             }
-            
+
             if (parentContainer.Equals(childObject))
             {
                 Debugger.Break();
@@ -363,13 +401,23 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     public void unset(string property)
     {
         ProviderObject.DeleteProperty(property);
-            
+
         _extent?.ChangeEventManager?.SendChangeEvent(this);
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Returns an enumeration of all properties being set.
+    /// At first, look into the the associated class model, because we just want to read those.
+    /// If there is no class model, check within the provider object.
+    /// </summary>
+    /// <returns>Returns all set properties</returns>
     public IEnumerable<string> getPropertiesBeingSet()
-        => ProviderObject.GetProperties();
+    {
+        var classModel = GetClassModel();
+        return classModel != null
+            ? classModel.Attributes.Select(x => x.Name)
+            : ProviderObject.GetProperties();
+    }
 
 #if DEBUG
     private int _stackDepth;
@@ -415,18 +463,40 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     }
 
     /// <summary>
+    /// Caches the class model in case the class model cache is activated
+    /// </summary>
+    private ClassModel? _cachedClassModel;
+    
+    /// <summary>
+    /// True, if the class model cache shall be activated
+    /// </summary>
+    private  const bool UseClassModelCache = true;
+
+#pragma warning disable CS0162 // Unreachable code detected
+    /// <summary>
     /// Finds the class model by looking into the type index.
     /// </summary>
     /// <returns>The found class model or null, if not found</returns>
     public ClassModel? GetClassModel()
     {
-        if (Extent is not MofUriExtent mofUriExtent) return null;
-        
+        bool lookInMetaClass = true;
+        if (Extent is not MofUriExtent extent)
+        {
+            extent = ReferencedExtent as MofUriExtent;
+            lookInMetaClass = false;
+        }
+
+        if (extent == null) return null;
+
         var metaClassUri = ProviderObject.MetaclassUri;
+
         return string.IsNullOrEmpty(metaClassUri)
-            ? null 
-            : mofUriExtent.FindModel(metaClassUri);
+            ? null
+            : UseClassModelCache
+                ? _cachedClassModel ??= extent.FindModel(metaClassUri, lookInMetaClass)
+                : extent.FindModel(metaClassUri, lookInMetaClass);
     }
+#pragma warning restore CS0162 // Unreachable code detected
 }
 
 public class MofObjectEqualityComparer : IEqualityComparer<IObject?>

@@ -34,4 +34,14 @@ public record ClassModel
     /// Stores the enumeration of the attributes
     /// </summary>
     public List<AttributeModel> Attributes { get; } = new();
+
+    /// <summary>
+    /// Gets the attribute by the given name
+    /// </summary>
+    /// <param name="attribute">Attribute to be queried</param>
+    /// <returns>The found attribute or null in case not found</returns>
+    public AttributeModel? FindAttribute(string attribute)
+    {
+        return Attributes.FirstOrDefault(x => x.Name == attribute);
+    }
 }

@@ -75,32 +75,48 @@ public class TestLoadClassesAndTheirProperties
         Assert.That(inheritedAttribute, Is.Not.Null);
         Assert.That(inheritedAttribute!.IsInherited, Is.True);
     }
-    
+
     [Test]
     public async Task TestFindProperty()
     {
         await using var dm = await IntegrationOfTests.GetDatenMeisterScope();
         var typeIndexStore = dm.ScopeStorage.TryGet<TypeIndexStore>()
                              ?? throw new InvalidOperationException("TypeIndexStore not found");
-        
+
         var typesWorkspace = typeIndexStore.GetCurrentIndexStore().FindWorkspace(WorkspaceNames.WorkspaceTypes);
         Assert.That(typesWorkspace, Is.Not.Null);
-        
+
         var classCommandLineApplication =
             typesWorkspace!.ClassModels
                 .FirstOrDefault(x => x.Name == "CommandLineApplication");
         Assert.That(classCommandLineApplication, Is.Not.Null);
 
-        var attributeCommandLine = classCommandLineApplication!.Attributes.FirstOrDefault(
-            x  => x.Name == _CommonTypes._OSIntegration._CommandLineApplication.applicationPath);
+        var attributeCommandLine = classCommandLineApplication!.Attributes.FirstOrDefault(x =>
+            x.Name == _CommonTypes._OSIntegration._CommandLineApplication.applicationPath);
         Assert.That(attributeCommandLine, Is.Not.Null);
-        
-        Assert.That(attributeCommandLine!.TypeUrl, 
+
+        Assert.That(attributeCommandLine!.TypeUrl,
             Is.EqualTo(_PrimitiveTypes.TheOne.__String.Uri));
         Assert.That(attributeCommandLine.Id, Is.Not.Null.Or.Empty);
 
         Assert.That(attributeCommandLine.DefaultValue, Is.Null);
-        Assert.That(attributeCommandLine.IsMultiple, Is.False);
+        Assert.That(attributeCommandLine.IsMultiple, Is.Null);
         Assert.That(attributeCommandLine.IsComposite, Is.True);
+
+        var queryStatement = typesWorkspace.ClassModels.FirstOrDefault(x => x.Name == "QueryStatement");
+        Assert.That(queryStatement, Is.Not.Null);
+        var resultNode = queryStatement!.Attributes.FirstOrDefault(x => x.Name == "resultNode");
+        Assert.That(resultNode, Is.Not.Null);
+
+        Assert.That(resultNode!.IsMultiple, Is.False);
+
+        var reportDefinition = typesWorkspace.ClassModels.FirstOrDefault(x => x.Name == "ReportDefinition");
+        Assert.That(reportDefinition, Is.Not.Null);
+        var reportDefinitionElements = reportDefinition!.Attributes.FirstOrDefault(x => x.Name == "elements");
+        Assert.That(reportDefinitionElements, Is.Not.Null);
+
+        Assert.That(reportDefinitionElements!.IsMultiple, Is.True);
+        
+        
     }
 }

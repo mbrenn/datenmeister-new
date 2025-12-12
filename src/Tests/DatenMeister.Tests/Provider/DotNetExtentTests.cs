@@ -8,6 +8,7 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Provider.DotNet;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DependencyInjection;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Provider;
@@ -16,9 +17,11 @@ namespace DatenMeister.Tests.Provider;
 public class DotNetExtentTests
 {
     [Test]
-    public void TestValue()
+    public async Task TestValue()
     {
-        var typeExtent = Initialize();
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var typeExtent = Initialize(dm);
+        
         var provider = new DotNetProvider(typeExtent.TypeLookup);
         var extent = new MofUriExtent(provider, "dm:///test", null);
         var value = new DotNetTests.TestClass();
@@ -36,9 +39,12 @@ public class DotNetExtentTests
     }
 
     [Test]
-    public void TestListWithStrings()
+    public async Task TestListWithStrings()
     {
-        var extent = Initialize();
+        
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        
+        var extent = Initialize(dm);
         var provider = new DotNetProvider(extent.TypeLookup);
         var dotNetExtent = new MofUriExtent(provider, "dm:///", null);
         var value = new DotNetTests.TestClassWithList();
@@ -66,9 +72,10 @@ public class DotNetExtentTests
     }
 
     [Test]
-    public void TestListWithObjects()
+    public async Task TestListWithObjects()
     {
-        var typeExtent = Initialize();
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var typeExtent = Initialize(dm);
         var provider = new DotNetProvider(typeExtent.TypeLookup);
         var extent = new MofUriExtent(provider, "dm:///test", null);
         extent.AddMetaExtent(typeExtent);
@@ -104,9 +111,10 @@ public class DotNetExtentTests
     }
 
     [Test]
-    public void TestExtent()
+    public async Task TestExtent()
     {
-        var typeExtent = Initialize();
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var typeExtent = Initialize(dm);
         var provider = new DotNetProvider(typeExtent.TypeLookup);
         var extent = new MofUriExtent(provider, "dm:///test", null);
         extent.AddMetaExtent(typeExtent);
@@ -117,9 +125,10 @@ public class DotNetExtentTests
     }
 
     [Test]
-    public void TestFactory()
+    public async Task TestFactory()
     {
-        var typeExtent = Initialize();
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var typeExtent = Initialize(dm);
         var provider = new DotNetProvider(typeExtent.TypeLookup);
         var extent = new MofUriExtent(provider, "dm:///test", null);
         var factory = new MofFactory(extent);
@@ -138,9 +147,10 @@ public class DotNetExtentTests
     }
 
     [Test]
-    public static void TestExtentReferences()
+    public async Task TestExtentReferences()
     {
-        var typeExtent = Initialize();
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var typeExtent = Initialize(dm);
         var provider = new DotNetProvider(typeExtent.TypeLookup);
         var extent = new MofUriExtent(provider, "dm:///test", null);
 
@@ -174,9 +184,10 @@ public class DotNetExtentTests
     }
 
     [Test]
-    public static void TestExtentReferencesWithSequence()
+    public async Task TestExtentReferencesWithSequence()
     {
-        var typeExtent = Initialize();
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var typeExtent = Initialize(dm);
         var provider = new DotNetProvider(typeExtent.TypeLookup);
         var extent = new MofUriExtent(provider, "dm:///test", null);
 
@@ -219,9 +230,11 @@ public class DotNetExtentTests
     }
 
     [Test]
-    public void TestWithElementsWithinSameExtent()
+    public async Task TestWithElementsWithinSameExtent()
     {
-        var typeExtent = Initialize();
+        
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var typeExtent = Initialize(dm);
         var provider = new DotNetProvider(typeExtent.TypeLookup);
         var extent = new MofUriExtent(provider, "dm:///test", null);
 
@@ -281,9 +294,11 @@ public class DotNetExtentTests
     }
 
     [Test]
-    public void TestWithElementsInOtherExtent()
+    public async Task TestWithElementsInOtherExtent()
     {
-        var typeExtent = Initialize();
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        
+        var typeExtent = Initialize(dm);
         var provider = new DotNetProvider(typeExtent.TypeLookup);
         var extent = new MofUriExtent(provider, "dm:///test", null);
         var otherExtent = new MofUriExtent(new InMemoryProvider(), "dm:///otherextent", null);
@@ -363,9 +378,9 @@ public class DotNetExtentTests
         Assert.That((children.ElementAt(0) as IElement)!.getOrDefault<string>("Name"), Is.EqualTo("New Child"));
     }
 
-    internal static MofUriExtent Initialize()
+    internal static MofUriExtent Initialize(IDatenMeisterScope scope)
     {
-        var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
+        var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", scope.ScopeStorage);
 
         extent.CreateTypeSpecification(typeof(DotNetTests.TestClass));
         extent.CreateTypeSpecification(typeof(DotNetTests.Person));

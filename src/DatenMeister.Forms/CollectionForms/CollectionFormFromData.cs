@@ -5,7 +5,6 @@ using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Forms.Fields;
 using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.CollectionForms;

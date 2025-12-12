@@ -1,9 +1,7 @@
 ﻿using Autofac;
-using DatenMeister.Core;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Provider;
 using DatenMeister.Core.Interfaces.Workspace;
-using DatenMeister.Core.Provider;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;

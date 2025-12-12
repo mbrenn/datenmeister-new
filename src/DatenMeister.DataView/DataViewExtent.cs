@@ -1,5 +1,4 @@
-﻿using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Implementation;
+﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;

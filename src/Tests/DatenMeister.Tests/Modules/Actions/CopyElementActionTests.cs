@@ -27,16 +27,16 @@ public class CopyElementActionTests
 
         await actionLogic.ExecuteAction(action);
 
-        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
 
-        Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?target1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?target1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
     }
 
     [Test]
@@ -55,16 +55,16 @@ public class CopyElementActionTests
 
         await actionLogic.ExecuteAction(action);
 
-        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
 
-        Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?target1", ResolveType.NoWorkspace) as MofElement, Is.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?target1", ResolveType.IncludeExtent) as MofElement, Is.Null);
     }
 
     [Test]
@@ -83,15 +83,15 @@ public class CopyElementActionTests
 
         await actionLogic.ExecuteAction(action);
 
-        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as MofElement, Is.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.IncludeExtent) as MofElement, Is.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.IncludeExtent) as MofElement, Is.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.IncludeExtent) as MofElement, Is.Null);
 
-        Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
     }
 
     [Test]
@@ -109,15 +109,15 @@ public class CopyElementActionTests
 
         await actionLogic.ExecuteAction(action);
 
-        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
 
-        Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.IncludeExtent) as MofElement, Is.Null);
     }
 
     [Test]
@@ -135,17 +135,17 @@ public class CopyElementActionTests
 
         await actionLogic.ExecuteAction(action);
 
-        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
 
-        Assert.That(target.GetUriResolver().Resolve("?target1::source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.1", ResolveType.NoWorkspace) as MofElement,
+        Assert.That(target.GetUriResolver().Resolve("?target1::source1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.1", ResolveType.IncludeExtent) as MofElement,
             Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.2", ResolveType.NoWorkspace) as MofElement,
+        Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.2", ResolveType.IncludeExtent) as MofElement,
             Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?target1::source2", ResolveType.NoWorkspace) as MofElement, Is.Null);
+        Assert.That(target.GetUriResolver().Resolve("?target1::source2", ResolveType.IncludeExtent) as MofElement, Is.Null);
     }
 
     [Test]
@@ -155,7 +155,7 @@ public class CopyElementActionTests
         var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
         // Check that packagedElement is the property
-        var sourceElement = source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as IObject;
+        var sourceElement = source.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as IObject;
         Assert.That(sourceElement, Is.Not.Null);
         Assert.That(DefaultClassifierHints.GetDefaultPackagePropertyName(sourceElement!),
             Is.EqualTo("packagedElement"));
@@ -171,15 +171,15 @@ public class CopyElementActionTests
 
         await actionLogic.ExecuteAction(action);
 
-        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
 
-        Assert.That(target.GetUriResolver().Resolve("?target1::source1", ResolveType.NoWorkspace) as MofElement, Is.Null);
-        Assert.That(target.GetUriResolver().Resolve("?target1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?target1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?target1::source2", ResolveType.NoWorkspace) as MofElement, Is.Null);
+        Assert.That(target.GetUriResolver().Resolve("?target1::source1", ResolveType.IncludeExtent) as MofElement, Is.Null);
+        Assert.That(target.GetUriResolver().Resolve("?target1::source1.1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?target1::source1.2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?target1::source2", ResolveType.IncludeExtent) as MofElement, Is.Null);
     }
 
     [Test]
@@ -189,7 +189,7 @@ public class CopyElementActionTests
         var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
         // Check that packagedElement is the property
-        var sourceElement = source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as IObject;
+        var sourceElement = source.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as IObject;
         Assert.That(sourceElement, Is.Not.Null);
         Assert.That(DefaultClassifierHints.GetDefaultPackagePropertyName(sourceElement!),
             Is.EqualTo("packagedElement"));
@@ -204,16 +204,16 @@ public class CopyElementActionTests
 
         await actionLogic.ExecuteAction(action);
 
-        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
 
-        Assert.That(target.GetUriResolver().Resolve("?target1::source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.1", ResolveType.NoWorkspace) as MofElement,
+        Assert.That(target.GetUriResolver().Resolve("?target1::source1", ResolveType.IncludeExtent) as MofElement, Is.Not.Null);
+        Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.1", ResolveType.IncludeExtent) as MofElement,
             Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.2", ResolveType.NoWorkspace) as MofElement,
+        Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.2", ResolveType.IncludeExtent) as MofElement,
             Is.Not.Null);
-        Assert.That(target.GetUriResolver().Resolve("?target1::source2", ResolveType.NoWorkspace) as MofElement, Is.Null);
+        Assert.That(target.GetUriResolver().Resolve("?target1::source2", ResolveType.IncludeExtent) as MofElement, Is.Null);
     }
 }

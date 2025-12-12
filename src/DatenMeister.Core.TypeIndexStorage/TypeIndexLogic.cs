@@ -33,7 +33,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     /// <summary>
     /// Gets the TypeIndexStore
     /// </summary>
-    private TypeIndexStore TypeIndexStore => ScopeStorage.Get<TypeIndexStore>();
+    public TypeIndexStore TypeIndexStore { get;  } = workspaceLogic.ScopeStorage.Get<TypeIndexStore>();
 
     /// <summary>
     /// Called by the plugin after all the types have been loaded.
@@ -50,17 +50,34 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
     /// <summary>
+    /// Checks, if the index is active. If yes, wait until the index has been updated.
+    /// If the index is not active, then return false but also do not wait
+    /// </summary>
+    /// <returns>true, if the index is up-to-date</returns>
+    public bool WaitForUpToDateIfIndexIsActive()
+    {
+        if (TypeIndexStore.TriggersReceived > 0)
+        {
+            TypeIndexStore.GetCurrentIndexStore();
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// In case there is an update of the type index, the method can be called
     /// It starts a listening of 5 seconds and then triggers the update of the index
     /// in case no other call has been requested
     /// </summary>
-    private async Task TriggerUpdateOfIndex(bool firstRun = false)
+    public async Task TriggerUpdateOfIndex(bool firstRun = false)
     {
         lock (TypeIndexStore.IndexIsUpToDateEvent)
         {
             TypeIndexStore.IncrementTriggers();
             TypeIndexStore.LastTriggerTime = DateTime.Now;
                 
+            // Check, if the index is currently in build up
             if (!TypeIndexStore.IndexIsUpToDateEvent.WaitOne(0))
             {
                 Logger.Info("We received a trigger, but the index is already being built.");
@@ -70,9 +87,6 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                 TypeIndexStore.TriggerOccuredDuringIndexing = true;
                 return;
             }
-            
-            // Now, we know that we can trigger the update itself.
-            
             // First, mark that we are updating the index
             TypeIndexStore.IndexIsUpToDateEvent.Reset();
         }
@@ -137,7 +151,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                 }
                 catch (OperationCanceledException)
                 {
-                    // Task was cancelled, which is expected
+                    // Task was cancelled, so we completely quit
                     return;
                 }
 
@@ -205,7 +219,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     /// This method builds the type index data by processing workspace information and updates the current index state.
     /// It is invoked internally during index updates and manages synchronization to ensure thread-safe index building.
     /// </summary>
-    private void PerformIndexing()
+    public void PerformIndexing()
     {
         using var stopWatchLogger = new StopWatchLogger(Logger,
             $"Performing indexing. Count: {TypeIndexStore.NumberOfReindexes}");
@@ -252,6 +266,52 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
 
                 indexData.Workspaces.Add(model);
             }
+
+            // Checks whether the workspaces are neighbors
+            foreach (var workspaceModel in indexData.Workspaces)
+            {
+                foreach (var otherWorkspaceModel in indexData.Workspaces.Where(x=> x != workspaceModel))
+                {
+                    if (!IsMetaWorkspace(workspaceModel, otherWorkspaceModel)
+                        && !IsMetaWorkspace(otherWorkspaceModel, workspaceModel))
+                    {
+                        workspaceModel.NeighborWorkspaces.Add(otherWorkspaceModel.WorkspaceId);
+                    }
+                }
+            }
+            
+            
+            // Now we need to understand the neighboring workspaces which are not dependent to each other
+            // A workspace is dependent to each other in case it has a metaworkspace (one level or multiple)
+            // or is a metaworkspace of the other
+            bool IsMetaWorkspace(WorkspaceModel focus, WorkspaceModel other, HashSet<string>? visited = null)
+            {
+                // Infinite Loop breaker! 
+                visited ??= new HashSet<string>();
+                if (!visited.Add(focus.WorkspaceId))
+                {
+                    return false;
+                }
+                
+                // First, check that the source is not a direct or indirect workspace of the target
+                if (focus.MetaclassWorkspaces.Any(x => x == other.WorkspaceId))
+                {
+                    return true;
+                }
+
+                // Checks recursively that the workspace is might be contained by that workspace
+                foreach (var metaWorkspace in focus.MetaclassWorkspaces)
+                {
+                    var metaWorkspaceOfFocus = indexData.FindWorkspace(metaWorkspace);
+                    if (metaWorkspaceOfFocus != null && IsMetaWorkspace(metaWorkspaceOfFocus, other, visited))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            
         }
 
         using (var _ = new StopWatchLogger(Logger, "Building classes"))
@@ -335,7 +395,8 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         {
             // Ok, we have packaged element, gets all of them and return them
             var packagedElements = 
-                element.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement).OfType<IElement>();
+                element.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement)
+                    .OfType<IElement>().ToList();
             foreach (var packagedElement in packagedElements)
             {
                 AddClassesToWorkspace(workspaceModel, packagedElement);
@@ -363,9 +424,11 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             FullName = NamedElementMethods.GetFullName(element),
             Uri = (element as IKnowsUri)?.Uri ?? string.Empty
         };
-        
+
         // Get th Generalizations of the class
-        var generalizations = element.getOrDefault<IReflectiveCollection?>(_UML._StructuredClassifiers._Class.generalization);
+        var generalizations =
+            element.getOrDefault<IReflectiveCollection?>(_UML._StructuredClassifiers._Class.generalization)
+                ?.ToList();
         if (generalizations != null)
         {
             foreach (var generalization in generalizations.OfType<IElement>())
@@ -379,8 +442,10 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         }
 
         // Now get the properties / attributes
-        var ownedAttributes = element.getOrDefault<IReflectiveCollection?>(
-            _UML._StructuredClassifiers._Class.ownedAttribute);
+        var ownedAttributes =
+            element.getOrDefault<IReflectiveCollection?>(
+                    _UML._StructuredClassifiers._Class.ownedAttribute)
+                ?.ToList();
         if (ownedAttributes != null)
         {
             foreach (var attribute in ownedAttributes.OfType<IElement>())
@@ -408,9 +473,18 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             Url = (attribute as IKnowsUri)?.Uri ?? string.Empty,
             Id = (attribute as IHasId)?.Id ?? string.Empty
         };
-        
-        var multiplier = attribute.getOrDefault<int>(_UML._Classification._Property.upperValue);
-        attributeModel.IsMultiple = multiplier is not (0 or 1);
+
+        if (attribute.isSet(_UML._Classification._Property.upperValue))
+        {
+            var multiplier = attribute.getOrDefault<string>(_UML._Classification._Property.upperValue);
+            attributeModel.IsMultiple = multiplier is not ("0" or "1");
+        }
+
+        if (attribute.isSet(_UML._Classification._Property.upper))
+        {
+            var multiplier = attribute.getOrDefault<string>(_UML._Classification._Property.upper);
+            attributeModel.IsMultiple = multiplier is not ("0" or "1");
+        }
 
         var defaultValue = attribute.getOrDefault<object?>(_UML._Classification._Property.defaultValue);
         if (defaultValue != null)

@@ -8,8 +8,6 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models.EMOF;
-using DatenMeister.Core.Provider;
-using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.Uml.Helper;
 

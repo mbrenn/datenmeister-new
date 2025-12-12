@@ -126,8 +126,8 @@ public class ObjectCopier
 
         copyOptions ??= CopyOptions.None;
 
-        if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
-        if (targetElement == null) throw new ArgumentNullException(nameof(targetElement));
+        ArgumentNullException.ThrowIfNull(sourceElement);
+        ArgumentNullException.ThrowIfNull(targetElement);
         if (sourceElement is not IObjectAllProperties elementAsExt)
         {
             throw new ArgumentException($"{nameof(sourceElement)} is not of type IObjectAllProperties");

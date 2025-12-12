@@ -12,7 +12,7 @@ public class WorkspaceData
     /// <summary>
     /// Stores the workspaces
     /// </summary>
-    public List<IWorkspace> Workspaces { get; set; } = new();
+    public List<IWorkspace> Workspaces { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the default layer that shall be assumed, if no information is considered as available.

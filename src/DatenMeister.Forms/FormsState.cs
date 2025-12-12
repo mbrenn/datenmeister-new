@@ -1,6 +1,4 @@
-﻿using DatenMeister.Forms.FormModifications;
-
-namespace DatenMeister.Forms;
+﻿namespace DatenMeister.Forms;
 
 /// <summary>
 /// Defines the data-structure for the form modification plugin

@@ -33,33 +33,46 @@ public enum ResolveType
     /// Default resolving process in which all extents in current workspace but also meta workspaces are resolved.
     /// If nothing was found, a full search will be started
     /// </summary>
-    Default = 0x01,
+    Default = IncludeExtent 
+              | IncludeWorkspace 
+              | IncludeMetaWorkspaces
+              | IncludeNeighboringWorkspaces
+              | IncludeMetaOfMetaWorkspaces,
 
     /// <summary>
-    /// Resolving in which the current workspace will not be looked. The type
-    /// will only be looked within the meta workspaces and extents. Useful to look for meta classes
-    /// </summary>
-    OnlyMetaClasses = 0x02,
-
+    /// Resolves only within the extent
+    /// </summary> 
+    IncludeExtent = 0x01,
+    
     /// <summary>
-    /// Resolving in which the current extent is resolved solely
+    /// Resolves also within the workspace
     /// </summary>
-    NoWorkspace = 0x04,
-
+    IncludeWorkspace = 0x02,
+    
     /// <summary>
-    /// Performs the resolving process only in the current workspace
+    /// Includes the workspaces which are on the same level as the current workspace
     /// </summary>
-    NoMetaWorkspaces = 0x08,
-        
+    IncludeNeighboringWorkspaces = 0x04,
+    
     /// <summary>
     /// Searches also within the workspace within the types
     /// </summary>
-    AlsoTypeWorkspace = 0x10,
-
+    IncludeTypeWorkspace = 0x08,
+    
     /// <summary>
-    ///     Searches only in the meta-workspaces and does not look in the Data and other 'first-level' workspaces.
+    /// Resolves also within the meta workspaces. The workspace itself is not included
     /// </summary>
-    OnlyMetaWorkspaces = 0x20
+    IncludeMetaWorkspaces = 0x10,
+    
+    /// <summary>
+    /// Does not include only the meta workspace, it also includes the meta workspaces of the meta workspaces...
+    /// </summary>
+    IncludeMetaOfMetaWorkspaces = 0x20,
+    
+    /// <summary>
+    /// We parse through everything! That is the most time-consuming resolving process. We should really avoid that. 
+    /// </summary>
+    IncludeAll = 0x40
 }
 
 public static class ResolveTypeExtensions

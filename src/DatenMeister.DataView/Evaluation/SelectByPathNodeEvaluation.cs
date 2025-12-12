@@ -1,6 +1,4 @@
 ﻿using BurnSystems.Logging;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -38,7 +36,7 @@ public class SelectByPathNodeEvaluation : IDataViewNodeEvaluation
             throw new InvalidOperationException($"Workspace is not found: {workspaceId}");
         }
 
-        var found = workspace.Resolve(path, ResolveType.NoMetaWorkspaces, true);
+        var found = workspace.Resolve(path, ResolveType.IncludeWorkspace, true);
 
         if (found is IElement element)
         {

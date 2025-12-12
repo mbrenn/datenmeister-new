@@ -1,12 +1,12 @@
 ﻿using System.Globalization;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.DefaultValue;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
-using DatenMeister.Core.Provider;
 using DatenMeister.Core.Uml.Helper;
 
 // ReSharper disable InconsistentNaming
@@ -119,7 +119,7 @@ public static class ObjectHelper
     /// <returns>The content of the element or default(T) if not known</returns>
     public static T get<T>(this IObject value, string property, bool noReferences = false)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(value);
 
         if (typeof(T) == typeof(object) && value is MofExtent)
         {
@@ -182,15 +182,17 @@ public static class ObjectHelper
         if (typeof(T) == typeof(IElement))
         {
             var asSingle = (value.GetAsSingle(property, noReferences, ObjectType.Element) as IElement)!;
-            return asSingle is MofObjectShadow ? default : (T) asSingle;
+            return asSingle is not IElement ? default : (T) asSingle;
         }
 
         if (typeof(T) == typeof(IReflectiveCollection))
         {
             if (!(value is IHasMofExtentMetaObject metaObject))
                 throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
-                
-            return (T) (object) new MofReflectiveSequence(metaObject.GetMetaObject(), property)
+
+            var asMetaObject = metaObject.GetMetaObject();
+            return (T)(object)new MofReflectiveSequence(asMetaObject, property,
+                asMetaObject.GetClassModel()?.FindAttribute(property))
             {
                 NoReferences = noReferences
             };
@@ -200,8 +202,10 @@ public static class ObjectHelper
         {
             if (!(value is IHasMofExtentMetaObject metaObject))
                 throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
-                
-            return (T) (object) new MofReflectiveSequence(metaObject.GetMetaObject(), property)
+
+            var asMetaObject = metaObject.GetMetaObject();
+            return (T)(object)new MofReflectiveSequence(asMetaObject, property,
+                asMetaObject.GetClassModel()?.FindAttribute(property))
             {
                 NoReferences = noReferences
             };
@@ -278,6 +282,10 @@ public static class ObjectHelper
     {
         if (!value.isSet(property))
         {
+            if (value is IElement asElement)
+            {
+                return DefaultValueHandler.ReadDefaultValueOfProperty<T>(asElement, property);
+            }
             return default;
         }
 
@@ -320,7 +328,9 @@ public static class ObjectHelper
     /// <param name="toBeAdded"></param>
     public static void AddCollectionItem(this IObject value, string property, object toBeAdded)
     {
-        var reflection = new MofReflectiveSequence((MofObject) value, property);
+        var asMofObject = value as MofObject ?? throw new InvalidOperationException("The given value is not an MofObject");
+        var reflection =
+            new MofReflectiveSequence(asMofObject, property, asMofObject.GetClassModel()?.FindAttribute(property));
         reflection.add(toBeAdded);
     }
 
@@ -334,7 +344,9 @@ public static class ObjectHelper
     /// <returns>true, if removal has been successful</returns>
     public static bool RemoveCollectionItem(this IObject value, string property, object toBeRemoved)
     {
-        var reflection = new MofReflectiveSequence((MofObject) value, property);
+        var asMofObject = value as MofObject ?? throw new InvalidOperationException("The given value is not an MofObject");
+        var reflection =
+            new MofReflectiveSequence(asMofObject, property, asMofObject.GetClassModel()?.FindAttribute(property));
         return reflection.remove(toBeRemoved);
     }
        
@@ -342,7 +354,7 @@ public static class ObjectHelper
         this IObject value,
         IEnumerable<string> properties)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(value);
 
         var result = new Dictionary<object, object?>();
 
@@ -475,7 +487,7 @@ public static class ObjectHelper
         if (!value.isSet(property))
         {
             // If value is not set, an empty list is returned
-            return new object[] { };
+            return [];
         }
 
         var result = value.get(property);
@@ -538,7 +550,7 @@ public static class ObjectHelper
     /// <returns>The found extent</returns>
     public static IExtent? GetExtentOf(this IObject value)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(value);
 
         // If the given object is already an extent... happy life
         if (value is IExtent asExtent)
@@ -695,6 +707,8 @@ public static class ObjectHelper
     public static IUriResolver GetUriResolver(this IExtent element) =>
         (element as IUriResolver) ?? throw new InvalidOperationException("element is not of type IUriResolver");
 
+    public static IUriResolver? TryGetUriResolver(this IExtent element) => element as IUriResolver;
+
     /// <summary>
     /// Gets all possible properties of the given element.
     /// If the element has a metaclass (or some other Classifier), the properties
@@ -772,12 +786,8 @@ public static class ObjectHelper
 
         // Second, check whether the element contains to an extent
         var extent = (value as IHasExtent)?.Extent;
-        if (extent is not null)
-        {
-            // Removes the element from the extent 
-            return extent.elements().remove(value);
-        }
-        
-        return false;
+        return extent is not null &&
+               // Removes the element from the extent 
+               extent.elements().remove(value);
     }
 }

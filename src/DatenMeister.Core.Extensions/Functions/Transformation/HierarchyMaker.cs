@@ -14,7 +14,7 @@ public static class HierarchyMaker
     /// <param name="settings">Settings being used</param>
     public static void Convert(HierarchyByParentSettings settings)
     {
-        if (settings == null) throw new ArgumentNullException(nameof(settings));
+        ArgumentNullException.ThrowIfNull(settings);
         if (settings.Sequence == null) throw new InvalidOperationException("settings.Sequence == null");
         if (settings.TargetFactory == null) throw new InvalidOperationException("target.TargetFactory == null");
         if (settings.TargetSequence == null) throw new InvalidOperationException("target.TargetSequence == null");
@@ -86,7 +86,7 @@ public static class HierarchyMaker
 
     public static void Convert(HierarchyByChildrenSettings settings)
     {
-        if (settings == null) throw new ArgumentNullException(nameof(settings));
+        ArgumentNullException.ThrowIfNull(settings);
         Debug.Assert(settings.Sequence != null);
         Debug.Assert(settings.TargetFactory != null);
         Debug.Assert(settings.TargetSequence != null);

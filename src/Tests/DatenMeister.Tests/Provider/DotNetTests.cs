@@ -18,9 +18,10 @@ namespace DatenMeister.Tests.Provider;
 public class DotNetTests
 {
     [Test]
-    public void TestDotNetTypeCreation()
+    public async Task TestDotNetTypeCreation()
     {
-        var typeExtent = DotNetExtentTests.Initialize();
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var typeExtent = DotNetExtentTests.Initialize(dm);
         var provider = new DotNetProvider(typeExtent.TypeLookup);
         var extent = new MofUriExtent(provider, "dm:///test", null);
         extent.AddMetaExtent(typeExtent);

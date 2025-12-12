@@ -1,7 +1,4 @@
-﻿using DatenMeister.Core;
-using DatenMeister.Core.Helper;
-using DatenMeister.Core.Models;
-using DatenMeister.Core.Runtime.Workspaces;
+﻿using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
@@ -53,9 +50,9 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
         var targetExtent = formMethods.GetInternalFormExtent();
         var localTypeExtent = localTypeSupport.GetInternalTypeExtent();
         PackageMethods.ImportByStream(
-            GetXmiStreamForForms(), null, targetExtent, "DatenMeister.Extent.Forms");
+            scopeStorage, GetXmiStreamForForms(), null, targetExtent, "DatenMeister.Extent.Forms");
         PackageMethods.ImportByStream(
-            GetXmiStreamForTypes(), null, localTypeExtent, "DatenMeister.Extent.Forms");
+            scopeStorage, GetXmiStreamForTypes(), null, localTypeExtent, "DatenMeister.Extent.Forms");
     }
 
 

@@ -1,5 +1,4 @@
 ﻿using BurnSystems.Logging;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
@@ -29,7 +28,7 @@ public class ActionSetMethods
             throw new InvalidOperationException(message);
         }
             
-        var sourceElement = workspace.Resolve(path, ResolveType.NoMetaWorkspaces);
+        var sourceElement = workspace.Resolve(path, ResolveType.IncludeWorkspace);
         if (!(sourceElement is IElement asElement))
         {
             var message = $"sourcePath is not found {path}";
@@ -60,7 +59,7 @@ public class ActionSetMethods
             throw new InvalidOperationException(message);
         }
             
-        var sourceElement = workspace.Resolve(path, ResolveType.NoMetaWorkspaces);
+        var sourceElement = workspace.Resolve(path, ResolveType.IncludeWorkspace);
         if (!(sourceElement is IReflectiveCollection asReflectiveCollection))
         {
             var message = $"sourcePath is not found {path}";

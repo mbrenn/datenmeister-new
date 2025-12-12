@@ -1,7 +1,6 @@
 ﻿using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
@@ -43,7 +42,7 @@ public class ExportToXmiActionHandler : IActionHandler
                 throw new InvalidOperationException(message);
             }
 
-            var sourceElement = workspace.Resolve(sourcePath, ResolveType.NoMetaWorkspaces);
+            var sourceElement = workspace.Resolve(sourcePath, ResolveType.IncludeWorkspace);
             if (sourceElement == null)
             {
                 var message = $"sourcePath is not found {sourcePath}";

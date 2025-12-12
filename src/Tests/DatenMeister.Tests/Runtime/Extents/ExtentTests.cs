@@ -14,6 +14,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Extent.Manager.ExtentStorage;
@@ -417,7 +418,8 @@ public class ExtentTests
         var userTypes = localTypeSupport.GetUserTypeExtent();
         var factory = new MofFactory(userTypes);
 
-        var extent = new MofUriExtent(new InMemoryProvider(), null);
+        var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test_types/", dm.ScopeStorage);
+        dm.WorkspaceLogic.GetTypesWorkspace().AddExtent(extent);
 
         type = factory.create(_UML.TheOne.StructuredClassifiers.__Class);
         var property1 = factory.create(_UML.TheOne.Classification.__Property);
@@ -436,6 +438,10 @@ public class ExtentTests
         type.set(_UML._CommonStructure._NamedElement.name, "your");
 
         userTypes.elements().add(type);
+
+        var typeIndex = new TypeIndexLogic(dm.WorkspaceLogic);
+        //typeIndex.PerformIndexing();
+        typeIndex.TypeIndexStore.WaitForAvailabilityOfIndexStore();
         return extent;
     }
 

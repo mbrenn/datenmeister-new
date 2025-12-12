@@ -72,7 +72,7 @@ public class TemporaryReflectiveCollection(IEnumerable<object?> values, bool isR
 
         if (Values.GetType().IsArray)
         {
-            Values = new object[] { };
+            Values = [];
         }
         else
         {

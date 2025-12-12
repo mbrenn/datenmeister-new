@@ -1,9 +1,7 @@
 ﻿using System.Reflection;
 using DatenMeister.Actions;
-using DatenMeister.Core;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
-using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Plugins;
 using DatenMeister.Types;
@@ -32,7 +30,7 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
         var localTypeSupport = new LocalTypeSupport(workspaceLogic, scopeStorage);
         var localTypeExtent = localTypeSupport.GetInternalTypeExtent();
         PackageMethods.ImportByStream(
-            GetXmiStreamForTypes(), null, localTypeExtent, "DatenMeister.Zip");
+            scopeStorage, GetXmiStreamForTypes(), null, localTypeExtent, "DatenMeister.Zip");
     }
 
     private static Stream GetXmiStreamForTypes()

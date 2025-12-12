@@ -144,7 +144,7 @@ public class FormTests
         var comparisonType = localTypeSupport.InternalTypes.element(
             "dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.ComparisonType");
 
-        var extent = XmiExtensions.CreateXmiExtent("dm:///test");
+        var extent = XmiExtensions.CreateXmiExtent("dm:///test", scope.ScopeStorage);
         var factory = new MofFactory(extent);
 
         var form = factory.create(_Forms.TheOne.__RowForm);

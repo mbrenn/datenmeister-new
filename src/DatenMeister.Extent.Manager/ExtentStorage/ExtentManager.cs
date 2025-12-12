@@ -2,19 +2,16 @@
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Locking;
-using static DatenMeister.Core.Models._ExtentLoaderConfigs;
 
 namespace DatenMeister.Extent.Manager.ExtentStorage;
 
@@ -124,6 +121,7 @@ public class ExtentManager
             }
 
             await LoadExtentWithoutAddingInternal(configuration, extentCreationFlags, extentInformation);
+            
             configuration = extentInformation.Configuration;
             var uriExtent = extentInformation.Extent;
             if (extentInformation.IsExtentAddedToWorkspace)
@@ -296,6 +294,11 @@ public class ExtentManager
         }
         catch (Exception e)
         {
+            if (e is ProviderLoaderNotFoundException)
+            {
+                throw;
+            }
+            
             extentInformation.LoadingState = ExtentLoadingState.Failed;
             extentInformation.FailLoadingMessage = e.ToString();
             extentInformation.IsExtentAddedToWorkspace = true;
@@ -871,14 +874,9 @@ public class ExtentManager
         }
 
         var metaWorkspaces = workspace.MetaWorkspaces;
-        foreach (var metaWorkspace in metaWorkspaces)
+        foreach (var metaWorkspace in metaWorkspaces
+                     .Where(metaWorkspace => metaWorkspace.id != workspaceId))
         {
-            if (metaWorkspace.id == workspaceId)
-            {
-                // Skip the self reference
-                continue;
-            }
-
             if (workspaceList.Any(x => x == metaWorkspace.id))
             {
                 return true;

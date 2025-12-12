@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Xml.Linq;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
@@ -53,7 +52,7 @@ public class SimpleLoader
 
     public void LoadFromFile(IFactory factory, IUriExtent extent, string filePath)
     {
-        if (factory == null) throw new ArgumentNullException(nameof(factory));
+        ArgumentNullException.ThrowIfNull(factory);
         using var stream = new FileStream(filePath, FileMode.Open);
         LoadFromStream(factory, extent, stream);
     }
@@ -120,8 +119,8 @@ public class SimpleLoader
     /// <param name="element">Xml Element to be used to load object</param>
     private IObject LoadElement(IFactory factory, XElement element)
     {
-        if (factory == null) throw new ArgumentNullException(nameof(factory));
-        if (element == null) throw new ArgumentNullException(nameof(element));
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(element);
 
         var resultingElement = factory.create(null);
         foreach (var attribute in element.Attributes())

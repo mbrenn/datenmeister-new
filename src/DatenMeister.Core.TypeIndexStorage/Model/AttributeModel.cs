@@ -37,9 +37,9 @@ public record AttributeModel
     
     /// <summary>
     /// Gets or sets the flag whether this attribute is a single instance or a multiple instance.
-    /// Multiplier >1 or *
+    /// Multiplier >1 or *. This variable is null in case no multiplicity is set.
     /// </summary>
-    public bool IsMultiple { get; set; }
+    public bool? IsMultiple { get; set; }
     
     /// <summary>
     /// Gets or sets the flag whether the attribute is inherited from a parent class

@@ -1,6 +1,4 @@
-﻿using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Interfaces;
+﻿using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
@@ -66,7 +64,7 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
             var workspace = WorkspaceLogic.GetWorkspace(workspaceId);
             if (workspace == null) throw new InvalidOperationException($"Workspace '{workspaceId}' is not found");
 
-            if (workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) is not IObject foundElement)
+            if (workspace.Resolve(itemUri, ResolveType.IncludeWorkspace) is not IObject foundElement)
                 throw new InvalidOperationException($"Element '{itemUri}' in Workspace {workspaceId} is not found");
 
             return foundElement;

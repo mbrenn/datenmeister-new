@@ -1,8 +1,6 @@
 ﻿using BurnSystems.Logging;
 using DatenMeister.Actions.ActionHandler;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Functions.Queries;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
@@ -43,7 +41,7 @@ public class ItemTransformationActionHandler : IActionHandler
                 throw new InvalidOperationException(message);
             }
 
-            var sourceElement = sourceWorkspace.Resolve(path, ResolveType.NoMetaWorkspaces);
+            var sourceElement = sourceWorkspace.Resolve(path, ResolveType.IncludeWorkspace);
 
             if (sourceElement == null)
             {

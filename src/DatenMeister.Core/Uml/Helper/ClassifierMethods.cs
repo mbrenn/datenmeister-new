@@ -26,8 +26,8 @@ public static class ClassifierMethods
     /// <param name="followGeneralizations">true, if the generalizations shall also be followed</param>
     public static IEnumerable<IElement> GetPropertiesOfClassifier(IObject classifier, HashSet<string>? alreadyIn = null, bool followGeneralizations = true)
     {
-        if (classifier == null) throw new ArgumentNullException(nameof(classifier));
-        alreadyIn ??= new HashSet<string>();
+        ArgumentNullException.ThrowIfNull(classifier);
+        alreadyIn ??= [];
 
         var propertyOwnedAttribute = _UML._StructuredClassifiers._StructuredClassifier.ownedAttribute;
 
@@ -71,7 +71,7 @@ public static class ClassifierMethods
     /// <returns>The found property</returns>
     public static IElement? GetPropertyOfClassifier(IObject classifier, string propertyName)
     {
-        if (classifier == null) throw new ArgumentNullException(nameof(classifier));
+        ArgumentNullException.ThrowIfNull(classifier);
 
         var properties = GetPropertiesOfClassifier(classifier);
         return properties.FirstOrDefault(x => x.getOrDefault<string>(_UML._CommonStructure._NamedElement.name) == propertyName);
@@ -107,7 +107,7 @@ public static class ClassifierMethods
     /// <returns>Enumeration of elements</returns>
     public static IEnumerable<IElement> GetGeneralizations(IObject classifier, HashSet<IElement>? alreadyVisited = null)
     {
-        alreadyVisited ??= new HashSet<IElement>();
+        alreadyVisited ??= [];
         var propertyGeneralization = _UML._Classification._Classifier.generalization;
         var propertyGeneral = _UML._Classification._Generalization.general;
 
@@ -165,7 +165,7 @@ public static class ClassifierMethods
         HashSet<IElement>? visitedElements = null,
         bool withoutItself = false)
     {
-        visitedElements ??= new HashSet<IElement>();
+        visitedElements ??= [];
         var extent = (element as IHasExtent)?.Extent;
         var workspace = extent?.GetWorkspace();
         if (extent == null)
@@ -286,8 +286,8 @@ public static class ClassifierMethods
     /// <param name="generalizedClassifier">Generalized class being used as base for specialized one</param>
     public static IElement? AddGeneralization(IElement specializedClassifier, IElement generalizedClassifier)
     {
-        if (specializedClassifier == null) throw new ArgumentNullException(nameof(specializedClassifier));
-        if (generalizedClassifier == null) throw new ArgumentNullException(nameof(generalizedClassifier));
+        ArgumentNullException.ThrowIfNull(specializedClassifier);
+        ArgumentNullException.ThrowIfNull(generalizedClassifier);
 
         if (GetGeneralizations(specializedClassifier).Contains(generalizedClassifier))
         {

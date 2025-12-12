@@ -13,7 +13,7 @@ public class InMemoryProviderLinkedList : IProviderWithTypeIndex, ICanUpdateCach
     /// <summary>
     /// Stores the elements of the current provider
     /// </summary>
-    private readonly LinkedList<InMemoryObject> _elements = new();
+    private readonly LinkedList<InMemoryObject> _elements = [];
         
     /// <summary>
     /// Stores the instances for the objects within the cache
@@ -29,14 +29,20 @@ public class InMemoryProviderLinkedList : IProviderWithTypeIndex, ICanUpdateCach
         IsTemporaryStorage = true
     };
 
+    private IProviderWithTypeIndex? _providerWithTypeIndex;
+
     /// <inheritdoc />
     public IProviderObject CreateElement(string? metaClassUri) =>
         new InMemoryObject(this, metaClassUri);
     
 
     public IProvider Provider => ProviderWithTypeIndex;
-    
-    public IProviderWithTypeIndex ProviderWithTypeIndex { get; set; }
+
+    public IProviderWithTypeIndex ProviderWithTypeIndex
+    {
+        get => _providerWithTypeIndex ?? throw new InvalidOperationException("Provider is not of type IProviderWithTypeIndex");
+        set => _providerWithTypeIndex = value;
+    }
 
     /// <summary>
     /// Stores the context to retrieve information about types from the typeindex logic.

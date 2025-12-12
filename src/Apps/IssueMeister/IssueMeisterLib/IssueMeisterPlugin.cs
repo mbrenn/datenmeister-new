@@ -1,8 +1,6 @@
-﻿using DatenMeister.Core;
-using DatenMeister.Core.Interfaces;
+﻿using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
-using DatenMeister.Forms;
 using DatenMeister.Forms.Helper;
 using DatenMeister.Plugins;
 using DatenMeister.Types;
@@ -19,6 +17,7 @@ public class IssueMeisterPlugin : IDatenMeisterPlugin
     public const string ExtentTypeName = "IssueMeister";
     private readonly FormMethods _formsPlugin;
     private readonly LocalTypeSupport _localTypeSupport;
+    private readonly IScopeStorage _scopeStorage;
     private readonly ExtentSettings _extentSettings;
 
     /// <summary>
@@ -34,6 +33,7 @@ public class IssueMeisterPlugin : IDatenMeisterPlugin
     {
         _formsPlugin = formsPlugin;
         _localTypeSupport = localTypeSupport;
+        _scopeStorage = scopeStorage;
         _extentSettings = scopeStorage.Get<ExtentSettings>();
     }
 
@@ -41,6 +41,7 @@ public class IssueMeisterPlugin : IDatenMeisterPlugin
     {
         // Import 
         PackageMethods.ImportByManifest(
+            _scopeStorage,
             typeof(IssueMeisterPlugin),
             "IssueMeisterLib.Xmi.IssueMeister.Forms.xml",
             PackageName,
@@ -49,6 +50,7 @@ public class IssueMeisterPlugin : IDatenMeisterPlugin
             
         // Import 
         PackageMethods.ImportByManifest(
+            _scopeStorage,
             typeof(IssueMeisterPlugin),
             "IssueMeisterLib.Xmi.IssueMeister.Types.xml",
             PackageName,

@@ -2,6 +2,7 @@
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
@@ -112,10 +113,10 @@ public static class PackageMethods
         IElement? metaClass = null,
         bool flagCreate = true)
     {
-        if (rootElements == null) throw new ArgumentNullException(nameof(rootElements));
+        ArgumentNullException.ThrowIfNull(rootElements);
 
         var elementNames = packagePath
-            .Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries)
+            .Split(["::"], StringSplitOptions.RemoveEmptyEntries)
             .Select(x => x.Trim()).ToList();
 
         var id = "_package";
@@ -173,7 +174,9 @@ public static class PackageMethods
             if (children == null)
             {
                 childElement.set(childProperty, Array.Empty<object>());
-                children = new MofReflectiveSequence((MofObject) childElement, childProperty);
+                var asMofObject = childElement as MofObject ?? throw new InvalidOperationException("Not an MofObject");
+                children = new MofReflectiveSequence(asMofObject, childProperty,
+                    asMofObject.GetClassModel()?.FindAttribute(childProperty));
             }
 
             rootElements = children;
@@ -266,6 +269,7 @@ public static class PackageMethods
     /// <param name="loadingRequired">true, if the loading is required and shall throw an exception
     /// in case the loading failed. </param>
     public static IObject? ImportByManifest(
+        IScopeStorage scopeStorage,
         Type manifestType,
         string manifestName,
         string? sourcePackageName,
@@ -281,7 +285,7 @@ public static class PackageMethods
             throw new InvalidOperationException($"The stream for {manifestName} could not be opened");
         }
 
-        return ImportByStream(stream, sourcePackageName, targetExtent, targetPackageName, loadingRequired);
+        return ImportByStream(scopeStorage, stream, sourcePackageName, targetExtent, targetPackageName, loadingRequired);
     }
 
     /// <summary>
@@ -295,6 +299,7 @@ public static class PackageMethods
     /// <param name="loadingRequired">true, if the loading is required and shall throw an exception
     /// in case the loading failed. </param>
     public static IObject? ImportByStream(
+        IScopeStorage scopeStorage,
         Stream stream,
         string? sourcePackageName,
         IExtent targetExtent,
@@ -303,7 +308,7 @@ public static class PackageMethods
     {
         var document = XDocument.Load(stream);
         var pseudoProvider = new XmiProvider(document);
-        var pseudoExtent = new MofUriExtent(pseudoProvider, null)
+        var pseudoExtent = new MofUriExtent(pseudoProvider, scopeStorage)
         {
             Workspace = (Workspace?) targetExtent.GetWorkspace()
         };

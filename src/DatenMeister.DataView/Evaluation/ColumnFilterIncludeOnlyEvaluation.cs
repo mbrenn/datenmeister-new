@@ -1,10 +1,8 @@
 using BurnSystems.Logging;
 using DatenMeister.Core.Functions.Queries;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.DataView.Evaluation;
 

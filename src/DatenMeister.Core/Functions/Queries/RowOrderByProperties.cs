@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
@@ -13,10 +12,7 @@ public class RowOrderByProperties : IReflectiveCollection, IHasExtent
 
     public RowOrderByProperties(IReflectiveCollection parent, IEnumerable<string> properties)
     {
-        if (properties == null)
-        {
-            throw new ArgumentNullException(nameof(properties));
-        }
+        ArgumentNullException.ThrowIfNull(properties);
 
         _parent = parent ?? throw new ArgumentNullException(nameof(parent));
         _orderByProperty = properties.ToList();

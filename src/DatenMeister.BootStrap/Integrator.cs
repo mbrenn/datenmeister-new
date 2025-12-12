@@ -19,7 +19,6 @@ using DatenMeister.Core.XmiFiles;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Forms;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Forms.Helper;
 using DatenMeister.Plugins;
@@ -230,6 +229,7 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
         var internalUserExtent = localTypeSupport.InternalTypes;
 
         PackageMethods.ImportByStream(
+            scopeStorage,
             XmiResources.GetDatenMeisterTypesStream(),
             null,
             internalUserExtent,
@@ -237,6 +237,7 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
 
         var formMethods = scope.Resolve<FormMethods>();
         PackageMethods.ImportByStream(
+            scopeStorage,
             XmiResources.GetDatenMeisterFormsStream(),
             null,
             formMethods.GetInternalFormExtent(),
@@ -280,7 +281,9 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
         await _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
 
         ResetUpdateFlagsOfExtent(workspaceLogic);
-
+        
+        await _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.AfterFinalizationOfIntegration);
+        
         watch.Stop();
         Logger.Debug($"Elapsed time for bootstrap: {watch.Elapsed}");
 

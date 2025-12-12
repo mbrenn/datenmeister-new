@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Web;
-using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
@@ -51,7 +49,7 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
         else
         {
             foundItem =
-                workspaceLogic.GetWorkspace(workspace)?.Resolve(HttpUtility.UrlDecode(uri), ResolveType.NoMetaWorkspaces)
+                workspaceLogic.GetWorkspace(workspace)?.Resolve(HttpUtility.UrlDecode(uri), ResolveType.IncludeWorkspace)
                     as IObject;
         }
 

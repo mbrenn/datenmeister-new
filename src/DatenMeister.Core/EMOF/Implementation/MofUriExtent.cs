@@ -1,12 +1,10 @@
 ﻿using System.Collections.Concurrent;
 using BurnSystems.Logging;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
 using DatenMeister.Core.Interfaces.Workspace;
-using DatenMeister.Core.Provider;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Proxies;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -37,7 +35,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     /// <summary>
     /// Stores the navigator
     /// </summary>
-    private readonly ExtentUrlNavigator _navigator;
+    public ExtentUrlNavigator Navigator { get; }
 
     /// <summary>
     /// Stores the resolver cache
@@ -50,7 +48,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
         IScopeStorage? scopeStorage) :
         base(provider, scopeStorage)
     {
-        _navigator = new ExtentUrlNavigator(this, scopeStorage);
+        Navigator = new ExtentUrlNavigator(this, scopeStorage);
 
         if (provider is IHasUriResolver hasUriResolver)
         {
@@ -88,7 +86,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     /// </summary>
     public IList<string> AlternativeUris
     {
-        get => new ReflectiveList<string>(new MofReflectiveSequence(GetMetaObject(), AlternativeUrlsProperty));
+        get => new ReflectiveList<string>(new MofReflectiveSequence(GetMetaObject(), AlternativeUrlsProperty, null));
         set => set(AlternativeUrlsProperty, value);
     }
 
@@ -117,11 +115,13 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
 
     /// <inheritdoc />
     public string uri(IElement element)
-        => _navigator.uri(element);
+        => Navigator.uri(element);
 
     /// <inheritdoc />
     public IElement? element(string uri)
-        => _navigator.element(uri) as IElement;
+        => Navigator.element(uri) as IElement;
+
+    private CoreUriResolver? _coreUriResolver;
 
     /// <inheritdoc />
     public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
@@ -140,7 +140,8 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
         }*/
 
         // We have to find it
-        var result = ResolveInternal(workspace, uri, resolveType);
+        _coreUriResolver ??= new CoreUriResolver(_cachedWorkspaceLogic);
+        var result = _coreUriResolver.Resolve(uri, resolveType, Workspace, this);
         if (result == null && traceFailing)
         {
             Logger.Debug($"URI not resolved: {uri} from Extent: {contextURI()}");
@@ -152,7 +153,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
             // Deactivated
             //_resolverCache.AddElementFor(uri, resolveType, result);
         }
-
+        
         return result;
     }
 
@@ -203,106 +204,6 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
         return uri.Substring(pos + 1);
     }
 
-    private object? ResolveInternal(string? workspace, string uri, ResolveType resolveType)
-    {
-        var currentWorkspace = Workspace;
-        if (!string.IsNullOrEmpty(currentWorkspace?.id) && !string.IsNullOrEmpty(workspace) && currentWorkspace.id != workspace)
-        {
-            // Wrong workspace, we need to jump directly into the workspace
-
-            return _cachedWorkspaceLogic?.GetWorkspace(workspace)
-                ?.Resolve(uri, resolveType, false, workspace);
-        }
-
-        if (!resolveType.HasFlagFast(ResolveType.OnlyMetaClasses))
-        {
-            var result = _navigator.element(uri);
-            if (result != null)
-            {
-                return result;
-            }
-
-            if ((resolveType & ResolveType.NoWorkspace) == 0)
-            {
-                var workspaceResult = Workspace?.Resolve(uri, resolveType, false);
-                if (workspaceResult != null)
-                {
-                    return workspaceResult;
-                }
-            }
-        }
-
-        var alreadyVisited = new HashSet<IWorkspace>();
-
-        if ((resolveType & (ResolveType.NoWorkspace | ResolveType.NoMetaWorkspaces)) == 0)
-        {
-            // Now look into the explicit extents, if no specific constraint is given
-            foreach (var element in
-                     MetaExtents
-                         .OfType<IUriExtent>()
-                         .Select(metaExtent => metaExtent.element(uri))
-                         .Where(element => element != null))
-            {
-                return element;
-            }
-
-            var workspaceResult = ResolveByMetaWorkspaces(uri, Workspace, alreadyVisited);
-            if (workspaceResult != null)
-            {
-                return workspaceResult;
-            }
-        }
-
-        if (resolveType.HasFlagFast(ResolveType.AlsoTypeWorkspace)
-            && _cachedWorkspaceLogic != null)
-        {
-            var typesWorkspace = _cachedWorkspaceLogic.TryGetTypesWorkspace();
-            if (typesWorkspace != null)
-            {
-                foreach (var result in
-                         typesWorkspace.extent
-                             .OfType<IUriExtent>()
-                             .Select(extent => extent.GetUriResolver().Resolve(uri, ResolveType.NoWorkspace, false))
-                             .Where(result => result != null))
-                {
-                    return result;
-                }
-            }
-        }
-
-        // If still not found, do a full search in every extent in every workspace
-        if (resolveType.HasFlagFast(ResolveType.Default) && _cachedWorkspaceLogic != null)
-        {
-            foreach (var innerWorkspace in _cachedWorkspaceLogic.Workspaces)
-            {
-                if ((innerWorkspace as Workspace)?.IsDynamicWorkspace == true) continue;
-                if (alreadyVisited.Contains(innerWorkspace))
-                {
-                    continue;
-                }
-
-                // Check, if there is an extent with the name
-                var extent = innerWorkspace.FindExtent(uri);
-                if (extent != null)
-                {
-                    return extent;
-                }
-
-                // If there is not an extent, then check, if there is an item
-                foreach (var result in
-                         innerWorkspace.extent
-                             .OfType<IUriExtent>()
-                             .Select(innerExtent => innerExtent.element(uri))
-                             .Where(result => result != null))
-                {
-                    return result;
-                }
-            }
-        }
-
-        return null;
-    }
-
     /// <summary>
     /// Resolves the the given uri by looking through each meta workspace of the workspace
     /// </summary>
@@ -310,12 +211,12 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     /// <param name="workspace">Workspace whose meta workspaces were queried</param>
     /// <param name="alreadyVisited">Set of all workspaces already being visited. This avoid unnecessary recursion and unlimited recursion</param>
     /// <returns>Found element or null, if not found</returns>
-    private IElement? ResolveByMetaWorkspaces(
+    internal IElement? ResolveByMetaWorkspaces(
         string uri,
         IWorkspace? workspace,
         HashSet<IWorkspace>? alreadyVisited = null)
     {
-        alreadyVisited ??= new HashSet<IWorkspace>();
+        alreadyVisited ??= [];
         if (workspace != null && alreadyVisited.Contains(workspace))
         {
             return null;
@@ -358,7 +259,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     internal void ClearResolveCache()
     {
         _resolverCache.Clear();
-        _navigator.ClearResolveCache();
+        Navigator.ClearResolveCache();
     }
 
     private class ResolverCache
@@ -417,8 +318,9 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     /// Finds the model within the Type Indexing by the given meta class url
     /// </summary>
     /// <param name="metaClassUrl">Url of the metaclass</param>
+    /// <param name="lookInMetaWorkspace">true, if the meta workspace shall be searched</param>
     /// <returns>Found model or null in case it was not found</returns>
-    public ClassModel? FindModel(string metaClassUrl)
+    public ClassModel? FindModel(string metaClassUrl, bool lookInMetaWorkspace = true)
     {
         if (_cachedWorkspaceLogic == null || Workspace == null)
         {
@@ -426,6 +328,9 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
         }
 
         _cachedTypeIndexLogic ??= new TypeIndexLogic(_cachedWorkspaceLogic);
-        return _cachedTypeIndexLogic.FindClassModelByUrlWithinMetaWorkspaces(Workspace.id, metaClassUrl);
+
+        return lookInMetaWorkspace 
+            ? _cachedTypeIndexLogic.FindClassModelByUrlWithinMetaWorkspaces(Workspace.id, metaClassUrl)
+            : _cachedTypeIndexLogic.FindClassModelByUrlWithinWorkspace(Workspace.id, metaClassUrl);
     }
 }

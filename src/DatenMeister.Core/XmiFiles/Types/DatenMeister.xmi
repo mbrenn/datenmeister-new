@@ -389,7 +389,7 @@
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportDefinition" name="ReportDefinition">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ed96b77c-79f3-4762-a583-3326a094e512" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b5e5b4fb-a5c8-4c2d-9a9a-8314e15536c5" name="title" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="45926fb0-671a-4620-af63-e8816cd5afee" name="elements" type-ref="#DatenMeister.Models.Reports.ReportElement" upper="2" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="45926fb0-671a-4620-af63-e8816cd5afee" name="elements" type-ref="#DatenMeister.Models.Reports.ReportElement" upper="*" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportInstanceSource" name="ReportInstanceSource">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="eb054fbc-1f1a-4e0d-bf61-225bfb9b0c9f" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
@@ -399,7 +399,7 @@
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportInstance" name="ReportInstance">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="20cd683f-6e41-4f2a-9ff3-4d25ad9dc912" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="df44cce6-b81d-4eb4-a9cc-7fbea8c0066b" name="reportDefinition" type-ref="#DatenMeister.Models.Reports.ReportDefinition" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="6085e2b8-b239-46c8-8bfc-c9bb21d77ca6" name="sources" type-ref="#DatenMeister.Models.Reports.ReportInstanceSource" upper="2" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="6085e2b8-b239-46c8-8bfc-c9bb21d77ca6" name="sources" type-ref="#DatenMeister.Models.Reports.ReportInstanceSource" upper="*" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.Adoc.AdocReportInstance" name="AdocReportInstance">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="1a45f30e-9c81-4085-a5d4-1736d07533f5" general-ref="#DatenMeister.Models.Reports.ReportInstance" />

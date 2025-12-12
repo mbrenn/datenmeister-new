@@ -6,7 +6,6 @@ using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.Mapping;
 using DatenMeister.Core.Provider.Proxies;
-using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 
 namespace DatenMeister.Provider.ExtentManagement;

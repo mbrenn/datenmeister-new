@@ -1,6 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Implementation.DefaultValue;
 using DatenMeister.Core.Functions.Queries;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
@@ -48,20 +47,6 @@ public class DefaultValueStripper
                         remove = true;
                     }
                 }
-                    
-                /* Hard coded removals which are now resolved and can be deprecated
-                if (property == "isDerived"
-                    || property == "aggregation"
-                    || property == "isDerivedUnion"
-                    || property == "isReadOnly"
-                    || property == "isOrdered"
-                    || property == "isUnique"
-                    || property == "isStatic"
-                    || property == "isLeaf"
-                   )
-                {
-                    remove = true;
-                }*/
                     
                 if (remove)
                 {

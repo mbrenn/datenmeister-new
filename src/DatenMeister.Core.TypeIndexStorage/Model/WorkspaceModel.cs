@@ -17,6 +17,11 @@ public class WorkspaceModel
     public List<string> MetaclassWorkspaces { get; } = new();
 
     /// <summary>
+    /// Stores the list of workspaces which may contain the types of the metaclasses
+    /// </summary>
+    public List<string> NeighborWorkspaces { get; } = new();
+
+    /// <summary>
     /// Stores the information about the extents in the WorkspaceModel 
     /// </summary>
     public List<ExtentModel> Extents { get; } = new();

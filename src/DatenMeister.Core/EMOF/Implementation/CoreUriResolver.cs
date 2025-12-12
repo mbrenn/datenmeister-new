@@ -184,6 +184,11 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
                 while (queue.Count > 0)
                 {
                     var metaWorkspace = queue.Dequeue();
+                    if (found.Contains(metaWorkspace))
+                    {
+                        continue;
+                    }
+                    
                     found.Add(metaWorkspace);
                     metaWorkspaces = metaWorkspace.MetaclassWorkspaces;
                     foreach (var metaWorkspaceItem in metaWorkspaces)

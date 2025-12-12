@@ -30,7 +30,7 @@ public static class DefaultValueHandler
         var properties = ClassifierMethods.GetPropertiesOfClassifier(type);
         foreach (var property in properties)
         {
-            var defaultValue = property.getOrDefault<object>(_UML._Classification._Property.defaultValue);
+            var defaultValue = property.getOrDefault<object?>(_UML._Classification._Property.defaultValue);
             var name = property.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
 
             if (defaultValue != null)
@@ -46,44 +46,43 @@ public static class DefaultValueHandler
     /// <param name="value">Value whose property shall be retrieved</param>
     /// <param name="property">The property that shall be read</param>
     /// <returns>The default value or null, if not set</returns>
-    [Obsolete]
-    public static T? ReadDefaultValueOfProperty<T>(IElement value, string property)
+    public static object? ReadDefaultValueOfProperty(IElement value, string property)
     {
+        if (value is MofObject mofObject)
+        {
+            return mofObject.GetClassModel()?.FindAttribute(property)?.DefaultValue;
+        }
+        
         var type = value.getMetaClass();
         if (type == null)
         {
             // No type ==> no default value
-            return default;
+            return null;
         }
 
         var tuple = new Tuple<IElement, string>(type, property);
 
-        if (_cachedDefaultValues.TryGetValue(
+        if (CachedDefaultValues.TryGetValue(
                 tuple,
                 out var cachedValue))
         {
-            if (cachedValue is T)
-            {
-                return (T)cachedValue!;
-            }
-
-            return default;
+            return cachedValue;
         }
 
         var propertyElement = ClassifierMethods.GetPropertyOfClassifier(type, property);
         if (propertyElement == null)
         {
             // No property ==> No default value
-            return default;
+            return null;
         }
 
-        var result = propertyElement.getOrDefault<T>(_UML._Classification._Property.defaultValue);
-        _cachedDefaultValues[tuple] = result;
+        var result = propertyElement.getOrDefault<object>(_UML._Classification._Property.defaultValue);
+        CachedDefaultValues[tuple] = result;
         return result;
     }
 
     /// <summary>
     /// The cache for the default values.
     /// </summary>
-    private static readonly TimeCachedDictionary<Tuple<IElement, string>, object?> _cachedDefaultValues = new();
+    private static readonly TimeCachedDictionary<Tuple<IElement, string>, object?> CachedDefaultValues = new();
 }

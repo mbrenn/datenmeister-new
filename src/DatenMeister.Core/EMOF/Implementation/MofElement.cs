@@ -147,7 +147,7 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
         else
         {
             // If not set, get the default value
-            var result = DefaultValueHandler.ReadDefaultValueOfProperty<object?>(this, property);
+            var result = GetClassModel()?.FindAttribute(property)?.DefaultValue;
             return ConvertToMofObject(this, property, result, attributeModel, noReferences);
         }
     }

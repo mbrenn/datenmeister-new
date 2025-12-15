@@ -43,7 +43,7 @@
   </item>
   <item p2:type="dm:///_internal/model/uml#Package" p2:id="DatenMeister.Types.Actions" name="Actions" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.ActionSet" name="ActionSet">
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d688f145-d02e-4052-be12-0d06cec9853b" name="action" type-ref="dm:///_internal/types/internal#Actions.Action" isComposite="True" upper="*" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d688f145-d02e-4052-be12-0d06cec9853b" name="action" type-ref="dm:///_internal/types/internal#Actions.Action" upper="*" isID="false" isComposite="false" />
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="9951a2cd-b072-4cba-9c19-4b9118368e8e" general-ref="dm:///_internal/types/internal#Actions.Action">
         <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
       </generalization>

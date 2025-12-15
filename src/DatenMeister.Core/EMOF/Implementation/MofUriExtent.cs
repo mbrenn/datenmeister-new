@@ -25,6 +25,8 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
 
     private const string AlternativeUrlsProperty = "__alternativeUrls";
 
+    private string? _cachedContextUri;
+
     /// <summary>
     /// Defines a possible logger
     /// </summary>
@@ -97,16 +99,25 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     {
         get
         {
+            if (_cachedContextUri != null)
+            {
+                return _cachedContextUri;
+            }
+            
             var uri = isSet(UriPropertyName) ? get(UriPropertyName) : null;
             if (uri == null)
             {
                 return string.Empty;
             }
 
-            return uri.ToString() ?? string.Empty;
+            return _cachedContextUri = uri.ToString() ?? string.Empty;
         }
 
-        set => set(UriPropertyName, value);
+        set
+        {
+            set(UriPropertyName, value);
+            _cachedContextUri = value;
+        }
     }
 
     /// <inheritdoc />

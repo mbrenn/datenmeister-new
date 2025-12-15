@@ -10,7 +10,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.DataView;
 
-public class DataViewLogic
+public class DataViewLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
     /// <summary>
     /// Defines the path to the packages of the dataviews
@@ -22,21 +22,11 @@ public class DataViewLogic
     /// </summary>
     private static readonly ILogger Logger = new ClassLogger(typeof(DataViewLogic));
 
-    private readonly IScopeStorage _scopeStorage;
-
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    public DataViewLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
-
     public IEnumerable<IElement> GetDataViewElements()
     {
         var metaClass = _DataViews.TheOne.__DataView;
 
-        var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
+        var managementWorkspace = workspaceLogic.GetManagementWorkspace();
         foreach (var dataView in managementWorkspace.extent.OfType<IUriExtent>()
                      .Where(extent => extent.contextURI() != WorkspaceNames.UriExtentWorkspaces)
                      .SelectMany(extent =>
@@ -53,7 +43,7 @@ public class DataViewLogic
     /// <returns>The reflective Sequence</returns>
     public IReflectiveCollection GetElementsForViewNode(IElement viewNode)
     {
-        var evaluation = new DataViewEvaluation(_workspaceLogic, _scopeStorage);
+        var evaluation = new DataViewEvaluation(workspaceLogic, scopeStorage);
         return evaluation.GetElementsForViewNode(viewNode);
     }
 }

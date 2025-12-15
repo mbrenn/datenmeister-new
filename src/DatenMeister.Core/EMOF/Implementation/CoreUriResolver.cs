@@ -69,7 +69,7 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
                 foreach (var result in
                          typesWorkspace.extent
                              .OfType<IUriExtent>()
-                             .Select(extent => extent.TryGetUriResolver()?.Resolve(uri, ResolveType.IncludeWorkspace, false))
+                             .Select(extent => extent.TryGetUriResolver()?.Resolve(uri, ResolveType.IncludeExtent, false))
                              .Where(result => result != null))
                 {
                     return result;

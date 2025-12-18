@@ -256,8 +256,7 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
     {
         ArgumentNullException.ThrowIfNull(element);
 
-        var elementAsObject = element as IHasId;
-        if (elementAsObject == null)
+        if (element is not IHasId elementAsObject)
         {
             throw new InvalidOperationException("element is not of type IHasId. Element is: " + element);
         }

@@ -216,7 +216,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     }
 
     /// <summary>
-    /// Resolves the the given uri by looking through each meta workspace of the workspace
+    /// Resolves the given uri by looking through each meta workspace of the workspace
     /// </summary>
     /// <param name="uri">Uri being retrieved</param>
     /// <param name="workspace">Workspace whose meta workspaces were queried</param>
@@ -227,41 +227,8 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
         IWorkspace? workspace,
         HashSet<IWorkspace>? alreadyVisited = null)
     {
-        alreadyVisited ??= [];
-        if (workspace != null && alreadyVisited.Contains(workspace))
-        {
-            return null;
-        }
-
-        if (workspace != null)
-        {
-            alreadyVisited.Add(workspace);
-        }
-
-        // If still not found, look into the meta workspaces. Nevertheless, no recursion
-        var metaWorkspaces = workspace?.MetaWorkspaces;
-        if (metaWorkspaces != null)
-        {
-            foreach (var metaWorkspace in metaWorkspaces)
-            {
-                foreach (var element in
-                         metaWorkspace.extent
-                             .OfType<IUriExtent>()
-                             .Select(metaExtent => metaExtent.element(uri))
-                             .Where(element => element != null))
-                {
-                    return element;
-                }
-
-                var elementByMeta = ResolveByMetaWorkspaces(uri, metaWorkspace, alreadyVisited);
-                if (elementByMeta != null)
-                {
-                    return elementByMeta;
-                }
-            }
-        }
-
-        return null;
+        var uriResolver = new CoreUriResolver(_cachedWorkspaceLogic);
+        return uriResolver.Resolve(uri, ResolveType.IncludeMetaOfMetaWorkspaces, workspace) as IElement;
     }
 
     /// <summary>

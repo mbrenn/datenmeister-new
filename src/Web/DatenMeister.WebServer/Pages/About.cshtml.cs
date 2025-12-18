@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using DatenMeister.Actions;
 using DatenMeister.Core;
+using DatenMeister.Core.Runtime;
 using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
@@ -87,4 +88,12 @@ public class AboutModel : PageModel
                 .ToList();
         }
     }
+
+    public static string CacheHits =>
+        $"{ExtentUrlNavigator.CacheHit} (" +
+        $"{Math.Round((double)ExtentUrlNavigator.CacheHit / (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss) * 100)}%)";
+    
+    public static string CacheMisses =>
+        $"{ExtentUrlNavigator.CacheMiss} (" +
+        $"{Math.Round((double)ExtentUrlNavigator.CacheMiss / (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss) * 100)}%)";
 }

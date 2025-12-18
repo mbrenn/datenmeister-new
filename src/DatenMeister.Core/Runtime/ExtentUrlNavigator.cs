@@ -24,6 +24,14 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
 
     private readonly ConcurrentDictionary<string, IHasId> _cacheIds = new();
 
+    private static int _cacheHit = 0;
+
+    private static int _cacheMiss = 0;
+    
+    public static int CacheHit => _cacheHit;
+
+    public static int CacheMiss => _cacheMiss;
+
     private ResolveHookContainer? GetResolveHooks()
     {
         return scopeStorage?.Get<ResolveHookContainer>();
@@ -131,6 +139,7 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
                     if (comparedUri == uri)
                     {
                         foundItem = resultAsMof;
+                        Interlocked.Increment(ref _cacheHit);
                     }
                 }
 
@@ -144,6 +153,7 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
                         // Caching is only useful for fragments since the cache lookup 
                         // Tries to find an item by the element
                         _cacheIds[fragmentUri] = (MofElement)foundItem;
+                        Interlocked.Increment(ref _cacheMiss);
                     }
                 }
             }
@@ -168,6 +178,25 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
         return foundItem;
     }
 
+    /// <summary>
+    /// Parses the query string from a given URI, extracting key-value pairs based on the positions
+    /// of the question mark and hash within the URI. It just returns the string between the question
+    /// mark and the hash symbol
+    /// </summary>
+    /// <param name="uri">The URI containing the query string to be parsed.</param>
+    /// <param name="posQuestion">The position of the question mark ('?') in the URI.</param>
+    /// <param name="posHash">The position of the hash ('#') in the URI.</param>
+    /// <returns>
+    /// A <see cref="NameValueCollection"/> containing the parsed key-value pairs from the query string.
+    /// If no query string is present, an empty collection is returned.
+    /// </returns>
+    /// <remarks>
+    /// If the query string does not contain key-value pairs (e.g., no '=' character is present),
+    /// a default key "fn" is assigned to the entire query string value.
+    /// </remarks>
+    /// <exception cref="UriFormatException">
+    /// Thrown if the URI format is invalid during parsing. In such cases, an empty collection is returned.
+    /// </exception>
     private static NameValueCollection ParseQueryString(string uri, int posQuestion, int posHash)
     {
         try
@@ -208,7 +237,7 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
     /// <summary>
     /// Resolves the item by using the fragment (#)
     /// </summary>
-    /// <param name="fragment">Fragment being required for the query</param>
+    /// <param name="fragment">Fragment being required for the query. This fragment is without the '#'</param>
     /// <returns>The found element</returns>
     /// <exception cref="InvalidOperationException"></exception>
     private MofElement? ResolveByFragment(string fragment)
@@ -252,6 +281,11 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
         return null;
     }
 
+    /// <summary>
+    /// Gets the uri of the element
+    /// </summary>
+    /// <param name="element">Element to be queried</param>
+    /// <returns>The uri of the element</returns>
     public virtual string uri(IElement element)
     {
         ArgumentNullException.ThrowIfNull(element);

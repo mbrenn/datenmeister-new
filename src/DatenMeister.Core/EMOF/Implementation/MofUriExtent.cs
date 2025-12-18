@@ -39,11 +39,6 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     /// </summary>
     public ExtentUrlNavigator Navigator { get; }
 
-    /// <summary>
-    /// Stores the resolver cache
-    /// </summary>
-    private readonly ResolverCache _resolverCache = new();
-
     /// <inheritdoc />
     public MofUriExtent(
         IProvider provider,
@@ -107,7 +102,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
             var uri = isSet(UriPropertyName) ? get(UriPropertyName) : null;
             if (uri == null)
             {
-                return string.Empty;
+                return _cachedContextUri = string.Empty;
             }
 
             return _cachedContextUri = uri.ToString() ?? string.Empty;
@@ -138,17 +133,6 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
     {
         uri = Migration.MigrateUriForResolver(uri);
-
-        // Check, if we have a cache...
-        /*var cachedResult = _resolverCache.GetElementFor(uri, resolveType);
-        if (cachedResult != null && false)
-        {
-            // TODO: Find here a better solution than just blocking the resolver
-            // Issue is that, when there is a new extent with the same extent uri,
-            // duplicate items will be just being able to resolved once, even though
-            // a new extent is being created. This effects especially dm://temp
-            return cachedResult;
-        }*/
 
         // We have to find it
         _coreUriResolver ??= new CoreUriResolver(_cachedWorkspaceLogic);
@@ -236,56 +220,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     /// </summary>
     internal void ClearResolveCache()
     {
-        _resolverCache.Clear();
         Navigator.ClearResolveCache();
-    }
-
-    private class ResolverCache
-    {
-        private readonly ConcurrentDictionary<ResolverKey, object> _cache = new();
-
-        public void Clear()
-        {
-            _cache.Clear();
-        }
-
-        public object? GetElementFor(string uri, ResolveType resolveType)
-        {
-            return _cache.GetValueOrDefault(new ResolverKey(uri, resolveType));
-        }
-
-        public void AddElementFor(string uri, ResolveType resolveType, object foundElement)
-        {
-            _cache[new ResolverKey(uri, resolveType)] = foundElement;
-        }
-
-        private class ResolverKey(string uri, ResolveType resolveType)
-        {
-            private readonly ResolveType _resolveType = resolveType;
-            private readonly string _uri = uri;
-
-            protected bool Equals(ResolverKey other)
-            {
-                return string.Equals(_uri, other._uri, StringComparison.InvariantCulture) &&
-                       _resolveType == other._resolveType;
-            }
-
-            public override bool Equals(object? obj)
-            {
-                if (ReferenceEquals(null, obj)) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != GetType()) return false;
-                return Equals((ResolverKey) obj);
-            }
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    return (_uri.GetHashCode() * 397) ^ (int) _resolveType;
-                }
-            }
-        }
     }
 
     public string Uri => contextURI();

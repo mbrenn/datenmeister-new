@@ -184,7 +184,23 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
             return _cachedMetaClass;
         }
 
+        var classModel = GetClassModel();
+        if (classModel != null)
+        {
+            if ((ReferencedExtent as IUriResolver)?.Resolve(
+                    classModel.Uri,
+                    ResolveType.IncludeWorkspace,
+                    traceFailing,
+                    classModel.WorkspaceId) is IElement localResult)
+            {
+                Interlocked.Increment(ref _getMetaClassViaClassModelCount);
+                return localResult;
+            }
+        }
+        
         var uri = ProviderObject.MetaclassUri;
+        
+        
         if (uri == null || string.IsNullOrEmpty(uri))
         {
             // No metaclass Uri is given.

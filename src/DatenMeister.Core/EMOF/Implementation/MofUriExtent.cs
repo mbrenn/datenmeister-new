@@ -133,10 +133,12 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
     {
         uri = Migration.MigrateUriForResolver(uri);
+        
+        var queriedWorkspace = string.IsNullOrEmpty(workspace) ? Workspace : _cachedWorkspaceLogic?.GetWorkspace(workspace);
 
         // We have to find it
         _coreUriResolver ??= new CoreUriResolver(_cachedWorkspaceLogic);
-        var result = _coreUriResolver.Resolve(uri, resolveType, Workspace, this);
+        var result = _coreUriResolver.Resolve(uri, resolveType, queriedWorkspace, this);
         if (result == null && traceFailing)
         {
             Logger.Debug($"URI not resolved: {uri} from Extent: {contextURI()}");

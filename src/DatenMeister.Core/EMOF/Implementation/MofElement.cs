@@ -194,12 +194,12 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
                     classModel.WorkspaceId) is IElement localResult)
             {
                 Interlocked.Increment(ref _getMetaClassViaClassModelCount);
+                _cachedMetaClass = localResult;
                 return localResult;
             }
         }
         
         var uri = ProviderObject.MetaclassUri;
-        
         
         if (uri == null || string.IsNullOrEmpty(uri))
         {

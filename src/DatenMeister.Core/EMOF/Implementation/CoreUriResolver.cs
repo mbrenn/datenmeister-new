@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Core.Helper;
@@ -51,6 +52,16 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
     /// When enabled, detailed information about each URI resolution attempt is logged.
     /// </summary>
     public static bool LogResolvings { get; set; } = true;
+
+    /// <summary>
+    /// Tracks the number of times a URI could not be resolved.
+    /// </summary>
+    private static long _unresolvedUrisCount = 0;
+
+    /// <summary>
+    /// Gets the number of times a URI could not be resolved.
+    /// </summary>
+    public static long UnresolvedUrisCount => _unresolvedUrisCount;
     
     /// <summary>
     /// Performs the resolution 
@@ -61,6 +72,20 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
     /// <param name="uriExtent">The extent to be queried</param>
     /// <returns>The found object or null in case nothing has been found</returns>
     public object? Resolve(string uri, ResolveType resolveType, IWorkspace? workspace = null, IUriExtent? uriExtent = null)
+    {
+        var result = ResolveInternal(uri, resolveType, workspace, uriExtent);
+        if (result == null)
+        {
+            Interlocked.Increment(ref _unresolvedUrisCount);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Performs the resolution internal
+    /// </summary>
+    private object? ResolveInternal(string uri, ResolveType resolveType, IWorkspace? workspace = null, IUriExtent? uriExtent = null)
     {
         if (LogResolvings)
         {

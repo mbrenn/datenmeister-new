@@ -111,6 +111,10 @@ public class AboutModel : PageModel
                 $"{MofElement.GetMetaClassViaClassModelCount}"
         },
         {
+            "MofElement: getMetaClass via CachedElement", () =>
+                $"{MofElement.GetMetaClassViaCachedElementCount}"
+        },
+        {
             "TypeIndexStore: Triggers Received", () =>
             {
                 var typeIndexLogic = new TypeIndexLogic(GiveMe.Scope.WorkspaceLogic);

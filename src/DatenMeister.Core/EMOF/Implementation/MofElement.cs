@@ -57,6 +57,16 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
     /// </summary>
     public static long GetMetaClassViaClassModelCount => _getMetaClassViaClassModelCount;
 
+    /// <summary>
+    /// Tracks the number of times the metaclass is accessed via the CachedElement in ClassModel.
+    /// </summary>
+    private static long _getMetaClassViaCachedElementCount = 0;
+
+    /// <summary>
+    /// Gets the number of times the metaclass has been retrieved via CachedElement in ClassModel.
+    /// </summary>
+    public static long GetMetaClassViaCachedElementCount => _getMetaClassViaCachedElementCount;
+
     /// <inheritdoc />
     public IElement? metaclass => getMetaClass();
         
@@ -187,6 +197,12 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
         var classModel = GetClassModel();
         if (classModel != null)
         {
+            if (classModel.CachedElement != null)
+            {
+                Interlocked.Increment(ref _getMetaClassViaCachedElementCount);
+                return classModel.CachedElement;
+            }
+            
             if ((ReferencedExtent as IUriResolver)?.Resolve(
                     classModel.Uri,
                     ResolveType.IncludeWorkspace,

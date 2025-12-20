@@ -95,16 +95,30 @@ public class AboutModel : PageModel
         {
             "ExtentUrlNavigator: Cache Hits", () =>
                 $"{ExtentUrlNavigator.CacheHit} (" +
-                $"{Math.Round((double)ExtentUrlNavigator.CacheHit / (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss) * 100)}%)"
+                $"{Math.Round((double)ExtentUrlNavigator.CacheHit / (ExtentUrlNavigator.CacheHit + (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss == 0 ? 1 : ExtentUrlNavigator.CacheMiss)) * 100)}%)"
         },
         {
             "ExtentUrlNavigator: Cache Misses", () =>
                 $"{ExtentUrlNavigator.CacheMiss} (" +
-                $"{Math.Round((double)ExtentUrlNavigator.CacheMiss / (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss) * 100)}%)"
+                $"{Math.Round((double)ExtentUrlNavigator.CacheMiss / (ExtentUrlNavigator.CacheHit + (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss == 0 ? 1 : ExtentUrlNavigator.CacheMiss)) * 100)}%)"
         },
         {
             "MofElement: getMetaClass Calls", () =>
                 $"{MofElement.GetMetaClassCount}"
+        },
+        {
+            "TypeIndexStore: Triggers Received", () =>
+            {
+                var typeIndexLogic = new TypeIndexLogic(GiveMe.Scope.WorkspaceLogic);
+                return typeIndexLogic.TypeIndexStore.TriggersReceived.ToString();
+            }
+        },
+        {
+            "TypeIndexStore: Number of Reindexed", () =>
+            {
+                var typeIndexLogic = new TypeIndexLogic(GiveMe.Scope.WorkspaceLogic);
+                return typeIndexLogic.TypeIndexStore.NumberOfReindexes.ToString();
+            }
         }
     };
 }

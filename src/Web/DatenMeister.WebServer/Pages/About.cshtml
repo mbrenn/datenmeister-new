@@ -94,7 +94,7 @@ Welcome to the About-Page
         <td>Instrumentation</td>
         <td>
             <table class="table table-sm">
-                @foreach (var instrumentationPoint in AboutModel.InstrumentationPoints)
+                @foreach (var instrumentationPoint in AboutModel.InstrumentationPoints.OrderBy(x => x.Key))
                 {
                     <tr>
                         <td>@instrumentationPoint.Key</td>

@@ -235,11 +235,21 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             
             // Now, create the new index and swap it
             storage.Next = new TypeIndexData();
+
+            if (!storage.IndexFirstBuiltEvent.WaitOne(0))
+            {
+                // In case we are doing the very first indexing, we need to build the dependency graph first
+                Logger.Info("Building workspace dependency graph for the first time");
+                
+                BuildWorkspaceDependencyGraph(storage.Next);
+                SwapNextAndCurrentTypeData();
+                
+                storage.Next = new TypeIndexData();
+            }
+
+            // But redo it to simplify logic
             BuildWorkspace(storage.Next);            
             SwapNextAndCurrentTypeData();
-            
-            // Indicate that we have create the first built event
-            storage.IndexFirstBuiltEvent.Set();
         }
     }
 
@@ -251,67 +261,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     {
         using (var _ = new StopWatchLogger(Logger, "Building workspace dependency tree"))
         {
-            // First, we build the workspace dependency tree
-            foreach (var workspace in WorkspaceLogic.Workspaces)
-            {
-                var model = new WorkspaceModel
-                {
-                    WorkspaceId = workspace.id
-                };
-
-                foreach (var meta in workspace.MetaWorkspaces)
-                {
-                    model.MetaclassWorkspaces.Add(meta.id);
-                }
-
-                indexData.Workspaces.Add(model);
-            }
-
-            // Checks whether the workspaces are neighbors
-            foreach (var workspaceModel in indexData.Workspaces)
-            {
-                foreach (var otherWorkspaceModel in indexData.Workspaces.Where(x=> x != workspaceModel))
-                {
-                    if (!IsMetaWorkspace(workspaceModel, otherWorkspaceModel)
-                        && !IsMetaWorkspace(otherWorkspaceModel, workspaceModel))
-                    {
-                        workspaceModel.NeighborWorkspaces.Add(otherWorkspaceModel.WorkspaceId);
-                    }
-                }
-            }
-            
-            
-            // Now we need to understand the neighboring workspaces which are not dependent to each other
-            // A workspace is dependent to each other in case it has a metaworkspace (one level or multiple)
-            // or is a metaworkspace of the other
-            bool IsMetaWorkspace(WorkspaceModel focus, WorkspaceModel other, HashSet<string>? visited = null)
-            {
-                // Infinite Loop breaker! 
-                visited ??= new HashSet<string>();
-                if (!visited.Add(focus.WorkspaceId))
-                {
-                    return false;
-                }
-                
-                // First, check that the source is not a direct or indirect workspace of the target
-                if (focus.MetaclassWorkspaces.Any(x => x == other.WorkspaceId))
-                {
-                    return true;
-                }
-
-                // Checks recursively that the workspace is might be contained by that workspace
-                foreach (var metaWorkspace in focus.MetaclassWorkspaces)
-                {
-                    var metaWorkspaceOfFocus = indexData.FindWorkspace(metaWorkspace);
-                    if (metaWorkspaceOfFocus != null && IsMetaWorkspace(metaWorkspaceOfFocus, other, visited))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-            
+            BuildWorkspaceDependencyGraph(indexData);
         }
 
         using (var _ = new StopWatchLogger(Logger, "Building classes"))
@@ -352,6 +302,70 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                 
                 AddInheritedAttributesFromGeneralizations(workspaceModel);
             }
+        }
+    }
+
+    private void BuildWorkspaceDependencyGraph(TypeIndexData indexData)
+    {
+        // First, we build the workspace dependency tree
+        foreach (var workspace in WorkspaceLogic.Workspaces)
+        {
+            var model = new WorkspaceModel
+            {
+                WorkspaceId = workspace.id
+            };
+
+            foreach (var meta in workspace.MetaWorkspaces)
+            {
+                model.MetaclassWorkspaces.Add(meta.id);
+            }
+
+            indexData.Workspaces.Add(model);
+        }
+
+        // Checks whether the workspaces are neighbors
+        foreach (var workspaceModel in indexData.Workspaces)
+        {
+            foreach (var otherWorkspaceModel in indexData.Workspaces.Where(x=> x != workspaceModel))
+            {
+                if (!IsMetaWorkspace(workspaceModel, otherWorkspaceModel)
+                    && !IsMetaWorkspace(otherWorkspaceModel, workspaceModel))
+                {
+                    workspaceModel.NeighborWorkspaces.Add(otherWorkspaceModel.WorkspaceId);
+                }
+            }
+        }
+            
+            
+        // Now we need to understand the neighboring workspaces which are not dependent to each other
+        // A workspace is dependent to each other in case it has a metaworkspace (one level or multiple)
+        // or is a metaworkspace of the other
+        bool IsMetaWorkspace(WorkspaceModel focus, WorkspaceModel other, HashSet<string>? visited = null)
+        {
+            // Infinite Loop breaker! 
+            visited ??= new HashSet<string>();
+            if (!visited.Add(focus.WorkspaceId))
+            {
+                return false;
+            }
+                
+            // First, check that the source is not a direct or indirect workspace of the target
+            if (focus.MetaclassWorkspaces.Any(x => x == other.WorkspaceId))
+            {
+                return true;
+            }
+
+            // Checks recursively that the workspace is might be contained by that workspace
+            foreach (var metaWorkspace in focus.MetaclassWorkspaces)
+            {
+                var metaWorkspaceOfFocus = indexData.FindWorkspace(metaWorkspace);
+                if (metaWorkspaceOfFocus != null && IsMetaWorkspace(metaWorkspaceOfFocus, other, visited))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 

@@ -116,5 +116,5 @@ public class TypeIndexStore
     public void WaitForAvailabilityOfIndexStore()
     {
         IndexIsUpToDateEvent.WaitOne();
-    }
+    } 
 }

@@ -300,7 +300,7 @@
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="8076086e-98c0-4c2b-be26-4d4110f2bec3" name="RegexNoMatch" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.QueryStatement" name="QueryStatement">
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="dec9a363-4e79-48bf-9168-83784aaeb31d" name="nodes" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" lower="0" upper="*" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="dec9a363-4e79-48bf-9168-83784aaeb31d" name="nodes" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" lower="0" upper="*" isID="false" isComposite="true" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="64a250be-b99f-49ec-b152-dd2e6bb8cc4f" name="resultNode" lower="0" upper="1" type-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4f5204b1-9bac-4ac7-a5ec-34b9b6befb36" name="name" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
     </packagedElement>

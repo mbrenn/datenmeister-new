@@ -93,10 +93,15 @@ Welcome to the About-Page
     <tr>
         <td>Instrumentation</td>
         <td>
-            @foreach (var instrumentationPoint in AboutModel.InstrumentationPoints)
-            {
-                <p>@instrumentationPoint.Key: @instrumentationPoint.Value()</p>
-            }
+            <table class="table table-sm">
+                @foreach (var instrumentationPoint in AboutModel.InstrumentationPoints)
+                {
+                    <tr>
+                        <td>@instrumentationPoint.Key</td>
+                        <td>@instrumentationPoint.Value()</td>
+                    </tr>
+                }
+            </table>
         </td>
     </tr>
     

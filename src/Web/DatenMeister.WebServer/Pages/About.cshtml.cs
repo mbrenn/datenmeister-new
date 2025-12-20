@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using DatenMeister.Actions;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.Extent.Manager.Extents.Configuration;
@@ -100,6 +101,10 @@ public class AboutModel : PageModel
             "ExtentUrlNavigator: Cache Misses", () =>
                 $"{ExtentUrlNavigator.CacheMiss} (" +
                 $"{Math.Round((double)ExtentUrlNavigator.CacheMiss / (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss) * 100)}%)"
+        },
+        {
+            "MofElement: getMetaClass Calls", () =>
+                $"{MofElement.GetMetaClassCount}"
         }
     };
 }

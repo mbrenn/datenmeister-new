@@ -142,12 +142,6 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
             Logger.Debug($"URI not resolved: {uri} from Extent: {contextURI()}");
             result = new MofObjectShadow(uri);
         }
-
-        if (result != null)
-        {
-            // Deactivated
-            //_resolverCache.AddElementFor(uri, resolveType, result);
-        }
         
         return result;
     }

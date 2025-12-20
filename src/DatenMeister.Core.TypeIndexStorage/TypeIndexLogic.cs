@@ -525,6 +525,8 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         }
         
         var isComposite = attribute.getOrDefault<bool>(_UML._Classification._Property.isComposite);
+        isComposite |= attribute.getOrDefault<string>(_UML._Classification._Property.aggregation) == "composite";
+        
         if (isComposite)
         {
             attributeModel.IsComposite = true;

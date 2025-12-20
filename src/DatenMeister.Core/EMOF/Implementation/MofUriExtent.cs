@@ -200,22 +200,6 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     }
 
     /// <summary>
-    /// Resolves the given uri by looking through each meta workspace of the workspace
-    /// </summary>
-    /// <param name="uri">Uri being retrieved</param>
-    /// <param name="workspace">Workspace whose meta workspaces were queried</param>
-    /// <param name="alreadyVisited">Set of all workspaces already being visited. This avoid unnecessary recursion and unlimited recursion</param>
-    /// <returns>Found element or null, if not found</returns>
-    internal IElement? ResolveByMetaWorkspaces(
-        string uri,
-        IWorkspace? workspace,
-        HashSet<IWorkspace>? alreadyVisited = null)
-    {
-        var uriResolver = new CoreUriResolver(_cachedWorkspaceLogic);
-        return uriResolver.Resolve(uri, ResolveType.IncludeMetaOfMetaWorkspaces, workspace) as IElement;
-    }
-
-    /// <summary>
     /// Clears all resolve caches
     /// </summary>
     internal void ClearResolveCache()

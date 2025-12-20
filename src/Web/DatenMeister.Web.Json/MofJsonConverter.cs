@@ -98,13 +98,18 @@ public class MofJsonConverter
         var komma = string.Empty;
 
         builder.Append("\"v\": {");
+        var classModel = (value as MofObject)?.GetClassModel();
         foreach (var property in allProperties.getPropertiesBeingSet())
         {
             builder.AppendLine(komma);
             builder.Append($"\"{HttpUtility.JavaScriptStringEncode(property)}\": ");
             var propertyValue = value.get(property);
 
-            AppendValue(builder, propertyValue, recursionDepth);
+            var attributeModel = classModel?.FindAttribute(property);
+            var isComposite = attributeModel?.IsComposite ?? false; // Default to true if no model is found
+
+            // TODO: We are prepared just to return composites, but do not do it.
+            AppendValue(builder, propertyValue, recursionDepth/*, !isComposite*/);
 
             komma = ",";
         }
@@ -166,10 +171,11 @@ public class MofJsonConverter
     /// <param name="builder"></param>
     /// <param name="propertyValue"></param>
     /// <param name="recursionDepth">Defines the recursion Depth</param>
-    private void AppendValue(StringBuilder builder, object? propertyValue, int recursionDepth = 0)
+    /// <param name="forceReference">true, if the reference shall be forced</param>
+    private void AppendValue(StringBuilder builder, object? propertyValue, int recursionDepth = 0, bool forceReference = false)
     {
         var connectedExtent = GetConnectedExtent(propertyValue);
-        var forceReference = !ResolveReferenceToOtherExtents
+        var forceReferenceByExtent = !ResolveReferenceToOtherExtents
                              && rootExtent != null
                              && rootExtent != connectedExtent;
 
@@ -181,7 +187,7 @@ public class MofJsonConverter
             recursionDepth = Math.Max(recursionDepth, MaxRecursionDepth - 1);
         }
 
-        if (propertyValue is IObject asObject && (recursionDepth >= MaxRecursionDepth || forceReference))
+        if (propertyValue is IObject asObject && (recursionDepth >= MaxRecursionDepth || forceReference || forceReferenceByExtent))
         {
             // Try to resolve the item to find the workspace, unfortunately, MofObjectShadow does not include the workspace
             if (asObject is MofObjectShadow mofObjectShadow)
@@ -239,7 +245,7 @@ public class MofJsonConverter
             foreach (var innerValue in enumeration)
             {
                 builder.AppendLine(komma);
-                AppendValue(builder, innerValue, recursionDepth + 1);
+                AppendValue(builder, innerValue, recursionDepth + 1, forceReference);
                 komma = ",";
             }
 

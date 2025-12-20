@@ -123,6 +123,10 @@ public class AboutModel : PageModel
                 var typeIndexLogic = new TypeIndexLogic(GiveMe.Scope.WorkspaceLogic);
                 return typeIndexLogic.TypeIndexStore.NumberOfReindexes.ToString();
             }
+        },
+        {
+            "CoreUriResolver: Unresolved URIs", () =>
+                $"{CoreUriResolver.UnresolvedUrisCount}"
         }
     };
 }

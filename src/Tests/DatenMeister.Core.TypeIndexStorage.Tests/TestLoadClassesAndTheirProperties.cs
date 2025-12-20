@@ -116,7 +116,30 @@ public class TestLoadClassesAndTheirProperties
         Assert.That(reportDefinitionElements, Is.Not.Null);
 
         Assert.That(reportDefinitionElements!.IsMultiple, Is.True);
+    }
+    
+    [Test]
+    public async Task TestWorkspaceAndExtentUriCorrectlySet()
+    {
+        await using var dm = await IntegrationOfTests.GetDatenMeisterScope();
+        var typeIndexStore = dm.ScopeStorage.TryGet<TypeIndexStore>()
+                             ?? throw new InvalidOperationException("TypeIndexStore not found");
         
+        var typesWorkspace = typeIndexStore.GetCurrentIndexStore().FindWorkspace(WorkspaceNames.WorkspaceTypes);
+        Assert.That(typesWorkspace, Is.Not.Null);
+
+        var classCommandLineApplication =
+            typesWorkspace!.ClassModels
+                .FirstOrDefault(x => x.Name == "CommandLineApplication");
         
+        Assert.That(classCommandLineApplication, Is.Not.Null);
+        
+        // Verify WorkspaceId is set correctly
+        Assert.That(classCommandLineApplication!.WorkspaceId, Is.EqualTo(WorkspaceNames.WorkspaceTypes));
+        
+        // Verify ExtentUri is set correctly. 
+        // For CommandLineApplication, it should be in the internal types extent.
+        Assert.That(classCommandLineApplication.ExtentUri, Is.Not.Null.And.Not.Empty);
+        Assert.That(classCommandLineApplication.ExtentUri, Does.Contain("dm:///_internal/types/internal"));
     }
 }

@@ -1,4 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Implementation.DefaultValue;
+﻿using System;
+using System.Threading;
+using DatenMeister.Core.EMOF.Implementation.DefaultValue;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -32,6 +34,10 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
         : base(providedObject, extent, referenceElement)
     {
     }
+
+    private static int _getMetaClassCount = 0;
+
+    public static int GetMetaClassCount => _getMetaClassCount;
 
     /// <inheritdoc />
     public IElement? metaclass => getMetaClass();
@@ -154,6 +160,7 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
 
     public IElement? getMetaClass(bool traceFailing = true)
     {
+        Interlocked.Increment(ref _getMetaClassCount);
         if (_cachedMetaClass != null && _cachedMetaClass is not MofObjectShadow)
         {
             return _cachedMetaClass;

@@ -28,9 +28,9 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
 
     private static int _cacheMiss = 0;
     
-    public static int CacheHit => _cacheHit;
+    public static long CacheHit => _cacheHit;
 
-    public static int CacheMiss => _cacheMiss;
+    public static long CacheMiss => _cacheMiss;
 
     private ResolveHookContainer? GetResolveHooks()
     {

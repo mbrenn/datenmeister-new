@@ -89,11 +89,17 @@ public class AboutModel : PageModel
         }
     }
 
-    public static string CacheHits =>
-        $"{ExtentUrlNavigator.CacheHit} (" +
-        $"{Math.Round((double)ExtentUrlNavigator.CacheHit / (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss) * 100)}%)";
-    
-    public static string CacheMisses =>
-        $"{ExtentUrlNavigator.CacheMiss} (" +
-        $"{Math.Round((double)ExtentUrlNavigator.CacheMiss / (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss) * 100)}%)";
+    public static Dictionary<string, Func<string>> InstrumentationPoints { get; } = new()
+    {
+        {
+            "ExtentUrlNavigator: Cache Hits", () =>
+                $"{ExtentUrlNavigator.CacheHit} (" +
+                $"{Math.Round((double)ExtentUrlNavigator.CacheHit / (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss) * 100)}%)"
+        },
+        {
+            "ExtentUrlNavigator: Cache Misses", () =>
+                $"{ExtentUrlNavigator.CacheMiss} (" +
+                $"{Math.Round((double)ExtentUrlNavigator.CacheMiss / (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss) * 100)}%)"
+        }
+    };
 }

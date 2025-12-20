@@ -91,10 +91,12 @@ Welcome to the About-Page
         </td>
     </tr>
     <tr>
-        <td>ExtentUrlNavigator</td>
+        <td>Instrumentation</td>
         <td>
-            <p>Cache Hits: @AboutModel.CacheHits</p>
-            <p>Cache Misses: @AboutModel.CacheMisses</p>
+            @foreach (var instrumentationPoint in AboutModel.InstrumentationPoints)
+            {
+                <p>@instrumentationPoint.Key: @instrumentationPoint.Value()</p>
+            }
         </td>
     </tr>
     

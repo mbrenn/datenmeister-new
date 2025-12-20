@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Diagnostics;
 using DatenMeister.Core.EMOF.Implementation.Uml;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
@@ -225,7 +226,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
 
                 return result;
             }
-            case IEnumerable<object> _:
+            case IEnumerable enumerable and not string:
                 return new MofReflectiveSequence(container, property, attributeModel);
             case UriReference valueAsUriReference when noReferences:
                 return valueAsUriReference;
@@ -265,7 +266,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
             switch (attributeModel.IsMultiple)
             {
                 case true:
-                    if (!DotNetHelper.IsOfEnumeration(value))
+                    if (value is not IEnumerable or string)
                     {
                         var list = new[] { value };
                         value = list;
@@ -273,7 +274,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
 
                     break;
                 case false:
-                    if (DotNetHelper.IsOfEnumeration(value))
+                    if (value is IEnumerable and not string)
                     {
                         throw new InvalidOperationException(
                             "Array was tried to be set, but Uml-Type just allowed to set a sinclue value");
@@ -284,12 +285,8 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         }
 
         // Check, if the value is an enumeration containing of multiple values
-        if (DotNetHelper.IsOfEnumeration(value))
+        if (value is IEnumerable valueAsEnumeration and not string)
         {
-            // In case, it is, we add each item individually
-            var valueAsEnumeration = value as IEnumerable<object?>;
-            ArgumentNullException.ThrowIfNull(valueAsEnumeration);
-
             ProviderObject.EmptyListForProperty(property);
             foreach (var child in valueAsEnumeration)
             {
@@ -465,7 +462,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     /// <summary>
     /// Caches the class model in case the class model cache is activated
     /// </summary>
-    private ClassModel? _cachedClassModel;
+    protected ClassModel? _cachedClassModel;
     
     /// <summary>
     /// True, if the class model cache shall be activated

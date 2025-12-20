@@ -101,6 +101,7 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
     public void SetMetaClass(IElement? metaClass)
     {
         _cachedMetaClass = metaClass is MofElement ? metaClass : null;
+        _cachedClassModel = null;
         if (metaClass is MofElement mofElement)
         {
             if (mofElement.Extent == null)
@@ -164,7 +165,8 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
 
     public override object? get(string property, bool noReferences, ObjectType objectType)
     {
-        var attributeModel = GetClassModel()?.FindAttribute(property);
+        var classModel = GetClassModel();
+        var attributeModel = classModel?.FindAttribute(property);
         // Checks, if we have a dynamic property
         var (isValid, resultValue) = GetDynamicProperty(property);
         if (isValid)
@@ -181,7 +183,7 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
         else
         {
             // If not set, get the default value
-            var result = GetClassModel()?.FindAttribute(property)?.DefaultValue;
+            var result = attributeModel?.DefaultValue;
             return ConvertToMofObject(this, property, result, attributeModel, noReferences);
         }
     }
@@ -200,6 +202,7 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
             if (classModel.CachedElement != null)
             {
                 Interlocked.Increment(ref _getMetaClassViaCachedElementCount);
+                _cachedMetaClass = classModel.CachedElement;
                 return classModel.CachedElement;
             }
             
@@ -243,6 +246,7 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
     public void SetMetaClass(string metaClassUri)
     {
         _cachedMetaClass = null;
+        _cachedClassModel = null;
         ProviderObject.MetaclassUri = metaClassUri;
 
         UpdateContent();

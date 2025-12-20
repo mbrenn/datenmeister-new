@@ -206,28 +206,24 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
     {
         // Queries the object
         var queryObjectId = HttpUtility.UrlDecode(fragment);
-            
+
         // Check if the extent type already supports the direct querying of objects
-        if (
-            extent is MofUriExtent mofUriExtent && 
-            mofUriExtent.Provider is IProviderSupportFunctions supportFunctions &&
+        if (extent is MofExtent mofExtent &&
+            mofExtent.Provider is IProviderSupportFunctions supportFunctions &&
             supportFunctions.ProviderSupportFunctions.QueryById != null)
         {
             var resultingObject = supportFunctions.ProviderSupportFunctions.QueryById(queryObjectId);
             if (resultingObject != null)
             {
-#if DEBUG
-                if (extent == null) throw new InvalidOperationException("_extent is null");
-#endif
-                var resultElement = new MofElement(resultingObject, mofUriExtent)
-                    { Extent = mofUriExtent };
+                var resultElement = new MofElement(resultingObject, mofExtent)
+                    { Extent = mofExtent };
                 return resultElement;
             }
         }
         else
         {
             // Now go through the list
-            foreach (var element in 
+            foreach (var element in
                      AllDescendentsQuery.GetDescendents(extent))
             {
                 var elementAsMofObject =

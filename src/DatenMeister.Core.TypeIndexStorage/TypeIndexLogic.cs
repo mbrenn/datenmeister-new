@@ -571,12 +571,24 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     /// <returns>The found class model or null, if not found</returns>
     public ClassModel? FindClassModelByUrlWithinMetaWorkspaces(string workspace, string url)
     {
-        var workspaceModel = TypeIndexStore.Current?.FindWorkspace(workspace);
+        var currentIndex = TypeIndexStore.Current;
+        if (currentIndex == null) return null;
+        
+        var workspaceModel = currentIndex.FindWorkspace(workspace);
         var metaclassWorkspaces = workspaceModel?.MetaclassWorkspaces;
-        return metaclassWorkspaces
-            ?.Select(x => TypeIndexStore.Current?.FindWorkspace(x))
-            .Select(x => x?.FindClassByUri(url))
-            .FirstOrDefault(x => x != null);
+        if (metaclassWorkspaces == null) return null;
+        
+        foreach (var metaWorkspaceId in metaclassWorkspaces)
+        {
+            var metaWorkspace = currentIndex.FindWorkspace(metaWorkspaceId);
+            var found = metaWorkspace?.FindClassByUri(url);
+            if (found != null)
+            {
+                return found;
+            }
+        }
+
+        return null;
     }
 
     /// <summary>

@@ -296,7 +296,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                     // Now we go through the elements and try to find the classes
                     foreach (var element in extent.elements().OfType<IElement>())
                     {
-                        AddClassesToWorkspace(workspaceModel, element);
+                        AddClassesToWorkspace(workspaceModel, (extent as IUriExtent)?.contextURI() ?? string.Empty, element);
                     }
                 }
                 
@@ -401,8 +401,9 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     /// Adds the classes to the workspace
     /// </summary>
     /// <param name="workspaceModel">Model in which the classes will be stored</param>
+    /// <param name="extentUri">The URI of the extent being evaluated</param>
     /// <param name="element">Elements which is to be evaluated</param>
-    private void AddClassesToWorkspace(WorkspaceModel workspaceModel, IElement element)
+    private void AddClassesToWorkspace(WorkspaceModel workspaceModel, string extentUri, IElement element)
     {
         // Check, if we are a package, if yes, then we look into its properties
         if (element.isSet(_UML._Packages._Package.packagedElement))
@@ -413,14 +414,17 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                     .OfType<IElement>().ToList();
             foreach (var packagedElement in packagedElements)
             {
-                AddClassesToWorkspace(workspaceModel, packagedElement);
+                AddClassesToWorkspace(workspaceModel, extentUri, packagedElement);
             }
         }
         
         // Check, if we are a classifier
         if (element.getMetaClass()?.equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
         {
-            workspaceModel.ClassModels.Add(CreateClassModel(element));
+            var classModel = CreateClassModel(element);
+            classModel.ExtentUri = extentUri;
+            classModel.WorkspaceId = workspaceModel.WorkspaceId;
+            workspaceModel.ClassModels.Add(classModel);
         }
     }
 

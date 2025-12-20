@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Runtime.CompilerServices;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DefaultValue;
@@ -117,6 +118,7 @@ public static class ObjectHelper
     /// <param name="property">Property being queried in the <c>value</c></param>
     /// <param name="noReferences">true, if references shall not be </param>
     /// <returns>The content of the element or default(T) if not known</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T get<T>(this IObject value, string property, bool noReferences = false)
     {
         ArgumentNullException.ThrowIfNull(value);
@@ -266,6 +268,7 @@ public static class ObjectHelper
         
 #nullable enable
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T? getOrNull<T>(this IObject value, string property, bool noReferences = false) where T : struct
     {
         if (!value.isSet(property))
@@ -278,6 +281,7 @@ public static class ObjectHelper
 
 #nullable disable
         
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T getOrDefault<T>(this IObject value, string property, bool noReferences = false)
     {
         if (!value.isSet(property))
@@ -302,6 +306,7 @@ public static class ObjectHelper
     /// <param name="value">Object being queried</param>
     /// <param name="property">Property of the object</param>
     /// <returns>The value of the object or null, if not existing</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static object? getFirstOrDefault(this IObject value, string property)
     {
         if (value.isSet(property))
@@ -415,6 +420,7 @@ public static class ObjectHelper
     /// <param name="element">Object which will receive the values</param>
     /// <param name="key">key of the property to be set</param>
     /// <param name="value">Value to be set</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IElement SetProperty(this IElement element, string key, object value)
     {
         element.set(key, value);
@@ -427,6 +433,7 @@ public static class ObjectHelper
     /// <param name="element">Element to be updated</param>
     /// <param name="id">Id to be set </param>
     /// <returns>The element itself</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IObject SetId(this IObject element, string id)
     {
         if (element is ICanSetId elementAsHasId)
@@ -442,6 +449,7 @@ public static class ObjectHelper
     /// </summary>
     /// <param name="element">Element to be queried</param>
     /// <returns>The id of the element or empty string</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string GetId(this IObject element)
     {
         if ( element is IHasId elementWithId)
@@ -539,6 +547,7 @@ public static class ObjectHelper
     /// </summary>
     /// <param name="hasExtent">The interface being able to request the extent</param>
     /// <returns>The found extent</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IExtent? GetExtentOf(this IHasExtent hasExtent) => hasExtent.Extent;
 
     /// <summary>
@@ -582,6 +591,7 @@ public static class ObjectHelper
     /// </summary>
     /// <param name="element">Element to be queried</param>
     /// <returns>The element to be retrieved</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IElement? GetMetaClassWithoutTracing(this IElement element)
     {
         return element is MofElement asObject ? asObject.getMetaClass(false) : element.metaclass;
@@ -701,12 +711,15 @@ public static class ObjectHelper
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IUriResolver? GetUriResolver(this IObject element) =>
         (element as MofObject)?.Extent as IUriResolver;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IUriResolver GetUriResolver(this IExtent element) =>
         (element as IUriResolver) ?? throw new InvalidOperationException("element is not of type IUriResolver");
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IUriResolver? TryGetUriResolver(this IExtent element) => element as IUriResolver;
 
     /// <summary>

@@ -116,7 +116,7 @@ export class ObjectFormCreatorForItem {
             await this.rebuildForm();
         }
         catch (error) {
-            this.htmlElements.itemContainer.text("An error occured during 'createForm': " + error);
+            this.htmlElements.itemContainer.prepend("An error occured during 'createForm': " + error);
         }
     }
     async switchFormUrl(newFormUrl) {

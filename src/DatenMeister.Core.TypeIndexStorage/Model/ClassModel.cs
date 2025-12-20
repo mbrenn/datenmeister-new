@@ -1,3 +1,5 @@
+using DatenMeister.Core.Interfaces.MOF.Reflection;
+
 namespace DatenMeister.Core.TypeIndexAssembly.Model;
 
 /// <summary>
@@ -44,6 +46,11 @@ public record ClassModel
     /// Stores the enumeration of the attributes
     /// </summary>
     public List<AttributeModel> Attributes { get; } = new();
+    
+    /// <summary>
+    /// Stores the cached element of the class
+    /// </summary>
+    public IElement? CachedElement { get; set; }
 
     /// <summary>
     /// Gets the attribute by the given name

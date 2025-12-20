@@ -142,4 +142,25 @@ public class TestLoadClassesAndTheirProperties
         Assert.That(classCommandLineApplication.ExtentUri, Is.Not.Null.And.Not.Empty);
         Assert.That(classCommandLineApplication.ExtentUri, Does.Contain("dm:///_internal/types/internal"));
     }
+
+    [Test]
+    public async Task TestCachedElementIsSet()
+    {
+        await using var dm = await IntegrationOfTests.GetDatenMeisterScope();
+        var typeIndexStore = dm.ScopeStorage.TryGet<TypeIndexStore>()
+                             ?? throw new InvalidOperationException("TypeIndexStore not found");
+
+        var typesWorkspace = typeIndexStore.GetCurrentIndexStore().FindWorkspace(WorkspaceNames.WorkspaceTypes);
+        Assert.That(typesWorkspace, Is.Not.Null);
+
+        var classCommandLineApplication =
+            typesWorkspace!.ClassModels
+                .FirstOrDefault(x => x.Name == "CommandLineApplication");
+
+        Assert.That(classCommandLineApplication, Is.Not.Null);
+
+        // Verify CachedElement is set
+        Assert.That(classCommandLineApplication!.CachedElement, Is.Not.Null);
+        Assert.That(classCommandLineApplication.CachedElement!.getOrDefault<string>(_UML._StructuredClassifiers._Class.name), Is.EqualTo("CommandLineApplication"));
+    }
 }

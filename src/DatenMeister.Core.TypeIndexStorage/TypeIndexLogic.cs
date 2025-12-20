@@ -440,7 +440,8 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             Id = (element as IHasId)?.Id ?? string.Empty,
             Name = element.getOrDefault<string>(_UML._StructuredClassifiers._Class.name),
             FullName = NamedElementMethods.GetFullName(element),
-            Uri = (element as IKnowsUri)?.Uri ?? string.Empty
+            Uri = (element as IKnowsUri)?.Uri ?? string.Empty,
+            CachedElement = element
         };
 
         // Get th Generalizations of the class

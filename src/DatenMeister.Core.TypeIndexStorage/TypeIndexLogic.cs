@@ -383,15 +383,28 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         // After we are done with the complete workspace, we add the attributes from the generalizations
         foreach (var classModel in workspaceModel.ClassModels)
         {
-            foreach (var generalization in classModel.Generalizations)
+            AddInheritedAttributes(classModel, new HashSet<ClassModel>());
+            continue;
+
+            void AddInheritedAttributes(ClassModel innerClassModel, HashSet<ClassModel> visited)
             {
-                var generalizedClassModel = workspaceModel.FindClassByUri(generalization);
-                if (generalizedClassModel != null)
+                if (!visited.Add(innerClassModel))
                 {
-                    foreach (var attribute in generalizedClassModel.Attributes)
+                    return;
+                }
+
+                foreach (var generalization in innerClassModel.Generalizations)
+                {
+                    var generalizedClassModel = workspaceModel.FindClassByUri(generalization);
+                    if (generalizedClassModel == null) continue;
+                    
+                    foreach (var attribute in generalizedClassModel.Attributes.Where(
+                                 attribute => classModel.Attributes.All(x => x.Name != attribute.Name)))
                     {
-                        classModel.Attributes.Add(attribute with {IsInherited = true});
+                        classModel.Attributes.Add(attribute with { IsInherited = true });
                     }
+                        
+                    AddInheritedAttributes(generalizedClassModel, visited);
                 }
             }
         }

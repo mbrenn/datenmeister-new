@@ -63,109 +63,71 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
     /// <returns></returns>
     public virtual object? element(string uri)
     {
-        // Checks, if hash or question. Unfortunately, we can't use the Uri since it 
-        // Fragment only is accepted in relative Uris
         var posQuestion = uri.IndexOf('?');
         var posHash = uri.IndexOf('#');
         var posExtentEnd = posQuestion == -1 ? posHash : posQuestion;
         var extentUri = posExtentEnd == -1 ? uri : uri.Substring(0, posExtentEnd);
 
-        // Check, if the given extent contains the alternative uri
-        var matchesAlternativeUri =
-            extent is IHasAlternativeUris hasAlternativeUris && hasAlternativeUris.AlternativeUris.Contains(extentUri);
-            
-        // Checks, if the extent itself is selected
-        if (posQuestion == -1 && posHash == -1
-                              && (uri == extent.contextURI() || matchesAlternativeUri))
-        {
-            return extent;
-        }
+        var isThisExtent = extentUri == extent.contextURI() ||
+                           (extent is IHasAlternativeUris hasAlt && hasAlt.AlternativeUris.Contains(extentUri));
 
+        // Case 1: Only the extent itself is requested (no # or ?)
         if (posQuestion == -1 && posHash == -1)
         {
-            // If element is not an extent, support the user by trying to find
-            // an element with the given id within this extent
-            var tryAsHash = element("#" + uri);
-            return tryAsHash;
+            if (isThisExtent) return extent;
+
+            // Fallback for convenience: try to find an element with the given ID within this extent
+            return element("#" + uri);
         }
 
-        // Verifies that the extent is working. Hash or question mark must be on first character, if there is no 
-        // extent
-        if (string.IsNullOrEmpty(extentUri) && posExtentEnd != 0) return null;
+        // Case 2: Extent URI is provided but does not match this extent
+        if (!string.IsNullOrEmpty(extentUri) && !isThisExtent)
+        {
+            return null;
+        }
 
-        // Verifies whether the context can be found in context uri or alternative Uris if extent uri is set
-        if (!string.IsNullOrEmpty(extentUri) &&
-            extentUri != extent.contextURI() &&
-            !matchesAlternativeUri)
+        // Case 3: Extent URI is empty, but it's not a relative URI starting with # or ?
+        if (string.IsNullOrEmpty(extentUri) && posExtentEnd != 0)
         {
             return null;
         }
 
         var queryString = ParseQueryString(uri, posQuestion, posHash);
-
         object? foundItem = null;
-        // Ok, not found, try to find it
-        if (posHash == -1 && posQuestion == -1)
-        {
-            Logger.Error("No hash and no question mark");
-            throw new NotImplementedException("No hash and no question mark");
-        }
 
         // Querying by hash
         if (posHash != -1)
         {
-            // Gets the fragment
             var fragment = uri.Substring(posHash + 1);
-            if (string.IsNullOrEmpty(fragment))
+            if (!string.IsNullOrEmpty(fragment))
             {
-                Logger.Info(
-                    $"Uri does not contain a URI-Fragment defining the object being looked for. {nameof(uri)}");
-            }
-            else
-            {
-                var fragmentUri =
-                    extentUri
-                    + "#" + fragment;
+                var fragmentKey = extentUri + "#" + fragment;
 
-                // Check, if the element is in the cache and if yes, return it
-                if (_cacheIds.TryGetValue(fragmentUri, out var result))
+                // Check cache
+                if (_cacheIds.TryGetValue(fragmentKey, out var result))
                 {
-                    var resultAsMof = result as MofElement;
-                    var comparedUri =
-                        (string.IsNullOrEmpty(extentUri)
-                            ? ""
-                            : (resultAsMof!.GetUriExtentOf()?.contextURI() ?? string.Empty))
-                        + ("#" + resultAsMof!.Id);
-                    if (comparedUri == uri)
-                    {
-                        foundItem = resultAsMof;
-                        Interlocked.Increment(ref _cacheHit);
-                    }
+                    foundItem = result;
+                    Interlocked.Increment(ref _cacheHit);
                 }
-
-                if (foundItem == null)
+                else
                 {
                     foundItem = ResolveByFragment(fragment);
-
-                    // Adds the found item to the cache
-                    if (foundItem != null)
+                    if (foundItem is MofElement mofFound)
                     {
-                        // Caching is only useful for fragments since the cache lookup 
-                        // Tries to find an item by the element
-                        _cacheIds[fragmentUri] = (MofElement)foundItem;
+                        _cacheIds[fragmentKey] = mofFound;
                         Interlocked.Increment(ref _cacheMiss);
                     }
                 }
             }
         }
 
+        // Handle Query String (Hooks)
         if (queryString.AllKeys.Length > 0)
         {
             var resolveHook = GetResolveHooks();
             if (resolveHook != null)
             {
                 var parameters = new ResolveHookParameters(scopeStorage, queryString, foundItem ?? extent, extent);
-
                 foreach (var hook in resolveHook.ResolveHooks)
                 {
                     parameters.CurrentItem = hook.Resolve(parameters);

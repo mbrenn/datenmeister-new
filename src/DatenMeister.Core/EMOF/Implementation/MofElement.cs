@@ -47,6 +47,16 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
     /// </summary>
     public static long GetMetaClassCount => _getMetaClassCount;
 
+    /// <summary>
+    /// Tracks the number of times the metaclass is accessed via the ClassModel.
+    /// </summary>
+    private static long _getMetaClassViaClassModelCount = 0;
+
+    /// <summary>
+    /// Gets the number of times the metaclass has been retrieved via ClassModel.
+    /// </summary>
+    public static long GetMetaClassViaClassModelCount => _getMetaClassViaClassModelCount;
+
     /// <inheritdoc />
     public IElement? metaclass => getMetaClass();
         

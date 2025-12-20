@@ -597,8 +597,9 @@ public class MofExtent :
                 if (isComposite == false)
                 {
                     var extentUri = (extent as IUriExtent)?.contextURI() ?? "Unknown";
+                    var metaClass = (asMofObject as IElement)?.getMetaClass()?.ToString() ?? "Unknown";
                     var attributeName = attributeModel?.Name ?? "Unknown";
-                    logger.Info($"We are NOT composite, but would like to get added without knowing the extent: {asMofObject} to Extent: {extentUri} (Attribute: {attributeName})");
+                    logger.Info($"We are NOT composite, but would like to get added without knowing the extent: {asMofObject} ({metaClass}) to Extent: {extentUri} (Attribute: {attributeName})");
                 }
                 
                 if (asMofObject.ProviderObject.Provider == extent.Provider)

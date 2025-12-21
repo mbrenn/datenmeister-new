@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Threading;
 using BurnSystems.Logging;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -129,6 +130,11 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
 
     private CoreUriResolver? _coreUriResolver;
 
+    /// <summary>
+    /// Stores the number of unresolved URIs
+    /// </summary>
+    public static long UnresolvedUrisCount;
+
     /// <inheritdoc />
     public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
     {
@@ -141,6 +147,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
         var result = _coreUriResolver.Resolve(uri, resolveType, queriedWorkspace, this);
         if (result == null && traceFailing)
         {
+            Interlocked.Increment(ref UnresolvedUrisCount);
             Logger.Debug($"URI not resolved: {uri} from Extent: {contextURI()}");
             result = new MofObjectShadow(uri);
         }

@@ -131,6 +131,10 @@ public class AboutModel : PageModel
         {
             "CoreUriResolver: Unresolved URIs", () =>
                 $"{CoreUriResolver.UnresolvedUrisCount}"
+        },
+        {
+            "MofUriExtent: Unresolved URIs", () =>
+                $"{MofUriExtent.UnresolvedUrisCount}"
         }
     };
 }

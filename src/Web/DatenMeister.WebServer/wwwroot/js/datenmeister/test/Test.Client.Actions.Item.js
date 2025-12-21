@@ -55,12 +55,14 @@ export function includeTests() {
                     const child2Name = children[1].get("name", ObjectType.String);
                     chai.assert.isTrue(child2Name === "Child 2", "Name is not found");
                     await ClientActionsItem.moveItemInExtentUp("Test", "dm:///unittest", subChild2.itemId);
-                    const newChildren = await ClientItems.getRootElements("Test", "dm:///unittest");
+                    const newChildren = (await ClientItems.getRootElements("Test", "dm:///unittest"))
+                        .rootElementsAsObjects;
                     const child1Name = newChildren[1].get("name", ObjectType.String);
                     chai.assert.isTrue(child1Name === "Child 1", "Item has not been moved");
                     await ClientActionsItem.moveItemInExtentDown("Test", "dm:///unittest", subChild2.itemId);
                     await ClientActionsItem.moveItemInExtentDown("Test", "dm:///unittest", subChild2.itemId);
-                    const newChildren2 = await ClientItems.getRootElements("Test", "dm:///unittest");
+                    const newChildren2 = (await ClientItems.getRootElements("Test", "dm:///unittest"))
+                        .rootElementsAsObjects;
                     const child1Name2 = newChildren2[2].get("name", ObjectType.String);
                     chai.assert.isTrue(child1Name2 === "Child 2", "Item has not been moved back");
                 });

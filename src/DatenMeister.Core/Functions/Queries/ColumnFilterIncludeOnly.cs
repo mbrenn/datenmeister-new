@@ -18,11 +18,12 @@ public class ColumnFilterIncludeOnly : ProxyReflectiveCollection
 
     public override IEnumerator<object?> GetEnumerator()
     {
-        var factory = new MofFactory(Collection);
+        IFactory? factory = null;
         foreach (var value in Collection)
         {
-            if (value is IElement element  && value is IObjectAllProperties allProperties)
+            if (value is IElement element and IObjectAllProperties allProperties)
             {
+                factory ??= new MofFactory(element);
                 var memoryObject = factory.create(element.getMetaClass());
                 foreach (var property in allProperties.getPropertiesBeingSet())
                 {

@@ -152,7 +152,7 @@ export class TableForm {
         // Evaluate the new buttons to create objects
         this.createButtonsForNewInstance();
         // Create Query Text
-        this.updateFilterQueryText();
+        const _ = this.updateFilterQueryText();
         // Creates the table 
         if (this.elements === undefined) {
             this.elements = [];

@@ -43,6 +43,12 @@ export function createQueryBuilder(query, limit) {
         if (query.filterByFreetext) {
             QueryEngine.filterByFreetext(builder, query.filterByFreetext);
         }
+        if (query.columnsIncludeOnly) {
+            QueryEngine.columnFilterIncludeOnly(builder, query.columnsIncludeOnly);
+        }
+        if (query.columnsExclude) {
+            QueryEngine.columnFilterExclude(builder, query.columnsExclude);
+        }
     }
     // Imposes only a limit in case it is not defined or positive
     // in case the given limit < 0, then no limit is applied

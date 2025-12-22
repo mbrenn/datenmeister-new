@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
 namespace DatenMeister.Core.EMOF.Implementation;
 
-public class TemporaryReflectiveCollection(IEnumerable<object?> values, bool isReadOnly) : IReflectiveCollection
+public class TemporaryReflectiveCollection(IEnumerable<object?> values, bool isReadOnly) : IReflectiveCollection, IHasExtent
 {
     /// <summary>
     /// Defines the event arguments for deletion
@@ -118,4 +120,10 @@ public class TemporaryReflectiveCollection(IEnumerable<object?> values, bool isR
     /// <inheritdoc />
     public virtual int size()
         => Values.Count();
+
+    /// <summary>
+    /// Gets the extent associated with the collection, if available.
+    /// The extent represents the context or container responsible for managing the collection's elements.
+    /// </summary>
+    public IExtent? Extent => (values as IHasExtent)?.Extent;
 }

@@ -424,6 +424,56 @@ public class ItemsControllerTests
         Assert.That(result.Value!.Xmi.Contains("dm:///_internal/temp"), Is.True);
     }
 
+    [Test]
+    public async Task TestGetRootElementsColumnFilterIncludeOnly()
+    {
+        var (dm, _) = await CreateExampleExtentForSorting();
+
+        var itemsController = new ItemsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
+        var result = itemsController
+                         .GetRootElementsInternal(
+                             WorkspaceNames.WorkspaceData,
+                             ElementControllerTests.UriTemporaryExtent,
+                             null,
+                             new QueryFilterParameter()
+                             {
+                                 ColumnsIncludeOnly = "name"
+                             })
+                     ?? throw new InvalidOperationException("Should not happen");
+        var elements = result.Elements;
+        Assert.That(elements, Is.Not.Null);
+        Assert.That(elements!.Count(), Is.GreaterThan(0));
+        Assert.That(elements![0].isSet("name"), Is.True);
+        Assert.That(elements![0].isSet("value"), Is.False);
+
+        dm.Dispose();
+    }
+
+    [Test]
+    public async Task TestGetRootElementsColumnFilterExclude()
+    {
+        var (dm, _) = await CreateExampleExtentForSorting();
+
+        var itemsController = new ItemsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
+        var result = itemsController
+                         .GetRootElementsInternal(
+                             WorkspaceNames.WorkspaceData,
+                             ElementControllerTests.UriTemporaryExtent,
+                             null,
+                             new QueryFilterParameter()
+                             {
+                                 ColumnsExclude = "value"
+                             })
+                     ?? throw new InvalidOperationException("Should not happen");
+        var elements = result.Elements;
+        Assert.That(elements, Is.Not.Null);
+        Assert.That(elements!.Count(), Is.GreaterThan(0));
+        Assert.That(elements![0].isSet("name"), Is.True);
+        Assert.That(elements![0].isSet("value"), Is.False);
+
+        dm.Dispose();
+    }
+
     public static async Task<(IDatenMeisterScope, IUriExtent)> CreateExampleExtentForSorting()
     {
         var dm = await DatenMeisterTests.GetDatenMeisterScope(

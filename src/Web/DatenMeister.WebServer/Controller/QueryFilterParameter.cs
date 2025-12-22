@@ -25,4 +25,16 @@ public class QueryFilterParameter
     /// Defines a free text against which the filtering shall be performed
     /// </summary>
     public string? FilterByFreeText { get; set; }
+
+    /// <summary>
+    /// Defines the columns which shall be included in the output.
+    /// The columns are separated by comma
+    /// </summary>
+    public string? ColumnsIncludeOnly { get; set; }
+
+    /// <summary>
+    /// Defines the columns which shall be excluded from the output.
+    /// The columns are separated by comma
+    /// </summary>
+    public string? ColumnsExclude { get; set; }
 }

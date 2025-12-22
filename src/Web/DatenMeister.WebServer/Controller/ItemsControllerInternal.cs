@@ -1,4 +1,8 @@
-﻿using DatenMeister.Core.Interfaces;
+﻿using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
@@ -129,6 +133,29 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
                 finalElements = finalElements
                     .Where(x => x.isSet(filter.Key) && x.get(filter.Key)?.ToString() == filter.Value).ToList();
             }
+        }
+
+        if (filterParameter != null && !string.IsNullOrEmpty(filterParameter.ColumnsIncludeOnly))
+        {
+            var includeColumns = filterParameter.ColumnsIncludeOnly.Split(',').Select(x => x.Trim()).ToHashSet();
+            finalElements = new ColumnFilterIncludeOnly(new TemporaryReflectiveCollection(finalElements))
+            {
+                IncludeColumns = includeColumns
+            }
+                .OfType<IObject>()
+                .ToList();
+        }
+
+        if (filterParameter != null && !string.IsNullOrEmpty(filterParameter.ColumnsExclude))
+        {
+            var excludeColumns = filterParameter.ColumnsExclude.Split(',').Select(x => x.Trim()).ToHashSet();
+            
+            finalElements = new ColumnFilterExclude(new TemporaryReflectiveCollection(finalElements))
+                {
+                    ExcludedColumns = excludeColumns
+                }
+                .OfType<IObject>()
+                .ToList();
         }
 
 #if DEBUG

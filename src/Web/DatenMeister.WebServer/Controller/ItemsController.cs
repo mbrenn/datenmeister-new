@@ -308,7 +308,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     [HttpGet("api/items/get_root_elements/{workspaceId}/{extentUri}")]
     public ActionResult<GetRootElementsResult> GetRootElements(string workspaceId, string extentUri, string? viewNode = null,
         string? orderBy = null, bool? orderByDescending = false, string? filterByProperties = null,
-        string? filterByFreeText = null)
+        string? filterByFreeText = null, string? columnsIncludeOnly = null, string? columnsExclude = null)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
@@ -320,6 +320,8 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             OrderByDescending = orderByDescending == true,
             FilterByFreeText = filterByFreeText,
             FilterByProperties = ItemsControllerInternal.DeserializeStringToDictionary(filterByProperties ?? ""),
+            ColumnsIncludeOnly = columnsIncludeOnly,
+            ColumnsExclude = columnsExclude
         };
 
         var result = _internal.GetRootElementsInternal(workspaceId, extentUri, viewNode, query);

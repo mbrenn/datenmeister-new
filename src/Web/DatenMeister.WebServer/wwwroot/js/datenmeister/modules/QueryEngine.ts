@@ -128,3 +128,21 @@ export function getElementsByPath(builder: QueryBuilder, workspaceId: string, pa
     return viewNode;
 }
 
+export function columnFilterIncludeOnly(builder: QueryBuilder, columnNamesComma: string) {
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Column.__ColumnFilterIncludeOnlyNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._Column._ColumnFilterIncludeOnlyNode.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._Column._ColumnFilterIncludeOnlyNode.columnNamesComma, columnNamesComma);
+    builder.addNode(viewNode);
+    builder.setResultNode(viewNode);
+    return viewNode;
+}
+
+export function columnFilterExclude(builder: QueryBuilder, columnNamesComma: string) {
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Column.__ColumnFilterExcludeNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._Column._ColumnFilterExcludeNode.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._Column._ColumnFilterExcludeNode.columnNamesComma, columnNamesComma);
+    builder.addNode(viewNode);
+    builder.setResultNode(viewNode);
+    return viewNode;
+}
+

@@ -269,7 +269,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         this.createButtonsForNewInstance();
 
         // Create Query Text
-        this.updateFilterQueryText();
+        const _ = this.updateFilterQueryText();
         
         // Creates the table 
         if (this.elements === undefined) {

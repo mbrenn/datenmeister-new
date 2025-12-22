@@ -104,4 +104,16 @@ export class QueryFilterParameter {
      * Defines the workspace to be used for the query. If not defined, the default workspace is used.
      */
     queryWorkspace?: string;
+
+    /**
+     * Defines the columns which shall be included in the output.
+     * The columns are separated by comma
+     */
+    columnsIncludeOnly?: string;
+
+    /**
+     * Defines the columns which shall be excluded from the output.
+     * The columns are separated by comma
+     */
+    columnsExclude?: string;
 }

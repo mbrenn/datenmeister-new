@@ -9,6 +9,13 @@ namespace DatenMeister.Forms;
 
 public static class FormCreation
 {
+    private static long _formCreationCount;
+
+    /// <summary>
+    /// Gets the number of forms created during the session
+    /// </summary>
+    public static long FormCreationCount => _formCreationCount;
+
     public static  bool IsInExtensionCreationMode(this FormCreationContext result)
     {
         return result.LocalScopeStorage.TryGet<ExtensionCreationMode>()?.IsActive == true;
@@ -24,6 +31,7 @@ public static class FormCreation
         FormCreationContext context,
         FormCreationResultOneForm? result = null)
     {
+        Interlocked.Increment(ref _formCreationCount);
         result ??= new FormCreationResultOneForm();
         WalkThroughManager(
             context.Global.CollectionFormFactories, 
@@ -93,6 +101,7 @@ public static class FormCreation
         FormCreationContext context,
         FormCreationResultOneForm? result = null)
     {
+        Interlocked.Increment(ref _formCreationCount);
         parameter.MetaClass ??= parameter.Element?.AsIElement()?.getMetaClass();
         
         result ??= new FormCreationResultOneForm();
@@ -163,6 +172,7 @@ public static class FormCreation
         FormCreationContext context,
         FormCreationResultMultipleForms? result = null)
     {
+        Interlocked.Increment(ref _formCreationCount);
         result ??= new FormCreationResultMultipleForms();
         WalkThroughManager(
             context.Global.TableFormFactories, 
@@ -178,6 +188,7 @@ public static class FormCreation
         FormCreationContext context,
         FormCreationResultMultipleForms? result = null)
     {
+        Interlocked.Increment(ref _formCreationCount);
         parameter.MetaClass ??= parameter.Element?.AsIElement()?.getMetaClass();
 
         result ??= new FormCreationResultMultipleForms();

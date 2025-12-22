@@ -135,6 +135,10 @@ public class AboutModel : PageModel
         {
             "MofUriExtent: Unresolved URIs", () =>
                 $"{MofUriExtent.UnresolvedUrisCount}"
+        },
+        {
+            "FormCreation: Forms Created", () =>
+                $"{FormCreation.FormCreationCount}"
         }
     };
 }

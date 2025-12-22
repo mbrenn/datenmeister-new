@@ -4,7 +4,7 @@ namespace DatenMeister.Forms.FormFactory;
 
 public record FieldFactoryParameter : FormFactoryParameterBase
 {
-    public IElement? PropertyType { get; set; }
+    public IElement? Property { get; set; }
     
     public string PropertyName { get; set; } = string.Empty;
     

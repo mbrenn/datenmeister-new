@@ -57,8 +57,6 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
     private readonly TypeIndexLogic _typeIndexLogic = new(workspaceLogic);
     
     #endregion
-
-    private IWorkspace? _uriResolver;
     
     public void CreateField(
         FieldFactoryParameter parameter,
@@ -69,35 +67,40 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
         if (result.IsMainContentCreated)
             return;
         
-        var property = parameter.PropertyType;
+        var property = parameter.Property;
         var propertyName = string.IsNullOrEmpty(parameter.PropertyName) 
             ? property?.getOrDefault<string>(_UML._Classification._Property.name) ?? string.Empty
             : parameter.PropertyName;
-        var propertyType = property == null ? null : PropertyMethods.GetPropertyType(property);
-        
-        if (property == null && string.IsNullOrEmpty(propertyName) || propertyType == null)
-            return;
         
         var factory = context.Global.Factory;
         
-        // Checks, if the property is an enumeration.
-        var propertyIsCollection = property != null && PropertyMethods.IsCollection(property);
-        var isReadOnly = context.IsReadOnly;
-
-        _typeIndexLogic.FindClassModelByMetaClass(parameter.MetaClass);
-
-        // Checks, if field property is an enumeration
-        _uriResolver ??= workspaceLogic.TryGetTypesWorkspace();
-        if (_uriResolver == null)
+        var foundClassModel = _typeIndexLogic.FindClassModelByMetaClass(parameter.MetaClass);
+        var attributeModel = foundClassModel?.FindAttribute(propertyName);
+        if (attributeModel == null)
+        {
             return;
+        }
+
+        var propertyTypeUrl = attributeModel.TypeUrl;
+        
+        if (property == null && string.IsNullOrEmpty(propertyName) || string.IsNullOrEmpty(propertyTypeUrl))
+            return;
+        
+        var coreUriResolver = new CoreUriResolver(workspaceLogic);
+        if (coreUriResolver.Resolve(propertyTypeUrl, ResolveType.IncludeTypeWorkspace) is not IElement propertyType)
+            return;
+        
+        // Checks, if the property is an enumeration.
+        var propertyIsCollection = attributeModel.IsMultiple == true;
+        var isReadOnly = context.IsReadOnly;
 
         CachedTypes.StringType ??= _PrimitiveTypes.TheOne.__String;
         CachedTypes.IntegerType ??= _PrimitiveTypes.TheOne.__Integer;
         CachedTypes.BooleanType ??= _PrimitiveTypes.TheOne.__Boolean;
         CachedTypes.RealType ??= _PrimitiveTypes.TheOne.__Real;
         CachedTypes.UnlimitedNaturalType ??= _PrimitiveTypes.TheOne.__UnlimitedNatural;
-        CachedTypes.DateTimeType ??= _uriResolver
-            ?.ResolveElement(CoreTypeNames.DateTimeType, ResolveType.Default, false);
+        CachedTypes.DateTimeType ??= 
+            coreUriResolver.Resolve(CoreTypeNames.DateTimeType, ResolveType.IncludeTypeWorkspace) as IElement;
 
         // Checks, if the property is an enumeration.
         var propertyTypeMetaClass = propertyType?.metaclass; // The type of the type (enum, class, struct, etc)
@@ -175,7 +178,7 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                     referenceField.set(_Forms._TextFieldData.title, propertyName);
                     result.Form = referenceField;
                 }
-                else if (Configuration.CreateDropDownForReferences)
+                else if (!attributeModel.IsComposite)
                 {
                     // Gets the workspace of the object
                     var workspace = parameter.Extent?.GetWorkspace();

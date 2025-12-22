@@ -69,8 +69,9 @@ public static class FieldCreationHelper
                     Extent = parameter.Extent,
                     ExtentTypes = parameter.ExtentTypes,
                     PropertyName = propertyName ?? string.Empty,
-                    PropertyType = property,
-                    IsInTable = isTableForm
+                    Property = property,
+                    IsInTable = isTableForm,
+                    MetaClass = metaClass
                 },
                 context.Clone());
             if (column.Form != null)

@@ -299,18 +299,18 @@ public static class WorkspaceExtensions
             throw new InvalidOperationException("ExtentUri is empty");
         }
         
+        var workspace = workspaceLogic.GetWorkspace(workspaceId);
+        
         if (string.IsNullOrEmpty(workspaceId))
         {
-            // If the workspace is empty return it itself
-            var workspace = workspaceLogic.GetDefaultWorkspace();
+            // If the workspace is empty return the default workspace
+            workspace = workspaceLogic.GetDefaultWorkspace();
             if (workspace == null) return (null, null);
-
-            workspaceId = workspace.id;
         }
         
         var coreUriResolver = new CoreUriResolver(workspaceLogic);
 
-        var foundExtent =  coreUriResolver.Resolve(extentUri, ResolveType.IncludeWorkspace, workspaceLogic.GetWorkspace(workspaceId));
+        var foundExtent =  coreUriResolver.Resolve(extentUri, ResolveType.IncludeWorkspace, workspace);
 
         return foundExtent switch
         {

@@ -562,41 +562,37 @@ public class MofExtent :
             return value;
         }
 
-        if (DotNetHelper.IsOfMofShadow(value))
+        if (value is MofObjectShadow asMofObjectShadow)
         {
-            var asMofObjectShadow = (MofObjectShadow) value;
-
             // It is a reference
             var reference = new UriReference(asMofObjectShadow.Uri);
 
             return reference;
         }
 
-        if (DotNetHelper.IsUriReference(value))
+        if (value is UriReference)
         {
             return value;
         }
 
-        if (DotNetHelper.IsOfUriExtent(value))
+        if (value is IUriExtent ofUriExtent)
         {
-            if (value is not IUriExtent ofUriExtent)
-                throw new InvalidOperationException("Should not exist");
-
             return new UriReference(ofUriExtent.contextURI());
         }
 
-        if (DotNetHelper.IsOfMofObject(value))
+        if (value is MofObject asMofObject)
         {
             if (extent == null)
                 throw new InvalidOperationException("Extent is null but MofObject given");
-
-            var asMofObject = (MofObject) value;
 
             if (asMofObject.Extent == null || isComposite == true)
             {
                 if (isComposite == false)
                 {
-                    logger.Info("We are NOT composite, but would like to get added without knowing the extent");
+                    var extentUri = (extent as IUriExtent)?.contextURI() ?? "Unknown";
+                    var metaClass = (asMofObject as IElement)?.getMetaClass()?.ToString() ?? "Unknown";
+                    var attributeName = attributeModel?.Name ?? "Unknown";
+                    logger.Info($"We are NOT composite, but would like to get added without knowing the extent: {asMofObject} ({metaClass}) to Extent: {extentUri} (Attribute: {attributeName})");
                 }
                 
                 if (asMofObject.ProviderObject.Provider == extent.Provider)
@@ -632,14 +628,18 @@ public class MofExtent :
             };
         }
 
-        if (DotNetHelper.IsOfEnumeration(value))
+        if (value is IEnumerable enumerable and not string)
         {
-            return ((IEnumerable) value)
-                .Cast<object>()
-                .Select(innerValue => ConvertForSetting(innerValue, extent, attributeModel)).ToList();
+            var result = new List<object?>();
+            foreach (var item in enumerable)
+            {
+                result.Add(ConvertForSetting(item, extent, attributeModel));
+            }
+
+            return result;
         }
 
-        if (DotNetHelper.IsOfProviderObject(value))
+        if (value is IProviderObject)
         {
             throw new InvalidOperationException(
                 "Setting of IProviderObjects is not supported. Create a MofObject containing that element");

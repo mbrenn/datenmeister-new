@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using DatenMeister.Actions;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.Extent.Manager.Extents.Configuration;
@@ -89,11 +90,51 @@ public class AboutModel : PageModel
         }
     }
 
-    public static string CacheHits =>
-        $"{ExtentUrlNavigator.CacheHit} (" +
-        $"{Math.Round((double)ExtentUrlNavigator.CacheHit / (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss) * 100)}%)";
-    
-    public static string CacheMisses =>
-        $"{ExtentUrlNavigator.CacheMiss} (" +
-        $"{Math.Round((double)ExtentUrlNavigator.CacheMiss / (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss) * 100)}%)";
+    public static Dictionary<string, Func<string>> InstrumentationPoints { get; } = new()
+    {
+        {
+            "ExtentUrlNavigator: Cache Hits", () =>
+                $"{ExtentUrlNavigator.CacheHit} (" +
+                $"{Math.Round((double)ExtentUrlNavigator.CacheHit / (ExtentUrlNavigator.CacheHit + (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss == 0 ? 1 : ExtentUrlNavigator.CacheMiss)) * 100)}%)"
+        },
+        {
+            "ExtentUrlNavigator: Cache Misses", () =>
+                $"{ExtentUrlNavigator.CacheMiss} (" +
+                $"{Math.Round((double)ExtentUrlNavigator.CacheMiss / (ExtentUrlNavigator.CacheHit + (ExtentUrlNavigator.CacheHit + ExtentUrlNavigator.CacheMiss == 0 ? 1 : ExtentUrlNavigator.CacheMiss)) * 100)}%)"
+        },
+        {
+            "MofElement: getMetaClass Calls", () =>
+                $"{MofElement.GetMetaClassCount}"
+        },
+        {
+            "MofElement: getMetaClass via ClassModel", () =>
+                $"{MofElement.GetMetaClassViaClassModelCount}"
+        },
+        {
+            "MofElement: getMetaClass via CachedElement", () =>
+                $"{MofElement.GetMetaClassViaCachedElementCount}"
+        },
+        {
+            "TypeIndexStore: Triggers Received", () =>
+            {
+                var typeIndexLogic = new TypeIndexLogic(GiveMe.Scope.WorkspaceLogic);
+                return typeIndexLogic.TypeIndexStore.TriggersReceived.ToString();
+            }
+        },
+        {
+            "TypeIndexStore: Number of Reindexed", () =>
+            {
+                var typeIndexLogic = new TypeIndexLogic(GiveMe.Scope.WorkspaceLogic);
+                return typeIndexLogic.TypeIndexStore.NumberOfReindexes.ToString();
+            }
+        },
+        {
+            "CoreUriResolver: Unresolved URIs", () =>
+                $"{CoreUriResolver.UnresolvedUrisCount}"
+        },
+        {
+            "MofUriExtent: Unresolved URIs", () =>
+                $"{MofUriExtent.UnresolvedUrisCount}"
+        }
+    };
 }

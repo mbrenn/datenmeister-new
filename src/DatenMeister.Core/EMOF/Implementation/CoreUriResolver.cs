@@ -1,5 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using BurnSystems.Logging;
+using BurnSystems.Logging.Provider;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -21,6 +27,41 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
     /// Stores the logger is used to provide information in case resolving gives some information
     /// </summary>
     private static readonly ILogger Logger = new ClassLogger(typeof(CoreUriResolver));
+
+    /// <summary>
+    /// Stores the logger that is used to log the resolution process to a file
+    /// </summary>
+    private static readonly Logger ResolveLogger = new();
+
+    static CoreUriResolver()
+    {
+        try
+        {
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var logFile = Path.Combine(desktopPath, "resolve.log");
+            ResolveLogger.AddProvider(new FileProvider(logFile, true), LogLevel.Info);
+        }
+        catch
+        {
+            // Ignore errors in logger initialization
+        }
+    }
+
+    /// <summary>
+    /// Indicates whether the process of resolving URIs should be logged.
+    /// When enabled, detailed information about each URI resolution attempt is logged.
+    /// </summary>
+    public static bool LogResolvings { get; set; } = true;
+
+    /// <summary>
+    /// Tracks the number of times a URI could not be resolved.
+    /// </summary>
+    private static long _unresolvedUrisCount = 0;
+
+    /// <summary>
+    /// Gets the number of times a URI could not be resolved.
+    /// </summary>
+    public static long UnresolvedUrisCount => _unresolvedUrisCount;
     
     /// <summary>
     /// Performs the resolution 
@@ -32,6 +73,25 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
     /// <returns>The found object or null in case nothing has been found</returns>
     public object? Resolve(string uri, ResolveType resolveType, IWorkspace? workspace = null, IUriExtent? uriExtent = null)
     {
+        var result = ResolveInternal(uri, resolveType, workspace, uriExtent);
+        if (result == null)
+        {
+            Interlocked.Increment(ref _unresolvedUrisCount);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Performs the resolution internal
+    /// </summary>
+    private object? ResolveInternal(string uri, ResolveType resolveType, IWorkspace? workspace = null, IUriExtent? uriExtent = null)
+    {
+        if (LogResolvings)
+        {
+            ResolveLogger.Info($"Resolve: {uri}, Type: {resolveType}, Workspace: {workspace?.id}, Extent: {uriExtent?.contextURI()}");
+        }
+
         // Checks, if the item is in the current extent
         if ((resolveType.HasFlagFast(ResolveType.IncludeExtent)
              || resolveType.HasFlagFast(ResolveType.IncludeWorkspace))

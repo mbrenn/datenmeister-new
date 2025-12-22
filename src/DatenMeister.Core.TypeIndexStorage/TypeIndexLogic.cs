@@ -235,11 +235,21 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             
             // Now, create the new index and swap it
             storage.Next = new TypeIndexData();
+
+            if (!storage.IndexFirstBuiltEvent.WaitOne(0))
+            {
+                // In case we are doing the very first indexing, we need to build the dependency graph first
+                Logger.Info("Building workspace dependency graph for the first time");
+                
+                BuildWorkspaceDependencyGraph(storage.Next);
+                SwapNextAndCurrentTypeData();
+                
+                storage.Next = new TypeIndexData();
+            }
+
+            // But redo it to simplify logic
             BuildWorkspace(storage.Next);            
             SwapNextAndCurrentTypeData();
-            
-            // Indicate that we have create the first built event
-            storage.IndexFirstBuiltEvent.Set();
         }
     }
 
@@ -251,67 +261,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     {
         using (var _ = new StopWatchLogger(Logger, "Building workspace dependency tree"))
         {
-            // First, we build the workspace dependency tree
-            foreach (var workspace in WorkspaceLogic.Workspaces)
-            {
-                var model = new WorkspaceModel
-                {
-                    WorkspaceId = workspace.id
-                };
-
-                foreach (var meta in workspace.MetaWorkspaces)
-                {
-                    model.MetaclassWorkspaces.Add(meta.id);
-                }
-
-                indexData.Workspaces.Add(model);
-            }
-
-            // Checks whether the workspaces are neighbors
-            foreach (var workspaceModel in indexData.Workspaces)
-            {
-                foreach (var otherWorkspaceModel in indexData.Workspaces.Where(x=> x != workspaceModel))
-                {
-                    if (!IsMetaWorkspace(workspaceModel, otherWorkspaceModel)
-                        && !IsMetaWorkspace(otherWorkspaceModel, workspaceModel))
-                    {
-                        workspaceModel.NeighborWorkspaces.Add(otherWorkspaceModel.WorkspaceId);
-                    }
-                }
-            }
-            
-            
-            // Now we need to understand the neighboring workspaces which are not dependent to each other
-            // A workspace is dependent to each other in case it has a metaworkspace (one level or multiple)
-            // or is a metaworkspace of the other
-            bool IsMetaWorkspace(WorkspaceModel focus, WorkspaceModel other, HashSet<string>? visited = null)
-            {
-                // Infinite Loop breaker! 
-                visited ??= new HashSet<string>();
-                if (!visited.Add(focus.WorkspaceId))
-                {
-                    return false;
-                }
-                
-                // First, check that the source is not a direct or indirect workspace of the target
-                if (focus.MetaclassWorkspaces.Any(x => x == other.WorkspaceId))
-                {
-                    return true;
-                }
-
-                // Checks recursively that the workspace is might be contained by that workspace
-                foreach (var metaWorkspace in focus.MetaclassWorkspaces)
-                {
-                    var metaWorkspaceOfFocus = indexData.FindWorkspace(metaWorkspace);
-                    if (metaWorkspaceOfFocus != null && IsMetaWorkspace(metaWorkspaceOfFocus, other, visited))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-            
+            BuildWorkspaceDependencyGraph(indexData);
         }
 
         using (var _ = new StopWatchLogger(Logger, "Building classes"))
@@ -346,12 +296,76 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                     // Now we go through the elements and try to find the classes
                     foreach (var element in extent.elements().OfType<IElement>())
                     {
-                        AddClassesToWorkspace(workspaceModel, element);
+                        AddClassesToWorkspace(workspaceModel, (extent as IUriExtent)?.contextURI() ?? string.Empty, element);
                     }
                 }
                 
                 AddInheritedAttributesFromGeneralizations(workspaceModel);
             }
+        }
+    }
+
+    private void BuildWorkspaceDependencyGraph(TypeIndexData indexData)
+    {
+        // First, we build the workspace dependency tree
+        foreach (var workspace in WorkspaceLogic.Workspaces)
+        {
+            var model = new WorkspaceModel
+            {
+                WorkspaceId = workspace.id
+            };
+
+            foreach (var meta in workspace.MetaWorkspaces)
+            {
+                model.MetaclassWorkspaces.Add(meta.id);
+            }
+
+            indexData.Workspaces.Add(model);
+        }
+
+        // Checks whether the workspaces are neighbors
+        foreach (var workspaceModel in indexData.Workspaces)
+        {
+            foreach (var otherWorkspaceModel in indexData.Workspaces.Where(x=> x != workspaceModel))
+            {
+                if (!IsMetaWorkspace(workspaceModel, otherWorkspaceModel)
+                    && !IsMetaWorkspace(otherWorkspaceModel, workspaceModel))
+                {
+                    workspaceModel.NeighborWorkspaces.Add(otherWorkspaceModel.WorkspaceId);
+                }
+            }
+        }
+            
+            
+        // Now we need to understand the neighboring workspaces which are not dependent to each other
+        // A workspace is dependent to each other in case it has a metaworkspace (one level or multiple)
+        // or is a metaworkspace of the other
+        bool IsMetaWorkspace(WorkspaceModel focus, WorkspaceModel other, HashSet<string>? visited = null)
+        {
+            // Infinite Loop breaker! 
+            visited ??= new HashSet<string>();
+            if (!visited.Add(focus.WorkspaceId))
+            {
+                return false;
+            }
+                
+            // First, check that the source is not a direct or indirect workspace of the target
+            if (focus.MetaclassWorkspaces.Any(x => x == other.WorkspaceId))
+            {
+                return true;
+            }
+
+            // Checks recursively that the workspace is might be contained by that workspace
+            foreach (var metaWorkspace in focus.MetaclassWorkspaces)
+            {
+                var metaWorkspaceOfFocus = indexData.FindWorkspace(metaWorkspace);
+                if (metaWorkspaceOfFocus != null && IsMetaWorkspace(metaWorkspaceOfFocus, other, visited))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -369,15 +383,28 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         // After we are done with the complete workspace, we add the attributes from the generalizations
         foreach (var classModel in workspaceModel.ClassModels)
         {
-            foreach (var generalization in classModel.Generalizations)
+            AddInheritedAttributes(classModel, new HashSet<ClassModel>());
+            continue;
+
+            void AddInheritedAttributes(ClassModel innerClassModel, HashSet<ClassModel> visited)
             {
-                var generalizedClassModel = workspaceModel.FindClassByUri(generalization);
-                if (generalizedClassModel != null)
+                if (!visited.Add(innerClassModel))
                 {
-                    foreach (var attribute in generalizedClassModel.Attributes)
+                    return;
+                }
+
+                foreach (var generalization in innerClassModel.Generalizations)
+                {
+                    var generalizedClassModel = workspaceModel.FindClassByUri(generalization);
+                    if (generalizedClassModel == null) continue;
+                    
+                    foreach (var attribute in generalizedClassModel.Attributes.Where(
+                                 attribute => classModel.Attributes.All(x => x.Name != attribute.Name)))
                     {
-                        classModel.Attributes.Add(attribute with {IsInherited = true});
+                        classModel.Attributes.Add(attribute with { IsInherited = true });
                     }
+                        
+                    AddInheritedAttributes(generalizedClassModel, visited);
                 }
             }
         }
@@ -387,8 +414,9 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     /// Adds the classes to the workspace
     /// </summary>
     /// <param name="workspaceModel">Model in which the classes will be stored</param>
+    /// <param name="extentUri">The URI of the extent being evaluated</param>
     /// <param name="element">Elements which is to be evaluated</param>
-    private void AddClassesToWorkspace(WorkspaceModel workspaceModel, IElement element)
+    private void AddClassesToWorkspace(WorkspaceModel workspaceModel, string extentUri, IElement element)
     {
         // Check, if we are a package, if yes, then we look into its properties
         if (element.isSet(_UML._Packages._Package.packagedElement))
@@ -399,14 +427,17 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                     .OfType<IElement>().ToList();
             foreach (var packagedElement in packagedElements)
             {
-                AddClassesToWorkspace(workspaceModel, packagedElement);
+                AddClassesToWorkspace(workspaceModel, extentUri, packagedElement);
             }
         }
         
         // Check, if we are a classifier
         if (element.getMetaClass()?.equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
         {
-            workspaceModel.ClassModels.Add(CreateClassModel(element));
+            var classModel = CreateClassModel(element);
+            classModel.ExtentUri = extentUri;
+            classModel.WorkspaceId = workspaceModel.WorkspaceId;
+            workspaceModel.ClassModels.Add(classModel);
         }
     }
 
@@ -422,7 +453,8 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             Id = (element as IHasId)?.Id ?? string.Empty,
             Name = element.getOrDefault<string>(_UML._StructuredClassifiers._Class.name),
             FullName = NamedElementMethods.GetFullName(element),
-            Uri = (element as IKnowsUri)?.Uri ?? string.Empty
+            Uri = (element as IKnowsUri)?.Uri ?? string.Empty,
+            CachedElement = element
         };
 
         // Get th Generalizations of the class
@@ -493,6 +525,8 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         }
         
         var isComposite = attribute.getOrDefault<bool>(_UML._Classification._Property.isComposite);
+        isComposite |= attribute.getOrDefault<string>(_UML._Classification._Property.aggregation) == "composite";
+        
         if (isComposite)
         {
             attributeModel.IsComposite = true;
@@ -539,12 +573,24 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     /// <returns>The found class model or null, if not found</returns>
     public ClassModel? FindClassModelByUrlWithinMetaWorkspaces(string workspace, string url)
     {
-        var workspaceModel = TypeIndexStore.Current?.FindWorkspace(workspace);
+        var currentIndex = TypeIndexStore.Current;
+        if (currentIndex == null) return null;
+        
+        var workspaceModel = currentIndex.FindWorkspace(workspace);
         var metaclassWorkspaces = workspaceModel?.MetaclassWorkspaces;
-        return metaclassWorkspaces
-            ?.Select(x => TypeIndexStore.Current?.FindWorkspace(x))
-            .Select(x => x?.FindClassByUri(url))
-            .FirstOrDefault(x => x != null);
+        if (metaclassWorkspaces == null) return null;
+        
+        foreach (var metaWorkspaceId in metaclassWorkspaces)
+        {
+            var metaWorkspace = currentIndex.FindWorkspace(metaWorkspaceId);
+            var found = metaWorkspace?.FindClassByUri(url);
+            if (found != null)
+            {
+                return found;
+            }
+        }
+
+        return null;
     }
 
     /// <summary>

@@ -95,7 +95,7 @@ export class DmObject {
                 if (resultString === undefined) {
                     return undefined;
                 }
-                return resultString.toString();
+                return (resultString?.toString() ?? "");
             case ObjectType.Boolean:
                 if (Array.isArray(result)) {
                     result = result[0];

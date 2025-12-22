@@ -1,4 +1,5 @@
-﻿using BurnSystems.Logging;
+﻿using System.Runtime.CompilerServices;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Interfaces;
@@ -17,6 +18,7 @@ public static class ExtentHelper
     /// </summary>
     public static readonly ClassLogger Logger = new(typeof(ExtentHelper));
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ExtentConfiguration GetConfiguration(this IExtent extent)
         => (extent as IHasExtentConfiguration)?.ExtentConfiguration
            ?? throw new InvalidOperationException("Configuration is not existing");
@@ -63,6 +65,7 @@ public static class ExtentHelper
     /// Gets the factory of the given extent
     /// </summary>
     /// <returns>The created factory</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IFactory GetFactory(this IExtent extent) => new MofFactory(extent);
 
     /// <summary>
@@ -70,6 +73,7 @@ public static class ExtentHelper
     /// </summary>
     /// <param name="extent">Extent to be queried</param>
     /// <returns>The workspace correlated to the extent</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IWorkspace? GetWorkspace(this IExtent extent) => (extent as IHasWorkspace)?.Workspace;
 
     /// <summary>

@@ -205,7 +205,7 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
         }
         catch(error)
         {
-            this.htmlElements.itemContainer.text(
+            this.htmlElements.itemContainer.prepend(
                 "An error occured during 'createForm': " + error);
         }
     }

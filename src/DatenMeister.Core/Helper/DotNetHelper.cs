@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Runtime.CompilerServices;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Globalization;
@@ -26,6 +27,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="type">Type to be evaluated</param>
     /// <returns>true, if the given type is a primitive type</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsPrimitiveType(Type type) =>
         type == typeof(bool)
         || type == typeof(float)
@@ -44,6 +46,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="type">Type to be evaluated</param>
     /// <returns>true, if it is a DateTime type</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsDateTime(Type type) => type == typeof(DateTime);
 
     /// <summary>
@@ -52,6 +55,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value">Value to be evaluated</param>
     /// <returns>true, if the given type is a primitive type</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfPrimitiveType(object? value) =>
         value != null && IsPrimitiveType(value.GetType());
 
@@ -62,6 +66,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value">Value to be evaluated</param>
     /// <returns>true, if the given type is a primitive type</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfDateTime(object? value) =>
         value != null && IsDateTime(value.GetType());
 
@@ -70,6 +75,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="type">Type to be evaluated</param>
     /// <returns>true, if an enumeration and not a string</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsEnumeration(Type? type) =>
         type != null && type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
 
@@ -93,6 +99,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value">Value to be evaluated</param>
     /// <returns>true, if an enumeration and not a string</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfEnumeration(object? value) =>
         value != null && IsEnumeration(value.GetType());
 
@@ -101,6 +108,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value">Value to be evaluated </param>
     /// <returns>true, if null</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsNull(object? value) =>
         value == null;
 
@@ -109,6 +117,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="type">Type to be verified</param>
     /// <returns>true, if the given type is an enum</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsEnum(Type type) =>
         type.GetTypeInfo().IsEnum;
 
@@ -117,6 +126,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value">Value to be verified</param>
     /// <returns>true, if enum</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfEnum(object? value) =>
         value != null && IsEnum(value.GetType());
 
@@ -125,9 +135,11 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="propertyValue">Value to be checked</param>
     /// <returns>true, if the given element is of the type</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfMofObject(object? propertyValue) =>
         propertyValue is IObject;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfMofElement(object? propertyValue) =>
         propertyValue is IElement;
 
@@ -136,6 +148,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value">Value to be checked</param>
     /// <returns>true, if the given value is an extent</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfExtent(object value) => value is IExtent;
 
     /// <summary>
@@ -143,8 +156,10 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value">Value to be checked</param>
     /// <returns>true, if the given value is an extent</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfUriExtent(object value) => value is IUriExtent;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfNumber(object? property)
     {
         if (property == null) return false;
@@ -153,6 +168,7 @@ public static class DotNetHelper
         return IsNumber(type);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool IsNumber(Type type) =>
         type == typeof(short)
         || type == typeof(int)
@@ -166,6 +182,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfChar(object? value)
     {
         return value?.GetType() == typeof(char);
@@ -176,6 +193,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="property">Property to be evaluated</param>
     /// <returns>true, if this is a boolean</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfBoolean(object? property)
     {
         if (property == null) return false;
@@ -184,6 +202,7 @@ public static class DotNetHelper
         return IsBoolean(type);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool IsBoolean(Type type) => type == typeof(bool);
 
     /// <summary>
@@ -191,6 +210,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value"></param>
     /// <returns>true, if the element is a string</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfString(object? value) => value is string;
 
     public static string? AsString(object? value)
@@ -304,6 +324,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value">Value to be checked</param>
     /// <returns>True, if element is true</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsTrue(object value) =>
         AsBoolean(value);
 
@@ -312,6 +333,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value">Value to be checked</param>
     /// <returns>True, if element is false</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsFalse(object value) =>
         !AsBoolean(value);
 
@@ -323,6 +345,7 @@ public static class DotNetHelper
     /// <param name="value">Value to be verified</param>
     /// <param name="property">Property to be queried</param>
     /// <returns>true, if the given property is null or not set</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsTrue(IObject value, string property)
         => value.isSet(property) && AsBoolean(value.get(property));
 
@@ -333,6 +356,7 @@ public static class DotNetHelper
     /// <param name="value">Value to be verified</param>
     /// <param name="property">Property to be queried</param>
     /// <returns>true, if the given property is null or not set</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsFalseOrNotSet(IObject value, string property)
     {
         if (value.isSet(property))
@@ -348,6 +372,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value">Value to be verified</param>
     /// <returns>true, if that is the case</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfReflectiveCollection(object? value)
     {
         if (value == null) return false;
@@ -361,6 +386,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="type">Type to be verified</param>
     /// <returns>true, if that is the case</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool IsReflectiveCollection(Type type) =>
         typeof(IReflectiveCollection).IsAssignableFrom(type);
 
@@ -369,6 +395,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="element">Element to be verified</param>
     /// <returns>true, if the given element is of type IProviderObject</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfProviderObject(object? element) =>
         element is IProviderObject;
 
@@ -378,6 +405,7 @@ public static class DotNetHelper
     /// <param name="value">Value to be converted</param>
     /// <param name="extent">The extent being used to create and resolve the element</param>
     /// <returns>The converted element</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IObject? ConvertToMofElement(
         object value,
         IUriExtent extent) =>
@@ -479,6 +507,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value">Value to be converted</param>
     /// <returns>true, if the value is of type MofShadow</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOfMofShadow(object value) => value is MofObjectShadow;
 
     /// <summary>
@@ -486,6 +515,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="value">Value to be converted</param>
     /// <returns>true, if given type is urireference</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsUriReference(object? value) => value is UriReference;
 
     /// <summary>
@@ -493,6 +523,7 @@ public static class DotNetHelper
     /// </summary>
     /// <param name="text">Text to be evaluated</param>
     /// <returns>true, if the text is a guid</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsGuid(string text)
     {
         return Guid.TryParse(text, out _);
@@ -504,6 +535,7 @@ public static class DotNetHelper
     /// <param name="value">Value to be evaluated</param>
     /// <typeparam name="T">Type to which that value needs to be converted</typeparam>
     /// <returns>The converter element. </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T ConvertTo<T>(object? value)
     {
         if (value == null)

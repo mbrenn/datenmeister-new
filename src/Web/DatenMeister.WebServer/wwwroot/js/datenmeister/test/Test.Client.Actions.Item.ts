@@ -139,7 +139,8 @@ export function includeTests() {
                         subChild2.itemId);
 
                     const newChildren =
-                        await ClientItems.getRootElements("Test", "dm:///unittest");
+                        (await ClientItems.getRootElements("Test", "dm:///unittest"))
+                            .rootElementsAsObjects;
                     const child1Name = (newChildren[1] as DmObject).get("name", ObjectType.String);
 
                     chai.assert.isTrue(child1Name === "Child 1", "Item has not been moved");
@@ -154,7 +155,8 @@ export function includeTests() {
                         subChild2.itemId);
 
                     const newChildren2 =
-                        await ClientItems.getRootElements("Test", "dm:///unittest");
+                        (await ClientItems.getRootElements("Test", "dm:///unittest"))
+                            .rootElementsAsObjects;
                     const child1Name2 = (newChildren2[2] as DmObject).get("name", ObjectType.String);
 
                     chai.assert.isTrue(child1Name2 === "Child 2", "Item has not been moved back");

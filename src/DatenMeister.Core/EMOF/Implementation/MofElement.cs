@@ -1,4 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Implementation.DefaultValue;
+﻿using System;
+using System.Threading;
+using DatenMeister.Core.EMOF.Implementation.DefaultValue;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -32,6 +34,38 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
         : base(providedObject, extent, referenceElement)
     {
     }
+
+    /// <summary>
+    /// Tracks the number of times the metaclass is accessed.
+    /// This static variable is incremented within the implementation of the `getMetaClass` method
+    /// to provide a count of how often the metaclass has been retrieved.
+    /// </summary>
+    private static long _getMetaClassCount = 0;
+
+    /// <summary>
+    /// Gets the number of times the metaclass has been retrieved.
+    /// </summary>
+    public static long GetMetaClassCount => _getMetaClassCount;
+
+    /// <summary>
+    /// Tracks the number of times the metaclass is accessed via the ClassModel.
+    /// </summary>
+    private static long _getMetaClassViaClassModelCount = 0;
+
+    /// <summary>
+    /// Gets the number of times the metaclass has been retrieved via ClassModel.
+    /// </summary>
+    public static long GetMetaClassViaClassModelCount => _getMetaClassViaClassModelCount;
+
+    /// <summary>
+    /// Tracks the number of times the metaclass is accessed via the CachedElement in ClassModel.
+    /// </summary>
+    private static long _getMetaClassViaCachedElementCount = 0;
+
+    /// <summary>
+    /// Gets the number of times the metaclass has been retrieved via CachedElement in ClassModel.
+    /// </summary>
+    public static long GetMetaClassViaCachedElementCount => _getMetaClassViaCachedElementCount;
 
     /// <inheritdoc />
     public IElement? metaclass => getMetaClass();
@@ -67,6 +101,7 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
     public void SetMetaClass(IElement? metaClass)
     {
         _cachedMetaClass = metaClass is MofElement ? metaClass : null;
+        _cachedClassModel = null;
         if (metaClass is MofElement mofElement)
         {
             if (mofElement.Extent == null)
@@ -130,7 +165,8 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
 
     public override object? get(string property, bool noReferences, ObjectType objectType)
     {
-        var attributeModel = GetClassModel()?.FindAttribute(property);
+        var classModel = GetClassModel();
+        var attributeModel = classModel?.FindAttribute(property);
         // Checks, if we have a dynamic property
         var (isValid, resultValue) = GetDynamicProperty(property);
         if (isValid)
@@ -147,19 +183,43 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
         else
         {
             // If not set, get the default value
-            var result = GetClassModel()?.FindAttribute(property)?.DefaultValue;
+            var result = attributeModel?.DefaultValue;
             return ConvertToMofObject(this, property, result, attributeModel, noReferences);
         }
     }
 
     public IElement? getMetaClass(bool traceFailing = true)
     {
+        Interlocked.Increment(ref _getMetaClassCount);
         if (_cachedMetaClass != null && _cachedMetaClass is not MofObjectShadow)
         {
             return _cachedMetaClass;
         }
 
+        var classModel = GetClassModel();
+        if (classModel != null)
+        {
+            if (classModel.CachedElement != null)
+            {
+                Interlocked.Increment(ref _getMetaClassViaCachedElementCount);
+                _cachedMetaClass = classModel.CachedElement;
+                return classModel.CachedElement;
+            }
+            
+            if ((ReferencedExtent as IUriResolver)?.Resolve(
+                    classModel.Uri,
+                    ResolveType.IncludeWorkspace,
+                    traceFailing,
+                    classModel.WorkspaceId) is IElement localResult)
+            {
+                Interlocked.Increment(ref _getMetaClassViaClassModelCount);
+                _cachedMetaClass = localResult;
+                return localResult;
+            }
+        }
+        
         var uri = ProviderObject.MetaclassUri;
+        
         if (uri == null || string.IsNullOrEmpty(uri))
         {
             // No metaclass Uri is given.
@@ -186,6 +246,7 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
     public void SetMetaClass(string metaClassUri)
     {
         _cachedMetaClass = null;
+        _cachedClassModel = null;
         ProviderObject.MetaclassUri = metaClassUri;
 
         UpdateContent();

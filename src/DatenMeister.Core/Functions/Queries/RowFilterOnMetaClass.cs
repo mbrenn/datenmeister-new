@@ -36,8 +36,7 @@ public class RowFilterOnMetaClass : ProxyReflectiveCollection
         var result = 0;
         foreach (var value in Collection)
         {
-            var valueAsObject = value as IElement;
-            if (valueAsObject == null) 
+            if (value is not IElement valueAsObject) 
                 continue;
                 
             if (IsInList(valueAsObject))
@@ -57,7 +56,7 @@ public class RowFilterOnMetaClass : ProxyReflectiveCollection
     private bool IsInList(IElement valueAsObject)
     {
         var isIn = false;
-        var metaClass = valueAsObject?.getMetaClass();
+        var metaClass = valueAsObject.getMetaClass();
 
         if (metaClass == null && (_filteredMetaClass == null || _filteredMetaClass.Length == 0)
             || metaClass != null && _filteredMetaClass?.Any(x => x.equals(metaClass)) == true)

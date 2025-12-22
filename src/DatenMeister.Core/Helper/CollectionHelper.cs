@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Runtime.CompilerServices;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -10,9 +11,11 @@ namespace DatenMeister.Core.Helper;
 
 public static class CollectionHelper
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IList<T> ToList<T>(this IReflectiveCollection collection) where T : notnull =>
         new ReflectiveList<T>(collection);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IList<T> ToList<T>(this IReflectiveCollection collection, Func<object?, T> wrapFunc,
         Func<T, object?> unwrapFunc) where T : notnull 
         =>
@@ -25,6 +28,7 @@ public static class CollectionHelper
     /// </summary>
     /// <param name="value">Value to be queried</param>
     /// <returns>Returned element</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static object MakeSingle(object value)
     {
         if (DotNetHelper.IsOfEnumeration(value))
@@ -76,6 +80,7 @@ public static class CollectionHelper
     /// </summary>
     /// <param name="collection"></param>
     /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IExtent? GetUriExtentOf(this IReflectiveCollection collection)
     {
         var mofReflection = collection as IHasExtent ??

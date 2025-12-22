@@ -1,3 +1,5 @@
+using DatenMeister.Core.Interfaces.MOF.Reflection;
+
 namespace DatenMeister.Core.TypeIndexAssembly.Model;
 
 /// <summary>
@@ -26,6 +28,16 @@ public record ClassModel
     public string Uri { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets or sets the URI of the extent to which the class belongs
+    /// </summary>
+    public string ExtentUri { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the ID of the workspace to which the class belongs
+    /// </summary>
+    public string WorkspaceId { get; set; } = string.Empty;
+
+    /// <summary>
     /// Stores the Uri of all Generalizations of that class
     /// </summary>
     public List<string> Generalizations { get; } = new();
@@ -34,6 +46,11 @@ public record ClassModel
     /// Stores the enumeration of the attributes
     /// </summary>
     public List<AttributeModel> Attributes { get; } = new();
+    
+    /// <summary>
+    /// Stores the cached element of the class
+    /// </summary>
+    public IElement? CachedElement { get; set; }
 
     /// <summary>
     /// Gets the attribute by the given name

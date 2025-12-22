@@ -50,7 +50,7 @@ public class TypeIndexPlugin(IScopeStorage scopeStorage, IWorkspaceLogic workspa
                 ScopeStorage.Add(new TypeIndexStore());
                 break;
             case PluginLoadingPosition.AfterLoadingOfExtents:
-                _ = _logic.CreateIndexFirstTime();
+                _logic.CreateIndexFirstTime().Wait();
                 break;
 
             case PluginLoadingPosition.AfterFinalizationOfIntegration:

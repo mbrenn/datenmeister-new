@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Threading;
 using BurnSystems.Logging;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -129,24 +130,26 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
 
     private CoreUriResolver? _coreUriResolver;
 
+    /// <summary>
+    /// Stores the number of unresolved URIs
+    /// </summary>
+    public static long UnresolvedUrisCount;
+
     /// <inheritdoc />
     public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
     {
         uri = Migration.MigrateUriForResolver(uri);
+        
+        var queriedWorkspace = string.IsNullOrEmpty(workspace) ? Workspace : _cachedWorkspaceLogic?.GetWorkspace(workspace);
 
         // We have to find it
         _coreUriResolver ??= new CoreUriResolver(_cachedWorkspaceLogic);
-        var result = _coreUriResolver.Resolve(uri, resolveType, Workspace, this);
+        var result = _coreUriResolver.Resolve(uri, resolveType, queriedWorkspace, this);
         if (result == null && traceFailing)
         {
+            Interlocked.Increment(ref UnresolvedUrisCount);
             Logger.Debug($"URI not resolved: {uri} from Extent: {contextURI()}");
             result = new MofObjectShadow(uri);
-        }
-
-        if (result != null)
-        {
-            // Deactivated
-            //_resolverCache.AddElementFor(uri, resolveType, result);
         }
         
         return result;
@@ -197,22 +200,6 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
         }
 
         return uri.Substring(pos + 1);
-    }
-
-    /// <summary>
-    /// Resolves the given uri by looking through each meta workspace of the workspace
-    /// </summary>
-    /// <param name="uri">Uri being retrieved</param>
-    /// <param name="workspace">Workspace whose meta workspaces were queried</param>
-    /// <param name="alreadyVisited">Set of all workspaces already being visited. This avoid unnecessary recursion and unlimited recursion</param>
-    /// <returns>Found element or null, if not found</returns>
-    internal IElement? ResolveByMetaWorkspaces(
-        string uri,
-        IWorkspace? workspace,
-        HashSet<IWorkspace>? alreadyVisited = null)
-    {
-        var uriResolver = new CoreUriResolver(_cachedWorkspaceLogic);
-        return uriResolver.Resolve(uri, ResolveType.IncludeMetaOfMetaWorkspaces, workspace) as IElement;
     }
 
     /// <summary>

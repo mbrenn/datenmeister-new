@@ -6,6 +6,7 @@ using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFactory;
 
@@ -48,7 +49,12 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
         internal IElement? UnlimitedNaturalType;
     }
 
-    CachedTypesDefinition CachedTypes { get; } = new CachedTypesDefinition();
+    CachedTypesDefinition CachedTypes { get; } = new();
+
+    /// <summary>
+    /// Defines the typeindex logic
+    /// </summary>
+    private readonly TypeIndexLogic _typeIndexLogic = new(workspaceLogic);
     
     #endregion
 
@@ -77,6 +83,8 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
         // Checks, if the property is an enumeration.
         var propertyIsCollection = property != null && PropertyMethods.IsCollection(property);
         var isReadOnly = context.IsReadOnly;
+
+        _typeIndexLogic.FindClassModelByMetaClass(parameter.MetaClass);
 
         // Checks, if field property is an enumeration
         _uriResolver ??= workspaceLogic.TryGetTypesWorkspace();

@@ -166,4 +166,20 @@ public class TestFindModels
         Assert.That(classModel, Is.Not.Null);
         Assert.That(classModel!.Name, Is.EqualTo("CommandLineApplication"));
     }
+    
+    [Test]
+    public async Task FindByMetaClass()
+    {
+        await using var dm = await IntegrationOfTests.GetDatenMeisterScope();
+        var typeIndexStore = dm.ScopeStorage.TryGet<TypeIndexStore>()
+                             ?? throw new InvalidOperationException("TypeIndexStore not found");
+        typeIndexStore.WaitForAvailabilityOfIndexStore();
+        
+        var typeIndexLogic = new TypeIndexLogic(dm.WorkspaceLogic);
+        var foundClassModel = typeIndexLogic.FindClassModelByMetaClass(
+            _CommonTypes.TheOne.OSIntegration.__CommandLineApplication);
+        
+        Assert.That(foundClassModel,Is.Not.Null);
+        Assert.That(foundClassModel!.Name, Is.EqualTo("CommandLineApplication"));
+    }
 }

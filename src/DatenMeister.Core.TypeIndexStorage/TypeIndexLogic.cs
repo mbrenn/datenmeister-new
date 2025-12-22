@@ -604,4 +604,21 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         var workspaceModel = TypeIndexStore.Current?.FindWorkspace(workspace);
         return workspaceModel?.FindClassByUri(url);
     }
+
+    /// <summary>
+    /// Finds the class by using the metaclass itself
+    /// </summary>
+    /// <param name="metaclass">Metaclass to be queried</param>
+    /// <returns>The found classmodel or null, if not found
+    /// </returns>
+    public ClassModel? FindClassModelByMetaClass(IElement? metaclass)
+    {
+        var uri = (metaclass as IKnowsUri)?.Uri;
+        if (uri == null)
+            return null;
+
+        return TypeIndexStore.Current?.Workspaces
+            .SelectMany(x => x.ClassModels.Where(x => x.Uri == uri))
+            .FirstOrDefault();
+    }
 }

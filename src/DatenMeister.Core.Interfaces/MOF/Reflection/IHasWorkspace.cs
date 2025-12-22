@@ -1,6 +1,6 @@
-﻿using DatenMeister.Core.Interfaces.Workspace;
+using DatenMeister.Core.Interfaces.Workspace;
 
-namespace DatenMeister.Core.Runtime.Workspaces;
+namespace DatenMeister.Core.Interfaces.MOF.Reflection;
 
 /// <summary>
 /// Defines that the certain element has a reference to the workspace.

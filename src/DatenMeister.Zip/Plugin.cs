@@ -10,9 +10,19 @@ using DatenMeister.Zip.Logic;
 namespace DatenMeister.Zip;
 
 
+/// <summary>
+/// Defines the plugin for zip file handling within the DatenMeister environment.
+/// </summary>
+/// <param name="workspaceLogic">The workspace logic to be used.</param>
+/// <param name="scopeStorage">The scope storage to be used.</param>
 [PluginLoading()]
 public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
+    /// <summary>
+    /// Starts the plugin by loading the XMI and adding the action handler.
+    /// </summary>
+    /// <param name="position">The position at which the plugin is loaded.</param>
+    /// <returns>A task representing the start process.</returns>
     public Task Start(PluginLoadingPosition position)
     {
         // Loads the Xmi
@@ -25,6 +35,9 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
         return Task.CompletedTask;
     }
     
+    /// <summary>
+    /// Loads the XMI file containing the types for the zip handler.
+    /// </summary>
     private void LoadXmi()
     {
         var localTypeSupport = new LocalTypeSupport(workspaceLogic, scopeStorage);
@@ -33,6 +46,10 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
             scopeStorage, GetXmiStreamForTypes(), null, localTypeExtent, "DatenMeister.Zip");
     }
 
+    /// <summary>
+    /// Gets the stream for the XMI file containing the types for the zip handler.
+    /// </summary>
+    /// <returns>The stream for the XMI file.</returns>
     private static Stream GetXmiStreamForTypes()
     {
         var stream = typeof(Plugin).GetTypeInfo()

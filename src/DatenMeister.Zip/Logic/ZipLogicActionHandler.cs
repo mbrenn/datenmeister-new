@@ -7,13 +7,27 @@ using DatenMeister.Zip.Model;
 
 namespace DatenMeister.Zip.Logic;
 
+/// <summary>
+/// This class handles the extraction of zip files within the DatenMeister environment.
+/// </summary>
 public class ZipLogicActionHandler : IActionHandler
 {
+    /// <summary>
+    /// Determines whether this action handler is responsible for the given action node.
+    /// </summary>
+    /// <param name="node">The node to check.</param>
+    /// <returns>True, if the node represents a ZipFileExtractAction.</returns>
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(_Root.TheOne.__ZipFileExtractAction) == true;
     }
 
+    /// <summary>
+    /// Executes the zip extraction logic for the given action.
+    /// </summary>
+    /// <param name="actionLogic">The action logic context.</param>
+    /// <param name="action">The element containing the action parameters.</param>
+    /// <returns>A result element indicating the outcome of the extraction.</returns>
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         // Caches the stuff
@@ -87,6 +101,12 @@ public class ZipLogicActionHandler : IActionHandler
         return result;
     }
     
+    /// <summary>
+    /// Checks whether the source zip file is newer than the already extracted target file.
+    /// </summary>
+    /// <param name="sourcePath">The path to the source zip file.</param>
+    /// <param name="targetPath">The path to the extracted target file.</param>
+    /// <returns>True, if the source file is newer than the target file.</returns>
     private static bool IsSourceFileNewer(string sourcePath, string targetPath)
     {
         // The write time within the ZIP File (the source)

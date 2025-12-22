@@ -476,8 +476,9 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     /// <returns>The found class model or null, if not found</returns>
     public ClassModel? GetClassModel()
     {
-        bool lookInMetaClass = true;
-        if (Extent is not MofUriExtent extent)
+        MofUriExtent? extent = Extent as MofUriExtent;
+        var lookInMetaClass = true;
+        if (extent == null)
         {
             extent = ReferencedExtent as MofUriExtent;
             lookInMetaClass = false;

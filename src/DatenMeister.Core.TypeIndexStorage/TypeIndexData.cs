@@ -10,7 +10,12 @@ public class TypeIndexData
     /// <summary>
     /// Stores all Workspaces
     /// </summary>
-    public List<WorkspaceModel> Workspaces = new();
+    public readonly List<WorkspaceModel> Workspaces = [];
+
+    /// <summary>
+    /// Stores the index of the class models by their URI
+    /// </summary>
+    private Dictionary<string, ClassModel>? _classModelsIndex;
 
     /// <summary>
     /// Finds the workspace by giving the id within the workspace model list
@@ -37,4 +42,47 @@ public class TypeIndexData
 
     public WorkspaceModel? GetWorkspace(string workspace) 
         => Workspaces.FirstOrDefault(x => x.WorkspaceId == workspace);
+
+    /// <summary>
+    /// Creates the index for all the class models
+    /// </summary>
+    public void CreateIndex()
+    {
+        _classModelsIndex = new Dictionary<string, ClassModel>();
+        foreach (var workspace in Workspaces)
+        {
+            foreach (var classModel in workspace.ClassModels)
+            {
+                if (!string.IsNullOrEmpty(classModel.Uri))
+                {
+                    _classModelsIndex[classModel.Uri] = classModel;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Finds a class model by its URI across all workspaces.
+    /// This uses the index for faster lookups if available.
+    /// </summary>
+    /// <param name="uri">URI of the class model</param>
+    /// <returns>The found class model or null</returns>
+    public ClassModel? FindClassModelByUri(string uri)
+    {
+        if (_classModelsIndex != null)
+        {
+            return _classModelsIndex.GetValueOrDefault(uri);
+        }
+
+        foreach (var workspace in Workspaces)
+        {
+            var found = workspace.FindClassByUri(uri);
+            if (found != null)
+            {
+                return found;
+            }
+        }
+
+        return null;
+    }
 }

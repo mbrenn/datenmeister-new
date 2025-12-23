@@ -301,7 +301,14 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                 }
                 
                 AddInheritedAttributesFromGeneralizations(workspaceModel);
+
+                foreach (var classModel in workspaceModel.ClassModels)
+                {
+                    classModel.CreateIndex();
+                }
             }
+
+            indexData.CreateIndex();
         }
     }
 
@@ -401,7 +408,9 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                     foreach (var attribute in generalizedClassModel.Attributes.Where(
                                  attribute => classModel.Attributes.All(x => x.Name != attribute.Name)))
                     {
-                        classModel.Attributes.Add(attribute with { IsInherited = true });
+                        var clonedAttribute = attribute.Clone();
+                        clonedAttribute.IsInherited = true;
+                        classModel.Attributes.Add(clonedAttribute);
                     }
                         
                     AddInheritedAttributes(generalizedClassModel, visited);
@@ -503,7 +512,8 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                 (attribute.getOrDefault<IElement>(_UML._Classification._Property.type) as IKnowsUri)
                 ?.Uri ?? string.Empty,
             Url = (attribute as IKnowsUri)?.Uri ?? string.Empty,
-            Id = (attribute as IHasId)?.Id ?? string.Empty
+            Id = (attribute as IHasId)?.Id ?? string.Empty,
+            MetaAttribute = attribute
         };
 
         if (attribute.isSet(_UML._Classification._Property.upperValue))
@@ -625,11 +635,6 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     /// </returns>
     public ClassModel? FindClassModelByMetaClass(string? uri)
     {
-        if (string.IsNullOrEmpty(uri))
-            return null;
-        
-        return TypeIndexStore.Current?.Workspaces
-            .SelectMany(x => x.ClassModels.Where(y => y.Uri == uri))
-            .FirstOrDefault();
+        return string.IsNullOrEmpty(uri) ? null : TypeIndexStore.Current?.FindClassModelByUri(uri);
     }
 }

@@ -4,6 +4,7 @@ using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
@@ -42,17 +43,22 @@ public static class FieldCreationHelper
 
         var isTableForm = rowOrObjectForm.metaclass?.equals(_Forms.TheOne.__TableForm) == true;
         var wasInMetaClass = false;
+        
+        var typeIndexLogic = new TypeIndexLogic (workspaceLogic);
+        var foundClassModel = typeIndexLogic.FindClassModelByMetaClass(metaClass);
+        if (foundClassModel == null)
+        {
+            throw new InvalidOperationException("Could not find the class model for " + metaClass);
+        }
 
-        var classifierMethods =
-            ClassifierMethods.GetPropertiesOfClassifier(metaClass)
-                .Where(x => x.isSet("name")).ToList();
+        var classifierMethods = foundClassModel.Attributes;
 
         foreach (var property in classifierMethods)
         {
             wasInMetaClass = true;
-            var propertyName = property.get<string?>("name");
+            var propertyName = property.Name;
 
-            if (propertyName == null || !cache.CoveredPropertyNames.Add(propertyName))
+            if (!cache.CoveredPropertyNames.Add(propertyName))
             {
                 // We already managed this property
                 continue;
@@ -72,7 +78,7 @@ public static class FieldCreationHelper
                     Extent = parameter.Extent,
                     ExtentTypes = parameter.ExtentTypes,
                     PropertyName = propertyName ?? string.Empty,
-                    Property = property,
+                    Property = property.MetaAttribute,
                     IsInTable = isTableForm,
                     MetaClass = metaClass
                 },

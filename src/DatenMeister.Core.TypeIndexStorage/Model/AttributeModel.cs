@@ -3,7 +3,7 @@
 /// <summary>
 /// Stores the information about the attribute within the class
 /// </summary>
-public record AttributeModel
+public class AttributeModel
 {
     /// <summary>
     /// Gets or sets the Id of the attribute as given within the extent
@@ -46,5 +46,28 @@ public record AttributeModel
     /// </summary>
     public bool IsInherited { get; set; }
 
+    /// <summary>
+    /// Gets or sets the original element of the attribute
+    /// </summary>
+    public DatenMeister.Core.Interfaces.MOF.Reflection.IElement? MetaAttribute { get; set; }
 
+    /// <summary>
+    /// Creates a clone of the attribute model
+    /// </summary>
+    /// <returns>The cloned attribute model</returns>
+    public AttributeModel Clone()
+    {
+        return new AttributeModel
+        {
+            Id = Id,
+            Name = Name,
+            Url = Url,
+            IsComposite = IsComposite,
+            TypeUrl = TypeUrl,
+            DefaultValue = DefaultValue,
+            IsMultiple = IsMultiple,
+            IsInherited = IsInherited,
+            MetaAttribute = MetaAttribute
+        };
+    }
 }

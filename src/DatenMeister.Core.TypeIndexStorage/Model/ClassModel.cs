@@ -5,7 +5,7 @@ namespace DatenMeister.Core.TypeIndexAssembly.Model;
 /// <summary>
 /// Stores the properties of the class being evaluated 
 /// </summary>
-public record ClassModel
+public class ClassModel
 {
     /// <summary>
     /// Stores the id of the class
@@ -46,11 +46,24 @@ public record ClassModel
     /// Stores the enumeration of the attributes
     /// </summary>
     public List<AttributeModel> Attributes { get; } = new();
+
+    /// <summary>
+    /// Stores the index of the attributes for faster access
+    /// </summary>
+    private Dictionary<string, AttributeModel>? _attributesIndex;
     
     /// <summary>
     /// Stores the cached element of the class
     /// </summary>
     public IElement? CachedElement { get; set; }
+
+    /// <summary>
+    /// Creates the index for the attributes
+    /// </summary>
+    public void CreateIndex()
+    {
+        _attributesIndex = Attributes.ToDictionary(x => x.Name, x => x);
+    }
 
     /// <summary>
     /// Gets the attribute by the given name
@@ -59,6 +72,11 @@ public record ClassModel
     /// <returns>The found attribute or null in case not found</returns>
     public AttributeModel? FindAttribute(string attribute)
     {
+        if (_attributesIndex != null)
+        {
+            return _attributesIndex.GetValueOrDefault(attribute);
+        }
+
         return Attributes.FirstOrDefault(x => x.Name == attribute);
     }
 }

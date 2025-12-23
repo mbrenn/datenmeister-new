@@ -48,7 +48,7 @@ public static class FieldCreationHelper
         var foundClassModel = typeIndexLogic.FindClassModelByMetaClass(metaClass);
         if (foundClassModel == null)
         {
-            throw new InvalidOperationException("Could not find the class model for " + metaClass);
+            return false;
         }
 
         var classifierMethods = foundClassModel.Attributes;

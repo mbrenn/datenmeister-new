@@ -104,7 +104,7 @@ public class DataViewEvaluation
             var result = GetElementsForViewNodeInternal(viewNode);
             if (Debugger.IsAttached)
             {
-                var asList = result.ToList();
+                var asList = result.Take(101).ToList();
                 if (asList.Count > 100)
                 {
                     Logger.Info($"Result of dataview evaluation {NamedElementMethods.GetFullName(viewNode)} is {asList.Count} elements");

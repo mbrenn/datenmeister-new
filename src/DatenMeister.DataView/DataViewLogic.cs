@@ -10,18 +10,27 @@ using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.DataView;
 
+/// <summary>
+/// Implements the logic for the data views
+/// </summary>
+/// <param name="workspaceLogic">The workspace logic</param>
+/// <param name="scopeStorage">The scope storage</param>
 public class DataViewLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
     /// <summary>
-    /// Defines the path to the packages of the dataviews
+    /// Defines the path to the packages of the data views
     /// </summary>
     public const string PackagePathTypesDataView = "DatenMeister::DataViews";
 
     /// <summary>
-    ///     Stores the logger
+    /// Stores the logger
     /// </summary>
     private static readonly ILogger Logger = new ClassLogger(typeof(DataViewLogic));
 
+    /// <summary>
+    /// Gets the list of data view elements
+    /// </summary>
+    /// <returns>The collection of data view elements</returns>
     public IEnumerable<IElement> GetDataViewElements()
     {
         var metaClass = _DataViews.TheOne.__DataView;
@@ -47,8 +56,6 @@ public class DataViewLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
             cache.IsDirty = false;
             return cache.CachedDataViews.ToArray();
         }
-
-        
     }
 
     /// <summary>

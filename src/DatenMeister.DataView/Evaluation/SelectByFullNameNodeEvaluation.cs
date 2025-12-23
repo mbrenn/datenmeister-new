@@ -7,10 +7,17 @@ using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.DataView.Evaluation;
 
+/// <summary>
+/// Implements the evaluation for the select by full name node
+/// </summary>
 public class SelectByFullNameNodeEvaluation : IDataViewNodeEvaluation
 {
+    /// <summary>
+    /// Stores the logger
+    /// </summary>
     private static readonly ILogger Logger = new ClassLogger(typeof(SelectByPathNodeEvaluation));
 
+    /// <inheritdoc />
     public bool IsResponsible(IElement node)
     {
         var metaClass = node.getMetaClass();
@@ -18,6 +25,7 @@ public class SelectByFullNameNodeEvaluation : IDataViewNodeEvaluation
                metaClass.equals(_DataViews.TheOne.Source.__SelectByFullNameNode);
     }
 
+    /// <inheritdoc />
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
         var inputNode = viewNode.getOrDefault<IElement>(_DataViews._Source._SelectByFullNameNode.input);

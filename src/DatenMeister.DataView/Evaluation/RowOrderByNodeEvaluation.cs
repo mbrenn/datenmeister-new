@@ -5,8 +5,12 @@ using DatenMeister.Core.Models;
 
 namespace DatenMeister.DataView.Evaluation;
 
-public class RowFilterNodeEvaluation : IDataViewNodeEvaluation
+/// <summary>
+/// Implements the evaluation for the row filter node
+/// </summary>
+public class RowOrderByNodeEvaluation : IDataViewNodeEvaluation
 {
+    /// <inheritdoc />
     public bool IsResponsible(IElement node)
     {
         var metaClass = node.getMetaClass();
@@ -14,6 +18,7 @@ public class RowFilterNodeEvaluation : IDataViewNodeEvaluation
                metaClass.equals(_DataViews.TheOne.Row.__RowOrderByNode);
     }
 
+    /// <inheritdoc />
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
         var input = evaluation.GetInputNode(viewNode);

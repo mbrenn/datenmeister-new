@@ -4,14 +4,23 @@ using DatenMeister.Core.Interfaces.MOF.Identifiers;
 
 namespace DatenMeister.DataView;
 
+/// <summary>
+/// Implements a factory for data view extents
+/// </summary>
 public class DataViewExtentFactory : IEnumerable<IExtent>
 {
+    /// <summary>
+    /// Stores the logic for the data view
+    /// </summary>
     private readonly DataViewLogic _dataViewLogic;
-        
+
+    /// <summary>
+    /// Stores the scope storage
+    /// </summary>
     private readonly IScopeStorage _scopeStorage;
 
     /// <summary>
-    /// Initializes a new instance of the workspace logic
+    /// Initializes a new instance of the <see cref="DataViewExtentFactory"/> class
     /// </summary>
     /// <param name="dataViewLogic">The logic for the dataviews</param>
     /// <param name="scopeStorage">The scope storage being associated</param>
@@ -21,6 +30,7 @@ public class DataViewExtentFactory : IEnumerable<IExtent>
         _scopeStorage = scopeStorage;
     }
 
+    /// <inheritdoc />
     public IEnumerator<IExtent> GetEnumerator()
     {
         foreach (var dataView in _dataViewLogic.GetDataViewElements())
@@ -29,6 +39,7 @@ public class DataViewExtentFactory : IEnumerable<IExtent>
         }
     }
 
+    /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() =>
         GetEnumerator();
 }

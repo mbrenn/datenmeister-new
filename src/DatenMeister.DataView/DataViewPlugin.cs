@@ -8,6 +8,12 @@ using DatenMeister.Plugins;
 
 namespace DatenMeister.DataView;
 
+/// <summary>
+/// Implements the plugin for the data views
+/// </summary>
+/// <param name="workspaceLogic">The workspace logic</param>
+/// <param name="dataViewLogic">The logic for the data view</param>
+/// <param name="scopeStorage">The scope storage</param>
 [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
 public class DataViewPlugin(
     IWorkspaceLogic workspaceLogic,
@@ -15,11 +21,16 @@ public class DataViewPlugin(
     IScopeStorage scopeStorage)
     : IDatenMeisterPlugin
 {
+    /// <summary>
+    /// Stores the logger
+    /// </summary>
     private ILogger logger = new ClassLogger(typeof(DataViewPlugin));
+
     /// <summary>
     /// Starts the plugin
     /// </summary>
-    /// <param name="position"></param>
+    /// <param name="position">The position at which the plugin is started</param>
+    /// <returns>A task representing the operation</returns>
     public Task Start(PluginLoadingPosition position)
     {
         switch (position)
@@ -74,7 +85,7 @@ public class DataViewPlugin(
         result.Add(new ColumnFilterExcludeEvaluation());
         result.Add(new ColumnFilterIncludeOnlyEvaluation());
         result.Add(new RowFilterOnPositionEvaluation());
-        result.Add(new RowFilterNodeEvaluation());
+        result.Add(new RowOrderByNodeEvaluation());
         result.Add(new RowFilterByFreeTextAnywhereNodeEvaluation());
         result.Add(new NodeReferenceNodeEvaluation());
 

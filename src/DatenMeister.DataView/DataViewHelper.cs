@@ -7,8 +7,18 @@ using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.DataView;
 
+/// <summary>
+/// Provides helper methods for data views
+/// </summary>
+/// <param name="workspaceLogic">The workspace logic</param>
 public class DataViewHelper(IWorkspaceLogic workspaceLogic)
 {
+    /// <summary>
+    /// Creates a new data view
+    /// </summary>
+    /// <param name="name">Name of the data view</param>
+    /// <param name="extentUri">URI of the extent to be created</param>
+    /// <returns>The created element defining the data view</returns>
     public IElement CreateDataview(string name, string extentUri)
     {
         var viewExtent = workspaceLogic.GetUserFormsExtent();
@@ -30,6 +40,10 @@ public class DataViewHelper(IWorkspaceLogic workspaceLogic)
     public IUriExtent GetUserFormExtent() =>
         workspaceLogic.GetUserFormsExtent();
 
+    /// <summary>
+    /// Gets the workspace containing the views
+    /// </summary>
+    /// <returns>The workspace for views</returns>
     public IWorkspace GetViewWorkspace() =>
         workspaceLogic.GetViewsWorkspace();
 }

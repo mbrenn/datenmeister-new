@@ -6,10 +6,17 @@ using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.DataView.Evaluation;
 
+/// <summary>
+/// Implements the evaluation for the select by extent node
+/// </summary>
 public class SelectByExtentNodeEvaluation : IDataViewNodeEvaluation
 {
+    /// <summary>
+    /// Stores the logger
+    /// </summary>
     private static readonly ILogger Logger = new ClassLogger(typeof(SelectByExtentNodeEvaluation));
 
+    /// <inheritdoc />
     public bool IsResponsible(IElement node)
     {
         var metaClass = node.getMetaClass();
@@ -17,6 +24,7 @@ public class SelectByExtentNodeEvaluation : IDataViewNodeEvaluation
                metaClass.equals(_DataViews.TheOne.Source.__SelectByExtentNode);
     }
 
+    /// <inheritdoc />
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
         var workspaceLogic = evaluation.WorkspaceLogic;

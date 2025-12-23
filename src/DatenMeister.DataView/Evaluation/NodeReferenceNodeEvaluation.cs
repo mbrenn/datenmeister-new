@@ -5,8 +5,12 @@ using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.DataView.Evaluation;
 
+/// <summary>
+/// Implements the evaluation for the node reference node
+/// </summary>
 public class NodeReferenceNodeEvaluation : IDataViewNodeEvaluation
 {
+    /// <inheritdoc />
     public bool IsResponsible(IElement node)
     {
         var metaClass = node.getMetaClass();
@@ -14,6 +18,7 @@ public class NodeReferenceNodeEvaluation : IDataViewNodeEvaluation
                metaClass.equals(_DataViews.TheOne.Node.__ReferenceViewNode);
     }
 
+    /// <inheritdoc />
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
         if(evaluation.WorkspaceLogic == null)

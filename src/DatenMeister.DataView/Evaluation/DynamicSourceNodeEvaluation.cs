@@ -6,10 +6,17 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.DataView.Evaluation;
 
+/// <summary>
+/// Implements the evaluation for the dynamic source node
+/// </summary>
 public class DynamicSourceNodeEvaluation : IDataViewNodeEvaluation
 {
+    /// <summary>
+    /// Stores the logger
+    /// </summary>
     private static readonly ILogger Logger = new ClassLogger(typeof(DynamicSourceNodeEvaluation));
 
+    /// <inheritdoc />
     public bool IsResponsible(IElement node)
     {
         var metaClass = node.getMetaClass();
@@ -17,6 +24,7 @@ public class DynamicSourceNodeEvaluation : IDataViewNodeEvaluation
                metaClass.equals(_DataViews.TheOne.Source.__DynamicSourceNode);
     }
 
+    /// <inheritdoc />
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
         var name = viewNode.getOrDefault<string>(_DataViews._Source._DynamicSourceNode.name);

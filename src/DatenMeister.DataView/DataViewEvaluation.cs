@@ -8,8 +8,14 @@ using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.DataView;
 
+/// <summary>
+/// Handles the evaluation of a data view
+/// </summary>
 public class DataViewEvaluation
 {
+    /// <summary>
+    /// The maximum number of recursive calls allowed during evaluation to prevent infinite loops
+    /// </summary>
     private const int MaximumReferenceCount = 1000;
 
     /// <summary>
@@ -18,16 +24,28 @@ public class DataViewEvaluation
     private static readonly ILogger Logger = new ClassLogger(typeof(DataViewEvaluation));
 
     /// <summary>
-    /// Adds the dynamic sources
+    /// Stores the dynamic sources being used for the evaluation
     /// </summary>
     private readonly Dictionary<string, IReflectiveCollection> _dynamicSources = new();
 
+    /// <summary>
+    /// Stores the workspace logic
+    /// </summary>
     private readonly IWorkspaceLogic? _workspaceLogic;
 
+    /// <summary>
+    /// Stores the factories used for view node evaluation
+    /// </summary>
     private DataViewNodeFactories _dataViewFactories;
 
+    /// <summary>
+    /// The current reference count to detect recursion
+    /// </summary>
     private int _referenceCount;
 
+    /// <summary>
+    /// Stopwatch used to measure the execution time of the evaluation
+    /// </summary>
     private readonly Stopwatch _stopwatch = new();
 
     /// <summary>
@@ -36,17 +54,31 @@ public class DataViewEvaluation
     /// </summary>
     public TimeSpan MaximumExecutionTiming = TimeSpan.MaxValue;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataViewEvaluation"/> class
+    /// </summary>
+    /// <param name="dataViewFactories">The factories used for evaluation</param>
     public DataViewEvaluation(DataViewNodeFactories dataViewFactories)
     {
         _dataViewFactories = dataViewFactories;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataViewEvaluation"/> class
+    /// </summary>
+    /// <param name="workspaceLogic">The workspace logic</param>
+    /// <param name="scopeStorage">The scope storage</param>
     public DataViewEvaluation(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     {
         _workspaceLogic = workspaceLogic;
         _dataViewFactories = scopeStorage.Get<DataViewNodeFactories>();
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataViewEvaluation"/> class
+    /// </summary>
+    /// <param name="workspaceLogic">The workspace logic</param>
+    /// <param name="dataViewFactories">The factories used for evaluation</param>
     public DataViewEvaluation(IWorkspaceLogic workspaceLogic, DataViewNodeFactories dataViewFactories)
     {
         _workspaceLogic = workspaceLogic;
@@ -54,17 +86,20 @@ public class DataViewEvaluation
     }
 
     /// <summary>
-    /// Adds the dynamic sources
+    /// Gets the dynamic sources
     /// </summary>
     public Dictionary<string, IReflectiveCollection> DynamicSources => _dynamicSources;
 
+    /// <summary>
+    /// Gets the workspace logic
+    /// </summary>
     public IWorkspaceLogic? WorkspaceLogic => _workspaceLogic;
 
     /// <summary>
     /// Adds a dynamic source for the collection
     /// </summary>
-    /// <param name="name">Name of the </param>
-    /// <param name="collection"></param>
+    /// <param name="name">Name of the dynamic source</param>
+    /// <param name="collection">The collection to be added</param>
     public void AddDynamicSource(string name, IReflectiveCollection collection)
     {
         _dynamicSources[name] = collection;

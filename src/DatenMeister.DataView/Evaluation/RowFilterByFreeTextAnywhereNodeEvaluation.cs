@@ -5,8 +5,12 @@ using DatenMeister.Core.Models;
 
 namespace DatenMeister.DataView.Evaluation;
 
+/// <summary>
+/// Implements the evaluation for the row filter by free text anywhere node
+/// </summary>
 public class RowFilterByFreeTextAnywhereNodeEvaluation : IDataViewNodeEvaluation
 {
+    /// <inheritdoc />
     public bool IsResponsible(IElement node)
     {
         var metaClass = node.getMetaClass();
@@ -14,6 +18,7 @@ public class RowFilterByFreeTextAnywhereNodeEvaluation : IDataViewNodeEvaluation
                metaClass.equals(_DataViews.TheOne.Row.__RowFilterByFreeTextAnywhere);
     }
 
+    /// <inheritdoc />
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
         var input = evaluation.GetInputNode(viewNode);

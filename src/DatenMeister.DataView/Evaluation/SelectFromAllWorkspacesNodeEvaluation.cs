@@ -5,8 +5,12 @@ using DatenMeister.Core.Models;
 
 namespace DatenMeister.DataView.Evaluation;
 
+/// <summary>
+/// Implements the evaluation for the select from all workspaces node
+/// </summary>
 public class SelectFromAllWorkspacesNodeEvaluation : IDataViewNodeEvaluation
 {
+    /// <inheritdoc />
     public bool IsResponsible(IElement node)
     {
         var metaClass = node.getMetaClass();
@@ -14,6 +18,7 @@ public class SelectFromAllWorkspacesNodeEvaluation : IDataViewNodeEvaluation
                metaClass.equals(_DataViews.TheOne.Source.__SelectFromAllWorkspacesNode);
     }
 
+    /// <inheritdoc />
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
         if (evaluation.WorkspaceLogic == null)

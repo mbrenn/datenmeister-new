@@ -34,7 +34,7 @@ public class PluginManager
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (type.GetCustomAttributes(typeof(T)).FirstOrDefault() is not T found)
+                    if (type.GetCustomAttributes<T>().FirstOrDefault() is not { } found)
                     {
                         continue;
                     }

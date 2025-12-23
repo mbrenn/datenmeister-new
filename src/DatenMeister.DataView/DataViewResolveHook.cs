@@ -6,10 +6,21 @@ using DatenMeister.Core.Interfaces.MOF.Common;
 
 namespace DatenMeister.DataView;
 
+/// <summary>
+/// Implements a resolve hook that allows resolving elements from a data view
+/// </summary>
 public class DataViewResolveHook : IResolveHook
 {
+    /// <summary>
+    /// Stores the logger
+    /// </summary>
     private static readonly ILogger logger = new ClassLogger(typeof(DataViewResolveHook));
 
+    /// <summary>
+    /// Resolves the given query string and returns the result
+    /// </summary>
+    /// <param name="hookParameters">The parameters for the resolve hook</param>
+    /// <returns>The resolved object or the original item if not resolved</returns>
     public object? Resolve(ResolveHookParameters hookParameters)
     {
         // Now check whether we have a dataview

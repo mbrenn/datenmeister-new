@@ -25,15 +25,30 @@ public class DataViewLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
     public IEnumerable<IElement> GetDataViewElements()
     {
         var metaClass = _DataViews.TheOne.__DataView;
+        var cache = scopeStorage.Get<DataViewCache>();
 
-        var managementWorkspace = workspaceLogic.GetManagementWorkspace();
-        foreach (var dataView in managementWorkspace.extent.OfType<IUriExtent>()
-                     .Where(extent => extent.contextURI() != WorkspaceNames.UriExtentWorkspaces)
-                     .SelectMany(extent =>
-                         extent.elements().GetAllDescendantsIncludingThemselves().WhenMetaClassIs(metaClass).Cast<IElement>()))
+        lock (cache)
         {
-            yield return dataView;
+            if (cache.IsDirty)
+            {
+                Logger.Info("Cache is built up");
+                cache.CachedDataViews.Clear();
+                var managementWorkspace = workspaceLogic.GetManagementWorkspace();
+                foreach (var dataView in managementWorkspace.extent.OfType<IUriExtent>()
+                             .Where(extent => extent.contextURI() != WorkspaceNames.UriExtentWorkspaces)
+                             .SelectMany(extent =>
+                                 extent.elements().GetAllDescendantsIncludingThemselves().WhenMetaClassIs(metaClass)
+                                     .Cast<IElement>()))
+                {
+                    cache.CachedDataViews.Add(dataView);
+                }
+            }
+
+            cache.IsDirty = false;
+            return cache.CachedDataViews.ToArray();
         }
+
+        
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Implementation.Hooks;
+﻿using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -14,6 +15,7 @@ public class DataViewPlugin(
     IScopeStorage scopeStorage)
     : IDatenMeisterPlugin
 {
+    private ILogger logger = new ClassLogger(typeof(DataViewPlugin));
     /// <summary>
     /// Starts the plugin
     /// </summary>
@@ -24,12 +26,25 @@ public class DataViewPlugin(
         {
             case PluginLoadingPosition.AfterBootstrapping:
                 var workspace = new Workspace(WorkspaceNames.WorkspaceViews,
-                    "Container of all views which are created dynamically.");
-                workspace.IsDynamicWorkspace = true;
+                    "Container of all views which are created dynamically.")
+                {
+                    IsDynamicWorkspace = true
+                };
                 workspaceLogic.AddWorkspace(workspace);
                 workspace.ExtentFactory.Add(new DataViewExtentFactory(dataViewLogic, scopeStorage));
 
+                scopeStorage.Get<DataViewCache>().MarkAsDirty();
                 scopeStorage.Get<ResolveHookContainer>().Add(new DataViewResolveHook());
+
+                workspaceLogic.ChangeEventManager.RegisterFor(
+                    workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement) ??
+                    throw new InvalidOperationException("Management workspace not found"),
+                    (w, e, o) => Task.Run(() =>
+                    {
+                        logger.Info("Management workspace changed");
+                        scopeStorage.Get<DataViewCache>().MarkAsDirty();
+                    }));
+
                 break;
             case PluginLoadingPosition.AfterLoadingOfExtents:
                 var factories = GetDefaultViewNodeFactories();

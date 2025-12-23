@@ -526,9 +526,6 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
             return converted;
         }
 
-        form.set(_Forms._Form.originalUri, form.GetUri());
-        form.set(_Forms._Form.originalWorkspace, form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
-
         return form;
     }
 

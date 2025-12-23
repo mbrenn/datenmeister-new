@@ -1,13 +1,17 @@
 using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.Fields;
 using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.ObjectForm;
 
-public class ObjectFormFromMetaClass : FormFactoryBase, IObjectFormFactory
+public class ObjectFormFromMetaClass(IWorkspaceLogic workspaceLogic) : FormFactoryBase, IObjectFormFactory
 {
     private static readonly ILogger Logger = new ClassLogger(typeof(ObjectFormFromMetaClass));
 
@@ -33,22 +37,30 @@ public class ObjectFormFromMetaClass : FormFactoryBase, IObjectFormFactory
 
         if (parameterMetaclass != null)
         {
+            var typeIndexLogic = new TypeIndexLogic(workspaceLogic);
+            var coreUriResolver = new CoreUriResolver(workspaceLogic);
             result.Form ??= factory.create(_Forms.TheOne.__ObjectForm);
             
             var propertyNamesWithCollection = new List<FieldCreationHelper.P>();
             var propertyNamesWithoutCollection = new List<FieldCreationHelper.P>();
 
-            var metaClassProperties = ClassifierMethods.GetPropertiesOfClassifier(parameterMetaclass);
+            var classModel = typeIndexLogic.FindClassModelByMetaClass(parameterMetaclass);
+            if (classModel == null)
+            {
+                throw new InvalidOperationException("Could not find the class model for " + parameterMetaclass);
+            }
+
+            var metaClassProperties = classModel.Attributes;
             foreach (var property in metaClassProperties)
             {
-                if (PropertyMethods.IsCollection(property))
+                if (property.IsMultiple == true)
                 {
                     propertyNamesWithCollection.Add(
                         new FieldCreationHelper.P
                         {
-                            PropertyName = NamedElementMethods.GetName(property),
-                            PropertyType = PropertyMethods.GetPropertyType(property),
-                            Property = property
+                            PropertyName = property.Name,
+                            PropertyType =  property.TypeUrl == null ? null: coreUriResolver.Resolve(property.TypeUrl, ResolveType.IncludeTypeWorkspace) as IElement,
+                            Property = property.MetaAttribute
                         });
                 }
                     
@@ -56,9 +68,9 @@ public class ObjectFormFromMetaClass : FormFactoryBase, IObjectFormFactory
                 propertyNamesWithoutCollection.Add(
                     new FieldCreationHelper.P
                     {
-                        PropertyName = NamedElementMethods.GetName(property),
-                        PropertyType = property,
-                        Property = property
+                        PropertyName = property.Name,
+                        PropertyType =  property.TypeUrl == null ? null: coreUriResolver.Resolve(property.TypeUrl, ResolveType.IncludeTypeWorkspace) as IElement,
+                        Property = property.MetaAttribute
                     });
             }
             

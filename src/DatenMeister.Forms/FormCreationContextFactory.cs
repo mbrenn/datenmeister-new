@@ -73,7 +73,7 @@ public class FormCreationContextFactory
                 { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
 
-        context.Global.ObjectFormFactories.Add(new ObjectFormFromMetaClass
+        context.Global.ObjectFormFactories.Add(new ObjectFormFromMetaClass(_workspaceLogic)
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
         context.Global.ObjectFormFactories.Add(new ObjectFormFromData
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });

@@ -90,9 +90,9 @@ public class FormCreationContextFactory
                 { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
 
-        context.Global.TableFormFactories.Add(new TableFormForMetaClass
+        context.Global.TableFormFactories.Add(new TableFormForMetaClass(_workspaceLogic)
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
-        context.Global.TableFormFactories.Add(new TableFormFromData
+        context.Global.TableFormFactories.Add(new TableFormFromData(_workspaceLogic)
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.TableFormFactories.Add(new ExpandDropDownOfValueReference());
         context.Global.TableFormFactories.Add(new AddDefaultTypeForMetaClassOfForm());
@@ -109,9 +109,9 @@ public class FormCreationContextFactory
                 { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
 
-        context.Global.RowFormFactories.Add(new RowFormFromData
+        context.Global.RowFormFactories.Add(new RowFormFromData(_workspaceLogic)
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
-        context.Global.RowFormFactories.Add(new RowFormFromMetaClass
+        context.Global.RowFormFactories.Add(new RowFormFromMetaClass(_workspaceLogic)
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.RowFormFactories.Add(new AddMetaClassField());
         context.Global.RowFormFactories.Add(new ExpandDropDownOfValueReference());

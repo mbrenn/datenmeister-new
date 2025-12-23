@@ -2,6 +2,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFactory;
@@ -16,12 +17,14 @@ public static class FieldCreationHelper
     ///     Adds the fields for the form by going through the properties of the metaclass.
     ///     It only adds fields, when they are not already added to the given list or detail form
     /// </summary>
+    /// <param name="workspaceLogic">Defines the workspacelogic to be used</param>
     /// <param name="rowOrObjectForm">Form that will be extended. Must be list or detail form.</param>
     /// <param name="metaClass">Metaclass to be used</param>
     /// <param name="parameter">Being </param>
     /// <param name="context">Creation Mode to be used</param>
     /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
     public static bool AddFieldsToRowOrTableFormByMetaClass(
+        IWorkspaceLogic workspaceLogic,
         IElement rowOrObjectForm,
         IElement? metaClass,
         FormFactoryParameterBase parameter,

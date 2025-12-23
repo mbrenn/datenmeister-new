@@ -1,13 +1,13 @@
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Forms.Fields;
 using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.TableForms;
 
-public class TableFormFromData : FormFactoryBase, ITableFormFactory
+public class TableFormFromData (IWorkspaceLogic workspaceLogic) : FormFactoryBase, ITableFormFactory
 {
-    /// <summary>
     /// Creates the Table Form
     /// </summary>
     /// <param name="parameter"></param>
@@ -39,6 +39,7 @@ public class TableFormFromData : FormFactoryBase, ITableFormFactory
                 if (innerMetaClass != null)
                 {
                     FieldCreationHelper.AddFieldsToRowOrTableFormByMetaClass(
+                        workspaceLogic,
                         createdForm,
                         innerMetaClass,
                         parameter,

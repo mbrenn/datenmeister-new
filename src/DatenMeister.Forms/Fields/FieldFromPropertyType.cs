@@ -50,13 +50,13 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
     }
 
     CachedTypesDefinition CachedTypes { get; } = new();
+    
+    #endregion
 
     /// <summary>
     /// Defines the typeindex logic
     /// </summary>
     private readonly TypeIndexLogic _typeIndexLogic = new(workspaceLogic);
-    
-    #endregion
     
     public void CreateField(
         FieldFactoryParameter parameter,

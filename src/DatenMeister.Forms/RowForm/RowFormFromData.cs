@@ -1,4 +1,5 @@
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.Fields;
@@ -6,7 +7,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.RowForm;
 
-public class RowFormFromData : FormFactoryBase, IRowFormFactory
+public class RowFormFromData(IWorkspaceLogic workspaceLogic) : FormFactoryBase, IRowFormFactory
 {
     public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResultMultipleForms result)
@@ -32,6 +33,7 @@ public class RowFormFromData : FormFactoryBase, IRowFormFactory
                 "[RowFormFromData.CreateRowFormForItem]: " + NamedElementMethods.GetName(element));
             
             FieldCreationHelper.AddFieldsToRowOrTableFormByMetaClass(
+                workspaceLogic,
                 createdForm,
                 metaClass,
                 parameter,

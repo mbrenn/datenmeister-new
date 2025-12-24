@@ -11,6 +11,8 @@ export var ObjectType;
 })(ObjectType || (ObjectType = {}));
 // This id is a running id being used to define IDs of recently created objects
 let runningId = 0;
+export class ObjectValue {
+}
 export class DmObject {
     /**
      * Creates a new instance of the MofObject
@@ -66,12 +68,22 @@ export class DmObject {
      */
     set(key, value) {
         const internalizedKey = DmObject.internalizeKey(key);
-        const oldValue = this.values[internalizedKey];
-        this.values[internalizedKey] = value;
-        return !(oldValue === value);
+        let objectValue = this.values[internalizedKey];
+        if (objectValue === undefined) {
+            objectValue = new ObjectValue();
+            this.values[internalizedKey] = objectValue;
+        }
+        const oldValue = objectValue.value;
+        const oldIsSet = objectValue.isSet;
+        objectValue.value = value;
+        objectValue.isSet = true;
+        return !(oldValue === value && oldIsSet === true);
     }
     get(key, objectType) {
-        let result = this.values[DmObject.internalizeKey(key)];
+        const objectValue = this.values[DmObject.internalizeKey(key)];
+        if (objectValue !== undefined && objectValue.isSet === false)
+            return objectValue.defaultValue;
+        let result = objectValue?.value;
         switch (objectType) {
             case ObjectType.Default:
                 return result;
@@ -148,15 +160,21 @@ export class DmObject {
             if (!this.values.hasOwnProperty(n)) {
                 continue;
             }
-            result[DmObject.externalizeKey(n)] = this.values[n];
+            const objectValue = this.values[n];
+            result[DmObject.externalizeKey(n)] = objectValue.value;
         }
         return result;
     }
     isSet(key) {
-        return this.values[DmObject.internalizeKey(key)] !== undefined;
+        const objectValue = this.values[DmObject.internalizeKey(key)];
+        return objectValue !== undefined && objectValue.isSet;
     }
     unset(key) {
-        this.values[DmObject.internalizeKey(key)] = undefined;
+        const objectValue = this.values[DmObject.internalizeKey(key)];
+        if (objectValue !== undefined) {
+            objectValue.isSet = false;
+            objectValue.value = objectValue.defaultValue;
+        }
     }
     toString() {
         let values = this.getPropertyValues();
@@ -278,17 +296,26 @@ export function createJsonFromObject(element) {
             return value;
         }
         else if (((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
-            // This is an object, so perform the transformation
-            return createJsonFromObject(elementValue);
+            if (elementValue instanceof DmObject) {
+                // This is an object, so perform the transformation
+                return createJsonFromObject(elementValue);
+            }
+            else {
+                return elementValue;
+            }
         }
         else {
             return elementValue;
         }
     }
     if (!element.isReference) {
-        for (const key in element.getPropertyValues()) {
-            let elementValue = element.get(key);
-            values[key] = convertValue(elementValue);
+        const internalValues = element["values"];
+        for (const internalizedKey in internalValues) {
+            if (!internalValues.hasOwnProperty(internalizedKey))
+                continue;
+            const objectValue = internalValues[internalizedKey];
+            const key = DmObject.externalizeKey(internalizedKey);
+            values[key] = convertValue(objectValue.value);
         }
     }
     else {
@@ -341,7 +368,9 @@ export function convertJsonObjectToDmObject(element) {
     if (elementValues !== undefined && elementValues !== null) {
         for (let key in elementValues) {
             if (Object.prototype.hasOwnProperty.call(elementValues, key)) {
-                let value = elementValues[key];
+                let valueArray = elementValues[key];
+                const isPropertySet = valueArray[0];
+                let value = valueArray[1];
                 if (Array.isArray(value)) {
                     // Converts array
                     const finalValue = [];
@@ -361,7 +390,11 @@ export function convertJsonObjectToDmObject(element) {
                     // Converts to DmObject, if item is an object
                     value = convertJsonObjectToDmObject(value);
                 }
-                result.set(key, value);
+                const internalizedKey = DmObject.internalizeKey(key);
+                const objectValue = new ObjectValue();
+                objectValue.isSet = isPropertySet;
+                objectValue.value = value;
+                result["values"][internalizedKey] = objectValue;
             }
         }
         // Removes the set properties since they are already synced with the server

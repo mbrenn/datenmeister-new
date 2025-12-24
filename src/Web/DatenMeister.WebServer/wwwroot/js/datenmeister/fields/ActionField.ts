@@ -60,4 +60,8 @@ export class Field extends BaseField implements IFormField {
     async evaluateDom(dmElement: DmObject) : Promise<void> {
 
     }
+
+    showValue(): boolean {
+        return false;
+    }
 }

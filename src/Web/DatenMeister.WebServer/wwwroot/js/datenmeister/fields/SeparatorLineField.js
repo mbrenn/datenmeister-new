@@ -8,5 +8,8 @@ export class Field extends BaseField {
     showNameField() {
         return true;
     }
+    showValue() {
+        return false;
+    }
 }
 //# sourceMappingURL=SeparatorLineField.js.map

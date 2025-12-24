@@ -9,6 +9,13 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import { SubmitMethod } from "./Forms.js";
 import * as ClientItem from "../client/Items.js";
     
+class FieldInForm
+{
+    fieldElement: InterfacesFields.IFormField;
+    field: Mof.DmObject;
+    checkbox: JQuery<HTMLElement>;
+}
+
 export class RowForm implements InterfacesForms.IObjectFormElement {
     pageNavigation: InterfacesForms.IPageNavigation;
     workspace: string;
@@ -17,7 +24,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
     element: Mof.DmObjectWithSync;
     formElement: Mof.DmObject;
 
-    fieldElements: Array<InterfacesFields.IFormField>;
+    fieldElements: Array<FieldInForm>;
 
     onCancel: () => void;
     onChange: (element: Mof.DmObject, method: SubmitMethod) => void;
@@ -55,12 +62,17 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
         let table;
         const tthis = this;
         parent.empty();
-        this.fieldElements = new Array<InterfacesFields.IFormField>();
+        this.fieldElements = new Array<FieldInForm>();
 
         const fields = this.formElement.getAsArray("field");
 
         table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-rowform'></table>");
-        const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr></tbody>");
+        const tableBody = $(
+            "<tbody><tr>" +
+            "<th>Name</th>" +
+            "<th>Value</th>" +
+            "<th>Is Set</th>" +
+            "</tr></tbody>");
         table.append(tableBody);
 
         const itemUri = this.itemUrl === undefined
@@ -96,10 +108,16 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
 
             // Creates the row
             if (singleColumn) {
-                tr = $("<tr><td class='value' colspan='2'></td></tr>");
+                tr = $("<tr><td class='value' colspan='3'></td></tr>");
             } else {
-                tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
+                tr = $("<tr>" +
+                    "<td class='key'></td>" +
+                    "<td class='value'></td>" +
+                    "<td class='isset'><input type='checkbox' class='checkbox_isset' /></td>" +
+                    "</tr>");
             }
+            
+            const checkbox = $(".checkbox_isset", tr);
 
             // Creates the key column content
             if (!singleColumn) {
@@ -123,6 +141,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 htmlElement = $("<em></em>");
                 htmlElement.text(fieldMetaClassId ?? "unknown");
                 $(".value", tr).append(fieldElement);
+                checkbox.prop("disabled", true);
             } else {
                 fieldElement.field = field;
                 fieldElement.isReadOnly = configuration.isReadOnly || isFieldReadOnly;
@@ -130,17 +149,34 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 fieldElement.itemUrl = itemUri;
 
                 htmlElement = fieldElement.createDom(this.element);
-
+                                
+                
                 // Pushes the field to the internal field list, so the data can be retrieved afterwards
-                this.fieldElements.push(fieldElement);
+                const fieldInForm = {
+                    fieldElement: fieldElement,
+                    field: field,
+                    checkbox: checkbox
+                };
+                this.fieldElements.push(fieldInForm);
 
                 // We have to create a function which is then executed within the closure. 
-                ((trInner, htmlElementInner) => {
+                ((trInner, htmlElementInner, innerFieldInForm) => {
                     htmlElementInner.then(x => {
                         // And finally adds it            
                         $(".value", trInner).append(x);
+                        innerFieldInForm.checkbox.prop("disabled", false);
+
+                        const propertyName = innerFieldInForm.field.get(_DatenMeister._Forms._FieldData._name_, Mof.ObjectType.String);                        
+                        const showValue = innerFieldInForm.fieldElement.showValue === undefined || innerFieldInForm.fieldElement.showValue();
+
+                        if(propertyName === undefined || propertyName === null || propertyName === "" || !showValue) {
+                            innerFieldInForm.checkbox.hide();
+                        }
+                        else {
+                            innerFieldInForm.checkbox.prop("checked", this.element.isSet(propertyName));
+                        }                        
                     });
-                })(tr, htmlElement);
+                })(tr, htmlElement, fieldInForm);
             }
 
             tableBody.append(tr);
@@ -171,7 +207,11 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                         rowValue.append(x);
                     });
 
-                tthis.fieldElements.push(textField);
+                tthis.fieldElements.push({
+                    fieldElement: textField,
+                    field: textField.field,
+                    checkbox: null
+                });
                 newRow.insertBefore($('.dm-row-newproperty'));
 
                 propertyTextField.trigger('focus');
@@ -334,13 +374,20 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             for (let m in this.fieldElements) {
                 if (!this.fieldElements.hasOwnProperty(m)) continue;
 
-                const fieldElement = this.fieldElements[m];
+                const fieldInForm = this.fieldElements[m];
 
                 // Just take the fields which are not readonly
-                if (fieldElement.field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
+                if (fieldInForm.field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
 
+                    // Unsets the field in case the checkbox is not set
+                    if(fieldInForm.checkbox !== null) {
+                        if(fieldInForm.checkbox.prop("checked") === false) {
+                            this.element.unset(fieldInForm.field.get(_DatenMeister._Forms._FieldData.name) as string);
+                        }
+                    }                    
+                    
                     // Comment out to store the values only in the saveElement
-                    await fieldElement.evaluateDom(this.element);
+                    await fieldInForm.fieldElement.evaluateDom(this.element);
                 }
             }
 

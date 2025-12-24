@@ -39,5 +39,8 @@ export class Field extends BaseField {
     }
     async evaluateDom(dmElement) {
     }
+    showValue() {
+        return false;
+    }
 }
 //# sourceMappingURL=ActionField.js.map

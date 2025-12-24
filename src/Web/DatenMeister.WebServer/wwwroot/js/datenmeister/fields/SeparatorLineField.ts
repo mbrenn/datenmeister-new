@@ -13,4 +13,8 @@ export class Field extends BaseField implements IFormField
     showNameField(): boolean {
         return true;
     }
+
+    showValue(): boolean {
+        return false;
+    }
 }

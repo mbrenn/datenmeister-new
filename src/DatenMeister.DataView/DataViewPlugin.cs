@@ -36,25 +36,35 @@ public class DataViewPlugin(
         switch (position)
         {
             case PluginLoadingPosition.AfterBootstrapping:
+                var managementWorkspace = workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement);
+                if (managementWorkspace == null)
+                {
+                    logger.Warn("Management workspace not found. Automated registering will not be performed");
+                }
+
                 var workspace = new Workspace(WorkspaceNames.WorkspaceViews,
                     "Container of all views which are created dynamically.")
                 {
                     IsDynamicWorkspace = true
                 };
+                
                 workspaceLogic.AddWorkspace(workspace);
                 workspace.ExtentFactory.Add(new DataViewExtentFactory(dataViewLogic, scopeStorage));
 
                 scopeStorage.Get<DataViewCache>().MarkAsDirty();
                 scopeStorage.Get<ResolveHookContainer>().Add(new DataViewResolveHook());
 
-                workspaceLogic.ChangeEventManager.RegisterFor(
-                    workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement) ??
-                    throw new InvalidOperationException("Management workspace not found"),
-                    (w, e, o) => Task.Run(() =>
-                    {
-                        logger.Info("Management workspace changed");
-                        scopeStorage.Get<DataViewCache>().MarkAsDirty();
-                    }));
+                if (managementWorkspace != null)
+                {
+                    workspaceLogic.ChangeEventManager.RegisterFor(
+                        managementWorkspace,
+                        (w, e, o) => Task.Run(() =>
+                        {
+                            logger.Info("Management workspace changed");
+                            scopeStorage.Get<DataViewCache>().MarkAsDirty();
+                        }));
+                }
+
 
                 break;
             case PluginLoadingPosition.AfterLoadingOfExtents:

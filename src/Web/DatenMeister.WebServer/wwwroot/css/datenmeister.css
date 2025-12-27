@@ -35,6 +35,7 @@ a.nolink
 -------------------------------------------------- */
 html {
     font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 @media (min-width: 768px) {
@@ -465,6 +466,65 @@ div .dm-tableform-querytext {
 .dm-status-text li{
     padding: 0px;
 }
+
+.dm_dashboard {
+    margin-top: 2rem;
+}
+
+.dm_dashboard_headline {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #333;
+    border-bottom: 2px solid #0078d4;
+    display: inline-block;
+    padding-bottom: 0.25rem;
+}
+
+.dm_dashboard_content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.dm_dashboard_widget {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dm_dashboard_widget:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.dm_dashboard_widget_title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #0078d4;
+}
+
+.dm_dashboard_widget a {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #0078d4;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+.dm_dashboard_widget a:hover {
+    background-color: #005a9e;
+    color: #fff;
+}
+
 /* Mocha Configuration
 -------------------------------------------------- */
 #mocha

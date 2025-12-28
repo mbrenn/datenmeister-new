@@ -276,6 +276,9 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="04e791c9-1316-4777-afc0-afb30d294530" name="text" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
       </packagedElement>
     </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="9d43decb-aa2f-4461-b680-3ec595b518d1" name="RefreshTypeIndexAction">
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="168f386d-7b52-473c-bcbb-abd5651d81d8" name="waitForRefresh" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false" />
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DataView" name="DataView">

@@ -99,7 +99,11 @@ public class MofJsonConverter
 
         builder.Append("\"v\": {");
         var classModel = (value as MofObject)?.GetClassModel();
-        foreach (var property in allProperties.getPropertiesBeingSet())
+        var propertyList = classModel != null
+            ? classModel.Attributes.Select(x => x.Name)
+            : allProperties.getPropertiesBeingSet();
+        
+        foreach (var property in propertyList)
         {
             var isPropertySet = value.isSet(property);
             builder.AppendLine(komma);

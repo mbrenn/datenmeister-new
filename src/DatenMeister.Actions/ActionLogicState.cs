@@ -10,13 +10,13 @@ namespace DatenMeister.Actions;
 public class ActionLogicState
 {
     /// <summary>
-    /// Gets the action handlers
+    /// Gets the list of action handlers that are available for the application.
     /// </summary>
     public List<IActionHandler> ActionHandlers { get; }
         = new();
 
     /// <summary>
-    /// Adds one action handler
+    /// Adds one action handler to the list of available handlers.
     /// </summary>
     /// <param name="actionHandler">ActionHandler to be added</param>
     public void AddActionHandler(IActionHandler actionHandler)
@@ -27,6 +27,10 @@ public class ActionLogicState
         }
     }
 
+    /// <summary>
+    /// Gets the default logic state containing the standard set of action handlers.
+    /// </summary>
+    /// <returns>The default action logic state</returns>
     public static ActionLogicState GetDefaultLogicState()
     {
         var logicState = new ActionLogicState();
@@ -53,6 +57,7 @@ public class ActionLogicState
         logicState.AddActionHandler(new ImportXmiActionHandler());
         logicState.AddActionHandler(new DeletePropertyFromCollectionActionHandler());
         logicState.AddActionHandler(new ConsoleWriteActionHandler());
+        logicState.AddActionHandler(new RefreshTypeIndexActionHandler());
         return logicState;
     }
 }

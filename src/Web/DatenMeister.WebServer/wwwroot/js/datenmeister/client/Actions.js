@@ -1,6 +1,7 @@
 import * as Settings from "../Settings.js";
 import * as ApiConnection from "../ApiConnection.js";
 import * as Mof from "../Mof.js";
+import * as _DatenMeister from '../models/DatenMeister.class.js';
 export async function executeActionDirectly(actionName, parameter) {
     let url = Settings.baseUrl +
         "api/action/execute_directly/" +
@@ -29,5 +30,13 @@ export async function executeAction(workspaceId, itemUri) {
         resultAsDmObject: Mof.convertJsonObjectToDmObject(result.result)
     };
     return resultAsDmObject;
+}
+export async function refreshTypeIndex(waitForRefresh) {
+    const action = new Mof.DmObject(_DatenMeister._Actions.__RefreshTypeIndexAction_Uri);
+    action.set(_DatenMeister._Actions._RefreshTypeIndexAction.waitForRefresh, waitForRefresh);
+    const parameter = {
+        parameter: action
+    };
+    await executeActionDirectly("Execute", parameter);
 }
 //# sourceMappingURL=Actions.js.map

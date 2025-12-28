@@ -12,7 +12,7 @@ public interface IScopeStorage
 
     /// <summary>
     /// Gets the storage item which was added via AddStorage Item.
-    /// An exception will be thrown if the item cannot be found
+    /// An item will be created in case the item is not already retrieved
     /// </summary>
     /// <typeparam name="T">Type to be retrieved</typeparam>
     /// <returns>The found storage item</returns>

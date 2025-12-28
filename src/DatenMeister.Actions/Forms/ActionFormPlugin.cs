@@ -53,7 +53,8 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                 return;
             
             var isAction = ClassifierMethods.IsSpecializedClassifierOf(
-                metaClass, _Actions.TheOne.__Action);
+                metaClass, 
+                _Actions.TheOne.__Action);
 
             var form = result.Forms.FirstOrDefault();
             if (form == null)

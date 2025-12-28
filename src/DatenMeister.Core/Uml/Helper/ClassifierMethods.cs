@@ -273,8 +273,8 @@ public static class ClassifierMethods
             return true;
         }
 
-        return GetGeneralizations(specializedClassifier)
-            .Any(generalization => IsSpecializedClassifierOf(generalization, generalizedClassifier));
+        var generalizations = GetGeneralizations(specializedClassifier);
+        return generalizations.Any(generalization => IsSpecializedClassifierOf(generalization, generalizedClassifier));
     }
 
     /// <summary>

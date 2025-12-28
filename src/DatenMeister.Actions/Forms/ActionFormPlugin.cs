@@ -45,6 +45,9 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
     {
         public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResultMultipleForms result)
         {
+            if (!context.IsInExtensionCreationMode())
+                return;
+            
             var metaClass = parameter.MetaClass;
             if (metaClass == null)
                 return;

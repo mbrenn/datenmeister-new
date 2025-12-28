@@ -90,7 +90,6 @@ public static class ActionButtonToFormAdder
             if (form == null)
                 throw new InvalidOperationException("Form is null");
 
-
             var fields = form.get<IReflectiveSequence>(_Forms._RowForm.field);
             var actionField = context.Global.Factory.create(_Forms.TheOne.__ActionFieldData);
             actionField.set(_Forms._ActionFieldData.actionName, parameter.ActionName);

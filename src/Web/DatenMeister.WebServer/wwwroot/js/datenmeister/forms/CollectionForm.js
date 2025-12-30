@@ -10,7 +10,6 @@ import { DmObject, ObjectType } from "../Mof.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Navigator from "../Navigator.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-import { FormSelectionControl } from "../controls/FormSelectionControl.js";
 var _TableForm = _DatenMeister._Forms._TableForm;
 import * as ActionField from "../fields/ActionField.js";
 import { StatusFieldControl } from "../controls/StatusFieldControl.js";
@@ -152,55 +151,58 @@ export class CollectionFormCreator {
         /*
          *  Creates the form selection in which the user can manually select a form
          */
-        if (this.htmlElements.formSelectorContainer !== undefined
+        /*if (this.htmlElements.formSelectorContainer !== undefined
             && this.htmlElements.formSelectorContainer !== null) {
             this.statusTextControl.setListStatus("Create Form Selection", false);
+
             // Empty the container for the formselector
             this.htmlElements.formSelectorContainer.empty();
+
             const formControl = new FormSelectionControl();
-            formControl.formSelected.addListener(selectedItem => {
-                this._overrideFormUrl = selectedItem.selectedForm.uri;
-                configuration.refreshForm();
-            });
-            formControl.formResetted.addListener(() => {
-                this._overrideFormUrl = undefined;
-                configuration.refreshForm();
-            });
-            let formUrl;
+            formControl.formSelected.addListener(
+                selectedItem => {
+                    this._overrideFormUrl = selectedItem.selectedForm.uri;
+                    configuration.refreshForm();
+                });
+            formControl.formResetted.addListener(
+                () => {
+                    this._overrideFormUrl = undefined;
+                    configuration.refreshForm();
+                });
+
+            let formUrl: ItemLink;
+
             // Tries to retrieve the current form uri
             if (this._overrideFormUrl !== undefined) {
                 formUrl = {
                     workspace: "Management",
                     uri: this._overrideFormUrl
                 };
-            }
-            else {
+            } else {
                 const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
                 if (form.uri !== undefined && byForm === undefined) {
                     formUrl = {
                         workspace: form.workspace,
                         uri: form.uri
                     };
-                }
-                else if (byForm !== undefined) {
+                } else if (byForm !== undefined) {
                     formUrl = {
                         workspace: "Management",
                         uri: byForm
                     };
                 }
             }
-            /*
-             * Handles the store auto-generated form button
-             */
             if (this.htmlElements.storeCurrentFormBtn !== undefined) {
                 this.htmlElements.storeCurrentFormBtn.on('click', () => {
-                });
+                })
             }
+
             // Sets the current formurl and creates the control
             formControl.setCurrentFormUrl(formUrl);
             await formControl.createControl(this.htmlElements.formSelectorContainer);
+
             this.statusTextControl.setListStatus("Create Form Selection", true);
-        }
+        }*/
         /*
          Creates the form for the creation of Metaclasses
          */

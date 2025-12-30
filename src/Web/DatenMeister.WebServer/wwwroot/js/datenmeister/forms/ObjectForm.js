@@ -7,7 +7,6 @@ import * as VML from "./ViewModeLogic.js";
 import * as ClientForms from "../client/Forms.js";
 import { debugElementToDom } from "../DomHelper.js";
 import { ViewModeSelectionControl } from "../controls/ViewModeSelectionControl.js";
-import { FormSelectionControl } from "../controls/FormSelectionControl.js";
 import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 import { FormMode } from "./Forms.js";
@@ -238,46 +237,52 @@ export class ObjectFormCreatorForItem {
             await objectFormCreator.createFormByObject(configuration);
             this.statusTextControl.setListStatus("Create Form", true);
             // Creates the form selection
-            if (this.htmlElements.formSelectorContainer !== undefined
+            /*if (this.htmlElements.formSelectorContainer !== undefined
                 && this.htmlElements.formSelectorContainer !== null) {
                 this.statusTextControl.setListStatus("Create Form Selection", false);
+                
                 this.htmlElements.formSelectorContainer.empty();
+
                 const formControl = new FormSelectionControl();
-                formControl.formSelected.addListener(async (selectedItem) => {
-                    this._overrideFormUrl = selectedItem.selectedForm.uri;
-                    await this.rebuildForm();
-                });
-                formControl.formResetted.addListener(async () => {
-                    this._overrideFormUrl = undefined;
-                    await this.rebuildForm();
-                });
-                let formUrl;
+                formControl.formSelected.addListener(
+                    async selectedItem => {
+                        this._overrideFormUrl = selectedItem.selectedForm.uri;
+                        await this.rebuildForm();
+                    });
+                formControl.formResetted.addListener(
+                    async () => {
+                        this._overrideFormUrl = undefined;
+                        await this.rebuildForm();
+                    });
+                
+                let formUrl: ItemLink;
                 if (this._overrideFormUrl !== undefined) {
                     formUrl = {
                         workspace: "Management",
                         uri: this._overrideFormUrl
                     };
-                }
-                else {
+                } else {
                     const originalUri = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
-                    const originalWorkspace = form.get(_DatenMeister._Forms._Form.originalWorkspace, Mof.ObjectType.String);
+                    const originalWorkspace = form.get(_DatenMeister._Forms._Form.originalWorkspace, Mof.ObjectType.String)
                     if (form.uri !== undefined && originalUri === undefined) {
                         formUrl = {
                             workspace: form.workspace,
                             uri: form.uri
                         };
-                    }
-                    else if (originalUri !== undefined) {
+                    } else if (originalUri !== undefined) {
                         formUrl = {
-                            workspace: originalWorkspace ?? "Management",
+                            workspace: originalWorkspace ?? WorkspaceData,
                             uri: originalUri
                         };
                     }
                 }
+
                 formControl.setCurrentFormUrl(formUrl);
+
                 await formControl.createControl(this.htmlElements.formSelectorContainer);
+
                 this.statusTextControl.setListStatus("Create Form Selection", true);
-            }
+            }*/
         });
     }
 }

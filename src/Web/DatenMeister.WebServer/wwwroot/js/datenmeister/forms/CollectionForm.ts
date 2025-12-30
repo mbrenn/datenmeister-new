@@ -273,7 +273,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
         /*
          *  Creates the form selection in which the user can manually select a form
          */
-        if (this.htmlElements.formSelectorContainer !== undefined
+        /*if (this.htmlElements.formSelectorContainer !== undefined
             && this.htmlElements.formSelectorContainer !== null) {
             this.statusTextControl.setListStatus("Create Form Selection", false);
 
@@ -314,10 +314,6 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                     };
                 }
             }
-
-            /*
-             * Handles the store auto-generated form button
-             */
             if (this.htmlElements.storeCurrentFormBtn !== undefined) {
                 this.htmlElements.storeCurrentFormBtn.on('click', () => {
                 })
@@ -328,7 +324,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
             await formControl.createControl(this.htmlElements.formSelectorContainer);
 
             this.statusTextControl.setListStatus("Create Form Selection", true);
-        }
+        }*/
 
         /* 
          Creates the form for the creation of Metaclasses
@@ -479,6 +475,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
             let tabFormContainer = $("<div></div>");
 
             this.statusTextControl.setListStatus("Create tab " + n, false);
+            
             // Do it asynchronously. 
             await tabCreationFunction(tab, tabFormContainer);
 

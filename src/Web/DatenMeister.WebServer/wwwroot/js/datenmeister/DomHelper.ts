@@ -14,16 +14,22 @@ export async function injectNameByObject(domElement: JQuery, element: DmObject)
 
 export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string, parameter?: IInjectNameByUriParams) {
 
-    const x = await ElementClient.loadNameByUri(workspaceId, elementUri);
+    try {
+        const x = await ElementClient.loadNameByUri(workspaceId, elementUri);
 
-    domElement.empty();
+        domElement.empty();
 
-    const paramCall: IConvertItemWithNameAndIdParameters = {};
-    if (parameter !== undefined) {
-        paramCall.onClick = parameter.onClick;
+        const paramCall: IConvertItemWithNameAndIdParameters = {};
+        if (parameter !== undefined) {
+            paramCall.onClick = parameter.onClick;
+        }
+
+        domElement.append(convertItemWithNameAndIdToDom(x, paramCall));
+
+    } catch (error) {
+        console.log(error);
+        throw error;
     }
-    
-    domElement.append(convertItemWithNameAndIdToDom(x, paramCall));
 }
 
 export async function convertDmObjectToDom(item: DmObject, params?: IConvertItemWithNameAndIdParameters) {

@@ -4,13 +4,19 @@ export async function injectNameByObject(domElement, element) {
     return injectNameByUri(domElement, element.workspace, element.uri);
 }
 export async function injectNameByUri(domElement, workspaceId, elementUri, parameter) {
-    const x = await ElementClient.loadNameByUri(workspaceId, elementUri);
-    domElement.empty();
-    const paramCall = {};
-    if (parameter !== undefined) {
-        paramCall.onClick = parameter.onClick;
+    try {
+        const x = await ElementClient.loadNameByUri(workspaceId, elementUri);
+        domElement.empty();
+        const paramCall = {};
+        if (parameter !== undefined) {
+            paramCall.onClick = parameter.onClick;
+        }
+        domElement.append(convertItemWithNameAndIdToDom(x, paramCall));
     }
-    domElement.append(convertItemWithNameAndIdToDom(x, paramCall));
+    catch (error) {
+        console.log(error);
+        throw error;
+    }
 }
 export async function convertDmObjectToDom(item, params) {
     const x = await ElementClient.loadNameByUri(item.workspace, item.uri);

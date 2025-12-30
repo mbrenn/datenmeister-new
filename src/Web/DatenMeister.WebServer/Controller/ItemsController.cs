@@ -55,13 +55,29 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var item = factory.create(metaClass);
         var values = createParams.Properties?.v;
         if (values != null)
-            foreach (var (key, value) in values)
+        {
+            foreach (var (key, valueObject) in values)
             {
-                var propertyValue = new DirectJsonDeconverter(workspaceLogic, scopeStorage)
-                    .ConvertJsonValue(value);
+                var valueAsArray = (valueObject as IEnumerable<object?>)?.ToArray();
+                if (valueAsArray == null)
+                {
+                    throw new InvalidOperationException("Value is not an array");
+                }
+                var isSet = DotNetHelper.AsBoolean(valueAsArray[0]);
+                var value = valueAsArray[1];
+                if (isSet)
+                {
+                    var propertyValue = new DirectJsonDeconverter(workspaceLogic, scopeStorage)
+                        .ConvertJsonValue(value);
 
-                if (propertyValue != null) item.set(key, propertyValue);
+                    if (propertyValue != null) item.set(key, propertyValue);
+                }
+                else
+                {
+                    item.unset(key);
+                }
             }
+        }
 
         extent.elements().add(item);
 
@@ -634,11 +650,16 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
-
-        var result = _internal.GetPropertyInternal(workspaceId, itemUri, property);
-
+        
+        var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
+                        ?? throw new InvalidOperationException("Item was not found");
+        
+        var value = foundItem.get(property);
+        var isSet = foundItem.isSet(property);
+        
         var converter = new MofJsonConverter { MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true };
-        return Content($"{{\"v\": {converter.ConvertToJson(result)}}}", "application/json", Encoding.UTF8);
+        // return an array of two values. The first value whether the element is set, the second value the element itself
+        return Content($"{{\"v\": [{converter.ConvertToJson(isSet)},{converter.ConvertToJson(value)}]}}", "application/json", Encoding.UTF8);
     }
 
     [HttpPut("api/items/set/{workspaceId}/{itemUri}")]

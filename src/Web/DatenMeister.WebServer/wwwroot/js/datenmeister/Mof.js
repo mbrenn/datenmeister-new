@@ -545,7 +545,9 @@ export function createJsonFromObject(element) {
                 continue;
             const objectValue = internalValues[internalizedKey];
             const key = DmObject.externalizeKey(internalizedKey);
-            values[key] = convertValue(objectValue.value);
+            // Creates an array of two values. The first one defines whether the element is set,
+            // the second one defines the value itself.
+            values[key] = [objectValue.isSet, convertValue(objectValue.value)];
         }
     }
     else {

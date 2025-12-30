@@ -19,7 +19,10 @@ public class MofObjectAsJson
     public string? w { get; set; }= string.Empty;
         
     /// <summary>
-    /// Defines the values of the element
+    /// Defines the values of the element.
+    /// The key is the property name and the value consists of an array of two items.
+    /// The first item reflects a boolean whether a value is set, the second value
+    /// stores the value itself or the default value in case the item is not set. 
     /// </summary>
     public Dictionary<string, object> v { get; set; }= new();
 

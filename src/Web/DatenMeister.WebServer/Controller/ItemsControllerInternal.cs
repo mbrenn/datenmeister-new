@@ -28,6 +28,11 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
         converter = new MofJsonConverter { MaxRecursionDepth = 2 };
         return foundElement;
     }
+    
+    /// <summary>
+    /// Stores the value that shall be returned if the property is not set
+    /// </summary>
+    public static object NotSetValue = new();
 
     /// <summary>
     ///     Gets the internal property of a certain item
@@ -42,7 +47,14 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
                         ?? throw new InvalidOperationException("Item was not found");
 
         object? result = null;
-        if (foundItem.isSet(property)) result = foundItem.get(property);
+        if (foundItem.isSet(property))
+        {
+            result = foundItem.get(property);
+        }
+        else
+        {
+            result = NotSetValue;
+        }
 
         return result;
     }

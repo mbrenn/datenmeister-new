@@ -55,6 +55,12 @@ export interface IFormField
      * @returns True if the value is shown, false otherwise
      */
     showValue?(): boolean;
+
+    /**
+     * This callback will be called in case of the content of the field is changed
+     * This allows creator of a field to explicitly react upon changes within the field
+     */
+    callbackUpdateField?: () => void;
 }
 
 /**

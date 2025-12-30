@@ -9,18 +9,25 @@ using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Actions;
 
+/// <summary>
+/// Defines the execution state for a set of actions.
+/// </summary>
+/// <param name="element">The element that stores the execution state.</param>
 public class ActionSetExecutionState(IElement element)
 {
     /// <summary>
-    /// Stores the number of actions
+    /// Stores the number of actions.
     /// </summary>
     private int _numberOfActions;
 
     /// <summary>
-    /// Stores the number of actions being executed
+    /// Gets the number of actions being executed.
     /// </summary>
     public int NumberOfActions => _numberOfActions;
 
+    /// <summary>
+    /// Increments the number of actions and updates the storage element.
+    /// </summary>
     public void IncrementNumberOfActions()
     {
         Interlocked.Increment(ref _numberOfActions);
@@ -28,6 +35,11 @@ public class ActionSetExecutionState(IElement element)
     }
 }
 
+/// <summary>
+/// Contains the logic to execute actions and action sets.
+/// </summary>
+/// <param name="workspaceLogic">The workspace logic to be used.</param>
+/// <param name="scopeStorage">The scope storage to be used.</param>
 public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
     /// <summary>
@@ -36,15 +48,26 @@ public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// </summary>
     private const bool AsyncExecution = false;
 
+    /// <summary>
+    /// The logger for this class.
+    /// </summary>
     private static readonly ILogger ClassLogger = new ClassLogger(typeof(ActionLogic));
         
+    /// <summary>
+    /// Gets the workspace logic.
+    /// </summary>
     public IWorkspaceLogic WorkspaceLogic { get; } = workspaceLogic;
+
+    /// <summary>
+    /// Gets the scope storage.
+    /// </summary>
     public IScopeStorage ScopeStorage { get; } = scopeStorage;
 
     /// <summary>
-    /// Executes the given action
+    /// Executes the given action set.
     /// </summary>
-    /// <param name="actionSet">Actions-Set to be executed</param>
+    /// <param name="actionSet">Action-Set to be executed.</param>
+    /// <returns>The result of the action set execution.</returns>
     public async Task<IElement?> ExecuteActionSet(IElement actionSet)
     {
         var result = InMemoryObject.CreateEmpty();

@@ -99,8 +99,13 @@ public class MofJsonConverter
 
         builder.Append("\"v\": {");
         var classModel = (value as MofObject)?.GetClassModel();
-        foreach (var property in allProperties.getPropertiesBeingSet())
+        var propertyList = classModel != null
+            ? classModel.Attributes.Select(x => x.Name)
+            : allProperties.getPropertiesBeingSet();
+        
+        foreach (var property in propertyList)
         {
+            var isPropertySet = value.isSet(property);
             builder.AppendLine(komma);
             builder.Append($"\"{HttpUtility.JavaScriptStringEncode(property)}\": ");
             var propertyValue = value.get(property);
@@ -109,7 +114,7 @@ public class MofJsonConverter
             var isComposite = attributeModel?.IsComposite ?? false; // Default to true if no model is found
 
             // TODO: We are prepared just to return composites, but do not do it.
-            AppendValue(builder, propertyValue, recursionDepth/*, !isComposite*/);
+            AppendValue(builder, new[] {isPropertySet, propertyValue}, recursionDepth/*, !isComposite*/);
 
             komma = ",";
         }

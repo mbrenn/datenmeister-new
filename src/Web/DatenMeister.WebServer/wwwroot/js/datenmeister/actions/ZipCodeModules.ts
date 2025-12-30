@@ -1,5 +1,5 @@
 ﻿import * as FormActions from "../FormActions.js"
-import {DmObject, DmObjectWithSync} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 import { SubmitMethod } from "../forms/Forms.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
@@ -20,13 +20,13 @@ class ZipCodeTestAction extends FormActions.ItemFormActionModuleBase{
         this.skipSaving = true;
     }
     
-    async loadObject(): Promise<DmObjectWithSync> | undefined {
+    async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
         const result = await MofSync.createTemporaryDmObject(
             "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
         return Promise.resolve(result);
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         alert(element.get('zip')?.toString() ?? "No Zip Code given");        
     }
 }
@@ -45,7 +45,7 @@ class CreateZipExampleAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         const id = element.get('id');
         await ApiConnection.post<ICreateZipExampleActionResult>(
             Settings.baseUrl + "api/zip/create",

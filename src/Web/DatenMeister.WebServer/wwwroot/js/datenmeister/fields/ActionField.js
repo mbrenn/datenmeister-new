@@ -1,15 +1,15 @@
 import * as FormActions from "../FormActions.js";
 import { BaseField } from "./Interfaces.js";
-import { ObjectType } from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 export class Field extends BaseField {
     async createDom(dmElement) {
         const tthis = this;
-        const title = this.field.get(_DatenMeister._Forms._ActionFieldData.title, ObjectType.String);
-        const action = this.field.get(_DatenMeister._Forms._ActionFieldData.actionName, ObjectType.String);
-        const parameter = this.field.get(_DatenMeister._Forms._ActionFieldData.parameter, ObjectType.Single);
-        const buttonText = this.field.get(_DatenMeister._Forms._ActionFieldData.buttonText, ObjectType.String);
+        const title = this.field.get(_DatenMeister._Forms._ActionFieldData.title, Mof.ObjectType.String);
+        const action = this.field.get(_DatenMeister._Forms._ActionFieldData.actionName, Mof.ObjectType.String);
+        const parameter = this.field.get(_DatenMeister._Forms._ActionFieldData.parameter, Mof.ObjectType.Single);
+        const buttonText = this.field.get(_DatenMeister._Forms._ActionFieldData.buttonText, Mof.ObjectType.String);
         const module = FormActions.getModule(action);
         this.inConfirmation = false;
         const requireConfirmation = module?.requiresConfirmation === true;
@@ -38,6 +38,9 @@ export class Field extends BaseField {
         return this.button;
     }
     async evaluateDom(dmElement) {
+    }
+    showValue() {
+        return false;
     }
 }
 //# sourceMappingURL=ActionField.js.map

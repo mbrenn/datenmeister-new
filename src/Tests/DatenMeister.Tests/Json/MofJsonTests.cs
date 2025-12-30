@@ -129,25 +129,25 @@ public class MofJsonTests
                    {
                      "id": "local_17",
                      "v": {
-                       "name": "Collection",
-                       "items": {
+                       "name": [true, "Collection"],
+                       "items": [true, {
                          "0": {
                            "id": "local_15",
                            "v": {
-                             "name": "Object 1",
-                             "test": {
+                             "name": [true, "Object 1"],
+                             "test": [true, {
                                "r": "#local_16",
                                "id": "local_16"
-                             }
+                             }]
                            }
                          },
                          "1": {
                            "id": "local_16",
                            "v": {
-                             "name": "Object 2"
+                             "name": [true, "Object 2"]
                            }
                          }
-                       }
+                       }]
                      }
                    }                   
                    """;

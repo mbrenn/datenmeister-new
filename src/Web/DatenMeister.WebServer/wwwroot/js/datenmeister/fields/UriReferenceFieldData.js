@@ -1,4 +1,4 @@
-import { ObjectType } from "../Mof.js";
+import * as Mof from "../Mof.js";
 import { BaseField } from "./Interfaces.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 var _UriReferenceFieldData = _DatenMeister._Forms._UriReferenceFieldData;
@@ -7,7 +7,7 @@ export class Field extends BaseField {
     async createDom(dmElement) {
         const fieldName = this.field.get('name')?.toString() ?? "";
         /* Returns a list element in case an array is given */
-        let value = dmElement.get(fieldName, ObjectType.String) ?? "";
+        let value = dmElement.get(fieldName, Mof.ObjectType.String) ?? "";
         const originalValue = value;
         /* Otherwise just create the correct field type. */
         if (this.isReadOnly) {
@@ -26,8 +26,8 @@ export class Field extends BaseField {
             const domContainer = $("<div class='dm-urireference-container'></div>");
             const textUri = "<div><strong>Uri:</strong></div>";
             domContainer.append(textUri);
-            const defaultExtent = this.field.get(_UriReferenceFieldData.defaultExtent, ObjectType.String);
-            const defaultWorkspace = this.field.get(_UriReferenceFieldData.defaultWorkspace, ObjectType.String);
+            const defaultExtent = this.field.get(_UriReferenceFieldData.defaultExtent, Mof.ObjectType.String);
+            const defaultWorkspace = this.field.get(_UriReferenceFieldData.defaultWorkspace, Mof.ObjectType.String);
             this._textBox = $("<input size='80' class='dm-textfield' />");
             this._textBox.val(value);
             domContainer.append(this._textBox);

@@ -1,15 +1,17 @@
+import { BaseField } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import { injectNameByUri } from "../DomHelper.js";
 import * as ClientItem from "../client/Items.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as DomHelper from "../DomHelper.js";
-export class Control {
+export class Control extends BaseField {
     /** Initializes a new instance
      *
      * @param field This field contains the definition according ReferenceFieldData. It may be undefined,
      * then no support will be given for the selected item
      * */
     constructor(field) {
+        super();
         this.field = field;
         this._list = $("<span></span>");
     }
@@ -158,6 +160,9 @@ export class Field extends Control {
     }
     async callbackSetReference(selectedElement) {
         this.element.set(this.fieldName, Mof.DmObject.createFromItemWithNameAndId(selectedElement));
+        if (this.callbackUpdateField !== undefined) {
+            this.callbackUpdateField();
+        }
     }
     async evaluateDom(dmElement) {
     }

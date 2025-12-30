@@ -1,5 +1,5 @@
 ﻿import * as FormActions from "../FormActions.js"
-import {DmObject, DmObjectWithSync, ObjectType} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 import * as FormClient from "../client/Forms.js";
 import * as ActionClient from "../client/Actions.js";
@@ -31,7 +31,7 @@ class ItemMoveOrCopyActionNavigate extends FormActions.ItemFormActionModuleBase 
         this.skipSaving = true;   
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         document.location.href =
             Settings.baseUrl + "ItemAction/Item.MoveOrCopy?workspaceId=" + encodeURIComponent(element.workspace)
             + "&itemUri=" + encodeURIComponent(element.uri);
@@ -44,7 +44,7 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         this.actionVerb = "Move/Copy Item";
     }
     
-    async loadObject(): Promise<DmObjectWithSync> | undefined {
+    async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
 
         let p = new URLSearchParams(window.location.search);
         
@@ -54,23 +54,23 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         const sourceWorkspace = p.get('workspaceId');
         const sourceItemUri = p.get('itemUri');
 
-        const source = DmObject.createFromReference(sourceWorkspace, sourceItemUri);
+        const source = Mof.DmObject.createFromReference(sourceWorkspace, sourceItemUri);
         result.set(_DatenMeister._Actions._MoveOrCopyAction.source, source);
         
         const container = await ItemClient.getContainer(sourceWorkspace, sourceItemUri);
         if (container.length > 0) {
-            const target = DmObject.createFromReference(container[0].workspace, container[0].uri);
+            const target = Mof.DmObject.createFromReference(container[0].workspace, container[0].uri);
             result.set(_DatenMeister._Actions._MoveOrCopyAction.target, target);
         }
 
         return Promise.resolve(result);
     }
 
-    async loadForm(): Promise<DmObject> | undefined {
+    async loadForm(): Promise<Mof.DmObject> | undefined {
         return await FormClient.getForm("dm:///_internal/forms/internal#Item.MoveOrCopy");
     }
         
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
         // Executes the action directly
         const result = await ActionClient.executeAction(
@@ -79,8 +79,8 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         );
 
         if (result.success) {
-            const itemUrl = result.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl, ObjectType.String);
-            const workspace = result.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace, ObjectType.String);
+            const itemUrl = result.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl, Mof.ObjectType.String);
+            const workspace = result.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace, Mof.ObjectType.String);
             Navigator.navigateToItemByUrl(workspace, itemUrl);
         } else {
             alert('Failure: \r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
@@ -96,7 +96,7 @@ class ItemDeleteAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         const data = await ItemClient.deleteItem(form.workspace, element.uri);
 
         const success = data.success;
@@ -115,7 +115,7 @@ class ItemMoveDownItemAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         await moveItemInCollectionDown(
             form.workspace,
             form.itemUrl,
@@ -132,7 +132,7 @@ class ItemMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         await moveItemInCollectionUp(
             form.workspace,
             form.itemUrl,
@@ -148,7 +148,7 @@ class ItemXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         Navigator.navigateToAction(
             "Item.ExportXmi",
             "dm:///_internal/forms/internal#DatenMeister.Export.Xmi",
@@ -166,7 +166,7 @@ class ItemXmiExport extends FormActions.ItemFormActionModuleBase {
         this.actionVerb = "Perform Xmi Export";
     }
 
-    async loadObject(): Promise<DmObjectWithSync> {
+    async loadObject(): Promise<Mof.DmObjectWithSync> {
         let p = new URLSearchParams(window.location.search);
 
         if (!p.has("itemUri") || !p.has("workspace")) {
@@ -184,7 +184,7 @@ class ItemXmiExport extends FormActions.ItemFormActionModuleBase {
         }
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         alert('Nothing to do');
     }
 }
@@ -195,7 +195,7 @@ class ItemXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         Navigator.navigateToAction(
             "Item.ImportXmi",
             "dm:///_internal/forms/internal#DatenMeister.Import.Item.Xmi",
@@ -213,7 +213,7 @@ class ItemXmiImport extends FormActions.ItemFormActionModuleBase {
         this.actionVerb = "Perform Import";
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         alert('Now, we do the import');
         let p = new URLSearchParams(window.location.search);
 
@@ -228,9 +228,9 @@ class ItemXmiImport extends FormActions.ItemFormActionModuleBase {
             const importedXmi = await ItemClient.importXmi(
                 workspace,
                 itemUri,
-                element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.property, ObjectType.String),
-                element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.addToCollection, ObjectType.Boolean),
-                element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.xmi, ObjectType.String));
+                element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.property, Mof.ObjectType.String),
+                element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.addToCollection, Mof.ObjectType.Boolean),
+                element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.xmi, Mof.ObjectType.String));
 
             if (importedXmi.success) {
                 Navigator.navigateToItemByUrl(workspace, itemUri);
@@ -247,12 +247,12 @@ class ItemCreateTemporarySetMetaclass extends FormActions.ItemFormActionModuleBa
         this.actionVerb = "Define Metaclass";
     }
 
-    async loadForm(): Promise<DmObject> | undefined {
+    async loadForm(): Promise<Mof.DmObject> | undefined {
         return await FormClient.getForm("dm:///_internal/forms/internal#Item.Create.Temporary.SetMetaclass");
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        const foundElement = element.get("metaClass", ObjectType.Default) as DmObject;
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        const foundElement = element.get("metaClass", Mof.ObjectType.Default) as Mof.DmObject;
         
         const temporaryElement = await ClientElements.createTemporaryElement(foundElement.uri);        
         Navigator.navigateToItemByUrl(temporaryElement.workspace, temporaryElement.uri, {editMode: true});

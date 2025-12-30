@@ -1,5 +1,4 @@
 import * as Mof from "../Mof.js";
-import {DmObject, ObjectType} from "../Mof.js";
 import {BaseField, IFormField} from "./Interfaces.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import _TextFieldData = _DatenMeister._Forms._TextFieldData;
@@ -15,11 +14,11 @@ export class Field extends BaseField implements IFormField
     
     _textBox: JQuery<HTMLElement>;
 
-    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
+    async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
         const fieldName = this.field.get('name')?.toString() ?? "";
 
         /* Returns a list element in case an array is given */
-        let value = dmElement.get(fieldName, ObjectType.String) ?? "";
+        let value = dmElement.get(fieldName, Mof.ObjectType.String) ?? "";
         const originalValue = value;
         
         // If we are in a table view, then reduce the length of the text to 100 
@@ -32,7 +31,7 @@ export class Field extends BaseField implements IFormField
             });
         }
         else {
-            const shortenTextLength = this.field.get(_DatenMeister._Forms._TextFieldData.shortenTextLength, ObjectType.Number);
+            const shortenTextLength = this.field.get(_DatenMeister._Forms._TextFieldData.shortenTextLength, Mof.ObjectType.Number);
             if (shortenTextLength !== undefined && shortenTextLength > 0) {
                 value = truncateText(value, {useWordBoundary: true, maxLength: shortenTextLength});
             }
@@ -59,7 +58,7 @@ export class Field extends BaseField implements IFormField
         if (this.isReadOnly) {
             const divContainer = $("<div class='dm-textfield-container'></div>");
             
-            if (this.field.get(_DatenMeister._Forms._TextFieldData.supportClipboardCopy, ObjectType.Boolean)) {
+            if (this.field.get(_DatenMeister._Forms._TextFieldData.supportClipboardCopy, Mof.ObjectType.Boolean)) {
                 const button = $("<button class='btn btn-secondary'>Copy to Clipboard</button>");
                 button.on('click', () =>
                 {
@@ -86,8 +85,8 @@ export class Field extends BaseField implements IFormField
             divContainer.append(div);
             return divContainer;
         } else {
-            const lineHeight = this.field.get(_TextFieldData.lineHeight, ObjectType.Number);
-            const width = this.field.get(_TextFieldData.width, ObjectType.Number);
+            const lineHeight = this.field.get(_TextFieldData.lineHeight, Mof.ObjectType.Number);
+            const width = this.field.get(_TextFieldData.width, Mof.ObjectType.Number);
             
             if (lineHeight === undefined || Number.isNaN(lineHeight) || lineHeight <= 1 ) {
                 this._textBox = $("<input class='dm-textfield' />");
@@ -110,11 +109,16 @@ export class Field extends BaseField implements IFormField
             }
                 
             this._textBox.val(value);
+            this._textBox.on('input change', () => {
+                if (this.callbackUpdateField !== undefined) {
+                    this.callbackUpdateField();
+                }
+            });
             return this._textBox;
         }
     }
 
-    async evaluateDom(dmElement: DmObject) : Promise<void> {
+    async evaluateDom(dmElement: Mof.DmObject) : Promise<void> {
         if (this._textBox !== undefined && this._textBox !== null)
         {
             let fieldName: string;

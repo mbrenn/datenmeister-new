@@ -1,5 +1,5 @@
 ﻿import {BaseField, IFormField} from "./Interfaces.js";
-import {DmObject} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import {injectNameByUri} from "../DomHelper.js";
 import * as ClientItem from "../client/Items.js"
 import * as SIC from "../controls/SelectItemControl.js";
@@ -25,14 +25,14 @@ export class Field extends BaseField implements IFormField {
     private _mode: ModeValue;
     
     // This is the element containing the property
-    private _element: DmObject;
+    private _element: Mof.DmObject;
     private _domElement: JQuery<HTMLElement>;
     
     // This is the element describing the property value; the element that shall be shown in this
     private _fieldValue: any;
 
     // Creates the overall DOM
-    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
+    async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
         const tthis = this;
         this._element = dmElement;
 
@@ -79,7 +79,7 @@ export class Field extends BaseField implements IFormField {
 
         return result;
     }
-    async evaluateDom(dmElement: DmObject) : Promise<void> {
+    async evaluateDom(dmElement: Mof.DmObject) : Promise<void> {
         if (this._mode === ModeValue.Value) {
             if (this._textBox !== undefined && this._textBox !== null) {
                 const fieldName = this.field.get('name').toString();
@@ -173,9 +173,9 @@ export class Field extends BaseField implements IFormField {
         if (this._mode === ModeValue.Reference) {
             const tthis = this;
 
-            let value = this._fieldValue as DmObject;
+            let value = this._fieldValue as Mof.DmObject;
             if(Array.isArray(value)) {
-                value = value[0] as DmObject;
+                value = value[0] as Mof.DmObject;
             }
             
             const fieldName = this.field.get('name').toString();
@@ -185,7 +185,7 @@ export class Field extends BaseField implements IFormField {
                 this._domElement.append(div);
             } else {
                 // An element is selected. The name can be shown
-                const asDmObject = value as DmObject;
+                const asDmObject = value as Mof.DmObject;
                 const div = $("<div />");
                 injectNameByUri(div, asDmObject.workspace, asDmObject.uri);
                 this._domElement.append(div);

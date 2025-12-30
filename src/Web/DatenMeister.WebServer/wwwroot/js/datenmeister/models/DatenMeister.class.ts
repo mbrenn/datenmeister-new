@@ -423,6 +423,12 @@ export namespace _Actions
                 export const __ConsoleWriteAction_Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a";
         }
 
+        export class _RefreshTypeIndexAction
+        {
+            static waitForRefresh = "waitForRefresh";
+        }
+
+        export const __RefreshTypeIndexAction_Uri = "dm:///_internal/types/internal#9d43decb-aa2f-4461-b680-3ec595b518d1";
 }
 
 export namespace _DataViews

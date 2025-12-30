@@ -928,6 +928,18 @@ public class _Actions
 
     public _OSIntegration OSIntegration = new ();
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#9d43decb-aa2f-4461-b680-3ec595b518d1",
+        TypeKind = TypeKind.ClassTree)]
+    public class _RefreshTypeIndexAction
+    {
+        public static readonly string @waitForRefresh = "waitForRefresh";
+        public IElement? @_waitForRefresh = null;
+
+    }
+
+    public _RefreshTypeIndexAction @RefreshTypeIndexAction = new ();
+    public MofObjectShadow @__RefreshTypeIndexAction = new ("dm:///_internal/types/internal#9d43decb-aa2f-4461-b680-3ec595b518d1");
+
     public static readonly _Actions TheOne = new ();
 
 }

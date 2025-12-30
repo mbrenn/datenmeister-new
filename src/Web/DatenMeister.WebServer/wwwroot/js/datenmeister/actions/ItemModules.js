@@ -1,5 +1,5 @@
 import * as FormActions from "../FormActions.js";
-import { DmObject, ObjectType } from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 import * as FormClient from "../client/Forms.js";
 import * as ActionClient from "../client/Actions.js";
@@ -43,11 +43,11 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         // TODO: Set Result
         const sourceWorkspace = p.get('workspaceId');
         const sourceItemUri = p.get('itemUri');
-        const source = DmObject.createFromReference(sourceWorkspace, sourceItemUri);
+        const source = Mof.DmObject.createFromReference(sourceWorkspace, sourceItemUri);
         result.set(_DatenMeister._Actions._MoveOrCopyAction.source, source);
         const container = await ItemClient.getContainer(sourceWorkspace, sourceItemUri);
         if (container.length > 0) {
-            const target = DmObject.createFromReference(container[0].workspace, container[0].uri);
+            const target = Mof.DmObject.createFromReference(container[0].workspace, container[0].uri);
             result.set(_DatenMeister._Actions._MoveOrCopyAction.target, target);
         }
         return Promise.resolve(result);
@@ -59,8 +59,8 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         // Executes the action directly
         const result = await ActionClient.executeAction(element.workspace, element.uri);
         if (result.success) {
-            const itemUrl = result.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl, ObjectType.String);
-            const workspace = result.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace, ObjectType.String);
+            const itemUrl = result.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl, Mof.ObjectType.String);
+            const workspace = result.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace, Mof.ObjectType.String);
             Navigator.navigateToItemByUrl(workspace, itemUrl);
         }
         else {
@@ -174,7 +174,7 @@ class ItemXmiImport extends FormActions.ItemFormActionModuleBase {
             const workspace = p.get('workspace');
             const itemUri = p.get('itemUri');
             // Export the Xmi and stores it into the element
-            const importedXmi = await ItemClient.importXmi(workspace, itemUri, element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.property, ObjectType.String), element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.addToCollection, ObjectType.Boolean), element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.xmi, ObjectType.String));
+            const importedXmi = await ItemClient.importXmi(workspace, itemUri, element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.property, Mof.ObjectType.String), element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.addToCollection, Mof.ObjectType.Boolean), element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.xmi, Mof.ObjectType.String));
             if (importedXmi.success) {
                 Navigator.navigateToItemByUrl(workspace, itemUri);
             }
@@ -193,7 +193,7 @@ class ItemCreateTemporarySetMetaclass extends FormActions.ItemFormActionModuleBa
         return await FormClient.getForm("dm:///_internal/forms/internal#Item.Create.Temporary.SetMetaclass");
     }
     async execute(form, element, parameter, submitMethod) {
-        const foundElement = element.get("metaClass", ObjectType.Default);
+        const foundElement = element.get("metaClass", Mof.ObjectType.Default);
         const temporaryElement = await ClientElements.createTemporaryElement(foundElement.uri);
         Navigator.navigateToItemByUrl(temporaryElement.workspace, temporaryElement.uri, { editMode: true });
     }

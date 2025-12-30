@@ -1,5 +1,5 @@
 import * as FormActions from "../FormActions.js";
-import { DmObject } from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 import * as ActionClient from "../client/Actions.js";
 import * as Settings from "../Settings.js";
@@ -78,7 +78,7 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
         return Promise.resolve(result);
     }
     async execute(form, element, parameter, submitMethod) {
-        const extentCreationParameter = new DmObject();
+        const extentCreationParameter = new Mof.DmObject();
         extentCreationParameter.set('configuration', element);
         extentCreationParameter.setMetaClassByUri(_DatenMeister._Actions.__LoadExtentAction_Uri, 'Types');
         const result = await ActionClient.executeActionDirectly("Execute", {
@@ -104,7 +104,7 @@ class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBas
         return Promise.resolve(result);
     }
     async execute(form, element, parameter, submitMethod) {
-        const extentCreationParameter = new DmObject();
+        const extentCreationParameter = new Mof.DmObject();
         extentCreationParameter.set('configuration', element);
         extentCreationParameter.setMetaClassByUri(_DatenMeister._Actions.__LoadExtentAction_Uri, 'Types');
         const result = await ActionClient.executeActionDirectly("Execute", {

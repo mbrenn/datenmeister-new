@@ -1,5 +1,5 @@
 ﻿import {IFormConfiguration} from "./IFormConfiguration.js";
-import {DmObject, DmObjectWithSync, ObjectType} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import {debugElementToDom} from "../DomHelper.js";
 import * as Forms from "./Forms.js";
 import * as ObjectForm from "./ObjectForm.js";
@@ -73,14 +73,14 @@ export async function createActionFormForEmptyObject(
             statusOverview.setListStatus("Execute Client-Action", false);
 
             // Checks, if we are having a client-actions responded back from the server
-            const resultAsMof = result as DmObject;
-            const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, ObjectType.Array);
+            const resultAsMof = result as Mof.DmObject;
+            const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, Mof.ObjectType.Array);
             if (clientActions !== undefined) {
 
                 for (let n in clientActions) {
 
                     // Try to find the module and execute the client action
-                    const clientAction = clientActions[n] as DmObject;
+                    const clientAction = clientActions[n] as Mof.DmObject;
                     await FormActions.executeClientAction(clientAction, creator);
                 }                
             }
@@ -101,7 +101,7 @@ export async function createActionFormForEmptyObject(
         const temporaryElement = 
             await ClientElements.createTemporaryElement(metaClass);
         statusOverview.setListStatus("Create Temporary Object", true);
-        element = DmObjectWithSync.createFromReference(temporaryElement.workspace, temporaryElement.uri);
+        element = Mof.DmObjectWithSync.createFromReference(temporaryElement.workspace, temporaryElement.uri);
         
 
         // Sets the metaclass and workspace id upon url, if not created by Modules

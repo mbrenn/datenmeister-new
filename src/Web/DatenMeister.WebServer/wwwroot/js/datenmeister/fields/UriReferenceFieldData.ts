@@ -1,5 +1,4 @@
 import * as Mof from "../Mof.js";
-import {DmObject, ObjectType} from "../Mof.js";
 import {BaseField, IFormField} from "./Interfaces.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import _UriReferenceFieldData = _DatenMeister._Forms._UriReferenceFieldData;
@@ -15,11 +14,11 @@ export class Field extends BaseField implements IFormField
     private _buildUriButton: JQuery<HTMLElement>;
     private _selectField: SIC.SelectItemControl;
 
-    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
+    async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
         const fieldName = this.field.get('name')?.toString() ?? "";
 
         /* Returns a list element in case an array is given */
-        let value = dmElement.get(fieldName, ObjectType.String) ?? "";
+        let value = dmElement.get(fieldName, Mof.ObjectType.String) ?? "";
         const originalValue = value;
 
         /* Otherwise just create the correct field type. */
@@ -41,8 +40,8 @@ export class Field extends BaseField implements IFormField
             const textUri = "<div><strong>Uri:</strong></div>";
             domContainer.append(textUri);
 
-            const defaultExtent = this.field.get(_UriReferenceFieldData.defaultExtent, ObjectType.String);
-            const defaultWorkspace = this.field.get(_UriReferenceFieldData.defaultWorkspace, ObjectType.String);
+            const defaultExtent = this.field.get(_UriReferenceFieldData.defaultExtent, Mof.ObjectType.String);
+            const defaultWorkspace = this.field.get(_UriReferenceFieldData.defaultWorkspace, Mof.ObjectType.String);
 
             this._textBox = $("<input size='80' class='dm-textfield' />");
             this._textBox.val(value);
@@ -187,7 +186,7 @@ export class Field extends BaseField implements IFormField
         await this._selectField.setItemByUri("Data", objectUrl);
     }
 
-    async evaluateDom(dmElement: DmObject) : Promise<void> {
+    async evaluateDom(dmElement: Mof.DmObject) : Promise<void> {
         if (this._textBox !== undefined && this._textBox !== null)
         {
             const fieldName = this.field.get('name')?.toString() ?? "";        

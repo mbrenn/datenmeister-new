@@ -1,6 +1,7 @@
 ﻿import * as Settings from "../Settings.js"
 import * as ApiConnection from "../ApiConnection.js"
 import * as Mof from "../Mof.js";
+import * as _DatenMeister from '../models/DatenMeister.class.js';
 
 export interface ExecuteActionParams
 {
@@ -65,4 +66,16 @@ export async function executeAction(workspaceId: string, itemUri: string) {
         };
 
     return resultAsDmObject;
+}
+
+export async function refreshTypeIndex(waitForRefresh: boolean) {
+    const action = new Mof.DmObject(_DatenMeister._Actions.__RefreshTypeIndexAction_Uri);
+    action.set(_DatenMeister._Actions._RefreshTypeIndexAction.waitForRefresh, waitForRefresh);
+
+    const parameter: ExecuteActionParams =
+        {
+            parameter: action
+        };
+
+    await executeActionDirectly("Execute", parameter);
 }

@@ -1,14 +1,14 @@
-﻿import {IFormField} from "./Interfaces.js";
+﻿import {BaseField, IFormField} from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import {IFormConfiguration} from "../forms/IFormConfiguration.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
-import {injectNameByObject, injectNameByUri} from "../DomHelper.js";
+import {injectNameByUri} from "../DomHelper.js";
 import * as ClientItem from "../client/Items.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as DomHelper from "../DomHelper.js";
 import {ItemWithNameAndId} from "../ApiModels";
 
-export class Control {
+export class Control extends BaseField{
     configuration: IFormConfiguration;
     isReadOnly: boolean;
 
@@ -36,6 +36,7 @@ export class Control {
      * */
     
     constructor(field?: Mof.DmObject) {
+        super();
         this.field = field;
         this._list = $("<span></span>");
     }
@@ -224,6 +225,10 @@ export class Field extends Control implements IFormField {
     
     async callbackSetReference(selectedElement: ItemWithNameAndId) {
         this.element.set(this.fieldName, Mof.DmObject.createFromItemWithNameAndId(selectedElement));
+
+        if (this.callbackUpdateField !== undefined) {
+            this.callbackUpdateField();
+        }
     }
 
     async evaluateDom(dmElement: Mof.DmObject) : Promise<void> {        

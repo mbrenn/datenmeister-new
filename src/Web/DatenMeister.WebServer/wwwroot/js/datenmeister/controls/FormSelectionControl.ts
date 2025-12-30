@@ -65,7 +65,10 @@ export class FormSelectionControl {
         const currentForm = $(".dm-form-selection-control-current-span", result);
 
         if (this.currentFormUrl !== undefined) {
-            const _ = DomHelper.injectNameByUri(currentForm, this.currentFormUrl.workspace, this.currentFormUrl.uri);
+            const _ = DomHelper.injectNameByUri(
+                currentForm, 
+                this.currentFormUrl.workspace, 
+                this.currentFormUrl.uri);
         } else {
             currentForm.append($("<em>Auto-Generated</em>"));
         }
@@ -76,7 +79,8 @@ export class FormSelectionControl {
         this.selectionField.itemSelected.addListener(
             async selectedItem => {
                 if (selectedItem !== undefined) {
-                    const foundItem = await ClientItems.getObjectByUri(selectedItem.workspace, selectedItem.uri);
+                    const foundItem =
+                        await ClientItems.getObjectByUri(selectedItem.workspace, selectedItem.uri);
                     this.formSelected.invoke(
                         {
                             selectedForm: foundItem

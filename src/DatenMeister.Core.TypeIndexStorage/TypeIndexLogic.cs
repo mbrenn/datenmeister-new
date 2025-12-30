@@ -77,7 +77,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             TypeIndexStore.IncrementTriggers();
             TypeIndexStore.LastTriggerTime = DateTime.Now;
                 
-            // Check, if the index is currently in build up
+            // Check, if the index is currently in build up or a trigger was already requested but not executed
             if (!TypeIndexStore.IndexIsUpToDateEvent.WaitOne(0))
             {
                 Logger.Info("We received a trigger, but the index is already being built.");
@@ -90,6 +90,8 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             // First, mark that we are updating the index
             TypeIndexStore.IndexIsUpToDateEvent.Reset();
         }
+        
+        TypeIndexStore.LastTriggerTime = DateTime.Now;
         
         // We leave the lock here, because we are protected now and can request the updating. 
         // This is in case we are heaving the first run
@@ -117,8 +119,6 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         else
         {
             // In case we are not in the first run, we trigger the 5-second time period
-            TypeIndexStore.LastTriggerTime = DateTime.Now;
-
             var token = _cancellationTokenSource.Token;
             _ = Task.Run(async () =>
             {
@@ -136,7 +136,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                                 break;
                             }
 
-                            timeToWait = TypeIndexStore.IndexWaitTime - elapsed + TimeSpan.FromMilliseconds(100);
+                            timeToWait = TypeIndexStore.IndexWaitTime - elapsed + TimeSpan.FromMilliseconds(50);
                         }
 
                         Logger.Info($"Waiting for {timeToWait.TotalSeconds} seconds");

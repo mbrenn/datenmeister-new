@@ -53,13 +53,15 @@ export function includeTests() {
 
             let checkResult = await ClientItems.getObjectByUri(result.workspace, result.uri);
             chai.assert.isTrue(checkResult.get('test', Mof.ObjectType.String) === 'testing', 'String should be set');
+            chai.assert.isTrue(checkResult.isSet('test'), 'Should be set');
             
             dmResult.unset('test');
             await sync(dmResult);
 
             // Now the value should be undefined
             checkResult = await ClientItems.getObjectByUri(result.workspace, result.uri);
-            chai.assert.isTrue(checkResult.get('test', Mof.ObjectType.Default) === undefined, 'Should be undefined');
+            chai.assert.isFalse(checkResult.isSet('test'), 'Should be not set');
+            chai.assert.isTrue(checkResult.get('test') === undefined, 'Should be undefined');
 
         });
     });

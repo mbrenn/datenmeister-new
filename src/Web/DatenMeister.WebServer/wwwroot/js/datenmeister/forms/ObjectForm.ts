@@ -20,6 +20,7 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import {ItemLink} from "../ApiModels.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
+import {WorkspaceData} from "../Settings.js";
 
 export class ObjectFormHtmlElements
 {
@@ -357,7 +358,7 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
             this.statusTextControl.setListStatus("Create Form", true);
 
             // Creates the form selection
-            if (this.htmlElements.formSelectorContainer !== undefined
+            /*if (this.htmlElements.formSelectorContainer !== undefined
                 && this.htmlElements.formSelectorContainer !== null) {
                 this.statusTextControl.setListStatus("Create Form Selection", false);
                 
@@ -391,7 +392,7 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
                         };
                     } else if (originalUri !== undefined) {
                         formUrl = {
-                            workspace: originalWorkspace ?? "Management",
+                            workspace: originalWorkspace ?? WorkspaceData,
                             uri: originalUri
                         };
                     }
@@ -402,7 +403,7 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
                 await formControl.createControl(this.htmlElements.formSelectorContainer);
 
                 this.statusTextControl.setListStatus("Create Form Selection", true);
-            }
+            }*/
         });
     }
 }

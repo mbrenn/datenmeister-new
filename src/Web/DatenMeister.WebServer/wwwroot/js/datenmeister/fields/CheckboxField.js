@@ -1,15 +1,20 @@
 import { BaseField } from "./Interfaces.js";
-import { ObjectType } from "../Mof.js";
+import * as Mof from "../Mof.js";
 export class Field extends BaseField {
     async createDom(dmElement) {
         this._checkbox = $("<input type='checkbox'/>");
         const fieldName = this.field.get('name').toString();
-        if (dmElement.get(fieldName, ObjectType.Boolean)) {
+        if (dmElement.get(fieldName, Mof.ObjectType.Boolean)) {
             this._checkbox.prop('checked', true);
         }
         if (this.isReadOnly) {
             this._checkbox.prop('disabled', 'disabled');
         }
+        this._checkbox.on('change', () => {
+            if (this.callbackUpdateField !== undefined) {
+                this.callbackUpdateField();
+            }
+        });
         return this._checkbox;
     }
     async evaluateDom(dmElement) {

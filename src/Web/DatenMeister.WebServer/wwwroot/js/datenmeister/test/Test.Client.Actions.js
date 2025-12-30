@@ -1,7 +1,6 @@
 import * as ClientActions from "../client/Actions.js";
 import * as ClientExtent from "../client/Extents.js";
 import * as Mof from "../Mof.js";
-import { ObjectType } from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ClientWorkspace from "../client/Workspace.js";
 import * as ClientItems from "../client/Items.js";
@@ -30,7 +29,7 @@ export function includeTests() {
                 const result = await ClientActions.executeActionDirectly("Execute", { parameter: parameter });
                 chai.assert.isTrue(result.success === true);
                 chai.assert.isTrue(result.resultAsDmObject !== undefined);
-                chai.assert.isTrue(result.resultAsDmObject.get("returnText", ObjectType.String) === "Returned");
+                chai.assert.isTrue(result.resultAsDmObject.get("returnText", Mof.ObjectType.String) === "Returned");
             });
             it('No success Echo', async () => {
                 const parameter = new Mof.DmObject();
@@ -87,11 +86,11 @@ export function includeTests() {
                 chai.assert.isTrue(check.get('name', Mof.ObjectType.String) === 'Yes', "Copied item does not have the property");
                 // Check, that Parent 2 has one child
                 const checkList = await ClientItems.getObjectByUri("Test", parent2.itemId);
-                const checkedProperty = checkList.get(_UML._Packages._Package.packagedElement, ObjectType.Array);
+                const checkedProperty = checkList.get(_UML._Packages._Package.packagedElement, Mof.ObjectType.Array);
                 chai.assert.isTrue(checkedProperty.length === 1, "New List does not contain copied item");
                 // Check, that Parent 1 has one child
                 const checkList2 = await ClientItems.getObjectByUri("Test", parent1.itemId);
-                const checkedProperty2 = checkList2.get(_UML._Packages._Package.packagedElement, ObjectType.Array);
+                const checkedProperty2 = checkList2.get(_UML._Packages._Package.packagedElement, Mof.ObjectType.Array);
                 chai.assert.isTrue(checkedProperty2.length === 1, "Old List does not contain anymore");
             });
             it('Move item', async () => {
@@ -120,11 +119,11 @@ export function includeTests() {
                 chai.assert.isTrue(check.get('name', Mof.ObjectType.String) === 'Yes');
                 // Check, that Parent 2 has one child
                 const checkList = await ClientItems.getObjectByUri("Test", parent2.itemId);
-                const checkedProperty = checkList.get(_UML._Packages._Package.packagedElement, ObjectType.Array);
+                const checkedProperty = checkList.get(_UML._Packages._Package.packagedElement, Mof.ObjectType.Array);
                 chai.assert.isTrue(checkedProperty.length === 1);
                 // Check, that Parent 1 has no child
                 const checkList2 = await ClientItems.getObjectByUri("Test", parent1.itemId);
-                const checkedProperty2 = checkList2.get(_UML._Packages._Package.packagedElement, ObjectType.Array);
+                const checkedProperty2 = checkList2.get(_UML._Packages._Package.packagedElement, Mof.ObjectType.Array);
                 chai.assert.isTrue(checkedProperty2.length === 0, "Old List still contains the item");
             });
             after(async function () {

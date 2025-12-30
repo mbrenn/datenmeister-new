@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.Provider.InMemory;
+﻿using System.ComponentModel;
+using DatenMeister.Core.Provider.InMemory;
 using System.Text.Json;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
@@ -56,7 +57,7 @@ public class DirectJsonDeconverter
         _workspaceLogic = workspaceLogic;
         _scopeStorage = scopeStorage;
     }
-        
+
     /// <summary>
     /// Converts the given json value to a .Net value
     /// </summary>
@@ -66,10 +67,9 @@ public class DirectJsonDeconverter
     /// <returns>Converted value</returns>
     public object? ConvertJsonValue(object? value)
     {
-        object? propertyValue = null;
         if (value is JsonElement jsonElement)
         {
-            propertyValue = jsonElement.ValueKind switch
+            object? propertyValue = jsonElement.ValueKind switch
             {
                 JsonValueKind.String => jsonElement.GetString(),
                 JsonValueKind.Number => jsonElement.GetDouble(),
@@ -86,9 +86,11 @@ public class DirectJsonDeconverter
                 JsonValueKind.Array => jsonElement.EnumerateArray().Select(x => ConvertJsonValue(x)).ToList(),
                 _ => jsonElement.GetString()
             };
+
+            return propertyValue;
         }
 
-        return propertyValue ?? value;
+        return value;
     }
 
     /// <summary>
@@ -237,16 +239,32 @@ public class DirectJsonDeconverter
                 
             foreach (var pair in jsonObject.v)
             {
-                var value = ConvertJsonValue(pair.Value);
-                if(value is MofObjectShadow shadow)
+                var valueObject = (ConvertJsonValue(pair.Value) as IEnumerable<object>)?.ToArray();
+                if (valueObject == null || valueObject.Length != 2)
                 {
-                    shadow.Uri = "#" + prefixCounter + shadow.Uri.Replace("#", "");
-                    Shadows.Add(new ShadowInformation(
-                        shadow, 
-                        x => result.set(pair.Key, x)));
+                    throw new InvalidOperationException("Value is null or # of items is not two");
                 }
-
-                result.set(pair.Key, value);
+                
+                // We expect two elements for the array
+                // The first one defines whether the element is set, the second one the value itself
+                var isSet = DotNetHelper.AsBoolean(valueObject[0]);
+                if (isSet)
+                {
+                    var value = valueObject[1];
+                    if (value is MofObjectShadow shadow)
+                    {
+                        shadow.Uri = "#" + prefixCounter + shadow.Uri.Replace("#", "");
+                        Shadows.Add(new ShadowInformation(
+                            shadow,
+                            x => result.set(pair.Key, x)));
+                    }
+                    
+                    result.set(pair.Key, value);
+                }
+                else
+                {
+                    result.unset(pair.Key);
+                }
             }   
         }
 

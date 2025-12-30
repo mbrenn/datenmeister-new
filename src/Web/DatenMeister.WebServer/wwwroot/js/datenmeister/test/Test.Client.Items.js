@@ -1,8 +1,11 @@
 import * as ClientExtent from "../client/Extents.js";
+import * as ClientActions from "../client/Actions.js";
 import * as ClientWorkspace from "../client/Workspace.js";
 import * as ClientItems from "../client/Items.js";
-import { DmObject, ObjectType } from "../Mof.js";
+import * as Mof from "../Mof.js";
 import { EntentType } from "../ApiModels.js";
+import * as DatenMeister from "../models/DatenMeister.class.js";
+import { _CommonTypes } from "../models/DatenMeister.class.js";
 export function includeTests() {
     describe('Client', function () {
         describe('Items', function () {
@@ -14,6 +17,7 @@ export function includeTests() {
                     workspace: "Test",
                     skipIfExisting: true
                 });
+                await ClientActions.refreshTypeIndex(true);
             });
             it('Get Non-existing item', async function () {
                 const result = await ClientItems.getObjectByUri("Test", "Does_Not_Exist");
@@ -47,9 +51,44 @@ export function includeTests() {
                 chai.assert.isTrue(result.success, 'Item was not created');
                 await ClientItems.setProperty('Test', '#' + result.itemId, 'name', 'Brenn');
                 const property = await ClientItems.getProperty('Test', result.itemId, 'name');
-                chai.assert.isTrue(property === 'Brenn');
+                chai.assert.isTrue(property === 'Brenn', 'Name is not set as "Brenn"');
                 const result2 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
                 chai.assert.isTrue(result2.success, "Deletion of all root Elements did not work");
+            });
+            it('Get Default Properties', async function () {
+                const result = await ClientItems.createItemInExtent("Test", "dm:///unittest", {
+                    metaClass: DatenMeister._CommonTypes._ExtentManager.__ImportSettings_Uri
+                });
+                chai.assert.isTrue(result.success, 'Item was not created');
+                // Check, that nothing is set, since we set nothing
+                const item = await ClientItems.getObjectByUri("Test", result.itemUrl);
+                chai.assert.isFalse(item.isSet(_CommonTypes._ExtentManager._ImportSettings.extentUri));
+                chai.assert.isFalse(item.isSet(_CommonTypes._ExtentManager._ImportSettings.workspaceId));
+                chai.assert.isFalse(item.isSet(_CommonTypes._ExtentManager._ImportSettings.filePath));
+                // Check, that we receive the default property
+                const workspace = item.get(_CommonTypes._ExtentManager._ImportSettings.workspaceId, Mof.ObjectType.String);
+                chai.assert.equal(workspace, "Data");
+                // Sets the workspaceId to 'Data' and verify that the content is the same and that the item is regarded as being set
+                item.set(_CommonTypes._ExtentManager._ImportSettings.workspaceId, "Data");
+                chai.assert.isTrue(item.isSet(_CommonTypes._ExtentManager._ImportSettings.workspaceId));
+                chai.assert.equal(workspace, item.get(_CommonTypes._ExtentManager._ImportSettings.workspaceId));
+                // Ok, now set it also on the server and check that it is working correctly
+                const result2 = await ClientItems.setProperty('Test', result.itemId, _CommonTypes._ExtentManager._ImportSettings.workspaceId, "Data");
+                chai.assert.isTrue(result2.success, "Setting of workspaceId did not work");
+                // Get the item from the server and check setting
+                const item2 = await ClientItems.getObjectByUri("Test", result.itemUrl);
+                chai.assert.isTrue(item2.isSet(_CommonTypes._ExtentManager._ImportSettings.workspaceId));
+                chai.assert.equal("Data", item2.get(_CommonTypes._ExtentManager._ImportSettings.workspaceId));
+                // Now do the same setting with extentUri. Set it as 'dm:///testing' on server and retrieve the item
+                // confirm that the setting was done correctly
+                const result3 = await ClientItems.setProperty('Test', result.itemId, _CommonTypes._ExtentManager._ImportSettings.extentUri, "dm:///testing");
+                chai.assert.isTrue(result3.success, "Setting of extentUri did not work");
+                const item3 = await ClientItems.getObjectByUri("Test", result.itemUrl);
+                chai.assert.isTrue(item3.isSet(_CommonTypes._ExtentManager._ImportSettings.extentUri));
+                chai.assert.equal("dm:///testing", item3.get(_CommonTypes._ExtentManager._ImportSettings.extentUri));
+                // Delete the root elements
+                const result4 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
+                chai.assert.isTrue(result4.success, "Deletion of all root Elements did not work");
             });
             it('Get Root Elements', async function () {
                 const result = await ClientItems.createItemInExtent("Test", "dm:///unittest", {});
@@ -144,7 +183,7 @@ export function includeTests() {
                 chai.assert.isTrue(extentContainer4[3].ententType === EntentType.Workspace, "Test 22: First item should be Workspace");
             });
             it('Set and get multiple properties', async function () {
-                const element = new DmObject();
+                const element = new Mof.DmObject();
                 element.set('name', 'Brenn');
                 element.set('age', 40);
                 const result = await ClientItems.createItemInExtent("Test", "dm:///unittest", { properties: element });
@@ -152,7 +191,7 @@ export function includeTests() {
                 chai.assert.equal(property, 'Brenn', 'Name is not set');
                 property = await ClientItems.getProperty('Test', result.itemId, 'age');
                 chai.assert.equal(property.toString(), '40', 'Age is not set');
-                const element2 = new DmObject();
+                const element2 = new Mof.DmObject();
                 element2.set('prename', 'Martin');
                 element2.set('zip', 12345);
                 await ClientItems.setProperties('Test', result.itemId, element2);
@@ -192,7 +231,7 @@ export function includeTests() {
                 const child = await ClientItems.getProperty("Test", "dm:///unittest#" + result.itemId, "child");
                 const asDmObject = child[0];
                 chai.assert.isTrue(asDmObject !== undefined);
-                chai.assert.isTrue(asDmObject.get("state", ObjectType.String) === "Closed");
+                chai.assert.isTrue(asDmObject.get("state", Mof.ObjectType.String) === "Closed");
             });
             after(async function () {
                 await ClientExtent.deleteExtent({

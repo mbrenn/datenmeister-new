@@ -1,5 +1,5 @@
 ﻿import * as FormActions from "../FormActions.js"
-import {DmObject, DmObjectWithSync} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 import * as ActionClient from "../client/Actions.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
@@ -24,7 +24,7 @@ class WorkspaceExtentXmiCreateNavigateAction extends FormActions.ItemFormActionM
         this.skipSaving = true;
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
         const workspaceId = parameter?.get('workspaceId') ?? "";
 
@@ -41,7 +41,7 @@ class WorkspaceExtentLoadOrCreateNavigateAction extends FormActions.ItemFormActi
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         const workspaceId = parameter?.get('workspaceId') ?? "";
         document.location.href =
             Settings.baseUrl + "ItemAction/Workspace.Extent.LoadOrCreate?workspaceId=" + encodeURIComponent(workspaceId);
@@ -55,15 +55,15 @@ class WorkspaceExtentLoadOrCreateAction extends FormActions.ItemFormActionModule
         this.actionVerb = "Choose Extent Type";
     }
     
-    async loadForm(): Promise<DmObject> | undefined {
+    async loadForm(): Promise<Mof.DmObject> | undefined {
         return await FormClient.getForm("dm:///_internal/forms/internal#WorkspacesAndExtents.Extent.SelectType");
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
         let p = new URLSearchParams(window.location.search);
         const workspaceIdParameter = p?.get('workspaceId') ?? "";
-        const extentType = await ItemClient.getProperty("Data", element.uri, "extentType") as DmObject;
+        const extentType = await ItemClient.getProperty("Data", element.uri, "extentType") as Mof.DmObject;
 
         if (extentType === null || extentType === undefined) {
             alert('No Extent Type has been selected');
@@ -85,7 +85,7 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
         this.actionVerb = "Create/Load Extent";
     }
 
-    async loadObject(): Promise<DmObjectWithSync> | undefined {
+    async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
         let p = new URLSearchParams(window.location.search);
         const workspaceId= p.get("workspaceId");
         const metaClassUri = p.get("metaclass");
@@ -97,8 +97,8 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
         return Promise.resolve(result);
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        const extentCreationParameter = new DmObject();
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        const extentCreationParameter = new Mof.DmObject();
         extentCreationParameter.set('configuration', element);
         extentCreationParameter.setMetaClassByUri(
             _DatenMeister._Actions.__LoadExtentAction_Uri, 
@@ -127,7 +127,7 @@ class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBas
         this.actionVerb = "Create Xmi Extent";
     }
     
-    async loadObject(): Promise<DmObjectWithSync> | undefined {
+    async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
         let p = new URLSearchParams(window.location.search);
         
         const result = await MofSync.createTemporaryDmObject(_DatenMeister._ExtentLoaderConfigs.__XmiStorageLoaderConfig_Uri);
@@ -136,9 +136,9 @@ class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBas
         return Promise.resolve(result);
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
-        const extentCreationParameter = new DmObject();
+        const extentCreationParameter = new Mof.DmObject();
         extentCreationParameter.set('configuration', element);
         extentCreationParameter.setMetaClassByUri(
             _DatenMeister._Actions.__LoadExtentAction_Uri,'Types'

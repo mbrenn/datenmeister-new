@@ -1,5 +1,5 @@
 import { BaseField } from "./Interfaces.js";
-import { ObjectType } from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 export class Field extends BaseField {
     constructor() {
@@ -13,16 +13,16 @@ export class Field extends BaseField {
     }
     async createDom(dmElement) {
         // Ensure local availability of field information
-        this.name = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData._name_, ObjectType.String);
-        this.separator = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.separator, ObjectType.String);
+        this.name = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData._name_, Mof.ObjectType.String);
+        this.separator = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.separator, Mof.ObjectType.String);
         if (this.separator === "" || this.separator === undefined) {
             this.separator = ",";
         }
-        const containsFreeText = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.containsFreeText, ObjectType.Boolean);
-        const valuePairs = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.values, ObjectType.Array);
-        this.isFieldReadOnly = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.isReadOnly, ObjectType.Boolean);
+        const containsFreeText = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.containsFreeText, Mof.ObjectType.Boolean);
+        const valuePairs = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.values, Mof.ObjectType.Array);
+        this.isFieldReadOnly = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.isReadOnly, Mof.ObjectType.Boolean);
         // Gets the value and splits it
-        const currentValue = dmElement.get(this.name, ObjectType.String) ?? "";
+        const currentValue = dmElement.get(this.name, Mof.ObjectType.String) ?? "";
         const currentList = currentValue.split(this.separator);
         // Create the element       
         const result = $("<table></table>");
@@ -31,12 +31,17 @@ export class Field extends BaseField {
             if (!Object.prototype.hasOwnProperty.call(valuePairs, n))
                 continue;
             const valuePair = valuePairs[n];
-            const valueName = valuePair.get(_DatenMeister._Forms._ValuePair._name_, ObjectType.String);
-            const valueContent = valuePair.get(_DatenMeister._Forms._ValuePair.value, ObjectType.String);
+            const valueName = valuePair.get(_DatenMeister._Forms._ValuePair._name_, Mof.ObjectType.String);
+            const valueContent = valuePair.get(_DatenMeister._Forms._ValuePair.value, Mof.ObjectType.String);
             // Creates the checkbox
             const checkbox = $("<input type='checkbox' />");
             checkbox.attr('name', valueName);
             checkbox.attr('data-value', valueContent);
+            checkbox.on('change', () => {
+                if (this.callbackUpdateField !== undefined) {
+                    this.callbackUpdateField();
+                }
+            });
             if (this.isFieldReadOnly || this.isReadOnly) {
                 checkbox.attr('disabled', 'disabled');
             }

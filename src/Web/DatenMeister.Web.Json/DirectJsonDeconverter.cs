@@ -57,7 +57,7 @@ public class DirectJsonDeconverter
         _workspaceLogic = workspaceLogic;
         _scopeStorage = scopeStorage;
     }
-        
+
     /// <summary>
     /// Converts the given json value to a .Net value
     /// </summary>
@@ -67,10 +67,9 @@ public class DirectJsonDeconverter
     /// <returns>Converted value</returns>
     public object? ConvertJsonValue(object? value)
     {
-        object? propertyValue = null;
         if (value is JsonElement jsonElement)
         {
-            propertyValue = jsonElement.ValueKind switch
+            object? propertyValue = jsonElement.ValueKind switch
             {
                 JsonValueKind.String => jsonElement.GetString(),
                 JsonValueKind.Number => jsonElement.GetDouble(),
@@ -87,9 +86,11 @@ public class DirectJsonDeconverter
                 JsonValueKind.Array => jsonElement.EnumerateArray().Select(x => ConvertJsonValue(x)).ToList(),
                 _ => jsonElement.GetString()
             };
+
+            return propertyValue;
         }
 
-        return propertyValue ?? value;
+        return value;
     }
 
     /// <summary>

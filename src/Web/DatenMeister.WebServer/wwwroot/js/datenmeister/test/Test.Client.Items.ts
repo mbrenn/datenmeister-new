@@ -86,7 +86,7 @@ export function includeTests() {
 
                 await ClientItems.setProperty('Test', '#' + result.itemId, 'name', 'Brenn');
                 const property = await ClientItems.getProperty('Test', result.itemId, 'name');
-                chai.assert.isTrue(property === 'Brenn');
+                chai.assert.isTrue(property === 'Brenn', 'Name is not set as "Brenn"');
 
                 const result2 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
                 chai.assert.isTrue(result2.success, "Deletion of all root Elements did not work");

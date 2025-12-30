@@ -56,9 +56,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var values = createParams.Properties?.v;
         if (values != null)
         {
+            var jsonConverter = new DirectJsonDeconverter(workspaceLogic, scopeStorage);
             foreach (var (key, valueObject) in values)
             {
-                var valueAsArray = (valueObject as IEnumerable<object?>)?.ToArray();
+                var valueAsArray = (jsonConverter.ConvertJsonValue(valueObject) as IEnumerable<object?>)?.ToArray();
                 if (valueAsArray == null)
                 {
                     throw new InvalidOperationException("Value is not an array");
@@ -67,8 +68,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
                 var value = valueAsArray[1];
                 if (isSet)
                 {
-                    var propertyValue = new DirectJsonDeconverter(workspaceLogic, scopeStorage)
-                        .ConvertJsonValue(value);
+                    var propertyValue = jsonConverter.ConvertJsonValue(value);
 
                     if (propertyValue != null) item.set(key, propertyValue);
                 }

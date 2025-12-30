@@ -372,7 +372,10 @@ export async function getProperty(
         "?property=" +
         encodeURIComponent(property);
     const result = await ApiConnection.get<IGetPropertyResult>(url);
-    return Mof.convertJsonObjectToObjects(result.v);
+    
+    // Result.v is an array of two items. The first one whether it is set, 
+    // the second one the value itself. We just return the value. 
+    return Mof.convertJsonObjectToObjects(result.v[1]);
 }
 
 export async function setMetaclass(workspaceId: string, itemUrl: string, newMetaClass: string) {

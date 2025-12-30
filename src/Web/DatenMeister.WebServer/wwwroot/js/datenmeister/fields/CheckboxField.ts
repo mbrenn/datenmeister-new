@@ -18,6 +18,12 @@ export class Field extends BaseField implements IFormField {
             this._checkbox.prop('disabled', 'disabled');
         }
 
+        this._checkbox.on('change', () => {
+            if (this.callbackUpdateField !== undefined) {
+                this.callbackUpdateField();
+            }
+        });
+
         return this._checkbox;
     }
 

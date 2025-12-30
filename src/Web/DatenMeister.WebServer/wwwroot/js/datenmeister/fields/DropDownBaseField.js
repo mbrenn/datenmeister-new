@@ -67,6 +67,11 @@ export class DropDownBaseField extends BaseField {
                     if (value !== undefined) {
                         this._dropDown.val(value);
                     }
+                    this._dropDown.on('change', () => {
+                        if (this.callbackUpdateField !== undefined) {
+                            this.callbackUpdateField();
+                        }
+                    });
                     return this._dropDown;
                 }
                 else {
@@ -93,6 +98,11 @@ export class DropDownBaseField extends BaseField {
                 if (!anySelected) {
                     notSelected.attr('selected', 'selected');
                 }
+                this._dropDown.on('change', () => {
+                    if (this.callbackUpdateField !== undefined) {
+                        this.callbackUpdateField();
+                    }
+                });
                 return this._dropDown;
             }
             else {

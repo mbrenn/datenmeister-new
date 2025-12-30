@@ -37,6 +37,11 @@ export class Field extends BaseField {
             const checkbox = $("<input type='checkbox' />");
             checkbox.attr('name', valueName);
             checkbox.attr('data-value', valueContent);
+            checkbox.on('change', () => {
+                if (this.callbackUpdateField !== undefined) {
+                    this.callbackUpdateField();
+                }
+            });
             if (this.isFieldReadOnly || this.isReadOnly) {
                 checkbox.attr('disabled', 'disabled');
             }

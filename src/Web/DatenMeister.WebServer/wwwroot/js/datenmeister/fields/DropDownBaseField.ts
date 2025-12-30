@@ -103,6 +103,12 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
                         this._dropDown.val(value);
                     }
 
+                    this._dropDown.on('change', () => {
+                        if (this.callbackUpdateField !== undefined) {
+                            this.callbackUpdateField();
+                        }
+                    });
+
                     return this._dropDown;
                 } else {
                     return $("<span><em>No values given</em></span>");
@@ -133,6 +139,12 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
                 if (!anySelected) {
                     notSelected.attr('selected', 'selected');
                 }
+
+                this._dropDown.on('change', () => {
+                    if (this.callbackUpdateField !== undefined) {
+                        this.callbackUpdateField();
+                    }
+                });
 
                 return this._dropDown;
             }

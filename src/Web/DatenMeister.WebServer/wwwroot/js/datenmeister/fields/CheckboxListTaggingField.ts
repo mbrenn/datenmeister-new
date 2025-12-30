@@ -58,6 +58,12 @@ export class Field extends BaseField implements IFormField {
             checkbox.attr('name', valueName);
             checkbox.attr('data-value', valueContent);
 
+            checkbox.on('change', () => {
+                if (this.callbackUpdateField !== undefined) {
+                    this.callbackUpdateField();
+                }
+            });
+
             if (this.isFieldReadOnly || this.isReadOnly) {
                 checkbox.attr('disabled', 'disabled');
             }

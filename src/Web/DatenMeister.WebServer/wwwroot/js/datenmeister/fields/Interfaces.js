@@ -10,5 +10,13 @@ export class BaseField {
     showValue() {
         return true;
     }
+    /**
+     * This callback will be called in case of the content of the field is changed
+     * This allows creator of a field to explicitly react upon changes within the field
+     * Default implementation does nothing.
+     */
+    callbackUpdateField() {
+        return;
+    }
 }
 //# sourceMappingURL=Interfaces.js.map

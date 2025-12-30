@@ -10,6 +10,11 @@ export class Field extends BaseField {
         if (this.isReadOnly) {
             this._checkbox.prop('disabled', 'disabled');
         }
+        this._checkbox.on('change', () => {
+            if (this.callbackUpdateField !== undefined) {
+                this.callbackUpdateField();
+            }
+        });
         return this._checkbox;
     }
     async evaluateDom(dmElement) {

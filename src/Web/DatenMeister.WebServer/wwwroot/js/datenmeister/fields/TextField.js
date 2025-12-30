@@ -87,6 +87,11 @@ export class Field extends BaseField {
                 }
             }
             this._textBox.val(value);
+            this._textBox.on('input change', () => {
+                if (this.callbackUpdateField !== undefined) {
+                    this.callbackUpdateField();
+                }
+            });
             return this._textBox;
         }
     }

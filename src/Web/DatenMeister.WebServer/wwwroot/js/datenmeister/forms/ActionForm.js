@@ -1,4 +1,4 @@
-import { DmObjectWithSync, ObjectType } from "../Mof.js";
+import * as Mof from "../Mof.js";
 import { debugElementToDom } from "../DomHelper.js";
 import * as Forms from "./Forms.js";
 import * as ObjectForm from "./ObjectForm.js";
@@ -48,7 +48,7 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
             statusOverview.setListStatus("Execute Client-Action", false);
             // Checks, if we are having a client-actions responded back from the server
             const resultAsMof = result;
-            const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, ObjectType.Array);
+            const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, Mof.ObjectType.Array);
             if (clientActions !== undefined) {
                 for (let n in clientActions) {
                     // Try to find the module and execute the client action
@@ -69,7 +69,7 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
         statusOverview.setListStatus("Create Temporary Object", false);
         const temporaryElement = await ClientElements.createTemporaryElement(metaClass);
         statusOverview.setListStatus("Create Temporary Object", true);
-        element = DmObjectWithSync.createFromReference(temporaryElement.workspace, temporaryElement.uri);
+        element = Mof.DmObjectWithSync.createFromReference(temporaryElement.workspace, temporaryElement.uri);
         // Sets the metaclass and workspace id upon url, if not created by Modules
         let p = new URLSearchParams(window.location.search);
         const metaclass = p.get('metaclass');

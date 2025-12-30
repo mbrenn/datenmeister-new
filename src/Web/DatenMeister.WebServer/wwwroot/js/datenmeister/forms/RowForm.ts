@@ -1,14 +1,14 @@
 ﻿import * as InterfacesForms from "../forms/Interfaces.js";
 import * as InterfacesFields from "../fields/Interfaces.js";
 import * as Mof from "../Mof.js";
-import { createField } from "./FieldFactory.js";
+import {createField} from "./FieldFactory.js";
 import * as Navigation from "../Navigator.js"
 import * as TextField from "../fields/TextField.js"
 import {IFormConfiguration} from "./IFormConfiguration.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-import { SubmitMethod } from "./Forms.js";
+import {SubmitMethod} from "./Forms.js";
 import * as ClientItem from "../client/Items.js";
-    
+
 class FieldInForm
 {
     fieldElement: InterfacesFields.IFormField;
@@ -71,7 +71,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             "<tbody><tr>" +
             "<th>Name</th>" +
             "<th>Value</th>" +
-            "<th>Is Set</th>" +
+            "<th title='Indicates whether the value is set in the data object'>Set?</th>" +
             "</tr></tbody>");
         table.append(tableBody);
 
@@ -90,7 +90,9 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             const fieldMetaClassUri = field.metaClass?.uri ?? "Undefined metaclass";
             let fieldElement = null; // The instance if IFormField allowing to create the dom
             let htmlElement; // The dom that had been created...
-            const isFieldReadOnly = field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean);
+            const isFieldReadOnly = 
+                field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean)
+                || configuration.isReadOnly;
 
             // Creates the field to be shown 
             fieldElement = createField(
@@ -99,7 +101,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                     configuration: configuration,
                     field: field,
                     itemUrl: itemUri,
-                    isReadOnly: configuration.isReadOnly,
+                    isReadOnly: isFieldReadOnly,
                     form: this
                 });
 
@@ -144,12 +146,11 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 checkbox.prop("disabled", true);
             } else {
                 fieldElement.field = field;
-                fieldElement.isReadOnly = configuration.isReadOnly || isFieldReadOnly;
+                fieldElement.isReadOnly = isFieldReadOnly;
                 fieldElement.form = this;
                 fieldElement.itemUrl = itemUri;
 
-                htmlElement = fieldElement.createDom(this.element);
-                                
+                htmlElement = fieldElement.createDom(this.element);                                
                 
                 // Pushes the field to the internal field list, so the data can be retrieved afterwards
                 const fieldInForm = {
@@ -164,16 +165,24 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                     htmlElementInner.then(x => {
                         // And finally adds it            
                         $(".value", trInner).append(x);
-                        innerFieldInForm.checkbox.prop("disabled", false);
+                        innerFieldInForm.checkbox.prop("disabled", isFieldReadOnly);
 
                         const propertyName = innerFieldInForm.field.get(_DatenMeister._Forms._FieldData._name_, Mof.ObjectType.String);                        
-                        const showValue = innerFieldInForm.fieldElement.showValue === undefined || innerFieldInForm.fieldElement.showValue();
+                        const showValue = innerFieldInForm.fieldElement.showValue === undefined
+                            || innerFieldInForm.fieldElement.showValue();
 
                         if(propertyName === undefined || propertyName === null || propertyName === "" || !showValue) {
                             innerFieldInForm.checkbox.hide();
+                            innerFieldInForm.checkbox = null;
                         }
                         else {
-                            innerFieldInForm.checkbox.prop("checked", this.element.isSet(propertyName));
+                            const isSet = this.element.isSet(propertyName);
+                            innerFieldInForm.checkbox.prop("checked", isSet);
+                            if (isSet) {
+                                innerFieldInForm.checkbox.attr(
+                                    "title", 
+                                    "The checkbox is set because the value itself is set");
+                            }
                         }                        
                     });
                 })(tr, htmlElement, fieldInForm);
@@ -375,6 +384,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 if (!this.fieldElements.hasOwnProperty(m)) continue;
 
                 const fieldInForm = this.fieldElements[m];
+                let managed = false;
 
                 // Just take the fields which are not readonly
                 if (fieldInForm.field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
@@ -382,12 +392,15 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                     // Unsets the field in case the checkbox is not set
                     if(fieldInForm.checkbox !== null) {
                         if(fieldInForm.checkbox.prop("checked") === false) {
-                            this.element.unset(fieldInForm.field.get(_DatenMeister._Forms._FieldData.name) as string);
+                            this.element.unset(fieldInForm.field.get(_DatenMeister._Forms._FieldData._name_, Mof.ObjectType.String));
+                            managed = true;
                         }
                     }                    
                     
-                    // Comment out to store the values only in the saveElement
-                    await fieldInForm.fieldElement.evaluateDom(this.element);
+                    if(!managed) {
+                        // Evaluate the field element to allow the element storing the properties.
+                        await fieldInForm.fieldElement.evaluateDom(this.element);
+                    }
                 }
             }
 

@@ -1,5 +1,5 @@
 import { BaseField } from "./Interfaces.js";
-import { DmObject, ObjectType } from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as ClientItems from "../client/Items.js";
 export var FieldType;
 (function (FieldType) {
@@ -31,7 +31,7 @@ export class DropDownBaseField extends BaseField {
                 return result;
             }
             else if (this.fieldType === FieldType.References) {
-                let value = dmElement.get(fieldName, ObjectType.Object);
+                let value = dmElement.get(fieldName, Mof.ObjectType.Object);
                 // Checks, if there is a value set at all? 
                 if (value === undefined) {
                     return $("<em>Not set</em>");
@@ -74,7 +74,7 @@ export class DropDownBaseField extends BaseField {
                 }
             }
             else if (this.fieldType === FieldType.References) {
-                let value = dmElement.get(fieldName, ObjectType.Object);
+                let value = dmElement.get(fieldName, Mof.ObjectType.Object);
                 this._dropDown = $("<select></select>");
                 let anySelected = false;
                 const notSelected = $("<option value=''>--- No selection ---</option>");
@@ -114,7 +114,7 @@ export class DropDownBaseField extends BaseField {
             else {
                 const field = this._loadedFields.find(x => x.key === fieldValue);
                 if (field !== undefined) {
-                    dmElement.set(fieldName, DmObject.createFromReference(field.workspace ?? "", field.itemUrl ?? ""));
+                    dmElement.set(fieldName, Mof.DmObject.createFromReference(field.workspace ?? "", field.itemUrl ?? ""));
                 }
             }
         }

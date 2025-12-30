@@ -1,5 +1,4 @@
 import * as Mof from "../Mof.js";
-import { ObjectType } from "../Mof.js";
 import { BaseField } from "./Interfaces.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 var _TextFieldData = _DatenMeister._Forms._TextFieldData;
@@ -9,7 +8,7 @@ export class Field extends BaseField {
     async createDom(dmElement) {
         const fieldName = this.field.get('name')?.toString() ?? "";
         /* Returns a list element in case an array is given */
-        let value = dmElement.get(fieldName, ObjectType.String) ?? "";
+        let value = dmElement.get(fieldName, Mof.ObjectType.String) ?? "";
         const originalValue = value;
         // If we are in a table view, then reduce the length of the text to 100 
         // characters. 
@@ -21,7 +20,7 @@ export class Field extends BaseField {
             });
         }
         else {
-            const shortenTextLength = this.field.get(_DatenMeister._Forms._TextFieldData.shortenTextLength, ObjectType.Number);
+            const shortenTextLength = this.field.get(_DatenMeister._Forms._TextFieldData.shortenTextLength, Mof.ObjectType.Number);
             if (shortenTextLength !== undefined && shortenTextLength > 0) {
                 value = truncateText(value, { useWordBoundary: true, maxLength: shortenTextLength });
             }
@@ -43,7 +42,7 @@ export class Field extends BaseField {
         /* Otherwise just create the correct field type. */
         if (this.isReadOnly) {
             const divContainer = $("<div class='dm-textfield-container'></div>");
-            if (this.field.get(_DatenMeister._Forms._TextFieldData.supportClipboardCopy, ObjectType.Boolean)) {
+            if (this.field.get(_DatenMeister._Forms._TextFieldData.supportClipboardCopy, Mof.ObjectType.Boolean)) {
                 const button = $("<button class='btn btn-secondary'>Copy to Clipboard</button>");
                 button.on('click', () => {
                     navigator.clipboard.writeText(originalValue);
@@ -66,8 +65,8 @@ export class Field extends BaseField {
             return divContainer;
         }
         else {
-            const lineHeight = this.field.get(_TextFieldData.lineHeight, ObjectType.Number);
-            const width = this.field.get(_TextFieldData.width, ObjectType.Number);
+            const lineHeight = this.field.get(_TextFieldData.lineHeight, Mof.ObjectType.Number);
+            const width = this.field.get(_TextFieldData.width, Mof.ObjectType.Number);
             if (lineHeight === undefined || Number.isNaN(lineHeight) || lineHeight <= 1) {
                 this._textBox = $("<input class='dm-textfield' />");
                 if (width !== undefined && !Number.isNaN(width) && width > 0) {

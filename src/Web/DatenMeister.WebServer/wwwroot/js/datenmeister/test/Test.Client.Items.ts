@@ -2,7 +2,7 @@
 import * as ClientActions from "../client/Actions.js"
 import * as ClientWorkspace from "../client/Workspace.js"
 import * as ClientItems from "../client/Items.js"
-import {DmObject, ObjectType} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import {EntentType} from "../ApiModels.js";
 import * as DatenMeister from "../models/DatenMeister.class.js"
 import {_CommonTypes} from "../models/DatenMeister.class.js"
@@ -111,7 +111,7 @@ export function includeTests() {
                 chai.assert.isFalse(item.isSet(_CommonTypes._ExtentManager._ImportSettings.filePath));
                 
                 // Check, that we receive the default property
-                const workspace = item.get(_CommonTypes._ExtentManager._ImportSettings.workspaceId, ObjectType.String);
+                const workspace = item.get(_CommonTypes._ExtentManager._ImportSettings.workspaceId, Mof.ObjectType.String);
                 chai.assert.equal(workspace, "Data");
                 
                 // Sets the workspaceId to 'Data' and verify that the content is the same and that the item is regarded as being set
@@ -338,7 +338,7 @@ export function includeTests() {
 
             it('Set and get multiple properties', async function () {
 
-                const element = new DmObject();
+                const element = new Mof.DmObject();
                 element.set('name', 'Brenn');
                 element.set('age', 40);
                 const result = await ClientItems.createItemInExtent(
@@ -352,7 +352,7 @@ export function includeTests() {
                 property = await ClientItems.getProperty('Test', result.itemId, 'age');
                 chai.assert.equal(property.toString(), '40', 'Age is not set');
 
-                const element2 = new DmObject();
+                const element2 = new Mof.DmObject();
                 element2.set('prename', 'Martin');
                 element2.set('zip', 12345);
 
@@ -404,7 +404,7 @@ export function includeTests() {
 
                 reference = await ClientItems.getProperty("Test", result.itemId, "reference");
                 chai.assert.isTrue(reference !== undefined, "Item is still undefined");
-                chai.assert.isTrue((reference as DmObject).get("name") === "item2", "Name is not correctly set");                
+                chai.assert.isTrue((reference as Mof.DmObject).get("name") === "item2", "Name is not correctly set");                
             });
             
             it ( 'Import Xmi', async () =>{
@@ -428,9 +428,9 @@ export function includeTests() {
                     "child"
                 );
                 
-                const asDmObject = child[0] as DmObject;
+                const asDmObject = child[0] as Mof.DmObject;
                 chai.assert.isTrue(asDmObject !== undefined);
-                chai.assert.isTrue(asDmObject.get("state", ObjectType.String) === "Closed");
+                chai.assert.isTrue(asDmObject.get("state", Mof.ObjectType.String) === "Closed");
             });
 
             after(async function () {

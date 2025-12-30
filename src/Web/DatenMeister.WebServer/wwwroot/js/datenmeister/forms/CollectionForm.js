@@ -6,7 +6,6 @@ import { debugElementToDom } from "../DomHelper.js";
 import { ViewModeSelectionControl } from "../controls/ViewModeSelectionControl.js";
 import * as IForm from "./Interfaces.js";
 import * as Mof from "../Mof.js";
-import { DmObject, ObjectType } from "../Mof.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Navigator from "../Navigator.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
@@ -246,7 +245,7 @@ export class CollectionFormCreator {
                 if (field.metaClass.uri === _DatenMeister._Forms.__ActionFieldData_Uri) {
                     const actionField = new ActionField.Field();
                     actionField.field = field;
-                    actionFields.append(await actionField.createDom(DmObject.createFromReference(this.workspace, this.extentUri)));
+                    actionFields.append(await actionField.createDom(Mof.DmObject.createFromReference(this.workspace, this.extentUri)));
                 }
                 else {
                     actionFields.append($("<div>Unsupported Field Type: " + field.metaClass.uri + "</div>"));
@@ -268,7 +267,7 @@ export class CollectionFormCreator {
             // This function must be indirectly created since it works in the enumeration value
             const tabCreationFunction = async function (tab, form) {
                 const parameter = {};
-                const viewNodeUrl = tab.get(_TableForm.viewNode, ObjectType.Single);
+                const viewNodeUrl = tab.get(_TableForm.viewNode, Mof.ObjectType.Single);
                 if (viewNodeUrl !== undefined) {
                     parameter.viewNode = viewNodeUrl.uri;
                 }

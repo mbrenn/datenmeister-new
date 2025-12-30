@@ -1,5 +1,5 @@
 ﻿import { BaseField, IFormField } from "./Interfaces.js";
-import {DmObject} from "../Mof.js";
+import * as Mof from "../Mof.js";
 
 export class Field extends BaseField implements IFormField {
     
@@ -11,12 +11,12 @@ export class Field extends BaseField implements IFormField {
         this.unknownFieldUri = unknownFieldUri;
     }
 
-    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
+    async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
         const result = $("<em></em>");
         result.text(this.unknownFieldUri ?? "unknown");
         return result;
     }
 
-    async evaluateDom(dmElement: DmObject) : Promise<void> {
+    async evaluateDom(dmElement: Mof.DmObject) : Promise<void> {
     }
 }

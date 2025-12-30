@@ -3,7 +3,7 @@
 // The user can select a view mode and this will be applied throughout the session
 // When the user changes the viewmode, it will be kept during the session
 
-import {DmObject, ObjectType} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as FormsClient from "../client/Forms.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 
@@ -52,7 +52,7 @@ export function clearCurrentViewMode() {
 /**
  *  Loads the viewModes
  */
-export async function getViewModesFromServer() : Promise<DmObject[]>
+export async function getViewModesFromServer() : Promise<Mof.DmObject[]>
 {
     const serverResult = await FormsClient.getViewModes();
     return serverResult.viewModes;
@@ -62,5 +62,5 @@ export async function getDefaultViewModeIfNotSet(workspaceId: string, extentUri:
     if (isCurrentViewModeSet()) return getCurrentViewMode();
     
     const viewMode = await FormsClient.getDefaultViewMode(workspaceId, extentUri);
-    return viewMode.viewMode.get(_DatenMeister._Forms._ViewMode._name_, ObjectType.String);
+    return viewMode.viewMode.get(_DatenMeister._Forms._ViewMode._name_, Mof.ObjectType.String);
 }

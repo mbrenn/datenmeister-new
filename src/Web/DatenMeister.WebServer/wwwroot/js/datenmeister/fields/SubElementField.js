@@ -1,5 +1,5 @@
 import * as MofResolver from "../MofResolver.js";
-import { DmObject, ObjectType } from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as FieldFactory from "../forms/FieldFactory.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as ClientItems from "../client/Items.js";
@@ -55,7 +55,7 @@ export class Control {
             let fields = this.getFieldDefinitions();
             let fieldsData = new Array();
             if (fields === undefined) {
-                const nameField = new DmObject();
+                const nameField = new Mof.DmObject();
                 nameField.setMetaClassByUri(_DatenMeister._Forms.__TextFieldData_Uri, 'Types');
                 nameField.set("name", "name");
                 nameField.set("title", "Name");
@@ -190,14 +190,14 @@ export class Control {
                     // There are two options to reference a metaclass in DefaultTypeForNewElements
                     if (additionalType.metaClass.uri === _DatenMeister._Forms.__DefaultTypeForNewElement_Uri) {
                         // One is by using an instance of DefaultTypeForNewElement
-                        name = additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement._name_, ObjectType.String);
-                        const metaClass = await MofResolver.resolve(additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, ObjectType.Object));
+                        name = additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement._name_, Mof.ObjectType.String);
+                        const metaClass = await MofResolver.resolve(additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, Mof.ObjectType.Object));
                         metaClassUri = metaClass.uri;
                         metaClassWorkspace = metaClass.workspace;
                     }
                     else {
                         // The other one is to directly reference
-                        name = additionalType.get(_UML._CommonStructure._NamedElement._name_, ObjectType.String);
+                        name = additionalType.get(_UML._CommonStructure._NamedElement._name_, Mof.ObjectType.String);
                         metaClassUri = additionalType.uri;
                         metaClassWorkspace = additionalType.workspace;
                     }
@@ -237,12 +237,12 @@ export class Field extends Control {
         ClientItems.getProperty(this.form.workspace, url, this.propertyName).then(x => tthis.createDomByFieldValue(x));
     }
     getFieldDefinitions() {
-        return this.field.get("form", ObjectType.Single)?.get("field", ObjectType.Array);
+        return this.field.get("form", Mof.ObjectType.Single)?.get("field", Mof.ObjectType.Array);
     }
     async createDom(dmElement) {
-        this.propertyName = this.field.get(_DatenMeister._Forms._SubElementFieldData._name_, ObjectType.String);
-        this.itemActionName = this.field.get(_DatenMeister._Forms._SubElementFieldData.actionName, ObjectType.String);
-        this.additionalTypes = this.field.get(_DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements, ObjectType.Array);
+        this.propertyName = this.field.get(_DatenMeister._Forms._SubElementFieldData._name_, Mof.ObjectType.String);
+        this.itemActionName = this.field.get(_DatenMeister._Forms._SubElementFieldData.actionName, Mof.ObjectType.String);
+        this.additionalTypes = this.field.get(_DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements, Mof.ObjectType.Array);
         if (this.configuration.isNewItem) {
             return $("<em>Element needs to be saved first</em>");
         }

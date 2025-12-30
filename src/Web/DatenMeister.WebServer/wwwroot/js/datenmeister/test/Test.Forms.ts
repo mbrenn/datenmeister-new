@@ -2,7 +2,7 @@
 import * as ClientWorkspace from "../client/Workspace.js";
 import * as ClientItems from "../client/Items.js";
 import * as ClientForms from "../client/Forms.js";
-import {DmObject, ObjectType} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import {FormType} from "../forms/Interfaces.js";
 
@@ -55,7 +55,7 @@ export function includeTests() {
             // Check, if any of the field has a name 
             let found = false;
             for (let n in fields) {
-                const field = fields[n] as DmObject;
+                const field = fields[n] as Mof.DmObject;
                 if (field.get('name') === 'name') {
                     found = true;
                 }
@@ -76,9 +76,9 @@ export function includeTests() {
                 FormType.Collection);
             chai.assert.isTrue(formAsCollection.metaClass.name === "CollectionForm", 'Not a collection Form');
 
-            const tabs = formAsCollection.get(_DatenMeister._Forms._CollectionForm.tab, ObjectType.Array);
+            const tabs = formAsCollection.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array);
             chai.assert.isTrue(tabs.length === 1, '# of tabs of CollectionForm is not 1');
-            chai.assert.isTrue((tabs[0] as DmObject).metaClass.name === "RowForm", 'Tab of CollectionForm is not a RowForm');
+            chai.assert.isTrue((tabs[0] as Mof.DmObject).metaClass.name === "RowForm", 'Tab of CollectionForm is not a RowForm');
 
             // Test that retrieval as Object Form is working
             const formAsObject = await ClientForms.getForm(
@@ -86,9 +86,9 @@ export function includeTests() {
                 FormType.Object);
             chai.assert.isTrue(formAsObject.metaClass.name === "ObjectForm", 'Not an Object Form');
 
-            const tabsObject = formAsObject.get(_DatenMeister._Forms._CollectionForm.tab, ObjectType.Array);
+            const tabsObject = formAsObject.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array);
             chai.assert.isTrue(tabsObject.length === 1, '# of tabs of ObjectForm is not 1');
-            chai.assert.isTrue((tabsObject[0] as DmObject).metaClass.name === "RowForm", 'Tab of ObjectForm is not a RowForm');
+            chai.assert.isTrue((tabsObject[0] as Mof.DmObject).metaClass.name === "RowForm", 'Tab of ObjectForm is not a RowForm');
         });
 
         it('Load Default Form for Detail', async () => {
@@ -108,7 +108,7 @@ export function includeTests() {
             // Check, if any of the field has a name 
             let found = false;
             for (let n in fields) {
-                const field = fields[n] as DmObject;
+                const field = fields[n] as Mof.DmObject;
                 if (field.get('name') === 'name') {
                     found = true;
                 }
@@ -118,7 +118,7 @@ export function includeTests() {
             // Check, if we have a metaclass 
             found = false;
             for (let n in fields) {
-                const field = fields[n] as DmObject;
+                const field = fields[n] as Mof.DmObject;
                 if (field.metaClass.uri === 'dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData') {
                     found = true;
                 }

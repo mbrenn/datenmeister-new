@@ -11,7 +11,6 @@ import {debugElementToDom} from "../DomHelper.js";
 import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl.js";
 import * as IForm from "./Interfaces.js";
 import * as Mof from "../Mof.js";
-import {DmObject, ObjectType} from "../Mof.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Navigator from "../Navigator.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
@@ -390,7 +389,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                     const actionField = new ActionField.Field();
                     actionField.field = field;
                     actionFields.append(await actionField.createDom(
-                        DmObject.createFromReference(
+                        Mof.DmObject.createFromReference(
                             this.workspace,
                             this.extentUri
                         )
@@ -425,9 +424,9 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
 
             // The function which is capable to create the content of the tab
             // This function must be indirectly created since it works in the enumeration value
-            const tabCreationFunction = async function (tab: DmObject, form: JQuery) {
+            const tabCreationFunction = async function (tab: Mof.DmObject, form: JQuery) {
                 const parameter = {} as ClientItems.IGetRootElementsParameter;
-                const viewNodeUrl = tab.get(_TableForm.viewNode, ObjectType.Single) as DmObject;
+                const viewNodeUrl = tab.get(_TableForm.viewNode, Mof.ObjectType.Single) as Mof.DmObject;
                 if (viewNodeUrl !== undefined) {
                     parameter.viewNode = viewNodeUrl.uri;
                 }
@@ -443,7 +442,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                         });
                     return {
                         message: queryResult.result.length >= 101 ? "Capped to 100 elements" : "",
-                        elements: queryResult.result.slice(0, 100) as Array<DmObject>
+                        elements: queryResult.result.slice(0, 100) as Array<Mof.DmObject>
                     }
                 };
 

@@ -1,5 +1,5 @@
 import { BaseField, IFormField } from "./Interfaces.js";
-import { DmObject, ObjectType } from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as ClientItems from "../client/Items.js";
 
 /**
@@ -30,14 +30,14 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
     /**
      * Stores the element to which the DOM needs to be created
      */
-    _element: DmObject | undefined;
+    _element: Mof.DmObject | undefined;
 
     private counter: number = 0;
 
     private _loadedFields: DropDownOptionField[] = [];
 
 
-    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
+    async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
 
         const fieldName = this.field.get('name')?.toString() ?? "";
 
@@ -61,7 +61,7 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
             }
             else if (this.fieldType === FieldType.References)
             {
-                let value = dmElement.get(fieldName, ObjectType.Object) as DmObject;
+                let value = dmElement.get(fieldName, Mof.ObjectType.Object) as Mof.DmObject;
 
                 // Checks, if there is a value set at all? 
                 if (value === undefined) {
@@ -109,7 +109,7 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
                 }
             } else if (this.fieldType === FieldType.References) {
 
-                let value = dmElement.get(fieldName, ObjectType.Object) as DmObject;
+                let value = dmElement.get(fieldName, Mof.ObjectType.Object) as Mof.DmObject;
 
                 this._dropDown = $("<select></select>");
                 let anySelected = false;
@@ -142,7 +142,7 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
         }
     }
 
-    async evaluateDom(dmElement: DmObject): Promise<void> {
+    async evaluateDom(dmElement: Mof.DmObject): Promise<void> {
         if (this.fieldType === FieldType.Strings) {
             const fieldName = this.field.get('name').toString();
             dmElement.set(fieldName, this._dropDown.val());
@@ -156,7 +156,7 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
             else {
                 const field = this._loadedFields.find(x => x.key === fieldValue);
                 if (field !== undefined) {
-                    dmElement.set(fieldName, DmObject.createFromReference(field.workspace ?? "", field.itemUrl ?? ""));
+                    dmElement.set(fieldName, Mof.DmObject.createFromReference(field.workspace ?? "", field.itemUrl ?? ""));
                 }
             }
         }        

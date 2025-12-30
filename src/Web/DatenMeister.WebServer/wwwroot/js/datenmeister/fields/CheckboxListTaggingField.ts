@@ -1,5 +1,5 @@
 ﻿import {BaseField, IFormField} from "./Interfaces.js";
-import {DmObject, ObjectType} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 
 export class Field extends BaseField implements IFormField {
@@ -23,22 +23,22 @@ export class Field extends BaseField implements IFormField {
         super();
     }
 
-    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
+    async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
         // Ensure local availability of field information
-        this.name = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData._name_, ObjectType.String);
-        this.separator = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.separator, ObjectType.String);
+        this.name = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData._name_, Mof.ObjectType.String);
+        this.separator = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.separator, Mof.ObjectType.String);
 
         if (this.separator === "" || this.separator === undefined) {
             this.separator = ",";
         }
 
-        const containsFreeText = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.containsFreeText, ObjectType.Boolean);
+        const containsFreeText = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.containsFreeText, Mof.ObjectType.Boolean);
 
-        const valuePairs = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.values, ObjectType.Array);
-        this.isFieldReadOnly = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.isReadOnly, ObjectType.Boolean);
+        const valuePairs = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.values, Mof.ObjectType.Array);
+        this.isFieldReadOnly = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.isReadOnly, Mof.ObjectType.Boolean);
 
         // Gets the value and splits it
-        const currentValue = dmElement.get(this.name, ObjectType.String) ?? "";
+        const currentValue = dmElement.get(this.name, Mof.ObjectType.String) ?? "";
         const currentList = currentValue.split(this.separator);
 
         // Create the element       
@@ -49,9 +49,9 @@ export class Field extends BaseField implements IFormField {
             if (!Object.prototype.hasOwnProperty.call(valuePairs, n))
                 continue;
 
-            const valuePair = valuePairs[n] as DmObject;
-            const valueName = valuePair.get(_DatenMeister._Forms._ValuePair._name_, ObjectType.String);
-            const valueContent = valuePair.get(_DatenMeister._Forms._ValuePair.value, ObjectType.String);
+            const valuePair = valuePairs[n] as Mof.DmObject;
+            const valueName = valuePair.get(_DatenMeister._Forms._ValuePair._name_, Mof.ObjectType.String);
+            const valueContent = valuePair.get(_DatenMeister._Forms._ValuePair.value, Mof.ObjectType.String);
 
             // Creates the checkbox
             const checkbox = $("<input type='checkbox' />");
@@ -117,7 +117,7 @@ export class Field extends BaseField implements IFormField {
      * Evaluates the user input and checks whether the data can be correctly set
      * @param dmElement Element to which the data shall be added
      */
-    async evaluateDom(dmElement: DmObject) : Promise<void> {
+    async evaluateDom(dmElement: Mof.DmObject) : Promise<void> {
         if (this.isReadOnly || this.isFieldReadOnly) return;
 
         let result = "";

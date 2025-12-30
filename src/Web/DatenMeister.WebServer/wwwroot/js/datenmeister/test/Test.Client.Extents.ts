@@ -1,7 +1,7 @@
 ﻿import * as ClientExtent from "../client/Extents.js"
 import * as ClientItem from "../client/Items.js"
 import * as ClientWorkspace from "../client/Workspace.js"
-import {DmObject} from "../Mof.js";
+import * as Mof from "../Mof.js";
 
 export function includeTests() {
     describe('Client', function () {
@@ -99,7 +99,7 @@ export function includeTests() {
 
                     chai.assert.isTrue(result.success, "Creation was not successful");
 
-                    const value = new DmObject();
+                    const value = new Mof.DmObject();
                     value.set('name', 'Testname');
                     await ClientExtent.setProperties("Test", "dm:///newexisting", value);
 

@@ -2,11 +2,11 @@ import {injectNameByUri} from "../DomHelper.js";
 import {BaseField, IFormField} from "./Interfaces.js";
 import {SelectItemControl} from "../controls/SelectItemControl.js";
 import {setMetaclass} from "../client/Items.js";
-import {DmObject} from "../Mof.js";
+import * as Mof from "../Mof.js";
 
 export class Field extends BaseField implements IFormField {
 
-    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
+    async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
         const tthis = this;
 
         const divContainer = $("<div />");
@@ -58,6 +58,6 @@ export class Field extends BaseField implements IFormField {
         return divContainer;
     }
 
-    async evaluateDom(dmElement: DmObject) : Promise<void> {
+    async evaluateDom(dmElement: Mof.DmObject) : Promise<void> {
     }
 }

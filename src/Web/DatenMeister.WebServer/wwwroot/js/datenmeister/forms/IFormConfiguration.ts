@@ -1,4 +1,4 @@
-﻿import {DmObject, DmObjectWithSync} from "../Mof.js";
+﻿import * as Mof from "../Mof.js";
 import { SubmitMethod } from "./Forms.js";
 
 export interface IFormConfiguration {
@@ -7,13 +7,13 @@ export interface IFormConfiguration {
     isNewItem?: boolean;
     submitName?: string;
     showCancelButton?: boolean;
-    formElement?: DmObject;
+    formElement?: Mof.DmObject;
 
     // Form Uri to be set, if the caller wants to have an explicit form
     formUri?: string;
     
     onCancel?: () => void;
-    onSubmit?: (element: DmObjectWithSync, method: SubmitMethod) => void;
+    onSubmit?: (element: Mof.DmObjectWithSync, method: SubmitMethod) => void;
 
     refreshForm?: () => Promise<void>;
 

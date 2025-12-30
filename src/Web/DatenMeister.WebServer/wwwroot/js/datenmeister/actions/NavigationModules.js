@@ -1,5 +1,5 @@
 import * as FormActions from "../FormActions.js";
-import { ObjectType } from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as Navigation from "../Navigator.js";
 export function loadModules() {
@@ -14,7 +14,7 @@ class ChangeForm extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     async execute(form, element, parameter, submitMethod) {
-        const formUrl = parameter.get("formUrl", ObjectType.String);
+        const formUrl = parameter.get("formUrl", Mof.ObjectType.String);
         var asFormPage = form;
         asFormPage.pageNavigation.switchFormUrl(formUrl);
     }
@@ -33,9 +33,9 @@ class CreateAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     async execute(form, element, parameter, submitMethod) {
-        const actionType = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.actionName, ObjectType.String);
-        const formUrl = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.formUrl, ObjectType.String);
-        const metaClassUrl = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.metaClassUrl, ObjectType.String);
+        const actionType = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.actionName, Mof.ObjectType.String);
+        const formUrl = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.formUrl, Mof.ObjectType.String);
+        const metaClassUrl = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.metaClassUrl, Mof.ObjectType.String);
         Navigation.navigateToAction(actionType, formUrl, { workspace: element.workspace, itemUri: element.uri, metaClass: metaClassUrl });
     }
 }

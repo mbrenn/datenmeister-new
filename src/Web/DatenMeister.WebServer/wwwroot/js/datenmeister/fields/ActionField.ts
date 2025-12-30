@@ -1,7 +1,7 @@
 
 import * as FormActions from "../FormActions.js";
 import {BaseField, IFormField} from "./Interfaces.js";
-import {DmObject, DmObjectWithSync, ObjectType} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as ClientItems from "../client/Items.js";
 import * as MofSync from "../MofSync.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
@@ -12,14 +12,14 @@ export class Field extends BaseField implements IFormField {
 
     private inConfirmation: boolean;
 
-    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
+    async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
 
         const tthis = this;
-        const title = this.field.get(_DatenMeister._Forms._ActionFieldData.title, ObjectType.String);
-        const action = this.field.get(_DatenMeister._Forms._ActionFieldData.actionName, ObjectType.String);
+        const title = this.field.get(_DatenMeister._Forms._ActionFieldData.title, Mof.ObjectType.String);
+        const action = this.field.get(_DatenMeister._Forms._ActionFieldData.actionName, Mof.ObjectType.String);
 
-        const parameter = this.field.get(_DatenMeister._Forms._ActionFieldData.parameter, ObjectType.Single);
-        const buttonText = this.field.get(_DatenMeister._Forms._ActionFieldData.buttonText, ObjectType.String);
+        const parameter = this.field.get(_DatenMeister._Forms._ActionFieldData.parameter, Mof.ObjectType.Single);
+        const buttonText = this.field.get(_DatenMeister._Forms._ActionFieldData.buttonText, Mof.ObjectType.String);
 
 
         const module = FormActions.getModule(action);
@@ -39,7 +39,7 @@ export class Field extends BaseField implements IFormField {
                         await tthis.form.storeFormValuesIntoDom(true);
                     }
 
-                    const mofWithSync = dmElement as DmObjectWithSync;
+                    const mofWithSync = dmElement as Mof.DmObjectWithSync;
                     if (module?.skipSaving !== true && mofWithSync.propertiesSet !== undefined) {
                         // We need to set the properties of the item, so the action handler can directly work on the item
                         await MofSync.sync(mofWithSync);
@@ -57,7 +57,7 @@ export class Field extends BaseField implements IFormField {
         return this.button;
     }
 
-    async evaluateDom(dmElement: DmObject) : Promise<void> {
+    async evaluateDom(dmElement: Mof.DmObject) : Promise<void> {
 
     }
 

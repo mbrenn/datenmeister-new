@@ -1,5 +1,5 @@
 ﻿import * as VML from "../forms/ViewModeLogic.js";
-import {ObjectType} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import {UserEvent} from "../../burnsystems/Events.js";
 
@@ -27,9 +27,9 @@ export class ViewModeSelectionControl {
         for (let n in viewModes) {
             const v = viewModes[n];
             const option = $("<option></option>");
-            const id = v.get(_DatenMeister._Forms._ViewMode.id, ObjectType.Single);
+            const id = v.get(_DatenMeister._Forms._ViewMode.id, Mof.ObjectType.Single);
             option.attr("value", id);
-            option.text(v.get(_DatenMeister._Forms._ViewMode._name_, ObjectType.Single));
+            option.text(v.get(_DatenMeister._Forms._ViewMode._name_, Mof.ObjectType.Single));
 
             if (id === currentViewMode) {
                 option.attr("selected", "selected");

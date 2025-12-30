@@ -1,6 +1,5 @@
 ﻿import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-import {DmObject} from "../Mof.js";
 
 export class QueryBuilder {
 
@@ -16,7 +15,7 @@ export class QueryBuilder {
 
     setResultNode(node: Mof.DmObject) {
         this.queryStatement.set(_DatenMeister._DataViews._QueryStatement.resultNode,
-            DmObject.createAsReferenceFromLocalId(node));
+            Mof.DmObject.createAsReferenceFromLocalId(node));
     }
 
     getResultNode(): Mof.DmObject {

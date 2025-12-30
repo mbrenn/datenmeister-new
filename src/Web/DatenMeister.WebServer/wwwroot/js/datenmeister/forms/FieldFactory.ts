@@ -14,14 +14,14 @@ import * as DropDownByQuery from "../fields/DropDownByQuery.js";
 import * as UriReferenceFieldData from "../fields/UriReferenceFieldData.js";
 import * as UnknownField from "../fields/UnknownField.js";
 import {IFormField} from "../fields/Interfaces.js";
-import {DmObject} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import {IFormConfiguration} from "./IFormConfiguration.js";
 import {IFormNavigation} from "./Interfaces.js";
 
 interface ICreateFieldParameter {
     configuration: IFormConfiguration,
     isReadOnly: boolean;
-    field: DmObject;
+    field: Mof.DmObject;
     itemUrl: string;
     form: IFormNavigation;
 }
@@ -42,7 +42,7 @@ export function registerField(metaClassFieldData: string, factoryMethod: () => I
     );
 }
 
-export function canBeSorted(field: DmObject): boolean {
+export function canBeSorted(field: Mof.DmObject): boolean {
     const metaClassUri = field.metaClass?.uri;
 
     if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {
@@ -52,7 +52,7 @@ export function canBeSorted(field: DmObject): boolean {
     return false;
 }
 
-export function canBeTextFiltered(field: DmObject): boolean {
+export function canBeTextFiltered(field: Mof.DmObject): boolean {
     const metaClassUri = field.metaClass?.uri;
 
     if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {

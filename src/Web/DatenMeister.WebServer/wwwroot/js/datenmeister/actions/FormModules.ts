@@ -5,7 +5,6 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ActionClient from "../client/Actions.js";
 import * as Navigation from "../Navigator.js";
 import {IFormNavigation} from "../forms/Interfaces";
-import {DmObject} from "../Mof.js";
 import {SubmitMethod} from "../forms/Forms";
 import {ItemWithNameAndId} from "../ApiModels";
 import {param} from "jquery";
@@ -26,7 +25,7 @@ class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase 
         return await FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         const result = await ActionClient.executeAction(element.workspace, element.uri);
         if (result.success !== true) {
             alert('Form was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
@@ -44,7 +43,7 @@ class NavigateToItemClientAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         const workspaceId = element.get(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.workspaceId, Mof.ObjectType.String);
         const itemUri = element.get(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.itemUrl, Mof.ObjectType.String);
         const formUri = element.get(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.formUri, Mof.ObjectType.String);

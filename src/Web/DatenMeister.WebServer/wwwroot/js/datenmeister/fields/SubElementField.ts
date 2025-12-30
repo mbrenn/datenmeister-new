@@ -1,6 +1,6 @@
 ﻿import { IFormField } from "./Interfaces.js";
 import * as MofResolver from "../MofResolver.js";
-import {DmObject, ObjectType} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as FieldFactory from "../forms/FieldFactory.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as ClientItems from "../client/Items.js";
@@ -45,7 +45,7 @@ export class Control {
      * Each of these types will receive a button on which the user can directly
      * create an object
      */
-    additionalTypes?: DmObject[];
+    additionalTypes?: Mof.DmObject[];
 
     _list: JQuery;
 
@@ -68,7 +68,7 @@ export class Control {
             let foundElements = 0;
             for (let m in fieldValue) {
                 if (Object.prototype.hasOwnProperty.call(fieldValue, m)) {
-                    let innerValue = fieldValue[m] as DmObject;
+                    let innerValue = fieldValue[m] as Mof.DmObject;
                     const item = $("<li></li>");
                     
                     const injectParams: IInjectNameByUriParams = {};
@@ -101,9 +101,9 @@ export class Control {
 
             let fields = this.getFieldDefinitions();
 
-            let fieldsData = new Array<DmObject>();
+            let fieldsData = new Array<Mof.DmObject>();
             if (fields === undefined) {
-                const nameField = new DmObject();
+                const nameField = new Mof.DmObject();
                 nameField.setMetaClassByUri(_DatenMeister._Forms.__TextFieldData_Uri, 'Types');
                 nameField.set("name", "name");
                 nameField.set("title", "Name");
@@ -131,7 +131,7 @@ export class Control {
             for (let m in fieldValue) {
                 if (Object.prototype.hasOwnProperty.call(fieldValue, m)) {
                     const tr = $("<tr></tr>");
-                    let innerValue = fieldValue[m] as DmObject;
+                    let innerValue = fieldValue[m] as Mof.DmObject;
 
                     for (let fieldDataKey in fieldsData) {
                         const td = $("<td></td>");
@@ -273,7 +273,7 @@ export class Control {
             const containerAdditional = $(".dm-subelements-createadditional", attachItem);
             if (this.additionalTypes !== undefined) {
                 for (const m in this.additionalTypes) {
-                    let additionalType = await MofResolver.resolve(this.additionalTypes[m]) as DmObject;
+                    let additionalType = await MofResolver.resolve(this.additionalTypes[m]) as Mof.DmObject;
                     let name; 
                     let metaClassUri;
                     let metaClassWorkspace;
@@ -281,9 +281,9 @@ export class Control {
                     // There are two options to reference a metaclass in DefaultTypeForNewElements
                     if (additionalType.metaClass.uri === _DatenMeister._Forms.__DefaultTypeForNewElement_Uri) {
                         // One is by using an instance of DefaultTypeForNewElement
-                        name = additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement._name_, ObjectType.String);
+                        name = additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement._name_, Mof.ObjectType.String);
                         const metaClass = await MofResolver.resolve(
-                            additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, ObjectType.Object)) as DmObject;
+                            additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, Mof.ObjectType.Object)) as Mof.DmObject;
                         metaClassUri = metaClass.uri;
                         metaClassWorkspace = metaClass.workspace;
                     }
@@ -291,7 +291,7 @@ export class Control {
                         // The other one is to directly reference
                         name = additionalType.get(
                             _UML._CommonStructure._NamedElement._name_,
-                            ObjectType.String
+                            Mof.ObjectType.String
                         );
                         metaClassUri = additionalType.uri;
                         metaClassWorkspace = additionalType.workspace;
@@ -339,15 +339,15 @@ export class Control {
      * Returns the default definition of a name.
      * method can be overridden by the right field definitions
      */
-    getFieldDefinitions(): Array<DmObject> | undefined {
+    getFieldDefinitions(): Array<Mof.DmObject> | undefined {
         return undefined;
     }
 }
 
 export class Field extends Control implements IFormField {
 
-    _element: DmObject;
-    field: DmObject;
+    _element: Mof.DmObject;
+    field: Mof.DmObject;
 
     reloadValuesFromServer(): void {
         const tthis = this;
@@ -358,14 +358,14 @@ export class Field extends Control implements IFormField {
         );
     }
 
-    getFieldDefinitions(): Array<DmObject> {
-        return this.field.get("form", ObjectType.Single)?.get("field", ObjectType.Array) as Array<DmObject>;
+    getFieldDefinitions(): Array<Mof.DmObject> {
+        return this.field.get("form", Mof.ObjectType.Single)?.get("field", Mof.ObjectType.Array) as Array<Mof.DmObject>;
     }
 
-    async createDom(dmElement: DmObject) {
-        this.propertyName = this.field.get(_DatenMeister._Forms._SubElementFieldData._name_, ObjectType.String);
-        this.itemActionName = this.field.get(_DatenMeister._Forms._SubElementFieldData.actionName, ObjectType.String);
-        this.additionalTypes = this.field.get(_DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements, ObjectType.Array);
+    async createDom(dmElement: Mof.DmObject) {
+        this.propertyName = this.field.get(_DatenMeister._Forms._SubElementFieldData._name_, Mof.ObjectType.String);
+        this.itemActionName = this.field.get(_DatenMeister._Forms._SubElementFieldData.actionName, Mof.ObjectType.String);
+        this.additionalTypes = this.field.get(_DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements, Mof.ObjectType.Array);
 
         if (this.configuration.isNewItem) {
             return $("<em>Element needs to be saved first</em>");
@@ -389,7 +389,7 @@ export class Field extends Control implements IFormField {
         }
     }
 
-    async evaluateDom(dmElement: DmObject) : Promise<void> {
+    async evaluateDom(dmElement: Mof.DmObject) : Promise<void> {
 
     }
 }

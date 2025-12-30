@@ -1,5 +1,5 @@
 ﻿import {BaseField, IFormField} from "./Interfaces.js";
-import {DmObject, ObjectType} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import * as ElementClient from "../client/Elements.js"
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 
@@ -14,9 +14,9 @@ export class Field extends DropDownBaseField.DropDownBaseField implements IFormF
 
     async loadFields(): Promise<DropDownBaseField.DropDownOptionField[]> {
         const workspace = this.field.get(
-            _DatenMeister._Forms._DropDownByCollection.defaultWorkspace, ObjectType.String) ?? "Data";
+            _DatenMeister._Forms._DropDownByCollection.defaultWorkspace, Mof.ObjectType.String) ?? "Data";
         const path = this.field.get(
-            _DatenMeister._Forms._DropDownByCollection.collection, ObjectType.String)
+            _DatenMeister._Forms._DropDownByCollection.collection, Mof.ObjectType.String)
 
         // Builds the query
         const queryBuilder = new QueryBuilder.QueryBuilder();
@@ -26,7 +26,7 @@ export class Field extends DropDownBaseField.DropDownBaseField implements IFormF
 
         return serverResult.result.map(x => {
             return {
-                title: x.get("name", ObjectType.String) ?? x.id,
+                title: x.get("name", Mof.ObjectType.String) ?? x.id,
                 workspace: x.workspace,
                 itemUrl: x.uri
             }

@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Runtime.Loader;
+using Autofac;
 using Autofac.Core;
 using Autofac.Core.Lifetime;
 using Autofac.Core.Resolving;
@@ -35,6 +36,11 @@ public class DatenMeisterScope(ILifetimeScope lifetimeScopeImplementation) : IDa
         return lifetimeScopeImplementation.ResolveComponent(request);
     }
 
+    public object ResolveComponent(in ResolveRequest request)
+    {
+        return lifetimeScopeImplementation.ResolveComponent(in request);
+    }
+
     public IComponentRegistry ComponentRegistry => lifetimeScopeImplementation.ComponentRegistry;
 
     public void Dispose()
@@ -46,6 +52,11 @@ public class DatenMeisterScope(ILifetimeScope lifetimeScopeImplementation) : IDa
 
     public ILifetimeScope BeginLifetimeScope() =>
         lifetimeScopeImplementation.BeginLifetimeScope();
+
+    public ILifetimeScope BeginLoadContextLifetimeScope(object tag, AssemblyLoadContext loadContext, Action<ContainerBuilder> configurationAction)
+    {
+        return lifetimeScopeImplementation.BeginLoadContextLifetimeScope(tag, loadContext, configurationAction);
+    }
 
     public IDisposer Disposer => lifetimeScopeImplementation.Disposer;
 
@@ -72,6 +83,11 @@ public class DatenMeisterScope(ILifetimeScope lifetimeScopeImplementation) : IDa
     public ILifetimeScope BeginLifetimeScope(object tag, Action<ContainerBuilder> configurationAction)
     {
         return lifetimeScopeImplementation.BeginLifetimeScope(tag, configurationAction);
+    }
+
+    public ILifetimeScope BeginLoadContextLifetimeScope(AssemblyLoadContext loadContext, Action<ContainerBuilder> configurationAction)
+    {
+        return lifetimeScopeImplementation.BeginLoadContextLifetimeScope(loadContext, configurationAction);
     }
 
     public ILifetimeScope BeginLifetimeScope(Action<ContainerBuilder> configurationAction)

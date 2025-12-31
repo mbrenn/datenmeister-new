@@ -13,7 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="6.5.0" />
+        <PackageReference Include="Autofac" Version="9.0.0" />
         <PackageReference Include="BurnSystems" Version="1.2.0" />
     </ItemGroup>
 

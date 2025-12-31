@@ -42,7 +42,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Actions\DatenMeister.Actions.csproj" />
-    <ProjectReference Include="..\..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Provider.Excel\DatenMeister.Provider.Excel.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
     <ProjectReference Include="..\..\DatenMeister.FastViewFilter\DatenMeister.FastViewFilter.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Forms.Actions\DatenMeister.Forms.Actions.csproj" />

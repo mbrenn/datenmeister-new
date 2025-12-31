@@ -115,11 +115,11 @@ public class MofJsonTests
         Assert.That(asJsonObject, Is.Not.Null);
 
         var deconverted = new DirectJsonDeconverter().ConvertToObject(asJsonObject!) as IElement;
-        Assert.IsTrue(deconverted?.metaclass!.equals(new MofObjectShadow("dm:///meta1")));
+        Assert.That(deconverted?.metaclass!.equals(new MofObjectShadow("dm:///meta1")), Is.True);
 
         var child2 = deconverted.get<IElement>("child");
         Assert.That(child2, Is.Not.Null);
-        Assert.IsTrue(child2.metaclass!.equals(new MofObjectShadow("dm:///meta2")));
+        Assert.That(child2.metaclass!.equals(new MofObjectShadow("dm:///meta2")), Is.True);
     }
 
     [Test]

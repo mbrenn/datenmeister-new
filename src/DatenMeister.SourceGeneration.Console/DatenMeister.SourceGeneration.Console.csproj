@@ -23,7 +23,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
+    <ProjectReference Include="..\DatenMeister.Provider.Excel\DatenMeister.Provider.Excel.csproj" />
     <ProjectReference Include="..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
     <ProjectReference Include="..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj" />
   </ItemGroup>

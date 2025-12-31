@@ -15,7 +15,7 @@ public static class ClassifierMethods
     /// <summary>
     /// Logger for the classifier methods
     /// </summary>
-    public static readonly ILogger ClassLogger = new ClassLogger(typeof(ClassifierMethods));
+    private static readonly ILogger ClassLogger = new ClassLogger(typeof(ClassifierMethods));
 
     /// <summary>
     /// Returns a list of all properties within the classifier.

@@ -36,6 +36,11 @@ public class XmiSourceParser : ISourceParser
         {
             return true;
         }
+
+        if (uri == WorkspaceNames.StandardUmlNamespace + "#" + packageName)
+        {
+            return true;
+        }
             
         var attributeXmi = "{" + Namespaces.Xmi + "}type";
 

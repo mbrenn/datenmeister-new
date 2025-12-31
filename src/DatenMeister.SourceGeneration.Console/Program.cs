@@ -93,7 +93,8 @@ internal class Program
 
         var typeExtent = new MofUriExtent(
             XmiProvider.CreateByFile(pathXml),
-            options.XmiNamespace, null);
+            options.XmiNamespace, 
+            dm.ScopeStorage);
 
         dm.WorkspaceLogic.AddExtent(dm.WorkspaceLogic.GetDataWorkspace(), typeExtent);
         if (!typeExtent.elements().Any())
@@ -109,7 +110,18 @@ internal class Program
         if (generator.TotalWalked == 0)
         {
             System.Console.WriteLine("Aborted creation because no package or class has been found.");
+            System.Console.WriteLine();
             return false;
+        }
+        else
+        {
+            System.Console.WriteLine($"Total Items: {generator.TotalWalked}, " +
+                                     $"Packages: {generator.PackagesWalked}, " +
+                                     $"Classes: {generator.ClassesWalked}, " +
+                                     $"Properties: {generator.PropertiesWalked}, " +
+                                     $"Enums: {generator.EnumWalked}, " +
+                                     $"Literals: {generator.LiteralWalked}");
+            System.Console.WriteLine();
         }
 
         if (!Directory.Exists(pathTarget))

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -15,6 +16,14 @@ namespace DatenMeister.SourcecodeGenerator;
 /// </summary>
 public class WalkPackageClass
 {
+    /// <summary>
+    /// Defines the logger for the class
+    /// </summary>
+    private static readonly ILogger Logger = new ClassLogger(typeof(WalkPackageClass));
+    
+    /// <summary>
+    /// Defines the version of the factory
+    /// </summary>
     protected Version FactoryVersion = new(1, 0, 1, 0);
 
     /// <summary>
@@ -185,6 +194,8 @@ public class WalkPackageClass
     /// <param name="stack">The callstack containing information about depth and full names</param>
     protected virtual void WalkPackage(IObject element, CallStack stack)
     {
+        Logger.Debug($"Walking package: {element.GetUri()}");
+        
         var innerStack = new CallStack(stack);
         var name = GetNameOfElement(element);
         if (stack.Level == 0)

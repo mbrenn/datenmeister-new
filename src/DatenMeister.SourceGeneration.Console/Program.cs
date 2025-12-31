@@ -58,49 +58,6 @@ internal class Program
     }
 
     /// <summary>
-    /// Performs the standard procedure
-    /// </summary>
-    private static Task PerformStandardProcedure()
-    {
-        /*System.Console.WriteLine("Clean up .xmi-Files");
-
-        await CleanUpProcedure.CleanUpExtent(
-            $"{R}/../DatenMeister.Core/XmiFiles/Forms/DatenMeister.xmi",
-            "dm:///intern.datenmeister.forms/",
-            DryRun);
-        await CleanUpProcedure.CleanUpExtent(
-            $"{R}/../DatenMeister.Core/XmiFiles/Types/DatenMeister.xmi",
-            "dm:///intern.datenmeister.types/",
-            DryRun);
-        await CleanUpProcedure.CleanUpExtent(
-            pathXml,
-            "dm:///intern.datenmeister.forms/",
-            DryRun);
-            */
-
-        System.Console.WriteLine("Perform the standard procedure.");
-
-        // First, creates
-        StandardProcedure.CreateSourceForExcel();
-
-        System.Console.WriteLine("Closing Source Code Generator");
-
-
-#if !DEBUG
-        
-            var R = StandardProcedure.R;
-            var T = StandardProcedure.T;
-            
-            File.Copy($"./ExcelModels.class.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
-            File.Copy($"./ExcelModels.wrapper.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.wrapper.cs", true);
-            File.Copy($"./ExcelModels.class.ts",
-                $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/ExcelModels.class.ts", true);
-#endif
-        
-        return Task.CompletedTask;
-    }
-
-    /// <summary>
     /// Generates source code files based on provided type definitions.
     /// This method processes the given XMI file and generates corresponding TypeScript interfaces,
     /// C# classes, and wrapper classes based on the type definitions found in the XMI.

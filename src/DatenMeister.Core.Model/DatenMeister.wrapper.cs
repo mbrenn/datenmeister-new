@@ -2384,6 +2384,38 @@ public class Actions
 
     }
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#9d43decb-aa2f-4461-b680-3ec595b518d1",
+        TypeKind = TypeKind.WrappedClass)]
+    public class RefreshTypeIndexAction_Wrapper : IElementWrapper
+    {
+        private readonly IElement _wrappedElement;
+
+        public RefreshTypeIndexAction_Wrapper(IElement innerDmElement)
+        {
+            _wrappedElement = innerDmElement;
+        }
+
+        public RefreshTypeIndexAction_Wrapper(IFactory factory)
+        {
+            _wrappedElement = factory.create(_metaClass);
+        }
+
+        public IElement GetWrappedElement() => _wrappedElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#9d43decb-aa2f-4461-b680-3ec595b518d1");
+
+        public static RefreshTypeIndexAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+        public bool @waitForRefresh
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("waitForRefresh");
+            set => 
+                _wrappedElement.set("waitForRefresh", value);
+        }
+
+    }
+
 }
 
 public class DataViews

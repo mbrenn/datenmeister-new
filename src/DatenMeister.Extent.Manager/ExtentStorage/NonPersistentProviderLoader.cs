@@ -16,7 +16,7 @@ public class NonPersistentProviderLoader : IProviderLoader
     public IScopeStorage? ScopeStorage { get; set; }
     public Task<LoadedProviderInfo> LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
     {
-        throw new InvalidOperationException()("I can never load, so I should not get called");
+        throw new InvalidOperationException("I can never load, so I should not get called");
     }
 
     public Task StoreProvider(IProvider provider, IElement configuration)

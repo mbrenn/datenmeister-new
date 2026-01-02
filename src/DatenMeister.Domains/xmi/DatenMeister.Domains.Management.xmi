@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xmi>
-  <meta p2:id="203fbfee-f9b0-459c-8bc4-be8ddc2f3e98" __uri="dm:///intern.management.domains.datenmeister/" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" />
+  <meta p2:id="203fbfee-f9b0-459c-8bc4-be8ddc2f3e98" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///intern.management.domains.datenmeister/" />
 </xmi>

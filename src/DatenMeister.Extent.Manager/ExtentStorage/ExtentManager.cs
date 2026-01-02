@@ -227,7 +227,6 @@ public class ExtentManager
         }
 
         // Checks, if the given URL has a relative path and transforms the path to an absolute path
-        // TODO: Do real check including generalizations, but accept it for now
         if (configuration.isSet(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath))
         {
             var filePath =
@@ -385,9 +384,43 @@ public class ExtentManager
                 }
             }
 
-            workspace.AddExtentNoDuplicate(WorkspaceLogic, loadedExtent);
+            workspace.AddExtentEnsuringNoDuplicate(WorkspaceLogic, loadedExtent);
         }
 
+        VerifyDatabaseContent();
+    }
+
+    /// <summary>
+    /// Adds an extent non persistently. This means that the
+    /// extent is stored in the registration, but it is ensured that this extent will not be stored
+    /// persistently in the database. This is useful for temporary extent registrations.
+    /// </summary>
+    /// <param name="workspaceName">Name of the Workspace to which that extent shall be added</param>
+    /// <param name="extent">The extent itself that will be added</param>
+    public void AddNonPersistentExtent(string workspaceName, IUriExtent extent)
+    {
+        // Gets the workspace
+        var workspace = WorkspaceLogic.GetWorkspace(workspaceName)
+            ?? throw new InvalidOperationException($"Workspace {workspaceName} not found");
+        
+        var extentInformation = new ExtentStorageData.LoadedExtentInformation(
+            ExtentStorageData.LoadedExtentInformation.ShadowConfigurationForNonPersisten)
+        {
+            Extent = extent,
+            IsExtentPersistent = false,
+            IsExtentAddedToWorkspace = true,
+            LoadingState = ExtentLoadingState.Loaded
+        };
+
+        // Stores the information into the data container
+        lock (_extentStorageData.LoadedExtents)
+        {
+            _extentStorageData.LoadedExtents.Add(extentInformation);
+        }
+        
+        // Adds the extent to the workspace
+        workspace.AddExtentEnsuringNoDuplicate(WorkspaceLogic, extent);
+        
         VerifyDatabaseContent();
     }
 
@@ -424,7 +457,8 @@ public class ExtentManager
             list.AddRange(
                 _extentStorageData.LoadedExtents
                     .Where(loadedExtent =>
-                        loadedExtent.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId) ==
+                        loadedExtent.Configuration?.getOrDefault<string>(
+                            _ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId) ==
                         workspaceId));
         }
 
@@ -458,7 +492,6 @@ public class ExtentManager
         
     public async Task ReloadExtent(IExtent extent)
     {
-
         ExtentStorageData.LoadedExtentInformation? information;
         lock (_extentStorageData.LoadedExtents)
         {
@@ -466,7 +499,7 @@ public class ExtentManager
                 x.LoadingState == ExtentLoadingState.Loaded && x.Extent == extent);
         }
 
-        if (information == null)
+        if (information == null || information.Configuration == null)
         {
             throw new InvalidOperationException($"The extent '{extent}' was not loaded by this instance");
         }
@@ -514,7 +547,7 @@ public class ExtentManager
                 x.LoadingState == ExtentLoadingState.Loaded && x.Extent == extent);
         }
 
-        if (information == null)
+        if (information == null || information.Configuration == null)
         {
             throw new InvalidOperationException($"The extent '{extent}' was not loaded by this instance");
         }
@@ -562,7 +595,7 @@ public class ExtentManager
         {
             var information = _extentStorageData.LoadedExtents.FirstOrDefault(x =>
                 x.LoadingState == ExtentLoadingState.Loaded && x.Extent?.equals(extent) == true);
-            if (information != null)
+            if (information != null && information.Configuration != null)
             {
                 _extentStorageData.LoadedExtents.Remove(information);
                 Logger.Info($"Detaching extent: {information.Configuration}");
@@ -960,16 +993,17 @@ public class ExtentManager
         {
             var copy = _extentStorageData.LoadedExtents.ToList();
 
-            foreach (var info in copy)
+            foreach (var info in copy.Where(x => x.Configuration != null))
             {
-                UnlockProvider(info.Configuration);
+                UnlockProvider(info.Configuration!);
             }
 
             if (_extentStorageData.IsRegistrationOpen)
             {
                 if (!_integrationSettings.IsReadOnly)
                 {
-                    var configurationLoader = new ExtentConfigurationLoader(ScopeStorage, this);
+                    var configurationLoader = 
+                        new ExtentConfigurationLoader(ScopeStorage, this);
                     configurationLoader.StoreConfiguration();
                 }
 
@@ -1007,11 +1041,12 @@ public class ExtentManager
         lock (_extentStorageData.LoadedExtents)
         {
             var list = new List<VerifyDatabaseEntry>();
-            foreach (var entry in _extentStorageData.LoadedExtents)
+            foreach (var entry in _extentStorageData.LoadedExtents
+                         .Where (x => x.Configuration != null))
             {
                 var found = list.FirstOrDefault(
                     x => x.Workspace ==
-                         entry.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId)
+                         entry.Configuration!.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId)
                          && x.ExtentUri ==
                          entry.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri));
 
@@ -1024,7 +1059,7 @@ public class ExtentManager
 
                 list.Add(
                     new VerifyDatabaseEntry(
-                        entry.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId),
+                        entry.Configuration!.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId),
                         entry.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)
                     ));
             }

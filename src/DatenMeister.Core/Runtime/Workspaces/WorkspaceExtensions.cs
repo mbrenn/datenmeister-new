@@ -150,7 +150,9 @@ public static class WorkspaceExtensions
     /// <param name="workspaceLogic">Workspacelogic being used</param>
     /// <param name="extent">Extent being added</param>
     /// <returns>true, if addition was succesfsul</returns>
-    public static bool AddExtentNoDuplicate(this IWorkspace workspace, IWorkspaceLogic workspaceLogic,
+    public static bool AddExtentEnsuringNoDuplicate(
+        this IWorkspace workspace,
+        IWorkspaceLogic workspaceLogic,
         IUriExtent extent)
     {
         var contextUri = extent.contextURI();

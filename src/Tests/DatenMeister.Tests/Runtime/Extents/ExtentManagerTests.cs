@@ -6,6 +6,8 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using NUnit.Framework;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
 namespace DatenMeister.Tests.Runtime.Extents;
 
@@ -35,6 +37,40 @@ public class ExtentManagerTests
 
         await extentManager.RemoveExtent(extent.Extent!);
         await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+    }
+
+    [Test]
+    public async Task TestNonPersistentExtents()
+    {
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var extentManager = dm.Resolve<ExtentManager>();
+        
+        var mofUriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test3", dm.ScopeStorage);
+        extentManager.AddNonPersistentExtent(WorkspaceNames.WorkspaceManagement, mofUriExtent);
+        
+        // Check that extent is within workspace
+        Assert.That(extentManager.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceManagement, "dm:///test3"), Is.Not.Null);
+
+        var loadedExtentInformation = extentManager.GetLoadedExtentInformation(mofUriExtent);
+        Assert.That(loadedExtentInformation, Is.Not.Null);
+        Assert.That(loadedExtentInformation!.IsExtentPersistent, Is.False);
+        
+        // Checks that the extent is available via the Management Extent for Workspaces
+        var managementExtent =
+            dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceManagement, WorkspaceNames.UriExtentWorkspaces);
+        Assert.That(managementExtent, Is.Not.Null);
+        
+        // Get workspace
+        var workspace = managementExtent!.elements().OfType<IElement>().FirstOrDefault(
+            x =>
+                x.getOrDefault<string>(_Management._Workspace.id) == WorkspaceNames.WorkspaceManagement);
+        Assert.That(workspace, Is.Not.Null);
+        
+        // Checks, that the extent is existing within the workspace
+        var extent = workspace!
+            .getOrDefault<IReflectiveSequence>(_Management._Workspace.extents).OfType<IElement>()
+            .FirstOrDefault(x => x.getOrDefault<string>(_Management._Extent.uri) == "dm:///test3");
+        Assert.That(extent, Is.Not.Null);
     }
 
     [Test]

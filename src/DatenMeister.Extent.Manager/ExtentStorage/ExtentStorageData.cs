@@ -1,12 +1,9 @@
-﻿using DatenMeister.Core.Interfaces.MOF.Identifiers;
-using DatenMeister.Core.Interfaces.MOF.Reflection;
-
-namespace DatenMeister.Extent.Manager.ExtentStorage;
+﻿namespace DatenMeister.Extent.Manager.ExtentStorage;
 
 /// <summary>
 /// Stores the configuration for the loaded extents during the runtime
 /// </summary>
-public class ExtentStorageData
+public partial class ExtentStorageData
 {
     /// <summary>
     /// Gets or sets the flag whether the extent is opened
@@ -58,44 +55,6 @@ public class ExtentStorageData
         }
 
         return FilePath + ".lock";
-    }
-
-    /// <summary>
-    /// Defines the class which stores the mapping between the extent and the configuration
-    /// </summary>
-    public class LoadedExtentInformation
-    {
-        public IUriExtent? Extent { get; set; }
-            
-        public IElement Configuration { get; set; }
-
-        public ExtentLoadingState LoadingState { get; set; } = ExtentLoadingState.Unloaded;
-
-        /// <summary>
-        /// Gets or sets the message why the loading of the extent has failed
-        /// </summary>
-        public string FailLoadingMessage { get; set; } = string.Empty;
-
-        public bool IsExtentAddedToWorkspace { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the  LoadedExtentInformation class
-        /// </summary>
-        /// <param name="configuration">Configuration of the loading extent</param>
-        public LoadedExtentInformation(IElement configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public override string ToString()
-        {
-            if (Extent == null)
-            {
-                return "(no extent): " + Configuration;
-            }
-
-            return $"({Extent}): " + Configuration;
-        }
     }
 }
 

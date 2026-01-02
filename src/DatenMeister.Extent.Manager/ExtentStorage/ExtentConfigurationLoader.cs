@@ -103,7 +103,7 @@ public class ExtentConfigurationLoader(
 
         var path = ExtentStorageData.FilePath;
 
-        foreach (var loadingInformation in ExtentStorageData.LoadedExtents)
+        foreach (var loadingInformation in ExtentStorageData.LoadedExtents.Where(x =>x.IsExtentPersistent))
         {
             var copiedConfiguration = ObjectCopier.Copy(factory, loadingInformation.Configuration);
             extentConfigurations.elements().add(

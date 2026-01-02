@@ -39,7 +39,7 @@ public class DefaultPluginLoader : IPluginLoader
                     $"PluginLoader: Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
             }
 
-        return pluginList;
+        return pluginList.OrderBy(x => x.FullName).ToList();
     }
 
     /// <summary>

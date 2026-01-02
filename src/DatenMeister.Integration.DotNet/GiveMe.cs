@@ -44,7 +44,8 @@ public static class GiveMe
     /// <param name="settings">Integration settings for the initialization of DatenMeister</param>
     /// <param name="pluginLoaderSettings">The default plugin loader settings</param>
     /// <returns>The initialized DatenMeister that can be used</returns>
-    public static async Task <IDatenMeisterScope> DatenMeister(IntegrationSettings? settings = null,
+    public static async Task <IDatenMeisterScope> DatenMeister(
+        IntegrationSettings? settings = null,
         PluginLoaderSettings? pluginLoaderSettings = null)
     {
         settings ??= GetDefaultIntegrationSettings();

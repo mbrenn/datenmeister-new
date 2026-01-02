@@ -28,7 +28,8 @@ public static class PluginMethods
         foreach (var datenMeisterPlugin in list)
             datenMeisterPlugin.Start(PluginLoadingPosition.BeforeBootstrapping);
 
-        foreach (var datenMeisterPlugin in list) datenMeisterPlugin.Start(PluginLoadingPosition.AfterBootstrapping);
+        foreach (var datenMeisterPlugin in list) 
+            datenMeisterPlugin.Start(PluginLoadingPosition.AfterBootstrapping);
 
         foreach (var datenMeisterPlugin in list)
             datenMeisterPlugin.Start(PluginLoadingPosition.AfterInitialization);

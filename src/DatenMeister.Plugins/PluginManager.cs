@@ -22,6 +22,11 @@ public class PluginManager
     public bool NoExceptionDuringLoading { get; set; }
 
     /// <summary>
+    /// Gets the enumeration of instantiated plugin 
+    /// </summary>
+    public IEnumerable<IDatenMeisterPlugin> InstantiatedPlugins => _instantiatedPlugins.Values;
+
+    /// <summary>
     ///     Gets all types of the loaded assemblies, having a certain attribute type
     /// </summary>
     /// <returns>Enumeration of key value pairs in which the type is associated with the assembly</returns>
@@ -173,4 +178,6 @@ public class PluginManager
         var attribute = GetPluginLoadingAttribute(plugin);
         return attribute?.PluginLoadingPosition ?? PluginLoadingPosition.AfterLoadingOfExtents;
     }
+    
+    
 }

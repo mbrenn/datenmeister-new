@@ -35,9 +35,12 @@ public class LoadExtentActionHandler : IActionHandler
             }
 
             var workspaceId =
-                configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig
-                    .workspaceId)
-                ?? WorkspaceNames.WorkspaceData;
+                configuration.getOrDefault<string>(
+                    _ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId);
+            if (string.IsNullOrEmpty(workspaceId))
+            {
+                workspaceId = WorkspaceNames.WorkspaceData;
+            }
 
             var dropExisting =
                 action.getOrDefault<bool>(_Actions._LoadExtentAction.dropExisting);

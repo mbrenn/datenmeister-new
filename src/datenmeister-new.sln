@@ -146,7 +146,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domains", "Domains", "{7C71
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Domains", "DatenMeister.Domains\DatenMeister.Domains.csproj", "{3B09A240-A853-4966-A1A7-C1B5A48A41B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Domains.Tests", "DatenMeister.Domains.Tests\DatenMeister.Domains.Tests.csproj", "{7A196489-90F9-4AB9-A1E5-ABF8744D9BC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Domains.Tests", "Tests\DatenMeister.Domains.Tests\DatenMeister.Domains.Tests.csproj", "{7A196489-90F9-4AB9-A1E5-ABF8744D9BC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

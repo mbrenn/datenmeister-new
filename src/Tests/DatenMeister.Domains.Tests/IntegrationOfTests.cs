@@ -1,13 +1,14 @@
 using System.Reflection;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
+using DatenMeister.Core;
 using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using NUnit.Framework;
 
-namespace DatenMeister.Core.TypeIndexStorage.Tests;
+namespace DatenMeister.Domains.Tests;
 
 public static class IntegrationOfTests
 {

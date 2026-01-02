@@ -5,7 +5,7 @@ using DatenMeister.Plugins;
 
 namespace DatenMeister.Extent.Manager.ExtentStorage;
 
-[PluginLoading]
+[PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
 // ReSharper disable once UnusedType.Global
 public class EventManagerEventHandler(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {

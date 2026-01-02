@@ -15,11 +15,8 @@
     <ItemGroup>
       <ProjectReference Include="..\..\DatenMeister.Core\DatenMeister.Core.csproj" />
       <ProjectReference Include="..\..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.Domains\DatenMeister.Domains.csproj" />
       <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="models\" />
     </ItemGroup>
 
     <ItemGroup>

@@ -6,7 +6,7 @@ using DatenMeister.Reports.Html;
 
 namespace DatenMeister.Reports;
 
-[PluginLoading]
+[PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
 public class ReportPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
     public Task Start(PluginLoadingPosition position)

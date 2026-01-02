@@ -15,7 +15,7 @@ namespace DatenMeister.Zip;
 /// </summary>
 /// <param name="workspaceLogic">The workspace logic to be used.</param>
 /// <param name="scopeStorage">The scope storage to be used.</param>
-[PluginLoading()]
+[PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
 public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
     /// <summary>

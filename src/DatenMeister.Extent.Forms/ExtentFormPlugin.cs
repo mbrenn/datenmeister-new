@@ -16,7 +16,7 @@ namespace DatenMeister.Extent.Forms;
 /// Defines the default form extensions which are used to navigate through the
 /// items, extens and also offers the simple creation and deletion of items. 
 /// </summary>
-[PluginLoading]
+[PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
 public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentManager, IWorkspaceLogic workspaceLogic)
     : IDatenMeisterPlugin
 {

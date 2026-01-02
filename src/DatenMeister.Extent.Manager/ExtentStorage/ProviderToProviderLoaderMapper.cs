@@ -82,6 +82,14 @@ public class ProviderToProviderLoaderMapper
 
     public IProviderLoader CreateFor(ExtentManager extentManager, IElement configuration)
     {
+        // Checks, if we are a fully non-persistant extent
+        if (configuration == ExtentStorageData.LoadedExtentInformation.ShadowConfigurationForNonPersistent)
+        {
+            return new NonPersistentProviderLoader();
+        }
+        
+        // If we are at least persistent in the database (the data itself does not need to be persistent),
+        // execute the default finding of right data
         lock (_mapping)
         {
             var metaClass = configuration.getMetaClass()

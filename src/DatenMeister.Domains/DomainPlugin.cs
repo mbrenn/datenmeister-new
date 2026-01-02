@@ -26,6 +26,7 @@ public class DomainPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSto
         switch (position)
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
+                var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
                 // Loads the Documents
                 var typesXmi = ResourceHelper.LoadStringFromAssembly(typeof(DomainPlugin), "DatenMeister.Domains.xmi.DatenMeister.Domains.Types.xmi");
                 var managementXmi = ResourceHelper.LoadStringFromAssembly(typeof(DomainPlugin), "DatenMeister.Domains.xmi.DatenMeister.Domains.Management.xmi");
@@ -43,8 +44,8 @@ public class DomainPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSto
                 var managementExtent = new MofUriExtent(xmiManagementProvider, DmInternManagementDomainsDatenmeister, scopeStorage);
                 
                 // Adds the extents to the workspaces directly, so they won't be loaded by the ExtentManager on Application Start-Up
-                workspaceLogic.GetTypesWorkspace().AddExtent(typesExtent);
-                workspaceLogic.GetManagementWorkspace().AddExtent(managementExtent);
+                extentManager.AddNonPersistentExtent(WorkspaceNames.WorkspaceManagement, managementExtent);
+                extentManager.AddNonPersistentExtent(WorkspaceNames.WorkspaceTypes, typesExtent);
                 break;
             
         }

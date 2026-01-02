@@ -404,7 +404,7 @@ public class ExtentManager
             ?? throw new InvalidOperationException($"Workspace {workspaceName} not found");
         
         var extentInformation = new ExtentStorageData.LoadedExtentInformation(
-            ExtentStorageData.LoadedExtentInformation.ShadowConfigurationForNonPersisten)
+            ExtentStorageData.LoadedExtentInformation.ShadowConfigurationForNonPersistent)
         {
             Extent = extent,
             IsExtentPersistent = false,
@@ -993,9 +993,9 @@ public class ExtentManager
         {
             var copy = _extentStorageData.LoadedExtents.ToList();
 
-            foreach (var info in copy.Where(x => x.Configuration != null))
+            foreach (var info in copy)
             {
-                UnlockProvider(info.Configuration!);
+                UnlockProvider(info.Configuration);
             }
 
             if (_extentStorageData.IsRegistrationOpen)
@@ -1042,7 +1042,7 @@ public class ExtentManager
         {
             var list = new List<VerifyDatabaseEntry>();
             foreach (var entry in _extentStorageData.LoadedExtents
-                         .Where (x => x.Configuration != null))
+                         .Where (x => x.Configuration != ExtentStorageData.LoadedExtentInformation.ShadowConfigurationForNonPersistent))
             {
                 var found = list.FirstOrDefault(
                     x => x.Workspace ==

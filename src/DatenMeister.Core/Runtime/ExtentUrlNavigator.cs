@@ -63,6 +63,11 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
     /// <returns></returns>
     public virtual object? element(string uri)
     {
+        // For whatever reason, that single tag is not Uri compliant
+        if (uri == "http://www.omg.org/spec/MOF/20131001#Tag") 
+            return null;
+        
+        // Now perform the actual execution
         var posQuestion = uri.IndexOf('?');
         var posHash = uri.IndexOf('#');
         var posExtentEnd = posQuestion == -1 ? posHash : posQuestion;

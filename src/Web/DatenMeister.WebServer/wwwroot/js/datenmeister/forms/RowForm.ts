@@ -420,7 +420,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 if (fieldInForm.field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
 
                     // Unsets the field in case the checkbox is not set
-                    if(fieldInForm.getCheckboxState() === true) {
+                    if(fieldInForm.getCheckboxState() === false) {
                         this.element.unset(fieldInForm.field.get(_DatenMeister._Forms._FieldData._name_, Mof.ObjectType.String));
                         managed = true;
                     }                 

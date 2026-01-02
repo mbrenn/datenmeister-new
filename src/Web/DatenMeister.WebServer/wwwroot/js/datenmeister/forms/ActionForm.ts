@@ -59,6 +59,7 @@ export async function createActionFormForEmptyObject(
         let loadedElement = await ClientItems.getObjectByUri(element.workspace, element.uri);
 
         statusOverview.setListStatus("Execute Action", false);
+        
         // Executes the detail form
         const result = await FormActions.execute(
             actionName,

@@ -684,7 +684,7 @@ public class ExtentManager
     }
 
     /// <summary>
-    /// Just opens an empty extent manager without having a connection to a extent registration storage date
+    /// Just opens an empty extent manager without having a connection to an extent registration storage date
     /// </summary>
     public void OpenDecoupled()
     {

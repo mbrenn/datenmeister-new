@@ -12,6 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\DatenMeister.Core.Interfaces\DatenMeister.Core.Interfaces.csproj" />
+      <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
       <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
     </ItemGroup>
 

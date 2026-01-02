@@ -6,4 +6,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Include="xmi\DatenMeister.Domains.Management.xmi" />
+      <EmbeddedResource Include="xmi\DatenMeister.Domains.Types.xmi" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+    </ItemGroup>
+
 </Project>

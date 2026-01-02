@@ -6,8 +6,11 @@ namespace DatenMeister.Domains.Tests;
 public class ActionTests
 {
     [Test]
-    public async Task TestTests()
+    public async Task CheckThatDomainsAreLoaded()
     {
+        var dm = await IntegrationOfTests.GetDatenMeisterScope();
+        
+        
         await Task.CompletedTask;
     }
 }

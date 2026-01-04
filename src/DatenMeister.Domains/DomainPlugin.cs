@@ -1,5 +1,6 @@
 ﻿using System.Xml.Linq;
 using BurnSystems;
+using DatenMeister.Actions;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
@@ -39,8 +40,9 @@ public class DomainPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSto
                 extentManager.LoadNonPersistentExtentFromResources(assemblyType, resourcePathManagement, WorkspaceNames.WorkspaceManagement, DmInternManagementDomainsDatenmeister);
                 
                 // Add the Action Handler
+                var actionLogicState = scopeStorage.Get<ActionLogicState>();
+                actionLogicState.AddActionHandler(new DomainCreateFoundationActionHandler(workspaceLogic, scopeStorage));
                 break;
-            
         }
         
         await Task.CompletedTask;

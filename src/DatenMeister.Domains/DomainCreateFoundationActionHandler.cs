@@ -29,14 +29,14 @@ public class DomainCreateFoundationActionHandler(IWorkspaceLogic workspaceLogic,
         var domainCreate = new Root.DomainCreateFoundationAction_Wrapper(action);
         
         // Cleans up the pre- and postfixes
-        var prefix = domainCreate.extentUriPrefix;
-        var postfix = domainCreate.extentUriPostfix;
-        if (!prefix.EndsWith(".") && !string.IsNullOrEmpty(prefix))
+        var prefix = domainCreate.extentUriPrefix ?? string.Empty;
+        var postfix = domainCreate.extentUriPostfix ?? string.Empty;
+        if (!string.IsNullOrEmpty(prefix) && !prefix.EndsWith('.'))
         {
             prefix += ".";
         }
 
-        if (!postfix.StartsWith(".")&& !string.IsNullOrEmpty(postfix))
+        if (!string.IsNullOrEmpty(postfix) && !postfix.StartsWith('.'))
         {
             postfix = "." + postfix;
         }

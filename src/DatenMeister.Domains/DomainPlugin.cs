@@ -6,6 +6,7 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Extent.Manager;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 
@@ -26,26 +27,18 @@ public class DomainPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSto
         switch (position)
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
+               
+                // Add the two xmi-extents to the workspace
+                var assemblyType = typeof(DomainPlugin);
+                var resourcePathTypes = "DatenMeister.Domains.Xmi.DatenMeister.Domains.Types.xmi";
+                var resourcePathManagement = "DatenMeister.Domains.Xmi.DatenMeister.Domains.Management.xmi";
+                
+                // Create the extentManager
                 var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
-                // Loads the Documents
-                var typesXmi = ResourceHelper.LoadStringFromAssembly(typeof(DomainPlugin), "DatenMeister.Domains.Xmi.DatenMeister.Domains.Types.xmi");
-                var managementXmi = ResourceHelper.LoadStringFromAssembly(typeof(DomainPlugin), "DatenMeister.Domains.Xmi.DatenMeister.Domains.Management.xmi");
+                extentManager.LoadNonPersistentExtentFromResources(assemblyType, resourcePathTypes, WorkspaceNames.WorkspaceTypes, DmInternTypesDomainsDatenmeister);
+                extentManager.LoadNonPersistentExtentFromResources(assemblyType, resourcePathManagement, WorkspaceNames.WorkspaceManagement, DmInternManagementDomainsDatenmeister);
                 
-                // Loads the XDocument from the loaded Resource Document, reflecting the content. 
-                var xmiTypesDocument = XDocument.Parse(typesXmi);
-                var xmiManagementDocument = XDocument.Parse(managementXmi);
-
-                // Loads the providers
-                var xmiTypesProvider = new XmiProvider(xmiTypesDocument);
-                var xmiManagementProvider = new XmiProvider(xmiTypesDocument);
-                
-                // Now, loads the UriExtents
-                var typesExtent = new MofUriExtent(xmiTypesProvider, DmInternTypesDomainsDatenmeister, scopeStorage);
-                var managementExtent = new MofUriExtent(xmiManagementProvider, DmInternManagementDomainsDatenmeister, scopeStorage);
-                
-                // Adds the extents to the workspaces directly, so they won't be loaded by the ExtentManager on Application Start-Up
-                extentManager.AddNonPersistentExtent(WorkspaceNames.WorkspaceManagement, managementExtent);
-                extentManager.AddNonPersistentExtent(WorkspaceNames.WorkspaceTypes, typesExtent);
+                // Add the Action Handler
                 break;
             
         }

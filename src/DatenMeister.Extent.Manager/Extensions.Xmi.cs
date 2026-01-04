@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Xml.Linq;
+using BurnSystems;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -63,5 +64,39 @@ public static class XmiExtensions
 
         var document = XDocument.Load(stream);
         return extentManager.CreateXmiExtentByDocument(uri, document, workspace);
+    }
+
+    /// <summary>
+    /// Loads types and creates a management extent from the specified embedded resource.
+    /// </summary>
+    /// <param name="extentManager">The manager responsible for handling extents within the application.</param>
+    /// <param name="sourceAssemblyType">The type located in the assembly containing the embedded resource.</param>
+    /// <param name="sourceResourcePath">The path to the embedded resource within the assembly.</param>
+    /// <param name="targetWorkspace">The name of the target workspace to which the extent will be added.</param>
+    /// <param name="targetExtentUri">The URI of the extent to be created.</param>
+    /// <returns>The created URI-based extent.</returns>
+    public static IUriExtent LoadNonPersistentExtentFromResources(
+        this ExtentManager extentManager,
+        Type sourceAssemblyType,
+        string sourceResourcePath,
+        string targetWorkspace,
+        string targetExtentUri)
+    {
+        // Loads the Documents
+        var xmiText = ResourceHelper.LoadStringFromAssembly(sourceAssemblyType, sourceResourcePath);
+                
+        // Loads the XDocument from the loaded Resource Document, reflecting the content. 
+        var xmiDocument = XDocument.Parse(xmiText);
+
+        // Loads the providers
+        var xmiProvider = new XmiProvider(xmiDocument);
+                
+        // Now, loads the UriExtents
+        var xmiExtent = new MofUriExtent(xmiProvider, targetExtentUri, extentManager.ScopeStorage);
+                
+        // Adds the extents to the workspaces directly, so they won't be loaded by the ExtentManager on Application Start-Up
+        extentManager.AddNonPersistentExtent(targetWorkspace, xmiExtent);
+
+        return xmiExtent;
     }
 }

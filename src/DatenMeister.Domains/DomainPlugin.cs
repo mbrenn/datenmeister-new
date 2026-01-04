@@ -28,8 +28,8 @@ public class DomainPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSto
             case PluginLoadingPosition.AfterLoadingOfExtents:
                 var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
                 // Loads the Documents
-                var typesXmi = ResourceHelper.LoadStringFromAssembly(typeof(DomainPlugin), "DatenMeister.Domains.xmi.DatenMeister.Domains.Types.xmi");
-                var managementXmi = ResourceHelper.LoadStringFromAssembly(typeof(DomainPlugin), "DatenMeister.Domains.xmi.DatenMeister.Domains.Management.xmi");
+                var typesXmi = ResourceHelper.LoadStringFromAssembly(typeof(DomainPlugin), "DatenMeister.Domains.Xmi.DatenMeister.Domains.Types.xmi");
+                var managementXmi = ResourceHelper.LoadStringFromAssembly(typeof(DomainPlugin), "DatenMeister.Domains.Xmi.DatenMeister.Domains.Management.xmi");
                 
                 // Loads the XDocument from the loaded Resource Document, reflecting the content. 
                 var xmiTypesDocument = XDocument.Parse(typesXmi);

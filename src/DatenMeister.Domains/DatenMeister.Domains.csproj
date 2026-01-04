@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="xmi\DatenMeister.Domains.Management.xmi" />
-      <EmbeddedResource Include="xmi\DatenMeister.Domains.Types.xmi" />
+      <EmbeddedResource Include="Xmi\DatenMeister.Domains.Management.xmi" />
+      <EmbeddedResource Include="Xmi\DatenMeister.Domains.Types.xmi" />
     </ItemGroup>
 
     <ItemGroup>

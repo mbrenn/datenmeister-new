@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xmi>
+  <meta p2:id="bf7573bb-bd76-4bfc-a6c8-4c35c51d6915" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes " __uri="dm:///intern.types.domains.datenmeister/" />
+  <item p2:type="dm:///_internal/model/uml#Class" p2:id="9b040443-4675-42b6-8707-0e42450a2102" name="DomainCreateFoundationAction" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="65555e46-fc82-4006-a319-238d7aab8339" general-ref="dm:///_internal/types/internal#Actions.Action" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="77b09d79-6d4d-4ad4-bc90-84219ff9a98f" name="filePath" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="5a8b5faa-522b-41f0-b04b-3c6232de42df" name="createDataExtent" />
+  </item>
+</xmi>

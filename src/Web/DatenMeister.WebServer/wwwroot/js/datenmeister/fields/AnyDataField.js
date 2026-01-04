@@ -177,6 +177,8 @@ export class Field extends BaseField {
                             referenceUri: selectedItem.uri,
                             workspaceId: selectItem.getUserSelectedWorkspaceId()
                         });
+                        if (tthis.callbackUpdateField !== undefined && tthis.callbackUpdateField !== null)
+                            tthis.callbackUpdateField();
                         await tthis.reloadAndUpdateDomContent();
                     });
                     containerChangeCell.empty();
@@ -213,6 +215,11 @@ export class Field extends BaseField {
             const value = this._fieldValue;
             this._textBox = $("<input />");
             this._textBox.val(value?.toString() ?? "");
+            // React upon changes of _textBox to call callback for changing of items
+            this._textBox.on('input change', () => {
+                if (this.callbackUpdateField !== undefined && this.callbackUpdateField !== null)
+                    this.callbackUpdateField();
+            });
             this._domElement.append(this._textBox);
         }
         else if (this._mode === ModeValue.Collection) {

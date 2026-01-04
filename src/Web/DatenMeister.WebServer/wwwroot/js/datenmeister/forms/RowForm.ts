@@ -39,9 +39,10 @@ class FieldInForm {
         if (this.fieldElement.callbackUpdateField === undefined) {
             this.fieldElement.callbackUpdateField = callback;
         } else {
+            const oldCallback = this.fieldElement.callbackUpdateField;
             this.fieldElement.callbackUpdateField = () => {
                 callback();
-                this.fieldElement.callbackUpdateField();
+                oldCallback();
             };
         }
     }

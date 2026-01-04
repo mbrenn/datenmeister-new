@@ -159,6 +159,7 @@ export class Control {
                         async () => {
                             await moveItemInCollectionUp(this.form.workspace, this.itemUrl, this.propertyName, innerValue.uri);
                             await this.reloadValuesFromServer();
+                            
                     });
                     moveDown.on("click",
                         async () => {

@@ -8,7 +8,7 @@ import * as SIC from "../controls/SelectItemControl.js";
 import * as DomHelper from "../DomHelper.js";
 import {ItemWithNameAndId} from "../ApiModels";
 
-export class Control extends BaseField{
+export class Control extends BaseField {
     configuration: IFormConfiguration;
     isReadOnly: boolean;
 
@@ -136,6 +136,10 @@ export class Control extends BaseField{
                         workspaceId: selectedItem.workspace
                     }
                 );
+
+                if (this.callbackUpdateField !== undefined) {
+                    this.callbackUpdateField();
+                }
 
                 if (!isSelectionInline) {
                     containerChangeCell.empty();

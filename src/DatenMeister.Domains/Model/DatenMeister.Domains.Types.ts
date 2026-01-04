@@ -5,6 +5,8 @@ export namespace _Root
         {
             static filePath = "filePath";
             static createDataExtent = "createDataExtent";
+            static extentUriPrefix = "extentUriPrefix";
+            static extentUriPostfix = "extentUriPostfix";
             static _name_ = "name";
             static isDisabled = "isDisabled";
         }

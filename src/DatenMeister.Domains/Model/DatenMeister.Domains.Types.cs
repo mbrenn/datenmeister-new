@@ -18,6 +18,12 @@ public class _Root
         public static readonly string @createDataExtent = "createDataExtent";
         public IElement? @_createDataExtent = null;
 
+        public static readonly string @extentUriPrefix = "extentUriPrefix";
+        public IElement? @_extentUriPrefix = null;
+
+        public static readonly string @extentUriPostfix = "extentUriPostfix";
+        public IElement? @_extentUriPostfix = null;
+
         public static readonly string @name = "name";
         public IElement? @_name = null;
 

@@ -30,22 +30,36 @@ public class Root
 
         public static DomainCreateFoundationAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
-        // Not found
-        public object? @filePath
+        public string? @filePath
         {
             get =>
-                _wrappedElement.getOrDefault<object?>("filePath");
+                _wrappedElement.getOrDefault<string?>("filePath");
             set => 
                 _wrappedElement.set("filePath", value);
         }
 
-        // Not found
-        public object? @createDataExtent
+        public bool @createDataExtent
         {
             get =>
-                _wrappedElement.getOrDefault<object?>("createDataExtent");
+                _wrappedElement.getOrDefault<bool>("createDataExtent");
             set => 
                 _wrappedElement.set("createDataExtent", value);
+        }
+
+        public string? @extentUriPrefix
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("extentUriPrefix");
+            set => 
+                _wrappedElement.set("extentUriPrefix", value);
+        }
+
+        public string? @extentUriPostfix
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("extentUriPostfix");
+            set => 
+                _wrappedElement.set("extentUriPostfix", value);
         }
 
         public string? @name

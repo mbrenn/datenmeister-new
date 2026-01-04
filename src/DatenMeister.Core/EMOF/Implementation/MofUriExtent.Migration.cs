@@ -40,5 +40,16 @@ public partial class MofUriExtent
 
             return uri;
         }
+    
+        /// <summary>
+        /// Adds a converter which converts the first parameter to the second parameter fitting to that function
+        /// </summary>
+        /// <param name="helpers">The list of migration helpers</param>
+        /// <param name="from">The uri to be converted</param>
+        /// <param name="to">The uri to be converted to</param>
+        public static void AddConverter(string from, string to)
+        {
+            MigrationHelpers.Add(uri => uri == from ? to : uri);
+        }
     }
 }

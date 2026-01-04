@@ -81,6 +81,8 @@ public class Workspace(string id, string annotation = "") : IWorkspace, IObject,
 
     public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
     {
+        uri = MofUriExtent.Migration.MigrateUriForResolver(uri);
+        
         var result = extent
             .Select(theExtent => theExtent is MofUriExtent mofUriExtent
                 ? mofUriExtent.Navigator.element(uri)

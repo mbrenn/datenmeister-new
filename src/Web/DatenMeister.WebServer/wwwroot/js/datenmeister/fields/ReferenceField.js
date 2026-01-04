@@ -88,6 +88,9 @@ export class Control extends BaseField {
                 referenceUri: selectedItem.uri,
                 workspaceId: selectedItem.workspace
             });
+            if (this.callbackUpdateField !== undefined) {
+                this.callbackUpdateField();
+            }
             if (!isSelectionInline) {
                 containerChangeCell.empty();
                 tthis.inhibitInline = true;

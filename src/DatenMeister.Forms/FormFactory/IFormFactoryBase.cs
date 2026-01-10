@@ -30,6 +30,11 @@ public static class FormFactoryPriorities
     public const int AdditionalFunctionsSecondary = 50;
     
     /// <summary>
+    /// Allows to add the buttons which contain the secondary function for the user
+    /// </summary>
+    public const int CleanUp = 0;
+    
+    /// <summary>
     /// Contains all the rest which will be called at last
     /// </summary>
     public const int Miscellaneous = -100;

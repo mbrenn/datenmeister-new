@@ -268,7 +268,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             const saveButton = $("<button class='btn btn-primary dm-detail-form-save'></button>").text(submitName);
             const saveAndCloseButton = $("<button class='btn btn-primary dm-detail-form-save-and-close'>Save &amp; Close</button>");
 
-            tr = $("<tr><td></td><td class='dm-form-submitbutton-cell'></td></tr>");
+            tr = $("<tr><td></td><td class='dm-form-submitbutton-cell'></td><td></td></tr>");
             const formSubmitButtonsCell = $('.dm-form-submitbutton-cell', tr);
 
             if (configuration.showCancelButton !== false) {

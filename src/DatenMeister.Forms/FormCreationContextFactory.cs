@@ -80,6 +80,8 @@ public class FormCreationContextFactory
         context.Global.ObjectFormFactories.Add(new AddTableFormForPackagedElements());
         context.Global.ObjectFormFactories.Add(new ValidateObjectOrCollectionForm
             { Priority = FormFactoryPriorities.Miscellaneous });
+        context.Global.ObjectFormFactories.Add(new AddEmptyRowFormInCaseItDoesNotExist
+            { Priority = FormFactoryPriorities.CleanUp });
 
         // Build up the TableForm Queue
         if (viewMode != ViewModes.AutoGenerate)

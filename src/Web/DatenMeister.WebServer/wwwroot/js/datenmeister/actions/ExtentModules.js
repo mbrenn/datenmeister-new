@@ -90,6 +90,9 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase {
         // Tries to find the first tab and its fields
         const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);
         const firstTab = tabs[0];
+        if (firstTab === undefined) {
+            throw "The form does not contain any tabs";
+        }
         const fields = firstTab.get(_RowForm.field, Mof.ObjectType.Array);
         // Adds the button to create another item
         const parameter = new Mof.DmObject();

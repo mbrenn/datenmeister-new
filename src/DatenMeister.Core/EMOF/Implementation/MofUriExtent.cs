@@ -136,9 +136,14 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     public static long UnresolvedUrisCount;
 
     /// <inheritdoc />
-    public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
+    public object? Resolve(string? uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
     {
         uri = Migration.MigrateUriForResolver(uri);
+        if (uri == null)
+        {
+            // We have found nothing or the uri is regarded as being ignored (like the Mof Tags)
+            return null;
+        }
         
         var queriedWorkspace = string.IsNullOrEmpty(workspace) ? Workspace : _cachedWorkspaceLogic?.GetWorkspace(workspace);
 

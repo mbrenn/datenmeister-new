@@ -7,15 +7,17 @@ public partial class MofUriExtent
         /// <summary>
         /// Stores a list of migration helpers supporting the move of namespaces and classed
         /// </summary>
-        public static List<Func<string, string>> MigrationHelpers { get; set; } = [MigrateDatenMeisterToDm];
+        public static List<Func<string, string?>> MigrationHelpers { get; set; } = [MigrateDatenMeisterToDm, IgnoreMofTags];
         
         /// <summary> 
         /// Performs the migration for the resolving
         /// </summary>
         /// <param name="uri">Uri to be checked</param>
         /// <returns>The migrated uri</returns>
-        public static string MigrateUriForResolver(string uri)
+        public static string? MigrateUriForResolver(string? uri)
         {
+            if(uri == null) return null;
+            
             foreach (var migrationHelper in MigrationHelpers)
             {
                 uri = migrationHelper(uri);
@@ -37,6 +39,19 @@ public partial class MofUriExtent
             {
                 return "dm:///_internal" + uri.Substring(prefix.Length);
             }
+
+            return uri;
+        }
+
+        /// <summary>
+        /// Ignores specific URIs matching predefined MOF tag addresses by converting them to null.
+        /// </summary>
+        /// <param name="uri">The URI to be checked and potentially ignored.</param>
+        /// <returns>The original URI if it does not match the ignored MOF tag, otherwise null.</returns>
+        private static string? IgnoreMofTags(string uri)
+        {
+            const string ignore = "http://www.omg.org/spec/MOF/20131001#Tag";
+            if(uri == ignore) return null;
 
             return uri;
         }

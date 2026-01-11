@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
-  <meta p2:id="3ff5a043-3cdc-4fc8-8733-b77f618754cc" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///issuemeister.forms" />
+  <meta p2:id="3ff5a043-3cdc-4fc8-8733-b77f618754cc" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="DatenMeister.Forms " __uri="dm:///intern.management.issues.datenmeister/" />
   <item p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="IssueMeister" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="78a82075-ec3f-4a9d-a739-2c139b9a9557">
     <!-- The filter -->
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="DataView" p1:id="4593ccf1-a127-47e2-bbe5-4d5bd228761e">
@@ -75,7 +75,7 @@
       </packagedElement>
       <!-- The Form Associations -->
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="IssueAssociationDetail" formType="Object" form-ref="#IssueFormDetail" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" name="Issue - Detail - Association" />
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="IssueExtentAssociationList" formType="Collection" form-ref="#IssuePackageList" extentType="IssueMeister" name="Collection View in IssueMeister" viewModeId="IssueMeister" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="IssueExtentAssociationList" formType="Collection" form-ref="#IssuePackageList" extentType="IssueMeister" name="Collection View in IssueMeister" viewModeId="IssueMeister" />
       <!-- Declares the view mode -->
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode" name="IssueMeister" id="IssueMeister" defaultExtentType="IssueMeister" p1:id="8ae94020-a5dc-49e4-a174-bbdd7cc1421e" />
     </packagedElement>

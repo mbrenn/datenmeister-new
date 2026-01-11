@@ -125,5 +125,5 @@ public class TemporaryReflectiveCollection(IEnumerable<object?> values, bool isR
     /// Gets the extent associated with the collection, if available.
     /// The extent represents the context or container responsible for managing the collection's elements.
     /// </summary>
-    public IExtent? Extent => (values as IHasExtent)?.Extent;
+    public IExtent? Extent => (Values as IHasExtent)?.Extent;
 }

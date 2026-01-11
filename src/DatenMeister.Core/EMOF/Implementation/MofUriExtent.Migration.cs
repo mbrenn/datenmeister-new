@@ -17,10 +17,11 @@ public partial class MofUriExtent
         public static string? MigrateUriForResolver(string? uri)
         {
             if(uri == null) return null;
-            
+
             foreach (var migrationHelper in MigrationHelpers)
             {
                 uri = migrationHelper(uri);
+                if (uri == null) return null;
             }
 
             return uri;

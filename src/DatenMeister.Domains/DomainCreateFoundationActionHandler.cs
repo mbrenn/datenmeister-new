@@ -10,6 +10,7 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Domains.Model;
 using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.Forms.Helper;
 using DatenMeister.Types.Plugin;
 
 namespace DatenMeister.Domains;
@@ -43,13 +44,14 @@ public class DomainCreateFoundationActionHandler(IWorkspaceLogic workspaceLogic,
         
         var filePathPrefix = 
             Path.Combine(domainCreate.filePath ?? string.Empty, domainCreate.name ?? string.Empty);
-        
+
         // We have to do the following tasks
         // 1. Create an empty Xmi-Extent into the specified folder with the name {Domain}_Management
+        // 1.1 Set Extent Type to FormMethods.FormExtentType = "DatenMeister.Forms";
         // 2. Create an empty Xmi-Extent into the specified folder with the name {Domain}_Types
         // 2.1. Set Extent Type to Uml.Classes (UmlPlugin.ExtentType)
         // 3. If required, add an empty Xmi-Extent into the specified folder with name {Domain_Data}
-        
+
         // 1.
         var managementConfiguration =
             new ExtentLoaderConfigs.XmiStorageLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
@@ -66,6 +68,9 @@ public class DomainCreateFoundationActionHandler(IWorkspaceLogic workspaceLogic,
         {
             throw new InvalidOperationException("Management-Extent could not be loaded: " + loadedManagementExtent.FailLoadingMessage);
         }
+
+        // 1.1
+        loadedManagementExtent.Extent.GetConfiguration().ExtentType = FormMethods.FormExtentType;
         
         // 2.
         var typesConfiguration =

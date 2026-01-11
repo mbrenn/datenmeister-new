@@ -1,9 +1,12 @@
 ﻿using DatenMeister.Actions;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Domains.Model;
+using DatenMeister.Forms.Helper;
 using DatenMeister.Plugins;
+using DatenMeister.Types.Plugin;
 using NUnit.Framework;
 
 namespace DatenMeister.Domains.Tests;
@@ -34,6 +37,52 @@ public class ActionTests
                 .Any(extent => extent.Uri.Contains(DomainPlugin.DmInternManagementDomainsDatenmeister)),
             Is.True,
             "Management Extent was not loaded");
+    }
+
+    [Test]
+    public async Task CheckThatExtentTypesAreSet()
+    {
+
+        await using var dm = await IntegrationOfTests.GetDatenMeisterScope();
+
+        var domainCreate = new Root.DomainCreateFoundationAction_Wrapper(InMemoryObject.TemporaryFactory)
+        {
+            name = "Test",
+            filePath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DatenMeister", "Domains",
+                "Test"),
+            createDataExtent = true,
+            extentUriPrefix = "prefix",
+            extentUriPostfix = "postfix"
+        };
+
+        var managementFilePath = Path.Combine(domainCreate.filePath, "Test_Management.xmi");
+        var typesFilePath = Path.Combine(domainCreate.filePath, "Test_Types.xmi");
+        var dataFilePath = Path.Combine(domainCreate.filePath, "Test_Data.xmi");
+
+        // Deletes the files of Management, Types and Data, if they are existing
+        if (File.Exists(managementFilePath)) File.Delete(managementFilePath);
+        if (File.Exists(typesFilePath)) File.Delete(typesFilePath);
+        if (File.Exists(dataFilePath)) File.Delete(dataFilePath);
+
+        // Now execute the action and verifies that
+        // 1. The Data, Management and Types Extents are loaded
+        // 2. The files are existing
+        var actionHandler = new ActionLogic(dm.WorkspaceLogic, dm.ScopeStorage);
+        await actionHandler.ExecuteAction(domainCreate.GetWrappedElement());
+
+
+        // Now perform the checking itself
+        var dataExtent = dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, "dm:///prefix.data.Test.postfix");
+        var managementExtent = dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceManagement, "dm:///prefix.management.Test.postfix");
+        var typesExtent = dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceTypes, "dm:///prefix.types.Test.postfix");
+
+        Assert.That(dataExtent, Is.Not.Null);
+        Assert.That(managementExtent, Is.Not.Null);
+        Assert.That(typesExtent, Is.Not.Null);
+
+        Assert.That(managementExtent!.GetConfiguration().ContainsExtentType(FormMethods.FormExtentType), Is.True);
+        Assert.That(typesExtent!.GetConfiguration().ContainsExtentType(UmlPlugin.ExtentType), Is.True);
     }
 
     [Test]

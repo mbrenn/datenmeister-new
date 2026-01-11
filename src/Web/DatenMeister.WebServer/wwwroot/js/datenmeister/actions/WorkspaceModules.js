@@ -111,7 +111,11 @@ class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBas
             parameter: extentCreationParameter
         });
         if (result.success) {
-            Navigator.navigateToExtentItems(element.get("workspaceId"), element.get("extentUri"));
+            let workspace = element.get("workspaceId");
+            if (workspace === undefined || workspace === null || workspace === "") {
+                workspace = Settings.WorkspaceData;
+            }
+            Navigator.navigateToExtentItems(workspace, element.get("extentUri"));
         }
         else {
             alert(result.reason);

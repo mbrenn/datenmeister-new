@@ -153,6 +153,20 @@ div.dm-collectionform-buttons
 .dm-rowform textarea.dm-textfield {
     resize: both;
 }
+.dm-textfield-clipboard-container
+{
+    padding: 5px;
+    background-color: lightgray;
+    border: 1px solid black;
+    width: 100%;    
+}
+
+.dm-textfield-clipboard
+{
+    width: calc(100%);
+    height: 200px;
+    padding: 5px;
+}
 
 table.dm-tableform
 {

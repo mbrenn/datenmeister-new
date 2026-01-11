@@ -45,8 +45,21 @@ export class Field extends BaseField {
             if (this.field.get(_DatenMeister._Forms._TextFieldData.supportClipboardCopy, Mof.ObjectType.Boolean)) {
                 const button = $("<button class='btn btn-secondary'>Copy to Clipboard</button>");
                 button.on('click', () => {
-                    navigator.clipboard.writeText(originalValue);
-                    alert('Text copied to clipboard');
+                    if (navigator.clipboard !== undefined && false) {
+                        navigator.clipboard.writeText(originalValue);
+                        alert('Text copied to clipboard');
+                    }
+                    else {
+                        // Unfortunately, we do not seem to be in a secure context, so we add a textbox
+                        const divBox = $("<div class='dm-textfield-clipboard-container'></div>");
+                        const infoText = $("<div class='dm-textfield-clipboard-info'>" +
+                            "Copy to clipboard is not <a href='https://developer.mozilla.org/en-US/docs/Web/API/Window/isSecureContext' target='_blank'>supported in your browser</a>. Please copy the text manually.</div>");
+                        divBox.append(infoText);
+                        const textbox = $("<textarea type='text' readonly class='dm-textfield-clipboard'/>");
+                        textbox.val(originalValue);
+                        divBox.append(textbox);
+                        divContainer.append(divBox);
+                    }
                 });
                 divContainer.append(button);
             }

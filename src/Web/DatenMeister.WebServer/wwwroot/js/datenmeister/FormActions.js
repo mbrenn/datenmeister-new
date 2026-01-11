@@ -3,10 +3,7 @@ import { SubmitMethod } from "./forms/Forms.js";
 import * as _DatenMeister from "./models/DatenMeister.class.js";
 import * as ActionClient from "./client/Actions.js";
 export function getActionHeading(module) {
-    if (module.actionHeading !== undefined) {
-        return module.actionHeading;
-    }
-    return module.actionVerb;
+    return module.actionHeading ?? module.actionName ?? module.actionVerb;
 }
 /**
  * Defines the base implementation which can be overridden

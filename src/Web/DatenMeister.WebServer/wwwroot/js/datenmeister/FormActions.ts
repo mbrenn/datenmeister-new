@@ -85,11 +85,7 @@ export interface IItemFormActionModule
 
 export function getActionHeading(module: IItemFormActionModule)
 {
-    if (module.actionHeading !== undefined) {
-        return module.actionHeading;
-    }
-    
-    return module.actionVerb;
+    return module.actionHeading ?? module.actionName ?? module.actionVerb;
 }
 
 /**

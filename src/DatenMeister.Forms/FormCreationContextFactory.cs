@@ -61,6 +61,8 @@ public class FormCreationContextFactory
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
         context.Global.CollectionFormFactories.Add(new CollectionFormFromData
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
+        context.Global.CollectionFormFactories.Add(new RemovePropertyFromCollectionFormTabs
+            { Priority = FormFactoryPriorities.CleanUp });
         context.Global.CollectionFormFactories.Add(new ValidateObjectOrCollectionForm
             { Priority = FormFactoryPriorities.Miscellaneous });
 

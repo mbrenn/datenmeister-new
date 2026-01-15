@@ -90,6 +90,9 @@ export function createQueryBuilder(query: QueryFilterParameter, limit?: number) 
     // Option 2, via Query Engine
     const builder = new QueryEngine.QueryBuilder();
     
+    // TODO: Add method, that viewnodes can also be considered!
+    
+    
     if(query.queryWorkspace !== undefined && query.queryUrl !== undefined)
     {
         QueryEngine.referenceExistingNode(builder, query.queryWorkspace, query.queryUrl);

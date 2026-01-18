@@ -1,14 +1,18 @@
-﻿import * as InterfacesForms from "./Interfaces.js";
+﻿import * as Settings from "../Settings.js"
+import * as InterfacesForms from "./Interfaces.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Mof from "../Mof.js";
+import {ObjectType} from "../Mof.js";
 import * as FieldFactory from "./FieldFactory.js";
 import {IFormConfiguration} from "./IFormConfiguration.js";
 import * as Navigator from '../Navigator.js'
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-import _FieldData = _DatenMeister._Forms._FieldData;
+import {_Forms} from "../models/DatenMeister.class.js";
 import * as burnJsPopup from "../../burnJsPopup.js"
 import * as ClientItem from "../client/Items.js"
 import * as ContextMenu from "./TableForm.ContextMenus.js"
+import _FieldData = _DatenMeister._Forms._FieldData;
+import _TableForm = _Forms._TableForm;
 
 interface MenuItemData
 {
@@ -296,12 +300,21 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
      */
     getQueryParameter() {
         const query = new InterfacesForms.QueryFilterParameter();
+
+        // Check, if we are having a viewnode
+        var viewNode = this.formElement.get(_TableForm.viewNode, ObjectType.Object);
+        if (viewNode !== undefined) {
+            query.queryWorkspace = Settings.WorkspaceManagement;
+            query.queryUrl = viewNode.uri;
+        } else {
+            query.queryUrl = this.tableState.overrideQueryItem;
+            query.queryWorkspace = this.tableState.overrideQueryWorkspace;
+        }
+
         query.orderBy = this.tableState.orderBy;
         query.orderByDescending = this.tableState.orderByDescending;
         query.filterByProperties = this.tableState.filterByProperty;
         query.filterByFreetext = this.tableState.freeTextFilter;
-        query.queryUrl = this.tableState.overrideQueryItem;
-        query.queryWorkspace = this.tableState.overrideQueryWorkspace;
         return query;
     }
 

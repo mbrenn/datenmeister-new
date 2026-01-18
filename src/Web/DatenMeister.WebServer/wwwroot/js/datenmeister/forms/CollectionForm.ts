@@ -87,51 +87,45 @@ export class CollectionFormHtmlElements
  * @return {QueryEngine.QueryBuilder} - An instance of the QueryEngine's QueryBuilder configured with the specified parameters.
  */
 export function createQueryBuilder(query: QueryFilterParameter, limit?: number) {
-    // Option 2, via Query Engine
     const builder = new QueryEngine.QueryBuilder();
-    
-    // TODO: Add method, that viewnodes can also be considered!
-    
-    
-    if(query.queryWorkspace !== undefined && query.queryUrl !== undefined)
-    {
+
+    if (query.queryWorkspace !== undefined && query.queryUrl !== undefined) {
+        // In case we are just using quzery, we use that one as input. 
         QueryEngine.referenceExistingNode(builder, query.queryWorkspace, query.queryUrl);
         return builder;
-    }
-    else {
+    } else {
         QueryEngine.addDynamicSource(builder, "input");
+    }
 
-        for (const property in query.filterByProperties) {
-            QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
-        }
+    for (const property in query.filterByProperties) {
+        QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
+    }
 
-        if (query.orderBy !== undefined) {
-            QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
-        }
+    if (query.orderBy !== undefined) {
+        QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
+    }
 
-        if (query.filterByFreetext) {
-            QueryEngine.filterByFreetext(builder, query.filterByFreetext);
-        }
+    if (query.filterByFreetext) {
+        QueryEngine.filterByFreetext(builder, query.filterByFreetext);
+    }
 
-        if (query.columnsIncludeOnly) {
-            QueryEngine.columnFilterIncludeOnly(builder, query.columnsIncludeOnly);
-        }
+    if (query.columnsIncludeOnly) {
+        QueryEngine.columnFilterIncludeOnly(builder, query.columnsIncludeOnly);
+    }
 
-        if (query.columnsExclude) {
-            QueryEngine.columnFilterExclude(builder, query.columnsExclude);
-        }
+    if (query.columnsExclude) {
+        QueryEngine.columnFilterExclude(builder, query.columnsExclude);
     }
 
     // Imposes only a limit in case it is not defined or positive
     // in case the given limit < 0, then no limit is applied
-    if(limit === undefined) {
+    if (limit === undefined) {
         QueryEngine.limit(builder, 101);
     }
-    if(limit > 0)
-    {
+    if (limit > 0) {
         QueryEngine.limit(builder, limit);
     }
-    
+
     return builder;
 }
 

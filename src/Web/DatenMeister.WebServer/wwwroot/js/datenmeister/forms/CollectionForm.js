@@ -24,29 +24,29 @@ export class CollectionFormHtmlElements {
  * @return {QueryEngine.QueryBuilder} - An instance of the QueryEngine's QueryBuilder configured with the specified parameters.
  */
 export function createQueryBuilder(query, limit) {
-    // Option 2, via Query Engine
     const builder = new QueryEngine.QueryBuilder();
     if (query.queryWorkspace !== undefined && query.queryUrl !== undefined) {
+        // In case we are just using quzery, we use that one as input. 
         QueryEngine.referenceExistingNode(builder, query.queryWorkspace, query.queryUrl);
         return builder;
     }
     else {
         QueryEngine.addDynamicSource(builder, "input");
-        for (const property in query.filterByProperties) {
-            QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
-        }
-        if (query.orderBy !== undefined) {
-            QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
-        }
-        if (query.filterByFreetext) {
-            QueryEngine.filterByFreetext(builder, query.filterByFreetext);
-        }
-        if (query.columnsIncludeOnly) {
-            QueryEngine.columnFilterIncludeOnly(builder, query.columnsIncludeOnly);
-        }
-        if (query.columnsExclude) {
-            QueryEngine.columnFilterExclude(builder, query.columnsExclude);
-        }
+    }
+    for (const property in query.filterByProperties) {
+        QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
+    }
+    if (query.orderBy !== undefined) {
+        QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
+    }
+    if (query.filterByFreetext) {
+        QueryEngine.filterByFreetext(builder, query.filterByFreetext);
+    }
+    if (query.columnsIncludeOnly) {
+        QueryEngine.columnFilterIncludeOnly(builder, query.columnsIncludeOnly);
+    }
+    if (query.columnsExclude) {
+        QueryEngine.columnFilterExclude(builder, query.columnsExclude);
     }
     // Imposes only a limit in case it is not defined or positive
     // in case the given limit < 0, then no limit is applied

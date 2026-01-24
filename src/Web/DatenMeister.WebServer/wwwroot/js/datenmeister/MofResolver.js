@@ -27,4 +27,28 @@ export function resolve(value) {
         }
     });
 }
+export function forceResolve(value) {
+    return new Promise(resolve => {
+        if (Array.isArray(value)) {
+            resolve(value);
+        }
+        else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
+            const asDmObject = value;
+            if (true) {
+                const workspace = asDmObject.workspace;
+                if (workspace === undefined) {
+                    alert('Workspace is undefined');
+                    asDmObject.workspace = "_";
+                }
+                ClientItem.getObjectByUri(asDmObject.workspace, asDmObject.uri).then(loadedValue => resolve(loadedValue));
+            }
+            else {
+                resolve(value);
+            }
+        }
+        else {
+            resolve(value);
+        }
+    });
+}
 //# sourceMappingURL=MofResolver.js.map

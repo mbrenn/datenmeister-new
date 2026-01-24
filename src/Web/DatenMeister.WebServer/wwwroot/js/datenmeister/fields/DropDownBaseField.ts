@@ -64,7 +64,7 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
                 let value = dmElement.get(fieldName, Mof.ObjectType.Object) as Mof.DmObject;
 
                 // Checks, if there is a value set at all? 
-                if (value === undefined) {
+                if (value === undefined || value === null) {
                     return $("<em>Not set</em>");
                 }
 

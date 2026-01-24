@@ -29,3 +29,27 @@ export function resolve(value: any): Promise<any> {
         }
     });
 }
+
+export function forceResolve(value: any): Promise<any> {
+    return new Promise<any>(resolve => {
+        if (Array.isArray(value)) {
+            resolve(value);
+        } else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
+            const asDmObject = value as DmObject;
+            if (true) {
+                const workspace = asDmObject.workspace;
+                if (workspace === undefined) {
+                    alert('Workspace is undefined');
+                    asDmObject.workspace = "_";
+                }
+
+                ClientItem.getObjectByUri(asDmObject.workspace, asDmObject.uri).then(
+                    loadedValue => resolve(loadedValue));
+            } else {
+                resolve(value);
+            }
+        } else {
+            resolve(value);
+        }
+    });
+}

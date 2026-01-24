@@ -33,7 +33,7 @@ export class DropDownBaseField extends BaseField {
             else if (this.fieldType === FieldType.References) {
                 let value = dmElement.get(fieldName, Mof.ObjectType.Object);
                 // Checks, if there is a value set at all? 
-                if (value === undefined) {
+                if (value === undefined || value === null) {
                     return $("<em>Not set</em>");
                 }
                 // If yes, get the value

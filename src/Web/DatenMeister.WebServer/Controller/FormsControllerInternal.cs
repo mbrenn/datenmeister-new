@@ -23,7 +23,7 @@ public class FormsControllerInternal
         WorkspaceLogic = workspaceLogic;
         ScopeStorage = scopeStorage;
         _temporaryLogic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
-        _temporaryExtentFactory = new TemporaryExtentFactory(_temporaryLogic);
+        _temporaryExtentFactory = new TemporaryExtentFactory(_temporaryLogic, true);
     }
 
     public IScopeStorage ScopeStorage { get; }
@@ -56,8 +56,7 @@ public class FormsControllerInternal
         };
         parameter.SetByExtent(item.GetExtentOf() as IUriExtent);
         
-        var form = FormCreation.CreateObjectForm(
-            parameter, formContext);
+        var form = FormCreation.CreateObjectForm(parameter, formContext);
 
         if (form.Form == null)
         {

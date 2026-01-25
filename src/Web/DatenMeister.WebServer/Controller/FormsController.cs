@@ -38,7 +38,10 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             }
         }
 
-        return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
+        return new MofJsonConverter
+        {
+            ResolveCompositesRecursively = true
+        }.ConvertToJson(form);
     }
 
     [HttpGet("api/forms/default_for_item/{workspaceId}/{itemUrl}/{viewMode?}")]
@@ -50,7 +53,10 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
         var form = _internal.GetObjectFormForItemInternal(workspaceId, itemUrl, viewMode ?? string.Empty);
 
-        return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
+        return new MofJsonConverter
+        {
+            ResolveCompositesRecursively = true
+        }.ConvertToJson(form);
     }
 
     [HttpGet("api/forms/default_for_extent/{workspaceId}/{extentUri}/{viewMode?}")]
@@ -62,7 +68,10 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
         var form = _internal.GetCollectionFormForExtentInternal(workspaceId, extentUri, viewMode ?? string.Empty);
 
-        return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
+        return new MofJsonConverter
+        {
+            ResolveCompositesRecursively = true
+        }.ConvertToJson(form);
     }
 
     /// <summary>

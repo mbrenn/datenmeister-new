@@ -37,6 +37,13 @@ public class MofJsonConverter
     public bool ResolveReferenceToOtherExtents { get; set; } = false;
 
     /// <summary>
+    ///     Gets or sets the flag whether composite properties shall be resolved recursively,
+    ///     ignoring the MaxRecursionDepth limit for composite properties.
+    ///     When enabled, the converter will continue resolving composite properties beyond the normal depth limit.
+    /// </summary>
+    public bool ResolveCompositesRecursively { get; set; } = false;
+
+    /// <summary>
     ///     Converts the given element to a json object
     /// </summary>
     /// <param name="value">Value to be converted</param>
@@ -111,10 +118,10 @@ public class MofJsonConverter
             var propertyValue = value.get(property);
 
             var attributeModel = classModel?.FindAttribute(property);
-            var isComposite = attributeModel?.IsComposite ?? false; // Default to true if no model is found
+            var isComposite = attributeModel?.IsComposite == true;
 
             // TODO: We are prepared just to return composites, but do not do it.
-            AppendValue(builder, new[] {isPropertySet, propertyValue}, recursionDepth/*, !isComposite*/);
+            AppendValue(builder, new[] {isPropertySet, propertyValue}, recursionDepth, isComposite: isComposite);
 
             komma = ",";
         }
@@ -177,7 +184,8 @@ public class MofJsonConverter
     /// <param name="propertyValue"></param>
     /// <param name="recursionDepth">Defines the recursion Depth</param>
     /// <param name="forceReference">true, if the reference shall be forced</param>
-    private void AppendValue(StringBuilder builder, object? propertyValue, int recursionDepth = 0, bool forceReference = false)
+    /// <param name="isComposite">true, if the property is a composite</param>
+    private void AppendValue(StringBuilder builder, object? propertyValue, int recursionDepth = 0, bool forceReference = false, bool isComposite = false)
     {
         var connectedExtent = GetConnectedExtent(propertyValue);
         var forceReferenceByExtent = !ResolveReferenceToOtherExtents
@@ -192,7 +200,11 @@ public class MofJsonConverter
             recursionDepth = Math.Max(recursionDepth, MaxRecursionDepth - 1);
         }
 
-        if (propertyValue is IObject asObject && (recursionDepth >= MaxRecursionDepth || forceReference || forceReferenceByExtent))
+        // Check if we should stop recursion based on depth
+        // If ResolveCompositesRecursively is enabled and this is a composite property, ignore depth limit
+        var shouldStopRecursion = recursionDepth >= MaxRecursionDepth && !(ResolveCompositesRecursively && isComposite);
+
+        if (propertyValue is IObject asObject && (shouldStopRecursion || forceReference || forceReferenceByExtent))
         {
             // Try to resolve the item to find the workspace, unfortunately, MofObjectShadow does not include the workspace
             if (asObject is MofObjectShadow mofObjectShadow)
@@ -250,7 +262,7 @@ public class MofJsonConverter
             foreach (var innerValue in enumeration)
             {
                 builder.AppendLine(komma);
-                AppendValue(builder, innerValue, recursionDepth + 1, forceReference);
+                AppendValue(builder, innerValue, recursionDepth + 1, forceReference, isComposite);
                 komma = ",";
             }
 

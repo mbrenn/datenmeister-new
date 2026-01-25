@@ -62,6 +62,8 @@ public class FormsControllerInternal
         {
             throw new InvalidOperationException("Form is not defined");
         }
+            
+        _temporaryLogic.TemporaryExtent.elements().add(form.Form);
 
         return form.Form;
     }
@@ -95,7 +97,7 @@ public class FormsControllerInternal
             throw new InvalidOperationException("Form is not defined");
         }
             
-        _temporaryLogic.TemporaryExtent.elements().add(form);
+        _temporaryLogic.TemporaryExtent.elements().add(form.Form);
 
         return form.Form;
     }
@@ -135,6 +137,8 @@ public class FormsControllerInternal
         {
             throw new InvalidOperationException("Form is not defined");
         }
+        
+        _temporaryLogic.TemporaryExtent.elements().add(result.Form);
 
         return result.Form;
     }

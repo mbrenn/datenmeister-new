@@ -182,7 +182,7 @@ export class TableForm {
         const query = new InterfacesForms.QueryFilterParameter();
         // Check, if we are having a viewnode
         var viewNode = this.formElement.get(_TableForm.viewNode, ObjectType.Object);
-        if (viewNode !== undefined) {
+        if (viewNode !== undefined && viewNode !== null) {
             query.queryWorkspace = Settings.WorkspaceManagement;
             query.queryUrl = viewNode.uri;
         }

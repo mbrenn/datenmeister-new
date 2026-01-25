@@ -191,7 +191,8 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
         const collectionFormHtml = $("<div>" +
             "<div class='dm_collection_form_message'></div>" +
             "<div class='dm_collection_form_table'></div>" +
-            "</div>")
+            "</div>");
+        this.htmlElements.itemContainer.empty();
         this.htmlElements.itemContainer.append(collectionFormHtml);
         this.htmlElements.messageContainer = this.htmlElements.itemContainer.find(".dm_collection_form_message");
         this.htmlElements.tableContainer = this.htmlElements.itemContainer.find(".dm_collection_form_table");
@@ -424,7 +425,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
             const tabCreationFunction = async function (tab: Mof.DmObject, form: JQuery) {
                 const parameter = {} as ClientItems.IGetRootElementsParameter;
                 const viewNodeUrl = tab.get(_TableForm.viewNode, Mof.ObjectType.Single) as Mof.DmObject;
-                if (viewNodeUrl !== undefined) {
+                if (viewNodeUrl !== undefined && viewNodeUrl !== null) {
                     parameter.viewNode = viewNodeUrl.uri;
                 }
 

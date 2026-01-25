@@ -90,6 +90,7 @@ export class CollectionFormCreator {
             "<div class='dm_collection_form_message'></div>" +
             "<div class='dm_collection_form_table'></div>" +
             "</div>");
+        this.htmlElements.itemContainer.empty();
         this.htmlElements.itemContainer.append(collectionFormHtml);
         this.htmlElements.messageContainer = this.htmlElements.itemContainer.find(".dm_collection_form_message");
         this.htmlElements.tableContainer = this.htmlElements.itemContainer.find(".dm_collection_form_table");
@@ -268,7 +269,7 @@ export class CollectionFormCreator {
             const tabCreationFunction = async function (tab, form) {
                 const parameter = {};
                 const viewNodeUrl = tab.get(_TableForm.viewNode, Mof.ObjectType.Single);
-                if (viewNodeUrl !== undefined) {
+                if (viewNodeUrl !== undefined && viewNodeUrl !== null) {
                     parameter.viewNode = viewNodeUrl.uri;
                 }
                 const callbackLoadItems = async (query) => {

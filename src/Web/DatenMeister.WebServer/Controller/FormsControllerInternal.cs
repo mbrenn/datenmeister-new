@@ -23,7 +23,7 @@ public class FormsControllerInternal
         WorkspaceLogic = workspaceLogic;
         ScopeStorage = scopeStorage;
         _temporaryLogic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
-        _temporaryExtentFactory = new TemporaryExtentFactory(_temporaryLogic, true);
+        _temporaryExtentFactory = new TemporaryExtentFactory(_temporaryLogic);
     }
 
     public IScopeStorage ScopeStorage { get; }

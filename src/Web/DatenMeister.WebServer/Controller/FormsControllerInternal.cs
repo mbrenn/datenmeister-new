@@ -58,14 +58,7 @@ public class FormsControllerInternal
         
         var form = FormCreation.CreateObjectForm(parameter, formContext);
 
-        if (form.Form == null)
-        {
-            throw new InvalidOperationException("Form is not defined");
-        }
-            
-        _temporaryLogic.TemporaryExtent.elements().add(form.Form);
-
-        return form.Form;
+        return form.Form ?? throw new InvalidOperationException("Form is not defined");
     }
 
     public IElement GetCollectionFormForExtentInternal(string workspaceId, string extentUri, string viewMode)
@@ -92,14 +85,7 @@ public class FormsControllerInternal
             },
             formContext);
             
-        if (form.Form == null)
-        {
-            throw new InvalidOperationException("Form is not defined");
-        }
-            
-        _temporaryLogic.TemporaryExtent.elements().add(form.Form);
-
-        return form.Form;
+        return form.Form ?? throw new InvalidOperationException("Form is not defined");
     }
 
     /// <summary>
@@ -133,14 +119,7 @@ public class FormsControllerInternal
                 MetaClass = resolvedMetaClass
             }, context);
 
-        if (result.Form == null)
-        {
-            throw new InvalidOperationException("Form is not defined");
-        }
-        
-        _temporaryLogic.TemporaryExtent.elements().add(result.Form);
-
-        return result.Form;
+        return result.Form ?? throw new InvalidOperationException("Form is not defined");
     }
 
     /// <summary>

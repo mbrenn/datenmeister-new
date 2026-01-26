@@ -49,10 +49,11 @@ public class FormCreationContextFactory
         };
 
         // Build up the CollectionForm Queue
+        context.Global.CollectionFormFactories.Add(new EmptyCollectionFormFactory(_workspaceLogic)
+            { Priority = FormFactoryPriorities.Preparation });
+        
         if (viewMode != ViewModes.AutoGenerate)
         {
-            context.Global.CollectionFormFactories.Add(new EmptyCollectionFormFactory
-                { Priority = FormFactoryPriorities.Preparation });
             context.Global.CollectionFormFactories.Add(new FormFinderFactory(_workspaceLogic)
                 { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
@@ -67,17 +68,18 @@ public class FormCreationContextFactory
             { Priority = FormFactoryPriorities.Miscellaneous });
 
         // Build up the ObjectForm Queue
+        context.Global.ObjectFormFactories.Add(new EmptyObjectFormFactory(_workspaceLogic)
+            { Priority = FormFactoryPriorities.Preparation });
+        
         if (viewMode != ViewModes.AutoGenerate)
         {
-            context.Global.ObjectFormFactories.Add(new EmptyObjectFormFactory
-                { Priority = FormFactoryPriorities.Preparation });
             context.Global.ObjectFormFactories.Add(new FormFinderFactory(_workspaceLogic)
                 { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
 
         context.Global.ObjectFormFactories.Add(new ObjectFormFromMetaClass(_workspaceLogic)
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
-        context.Global.ObjectFormFactories.Add(new ObjectFormFromData
+        context.Global.ObjectFormFactories.Add(new ObjectFormFromData(_workspaceLogic)
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.ObjectFormFactories.Add(new AddTableFormForPackagedElements());
         context.Global.ObjectFormFactories.Add(new ValidateObjectOrCollectionForm
@@ -86,10 +88,10 @@ public class FormCreationContextFactory
             { Priority = FormFactoryPriorities.CleanUp });
 
         // Build up the TableForm Queue
+        context.Global.TableFormFactories.Add(new EmptyTableFormFactory(_workspaceLogic)
+            { Priority = FormFactoryPriorities.Preparation });
         if (viewMode != ViewModes.AutoGenerate)
         {
-            context.Global.TableFormFactories.Add(new EmptyTableFormFactory
-                { Priority = FormFactoryPriorities.Preparation });
             context.Global.TableFormFactories.Add(new FormFinderFactory(_workspaceLogic)
                 { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
@@ -105,10 +107,10 @@ public class FormCreationContextFactory
             { Priority = FormFactoryPriorities.Miscellaneous });
 
         // Build up the RowForm Queue
+        context.Global.RowFormFactories.Add(new EmptyRowFormFactory(_workspaceLogic)
+            { Priority = FormFactoryPriorities.Preparation });
         if (viewMode != ViewModes.AutoGenerate)
         {
-            context.Global.RowFormFactories.Add(new EmptyRowFormFactory
-                { Priority = FormFactoryPriorities.Preparation });
             context.Global.RowFormFactories.Add(new FormFinderFactory(_workspaceLogic)
                 { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }

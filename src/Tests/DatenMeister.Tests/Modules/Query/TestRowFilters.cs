@@ -1,6 +1,7 @@
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
@@ -19,7 +20,9 @@ public class TestRowFilters
     {
         var (scope, queryFlatten, queryByMetaClass) = await SetupExtentAndQuery();
         var testExtent = scope.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, "dm:///test")!;
+        var viewExtent = scope.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, "dm:///view_test")!;
         Assert.That(testExtent, Is.Not.Null);
+        Assert.That(viewExtent, Is.Not.Null);
         
         // Add some values
         var factory = new MofFactory(testExtent);
@@ -40,6 +43,7 @@ public class TestRowFilters
         var viewLogic = new DataView.DataViewEvaluation(scope.WorkspaceLogic, scope.ScopeStorage);
 
         var queryProperty = factory.create(_DataViews.TheOne.Row.__RowFilterByPropertyValueNode);
+        viewExtent.elements().add(queryProperty);
         queryProperty.set(_DataViews._Row._RowFilterByPropertyValueNode.input, queryFlatten);
         queryProperty.set(_DataViews._Row._RowFilterByPropertyValueNode.property, "code");
         
@@ -100,7 +104,7 @@ public class TestRowFilters
     }
 
     [Test]
-    public async Task TestWhenMetaClassIsWitInherits()
+    public async Task TestWhenMetaClassIsWithInherits()
     {
         var (scope, _, queryByMetaClass) = await SetupExtentAndQuery();
         await using var datenMeisterScope = scope;
@@ -118,7 +122,6 @@ public class TestRowFilters
                  x.metaclass.equals(_DataViews.TheOne.Source.__SelectByWorkspaceNode))));
     }
 
-
     [Test]
     public async Task TestOrderBy()
     {
@@ -126,34 +129,31 @@ public class TestRowFilters
 
         var extentManager = scope.Resolve<ExtentManager>();
 
-        var loaderConfig =
-            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
-        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
-        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
-            WorkspaceNames.WorkspaceData);
-
-        var loadedExtentInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
-        Assert.That(loadedExtentInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
-        var factory = new MofFactory(loadedExtentInfo.Extent!);
+        var (extent, viewExtent) = await LoadAndValidateExtents(extentManager);
+        
+        var factory = new MofFactory(extent!);
+        Assert.That(extent, Is.Not.Null);
 
         var item = factory.create(_DataViews.TheOne.__ViewNode);
         item.set(_DataViews._ViewNode.name, $"X");
-        loadedExtentInfo.Extent!.elements().add(item);
+        extent.elements().add(item);
         
         item = factory.create(_DataViews.TheOne.__ViewNode);
         item.set(_DataViews._ViewNode.name, $"B");
-        loadedExtentInfo.Extent!.elements().add(item);
+        extent.elements().add(item);
 
         item = factory.create(_DataViews.TheOne.__ViewNode);
         item.set(_DataViews._ViewNode.name, $"A");
-        loadedExtentInfo.Extent!.elements().add(item);
+        extent.elements().add(item);
         
         // Now, we create the query and check that the ordering is working
         var queryByExtent = factory.create(_DataViews.TheOne.Source.__SelectByExtentNode);
+        viewExtent.elements().add(queryByExtent);
         queryByExtent.set(_DataViews._Source._SelectByExtentNode.workspaceId, "Data");
         queryByExtent.set(_DataViews._Source._SelectByExtentNode.extentUri, "dm:///test");
         
         var queryOnPosition = factory.create(_DataViews.TheOne.Row.__RowOrderByNode);
+        viewExtent.elements().add(queryOnPosition);
         queryOnPosition.set(_DataViews._Row._RowOrderByNode.input, queryByExtent);
         queryOnPosition.set(_DataViews._Row._RowOrderByNode.propertyName, "name");
         
@@ -182,30 +182,25 @@ public class TestRowFilters
         
         var extentManager = scope.Resolve<ExtentManager>();
 
-        var loaderConfig =
-            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
-        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
-        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
-            WorkspaceNames.WorkspaceData);
-        
-        var loadedExtentInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
-        Assert.That(loadedExtentInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
-        var factory = new MofFactory(loadedExtentInfo.Extent!);
+        var (extent, viewExtent) = await LoadAndValidateExtents(extentManager);
+        var factory = new MofFactory(extent);
 
         // Create the data for 100 of items
         foreach(var i in Enumerable.Range(0, 100))
         {
             var item = factory.create(_DataViews.TheOne.__ViewNode);
             item.set(_DataViews._ViewNode.name, $"Item {i}");
-            loadedExtentInfo.Extent!.elements().add(item);
+            extent.elements().add(item);
         }
         
         // Now, we create the query and check that a the OnPosition is capable to retrieve
         // the first 10 items, the items 15 to 25 and the last 5 items by querying position of 95 and amount of 10
         var queryByExtent = factory.create(_DataViews.TheOne.Source.__SelectByExtentNode);
+        viewExtent.elements().add(queryByExtent);
         queryByExtent.set(_DataViews._Source._SelectByExtentNode.workspaceId, "Data");
         queryByExtent.set(_DataViews._Source._SelectByExtentNode.extentUri, "dm:///test");
         var queryOnPosition = factory.create(_DataViews.TheOne.Row.__RowFilterOnPositionNode);
+        viewExtent.elements().add(queryOnPosition);
 
         var viewLogic = new DataView.DataViewEvaluation(scope.WorkspaceLogic, scope.ScopeStorage);
         queryOnPosition.set(_DataViews._Row._RowFilterOnPositionNode.input, queryByExtent);
@@ -243,19 +238,10 @@ public class TestRowFilters
             scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             // Create the Target Extent
-
             var extentManager = scope.Resolve<ExtentManager>();
 
-            var loaderConfig =
-                InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
-            loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
-            loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
-                WorkspaceNames.WorkspaceData);
-        
-            var loadedExtentInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
-            Assert.That(loadedExtentInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
+            var (extent, viewExtent) = await LoadAndValidateExtents(extentManager);
 
-            var extent = loadedExtentInfo.Extent!;
             var factory = new MofFactory(extent);
         
             // Create the data!
@@ -267,6 +253,7 @@ public class TestRowFilters
             // Now create the query
             var dropDownByQueryData = factory.create(_Forms.TheOne.__DropDownByQueryData);
             var queryStatement = factory.create(_DataViews.TheOne.__QueryStatement);
+            viewExtent.elements().add(queryStatement);
 
             var queryByExtent = factory.create(_DataViews.TheOne.Source.__SelectByWorkspaceNode);
             queryByExtent.set(_DataViews._Source._SelectByWorkspaceNode.workspaceId, "Data");
@@ -277,16 +264,14 @@ public class TestRowFilters
             queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByExtent);
             queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByMetaClass);
             queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryFlatten);
+            
             queryStatement.set(_DataViews._QueryStatement.resultNode, queryByMetaClass);
-
-            dropDownByQueryData.set(_Forms._DropDownByQueryData.query, queryStatement);
-
             queryFlatten.set(_DataViews._Row._RowFlattenNode.input, queryByExtent);
-
             queryByMetaClass.set(_DataViews._Row._RowFilterByMetaclassNode.input, queryFlatten);
             queryByMetaClass.set(
                 _DataViews._Row._RowFilterByMetaclassNode.metaClass,
                 _DataViews.TheOne.__ViewNode);
+            
             return (scope, queryFlatten, queryByMetaClass);
         }
         catch
@@ -298,5 +283,30 @@ public class TestRowFilters
 
             throw;
         }
+    }
+
+    public static async Task<(IUriExtent extent, IUriExtent viewExtent)> LoadAndValidateExtents(ExtentManager extentManager)
+    {
+        var loaderConfig = new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+        {
+            extentUri = "dm:///test",
+            workspaceId = WorkspaceNames.WorkspaceData
+        };
+        
+        var loadedExtentInfo = await extentManager.LoadExtent(loaderConfig.GetWrappedElement(), ExtentCreationFlags.CreateOnly);
+        Assert.That(loadedExtentInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
+        var extent = loadedExtentInfo.Extent!;
+
+        var viewLoaderConfig = new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+        {
+            extentUri = "dm:///view_test",
+            workspaceId = WorkspaceNames.WorkspaceData
+        };
+        
+        var viewLoadedExtentInfo = await extentManager.LoadExtent(viewLoaderConfig.GetWrappedElement(), ExtentCreationFlags.CreateOnly);
+        Assert.That(viewLoadedExtentInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
+        var viewExtent = viewLoadedExtentInfo.Extent;
+        Assert.That(viewExtent, Is.Not.Null);
+        return (extent, viewExtent!);
     }
 }

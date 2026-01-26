@@ -55,7 +55,11 @@ public class MofJsonConverter
         rootExtent =
             GetConnectedExtent(value);
 
-        AppendValue(builder, value, -1 /* starts with -1 since AppendValue will directly increase the value */);
+        AppendValue(
+            builder,
+            value,
+            -1, /* starts with -1 since AppendValue will directly increase the value */
+            isComposite: true);
         return builder.ToString();
     }
 
@@ -119,7 +123,7 @@ public class MofJsonConverter
             var propertyValue = value.get(property);
 
             var attributeModel = classModel?.FindAttribute(property);
-            var isComposite = attributeModel?.IsComposite == true;
+            var isComposite = attributeModel?.IsComposite != false;
 
             AppendValue(builder, new[] {isPropertySet, propertyValue}, recursionDepth, isComposite: isComposite);
 

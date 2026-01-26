@@ -584,8 +584,24 @@ public class MofExtent :
         {
             if (extent == null)
                 throw new InvalidOperationException("Extent is null but MofObject given");
+            
+            // Different configuration
+            var isCompositeAndInExtent = isComposite == true && asMofObject.Extent != null;
+            var isUnknownCompositeNotInExtent = isComposite == null && asMofObject.Extent == null;
+            var isReferenceExtentFitting = asMofObject.ReferencedExtent == extent;
 
-            if ((asMofObject.Extent == null && isComposite == null) || isComposite == true)
+            // We can take over the element, in case the extent is null, but the reference is perfectly fitting
+            if (asMofObject.Extent == null && isReferenceExtentFitting && asMofObject.ProviderObject.Provider == extent.Provider)
+            {
+                return asMofObject.ProviderObject;
+            }
+            
+            // We need to copy in case: 
+            // Item isComposite and already in an Extent ==> Real composition
+            // Item isComposite not in extent and also the factory is different ==> We can just set it.. everythjing good
+            // Item is unknown whether composite or not, but extent is not known
+
+            if (isCompositeAndInExtent || isCompositeAndInExtent && !isReferenceExtentFitting || isUnknownCompositeNotInExtent)
             {
                 if (isComposite == false)
                 {
@@ -594,13 +610,6 @@ public class MofExtent :
                     var attributeName = attributeModel?.Name ?? "Unknown";
                     logger.Info(
                         $"We are NOT composite, but would like to get added without knowing the extent: {asMofObject} ({metaClass}) to Extent: {extentUri} (Attribute: {attributeName})");
-                }
-
-                if (asMofObject.ProviderObject.Provider == extent.Provider)
-                {
-                    // if the given value is created by the provider, but has not been allocated
-                    // to an object until now, it can be used directly.
-                    return asMofObject.ProviderObject;
                 }
 
                 // We are having (1) a composite object or (2) no information about composition strategy

@@ -30,7 +30,7 @@ public class RowFilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
     /// <inheritdoc />
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._Row._RowFilterByPropertyValueNode.input);
+        var inputNode = viewNode.getOrDefault<IElement?>(_DataViews._Row._RowFilterByPropertyValueNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");
@@ -40,14 +40,14 @@ public class RowFilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
         var input = evaluation.GetElementsForViewNode(inputNode);
 
         var property = viewNode.getOrDefault<string>(_DataViews._Row._RowFilterByPropertyValueNode.property);
-        if (property == null)
+        if (string.IsNullOrEmpty(property))
         {
             Logger.Warn("Property not found");
             return new PureReflectiveSequence();
         }
 
         var propertyValue = viewNode.getOrDefault<string>(_DataViews._Row._RowFilterByPropertyValueNode.value);
-        if (propertyValue == null)
+        if (string.IsNullOrEmpty(propertyValue))
         {
             Logger.Warn("Property Value not found");
             return new PureReflectiveSequence();
@@ -79,8 +79,8 @@ public class RowFilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
         string propertyValue, _DataViews.___ComparisonMode comparisonMode)
     {
         Regex? regex = null;
-        if (comparisonMode == _DataViews.___ComparisonMode.RegexMatch
-            || comparisonMode == _DataViews.___ComparisonMode.RegexNoMatch)
+        if (comparisonMode is 
+            _DataViews.___ComparisonMode.RegexMatch or _DataViews.___ComparisonMode.RegexNoMatch)
         {
             regex = new Regex(propertyValue);
         }

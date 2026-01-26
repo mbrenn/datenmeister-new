@@ -50,6 +50,14 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     {
         get
         {
+            var workspace = Workspace;
+            if (workspace == null)
+            {
+                // In case, that we are not in a good context while having a Data Workspace, we just return the temporary extent,
+                // so most unit tests will be working
+                return InMemoryProvider.TemporaryExtent;
+            }
+            
             if (workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri)
                 is not IUriExtent foundExtent)
             {

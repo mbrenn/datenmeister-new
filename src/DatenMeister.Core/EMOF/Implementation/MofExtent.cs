@@ -600,8 +600,7 @@ public class MofExtent :
             // Item isComposite and already in an Extent ==> Real composition
             // Item isComposite not in extent and also the factory is different ==> We can just set it.. everythjing good
             // Item is unknown whether composite or not, but extent is not known
-
-            if (isCompositeAndInExtent || isCompositeAndInExtent && !isReferenceExtentFitting || isUnknownCompositeNotInExtent)
+            if (isComposite == true || isCompositeAndInExtent && !isReferenceExtentFitting || isUnknownCompositeNotInExtent)
             {
                 if (isComposite == false)
                 {

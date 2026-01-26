@@ -142,7 +142,7 @@ public record ItemWithNameAndId
             komma = ",";
         }
 
-        if (!shortOutput)
+        if (!shortOutput || true)
         {
             if (metaClassName != null)
             {

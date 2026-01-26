@@ -198,9 +198,15 @@ public class MofJsonConverter
     private void AppendValue(StringBuilder builder, object? propertyValue, int recursionDepth = 0, bool forceReference = false, bool isComposite = false)
     {
         var connectedExtent = GetConnectedExtent(propertyValue);
-        var forceReferenceByExtent = !ResolveReferenceToOtherExtents
-                             && rootExtent != null
-                             && rootExtent != connectedExtent;
+        var forceReferenceByExtent =
+            !ResolveReferenceToOtherExtents
+            && rootExtent != null
+            && rootExtent != connectedExtent
+            && !isComposite;
+        if (isComposite)
+        {
+            forceReference = false;
+        }
 
         // If the item is of another extent, the recursion depth will be set, so there will be no deeper 
         // parsing. If a deeper parsing is required, the client shall explicitly query

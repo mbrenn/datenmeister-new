@@ -373,7 +373,7 @@ export class TableForm {
             const row = $("<tr></tr>");
             for (const field of fields) {
                 let cell = $("<td></td>");
-                const fieldMetaClassUri = field.metaClass.uri;
+                const fieldMetaClassUri = field.metaClass?.uri;
                 const fieldElement = FieldFactory.createField(fieldMetaClassUri, {
                     configuration: this.configuration,
                     field: field,
@@ -512,7 +512,8 @@ export class TableForm {
     }
     async createPropertyMenuItems(field) {
         let result = [];
-        if (field.metaClass.uri !== _DatenMeister._Forms.__ActionFieldData_Uri
+        if (field.metaClass !== undefined && field.metaClass !== null &&
+            field.metaClass.uri !== _DatenMeister._Forms.__ActionFieldData_Uri
             && field.metaClass.uri !== _DatenMeister._Forms.__MetaClassElementFieldData_Uri) {
             result.push(ContextMenu.createFunctionToRemoveAllProperties(field));
             if (this.tableParameter.allowFilteringOnProperty) {

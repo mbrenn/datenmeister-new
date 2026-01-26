@@ -556,7 +556,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             for (const field of fields) {
                 let cell = $("<td></td>");
 
-                const fieldMetaClassUri = field.metaClass.uri;
+                const fieldMetaClassUri = field.metaClass?.uri;
                 const fieldElement = FieldFactory.createField(
                     fieldMetaClassUri,
                     {
@@ -721,7 +721,8 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     async createPropertyMenuItems(field: Mof.DmObject): Promise<MenuItemData[]> {
         let result = [];
 
-        if (field.metaClass.uri !== _DatenMeister._Forms.__ActionFieldData_Uri
+        if (field.metaClass !== undefined && field.metaClass !== null && 
+            field.metaClass.uri !== _DatenMeister._Forms.__ActionFieldData_Uri
             && field.metaClass.uri !== _DatenMeister._Forms.__MetaClassElementFieldData_Uri) {
 
             result.push(ContextMenu.createFunctionToRemoveAllProperties(field));

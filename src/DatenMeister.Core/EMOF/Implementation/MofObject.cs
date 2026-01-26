@@ -477,11 +477,9 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     public ClassModel? GetClassModel()
     {
         MofUriExtent? extent = Extent as MofUriExtent;
-        var lookInMetaClass = true;
         if (extent == null)
         {
             extent = ReferencedExtent as MofUriExtent;
-            lookInMetaClass = false;
         }
 
         if (extent == null) return null;
@@ -491,8 +489,8 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         return string.IsNullOrEmpty(metaClassUri)
             ? null
             : UseClassModelCache
-                ? _cachedClassModel ??= extent.FindModel(metaClassUri, lookInMetaClass)
-                : extent.FindModel(metaClassUri, lookInMetaClass);
+                ? _cachedClassModel ??= extent.FindModel(metaClassUri)
+                : extent.FindModel(metaClassUri);
     }
 #pragma warning restore CS0162 // Unreachable code detected
 }

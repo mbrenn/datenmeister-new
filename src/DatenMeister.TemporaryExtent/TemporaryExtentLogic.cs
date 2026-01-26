@@ -22,24 +22,26 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// </summary>
     private static readonly ILogger ClassLogger = new ClassLogger(typeof(TemporaryExtentLogic));
 
+    /// <summary>
+    /// Defines the survival time of the temporary elements before they are deleted.
+    /// </summary>
     public static TimeSpan DefaultCleanupTime { get; set; } = TimeSpan.FromHours(1);
 
+    /// <summary>
+    /// Gets the name of the workspace
+    /// </summary>
+    public IWorkspace? Workspace => workspaceLogic.TryGetDataWorkspace();
 
     /// <summary>
     /// Gets the name of the workspace
     /// </summary>
-    public IWorkspace Workspace => workspaceLogic.GetDataWorkspace();
-
-    /// <summary>
-    /// Gets the name of the workspace
-    /// </summary>
-    public string WorkspaceName => Workspace.id;
+    public string WorkspaceName => Workspace?.id ?? throw new InvalidOperationException("Workspace is null");
 
     /// <summary>
     /// Maps the element to a datetime until when it shall be deleted.
     /// If the element is not found here, then it will be directly deleted
     /// </summary>
-    private static readonly ConcurrentDictionary<IObject, DateTime> ElementMapping = new ();
+    private static readonly ConcurrentDictionary<IObject, DateTime> ElementMapping = new();
 
     /// <summary>
     /// Gets the temporary extent and creates a new one, if necessary
@@ -48,7 +50,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     {
         get
         {
-            if (workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri) 
+            if (workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri)
                 is not IUriExtent foundExtent)
             {
                 // Somebody deleted the extent... So, we will create a new one
@@ -59,7 +61,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
             return foundExtent;
         }
     }
-        
+
 
     /// <summary>
     /// Tries to find the temporary extent. May also be null
@@ -99,7 +101,8 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// <param name="cleanUpTime">The cleanup time after which the element will be removed automatically. Default is null.</param>
     /// <param name="addToExtent">If true, the element will be added to the temporary extent. Default is true.</param>
     /// <returns>The created temporary element.</returns>
-    public IElement CreateTemporaryElementByUri(string metaClassUri, TimeSpan? cleanUpTime = null, bool addToExtent = true)
+    public IElement CreateTemporaryElementByUri(string metaClassUri, TimeSpan? cleanUpTime = null,
+        bool addToExtent = true)
     {
         var result = CreateTemporaryElement((IElement?)null, cleanUpTime, addToExtent);
 
@@ -120,7 +123,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
         var currentTime = DateTime.Now;
 
         // Go through the elements and collect these ones whose clean up time has passed
-        var itemsToBeDeleted = 
+        var itemsToBeDeleted =
             foundExtent.elements()
                 .OfType<IObject>()
                 .Where(element =>
@@ -129,7 +132,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
                     {
                         return time < currentTime;
                     }
-                            
+
                     // If item is not in element-mapping, it will be directly deleted
                     return true;
                 })
@@ -155,9 +158,17 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// </summary>
     public IUriExtent CreateTemporaryExtent()
     {
+        var workspace = Workspace;
+        if (workspace == null)
+        {
+            // In case, that we are not in a good context while having a Data Workspace, we just return the temporary extent,
+            // so most unit tests will be working
+            return InMemoryProvider.TemporaryExtent;
+        }
+        
         var temporaryProvider = new InMemoryProvider();
         var extent = new MofUriExtent(temporaryProvider, InternalTempUri, scopeStorage);
-        workspaceLogic.AddExtent(Workspace, extent);
+        workspaceLogic.AddExtent(workspace, extent);
         return extent;
     }
 }

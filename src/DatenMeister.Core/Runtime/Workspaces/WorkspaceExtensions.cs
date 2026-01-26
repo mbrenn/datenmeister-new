@@ -369,6 +369,9 @@ public static class WorkspaceExtensions
         logic.GetWorkspace(WorkspaceNames.WorkspaceManagement)
         ?? throw new InvalidOperationException("Management is not found");
 
+    public static IWorkspace? TryGetDataWorkspace(this IWorkspaceLogic logic) =>
+        logic.GetWorkspace(WorkspaceNames.WorkspaceData);
+    
     public static IWorkspace GetDataWorkspace(this IWorkspaceLogic logic) =>
         logic.GetWorkspace(WorkspaceNames.WorkspaceData)
         ?? throw new InvalidOperationException("Data is not found");

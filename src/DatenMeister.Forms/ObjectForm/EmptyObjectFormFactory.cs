@@ -11,18 +11,7 @@ public class EmptyObjectFormFactory(IWorkspaceLogic workspaceLogic) : FormFactor
     {
         if (result.Form == null)
         {
-            var scopeStorage = workspaceLogic.ScopeStorage;
-            if (scopeStorage != null)
-            {
-                var temporaryExtentLogic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
-                result.Form = temporaryExtentLogic.CreateTemporaryElement(_Forms.TheOne.__ObjectForm);
-                
-            }
-            else
-            {
-                result.Form = context.Global.Factory.create(_Forms.TheOne.__ObjectForm);
-            }
-            
+            result.Form = context.Global.FactoryForForms.create(_Forms.TheOne.__ObjectForm);
             result.IsManaged = true;
             result.AddToFormCreationProtocol(
                 "[EmptyTableFormFactory] Empty object Table-Form created");

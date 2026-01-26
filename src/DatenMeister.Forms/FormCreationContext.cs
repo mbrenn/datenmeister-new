@@ -47,6 +47,14 @@ public class FormCreationContext
         /// Defines the factory to be used to create the items
         /// </summary>
         public required IFactory Factory { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the factory which is used to create the top form.
+        /// It may be a different one since the form creation itself needs to add the created
+        /// item to a temporary extent. Other elements, like the tabs or fields do not need to
+        /// be added to the root element. 
+        /// </summary>
+        public required IFactory FactoryForForms { get; set; }
     }
 
     public ScopeStorage LocalScopeStorage { get; } = new();

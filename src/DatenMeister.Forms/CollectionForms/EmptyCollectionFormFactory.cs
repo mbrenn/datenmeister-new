@@ -15,19 +15,12 @@ public class EmptyCollectionFormFactory(IWorkspaceLogic workspaceLogic) : FormFa
         FormCreationContext context,
         FormCreationResultOneForm result)
     {
+        // TODO: evaluate more useful context.Global.Factory... We have the gap that only the top form shall
+        // be added to the temporary extent but not every single smaller item! 
+        
         if (result.Form == null)
         {
-            var scopeStorage = workspaceLogic.ScopeStorage;
-            if (scopeStorage != null)
-            {
-                var temporaryExtentLogic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
-                result.Form = temporaryExtentLogic.CreateTemporaryElement(_Forms.TheOne.__CollectionForm);
-            }
-            else
-            {
-                result.Form = context.Global.Factory.create(_Forms.TheOne.__CollectionForm);
-            }
-
+            result.Form = context.Global.FactoryForForms.create(_Forms.TheOne.__CollectionForm);
             result.IsManaged = true;
             result.AddToFormCreationProtocol(
                 "[EmptyCollectionFormFactory] Empty object Collection-Form created");

@@ -13,17 +13,7 @@ public class EmptyRowFormFactory(IWorkspaceLogic workspaceLogic) : FormFactoryBa
     {
         if (!result.Forms.Any())
         {
-            var scopeStorage = workspaceLogic.ScopeStorage;
-            if (scopeStorage != null)
-            {
-                var temporaryExtentLogic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
-                result.Forms.Add(temporaryExtentLogic.CreateTemporaryElement(_Forms.TheOne.__RowForm));
-            }
-            else
-            {
-                result.Forms.Add(context.Global.Factory.create(_Forms.TheOne.__RowForm));
-            }
-
+            result.Forms.Add(context.Global.FactoryForForms.create(_Forms.TheOne.__RowForm));
             result.IsManaged = true;
             result.AddToFormCreationProtocol(
                 "[EmptyRowFormFactory] Empty object Row-Form created");

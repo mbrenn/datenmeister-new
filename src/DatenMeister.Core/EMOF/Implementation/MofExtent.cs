@@ -585,44 +585,47 @@ public class MofExtent :
             if (extent == null)
                 throw new InvalidOperationException("Extent is null but MofObject given");
 
-            if (asMofObject.Extent == null || isComposite == true)
+            if ((asMofObject.Extent == null && isComposite == null) || isComposite == true)
             {
                 if (isComposite == false)
                 {
                     var extentUri = (extent as IUriExtent)?.contextURI() ?? "Unknown";
                     var metaClass = (asMofObject as IElement)?.getMetaClass()?.ToString() ?? "Unknown";
                     var attributeName = attributeModel?.Name ?? "Unknown";
-                    logger.Info($"We are NOT composite, but would like to get added without knowing the extent: {asMofObject} ({metaClass}) to Extent: {extentUri} (Attribute: {attributeName})");
+                    logger.Info(
+                        $"We are NOT composite, but would like to get added without knowing the extent: {asMofObject} ({metaClass}) to Extent: {extentUri} (Attribute: {attributeName})");
                 }
-                
+
                 if (asMofObject.ProviderObject.Provider == extent.Provider)
                 {
                     // if the given value is created by the provider, but has not been allocated
                     // to an object until now, it can be used directly.
                     return asMofObject.ProviderObject;
                 }
-                
+
                 // We are having (1) a composite object or (2) no information about composition strategy
                 // In case of (1), we clone the item, since we have to. The id is reused since the item is not
                 // added anywhere
                 // In case of (2), we clone the item, since we assume that it needs to be copied
-                
+
                 // If the object to be added is not connected to an extent, we have to copy 
                 // the element to the right provider type, but we keep the id
-                var result = (MofElement) ObjectCopier.Copy(
+                var result = (MofElement)ObjectCopier.Copy(
                     new MofFactory(extent),
-                    asMofObject, 
-                    new CopyOption {CopyId = true});
+                    asMofObject,
+                    new CopyOption { CopyId = true });
                 return result.ProviderObject;
             }
 
             // We regard it as a reference since no composition is requested
             var asElement = asMofObject as IElement ??
                             throw new InvalidOperationException("Given element is not of type IElement");
-            var uriExtentOfItem = (MofUriExtent)asMofObject.Extent;
+            var uriExtentOfItem = (MofUriExtent?)asMofObject.Extent ??
+                                  (MofUriExtent)asMofObject.ReferencedExtent
+                                  ?? throw new InvalidOperationException("Extent is null");
             var workspace = uriExtentOfItem.GetWorkspace()?.id ?? string.Empty;
 
-            return new UriReference(((MofUriExtent)asMofObject.Extent).uri(asElement))
+            return new UriReference(uriExtentOfItem.uri(asElement))
             {
                 Workspace = workspace
             };

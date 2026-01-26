@@ -15,12 +15,15 @@ namespace DatenMeister.Tests.Modules.Query;
 
 public class TestRowFilters
 {
+    private const string TestExtentUri = "dm:///test";
+    private const string ViewExtentUri = "dm:///view_test";
+
     [Test]
     public async Task TestFilterByPropertyEqual()
     {
         var (scope, queryFlatten, queryByMetaClass) = await SetupExtentAndQuery();
-        var testExtent = scope.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, "dm:///test")!;
-        var viewExtent = scope.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, "dm:///view_test")!;
+        var testExtent = scope.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, TestExtentUri)!;
+        var viewExtent = scope.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, ViewExtentUri)!;
         Assert.That(testExtent, Is.Not.Null);
         Assert.That(viewExtent, Is.Not.Null);
         
@@ -150,7 +153,7 @@ public class TestRowFilters
         var queryByExtent = factory.create(_DataViews.TheOne.Source.__SelectByExtentNode);
         viewExtent.elements().add(queryByExtent);
         queryByExtent.set(_DataViews._Source._SelectByExtentNode.workspaceId, "Data");
-        queryByExtent.set(_DataViews._Source._SelectByExtentNode.extentUri, "dm:///test");
+        queryByExtent.set(_DataViews._Source._SelectByExtentNode.extentUri, TestExtentUri);
         
         var queryOnPosition = factory.create(_DataViews.TheOne.Row.__RowOrderByNode);
         viewExtent.elements().add(queryOnPosition);
@@ -198,7 +201,7 @@ public class TestRowFilters
         var queryByExtent = factory.create(_DataViews.TheOne.Source.__SelectByExtentNode);
         viewExtent.elements().add(queryByExtent);
         queryByExtent.set(_DataViews._Source._SelectByExtentNode.workspaceId, "Data");
-        queryByExtent.set(_DataViews._Source._SelectByExtentNode.extentUri, "dm:///test");
+        queryByExtent.set(_DataViews._Source._SelectByExtentNode.extentUri, TestExtentUri);
         var queryOnPosition = factory.create(_DataViews.TheOne.Row.__RowFilterOnPositionNode);
         viewExtent.elements().add(queryOnPosition);
 
@@ -243,6 +246,7 @@ public class TestRowFilters
             var (extent, viewExtent) = await LoadAndValidateExtents(extentManager);
 
             var factory = new MofFactory(extent);
+            var viewFactory = new MofFactory(viewExtent);
         
             // Create the data!
             var viewNode = factory.create(_DataViews.TheOne.__ViewNode);
@@ -251,15 +255,16 @@ public class TestRowFilters
             extent.elements().add(selectWorkspace);
         
             // Now create the query
-            var dropDownByQueryData = factory.create(_Forms.TheOne.__DropDownByQueryData);
-            var queryStatement = factory.create(_DataViews.TheOne.__QueryStatement);
+            var dropDownByQueryData = viewFactory.create(_Forms.TheOne.__DropDownByQueryData);
+            var queryStatement = viewFactory.create(_DataViews.TheOne.__QueryStatement);
             viewExtent.elements().add(queryStatement);
 
-            var queryByExtent = factory.create(_DataViews.TheOne.Source.__SelectByWorkspaceNode);
-            queryByExtent.set(_DataViews._Source._SelectByWorkspaceNode.workspaceId, "Data");
+            var queryByExtent = viewFactory.create(_DataViews.TheOne.Source.__SelectByExtentNode);
+            queryByExtent.set(_DataViews._Source._SelectByExtentNode.workspaceId, "Data");
+            queryByExtent.set(_DataViews._Source._SelectByExtentNode.extentUri, TestExtentUri);
 
-            var queryFlatten = factory.create(_DataViews.TheOne.Row.__RowFlattenNode);
-            var queryByMetaClass = factory.create(_DataViews.TheOne.Row.__RowFilterByMetaclassNode);
+            var queryFlatten = viewFactory.create(_DataViews.TheOne.Row.__RowFlattenNode);
+            var queryByMetaClass = viewFactory.create(_DataViews.TheOne.Row.__RowFilterByMetaclassNode);
 
             queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByExtent);
             queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByMetaClass);
@@ -289,7 +294,7 @@ public class TestRowFilters
     {
         var loaderConfig = new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
         {
-            extentUri = "dm:///test",
+            extentUri = TestExtentUri,
             workspaceId = WorkspaceNames.WorkspaceData
         };
         
@@ -299,7 +304,7 @@ public class TestRowFilters
 
         var viewLoaderConfig = new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
         {
-            extentUri = "dm:///view_test",
+            extentUri = ViewExtentUri,
             workspaceId = WorkspaceNames.WorkspaceData
         };
         

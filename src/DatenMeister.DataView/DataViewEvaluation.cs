@@ -173,6 +173,11 @@ public class DataViewEvaluation
             throw new ArgumentException(nameof(viewNode));
         }
 
+        if (viewNode is MofObjectShadow)
+        {
+            throw new ArgumentException($"The given viewnode is a shadow object: {viewNode}");
+        }
+        
         // Check, if viewnode has been visited
         foreach (var evaluation in
                  from x in _dataViewFactories.Evaluations

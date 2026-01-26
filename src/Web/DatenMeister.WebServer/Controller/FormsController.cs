@@ -103,8 +103,10 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         
         var formMethods = new FormMethods(_internal.WorkspaceLogic);
         var factory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
+        var userFormExtent = formMethods.GetUserFormExtent();
 
         var context = factory.Create(viewMode ?? string.Empty);
+        context.Global.Factory = context.Global.FactoryForForms = new MofFactory(userFormExtent);
 
         var (collection, extent) = _internal.WorkspaceLogic.FindExtentAndCollection(workspaceId, extentUri);
         if (extent == null || collection == null)
@@ -121,7 +123,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
                        context).Form
                    ?? throw new InvalidOperationException("Form returned null for whatever reason");
 
-        formMethods.GetUserFormExtent().elements().add(form);
+        userFormExtent.elements().add(form);
             
         return new CreateCollectionFormForExtentResult
         {
@@ -163,6 +165,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var factory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         
         var formContext = factory.Create(viewMode ?? string.Empty);
+        formContext.Global.Factory = formContext.Global.FactoryForForms = new MofFactory(userFormExtent);
 
         var element = _internal.WorkspaceLogic.FindObject(workspaceId, itemUri);
         if (element == null)

@@ -576,21 +576,23 @@ export function createJsonFromObject(element) {
  * - Objects: Converts to DmObject instances
  *
  * @param element The value to convert (can be primitive, array, or object)
+ * @param extent The extent to which the object belongs
+ * @param workspace The workspace to which the object belongs
  * @returns The converted value in appropriate TypeScript format
  */
-export function convertJsonObjectToObjects(element) {
+export function convertJsonObjectToObjects(element, extent = undefined, workspace = undefined) {
     if (Array.isArray(element)) {
         // Recursively convert array elements
         const arrayResult = [];
         for (let m in element) {
             const inner = element[m];
-            arrayResult.push(convertJsonObjectToObjects(inner));
+            arrayResult.push(convertJsonObjectToObjects(inner, extent, workspace));
         }
         return arrayResult;
     }
     else if ((typeof element === "object" || typeof element === "function") && (element !== null)) {
         // Convert objects to DmObject
-        return convertJsonObjectToDmObject(element);
+        return convertJsonObjectToDmObject(element, extent, workspace);
     }
     // Return primitives as-is
     return element;
@@ -620,9 +622,11 @@ export function convertJsonObjectToObjects(element) {
  * - w: Workspace ID
  *
  * @param element The JSON object or string to deserialize
+ * @param extent The extent to which the object belongs
+ * @param workspace The workspace to which the object belongs
  * @returns A DmObjectWithSync instance, or undefined if input is empty
  */
-export function convertJsonObjectToDmObject(element) {
+export function convertJsonObjectToDmObject(element, extent = undefined, workspace = undefined) {
     // Handle null, undefined, or empty inputs
     if (element === undefined || element === null || element === "") {
         return undefined;
@@ -632,6 +636,22 @@ export function convertJsonObjectToDmObject(element) {
         element = JSON.parse(element);
     }
     const result = new DmObjectWithSync();
+    if (extent !== undefined) {
+        result.extentUri = extent;
+    }
+    if (workspace !== undefined) {
+        result.workspace = workspace;
+    }
+    // Restore extent URI
+    const extentUri = element["e"];
+    if (extentUri !== undefined && extentUri !== null) {
+        result.extentUri = extentUri;
+    }
+    // Restore workspace
+    const elementWorkspace = element["w"];
+    if (elementWorkspace !== undefined && elementWorkspace !== null) {
+        result.workspace = elementWorkspace;
+    }
     const elementValues = element["v"];
     // Reconstruct property values
     if (elementValues !== undefined && elementValues !== null) {
@@ -650,7 +670,7 @@ export function convertJsonObjectToDmObject(element) {
                         let arrayValue = value[m];
                         if ((typeof arrayValue === "object" || typeof arrayValue === "function") && (arrayValue !== null)) {
                             // Convert nested objects to DmObject
-                            arrayValue = convertJsonObjectToDmObject(arrayValue);
+                            arrayValue = convertJsonObjectToDmObject(arrayValue, result.extentUri, result.workspace);
                         }
                         finalValue.push(arrayValue);
                     }
@@ -658,7 +678,7 @@ export function convertJsonObjectToDmObject(element) {
                 }
                 else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
                     // Convert nested object to DmObject
-                    value = convertJsonObjectToDmObject(value);
+                    value = convertJsonObjectToDmObject(value, result.extentUri, result.workspace);
                 }
                 // Store the property value with isSet tracking
                 const internalizedKey = DmObject.internalizeKey(key);
@@ -696,16 +716,6 @@ export function convertJsonObjectToDmObject(element) {
     if (elementReferenceUri !== undefined && elementReferenceUri !== null) {
         result.uri = elementReferenceUri;
         result.isReference = true;
-    }
-    // Restore extent URI
-    const extentUri = element["e"];
-    if (extentUri !== undefined && extentUri !== null) {
-        result.extentUri = extentUri;
-    }
-    // Restore workspace
-    const workspace = element["w"];
-    if (workspace !== undefined && workspace !== null) {
-        result.workspace = workspace;
     }
     return result;
 }

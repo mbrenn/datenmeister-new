@@ -84,8 +84,9 @@ public class MofJsonConverter
     /// </summary>
     /// <param name="builder">The string builder to be used</param>
     /// <param name="value">Value to be converted</param>
+    /// <param name="isReference">true, if the value is a reference</param>
     /// <param name="recursionDepth">Defines the recursion depth to be handled</param>
-    private void ConvertToJson(StringBuilder builder, IObject value, int recursionDepth = 0)
+    private void ConvertToJson(StringBuilder builder, IObject value, bool isReference, int recursionDepth = 0)
     {
         if (value is MofObjectShadow asShadow)
         {
@@ -120,7 +121,6 @@ public class MofJsonConverter
             var attributeModel = classModel?.FindAttribute(property);
             var isComposite = attributeModel?.IsComposite == true;
 
-            // TODO: We are prepared just to return composites, but do not do it.
             AppendValue(builder, new[] {isPropertySet, propertyValue}, recursionDepth, isComposite: isComposite);
 
             komma = ",";
@@ -135,7 +135,7 @@ public class MofJsonConverter
             if (item != null)
             {
                 builder.Append(", \"m\": ");
-                item.AppendJson(builder);
+                item.AppendJson(builder, true);
             }
         }
             
@@ -153,6 +153,12 @@ public class MofJsonConverter
         {
             builder.Append(", \"u\": ");
             AppendValue(builder, uri);
+
+            if (isReference)
+            {
+                builder.Append(", \"r\": ");
+                AppendValue(builder, uri);
+            }
         }
 
         var extent = value.GetUriExtentOf();
@@ -202,7 +208,9 @@ public class MofJsonConverter
 
         // Check if we should stop recursion based on depth
         // If ResolveCompositesRecursively is enabled and this is a composite property, ignore depth limit
-        var shouldStopRecursion = recursionDepth >= MaxRecursionDepth && !(ResolveCompositesRecursively && isComposite);
+        // If it is not a composite, just reference it.
+        var shouldStopRecursion =
+            recursionDepth >= MaxRecursionDepth && !(ResolveCompositesRecursively && isComposite);
 
         if (propertyValue is IObject asObject && (shouldStopRecursion || forceReference || forceReferenceByExtent))
         {
@@ -250,7 +258,7 @@ public class MofJsonConverter
         }
         else if (DotNetHelper.IsOfMofObject(propertyValue))
         {
-            ConvertToJson(builder, (propertyValue as IObject)!, recursionDepth + 1);
+            ConvertToJson(builder, (propertyValue as IObject)!, !isComposite, recursionDepth + 1);
         }
         else if (DotNetHelper.IsOfEnumeration(propertyValue)
                  && propertyValue is IEnumerable enumeration)

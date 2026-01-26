@@ -50,7 +50,7 @@ export async function getObject(workspace, extent, id) {
         encodeURIComponent(extent) +
         "/" +
         encodeURIComponent(id));
-    return Mof.convertJsonObjectToDmObject(resultFromServer);
+    return Mof.convertJsonObjectToDmObject(resultFromServer, extent, workspace);
 }
 export async function getObjectByUri(workspace, url) {
     try {
@@ -59,7 +59,7 @@ export async function getObjectByUri(workspace, url) {
             encodeURIComponent(workspace) +
             "/" +
             encodeURIComponent(url));
-        return Mof.convertJsonObjectToDmObject(resultFromServer);
+        return Mof.convertJsonObjectToDmObject(resultFromServer, undefined, workspace);
     }
     catch (e) {
         return undefined;
@@ -114,7 +114,7 @@ export async function getRootElements(workspace, extentUri, parameter) {
         url += '?' + queryParams.join('&');
     }
     const resultFromServer = await ApiConnection.get(url);
-    resultFromServer.rootElementsAsObjects = convertToMofObjects(resultFromServer.rootElements);
+    resultFromServer.rootElementsAsObjects = convertToMofObjects(resultFromServer.rootElements, extentUri, workspace);
     return resultFromServer;
 }
 function serializeArrayToString(arrayValue) {
@@ -127,13 +127,13 @@ function serializeArrayToString(arrayValue) {
     }
     return encodeURIComponent(result);
 }
-export function convertToMofObjects(resultFromServer) {
+export function convertToMofObjects(resultFromServer, extent, workspace) {
     const x = JSON.parse(resultFromServer);
     let result = new Array();
     for (let n in x) {
         if (Object.prototype.hasOwnProperty.call(x, n)) {
             const v = x[n];
-            result.push(Mof.convertJsonObjectToDmObject(v));
+            result.push(Mof.convertJsonObjectToDmObject(v, extent, workspace));
         }
     }
     return result;

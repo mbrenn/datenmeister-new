@@ -181,7 +181,8 @@ public class DataViewEvaluation
         {
             return evaluation.Evaluate(this, viewNode);
         }
-
+        
+        // We have not found the evaluation. 
         var metaClass = viewNode.getMetaClass();
         if (metaClass == null)
         {

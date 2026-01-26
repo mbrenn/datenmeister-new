@@ -94,7 +94,8 @@ public record ItemWithNameAndId
     /// Converts this given ItemWithNameAndId to a JSON obkect
     /// </summary>
     /// <param name="builder"></param>
-    public void AppendJson(StringBuilder builder)
+    /// <param name="shortOutput">true, if the output shall be short (without additional metaclass information)</param>
+    public void AppendJson(StringBuilder builder, bool shortOutput = false)
     {
         var komma = string.Empty;
         builder.Append("{");
@@ -141,23 +142,26 @@ public record ItemWithNameAndId
             komma = ",";
         }
 
-        if (metaClassName != null)
+        if (!shortOutput)
         {
-            builder.Append($"{komma}\"metaClassName\": ");
-            builder.Append($"\"{HttpUtility.JavaScriptStringEncode(metaClassName)}\"");
-            komma = ",";
+            if (metaClassName != null)
+            {
+                builder.Append($"{komma}\"metaClassName\": ");
+                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(metaClassName)}\"");
+                komma = ",";
+            }
+
+            if (metaClassUri != null)
+            {
+                builder.Append($"{komma}\"metaClassUri\": ");
+                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(metaClassUri)}\"");
+                komma = ",";
+            }
+
+            builder.Append($"{komma}\"ententType\": ");
+            builder.Append($"\"{HttpUtility.JavaScriptStringEncode(ententType.ToString())}\"");
         }
 
-        if (metaClassUri != null)
-        {
-            builder.Append($"{komma}\"metaClassUri\": ");
-            builder.Append($"\"{HttpUtility.JavaScriptStringEncode(metaClassUri)}\"");
-            komma = ",";
-        }
-
-        builder.Append($"{komma}\"ententType\": ");
-        builder.Append($"\"{HttpUtility.JavaScriptStringEncode(ententType.ToString())}\"");
-            
         builder.Append("}");
 
     }

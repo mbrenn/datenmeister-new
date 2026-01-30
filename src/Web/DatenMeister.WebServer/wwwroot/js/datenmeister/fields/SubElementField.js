@@ -184,6 +184,8 @@ export class Control {
             if (this.additionalTypes !== undefined) {
                 for (const m in this.additionalTypes) {
                     let additionalType = await MofResolver.resolve(this.additionalTypes[m]);
+                    if (additionalType === undefined)
+                        continue;
                     let name;
                     let metaClassUri;
                     let metaClassWorkspace;

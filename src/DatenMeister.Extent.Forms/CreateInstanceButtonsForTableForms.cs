@@ -41,7 +41,7 @@ public class CreateInstanceButtonsForTableForms : FormFactoryBase, ITableFormFac
                             "[CreateInstanceButtonsForTableForms]: Add DefaultType per ExtentDefaultTypes property " +
                             NamedElementMethods.GetName(defaultType));
 
-                        AddDefaultTypeForMetaClassOfForm.AddDefaultTypeIfNotExists(result, form, defaultType);
+                        AddDefaultTypeForMetaClassOfForm.AddDefaultTypeIfNotExists(context, result, form, defaultType);
                         added = true;
                     }
                 }

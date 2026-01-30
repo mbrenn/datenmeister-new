@@ -15,8 +15,6 @@ export class Field extends BaseField implements IFormField {
         const hideDate = this.field.get(_DatenMeister._Forms._DateTimeFieldData.hideDate, Mof.ObjectType.Boolean) ?? false;
         const hideTime = this.field.get(_DatenMeister._Forms._DateTimeFieldData.hideTime, Mof.ObjectType.Boolean) ?? false;
 
-        const container = $("<div class='dm-datetime-container d-flex align-items-center' />");
-
         const value = dmElement.get(fieldName, Mof.ObjectType.String) ?? "";
         let dateObj: Date | null = null;
         if (value) {
@@ -25,6 +23,30 @@ export class Field extends BaseField implements IFormField {
                 dateObj = null;
             }
         }
+
+        if (this.isReadOnly) {
+            const container = $("<div class='dm-datetime-readonly' />");
+            if (!dateObj) {
+                container.append($("<em class='dm-undefined'>undefined</em>"));
+                return container;
+            }
+
+            const pad = (n: number) => n < 10 ? '0' + n : n;
+            let text = "";
+            if (!hideDate) {
+                text += `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}`;
+            }
+
+            if (!hideTime) {
+                if (text !== "") text += " ";
+                text += `${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
+            }
+
+            container.text(text);
+            return container;
+        }
+
+        const container = $("<div class='dm-datetime-container d-flex align-items-center' />");
 
         if (!hideDate) {
             this._year = $("<input type='number' class='form-control me-1' style='width: 80px' placeholder='YYYY' />");
@@ -38,12 +60,6 @@ export class Field extends BaseField implements IFormField {
             }
 
             container.append(this._year, this._month, this._day);
-            
-            if (this.isReadOnly) {
-                this._year.prop('disabled', true);
-                this._month.prop('disabled', true);
-                this._day.prop('disabled', true);
-            }
         }
 
         if (!hideTime) {
@@ -56,11 +72,6 @@ export class Field extends BaseField implements IFormField {
             }
 
             container.append(this._hour, this._minute);
-
-            if (this.isReadOnly) {
-                this._hour.prop('disabled', true);
-                this._minute.prop('disabled', true);
-            }
         }
 
         if (!this.isReadOnly) {

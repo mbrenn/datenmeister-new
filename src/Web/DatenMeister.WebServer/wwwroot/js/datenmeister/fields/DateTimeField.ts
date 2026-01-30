@@ -46,9 +46,11 @@ export class Field extends BaseField implements IFormField {
             return container;
         }
 
-        const container = $("<div class='d-flex align-items-center' />");
+        const container = $("<div class='align-items-center' />");
 
         if (!hideDate) {
+            container.append($("<span>Date: </span>"));
+            const dateInputs = $("<div class='d-flex' />");
             this._year = $("<input type='number' class='form-control me-1' style='width: 80px' placeholder='YYYY' />");
             this._month = $("<input type='number' class='form-control me-1' style='width: 60px' placeholder='MM' min='1' max='12' />");
             this._day = $("<input type='number' class='form-control me-1' style='width: 60px' placeholder='DD' min='1' max='31' />");
@@ -59,10 +61,13 @@ export class Field extends BaseField implements IFormField {
                 this._day.val(dateObj.getDate());
             }
 
-            container.append(this._year, this._month, this._day);
+            dateInputs.append(this._year, this._month, this._day);
+            container.append(dateInputs);
         }
 
         if (!hideTime) {
+            container.append($("<span>Time: </span>"));
+            const timeInputs = $("<div class='d-flex align-items-center' />");
             this._hour = $("<input type='number' class='form-control me-1' style='width: 60px' placeholder='HH' min='0' max='23' />");
             this._minute = $("<input type='number' class='form-control me-1' style='width: 60px' placeholder='MM' min='0' max='59' />");
 
@@ -71,7 +76,8 @@ export class Field extends BaseField implements IFormField {
                 this._minute.val(dateObj.getMinutes());
             }
 
-            container.append(this._hour, this._minute);
+            timeInputs.append(this._hour, $("<span class='me-1'>:</span>"), this._minute);
+            container.append(timeInputs);
         }
 
         if (!this.isReadOnly) {

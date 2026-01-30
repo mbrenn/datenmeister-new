@@ -1019,7 +1019,6 @@ export namespace _Forms
         {
             static hideDate = "hideDate";
             static hideTime = "hideTime";
-            static showOffsetButtons = "showOffsetButtons";
             static isAttached = "isAttached";
             static _name_ = "name";
             static title = "title";

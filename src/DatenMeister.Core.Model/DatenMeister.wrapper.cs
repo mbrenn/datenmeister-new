@@ -6052,14 +6052,6 @@ public class Forms
                 _wrappedElement.set("hideTime", value);
         }
 
-        public bool @showOffsetButtons
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("showOffsetButtons");
-            set => 
-                _wrappedElement.set("showOffsetButtons", value);
-        }
-
         public bool @isAttached
         {
             get =>
@@ -6670,13 +6662,25 @@ public class Forms
                 _wrappedElement.set("allowOnlyExistingElements", value);
         }
 
-        // Not found
-        public object? @defaultTypesForNewElements
+        // DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper
+        public DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper? @defaultTypesForNewElements
         {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultTypesForNewElements");
-            set => 
-                _wrappedElement.set("defaultTypesForNewElements", value);
+            get
+            {
+                var foundElement = _wrappedElement.getOrDefault<IElement?>("defaultTypesForNewElements");
+                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper(foundElement);
+            }
+            set 
+            {
+                if(value is IElementWrapper wrappedElement)
+                {
+                    _wrappedElement.set("defaultTypesForNewElements", wrappedElement.GetWrappedElement());
+                }
+                else
+                {
+                    _wrappedElement.set("defaultTypesForNewElements", value);
+                }
+            }
         }
 
         public bool @includeSpecializationsForDefaultTypes

@@ -2282,9 +2282,6 @@ public class _Forms
         public static readonly string @hideTime = "hideTime";
         public IElement? @_hideTime = null;
 
-        public static readonly string @showOffsetButtons = "showOffsetButtons";
-        public IElement? @_showOffsetButtons = null;
-
         public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 

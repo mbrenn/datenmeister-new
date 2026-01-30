@@ -25,7 +25,7 @@ export class Field extends BaseField implements IFormField {
         }
 
         if (this.isReadOnly) {
-            const container = $("<div class='dm-datetime-readonly' />");
+            const container = $("<div />");
             if (!dateObj) {
                 container.append($("<em class='dm-undefined'>undefined</em>"));
                 return container;
@@ -46,7 +46,7 @@ export class Field extends BaseField implements IFormField {
             return container;
         }
 
-        const container = $("<div class='dm-datetime-container d-flex align-items-center' />");
+        const container = $("<div class='d-flex align-items-center' />");
 
         if (!hideDate) {
             this._year = $("<input type='number' class='form-control me-1' style='width: 80px' placeholder='YYYY' />");

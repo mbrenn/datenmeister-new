@@ -5857,14 +5857,6 @@ public class Forms
 
         public static CheckboxFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
-        public int @lineHeight
-        {
-            get =>
-                _wrappedElement.getOrDefault<int>("lineHeight");
-            set => 
-                _wrappedElement.set("lineHeight", value);
-        }
-
         public bool @isAttached
         {
             get =>

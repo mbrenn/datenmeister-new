@@ -2210,9 +2210,6 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _CheckboxFieldData
     {
-        public static readonly string @lineHeight = "lineHeight";
-        public IElement? @_lineHeight = null;
-
         public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 

@@ -991,7 +991,6 @@ export namespace _Forms
         export const __AnyDataFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData";
         export class _CheckboxFieldData
         {
-            static lineHeight = "lineHeight";
             static isAttached = "isAttached";
             static _name_ = "name";
             static title = "title";

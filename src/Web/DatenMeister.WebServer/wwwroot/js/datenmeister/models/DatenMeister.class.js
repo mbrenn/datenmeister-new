@@ -898,7 +898,6 @@ export var _Forms;
     }
     _DateTimeFieldData.hideDate = "hideDate";
     _DateTimeFieldData.hideTime = "hideTime";
-    _DateTimeFieldData.showOffsetButtons = "showOffsetButtons";
     _DateTimeFieldData.isAttached = "isAttached";
     _DateTimeFieldData._name_ = "name";
     _DateTimeFieldData.title = "title";

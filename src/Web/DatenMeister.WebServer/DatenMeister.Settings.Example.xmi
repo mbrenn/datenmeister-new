@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xmi>
+    <item>
+        <web webServerIsPublic="true" webServerUseHttps="false" />
+        
+        <!-- This is the way to have a public webserver, listening to all IPs 
+        <web webServerIsPublic="true" />
+        -->
+        <!-- This is more the 'kiosk' mode in which the user directly gets to a certain page. Be aware that this cannnot
+             be used to hide information since the user has access to everything 
+        <web layoutHideSideToolbar="true" layoutHideTopToolbar="true" startPage="/ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces" designBackgroundColor="#EEEEEE" />
+        -->
+    </item>
+</xmi>

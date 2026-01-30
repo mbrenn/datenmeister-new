@@ -67,7 +67,7 @@ public class Program
             }
 
             _performRestart = false;
-            _host = CreateHostBuilder(args).Build();
+            _host = CreateHostBuilder(args, WebServerSettingHandler.TheOne.WebServerSettings).Build();
             await _host.RunAsync();
         } while (_performRestart);
 
@@ -116,7 +116,21 @@ public class Program
         return publicSettings!;
     }
 
-    private static IHostBuilder CreateHostBuilder(string[] args) =>
+    private static IHostBuilder CreateHostBuilder(string[] args, WebServerSettings webServerSettings) =>
         Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+                if (webServerSettings.webServerIsPublic)
+                {
+                    if (webServerSettings.webServerUseHttps)
+                    {
+                        webBuilder.UseUrls("http://*:5000;https://*:5001");
+                    }
+                    else
+                    {
+                        webBuilder.UseUrls("http://*:5000");
+                    }
+                }
+            });
 }

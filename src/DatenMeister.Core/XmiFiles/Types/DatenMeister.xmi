@@ -30,7 +30,7 @@
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="message" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="da1d7009-925f-438a-96ac-eecb9e8a4f4c" />
       </packagedElement>
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="406de08b-c162-4b88-9e5e-b40ac9623637" name="OSIntegration">
+    <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="406de08b-c162-4b88-9e5e-b40ac9623637" name="OSIntegration">
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="CommonTypes.OSIntegration.CommandLineApplication" name="CommandLineApplication">
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="812980d3-6ce9-4477-a4ab-869aca88e082" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="17157cd1-1430-4442-87f1-ec59f720bb89" name="applicationPath" type-ref="dm:///_internal/model/primitivetypes#String" />
@@ -129,7 +129,7 @@
       </generalization>
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a8a3ea8f-b505-46bc-ab43-1bed0922e2f4" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
-    <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="f77015a8-1d70-4f09-beb3-1e20e6303d40" name="Reports">
+    <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="f77015a8-1d70-4f09-beb3-1e20e6303d40" name="Reports">
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.SimpleReportAction" name="SimpleReportAction">
         <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="cf1cf780-d423-4f1b-b3b4-2c28f549d7a7" general-ref="dm:///_internal/types/internal#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
@@ -429,7 +429,7 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e027e9e1-1b86-4071-a972-dfa369e6d077" name="typeMode" type-ref="#DatenMeister.Models.Reports.Simple.ReportTableForTypeMode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1f01f853-aa5f-424a-991b-bca2064492c5" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="958d7bee-ae1f-4f0c-84e1-dcd2b1ef3a0a" name="Elements">
+    <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="958d7bee-ae1f-4f0c-84e1-dcd2b1ef3a0a" name="Elements">
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportElement" name="ReportElement">
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="45e54372-377c-4cba-9416-696c1476dde2" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
@@ -843,7 +843,7 @@
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1af78287-772b-4685-89a2-8ffefc50d41a" name="runtimeClass" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="26400f5a-047d-43f9-88c1-e6b4c24db445" name="configuration" />
     </packagedElement>
-    <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="da7521f6-f13d-433a-90c6-bdf930326f57" name="Examples">
+    <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="da7521f6-f13d-433a-90c6-bdf930326f57" name="Examples">
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="f264ab67-ab6a-4462-8088-d3d6c9e2763a" name="NumberProviderSettings">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6f9e76bf-2b55-4fb0-b593-8c3e11a51a09" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a73ea7aa-a430-44d5-8f33-05360fd8f8ec" name="start" type-ref="dm:///_internal/model/primitivetypes#Integer" />

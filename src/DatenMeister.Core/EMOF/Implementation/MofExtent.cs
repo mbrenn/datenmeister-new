@@ -686,7 +686,18 @@ public class MofExtent :
             {
                 var result = ConvertForSetting(childValue, mofObject.ReferencedExtent, attributeModel);
 
-                if (result is IProviderObject && childValue is MofObject childValueAsObject)
+                // In case that the result is an object and in case that the object which shall be set, 
+                // we update the childValue's extent in case it is flying around loosely coupled. 
+                // This allows the (indirect) caller of that function to use the child value (MofObject which
+                // is just a temporary access to the IProviderObject) for other operations while the
+                // reference retrieval processes are fully working. 
+                // There might be some corner cases, in which the element is fully copied, but we update
+                // the childvalue. This could be resolved by a "out variable"  of ConvertForSettings
+                // which indicates whether a complete new object has been created or whether just
+                // the reference has been used. 
+                if (result is IProviderObject
+                    && childValue is MofObject childValueAsObject
+                    && childValueAsObject.Extent == null)
                 {
                     // Sets the extent of the newly added object which will be associated to the mofObject
                     // This value must be set, so the new information is propagated to the MofObjects
@@ -700,7 +711,9 @@ public class MofExtent :
             {
                 var result = ConvertForSetting(childValue, extent, attributeModel);
 
-                if (result is IProviderObject && childValue is MofObject childValueAsObject)
+                if (result is IProviderObject 
+                    && childValue is MofObject childValueAsObject
+                    && childValueAsObject.Extent == null)
                 {
                     // Sets the extent of the newly added object which will be associated to the mofObject
                     // This value must be set, so the new information is propagated to the MofObjects

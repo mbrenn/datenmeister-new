@@ -872,7 +872,6 @@ export var _Forms;
     _Forms.__AnyDataFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData";
     class _CheckboxFieldData {
     }
-    _CheckboxFieldData.lineHeight = "lineHeight";
     _CheckboxFieldData.isAttached = "isAttached";
     _CheckboxFieldData._name_ = "name";
     _CheckboxFieldData.title = "title";

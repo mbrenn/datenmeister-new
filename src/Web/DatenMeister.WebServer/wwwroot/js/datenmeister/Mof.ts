@@ -305,7 +305,7 @@ export class DmObject {
             return value;
         }
 
-        if (value === undefined) {
+        if (value === undefined || value === null) {
             const newArray = [];
             this.set(key, newArray);
             return newArray;

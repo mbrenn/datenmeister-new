@@ -226,7 +226,7 @@ export class DmObject {
         if (Array.isArray(value)) {
             return value;
         }
-        if (value === undefined) {
+        if (value === undefined || value === null) {
             const newArray = [];
             this.set(key, newArray);
             return newArray;

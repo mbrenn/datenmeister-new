@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -54,6 +55,16 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
     {
         // This is the easy implementation
         ClearResolveCache();
+    }
+
+    /// <summary>
+    /// Checks if the given id is present in the resolve cache.
+    /// </summary>
+    /// <param name="id">The id of the element to check for existence in the resolve cache.</param>
+    /// <returns>True if the id is present in the resolve cache; otherwise, false.</returns>
+    public bool IsInResolveCache(string id)
+    {
+        return _cacheIds.ContainsKey(id);
     }
 
     /// <summary>

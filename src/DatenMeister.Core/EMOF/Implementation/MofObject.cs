@@ -37,6 +37,11 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         {
             if (value == null)
             {
+                if ((_extent as MofUriExtent)?.Navigator.IsInResolveCache("#" + ProviderObject.Id) == true)
+                {
+                    Debugger.Break();
+                }
+                (_extent as MofUriExtent)?.Navigator.ClearResolveCache();
                 _extent = null;
             }
             else
@@ -164,7 +169,8 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
 
     public T getOrDefault<T>(string property)
     {
-        return ObjectHelper.getOrDefault<T>(this, property);
+        var result = ObjectHelper.getOrDefault<T>(this, property);
+        return result;
     }
 
     // ReSharper disable once InconsistentNaming

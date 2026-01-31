@@ -238,7 +238,7 @@ public class FormCreatorTests
                 new ObjectFormFactoryParameter
                 {
                     Element = packageModel,
-                    MetaClass = _UML.TheOne.Packages.__Package,
+                    MetaClass = _UML.TheOne.Packages.__Package
                 }, context).Form;
 
         Assert.That(createdForm, Is.Not.Null);
@@ -263,13 +263,16 @@ public class FormCreatorTests
         Assert.That(
             tableFormsForPackagedElements.Any(x =>
                 x.getOrDefault<IElement>(_Forms._TableForm.metaClass)
-                    ?.equals(_UML.TheOne.StructuredClassifiers.__Class) == true),
+                    ?.equals(_UML.TheOne.StructuredClassifiers.__Connector) == true),
             Is.True);
         Assert.That(
             tableFormsForPackagedElements.Any(x =>
-                x.getOrDefault<IElement>(_Forms._TableForm.metaClass)
-                    ?.equals(_UML.TheOne.StructuredClassifiers.__Connector) == true),
-            Is.True);
+            {
+                var result =
+                    x.getOrDefault<IElement>(_Forms._TableForm.metaClass)
+                        ?.equals(_UML.TheOne.StructuredClassifiers.__Class) == true;
+                return result;
+            }), Is.True);
     }
 
     [Test]

@@ -165,9 +165,7 @@ public class CoreUriResolver(IWorkspaceLogic? workspaceLogic)
                         {
                             return element;
                         }
-                        
                     }
-                    
                 }
             }
             else

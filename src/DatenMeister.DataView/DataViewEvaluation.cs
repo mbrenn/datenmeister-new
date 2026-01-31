@@ -137,12 +137,12 @@ public class DataViewEvaluation
 
             // Gets the elements
             var result = GetElementsForViewNodeInternal(viewNode);
-            if (Debugger.IsAttached)
+            if (_referenceCount == 1 && Debugger.IsAttached)
             {
-                var asList = result.Take(101).ToList();
-                if (asList.Count > 100)
+                var asList = result.ToList();
+                if (asList.Count > 200)
                 {
-                    Logger.Info($"Result of dataview evaluation {NamedElementMethods.GetFullName(viewNode)} is {asList.Count} elements");
+                    Logger.Warn($"Result of dataview evaluation {NamedElementMethods.GetFullName(viewNode)} is {asList.Count} elements");
                 }
             }
             

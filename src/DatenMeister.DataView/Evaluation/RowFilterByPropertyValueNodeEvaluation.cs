@@ -87,13 +87,11 @@ public class RowFilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
         
         foreach (var element in input.OfType<IObject>())
         {
-            if (!element.isSet(property))
+            var elementValue = element.getOrDefault<string>(property);
+            if (elementValue == null)
             {
-                // Element is not set
                 continue;
             }
-
-            var elementValue = element.getOrDefault<string>(property);
 
             var isIn = comparisonMode switch
             {

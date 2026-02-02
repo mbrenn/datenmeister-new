@@ -516,6 +516,11 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             MetaAttribute = attribute
         };
 
+        if (attribute.getOrDefault<bool>(_UML._Classification._Property.isID))
+        {
+            attributeModel.IsId = true;
+        }
+
         if (attribute.isSet(_UML._Classification._Property.upperValue))
         {
             var multiplier = attribute.getOrDefault<string>(_UML._Classification._Property.upperValue);

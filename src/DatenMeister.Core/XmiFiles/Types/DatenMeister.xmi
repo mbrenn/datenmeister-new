@@ -16,8 +16,8 @@
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="73c8c24e-6040-4700-b11d-c60f2379523a" name="XmiImportContainer">
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="405bae4b-b378-4c20-8367-58488cf61008" name="xmi" type-ref="dm:///_internal/model/primitivetypes#String" />
-        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a8901f30-7e86-4149-ac09-16393b8ed66b" type-ref="dm:///_internal/model/primitivetypes#String" name="property" isID="True" isComposite="True" />
-        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="01429fa5-30e1-42b1-8ef8-640d68012538" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="addToCollection" isID="True" isComposite="True" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a8901f30-7e86-4149-ac09-16393b8ed66b" type-ref="dm:///_internal/model/primitivetypes#String" name="property" isComposite="True" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="01429fa5-30e1-42b1-8ef8-640d68012538" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="addToCollection" isComposite="True" />
       </packagedElement>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="Package_ExtentManager" name="ExtentManager" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
@@ -36,7 +36,7 @@
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="17157cd1-1430-4442-87f1-ec59f720bb89" name="applicationPath" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="OSIntegration.EnvironmentalVariable" name="EnvironmentalVariable">
-        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4ab7c03c-b55c-4e40-8d91-293498813bad" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4ab7c03c-b55c-4e40-8d91-293498813bad" name="name" type-ref="dm:///_internal/model/primitivetypes#String" isID="True" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e6938d8f-0fd8-445e-ac90-c0182d98fc7b" name="value" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
     </packagedElement>
@@ -173,9 +173,9 @@
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="bc4952bf-a3f5-4516-be26-5b773e38bd54" name="MoveUpDownAction">
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f138f871-6faa-4f2d-b9e6-41ed762c0225" name="element" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="52364770-cbea-417c-bfd1-10332835fe6d" type-ref="dm:///_internal/types/internal#45928e05-c8fc-4f90-a726-ecffebc2a566" name="direction" isID="True" isComposite="True" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="52364770-cbea-417c-bfd1-10332835fe6d" type-ref="dm:///_internal/types/internal#45928e05-c8fc-4f90-a726-ecffebc2a566" name="direction" isComposite="True" />
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="110207a7-cc45-46d9-918d-ca65a31dc136" name="container" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7519f4e6-f329-4810-9696-64851f734237" type-ref="dm:///_internal/model/primitivetypes#String" name="property" isID="True" isComposite="True" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7519f4e6-f329-4810-9696-64851f734237" type-ref="dm:///_internal/model/primitivetypes#String" name="property" isComposite="True" />
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="43b0764e-b70f-42bb-b37d-ae8586ec45f1" name="StoreExtentAction">
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="990dafb5-a2cc-4d6e-ba0b-4b1fb7b40cdd" type-ref="dm:///_internal/model/primitivetypes#String" name="workspaceId" />
@@ -183,16 +183,16 @@
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="f71dd2c1-8b7c-4076-8b0f-92435fd81916" isSubstitutable="True" general-ref="dm:///_internal/types/internal#Actions.Action" />
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d" name="ImportXmiAction">
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d7d4d1c9-075e-4abc-9d00-a227def28777" type-ref="dm:///_internal/model/primitivetypes#String" name="workspaceId" isID="True" isComposite="True" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="af1d9aab-3dba-4b2c-833a-9653ec11e4ea" type-ref="dm:///_internal/model/primitivetypes#String" name="itemUri" isID="True" isComposite="True" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f539c39b-9b09-428f-b2d7-896bb4b5930e" type-ref="dm:///_internal/model/primitivetypes#String" name="xmi" isID="True" isComposite="True" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c943ca90-ccc8-4977-8e64-8d8e961964c2" type-ref="dm:///_internal/model/primitivetypes#String" name="property" isID="True" isComposite="True" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a596ed8a-d0fd-4d12-9a72-e0ceebb3ff05" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="addToCollection" isID="True" isComposite="True" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d7d4d1c9-075e-4abc-9d00-a227def28777" type-ref="dm:///_internal/model/primitivetypes#String" name="workspaceId" isComposite="True" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="af1d9aab-3dba-4b2c-833a-9653ec11e4ea" type-ref="dm:///_internal/model/primitivetypes#String" name="itemUri" isComposite="True" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f539c39b-9b09-428f-b2d7-896bb4b5930e" type-ref="dm:///_internal/model/primitivetypes#String" name="xmi" isComposite="True" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c943ca90-ccc8-4977-8e64-8d8e961964c2" type-ref="dm:///_internal/model/primitivetypes#String" name="property" isComposite="True" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a596ed8a-d0fd-4d12-9a72-e0ceebb3ff05" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="addToCollection" isComposite="True" />
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="b631bb00-ab11-4a8a-a148-e28abc398503" name="DeletePropertyFromCollectionAction">
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1db8339a-8167-40b5-a010-6e235e9ad9bc" isComposite="false" isID="false" name="propertyName" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="84dd1f97-b90e-43e2-8914-a933f15e359f" name="metaclass" type-ref="dm:///_internal/model/uml#Class" isID="true" isComposite="true" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="09c1a91e-096b-4636-9c0a-fa1d5afdb43e" type-ref="dm:///_internal/model/primitivetypes#String" name="collectionUrl" isID="true" isComposite="true" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="84dd1f97-b90e-43e2-8914-a933f15e359f" name="metaclass" type-ref="dm:///_internal/model/uml#Class" isComposite="true" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="09c1a91e-096b-4636-9c0a-fa1d5afdb43e" type-ref="dm:///_internal/model/primitivetypes#String" name="collectionUrl" isComposite="true" />
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="546dbfc7-18e4-4839-a74b-fab73ff6b3ec" isSubstitutable="false">
         <general p2:type="dm:///_internal/model/uml#Class" p2:id="956d37e5-37e0-41ea-b7e2-1a3769145d67" name="Action">
           <ownedAttribute p2:id="e2487ff4-fe72-4295-ab73-797c5a567426" />
@@ -232,7 +232,7 @@
         <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="f34529f8-1641-4d08-9387-044095cef715" general-ref="#e07ca80e-2540-4f91-8214-60dbd464e998" isSubstitutable="false" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="3251783f-2683-4c24-bad5-828930028462" name="NavigateToExtentClientAction">
-        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6e01d349-4d72-4be7-9038-22e2e8c5449f" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" isID="true" isComposite="true" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6e01d349-4d72-4be7-9038-22e2e8c5449f" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" isComposite="true" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c2406255-991c-40c1-9d86-44dfb1606bb6" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="5f69675e-df58-4ad7-84bf-359cdfba5db4" name="NavigateToItemClientAction">
@@ -625,14 +625,14 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="634a840c-786f-4960-bc71-6da7e7c15cf4" name="includeSpecializationsForDefaultTypes" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7f641fce-248d-4415-b8f7-0ef4e53df927" name="defaultWorkspaceOfNewElements" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="c0dc1ee6-9011-4bc3-a8f1-e6583b7e0437" name="defaultExtentOfNewElements" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1d9ae5aa-83e2-4f9b-bbdb-0a1fc8c72085" type-ref="dm:///_internal/model/primitivetypes#String" name="actionName" isID="True" isComposite="True" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1d9ae5aa-83e2-4f9b-bbdb-0a1fc8c72085" type-ref="dm:///_internal/model/primitivetypes#String" name="actionName" isComposite="True" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.TextFieldData" name="TextFieldData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="4a3c3292-2df3-494b-9b00-32c86b786a58" general-ref="#DatenMeister.Models.Forms.FieldData" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5cc0db9b-3cd7-459f-9859-566fa7232ab3" name="lineHeight" type-ref="dm:///_internal/model/primitivetypes#Integer" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="90eb00db-fee9-4f1e-9e5c-01b97fb71823" name="width" type-ref="dm:///_internal/model/primitivetypes#Integer" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7e63288b-0ed8-4680-ba79-6de132551313" type-ref="dm:///_internal/model/primitivetypes#Integer" name="shortenTextLength" isID="True" isComposite="True" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="cff81544-b1f9-432f-a8b8-f0b4efa5f133" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="supportClipboardCopy" isID="True" isComposite="True" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7e63288b-0ed8-4680-ba79-6de132551313" type-ref="dm:///_internal/model/primitivetypes#Integer" name="shortenTextLength" isComposite="True" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="cff81544-b1f9-432f-a8b8-f0b4efa5f133" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="supportClipboardCopy" isComposite="True" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.EvalTextFieldData" name="EvalTextFieldData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="647af3a7-ee7a-48d5-a1d0-4ed02a45b5c2" general-ref="#DatenMeister.Models.Forms.TextFieldData" />
@@ -718,7 +718,7 @@
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="8cae918e-73c1-498c-8479-19d1aaa39caa" general-ref="#DatenMeister.Models.Forms.Form" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="c19bbfec-6afb-4017-94c2-d2992853a25c" name="tab" upper="2" isComposite="True" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b09268a2-2412-42cd-816c-cf0c4a913a63" name="autoTabs" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a3cc7ca4-b48f-450e-91c5-e1df3a8e13e7" lower="0" upper="*" name="field" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData" isID="true" isComposite="true" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a3cc7ca4-b48f-450e-91c5-e1df3a8e13e7" lower="0" upper="*" name="field" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData" isComposite="true" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.ObjectForm" name="ObjectForm">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="8cae918e-73c1-498c-8479-19d1aea39caa" general-ref="#DatenMeister.Models.Forms.Form" />
@@ -733,7 +733,7 @@
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.DropDownByCollection" name="DropDownByCollection">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="4c7227a4-4e25-4ddc-876e-6dcfc3282249" general-ref="#DatenMeister.Models.Forms.FieldData" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4d5caf8d-b3e7-4df9-8f64-b06d77279cad" name="defaultWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="36d692e2-73dc-46e4-b92b-2c2a6e2747b2" type-ref="dm:///_internal/model/primitivetypes#String" name="collection" isID="True" isComposite="True" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="36d692e2-73dc-46e4-b92b-2c2a6e2747b2" type-ref="dm:///_internal/model/primitivetypes#String" name="collection" isComposite="True" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="26a9c433-ead8-414b-9a8e-bb5a1a8cca00" name="UriReferenceFieldData">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8e1114d6-d5e5-49a4-8f07-3d2c3a9c3b48" isComposite="false" isID="false" name="defaultWorkspace">
@@ -859,10 +859,10 @@
   </item>
   <item p2:type="dm:///_internal/model/uml#Package" p2:id="a8bbe11e-07e1-44e6-ac9c-a9317d83251d" name="Verifier" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="d19d742f-9bba-4bef-b310-05ef96153768" name="VerifyEntry">
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c9ac4b37-733f-4740-9fb9-b817b58dc73c" type-ref="dm:///_internal/model/primitivetypes#String" name="workspaceId" isID="True" isComposite="True" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f62131b8-04ee-4d87-b8d1-998d6f42fd11" type-ref="dm:///_internal/model/primitivetypes#String" name="itemUri" isID="True" isComposite="True" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4998bce9-fdc7-4953-a0a0-fa2b6dc75f5c" type-ref="dm:///_internal/model/primitivetypes#String" name="category" isID="True" isComposite="True" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1651b893-030e-4c29-8d99-96a2066d6c1d" type-ref="dm:///_internal/model/primitivetypes#String" name="message" isID="True" isComposite="True" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c9ac4b37-733f-4740-9fb9-b817b58dc73c" type-ref="dm:///_internal/model/primitivetypes#String" name="workspaceId" isComposite="True" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f62131b8-04ee-4d87-b8d1-998d6f42fd11" type-ref="dm:///_internal/model/primitivetypes#String" name="itemUri" isComposite="True" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4998bce9-fdc7-4953-a0a0-fa2b6dc75f5c" type-ref="dm:///_internal/model/primitivetypes#String" name="category" isComposite="True" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1651b893-030e-4c29-8d99-96a2066d6c1d" type-ref="dm:///_internal/model/primitivetypes#String" name="message" isComposite="True" />
     </packagedElement>
   </item>
 </item>

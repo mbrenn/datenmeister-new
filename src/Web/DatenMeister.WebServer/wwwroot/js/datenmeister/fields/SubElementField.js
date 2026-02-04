@@ -183,7 +183,8 @@ export class Control {
             const containerAdditional = $(".dm-subelements-createadditional", attachItem);
             if (this.additionalTypes !== undefined) {
                 for (const m in this.additionalTypes) {
-                    let additionalType = await MofResolver.resolve(this.additionalTypes[m]);
+                    const additionalTypeTemp = this.additionalTypes[m];
+                    let additionalType = await MofResolver.resolve(additionalTypeTemp);
                     if (additionalType === undefined)
                         continue;
                     let name;

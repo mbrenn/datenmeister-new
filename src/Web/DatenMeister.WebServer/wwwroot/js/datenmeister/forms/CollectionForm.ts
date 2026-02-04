@@ -90,7 +90,6 @@ export function createQueryBuilder(query: QueryFilterParameter, limit?: number) 
     if (query.queryWorkspace !== undefined && query.queryUrl !== undefined) {
         // In case we are just using quzery, we use that one as input. 
         QueryEngine.referenceExistingNode(builder, query.queryWorkspace, query.queryUrl);
-        return builder;
     } else {
         QueryEngine.addDynamicSource(builder, "input");
     }

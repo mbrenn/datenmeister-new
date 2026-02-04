@@ -617,6 +617,12 @@ export namespace _DataViews
                 export const __ReferenceViewNode_Uri = "dm:///_internal/types/internal#e80d4c64-a68e-44a7-893d-1a5100a80370";
         }
 
+        export class _ValueItem
+        {
+            static value = "value";
+        }
+
+        export const __ValueItem_Uri = "dm:///_internal/types/internal#4394a28a-0def-4030-b5d0-7a1b5b01c91b";
 }
 
 export namespace _Reports

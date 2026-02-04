@@ -1325,6 +1325,18 @@ public class _DataViews
 
     public _Node Node = new ();
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#4394a28a-0def-4030-b5d0-7a1b5b01c91b",
+        TypeKind = TypeKind.ClassTree)]
+    public class _ValueItem
+    {
+        public static readonly string @value = "value";
+        public IElement? @_value = null;
+
+    }
+
+    public _ValueItem @ValueItem = new ();
+    public MofObjectShadow @__ValueItem = new ("dm:///_internal/types/internal#4394a28a-0def-4030-b5d0-7a1b5b01c91b");
+
     public static readonly _DataViews TheOne = new ();
 
 }

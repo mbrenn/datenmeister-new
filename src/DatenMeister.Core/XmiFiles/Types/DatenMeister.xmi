@@ -387,6 +387,9 @@
         <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="fd6668cb-67f9-436c-9300-8e6f00b60476" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isSubstitutable="false" />
       </packagedElement>
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="4394a28a-0def-4030-b5d0-7a1b5b01c91b" name="ValueItem">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="d8591564-d33a-4249-95ac-ff70a99180f9" type-ref="dm:///_internal/model/primitivetypes#String" name="value" />
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Reports" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportDefinition" name="ReportDefinition">

@@ -3402,6 +3402,38 @@ public class DataViews
 
     }
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#4394a28a-0def-4030-b5d0-7a1b5b01c91b",
+        TypeKind = TypeKind.WrappedClass)]
+    public class ValueItem_Wrapper : IElementWrapper
+    {
+        private readonly IElement _wrappedElement;
+
+        public ValueItem_Wrapper(IElement innerDmElement)
+        {
+            _wrappedElement = innerDmElement;
+        }
+
+        public ValueItem_Wrapper(IFactory factory)
+        {
+            _wrappedElement = factory.create(_metaClass);
+        }
+
+        public IElement GetWrappedElement() => _wrappedElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#4394a28a-0def-4030-b5d0-7a1b5b01c91b");
+
+        public static ValueItem_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+        public string? @value
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("value");
+            set => 
+                _wrappedElement.set("value", value);
+        }
+
+    }
+
 }
 
 public class Reports

@@ -106,7 +106,7 @@ public class LocalTypeSupport : IDatenMeisterPlugin
         };
 
         var typeWorkspace = _workspaceLogic.GetTypesWorkspace();
-        extentTypes.GetConfiguration().ExtentType = UmlPlugin.ExtentType;
+        extentTypes.GetConfiguration().ExtentType = Plugin.Plugin.ExtentType;
         _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
     }
 
@@ -121,7 +121,7 @@ public class LocalTypeSupport : IDatenMeisterPlugin
                 WorkspaceNames.WorkspaceTypes,
                 WorkspaceNames.UriExtentUserTypes,
                 "DatenMeister.Types_User",
-                UmlPlugin.ExtentType,
+                Plugin.Plugin.ExtentType,
                 _integrationSettings.InitializeDefaultExtents
                     ? ExtentCreationFlags.CreateOnly
                     : ExtentCreationFlags.LoadOrCreate

@@ -57,6 +57,8 @@ public class IssueMeisterPlugin : IDatenMeisterPlugin
             ?? throw new InvalidOperationException("IssueMeister.Issue was not found. "));
         _extentSettings.extentTypeSettings.Add(extentSetting);
         
+        
+        (issueMeisterTypes as MofUriExtent)?.AddAlternativeUri("dm:///_internal/types/internal");
         MofUriExtent.Migration.AddConverter("dm:///_internal/types/internal#IssueMeister.Issue", DmInternTypesDomainsDatenmeister + "#IssueMeister.Issue");
 
         return Task.CompletedTask;

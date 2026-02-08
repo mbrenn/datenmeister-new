@@ -535,6 +535,11 @@ export var _DataViews;
         _Node._ReferenceViewNode = _ReferenceViewNode;
         _Node.__ReferenceViewNode_Uri = "dm:///_internal/types/internal#e80d4c64-a68e-44a7-893d-1a5100a80370";
     })(_Node = _DataViews._Node || (_DataViews._Node = {}));
+    class _ValueItem {
+    }
+    _ValueItem.value = "value";
+    _DataViews._ValueItem = _ValueItem;
+    _DataViews.__ValueItem_Uri = "dm:///_internal/types/internal#4394a28a-0def-4030-b5d0-7a1b5b01c91b";
 })(_DataViews || (_DataViews = {}));
 export var _Reports;
 (function (_Reports) {

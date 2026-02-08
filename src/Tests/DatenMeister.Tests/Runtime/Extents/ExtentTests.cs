@@ -151,7 +151,7 @@ public class ExtentTests
     {
         await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
         var extentSettings = dm.ScopeStorage.Get<ExtentSettings>();
-        Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == UmlPlugin.ExtentType), Is.True);
+        Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == Plugin.ExtentType), Is.True);
         Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == FormMethods.FormExtentType), Is.True);
         Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == ZipCodePlugin.ZipCodeExtentType), Is.True);
     }

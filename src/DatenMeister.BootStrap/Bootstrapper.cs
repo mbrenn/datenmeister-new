@@ -492,7 +492,7 @@ public class Bootstrapper
 
         umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001");
         umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/UML.xmi");
-        umlExtent.GetConfiguration().ExtentType = UmlPlugin.ExtentType;
+        umlExtent.GetConfiguration().ExtentType = Plugin.ExtentType;
 
         var mofExtent = new MofUriExtent(
             new XmiProvider(XDocument.Parse(xmlMof)),

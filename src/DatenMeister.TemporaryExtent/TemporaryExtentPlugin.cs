@@ -1,6 +1,7 @@
 ﻿using BurnSystems.Logging;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Plugins;
 
 namespace DatenMeister.TemporaryExtent;
@@ -17,6 +18,11 @@ public class TemporaryExtentPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage
     /// The Uri of the temporary extent
     /// </summary>
     public const string Uri = "dm:///_internal/temp";
+
+    /// <summary>
+    /// Stores the extent in which the temporary extent is stored
+    /// </summary>
+    public const string WorkspaceName = WorkspaceNames.WorkspaceManagement;
 
     private CancellationToken _taskCancellation;
     private CancellationTokenSource? _taskCancellationSource;
@@ -38,12 +44,12 @@ public class TemporaryExtentPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage
             case PluginLoadingPosition.AfterBootstrapping:
                 _taskCancellationSource = new CancellationTokenSource();
                 _taskCancellation = _taskCancellationSource.Token;
-                    
-                var logic = new TemporaryExtentLogic(workspaceLogic,scopeStorage);
+
+                var logic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
                 logic.CreateTemporaryExtent();
-                    
+
                 Task.Run(() => CleanTemporaryExtentRunAsync(_taskCancellation), _taskCancellation);
-                    
+
                 break;
             case PluginLoadingPosition.AfterShutdownStarted:
                 // Being called after the shutdown started
@@ -55,6 +61,7 @@ public class TemporaryExtentPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage
                 {
                     throw new InvalidOperationException("_source was not set");
                 }
+
                 break;
         }
 

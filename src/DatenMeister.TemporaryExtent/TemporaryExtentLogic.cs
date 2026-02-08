@@ -15,7 +15,6 @@ namespace DatenMeister.TemporaryExtent;
 /// </summary>
 public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
-    public const string InternalTempUri = "dm:///_internal/temp";
 
     /// <summary>
     /// Defines the logger
@@ -28,18 +27,20 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// <summary>
     /// Gets the name of the workspace
     /// </summary>
-    public IWorkspace Workspace => workspaceLogic.GetDataWorkspace();
+    public IWorkspace Workspace => workspaceLogic.GetWorkspace(TemporaryExtentPlugin.WorkspaceName)
+                                   ?? throw new InvalidOperationException(
+                                       $"{TemporaryExtentPlugin.WorkspaceName} does not exist");
 
     /// <summary>
     /// Gets the name of the workspace
     /// </summary>
-    public string WorkspaceName => Workspace.id;
+    public string WorkspaceName => TemporaryExtentPlugin.WorkspaceName;
 
     /// <summary>
     /// Maps the element to a datetime until when it shall be deleted.
     /// If the element is not found here, then it will be directly deleted
     /// </summary>
-    private static readonly ConcurrentDictionary<IObject, DateTime> ElementMapping = new ();
+    private static readonly ConcurrentDictionary<IObject, DateTime> ElementMapping = new();
 
     /// <summary>
     /// Gets the temporary extent and creates a new one, if necessary
@@ -48,7 +49,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     {
         get
         {
-            if (workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri) 
+            if (workspaceLogic.FindExtent(TemporaryExtentPlugin.WorkspaceName, TemporaryExtentPlugin.Uri)
                 is not IUriExtent foundExtent)
             {
                 // Somebody deleted the extent... So, we will create a new one
@@ -59,7 +60,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
             return foundExtent;
         }
     }
-        
+
 
     /// <summary>
     /// Tries to find the temporary extent. May also be null
@@ -67,7 +68,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// <returns>Found extent or null, if not found</returns>
     public IUriExtent? TryGetTemporaryExtent()
     {
-        return workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri);
+        return workspaceLogic.FindExtent(TemporaryExtentPlugin.WorkspaceName, TemporaryExtentPlugin.Uri);
     }
 
     /// <summary>
@@ -99,7 +100,8 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// <param name="cleanUpTime">The cleanup time after which the element will be removed automatically. Default is null.</param>
     /// <param name="addToExtent">If true, the element will be added to the temporary extent. Default is true.</param>
     /// <returns>The created temporary element.</returns>
-    public IElement CreateTemporaryElementByUri(string metaClassUri, TimeSpan? cleanUpTime = null, bool addToExtent = true)
+    public IElement CreateTemporaryElementByUri(string metaClassUri, TimeSpan? cleanUpTime = null,
+        bool addToExtent = true)
     {
         var result = CreateTemporaryElement((IElement?)null, cleanUpTime, addToExtent);
 
@@ -120,7 +122,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
         var currentTime = DateTime.Now;
 
         // Go through the elements and collect these ones whose clean up time has passed
-        var itemsToBeDeleted = 
+        var itemsToBeDeleted =
             foundExtent.elements()
                 .OfType<IObject>()
                 .Where(element =>
@@ -129,7 +131,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
                     {
                         return time < currentTime;
                     }
-                            
+
                     // If item is not in element-mapping, it will be directly deleted
                     return true;
                 })
@@ -156,7 +158,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     public IUriExtent CreateTemporaryExtent()
     {
         var temporaryProvider = new InMemoryProvider();
-        var extent = new MofUriExtent(temporaryProvider, InternalTempUri, scopeStorage);
+        var extent = new MofUriExtent(temporaryProvider, TemporaryExtentPlugin.Uri, scopeStorage);
         workspaceLogic.AddExtent(Workspace, extent);
         return extent;
     }

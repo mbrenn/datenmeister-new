@@ -51,8 +51,10 @@ public static class DefaultValueHandler
     {
         if (value is MofObject mofObject)
         {
+            var classModel = mofObject.GetClassModel();
+            var attributeModel = classModel?.FindAttribute(property);
             return DotNetHelper.ConvertTo<T>(
-                mofObject.GetClassModel()?.FindAttribute(property)?.DefaultValue);
+                attributeModel?.DefaultValue);
         }
 
         var type = value.getMetaClass();

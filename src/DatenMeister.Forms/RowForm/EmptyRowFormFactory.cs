@@ -1,9 +1,11 @@
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Forms.FormFactory;
+using DatenMeister.TemporaryExtent;
 
 namespace DatenMeister.Forms.RowForm;
 
-public class EmptyRowFormFactory : FormFactoryBase, IRowFormFactory
+public class EmptyRowFormFactory(IWorkspaceLogic workspaceLogic) : FormFactoryBase, IRowFormFactory
 {
     public void CreateRowForm(RowFormFactoryParameter parameter,
         FormCreationContext context, 
@@ -11,9 +13,10 @@ public class EmptyRowFormFactory : FormFactoryBase, IRowFormFactory
     {
         if (!result.Forms.Any())
         {
-            result.Forms.Add(context.Global.Factory.create(_Forms.TheOne.__RowForm));
+            result.Forms.Add(context.Global.FactoryForForms.create(_Forms.TheOne.__RowForm));
+            result.IsManaged = true;
+            result.AddToFormCreationProtocol(
+                "[EmptyRowFormFactory] Empty object Row-Form created");
         }
-
-        result.IsManaged = true;
     }
 }

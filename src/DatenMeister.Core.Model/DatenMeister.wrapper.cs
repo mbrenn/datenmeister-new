@@ -3402,6 +3402,38 @@ public class DataViews
 
     }
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#4394a28a-0def-4030-b5d0-7a1b5b01c91b",
+        TypeKind = TypeKind.WrappedClass)]
+    public class ValueItem_Wrapper : IElementWrapper
+    {
+        private readonly IElement _wrappedElement;
+
+        public ValueItem_Wrapper(IElement innerDmElement)
+        {
+            _wrappedElement = innerDmElement;
+        }
+
+        public ValueItem_Wrapper(IFactory factory)
+        {
+            _wrappedElement = factory.create(_metaClass);
+        }
+
+        public IElement GetWrappedElement() => _wrappedElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#4394a28a-0def-4030-b5d0-7a1b5b01c91b");
+
+        public static ValueItem_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+        public string? @value
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("value");
+            set => 
+                _wrappedElement.set("value", value);
+        }
+
+    }
+
 }
 
 public class Reports
@@ -5857,14 +5889,6 @@ public class Forms
 
         public static CheckboxFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
-        public int @lineHeight
-        {
-            get =>
-                _wrappedElement.getOrDefault<int>("lineHeight");
-            set => 
-                _wrappedElement.set("lineHeight", value);
-        }
-
         public bool @isAttached
         {
             get =>
@@ -6050,14 +6074,6 @@ public class Forms
                 _wrappedElement.getOrDefault<bool>("hideTime");
             set => 
                 _wrappedElement.set("hideTime", value);
-        }
-
-        public bool @showOffsetButtons
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("showOffsetButtons");
-            set => 
-                _wrappedElement.set("showOffsetButtons", value);
         }
 
         public bool @isAttached
@@ -6670,13 +6686,25 @@ public class Forms
                 _wrappedElement.set("allowOnlyExistingElements", value);
         }
 
-        // Not found
-        public object? @defaultTypesForNewElements
+        // DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper
+        public DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper? @defaultTypesForNewElements
         {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultTypesForNewElements");
-            set => 
-                _wrappedElement.set("defaultTypesForNewElements", value);
+            get
+            {
+                var foundElement = _wrappedElement.getOrDefault<IElement?>("defaultTypesForNewElements");
+                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper(foundElement);
+            }
+            set 
+            {
+                if(value is IElementWrapper wrappedElement)
+                {
+                    _wrappedElement.set("defaultTypesForNewElements", wrappedElement.GetWrappedElement());
+                }
+                else
+                {
+                    _wrappedElement.set("defaultTypesForNewElements", value);
+                }
+            }
         }
 
         public bool @includeSpecializationsForDefaultTypes

@@ -584,45 +584,56 @@ public class MofExtent :
         {
             if (extent == null)
                 throw new InvalidOperationException("Extent is null but MofObject given");
+            
+            // Different configuration
+            var isCompositeAndInExtent = isComposite == true && asMofObject.Extent != null;
+            var isUnknownCompositeNotInExtent = isComposite == null && asMofObject.Extent == null;
+            var isReferenceExtentFitting = asMofObject.ReferencedExtent == extent;
 
-            if (asMofObject.Extent == null || isComposite == true)
+            // We can take over the element, in case the extent is null, but the reference is perfectly fitting
+            if (asMofObject.Extent == null && isReferenceExtentFitting && asMofObject.ProviderObject.Provider == extent.Provider)
+            {
+                return asMofObject.ProviderObject;
+            }
+            
+            // We need to copy in case: 
+            // Item isComposite and already in an Extent ==> Real composition
+            // Item isComposite not in extent and also the factory is different ==> We can just set it.. everythjing good
+            // Item is unknown whether composite or not, but extent is not known
+            if (isComposite == true || isCompositeAndInExtent && !isReferenceExtentFitting || isUnknownCompositeNotInExtent)
             {
                 if (isComposite == false)
                 {
                     var extentUri = (extent as IUriExtent)?.contextURI() ?? "Unknown";
                     var metaClass = (asMofObject as IElement)?.getMetaClass()?.ToString() ?? "Unknown";
                     var attributeName = attributeModel?.Name ?? "Unknown";
-                    logger.Info($"We are NOT composite, but would like to get added without knowing the extent: {asMofObject} ({metaClass}) to Extent: {extentUri} (Attribute: {attributeName})");
+                    logger.Info(
+                        $"We are NOT composite, but would like to get added without knowing the extent: {asMofObject} ({metaClass}) to Extent: {extentUri} (Attribute: {attributeName})");
                 }
-                
-                if (asMofObject.ProviderObject.Provider == extent.Provider)
-                {
-                    // if the given value is created by the provider, but has not been allocated
-                    // to an object until now, it can be used directly.
-                    return asMofObject.ProviderObject;
-                }
-                
+
                 // We are having (1) a composite object or (2) no information about composition strategy
                 // In case of (1), we clone the item, since we have to. The id is reused since the item is not
                 // added anywhere
                 // In case of (2), we clone the item, since we assume that it needs to be copied
-                
+
                 // If the object to be added is not connected to an extent, we have to copy 
                 // the element to the right provider type, but we keep the id
-                var result = (MofElement) ObjectCopier.Copy(
+                var result = (MofElement)ObjectCopier.Copy(
                     new MofFactory(extent),
-                    asMofObject, 
-                    new CopyOption {CopyId = true});
+                    asMofObject,
+                    new CopyOption { CopyId = true });
                 return result.ProviderObject;
             }
 
             // We regard it as a reference since no composition is requested
             var asElement = asMofObject as IElement ??
                             throw new InvalidOperationException("Given element is not of type IElement");
-            var uriExtentOfItem = (MofUriExtent)asMofObject.Extent;
+            var uriExtentOfItem = (MofUriExtent?)asMofObject.Extent ??
+                                  (MofUriExtent)asMofObject.ReferencedExtent
+                                  ?? throw new InvalidOperationException("Extent is null");
             var workspace = uriExtentOfItem.GetWorkspace()?.id ?? string.Empty;
 
-            return new UriReference(((MofUriExtent)asMofObject.Extent).uri(asElement))
+            return new UriReference(uriExtentOfItem.uri(asElement))
             {
                 Workspace = workspace
             };
@@ -675,7 +686,18 @@ public class MofExtent :
             {
                 var result = ConvertForSetting(childValue, mofObject.ReferencedExtent, attributeModel);
 
-                if (result is IProviderObject && childValue is MofObject childValueAsObject)
+                // In case that the result is an object and in case that the object which shall be set, 
+                // we update the childValue's extent in case it is flying around loosely coupled. 
+                // This allows the (indirect) caller of that function to use the child value (MofObject which
+                // is just a temporary access to the IProviderObject) for other operations while the
+                // reference retrieval processes are fully working. 
+                // There might be some corner cases, in which the element is fully copied, but we update
+                // the childvalue. This could be resolved by a "out variable"  of ConvertForSettings
+                // which indicates whether a complete new object has been created or whether just
+                // the reference has been used. 
+                if (result is IProviderObject
+                    && childValue is MofObject childValueAsObject
+                    && childValueAsObject.Extent == null)
                 {
                     // Sets the extent of the newly added object which will be associated to the mofObject
                     // This value must be set, so the new information is propagated to the MofObjects
@@ -689,7 +711,9 @@ public class MofExtent :
             {
                 var result = ConvertForSetting(childValue, extent, attributeModel);
 
-                if (result is IProviderObject && childValue is MofObject childValueAsObject)
+                if (result is IProviderObject 
+                    && childValue is MofObject childValueAsObject
+                    && childValueAsObject.Extent == null)
                 {
                     // Sets the extent of the newly added object which will be associated to the mofObject
                     // This value must be set, so the new information is propagated to the MofObjects

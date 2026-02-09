@@ -2,6 +2,7 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as TextField from "../fields/TextField.js";
 import * as CheckboxField from "../fields/CheckboxField.js";
 import * as CheckboxListTaggingField from "../fields/CheckboxListTaggingField.js";
+import * as DateTimeField from "../fields/DateTimeField.js";
 import * as DropDownField from "../fields/DropDownField.js";
 import * as MetaClassElementField from "../fields/MetaClassElementField.js";
 import * as ActionField from "../fields/ActionField.js";
@@ -22,14 +23,16 @@ export function registerField(metaClassFieldData, factoryMethod) {
 }
 export function canBeSorted(field) {
     const metaClassUri = field.metaClass?.uri;
-    if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {
+    if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri ||
+        metaClassUri === _DatenMeister._Forms.__DateTimeFieldData_Uri) {
         return true;
     }
     return false;
 }
 export function canBeTextFiltered(field) {
     const metaClassUri = field.metaClass?.uri;
-    if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {
+    if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri ||
+        metaClassUri === _DatenMeister._Forms.__DateTimeFieldData_Uri) {
         return true;
     }
     return false;
@@ -54,6 +57,9 @@ export function createField(fieldMetaClassUri, parameter) {
             break;
         case _DatenMeister._Forms.__CheckboxFieldData_Uri:
             result = new CheckboxField.Field();
+            break;
+        case _DatenMeister._Forms.__DateTimeFieldData_Uri:
+            result = new DateTimeField.Field();
             break;
         case _DatenMeister._Forms.__CheckboxListTaggingFieldData_Uri:
             result = new CheckboxListTaggingField.Field();

@@ -75,7 +75,8 @@ public class FormTests
         {
             Global = new FormCreationContext.GlobalContext
             {
-                Factory = factory
+                Factory = factory,
+                FactoryForForms = factory
             }
         };
 
@@ -162,7 +163,11 @@ public class FormTests
         
         var context = new FormCreationContext
         {
-            Global = new FormCreationContext.GlobalContext { Factory = new MofFactory(form) }
+            Global = new FormCreationContext.GlobalContext
+            {
+                Factory = new MofFactory(form),
+                FactoryForForms = new MofFactory(form)
+            }
         };
         
         var result = new FormCreationResultMultipleForms()
@@ -209,7 +214,11 @@ public class FormTests
 
         var context = new FormCreationContext
         {
-            Global = new FormCreationContext.GlobalContext { Factory = new MofFactory(form) }
+            Global = new FormCreationContext.GlobalContext
+            {
+                Factory = new MofFactory(form),
+                FactoryForForms = new MofFactory(form)
+            }
         };
         
         var result = new FormCreationResultMultipleForms()

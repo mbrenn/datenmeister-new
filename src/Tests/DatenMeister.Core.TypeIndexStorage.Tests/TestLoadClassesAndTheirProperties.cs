@@ -38,6 +38,23 @@ public class TestLoadClassesAndTheirProperties
     }
 
     [Test]
+    public async Task TestAttributesWithId()
+    {
+        await using var dm = await IntegrationOfTests.GetDatenMeisterScope();
+        var typeIndexStore = dm.ScopeStorage.TryGet<TypeIndexStore>()
+                             ?? throw new InvalidOperationException("TypeIndexStore not found");
+        var typesWorkspace = typeIndexStore.GetCurrentIndexStore().FindWorkspace(WorkspaceNames.WorkspaceTypes);
+        var environmentVariable = typesWorkspace!.FindClassByUri(_CommonTypes.TheOne.OSIntegration.__EnvironmentalVariable.Uri);
+        Assert.That(environmentVariable, Is.Not.Null);
+        var name = environmentVariable!.FindAttribute("name");
+        Assert.That(name, Is.Not.Null);
+        Assert.That(name!.IsId, Is.True);
+        var value= environmentVariable.FindAttribute("value");
+        Assert.That(value, Is.Not.Null);
+        Assert.That(value!.IsId, Is.False);
+    }
+
+    [Test]
     public async Task TestGeneralizationsInClassModel()
     {
         await using var dm = await IntegrationOfTests.GetDatenMeisterScope();

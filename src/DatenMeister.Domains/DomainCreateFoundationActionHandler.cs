@@ -89,7 +89,7 @@ public class DomainCreateFoundationActionHandler(IWorkspaceLogic workspaceLogic,
         }
         
         // 2.1
-        loadedTypesExtent.Extent.GetConfiguration().ExtentType = UmlPlugin.ExtentType;
+        loadedTypesExtent.Extent.GetConfiguration().ExtentType = Plugin.ExtentType;
         
         // 3.
         if (domainCreate.createDataExtent)

@@ -24,29 +24,28 @@ export class CollectionFormHtmlElements {
  * @return {QueryEngine.QueryBuilder} - An instance of the QueryEngine's QueryBuilder configured with the specified parameters.
  */
 export function createQueryBuilder(query, limit) {
-    // Option 2, via Query Engine
     const builder = new QueryEngine.QueryBuilder();
     if (query.queryWorkspace !== undefined && query.queryUrl !== undefined) {
+        // In case we are just using quzery, we use that one as input. 
         QueryEngine.referenceExistingNode(builder, query.queryWorkspace, query.queryUrl);
-        return builder;
     }
     else {
         QueryEngine.addDynamicSource(builder, "input");
-        for (const property in query.filterByProperties) {
-            QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
-        }
-        if (query.orderBy !== undefined) {
-            QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
-        }
-        if (query.filterByFreetext) {
-            QueryEngine.filterByFreetext(builder, query.filterByFreetext);
-        }
-        if (query.columnsIncludeOnly) {
-            QueryEngine.columnFilterIncludeOnly(builder, query.columnsIncludeOnly);
-        }
-        if (query.columnsExclude) {
-            QueryEngine.columnFilterExclude(builder, query.columnsExclude);
-        }
+    }
+    for (const property in query.filterByProperties) {
+        QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
+    }
+    if (query.orderBy !== undefined) {
+        QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
+    }
+    if (query.filterByFreetext) {
+        QueryEngine.filterByFreetext(builder, query.filterByFreetext);
+    }
+    if (query.columnsIncludeOnly) {
+        QueryEngine.columnFilterIncludeOnly(builder, query.columnsIncludeOnly);
+    }
+    if (query.columnsExclude) {
+        QueryEngine.columnFilterExclude(builder, query.columnsExclude);
     }
     // Imposes only a limit in case it is not defined or positive
     // in case the given limit < 0, then no limit is applied
@@ -90,6 +89,7 @@ export class CollectionFormCreator {
             "<div class='dm_collection_form_message'></div>" +
             "<div class='dm_collection_form_table'></div>" +
             "</div>");
+        this.htmlElements.itemContainer.empty();
         this.htmlElements.itemContainer.append(collectionFormHtml);
         this.htmlElements.messageContainer = this.htmlElements.itemContainer.find(".dm_collection_form_message");
         this.htmlElements.tableContainer = this.htmlElements.itemContainer.find(".dm_collection_form_table");
@@ -113,6 +113,24 @@ export class CollectionFormCreator {
             configuration.viewMode = await VML.getDefaultViewModeIfNotSet(workspace, extentUri);
         }
         this.statusTextControl.setListStatus("Loading Default Viewmode", true);
+        /*
+         Creates the form for the View Mode Selection
+         */
+        this.htmlElements.viewModeSelectorContainer?.empty();
+        if (this.htmlElements.viewModeSelectorContainer !== undefined
+            && this.htmlElements.viewModeSelectorContainer !== null) {
+            const _ = (async () => {
+                this.statusTextControl.setListStatus("Create Viewmode Selection", false);
+                const viewModeForm = new ViewModeSelectionControl();
+                const htmlViewModeForm = await viewModeForm.createForm();
+                viewModeForm.viewModeSelected.addListener(viewMode => {
+                    configuration.viewMode = viewMode;
+                    configuration.refreshForm();
+                });
+                this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+                this.statusTextControl.setListStatus("Create Viewmode Selection", true);
+            })();
+        }
         // Load Breadcrumb
         this.statusTextControl.setListStatus("Loading Breadcrumb", false);
         let breadcrumb = new ElementBreadcrumb($(".dm-breadcrumb-page"));
@@ -131,77 +149,6 @@ export class CollectionFormCreator {
         this.statusTextControl.setListStatus("Create Form", false);
         await tthis.createFormByCollection(configuration);
         this.statusTextControl.setListStatus("Create Form", true);
-        /*
-         Creates the form for the View Mode Selection
-         */
-        this.htmlElements.viewModeSelectorContainer?.empty();
-        if (this.htmlElements.viewModeSelectorContainer !== undefined
-            && this.htmlElements.viewModeSelectorContainer !== null) {
-            this.statusTextControl.setListStatus("Create Viewmode Selection", false);
-            const viewModeForm = new ViewModeSelectionControl();
-            const htmlViewModeForm = await viewModeForm.createForm();
-            viewModeForm.viewModeSelected.addListener(viewMode => {
-                configuration.viewMode = viewMode;
-                configuration.refreshForm();
-            });
-            this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
-            this.statusTextControl.setListStatus("Create Viewmode Selection", true);
-        }
-        /*
-         *  Creates the form selection in which the user can manually select a form
-         */
-        /*if (this.htmlElements.formSelectorContainer !== undefined
-            && this.htmlElements.formSelectorContainer !== null) {
-            this.statusTextControl.setListStatus("Create Form Selection", false);
-
-            // Empty the container for the formselector
-            this.htmlElements.formSelectorContainer.empty();
-
-            const formControl = new FormSelectionControl();
-            formControl.formSelected.addListener(
-                selectedItem => {
-                    this._overrideFormUrl = selectedItem.selectedForm.uri;
-                    configuration.refreshForm();
-                });
-            formControl.formResetted.addListener(
-                () => {
-                    this._overrideFormUrl = undefined;
-                    configuration.refreshForm();
-                });
-
-            let formUrl: ItemLink;
-
-            // Tries to retrieve the current form uri
-            if (this._overrideFormUrl !== undefined) {
-                formUrl = {
-                    workspace: "Management",
-                    uri: this._overrideFormUrl
-                };
-            } else {
-                const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
-                if (form.uri !== undefined && byForm === undefined) {
-                    formUrl = {
-                        workspace: form.workspace,
-                        uri: form.uri
-                    };
-                } else if (byForm !== undefined) {
-                    formUrl = {
-                        workspace: "Management",
-                        uri: byForm
-                    };
-                }
-            }
-            if (this.htmlElements.storeCurrentFormBtn !== undefined) {
-                this.htmlElements.storeCurrentFormBtn.on('click', () => {
-                })
-            }
-
-            // Sets the current formurl and creates the control
-            formControl.setCurrentFormUrl(formUrl);
-            await formControl.createControl(this.htmlElements.formSelectorContainer);
-
-            this.statusTextControl.setListStatus("Create Form Selection", true);
-        }*/
         /*
          Creates the form for the creation of Metaclasses
          */
@@ -268,7 +215,7 @@ export class CollectionFormCreator {
             const tabCreationFunction = async function (tab, form) {
                 const parameter = {};
                 const viewNodeUrl = tab.get(_TableForm.viewNode, Mof.ObjectType.Single);
-                if (viewNodeUrl !== undefined) {
+                if (viewNodeUrl !== undefined && viewNodeUrl !== null) {
                     parameter.viewNode = viewNodeUrl.uri;
                 }
                 const callbackLoadItems = async (query) => {

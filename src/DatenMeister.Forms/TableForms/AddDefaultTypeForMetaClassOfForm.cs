@@ -22,18 +22,19 @@ public class AddDefaultTypeForMetaClassOfForm : FormFactoryBase, ITableFormFacto
             if (defaultType == null)
                 return;
 
-            AddDefaultTypeIfNotExists(result, form, defaultType);
+            AddDefaultTypeIfNotExists(context, result, form, defaultType);
         }
     }
 
-    public static void AddDefaultTypeIfNotExists(FormCreationResultOneForm result, IElement defaultType)
+    public static void AddDefaultTypeIfNotExists(FormCreationContext context, FormCreationResultOneForm result, IElement defaultType)
     {
         if (result.Form == null) return;
         
-        AddDefaultTypeIfNotExists(result, result.Form, defaultType);
+        AddDefaultTypeIfNotExists(context, result, result.Form, defaultType);
     }
     
     public static void AddDefaultTypeIfNotExists(
+        FormCreationContext context,
         FormCreationResult result,
         IElement form,
         IElement defaultType)
@@ -52,7 +53,7 @@ public class AddDefaultTypeForMetaClassOfForm : FormFactoryBase, ITableFormFacto
         }
 
         var defaultTypeInstance =
-            new MofFactory(form).create(_Forms.TheOne.__DefaultTypeForNewElement);
+            context.Global.Factory.create(_Forms.TheOne.__DefaultTypeForNewElement);
         defaultTypeInstance.set(_Forms._DefaultTypeForNewElement.metaClass, defaultType);
         defaultTypeInstance.set(_Forms._DefaultTypeForNewElement.name,
             NamedElementMethods.GetName(defaultType));

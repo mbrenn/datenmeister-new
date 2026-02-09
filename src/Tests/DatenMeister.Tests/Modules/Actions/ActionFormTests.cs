@@ -41,7 +41,8 @@ public class ActionFormTests
         {
             Global = new FormCreationContext.GlobalContext
             {
-                Factory = InMemoryObject.TemporaryFactory
+                Factory = InMemoryObject.TemporaryFactory, 
+                FactoryForForms = InMemoryObject.TemporaryFactory
             }
         };
 

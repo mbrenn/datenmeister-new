@@ -28,7 +28,7 @@ public class RowFlattenNodeEvaluation : IDataViewNodeEvaluation
     /// <inheritdoc />
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._Row._RowFlattenNode.input);
+        var inputNode = viewNode.getOrDefault<IElement?>(_DataViews._Row._RowFlattenNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");

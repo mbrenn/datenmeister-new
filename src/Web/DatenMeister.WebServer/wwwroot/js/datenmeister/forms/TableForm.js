@@ -1,13 +1,17 @@
+import * as Settings from "../Settings.js";
 import * as InterfacesForms from "./Interfaces.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Mof from "../Mof.js";
+import { ObjectType } from "../Mof.js";
 import * as FieldFactory from "./FieldFactory.js";
 import * as Navigator from '../Navigator.js';
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-var _FieldData = _DatenMeister._Forms._FieldData;
+import { _Forms } from "../models/DatenMeister.class.js";
 import * as burnJsPopup from "../../burnJsPopup.js";
 import * as ClientItem from "../client/Items.js";
 import * as ContextMenu from "./TableForm.ContextMenus.js";
+var _FieldData = _DatenMeister._Forms._FieldData;
+var _TableForm = _Forms._TableForm;
 export class TableFormParameter {
     constructor() {
         this.shortenFullText = true;
@@ -176,12 +180,20 @@ export class TableForm {
      */
     getQueryParameter() {
         const query = new InterfacesForms.QueryFilterParameter();
+        // Check, if we are having a viewnode
+        var viewNode = this.formElement.get(_TableForm.viewNode, ObjectType.Object);
+        if (viewNode !== undefined && viewNode !== null) {
+            query.queryWorkspace = Settings.WorkspaceManagement;
+            query.queryUrl = viewNode.uri;
+        }
+        else {
+            query.queryUrl = this.tableState.overrideQueryItem;
+            query.queryWorkspace = this.tableState.overrideQueryWorkspace;
+        }
         query.orderBy = this.tableState.orderBy;
         query.orderByDescending = this.tableState.orderByDescending;
         query.filterByProperties = this.tableState.filterByProperty;
         query.filterByFreetext = this.tableState.freeTextFilter;
-        query.queryUrl = this.tableState.overrideQueryItem;
-        query.queryWorkspace = this.tableState.overrideQueryWorkspace;
         return query;
     }
     /**
@@ -361,7 +373,7 @@ export class TableForm {
             const row = $("<tr></tr>");
             for (const field of fields) {
                 let cell = $("<td></td>");
-                const fieldMetaClassUri = field.metaClass.uri;
+                const fieldMetaClassUri = field.metaClass?.uri;
                 const fieldElement = FieldFactory.createField(fieldMetaClassUri, {
                     configuration: this.configuration,
                     field: field,
@@ -500,7 +512,8 @@ export class TableForm {
     }
     async createPropertyMenuItems(field) {
         let result = [];
-        if (field.metaClass.uri !== _DatenMeister._Forms.__ActionFieldData_Uri
+        if (field.metaClass !== undefined && field.metaClass !== null &&
+            field.metaClass.uri !== _DatenMeister._Forms.__ActionFieldData_Uri
             && field.metaClass.uri !== _DatenMeister._Forms.__MetaClassElementFieldData_Uri) {
             result.push(ContextMenu.createFunctionToRemoveAllProperties(field));
             if (this.tableParameter.allowFilteringOnProperty) {

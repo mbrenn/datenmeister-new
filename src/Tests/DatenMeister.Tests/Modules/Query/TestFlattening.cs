@@ -3,8 +3,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
@@ -41,16 +39,8 @@ public class TestFlattening
             // Create the Target Extent
             var extentManager = scope.Resolve<ExtentManager>();
 
-            var loaderConfig =
-                InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
-            loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, TestExtentUri);
-            loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
-                WorkspaceNames.WorkspaceData);
-
-            var loadedExtentInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
-            Assert.That(loadedExtentInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
-
-            var extent = loadedExtentInfo.Extent!;
+            var (extent, viewExtent) = await TestRowFilters.LoadAndValidateExtents(extentManager);
+            
             var factory = new MofFactory(extent);
 
             // Create the data!
@@ -62,6 +52,7 @@ public class TestFlattening
             // Now create the query
             var dropDownByQueryData = factory.create(_Forms.TheOne.__DropDownByQueryData);
             var queryStatement = factory.create(_DataViews.TheOne.__QueryStatement);
+            viewExtent.elements().add(queryStatement);
 
             var queryByExtent = factory.create(_DataViews.TheOne.Source.__SelectByExtentNode);
             queryByExtent.set(_DataViews._Source._SelectByExtentNode.workspaceId, "Types");

@@ -21,6 +21,7 @@ using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms.Helper;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.ZipCodeExample;
+using DatenMeister.TemporaryExtent;
 using DatenMeister.Types;
 using DatenMeister.Types.Plugin;
 using NUnit.Framework;
@@ -150,7 +151,7 @@ public class ExtentTests
     {
         await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
         var extentSettings = dm.ScopeStorage.Get<ExtentSettings>();
-        Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == UmlPlugin.ExtentType), Is.True);
+        Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == Plugin.ExtentType), Is.True);
         Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == FormMethods.FormExtentType), Is.True);
         Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == ZipCodePlugin.ZipCodeExtentType), Is.True);
     }
@@ -325,9 +326,10 @@ public class ExtentTests
     {
         await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
-        var extent = CreateType(dm, out var type);
+        CreateType(dm, out var type);
 
-        var extentFactory = new MofFactory(extent);
+        var extentFactory = new TemporaryExtentFactory( 
+            new TemporaryExtentLogic(dm.WorkspaceLogic, dm.ScopeStorage));
 
         var createdType = extentFactory.create(type);
         Assert.That(createdType, Is.Not.Null);

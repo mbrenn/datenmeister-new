@@ -82,7 +82,7 @@ public class ActionTests
         Assert.That(typesExtent, Is.Not.Null);
 
         Assert.That(managementExtent!.GetConfiguration().ContainsExtentType(FormMethods.FormExtentType), Is.True);
-        Assert.That(typesExtent!.GetConfiguration().ContainsExtentType(UmlPlugin.ExtentType), Is.True);
+        Assert.That(typesExtent!.GetConfiguration().ContainsExtentType(Plugin.ExtentType), Is.True);
     }
 
     [Test]

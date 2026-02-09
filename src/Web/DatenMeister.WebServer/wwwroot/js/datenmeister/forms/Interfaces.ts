@@ -100,6 +100,7 @@ export class QueryFilterParameter {
      * Defines the url to be used for the query. If not defined, the query will not be used
      */
     queryUrl?: string;
+    
     /**
      * Defines the workspace to be used for the query. If not defined, the default workspace is used.
      */

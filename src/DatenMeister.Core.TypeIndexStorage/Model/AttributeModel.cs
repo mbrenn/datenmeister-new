@@ -45,6 +45,11 @@ public class AttributeModel
     /// Gets or sets the flag whether the attribute is inherited from a parent class
     /// </summary>
     public bool IsInherited { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the information whether the attribute is an id attribute
+    /// </summary>
+    public bool IsId { get; set; }
 
     /// <summary>
     /// Gets or sets the original element of the attribute

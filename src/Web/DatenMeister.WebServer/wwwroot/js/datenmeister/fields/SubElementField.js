@@ -29,7 +29,7 @@ export class Control {
                     let innerValue = fieldValue[m];
                     const item = $("<li></li>");
                     const injectParams = {};
-                    if (this.itemActionName !== undefined) {
+                    if (this.itemActionName !== undefined && this.itemActionName !== null) {
                         injectParams.onClick = async (x) => {
                             const readObject = await ClientItems.getObjectByUri(x.workspace, x.uri);
                             await FormActions.execute(this.itemActionName, tthis.form, readObject);
@@ -183,7 +183,10 @@ export class Control {
             const containerAdditional = $(".dm-subelements-createadditional", attachItem);
             if (this.additionalTypes !== undefined) {
                 for (const m in this.additionalTypes) {
-                    let additionalType = await MofResolver.resolve(this.additionalTypes[m]);
+                    const additionalTypeTemp = this.additionalTypes[m];
+                    let additionalType = await MofResolver.resolve(additionalTypeTemp);
+                    if (additionalType === undefined)
+                        continue;
                     let name;
                     let metaClassUri;
                     let metaClassWorkspace;

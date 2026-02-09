@@ -109,7 +109,7 @@ export async function getObject(workspace: string, extent: string, id: string) {
         encodeURIComponent(id)
     );
 
-    return Mof.convertJsonObjectToDmObject(resultFromServer);
+    return Mof.convertJsonObjectToDmObject(resultFromServer, extent, workspace);
 }
 
 export async function getObjectByUri(workspace: string, url: string): Promise<Mof.DmObjectWithSync | undefined> {
@@ -122,7 +122,7 @@ export async function getObjectByUri(workspace: string, url: string): Promise<Mo
             encodeURIComponent(url)
         );
 
-        return Mof.convertJsonObjectToDmObject(resultFromServer);
+        return Mof.convertJsonObjectToDmObject(resultFromServer, undefined, workspace);
     }
     catch(e)
     {
@@ -211,7 +211,7 @@ export async function getRootElements(workspace: string, extentUri: string, para
     }
 
     const resultFromServer = await ApiConnection.get<IGetRootElementsResult>(url);
-    resultFromServer.rootElementsAsObjects = convertToMofObjects(resultFromServer.rootElements);
+    resultFromServer.rootElementsAsObjects = convertToMofObjects(resultFromServer.rootElements, extentUri, workspace);
     return resultFromServer;
 }
 
@@ -228,13 +228,13 @@ function serializeArrayToString(arrayValue) {
     return encodeURIComponent(result);
 }
 
-export function convertToMofObjects(resultFromServer: string) {
+export function convertToMofObjects(resultFromServer: string, extent?: string, workspace?: string) {
     const x = JSON.parse(resultFromServer);
     let result = new Array<Mof.DmObject>();
     for (let n in x) {
         if (Object.prototype.hasOwnProperty.call(x, n)) {
             const v = x[n];
-            result.push(Mof.convertJsonObjectToDmObject(v));
+            result.push(Mof.convertJsonObjectToDmObject(v, extent, workspace));
         }
     }
     return result;

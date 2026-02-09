@@ -2,6 +2,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.Fields;
@@ -11,7 +12,7 @@ using DatenMeister.Forms.RowForm;
 
 namespace DatenMeister.Forms.ObjectForm;
 
-public class ObjectFormFromData : FormFactoryBase, IObjectFormFactory
+public class ObjectFormFromData(IWorkspaceLogic workspaceLogic) : FormFactoryBase, IObjectFormFactory
 {
     private static readonly ILogger Logger = new ClassLogger(typeof(ObjectFormFromData));
 
@@ -137,7 +138,7 @@ public class ObjectFormFromData : FormFactoryBase, IObjectFormFactory
             if (detailForm == null)
             {
                 var detailResult = new FormCreationResultMultipleForms();
-                new EmptyRowFormFactory().CreateRowForm(
+                new EmptyRowFormFactory(workspaceLogic).CreateRowForm(
                     new RowFormFactoryParameter
                     {
                         MetaClass = parameter.MetaClass,

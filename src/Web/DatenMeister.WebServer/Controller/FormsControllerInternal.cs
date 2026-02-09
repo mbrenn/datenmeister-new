@@ -14,16 +14,16 @@ namespace DatenMeister.WebServer.Controller;
 public class FormsControllerInternal
 {
     private readonly TemporaryExtentFactory _temporaryExtentFactory;
-    private readonly TemporaryExtentLogic _temporaryLogic;
+    private readonly TemporaryExtentFactory _temporaryExtentFactoryForForms;
     
-    public TemporaryExtentFactory TemporaryExtentFactory => _temporaryExtentFactory;
 
     public FormsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     {
         WorkspaceLogic = workspaceLogic;
         ScopeStorage = scopeStorage;
-        _temporaryLogic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
-        _temporaryExtentFactory = new TemporaryExtentFactory(_temporaryLogic);
+        var temporaryLogic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
+        _temporaryExtentFactory = new TemporaryExtentFactory(temporaryLogic);
+        _temporaryExtentFactoryForForms = new TemporaryExtentFactory(temporaryLogic, true);
     }
 
     public IScopeStorage ScopeStorage { get; }
@@ -43,10 +43,7 @@ public class FormsControllerInternal
     public IElement GetObjectFormForItemInternal(string workspaceId, string itemUrl, string viewMode)
     {
         var item = GetItemByUriParameter(workspaceId, itemUrl);
-        var factory = new FormCreationContextFactory(WorkspaceLogic, ScopeStorage)
-        {
-            MofFactory = _temporaryExtentFactory
-        };
+        var factory = new FormCreationContextFactory(WorkspaceLogic, ScopeStorage);
 
         var formContext = factory.Create(viewMode);
 
@@ -56,15 +53,9 @@ public class FormsControllerInternal
         };
         parameter.SetByExtent(item.GetExtentOf() as IUriExtent);
         
-        var form = FormCreation.CreateObjectForm(
-            parameter, formContext);
+        var form = FormCreation.CreateObjectForm(parameter, formContext);
 
-        if (form.Form == null)
-        {
-            throw new InvalidOperationException("Form is not defined");
-        }
-
-        return form.Form;
+        return form.Form ?? throw new InvalidOperationException("Form is not defined");
     }
 
     public IElement GetCollectionFormForExtentInternal(string workspaceId, string extentUri, string viewMode)
@@ -75,10 +66,7 @@ public class FormsControllerInternal
             throw new InvalidOperationException("Extent not found: " + extentUri);
         }
 
-        var factory = new FormCreationContextFactory(WorkspaceLogic, ScopeStorage)
-        {
-            MofFactory = _temporaryExtentFactory
-        };
+        var factory = new FormCreationContextFactory(WorkspaceLogic, ScopeStorage);
         
         var formContext = factory.Create(viewMode);
 
@@ -91,14 +79,7 @@ public class FormsControllerInternal
             },
             formContext);
             
-        if (form.Form == null)
-        {
-            throw new InvalidOperationException("Form is not defined");
-        }
-            
-        _temporaryLogic.TemporaryExtent.elements().add(form);
-
-        return form.Form;
+        return form.Form ?? throw new InvalidOperationException("Form is not defined");
     }
 
     /// <summary>
@@ -109,10 +90,7 @@ public class FormsControllerInternal
     /// <returns>The found form</returns>
     public IObject GetObjectFormForMetaClassInternal(string? metaClass, string viewMode)
     {
-        var factory = new FormCreationContextFactory(WorkspaceLogic, ScopeStorage)
-        {
-            MofFactory = _temporaryExtentFactory
-        };
+        var factory = new FormCreationContextFactory(WorkspaceLogic, ScopeStorage);
 
         var context = factory.Create(viewMode);
 
@@ -132,12 +110,7 @@ public class FormsControllerInternal
                 MetaClass = resolvedMetaClass
             }, context);
 
-        if (result.Form == null)
-        {
-            throw new InvalidOperationException("Form is not defined");
-        }
-
-        return result.Form;
+        return result.Form ?? throw new InvalidOperationException("Form is not defined");
     }
 
     /// <summary>

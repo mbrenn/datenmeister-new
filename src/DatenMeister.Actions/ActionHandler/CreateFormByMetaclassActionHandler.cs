@@ -43,7 +43,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
                 actionLogic.WorkspaceLogic,
                 actionLogic.ScopeStorage);
             var context = factory.Create(string.Empty);
-            context.Global.Factory = new MofFactory(targetReflection);
+            context.Global.FactoryForForms = context.Global.Factory = new MofFactory(targetReflection);
 
             switch (creationMode)
             {

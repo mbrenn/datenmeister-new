@@ -29,8 +29,7 @@ public class NodeReferenceNodeEvaluation : IDataViewNodeEvaluation
         var itemUri = viewNode.getOrDefault<string>(
             _DataViews._Node._ReferenceViewNode.itemUri);
 
-        var foundObject = evaluation.WorkspaceLogic.FindObject(workspaceId, itemUri) as IElement;
-        if (foundObject == null)
+        if (evaluation.WorkspaceLogic.FindObject(workspaceId, itemUri) is not IElement foundObject)
         {
             throw new InvalidOperationException("The item has not been found");
         }        

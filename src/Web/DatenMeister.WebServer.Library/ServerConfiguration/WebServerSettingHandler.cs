@@ -29,9 +29,9 @@ public class WebServerSettingHandler
     {
         get
         {
-            if (!string.IsNullOrEmpty(WebServerSettings.backgroundColor))
+            if (!string.IsNullOrEmpty(WebServerSettings.designBackgroundColor))
             {
-                return $"background-color: {WebServerSettings.backgroundColor}";
+                return $"background-color: {WebServerSettings.designBackgroundColor}";
             }
 
             return string.Empty;

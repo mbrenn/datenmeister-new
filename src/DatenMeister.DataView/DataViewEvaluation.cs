@@ -137,12 +137,12 @@ public class DataViewEvaluation
 
             // Gets the elements
             var result = GetElementsForViewNodeInternal(viewNode);
-            if (Debugger.IsAttached)
+            if (_referenceCount == 1 && Debugger.IsAttached)
             {
-                var asList = result.Take(101).ToList();
-                if (asList.Count > 100)
+                var asList = result.ToList();
+                if (asList.Count > 200)
                 {
-                    Logger.Info($"Result of dataview evaluation {NamedElementMethods.GetFullName(viewNode)} is {asList.Count} elements");
+                    Logger.Warn($"Result of dataview evaluation {NamedElementMethods.GetFullName(viewNode)} is {asList.Count} elements");
                 }
             }
             
@@ -173,6 +173,11 @@ public class DataViewEvaluation
             throw new ArgumentException(nameof(viewNode));
         }
 
+        if (viewNode is MofObjectShadow)
+        {
+            throw new ArgumentException($"The given viewnode is a shadow object: {viewNode}");
+        }
+        
         // Check, if viewnode has been visited
         foreach (var evaluation in
                  from x in _dataViewFactories.Evaluations
@@ -181,7 +186,8 @@ public class DataViewEvaluation
         {
             return evaluation.Evaluate(this, viewNode);
         }
-
+        
+        // We have not found the evaluation. 
         var metaClass = viewNode.getMetaClass();
         if (metaClass == null)
         {

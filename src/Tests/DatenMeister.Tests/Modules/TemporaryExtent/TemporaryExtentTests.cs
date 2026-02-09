@@ -100,14 +100,41 @@ public class TemporaryExtentTests
     {
         await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
         var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
-            
+
         var temporaryFactory = new TemporaryExtentFactory(temporaryLogic);
         var element = temporaryFactory.create(null);
         Assert.That(element, Is.Not.Null);
-            
+
         var element2 = temporaryFactory.create(_Forms.TheOne.__RowForm);
         Assert.That(element2, Is.Not.Null);
         Assert.That(element2.getMetaClass(), Is.Not.Null);
         Assert.That(element2.getMetaClass()!.Equals(_Forms.TheOne.__RowForm), Is.Not.Null);
+    }
+
+    [Test]
+    public async Task TestFactoryAutoAdd()
+    {
+        await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+        var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
+        var temporaryExtent = temporaryLogic.TryGetTemporaryExtent();
+        Assert.That(temporaryExtent, Is.Not.Null);
+
+        // Test with autoAdd = false
+        var factoryNoAutoAdd = new TemporaryExtentFactory(temporaryLogic, autoAdd: false);
+        var elementNotAdded = factoryNoAutoAdd.create(null);
+        Assert.That(elementNotAdded, Is.Not.Null);
+        Assert.That(temporaryExtent!.elements().Contains(elementNotAdded), Is.False);
+
+        // Test with autoAdd = true
+        var factoryWithAutoAdd = new TemporaryExtentFactory(temporaryLogic, autoAdd: true);
+        var elementAdded = factoryWithAutoAdd.create(null);
+        Assert.That(elementAdded, Is.Not.Null);
+        Assert.That(temporaryExtent.elements().Contains(elementAdded), Is.True);
+
+        // Test default behavior (should be false)
+        var factoryDefault = new TemporaryExtentFactory(temporaryLogic);
+        var elementDefault = factoryDefault.create(null);
+        Assert.That(elementDefault, Is.Not.Null);
+        Assert.That(temporaryExtent.elements().Contains(elementDefault), Is.False);
     }
 }

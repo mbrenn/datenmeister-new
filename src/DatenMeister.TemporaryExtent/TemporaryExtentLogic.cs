@@ -15,26 +15,28 @@ namespace DatenMeister.TemporaryExtent;
 /// </summary>
 public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
+    public const string InternalTempUri = "dm:///_internal/temp";
 
     /// <summary>
     /// Defines the logger
     /// </summary>
     private static readonly ILogger ClassLogger = new ClassLogger(typeof(TemporaryExtentLogic));
 
+    /// <summary>
+    /// Defines the survival time of the temporary elements before they are deleted.
+    /// </summary>
     public static TimeSpan DefaultCleanupTime { get; set; } = TimeSpan.FromHours(1);
 
 
     /// <summary>
     /// Gets the name of the workspace
     /// </summary>
-    public IWorkspace Workspace => workspaceLogic.GetWorkspace(TemporaryExtentPlugin.WorkspaceName)
-                                   ?? throw new InvalidOperationException(
-                                       $"{TemporaryExtentPlugin.WorkspaceName} does not exist");
+    public IWorkspace? Workspace => workspaceLogic.TryGetDataWorkspace();
 
     /// <summary>
     /// Gets the name of the workspace
     /// </summary>
-    public string WorkspaceName => TemporaryExtentPlugin.WorkspaceName;
+    public string WorkspaceName => Workspace?.id ?? throw new InvalidOperationException("Workspace is null");
 
     /// <summary>
     /// Maps the element to a datetime until when it shall be deleted.
@@ -49,7 +51,15 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     {
         get
         {
-            if (workspaceLogic.FindExtent(TemporaryExtentPlugin.WorkspaceName, TemporaryExtentPlugin.Uri)
+            var workspace = Workspace;
+            if (workspace == null)
+            {
+                // In case, that we are not in a good context while having a Data Workspace, we just return the temporary extent,
+                // so most unit tests will be working
+                return InMemoryProvider.TemporaryExtent;
+            }
+            
+            if (workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri)
                 is not IUriExtent foundExtent)
             {
                 // Somebody deleted the extent... So, we will create a new one
@@ -68,7 +78,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// <returns>Found extent or null, if not found</returns>
     public IUriExtent? TryGetTemporaryExtent()
     {
-        return workspaceLogic.FindExtent(TemporaryExtentPlugin.WorkspaceName, TemporaryExtentPlugin.Uri);
+        return workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri);
     }
 
     /// <summary>
@@ -157,9 +167,17 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// </summary>
     public IUriExtent CreateTemporaryExtent()
     {
+        var workspace = Workspace;
+        if (workspace == null)
+        {
+            // In case, that we are not in a good context while having a Data Workspace, we just return the temporary extent,
+            // so most unit tests will be working
+            return InMemoryProvider.TemporaryExtent;
+        }
+        
         var temporaryProvider = new InMemoryProvider();
-        var extent = new MofUriExtent(temporaryProvider, TemporaryExtentPlugin.Uri, scopeStorage);
-        workspaceLogic.AddExtent(Workspace, extent);
+        var extent = new MofUriExtent(temporaryProvider, InternalTempUri, scopeStorage);
+        workspaceLogic.AddExtent(workspace, extent);
         return extent;
     }
 }

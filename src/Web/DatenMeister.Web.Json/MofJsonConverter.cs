@@ -37,6 +37,43 @@ public class MofJsonConverter
     public bool ResolveReferenceToOtherExtents { get; set; } = false;
 
     /// <summary>
+    ///     Gets or sets the flag whether composite properties shall be resolved recursively,
+    ///     ignoring the MaxRecursionDepth limit for composite properties.
+    ///     When enabled, the converter will continue resolving composite properties beyond the normal depth limit.
+    /// </summary>
+    public bool ResolveCompositesRecursively { get; set; } = false;
+    
+    /// <summary>
+    /// Stores the current indentation
+    /// </summary>
+    public string IndentString { get; set; } = "";
+    
+    /// <summary>
+    /// Stores the indentation string which added for each 'level-in' 
+    /// </summary>
+    public const string IndentStringTemplate = "  ";
+
+    /// <summary>
+    /// Increases the current indentation level by appending the predefined
+    /// indentation string to the internal indent representation. This is used
+    /// to structure the debug text or JSON output for better readability.
+    /// </summary>
+    public void IncreaseIndent()
+    {
+        IndentString += IndentStringTemplate;
+    }
+
+    /// <summary>
+    /// Decreases the current indentation level by removing the predefined
+    /// indentation string from the internal indent representation. This is used
+    /// to maintain structure in the debug text or JSON output when exiting a nested level.
+    /// </summary>
+    public void DecreaseIndent()
+    {
+        IndentString = IndentString.Substring(0, IndentString.Length - IndentStringTemplate.Length);
+    }
+
+    /// <summary>
     ///     Converts the given element to a json object
     /// </summary>
     /// <param name="value">Value to be converted</param>
@@ -48,7 +85,11 @@ public class MofJsonConverter
         rootExtent =
             GetConnectedExtent(value);
 
-        AppendValue(builder, value, -1 /* starts with -1 since AppendValue will directly increase the value */);
+        AppendValue(
+            builder,
+            value,
+            -1, /* starts with -1 since AppendValue will directly increase the value */
+            isComposite: true);
         return builder.ToString();
     }
 
@@ -77,13 +118,15 @@ public class MofJsonConverter
     /// </summary>
     /// <param name="builder">The string builder to be used</param>
     /// <param name="value">Value to be converted</param>
+    /// <param name="isReference">true, if the value is a reference</param>
     /// <param name="recursionDepth">Defines the recursion depth to be handled</param>
-    private void ConvertToJson(StringBuilder builder, IObject value, int recursionDepth = 0)
+    private void ConvertToJson(StringBuilder builder, IObject value, bool isReference, int recursionDepth = 0)
     {
         if (value is MofObjectShadow asShadow)
         {
             // Element is of type MofObjectShadow and can just be referenced
-            builder.Append($"{{\"r\": \"{HttpUtility.JavaScriptStringEncode(asShadow.Uri)}\"}}");
+            builder.Append($"\r\n{IndentString}{{\"r\": \"{HttpUtility.JavaScriptStringEncode(asShadow.Uri)}\"}}");
+            
             return;
         }
 
@@ -93,32 +136,34 @@ public class MofJsonConverter
         }
 
         builder.Append('{');
+        IncreaseIndent();
 
         // Creates the values
         var komma = string.Empty;
 
-        builder.Append("\"v\": {");
+        builder.Append($"\r\n{IndentString}\"v\": {{");
         var classModel = (value as MofObject)?.GetClassModel();
         var propertyList = classModel != null
             ? classModel.Attributes.Select(x => x.Name)
             : allProperties.getPropertiesBeingSet();
         
+        
         foreach (var property in propertyList)
         {
             var isPropertySet = value.isSet(property);
             builder.AppendLine(komma);
-            builder.Append($"\"{HttpUtility.JavaScriptStringEncode(property)}\": ");
+            builder.Append($"{IndentString}\"{HttpUtility.JavaScriptStringEncode(property)}\": ");
             var propertyValue = value.get(property);
 
             var attributeModel = classModel?.FindAttribute(property);
-            var isComposite = attributeModel?.IsComposite ?? false; // Default to true if no model is found
+            var isComposite = attributeModel?.IsComposite != false;
 
-            // TODO: We are prepared just to return composites, but do not do it.
-            AppendValue(builder, new[] {isPropertySet, propertyValue}, recursionDepth/*, !isComposite*/);
+            AppendValue(builder, new[] {isPropertySet, propertyValue}, recursionDepth, isComposite: isComposite);
 
             komma = ",";
         }
-
+        
+        DecreaseIndent();
         builder.Append("}");
 
         // Creates the metaclass
@@ -127,8 +172,8 @@ public class MofJsonConverter
             var item = ItemWithNameAndId.Create(asElement.getMetaClass());
             if (item != null)
             {
-                builder.Append(", \"m\": ");
-                item.AppendJson(builder);
+                builder.Append($",\r\n{IndentString}\"m\": ");
+                item.AppendJson(builder, true);
             }
         }
             
@@ -136,7 +181,7 @@ public class MofJsonConverter
         var id = value.GetId();
         if (!string.IsNullOrEmpty(id))
         {
-            builder.Append(", \"id\": ");
+            builder.Append($",\r\n{IndentString}\"id\": ");
             AppendValue(builder, id);
         }
 
@@ -144,15 +189,21 @@ public class MofJsonConverter
         var uri = value.GetUri();
         if (uri != null)
         {
-            builder.Append(", \"u\": ");
+            builder.Append($",\r\n{IndentString}\"u\": ");
             AppendValue(builder, uri);
+
+            if (isReference)
+            {
+                builder.Append($",\r\n{IndentString}\"r\": ");
+                AppendValue(builder, uri);
+            }
         }
 
         var extent = value.GetUriExtentOf();
         if (extent != null)
         {
             var contextUri = extent.contextURI();
-            builder.Append(", \"e\": ");
+            builder.Append($",\r\n{IndentString}\"e\": ");
             AppendValue(builder, contextUri);
         }
 
@@ -160,7 +211,7 @@ public class MofJsonConverter
         if (workspace != null)
         {
             var workspaceName = workspace.id;
-            builder.Append(", \"w\": ");
+            builder.Append($",\r\n{IndentString}\"w\": ");
             AppendValue(builder, workspaceName);
         }
 
@@ -177,12 +228,19 @@ public class MofJsonConverter
     /// <param name="propertyValue"></param>
     /// <param name="recursionDepth">Defines the recursion Depth</param>
     /// <param name="forceReference">true, if the reference shall be forced</param>
-    private void AppendValue(StringBuilder builder, object? propertyValue, int recursionDepth = 0, bool forceReference = false)
+    /// <param name="isComposite">true, if the property is a composite</param>
+    private void AppendValue(StringBuilder builder, object? propertyValue, int recursionDepth = 0, bool forceReference = false, bool isComposite = false)
     {
         var connectedExtent = GetConnectedExtent(propertyValue);
-        var forceReferenceByExtent = !ResolveReferenceToOtherExtents
-                             && rootExtent != null
-                             && rootExtent != connectedExtent;
+        var forceReferenceByExtent =
+            !ResolveReferenceToOtherExtents
+            && rootExtent != null
+            && rootExtent != connectedExtent
+            && !isComposite;
+        if (isComposite)
+        {
+            forceReference = false;
+        }
 
         // If the item is of another extent, the recursion depth will be set, so there will be no deeper 
         // parsing. If a deeper parsing is required, the client shall explicitly query
@@ -192,7 +250,13 @@ public class MofJsonConverter
             recursionDepth = Math.Max(recursionDepth, MaxRecursionDepth - 1);
         }
 
-        if (propertyValue is IObject asObject && (recursionDepth >= MaxRecursionDepth || forceReference || forceReferenceByExtent))
+        // Check if we should stop recursion based on depth
+        // If ResolveCompositesRecursively is enabled and this is a composite property, ignore depth limit
+        // If it is not a composite, just reference it.
+        var shouldStopRecursion =
+            recursionDepth >= MaxRecursionDepth && !(ResolveCompositesRecursively && isComposite);
+
+        if (propertyValue is IObject asObject && (shouldStopRecursion || forceReference || forceReferenceByExtent))
         {
             // Try to resolve the item to find the workspace, unfortunately, MofObjectShadow does not include the workspace
             if (asObject is MofObjectShadow mofObjectShadow)
@@ -201,18 +265,20 @@ public class MofJsonConverter
             }
 
             // Create the element
-            builder.Append("{");
+            builder.Append($"{{");
+            IncreaseIndent();
 
-            builder.Append($"\"r\": \"{HttpUtility.JavaScriptStringEncode(asObject.GetUri() ?? "None")}\"");
+            builder.Append($"\r\n{IndentString}\"r\": \"{HttpUtility.JavaScriptStringEncode(asObject.GetUri() ?? "None")}\"");
             var workspace = asObject.GetExtentOf()?.GetWorkspace();
             if (workspace != null)
             {
                 var workspaceName = workspace.id;
-                builder.Append(", \"w\": ");
+                builder.Append($",\r\n{IndentString}\"w\": ");
                 AppendValue(builder, workspaceName);
             }
 
-            builder.Append("}");
+            DecreaseIndent();
+            builder.Append($"\r\n{IndentString}}}");
             return;
         }
 
@@ -238,7 +304,7 @@ public class MofJsonConverter
         }
         else if (DotNetHelper.IsOfMofObject(propertyValue))
         {
-            ConvertToJson(builder, (propertyValue as IObject)!, recursionDepth + 1);
+            ConvertToJson(builder, (propertyValue as IObject)!, !isComposite, recursionDepth + 1);
         }
         else if (DotNetHelper.IsOfEnumeration(propertyValue)
                  && propertyValue is IEnumerable enumeration)
@@ -246,15 +312,18 @@ public class MofJsonConverter
             Debug.Assert(enumeration != null, "enumeration != null");
 
             builder.Append("[");
+            IncreaseIndent();
             var komma = string.Empty;
             foreach (var innerValue in enumeration)
             {
                 builder.AppendLine(komma);
-                AppendValue(builder, innerValue, recursionDepth + 1, forceReference);
+                builder.Append(IndentString);
+                AppendValue(builder, innerValue, recursionDepth + 1, forceReference, isComposite);
                 komma = ",";
             }
 
-            builder.Append("]");
+            DecreaseIndent();
+            builder.Append($"\r\n{IndentString}]");
         }
         else
         {

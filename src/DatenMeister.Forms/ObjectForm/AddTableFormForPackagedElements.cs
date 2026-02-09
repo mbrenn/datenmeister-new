@@ -78,6 +78,7 @@ public class AddTableFormForPackagedElements : FormFactoryBase, IObjectFormFacto
 
             foreach (var form in forms.Forms)
             {
+                form.set(_Forms._TableForm.name, $"PackagedElements of type '{NamedElementMethods.GetName(metaClass)}'");
                 form.set(_Forms._TableForm.property, _UML._Packages._Package.packagedElement);
                 
                 result.AddToFormCreationProtocol(

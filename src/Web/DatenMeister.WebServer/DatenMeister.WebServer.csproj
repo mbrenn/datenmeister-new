@@ -69,7 +69,7 @@
     <None Update="Examples\plz.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="DatenMeister.Settings.xmi">
+    <None Update="DatenMeister.Settings.Example.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

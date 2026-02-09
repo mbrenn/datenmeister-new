@@ -171,7 +171,7 @@ public class ExtentTypeFormModification
                             continue;
                         }
 
-                        AddDefaultTypeForMetaClassOfForm.AddDefaultTypeIfNotExists(result, resolvedMetaClass);
+                        AddDefaultTypeForMetaClassOfForm.AddDefaultTypeIfNotExists(context, result, resolvedMetaClass);
 
                         result.AddToFormCreationProtocol(
                             $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}'");

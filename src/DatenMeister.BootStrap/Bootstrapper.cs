@@ -384,7 +384,7 @@ public class Bootstrapper
         foreach (var classes in umlMetaClasses)
         {
             var ownedAttributes =
-                classes.getOrDefault<IReflectiveCollection>(_UML._StructuredClassifiers._Class.ownedAttribute);
+                classes.getOrDefault<IReflectiveCollection?>(_UML._StructuredClassifiers._Class.ownedAttribute);
             if (ownedAttributes == null)
             {
                 continue;

@@ -4,6 +4,7 @@ using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.TemporaryExtent;
 using DatenMeister.Web.Json;
 using DatenMeister.WebServer.Controller;
 using NUnit.Framework;
@@ -159,7 +160,7 @@ public class ExtentControllerTests
         var extentController = new ExtentController(dm.WorkspaceLogic, dm.ScopeStorage);
         var result = extentController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces");
             
-        Assert.That(result.Value!.Xmi.Contains("dm:///_internal/temp"), Is.True);
+        Assert.That(result.Value!.Xmi.Contains(TemporaryExtentPlugin.ExtentUri), Is.True);
     }
         
 

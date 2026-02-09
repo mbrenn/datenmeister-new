@@ -8,6 +8,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Provider.ExtentManagement;
+using DatenMeister.TemporaryExtent;
 using DatenMeister.WebServer.Controller;
 using DatenMeister.WebServer.Library.Helper;
 using Newtonsoft.Json;
@@ -422,7 +423,7 @@ public class ItemsControllerTests
         var result =
             itemsController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces#Management");
             
-        Assert.That(result.Value!.Xmi.Contains("dm:///_internal/temp"), Is.True);
+        Assert.That(result.Value!.Xmi.Contains(TemporaryExtentPlugin.ExtentUri), Is.True);
     }
 
     [Test]

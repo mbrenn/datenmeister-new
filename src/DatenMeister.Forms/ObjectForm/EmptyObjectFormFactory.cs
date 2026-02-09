@@ -1,11 +1,10 @@
-using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.TemporaryExtent;
 
 namespace DatenMeister.Forms.ObjectForm;
 
-public class EmptyObjectFormFactory(IWorkspaceLogic workspaceLogic) : FormFactoryBase, IObjectFormFactory
+public class EmptyObjectFormFactory() : FormFactoryBase, IObjectFormFactory
 {
     public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context, FormCreationResultOneForm result)
     {

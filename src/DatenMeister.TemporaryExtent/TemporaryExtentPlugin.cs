@@ -17,7 +17,7 @@ public class TemporaryExtentPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage
     /// <summary>
     /// The Uri of the temporary extent
     /// </summary>
-    public const string Uri = "dm:///_internal/temp";
+    public const string ExtentUri = "dm:///_internal/temp";
 
     /// <summary>
     /// Stores the extent in which the temporary extent is stored

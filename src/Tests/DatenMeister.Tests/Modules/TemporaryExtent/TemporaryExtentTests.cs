@@ -23,7 +23,7 @@ public class TemporaryExtentTests
 
         // Now find it
         var found = scope.WorkspaceLogic.Resolve(
-            TemporaryExtentPlugin.Uri + "#" + (element as IHasId)?.Id ?? throw new InvalidOperationException("Shall not happen"),
+            TemporaryExtentPlugin.ExtentUri + "#" + (element as IHasId)?.Id ?? throw new InvalidOperationException("Shall not happen"),
             ResolveType.Default) as IElement;
 
         Assert.That(found, Is.Not.Null);
@@ -52,7 +52,7 @@ public class TemporaryExtentTests
             
         // Now find it, this should happen in less than 150 ms
         var found = scope.WorkspaceLogic.Resolve(
-            TemporaryExtentPlugin.Uri + "#" + (element as IHasId)?.Id ?? throw new InvalidOperationException("Shall not happen"),
+            TemporaryExtentPlugin.ExtentUri + "#" + (element as IHasId)?.Id ?? throw new InvalidOperationException("Shall not happen"),
             ResolveType.Default) as IElement;
         Assert.That(found, Is.Not.Null);
             
@@ -62,7 +62,7 @@ public class TemporaryExtentTests
             
         // Check, that it is gone
         found = scope.WorkspaceLogic.Resolve(
-            TemporaryExtentPlugin.Uri + "#" + (element as IHasId)?.Id ?? throw new InvalidOperationException("Shall not happen"),
+            TemporaryExtentPlugin.ExtentUri + "#" + (element as IHasId)?.Id ?? throw new InvalidOperationException("Shall not happen"),
             ResolveType.Default) as IElement;
 
         Assert.That(found, Is.Null);
@@ -82,14 +82,14 @@ public class TemporaryExtentTests
         var element = temporaryLogic.CreateTemporaryElement(null);
         Assert.That(element, Is.Not.Null);
 
-        (scope.WorkspaceLogic.GetManagementWorkspace() as Workspace)?.RemoveExtent(TemporaryExtentLogic.InternalTempUri);
+        (scope.WorkspaceLogic.GetManagementWorkspace() as Workspace)?.RemoveExtent(TemporaryExtentPlugin.ExtentUri);
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Null);
             
         element = temporaryLogic.CreateTemporaryElement(null);
         Assert.That(element, Is.Not.Null);
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);
 
-        (scope.WorkspaceLogic.GetManagementWorkspace() as Workspace)?.RemoveExtent(TemporaryExtentLogic.InternalTempUri);
+        (scope.WorkspaceLogic.GetManagementWorkspace() as Workspace)?.RemoveExtent(TemporaryExtentPlugin.ExtentUri);
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Null);
         temporaryLogic.CleanElements();
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);

@@ -1,4 +1,3 @@
-using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Forms.FormFactory;
 
@@ -7,7 +6,7 @@ namespace DatenMeister.Forms.CollectionForms;
 /// <summary>
 /// The factory which creates an empty collection form. 
 /// </summary>
-public class EmptyCollectionFormFactory(IWorkspaceLogic workspaceLogic) : FormFactoryBase, ICollectionFormFactory
+public class EmptyCollectionFormFactory() : FormFactoryBase, ICollectionFormFactory
 {
     public void CreateCollectionForm(
         CollectionFormFactoryParameter parameter, 

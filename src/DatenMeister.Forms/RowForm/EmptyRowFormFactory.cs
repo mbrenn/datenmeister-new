@@ -1,11 +1,10 @@
-using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.TemporaryExtent;
 
 namespace DatenMeister.Forms.RowForm;
 
-public class EmptyRowFormFactory(IWorkspaceLogic workspaceLogic) : FormFactoryBase, IRowFormFactory
+public class EmptyRowFormFactory() : FormFactoryBase, IRowFormFactory
 {
     public void CreateRowForm(RowFormFactoryParameter parameter,
         FormCreationContext context, 

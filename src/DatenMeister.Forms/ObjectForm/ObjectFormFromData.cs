@@ -138,7 +138,7 @@ public class ObjectFormFromData(IWorkspaceLogic workspaceLogic) : FormFactoryBas
             if (detailForm == null)
             {
                 var detailResult = new FormCreationResultMultipleForms();
-                new EmptyRowFormFactory(workspaceLogic).CreateRowForm(
+                new EmptyRowFormFactory().CreateRowForm(
                     new RowFormFactoryParameter
                     {
                         MetaClass = parameter.MetaClass,

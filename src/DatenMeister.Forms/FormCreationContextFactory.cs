@@ -37,7 +37,7 @@ public class FormCreationContextFactory(IWorkspaceLogic workspaceLogic, IScopeSt
         };
 
         // Build up the CollectionForm Queue
-        context.Global.CollectionFormFactories.Add(new EmptyCollectionFormFactory(workspaceLogic)
+        context.Global.CollectionFormFactories.Add(new EmptyCollectionFormFactory()
             { Priority = FormFactoryPriorities.Preparation });
         
         if (viewMode != ViewModes.AutoGenerate)
@@ -56,7 +56,7 @@ public class FormCreationContextFactory(IWorkspaceLogic workspaceLogic, IScopeSt
             { Priority = FormFactoryPriorities.Miscellaneous });
 
         // Build up the ObjectForm Queue
-        context.Global.ObjectFormFactories.Add(new EmptyObjectFormFactory(workspaceLogic)
+        context.Global.ObjectFormFactories.Add(new EmptyObjectFormFactory()
             { Priority = FormFactoryPriorities.Preparation });
         
         if (viewMode != ViewModes.AutoGenerate)
@@ -76,7 +76,7 @@ public class FormCreationContextFactory(IWorkspaceLogic workspaceLogic, IScopeSt
             { Priority = FormFactoryPriorities.CleanUp });
 
         // Build up the TableForm Queue
-        context.Global.TableFormFactories.Add(new EmptyTableFormFactory(workspaceLogic)
+        context.Global.TableFormFactories.Add(new EmptyTableFormFactory()
             { Priority = FormFactoryPriorities.Preparation });
         if (viewMode != ViewModes.AutoGenerate)
         {
@@ -95,7 +95,7 @@ public class FormCreationContextFactory(IWorkspaceLogic workspaceLogic, IScopeSt
             { Priority = FormFactoryPriorities.Miscellaneous });
 
         // Build up the RowForm Queue
-        context.Global.RowFormFactories.Add(new EmptyRowFormFactory(workspaceLogic)
+        context.Global.RowFormFactories.Add(new EmptyRowFormFactory()
             { Priority = FormFactoryPriorities.Preparation });
         if (viewMode != ViewModes.AutoGenerate)
         {

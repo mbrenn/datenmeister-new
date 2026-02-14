@@ -50,6 +50,11 @@ public class AttributeModel
     /// Gets or sets the information whether the attribute is an id attribute
     /// </summary>
     public bool IsId { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the information whether the attribute is a primitive type.
+    /// </summary>
+    public bool IsPrimitiveType { get; set; }
 
     /// <summary>
     /// Gets or sets the original element of the attribute

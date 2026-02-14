@@ -134,25 +134,33 @@ public class AllDescendentsQuery
 
         // Gets the property list
         IEnumerable<string> propertyList;
-        if (descendentMode.HasFlagFast(DescendentMode.OnlyComposites))
-        {
-            var metaClass = (element as IElement)?.getMetaClass();
-            if (metaClass == null)
-            {
-                propertyList = ["id", "name"];
-            }
-            else
-            {
-                propertyList =
-                    ClassifierMethods.GetCompositingProperties(metaClass)
-                        .Select(x => NamedElementMethods.GetName(x));
-            }
-        }
-        else
+        var classModel = asMofObject.GetClassModel();
+        if (classModel == null)
         {
             propertyList = elementAsIObjectExt.getPropertiesBeingSet();
         }
+        else
+        {
+            var foundAttributes = new List<string>();
+            var onlyComposites = descendentMode.HasFlagFast(DescendentMode.OnlyComposites);
+            foreach (var attribute in classModel.Attributes)
+            {
+                if (onlyComposites || !attribute.IsComposite)
+                {
+                    continue;
+                }
 
+                if (attribute.IsPrimitiveType)
+                {
+                    continue;
+                }
+                
+                foundAttributes.Add(attribute.Name);
+            }
+            
+            propertyList = foundAttributes;
+        }
+        
         // Goes through the found properties
         foreach (var property in propertyList)
         {

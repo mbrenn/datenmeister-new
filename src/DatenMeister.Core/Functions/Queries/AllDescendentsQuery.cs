@@ -145,7 +145,7 @@ public class AllDescendentsQuery
             var onlyComposites = descendentMode.HasFlagFast(DescendentMode.OnlyComposites);
             foreach (var attribute in classModel.Attributes)
             {
-                if (onlyComposites || !attribute.IsComposite)
+                if (onlyComposites && !attribute.IsComposite)
                 {
                     continue;
                 }

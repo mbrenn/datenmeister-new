@@ -557,6 +557,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                 || typeUrl == Models._CommonTypes.TheOne.__DateTime.Uri)
             {
                 attributeModel.IsComposite = true;
+                attributeModel.IsPrimitiveType = true;
             }
         }
         

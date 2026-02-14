@@ -77,7 +77,9 @@ public class AttributeModel
             DefaultValue = DefaultValue,
             IsMultiple = IsMultiple,
             IsInherited = IsInherited,
-            MetaAttribute = MetaAttribute
+            MetaAttribute = MetaAttribute,
+            IsId = IsId,
+            IsPrimitiveType = IsPrimitiveType
         };
     }
 }

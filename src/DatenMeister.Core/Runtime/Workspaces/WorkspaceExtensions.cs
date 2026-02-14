@@ -1,4 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
+﻿using System.Diagnostics;
+using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
@@ -12,6 +14,11 @@ namespace DatenMeister.Core.Runtime.Workspaces;
 
 public static class WorkspaceExtensions
 {
+    /// <summary>
+    /// The logger for the WorkspaceExtensions
+    /// </summary>
+    public static ILogger Logger { get; set; } = new ClassLogger(typeof(WorkspaceExtensions)); 
+        
     /// <summary>
     /// Resolves the element of the workspace, if an object shadow extent is given.
     /// Otherwise, just returns the element itself
@@ -277,7 +284,32 @@ public static class WorkspaceExtensions
         string workspaceId,
         string extentUri)
     {
-        return FindExtentAndCollection(workspaceLogic, workspaceId, extentUri).uriExtent;
+        // If there is a '#' in the extentUri, strip it away
+        var posHash = extentUri.IndexOf('#');
+        if (posHash >= 0)
+        {
+            extentUri = extentUri.Substring(0, posHash);
+        }
+
+        var result = workspaceLogic.GetWorkspace(workspaceId)?.FindExtent(extentUri);
+        if (result != null)
+        {
+            return result;
+        }
+        
+        result = FindExtentAndCollection(workspaceLogic, workspaceId, extentUri).uriExtent;
+
+        if (result != null)
+        {
+            Logger.Warn("Extent was found via FindExtentAndCollection, but not via GetWorkspace");
+            
+            if (Debugger.IsAttached)
+            {
+                Debugger.Break();
+            }
+        }
+        
+        return result;
     }
 
     /// <summary>

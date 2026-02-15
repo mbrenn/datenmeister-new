@@ -119,6 +119,7 @@ public class TestLoadClassesAndTheirProperties
         Assert.That(attributeCommandLine.DefaultValue, Is.Null);
         Assert.That(attributeCommandLine.IsMultiple, Is.Null);
         Assert.That(attributeCommandLine.IsComposite, Is.True);
+        Assert.That(attributeCommandLine.IsPrimitiveType, Is.True);
 
         var queryStatement = typesWorkspace.ClassModels.FirstOrDefault(x => x.Name == "QueryStatement");
         Assert.That(queryStatement, Is.Not.Null);
@@ -126,6 +127,7 @@ public class TestLoadClassesAndTheirProperties
         Assert.That(resultNode, Is.Not.Null);
 
         Assert.That(resultNode!.IsMultiple, Is.False);
+        Assert.That(resultNode.IsPrimitiveType, Is.False);
 
         var reportDefinition = typesWorkspace.ClassModels.FirstOrDefault(x => x.Name == "ReportDefinition");
         Assert.That(reportDefinition, Is.Not.Null);

@@ -44,13 +44,157 @@ export class TableFormParameter {
 }
 
 class TableState {
-    orderBy: string = undefined;
-    orderByDescending: boolean = false;
-    freeTextFilter: string = "";
-    filterByProperty: Array<string> = new Array<string>();
-    
+    queryStatement: Mof.DmObject = new Mof.DmObject(_DatenMeister._DataViews.__QueryStatement_Uri);
+
     overrideQueryWorkspace: string = undefined;
     overrideQueryItem: string = undefined;
+
+    getOrderBy(): { property: string, descending: boolean } | undefined {
+        const node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
+        if (node) {
+            return {
+                property: node.get(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, ObjectType.String),
+                descending: node.get(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, ObjectType.Boolean)
+            };
+        }
+        return undefined;
+    }
+
+    setOrderBy(property: string, descending: boolean) {
+        let node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
+        if (!node) {
+            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
+            this.addNode(node);
+        }
+        node.set(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, property);
+        node.set(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, descending);
+    }
+
+    removeOrderBy() {
+        this.removeNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
+    }
+
+    getFreeTextFilter(): string | undefined {
+        const node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
+        return node?.get(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, ObjectType.String);
+    }
+
+    setFreeTextFilter(text: string) {
+        let node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
+        if (!node) {
+            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
+            this.addNode(node);
+        }
+        node.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, text);
+    }
+
+    removeFreeTextFilter() {
+        this.removeNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
+    }
+
+    getFilterByProperty(property: string): string | undefined {
+        const node = this.findFilterByPropertyNode(property);
+        return node?.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, ObjectType.String);
+    }
+
+    setFilterByProperty(property: string, value: string) {
+        let node = this.findFilterByPropertyNode(property);
+        if (!node) {
+            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri);
+            node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, property);
+            node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.comparisonMode, _DatenMeister._DataViews._ComparisonMode.Equal);
+            this.addNode(node);
+        }
+        node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, value);
+    }
+
+    removeFilterByProperty(property: string) {
+        const node = this.findFilterByPropertyNode(property);
+        if (node) {
+            this.removeNode(node);
+        }
+    }
+
+    getFilterByProperties(): { [key: string]: string } {
+        const result: { [key: string]: string } = {};
+        for (const node of this.viewNodes) {
+            if (node.metaClass?.uri === _DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri) {
+                const prop = node.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, ObjectType.String);
+                const val = node.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, ObjectType.String);
+                if (prop) {
+                    result[prop] = val;
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Gets the nodes of the query statement in the order from source to result
+     */
+    get viewNodes(): Mof.DmObject[] {
+        const result: Mof.DmObject[] = [];
+        let currentNode = this.queryStatement.get(_DatenMeister._DataViews._QueryStatement.resultNode, ObjectType.Object);
+        while (currentNode) {
+            result.push(currentNode);
+            currentNode = currentNode.get("input", ObjectType.Object);
+        }
+        return result.reverse();
+    }
+
+    private findNodeByMetaClass(metaClassUri: string): Mof.DmObject | undefined {
+        return this.viewNodes.find(n => n.metaClass?.uri === metaClassUri);
+    }
+
+    private findFilterByPropertyNode(property: string): Mof.DmObject | undefined {
+        return this.viewNodes.find(n =>
+            n.metaClass?.uri === _DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri &&
+            n.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, ObjectType.String) === property);
+    }
+
+    private addNode(node: Mof.DmObject) {
+        const resultNode = this.queryStatement.get(_DatenMeister._DataViews._QueryStatement.resultNode, ObjectType.Object);
+        if (resultNode) {
+            node.set("input", resultNode);
+        }
+        this.queryStatement.appendToArray(_DatenMeister._DataViews._QueryStatement.nodes, node);
+        this.queryStatement.set(_DatenMeister._DataViews._QueryStatement.resultNode, node);
+    }
+
+    private removeNodeByMetaClass(metaClassUri: string) {
+        const node = this.findNodeByMetaClass(metaClassUri);
+        if (node) {
+            this.removeNode(node);
+        }
+    }
+
+    private removeNode(node: Mof.DmObject) {
+        const nodes = this.queryStatement.getAsArray(_DatenMeister._DataViews._QueryStatement.nodes) as Mof.DmObject[];
+        const index = nodes.indexOf(node);
+        if (index === -1) return;
+
+        // Find the node that has this node as input
+        const childNode = nodes.find(n => n.get("input", ObjectType.Object) === node);
+        const inputNode = node.get("input", ObjectType.Object);
+
+        if (childNode) {
+            if (inputNode) {
+                childNode.set("input", inputNode);
+            } else {
+                childNode.unset("input");
+            }
+        } else {
+            // This was the result node
+            if (inputNode) {
+                this.queryStatement.set(_DatenMeister._DataViews._QueryStatement.resultNode, inputNode);
+            } else {
+                this.queryStatement.unset(_DatenMeister._DataViews._QueryStatement.resultNode);
+            }
+        }
+
+        nodes.splice(index, 1);
+        this.queryStatement.set(_DatenMeister._DataViews._QueryStatement.nodes, nodes);
+    }
 }
 
 class TableJQueryCaches {
@@ -311,10 +455,11 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             query.queryWorkspace = this.tableState.overrideQueryWorkspace;
         }
 
-        query.orderBy = this.tableState.orderBy;
-        query.orderByDescending = this.tableState.orderByDescending;
-        query.filterByProperties = this.tableState.filterByProperty;
-        query.filterByFreetext = this.tableState.freeTextFilter;
+        const orderBy = this.tableState.getOrderBy();
+        query.orderBy = orderBy?.property;
+        query.orderByDescending = orderBy?.descending;
+        query.filterByProperties = this.tableState.getFilterByProperties() as any;
+        query.filterByFreetext = this.tableState.getFreeTextFilter();
         return query;
     }
 
@@ -427,7 +572,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
         const inputField = $('<input type="text" placeholder="Filter by Text"></input>');
         inputField.on('input', async () => {
-            tthis.tableState.freeTextFilter = inputField.val().toString();
+            tthis.tableState.setFreeTextFilter(inputField.val().toString());
             await tthis.reloadTable();
         });
 
@@ -590,7 +735,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
      * @returns True if the element matches the free text filter, false otherwise.
      */
     private isElementMatchingFreeTextFilter(element: Mof.DmObject, fields: Mof.DmObject[]): boolean {
-        const filterText = this.tableState.freeTextFilter.toLowerCase();
+        const filterText = this.tableState.getFreeTextFilter()?.toLowerCase();
         
         if (filterText === undefined || filterText === null || filterText === "") {
             // Item is matching in case the filterText is empty
@@ -618,8 +763,9 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         if (!fieldCanBeSorted) return;
 
         const fieldName = field.get(_FieldData._name_);
-        const isSorted = this.tableState.orderBy === fieldName;
-        const isSortedDescending = this.tableState.orderByDescending;
+        const orderBy = this.tableState.getOrderBy();
+        const isSorted = orderBy?.property === fieldName;
+        const isSortedDescending = orderBy?.descending;
 
         let sortingArrow: JQuery;
         let onClick: () => Promise<void>;
@@ -628,15 +774,14 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             // Starting point, not sorted --> Transition to Sorted
             sortingArrow = $('<span class="dm-tableform-sortbutton">⇅</span>');
             onClick = async () => {
-                this.tableState.orderBy = fieldName;
-                this.tableState.orderByDescending = false;
+                this.tableState.setOrderBy(fieldName, false);
                 await this.reloadTable();
             };
         } else if (isSorted && !isSortedDescending) {
             // Now we are sorted, on next click, we are sorted by descnding
             sortingArrow = $('<span class="dm-tableform-sortbutton">↓</span>');
             onClick = async () => {
-                this.tableState.orderByDescending = true;
+                this.tableState.setOrderBy(fieldName, true);
                 await this.reloadTable();
             };
         } else if (isSorted && isSortedDescending) {
@@ -644,8 +789,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             sortingArrow = $('<span class="dm-tableform-sortbutton">↑</span>');
             
             onClick = async () => {
-                this.tableState.orderByDescending = false;
-                this.tableState.orderBy = undefined;
+                this.tableState.removeOrderBy();
                 await this.reloadTable();
             };
             
@@ -751,28 +895,31 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             return;
         }
 
-        if (this.tableState.orderBy !== undefined) {
-            result += `Order By: ${this.tableState.orderBy}`;
-            if (this.tableState.orderByDescending) {
+        const orderBy = this.tableState.getOrderBy();
+        if (orderBy !== undefined) {
+            result += `Order By: ${orderBy.property}`;
+            if (orderBy.descending) {
                 result += ' (Descending)';
             }
 
             andText = ' AND ';
         }
 
-        if (this.tableState.freeTextFilter !== undefined && this.tableState.freeTextFilter !== "") {
-            result += `${andText}Free-Textfilter: ${this.tableState.freeTextFilter}`;
+        const freeTextFilter = this.tableState.getFreeTextFilter();
+        if (freeTextFilter !== undefined && freeTextFilter !== "") {
+            result += `${andText}Free-Textfilter: ${freeTextFilter}`;
             andText = ' AND ';
         }
 
-        if (this.tableState.filterByProperty !== undefined) {
-            for (let key in this.tableState.filterByProperty) {
-                const value = this.tableState.filterByProperty[key];
+        const filterByProperties = this.tableState.getFilterByProperties();
+        if (filterByProperties !== undefined) {
+            for (let key in filterByProperties) {
+                const value = filterByProperties[key];
 
                 result += `${andText + key} is '${value}'`;
                 andText = ' AND ' 
             }
-        }        
+        }
 
         if (result === "") {
             return "No Filter";

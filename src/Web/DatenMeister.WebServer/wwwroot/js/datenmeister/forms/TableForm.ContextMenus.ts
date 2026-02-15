@@ -88,7 +88,7 @@ export function createFunctionToFilterInProperty(tthis: TableForm, field: Mof.Dm
             noFilter.text("-- No Filter --");
             dropDown.append(noFilter);
 
-            const currentValue = tthis.tableState.filterByProperty[propertyName];
+            const currentValue = tthis.tableState.getFilterByProperty(propertyName);
 
             sortedPropertyValues.forEach(value => {
                 const option = $("<option></option>");
@@ -105,19 +105,20 @@ export function createFunctionToFilterInProperty(tthis: TableForm, field: Mof.Dm
         },
 
         onSubmitForm: async () =>  {
-            const value = dropDown.val();
+            const value = dropDown.val()?.toString();
 
             if (value !== "" && value !== undefined) {
-                tthis.tableState.filterByProperty[propertyName] = dropDown.val();
+                tthis.tableState.setFilterByProperty(propertyName, value);
             }
             else {
-                delete tthis.tableState.filterByProperty[propertyName];
+                tthis.tableState.removeFilterByProperty(propertyName);
             }
             await tthis.reloadTable();
         },
 
         callbackButtonText: (query: JQuery) => {
-            if (tthis.tableState.filterByProperty[propertyName] !== undefined && tthis.tableState.filterByProperty[propertyName] !== "") {
+            const val = tthis.tableState.getFilterByProperty(propertyName);
+            if (val !== undefined && val !== "") {
                 query.append($("<span>F</span>"));
                 return true;
             }

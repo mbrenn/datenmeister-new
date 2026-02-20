@@ -1,10 +1,5 @@
 import * as mof from "../Mof.js";
 import { moveItemInArrayDownByUri, moveItemInArrayUpByUri } from "../MofArray.js";
-// @ts-ignore
-if (typeof chai === 'undefined') {
-    // @ts-ignore
-    var chai = require('chai');
-}
 export function includeTests() {
     describe('Mof', function () {
         describe('Element', function () {
@@ -176,5 +171,10 @@ export function includeTests() {
             });
         });
     });
+}
+// Auto-run when executed directly under Node/Mocha
+// @ts-ignore
+if (typeof window === 'undefined') {
+    includeTests();
 }
 //# sourceMappingURL=Test.Mof.js.map

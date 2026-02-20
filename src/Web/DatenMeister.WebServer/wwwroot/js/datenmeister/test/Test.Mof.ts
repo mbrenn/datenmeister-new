@@ -1,6 +1,8 @@
 ﻿import * as mof from "../Mof.js"
 import { moveItemInArrayDownByUri, moveItemInArrayUpByUri } from "../MofArray.js";
 
+declare const chai: any;
+
 export function includeTests() {
     describe('Mof', function () {
         describe('Element', function () {
@@ -114,7 +116,62 @@ export function includeTests() {
 
                 const mofObject2AsReference = mofObject.get('test');
                 chai.assert.isTrue(mofObject2AsReference.uri === '#' + mofObject2.id);
-            })
+            });
+
+            it('Boolean conversion should work correctly', () => {
+                const element = new mof.DmObject();
+                
+                element.set('boolTrue', true);
+                chai.assert.strictEqual(element.get('boolTrue', mof.ObjectType.Boolean), true);
+                
+                element.set('boolFalse', false);
+                chai.assert.strictEqual(element.get('boolFalse', mof.ObjectType.Boolean), false);
+                
+                element.set('strTrue', "true");
+                chai.assert.strictEqual(element.get('strTrue', mof.ObjectType.Boolean), true);
+                
+                element.set('strFalse', "false");
+                chai.assert.strictEqual(element.get('strFalse', mof.ObjectType.Boolean), false);
+                
+                element.set('strZero', "0");
+                chai.assert.strictEqual(element.get('strZero', mof.ObjectType.Boolean), false);
+                
+                element.set('strOne', "1");
+                chai.assert.strictEqual(element.get('strOne', mof.ObjectType.Boolean), true);
+            });
+
+            it('Number conversion should work correctly', () => {
+                const element = new mof.DmObject();
+                
+                element.set('num', 42);
+                chai.assert.strictEqual(element.get('num', mof.ObjectType.Number), 42);
+                
+                element.set('strNum', "123.45");
+                chai.assert.strictEqual(element.get('strNum', mof.ObjectType.Number), 123.45);
+                
+                element.set('invalidNum', "abc");
+                chai.assert.isTrue(isNaN(element.get('invalidNum', mof.ObjectType.Number)));
+            });
+
+            it('String conversion should work correctly', () => {
+                const element = new mof.DmObject();
+                
+                element.set('str', "hello");
+                chai.assert.strictEqual(element.get('str', mof.ObjectType.String), "hello");
+                
+                element.set('num', 123);
+                chai.assert.strictEqual(element.get('num', mof.ObjectType.String), "123");
+                
+                element.set('bool', true);
+                chai.assert.strictEqual(element.get('bool', mof.ObjectType.String), "true");
+            });
+
+            it('GetAsArray should return an array even for non-set properties', () => {
+                const element = new mof.DmObject();
+                const arr = element.getAsArray('nonExistent');
+                chai.assert.isTrue(Array.isArray(arr));
+                chai.assert.strictEqual(arr.length, 0);
+            });
         });
 
         describe('Element', function () {
@@ -164,4 +221,10 @@ export function includeTests() {
             });
         });
     });
+}
+
+// Auto-run when executed directly under Node/Mocha
+// @ts-ignore
+if (typeof window === 'undefined') {
+    includeTests();
 }

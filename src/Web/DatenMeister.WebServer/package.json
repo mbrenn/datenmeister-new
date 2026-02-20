@@ -6,11 +6,15 @@
     "bootstrap": "5.3.2",
     "chai": "4.3.10",
     "jquery": "3.7.1",
+    "ts-node": "^10.9.1",
     "typescript": "5.2.2"
   },
   "dependencies": {
     "amd-loader": "0.0.8",
     "@mbrenn/burnjspopup": "1.0.0",
     "mocha": "10.2.0"
+  },
+  "scripts": {
+    "test": "mocha \"wwwroot/js/datenmeister/test/Test.Mof.ts\" --require ts-node/register --require ./wwwroot/js/datenmeister/test/setup.ts --ui bdd --reporter spec"
   }
 }

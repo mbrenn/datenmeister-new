@@ -391,7 +391,12 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
 
         const inputField = $('<input type="text" placeholder="Filter by Text"></input>');
         inputField.on('input', async () => {
-            tthis.tableState.setFreeTextFilter(inputField.val().toString());
+            const value = inputField.val()?.toString();
+            if (value === "" || value === undefined || value === null) {
+                this.tableState.removeFreeTextFilter();
+            } else {
+                tthis.tableState.setFreeTextFilter(value);
+            }
             await tthis.reloadTable();
         });
 
@@ -545,28 +550,6 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
 
             this.tableCache.cacheTable.append(row);
         }
-    }
-
-    /**
-     * Checks if the specified element matches the free text filter based on the provided fields.
-     * @param element - The element to check against the free text filter.
-     * @param fields - The fields to consider for the free text filter.
-     * @returns True if the element matches the free text filter, false otherwise.
-     */
-    private isElementMatchingFreeTextFilter(element: Mof.DmObject, fields: Mof.DmObject[]): boolean {
-        const filterText = this.tableState.getFreeTextFilter()?.toLowerCase();
-        
-        if (filterText === undefined || filterText === null || filterText === "") {
-            // Item is matching in case the filterText is empty
-            return true;
-        }
-        
-        return fields.some(field => {
-            if (!FieldFactory.canBeTextFiltered(field)) return false;
-            const fieldName = field.get(_FieldData._name_);
-            const fieldValue = element.get(fieldName, Mof.ObjectType.String);
-            return fieldValue?.toString().toLowerCase().includes(filterText);
-        });
     }
 
     /**

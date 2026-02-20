@@ -5,7 +5,7 @@ import _FieldData = _DatenMeister._Forms._FieldData;
 import _TableForm = _DatenMeister._Forms._TableForm;
 import * as Mof from "../Mof.js";
 import {truncateText} from "../../burnsystems/StringManipulation.js";
-import {TableForm} from "./TableForm.js";
+import TableForm from "./TableForm.js";
 import * as SelectItemControl from "../controls/SelectItemControl.js";
 import * as Settings from "../Settings.js";
 import * as CollectionForm from "./CollectionForm.js";
@@ -245,8 +245,7 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                     actionParameter.set(
                         _DatenMeister._Actions._Forms._CreateFormUponViewAction.targetPackageWorkspace, packageUrl.workspace);
 
-                    const queryBuilder =
-                        CollectionForm.createQueryBuilder(tableForm.getQueryParameter(), -1).queryStatement;
+                    const queryBuilder = tableForm.tableState.queryStatement;
                     queryBuilder.set(_NamedElement._name_, name);
                     actionParameter.set(
                         _DatenMeister._Actions._Forms._CreateFormUponViewAction.query, queryBuilder);

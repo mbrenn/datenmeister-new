@@ -4,7 +4,7 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import _TextFieldData = _DatenMeister._Forms._TextFieldData;
 import {truncateText} from "../../burnsystems/StringManipulation.js";
 import { injectNameByUri } from "../DomHelper.js";
-import { TableForm } from "../forms/TableForm.js";
+import TableForm from "../forms/TableForm.js";
 
 export class Field extends BaseField implements IFormField
 {

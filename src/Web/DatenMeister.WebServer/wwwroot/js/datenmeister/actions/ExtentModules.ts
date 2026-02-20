@@ -17,7 +17,7 @@ import _StoreExtentAction = _DatenMeister._Actions._StoreExtentAction;
 import _ObjectForm = _DatenMeister._Forms._ObjectForm;
 import _RowForm = _DatenMeister._Forms._RowForm;
 import _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
-import {TableForm} from "../forms/TableForm.js";
+import TableForm from "../forms/TableForm.js";
 
 export function loadModules() {
     FormActions.addModule(new ExtentPropertiesUpdateAction());

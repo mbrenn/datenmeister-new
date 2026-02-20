@@ -1,18 +1,15 @@
-﻿import * as Settings from "../Settings.js"
-import * as InterfacesForms from "./Interfaces.js";
+﻿import * as InterfacesForms from "./Interfaces.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Mof from "../Mof.js";
-import {ObjectType} from "../Mof.js";
 import * as FieldFactory from "./FieldFactory.js";
 import {IFormConfiguration} from "./IFormConfiguration.js";
 import * as Navigator from '../Navigator.js'
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-import {_Forms} from "../models/DatenMeister.class.js";
 import * as burnJsPopup from "../../burnJsPopup.js"
 import * as ClientItem from "../client/Items.js"
 import * as ContextMenu from "./TableForm.ContextMenus.js"
+import {TableState} from "./TableState.js"
 import _FieldData = _DatenMeister._Forms._FieldData;
-import _TableForm = _Forms._TableForm;
 
 interface MenuItemData
 {
@@ -43,159 +40,6 @@ export class TableFormParameter {
     metaClass: string; 
 }
 
-class TableState {
-    queryStatement: Mof.DmObject = new Mof.DmObject(_DatenMeister._DataViews.__QueryStatement_Uri);
-
-    overrideQueryWorkspace: string = undefined;
-    overrideQueryItem: string = undefined;
-
-    getOrderBy(): { property: string, descending: boolean } | undefined {
-        const node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
-        if (node) {
-            return {
-                property: node.get(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, ObjectType.String),
-                descending: node.get(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, ObjectType.Boolean)
-            };
-        }
-        return undefined;
-    }
-
-    setOrderBy(property: string, descending: boolean) {
-        let node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
-        if (!node) {
-            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
-            this.addNode(node);
-        }
-        node.set(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, property);
-        node.set(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, descending);
-    }
-
-    removeOrderBy() {
-        this.removeNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
-    }
-
-    getFreeTextFilter(): string | undefined {
-        const node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
-        return node?.get(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, ObjectType.String);
-    }
-
-    setFreeTextFilter(text: string) {
-        let node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
-        if (!node) {
-            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
-            this.addNode(node);
-        }
-        node.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, text);
-    }
-
-    removeFreeTextFilter() {
-        this.removeNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
-    }
-
-    getFilterByProperty(property: string): string | undefined {
-        const node = this.findFilterByPropertyNode(property);
-        return node?.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, ObjectType.String);
-    }
-
-    setFilterByProperty(property: string, value: string) {
-        let node = this.findFilterByPropertyNode(property);
-        if (!node) {
-            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri);
-            node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, property);
-            node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.comparisonMode, _DatenMeister._DataViews._ComparisonMode.Equal);
-            this.addNode(node);
-        }
-        node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, value);
-    }
-
-    removeFilterByProperty(property: string) {
-        const node = this.findFilterByPropertyNode(property);
-        if (node) {
-            this.removeNode(node);
-        }
-    }
-
-    getFilterByProperties(): { [key: string]: string } {
-        const result: { [key: string]: string } = {};
-        for (const node of this.viewNodes) {
-            if (node.metaClass?.uri === _DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri) {
-                const prop = node.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, ObjectType.String);
-                const val = node.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, ObjectType.String);
-                if (prop) {
-                    result[prop] = val;
-                }
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Gets the nodes of the query statement in the order from source to result
-     */
-    get viewNodes(): Mof.DmObject[] {
-        const result: Mof.DmObject[] = [];
-        let currentNode = this.queryStatement.get(_DatenMeister._DataViews._QueryStatement.resultNode, ObjectType.Object);
-        while (currentNode) {
-            result.push(currentNode);
-            currentNode = currentNode.get("input", ObjectType.Object);
-        }
-        return result.reverse();
-    }
-
-    private findNodeByMetaClass(metaClassUri: string): Mof.DmObject | undefined {
-        return this.viewNodes.find(n => n.metaClass?.uri === metaClassUri);
-    }
-
-    private findFilterByPropertyNode(property: string): Mof.DmObject | undefined {
-        return this.viewNodes.find(n =>
-            n.metaClass?.uri === _DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri &&
-            n.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, ObjectType.String) === property);
-    }
-
-    private addNode(node: Mof.DmObject) {
-        const resultNode = this.queryStatement.get(_DatenMeister._DataViews._QueryStatement.resultNode, ObjectType.Object);
-        if (resultNode) {
-            node.set("input", resultNode);
-        }
-        this.queryStatement.appendToArray(_DatenMeister._DataViews._QueryStatement.nodes, node);
-        this.queryStatement.set(_DatenMeister._DataViews._QueryStatement.resultNode, node);
-    }
-
-    private removeNodeByMetaClass(metaClassUri: string) {
-        const node = this.findNodeByMetaClass(metaClassUri);
-        if (node) {
-            this.removeNode(node);
-        }
-    }
-
-    private removeNode(node: Mof.DmObject) {
-        const nodes = this.queryStatement.getAsArray(_DatenMeister._DataViews._QueryStatement.nodes) as Mof.DmObject[];
-        const index = nodes.indexOf(node);
-        if (index === -1) return;
-
-        // Find the node that has this node as input
-        const childNode = nodes.find(n => n.get("input", ObjectType.Object) === node);
-        const inputNode = node.get("input", ObjectType.Object);
-
-        if (childNode) {
-            if (inputNode) {
-                childNode.set("input", inputNode);
-            } else {
-                childNode.unset("input");
-            }
-        } else {
-            // This was the result node
-            if (inputNode) {
-                this.queryStatement.set(_DatenMeister._DataViews._QueryStatement.resultNode, inputNode);
-            } else {
-                this.queryStatement.unset(_DatenMeister._DataViews._QueryStatement.resultNode);
-            }
-        }
-
-        nodes.splice(index, 1);
-        this.queryStatement.set(_DatenMeister._DataViews._QueryStatement.nodes, nodes);
-    }
-}
 
 class TableJQueryCaches {
     /* 
@@ -235,7 +79,7 @@ class TableJQueryCaches {
     parentHtml: JQuery<HTMLElement>;
 }
 
-export class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesForms.IObjectFormElement {
+class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesForms.IObjectFormElement {
 
     /**
      * Caches the elements to allow direct manipulation without additional server round-trip
@@ -262,7 +106,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     /**
      * This callback allows to load the items in case the user has changed the QueryFilterParameters
      */
-    callbackLoadItems: (query: InterfacesForms.QueryFilterParameter) => Promise<Array<Mof.DmObject>>;
+    callbackLoadItems: (query: Mof.DmObject) => Promise<Array<Mof.DmObject>>;
 
     firstRun: boolean = true;
 
@@ -283,12 +127,12 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
      * The query parameters are taken into consideration
      */
     async reloadTable(): Promise<void> {
-        this.updateFilterQueryText();
+        const _ = this.updateFilterQueryText();
         await this.createFormByCollection(this.tableCache.parentHtml, this.configuration, true);
     }
 
     async refreshTable(): Promise<void> {
-        this.updateFilterQueryText();
+        const _ = this.updateFilterQueryText();
         await this.createTable();
     }
     
@@ -308,7 +152,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         const tthis = this;
 
         // We need to get a loading mechanism in case the user wants to filter or sort. Unfortunately, the queries are not support
-        this.callbackLoadItems = async (query: InterfacesForms.QueryFilterParameter) => {
+        this.callbackLoadItems = async (query: Mof.DmObject) => {
             // As mentioned, the queries are not supported, so we don't show them
             this.tableParameter.allowSortingOfColumn = false;
             this.tableParameter.allowFilteringOnProperty = false;
@@ -394,10 +238,12 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 // Create freetext
                 this.createFreeTextField();
             }
-        }
 
-        const query = this.getQueryParameter();
-        this.elements = await this.callbackLoadItems(query);
+            // Initialize the table state by also creating the empty query
+            this.tableState.initialize();
+        }
+        
+        this.elements = await this.callbackLoadItems(this.tableState.queryStatement);
 
         const headLineLink = $("a", this.tableCache.cacheHeadline);
         headLineLink.text(
@@ -434,33 +280,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             // Creates the table            
             await this.createTable();
         }
-    }
-
-    /**
-     * Converts the Table State into a parameter information 
-     * which is used by the Query creator to provide the 
-     * correct Query Statements
-     * @returns The parameter information
-     */
-    getQueryParameter() {
-        const query = new InterfacesForms.QueryFilterParameter();
-
-        // Check, if we are having a viewnode
-        var viewNode = this.formElement.get(_TableForm.viewNode, ObjectType.Object);
-        if (viewNode !== undefined && viewNode !== null) {
-            query.queryWorkspace = Settings.WorkspaceManagement;
-            query.queryUrl = viewNode.uri;
-        } else {
-            query.queryUrl = this.tableState.overrideQueryItem;
-            query.queryWorkspace = this.tableState.overrideQueryWorkspace;
-        }
-
-        const orderBy = this.tableState.getOrderBy();
-        query.orderBy = orderBy?.property;
-        query.orderByDescending = orderBy?.descending;
-        query.filterByProperties = this.tableState.getFilterByProperties() as any;
-        query.filterByFreetext = this.tableState.getFreeTextFilter();
-        return query;
     }
 
     /**
@@ -928,3 +747,5 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         return result;
     }
 }
+
+export default TableForm

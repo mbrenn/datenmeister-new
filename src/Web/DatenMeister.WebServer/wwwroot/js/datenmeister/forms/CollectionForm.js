@@ -219,8 +219,7 @@ export class CollectionFormCreator {
                     parameter.viewNode = viewNodeUrl.uri;
                 }
                 const callbackLoadItems = async (query) => {
-                    const builder = createQueryBuilder(query);
-                    const queryResult = await ClientElements.queryObject(builder.queryStatement, {
+                    const queryResult = await ClientElements.queryObject(query, {
                         dynamicSourceWorkspaceId: tthis.workspace,
                         dynamicSourceItemUri: tthis.extentUri
                     });

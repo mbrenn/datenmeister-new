@@ -372,11 +372,10 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                     parameter.viewNode = viewNodeUrl.uri;
                 }
 
-                const callbackLoadItems = async (query: IForm.QueryFilterParameter) => {
-                    const builder = createQueryBuilder(query);
-
+                const callbackLoadItems = async (query: Mof.DmObject) => {
+                    
                     const queryResult = await ClientElements.queryObject(
-                        builder.queryStatement,
+                        query,
                         {
                             dynamicSourceWorkspaceId: tthis.workspace,
                             dynamicSourceItemUri: tthis.extentUri

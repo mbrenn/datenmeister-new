@@ -6,7 +6,6 @@ import * as Mof from "../Mof.js";
 import { truncateText } from "../../burnsystems/StringManipulation.js";
 import * as SelectItemControl from "../controls/SelectItemControl.js";
 import * as Settings from "../Settings.js";
-import * as CollectionForm from "./CollectionForm.js";
 import * as Navigator from "../Navigator.js";
 import { _UML } from "../models/uml.js";
 var _NamedElement = _UML._CommonStructure._NamedElement;
@@ -198,7 +197,7 @@ export function createFunctionToStoreCurrentView(tableForm) {
                     actionParameter.set(_DatenMeister._Actions._Forms._CreateFormUponViewAction.name, name);
                     actionParameter.set(_DatenMeister._Actions._Forms._CreateFormUponViewAction.targetPackageUri, packageUrl.uri);
                     actionParameter.set(_DatenMeister._Actions._Forms._CreateFormUponViewAction.targetPackageWorkspace, packageUrl.workspace);
-                    const queryBuilder = CollectionForm.createQueryBuilder(tableForm.getQueryParameter(), -1).queryStatement;
+                    const queryBuilder = tableForm.tableState.queryStatement;
                     queryBuilder.set(_NamedElement._name_, name);
                     actionParameter.set(_DatenMeister._Actions._Forms._CreateFormUponViewAction.query, queryBuilder);
                     const result = await Actions.executeActionDirectly("Execute", {

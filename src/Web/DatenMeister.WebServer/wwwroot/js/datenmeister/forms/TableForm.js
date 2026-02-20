@@ -1,17 +1,13 @@
-import * as Settings from "../Settings.js";
-import * as InterfacesForms from "./Interfaces.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Mof from "../Mof.js";
-import { ObjectType } from "../Mof.js";
 import * as FieldFactory from "./FieldFactory.js";
 import * as Navigator from '../Navigator.js';
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-import { _Forms } from "../models/DatenMeister.class.js";
 import * as burnJsPopup from "../../burnJsPopup.js";
 import * as ClientItem from "../client/Items.js";
 import * as ContextMenu from "./TableForm.ContextMenus.js";
+import { TableState } from "./TableState.js";
 var _FieldData = _DatenMeister._Forms._FieldData;
-var _TableForm = _Forms._TableForm;
 export class TableFormParameter {
     constructor() {
         this.shortenFullText = true;
@@ -21,147 +17,9 @@ export class TableFormParameter {
         this.showFilterQuery = true;
     }
 }
-class TableState {
-    constructor() {
-        this.queryStatement = new Mof.DmObject(_DatenMeister._DataViews.__QueryStatement_Uri);
-        this.overrideQueryWorkspace = undefined;
-        this.overrideQueryItem = undefined;
-    }
-    getOrderBy() {
-        const node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
-        if (node) {
-            return {
-                property: node.get(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, ObjectType.String),
-                descending: node.get(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, ObjectType.Boolean)
-            };
-        }
-        return undefined;
-    }
-    setOrderBy(property, descending) {
-        let node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
-        if (!node) {
-            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
-            this.addNode(node);
-        }
-        node.set(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, property);
-        node.set(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, descending);
-    }
-    removeOrderBy() {
-        this.removeNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
-    }
-    getFreeTextFilter() {
-        const node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
-        return node?.get(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, ObjectType.String);
-    }
-    setFreeTextFilter(text) {
-        let node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
-        if (!node) {
-            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
-            this.addNode(node);
-        }
-        node.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, text);
-    }
-    removeFreeTextFilter() {
-        this.removeNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
-    }
-    getFilterByProperty(property) {
-        const node = this.findFilterByPropertyNode(property);
-        return node?.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, ObjectType.String);
-    }
-    setFilterByProperty(property, value) {
-        let node = this.findFilterByPropertyNode(property);
-        if (!node) {
-            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri);
-            node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, property);
-            node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.comparisonMode, _DatenMeister._DataViews._ComparisonMode.Equal);
-            this.addNode(node);
-        }
-        node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, value);
-    }
-    removeFilterByProperty(property) {
-        const node = this.findFilterByPropertyNode(property);
-        if (node) {
-            this.removeNode(node);
-        }
-    }
-    getFilterByProperties() {
-        const result = {};
-        for (const node of this.viewNodes) {
-            if (node.metaClass?.uri === _DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri) {
-                const prop = node.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, ObjectType.String);
-                const val = node.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, ObjectType.String);
-                if (prop) {
-                    result[prop] = val;
-                }
-            }
-        }
-        return result;
-    }
-    /**
-     * Gets the nodes of the query statement in the order from source to result
-     */
-    get viewNodes() {
-        const result = [];
-        let currentNode = this.queryStatement.get(_DatenMeister._DataViews._QueryStatement.resultNode, ObjectType.Object);
-        while (currentNode) {
-            result.push(currentNode);
-            currentNode = currentNode.get("input", ObjectType.Object);
-        }
-        return result.reverse();
-    }
-    findNodeByMetaClass(metaClassUri) {
-        return this.viewNodes.find(n => n.metaClass?.uri === metaClassUri);
-    }
-    findFilterByPropertyNode(property) {
-        return this.viewNodes.find(n => n.metaClass?.uri === _DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri &&
-            n.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, ObjectType.String) === property);
-    }
-    addNode(node) {
-        const resultNode = this.queryStatement.get(_DatenMeister._DataViews._QueryStatement.resultNode, ObjectType.Object);
-        if (resultNode) {
-            node.set("input", resultNode);
-        }
-        this.queryStatement.appendToArray(_DatenMeister._DataViews._QueryStatement.nodes, node);
-        this.queryStatement.set(_DatenMeister._DataViews._QueryStatement.resultNode, node);
-    }
-    removeNodeByMetaClass(metaClassUri) {
-        const node = this.findNodeByMetaClass(metaClassUri);
-        if (node) {
-            this.removeNode(node);
-        }
-    }
-    removeNode(node) {
-        const nodes = this.queryStatement.getAsArray(_DatenMeister._DataViews._QueryStatement.nodes);
-        const index = nodes.indexOf(node);
-        if (index === -1)
-            return;
-        // Find the node that has this node as input
-        const childNode = nodes.find(n => n.get("input", ObjectType.Object) === node);
-        const inputNode = node.get("input", ObjectType.Object);
-        if (childNode) {
-            if (inputNode) {
-                childNode.set("input", inputNode);
-            }
-            else {
-                childNode.unset("input");
-            }
-        }
-        else {
-            // This was the result node
-            if (inputNode) {
-                this.queryStatement.set(_DatenMeister._DataViews._QueryStatement.resultNode, inputNode);
-            }
-            else {
-                this.queryStatement.unset(_DatenMeister._DataViews._QueryStatement.resultNode);
-            }
-        }
-        nodes.splice(index, 1);
-        this.queryStatement.set(_DatenMeister._DataViews._QueryStatement.nodes, nodes);
-    }
-}
 class TableJQueryCaches {
 }
-export class TableForm {
+class TableForm {
     constructor() {
         this.tableParameter = new TableFormParameter();
         this.tableState = new TableState();
@@ -184,11 +42,11 @@ export class TableForm {
      * The query parameters are taken into consideration
      */
     async reloadTable() {
-        this.updateFilterQueryText();
+        const _ = this.updateFilterQueryText();
         await this.createFormByCollection(this.tableCache.parentHtml, this.configuration, true);
     }
     async refreshTable() {
-        this.updateFilterQueryText();
+        const _ = this.updateFilterQueryText();
         await this.createTable();
     }
     setInfoText(message) {
@@ -270,9 +128,10 @@ export class TableForm {
                 // Create freetext
                 this.createFreeTextField();
             }
+            // Initialize the table state by also creating the empty query
+            this.tableState.initialize();
         }
-        const query = this.getQueryParameter();
-        this.elements = await this.callbackLoadItems(query);
+        this.elements = await this.callbackLoadItems(this.tableState.queryStatement);
         const headLineLink = $("a", this.tableCache.cacheHeadline);
         headLineLink.text(this.formElement.get('title')
             ?? this.formElement.get('name'));
@@ -299,31 +158,6 @@ export class TableForm {
             // Creates the table            
             await this.createTable();
         }
-    }
-    /**
-     * Converts the Table State into a parameter information
-     * which is used by the Query creator to provide the
-     * correct Query Statements
-     * @returns The parameter information
-     */
-    getQueryParameter() {
-        const query = new InterfacesForms.QueryFilterParameter();
-        // Check, if we are having a viewnode
-        var viewNode = this.formElement.get(_TableForm.viewNode, ObjectType.Object);
-        if (viewNode !== undefined && viewNode !== null) {
-            query.queryWorkspace = Settings.WorkspaceManagement;
-            query.queryUrl = viewNode.uri;
-        }
-        else {
-            query.queryUrl = this.tableState.overrideQueryItem;
-            query.queryWorkspace = this.tableState.overrideQueryWorkspace;
-        }
-        const orderBy = this.tableState.getOrderBy();
-        query.orderBy = orderBy?.property;
-        query.orderByDescending = orderBy?.descending;
-        query.filterByProperties = this.tableState.getFilterByProperties();
-        query.filterByFreetext = this.tableState.getFreeTextFilter();
-        return query;
     }
     /**
      * Creates the buttons for the new instance
@@ -690,4 +524,5 @@ export class TableForm {
         return result;
     }
 }
+export default TableForm;
 //# sourceMappingURL=TableForm.js.map

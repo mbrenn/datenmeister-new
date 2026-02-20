@@ -68,8 +68,10 @@ export interface IObjectFormElement extends IPageForm {
 export interface ICollectionFormElement extends IPageForm {
     /**
      * Elements which are required to shown
+     * @param query Query to be used for the collection. The query is a MofObject which contains the parameters
+     * for the query. The query is expected to be a query which can be executed on the server.
      */
-    callbackLoadItems: (query: QueryFilterParameter) => Promise<Array<Mof.DmObject>>;
+    callbackLoadItems: (query: Mof.DmObject) => Promise<Array<Mof.DmObject>>;
 
     /**
      * Sets the info text by the loading which shall be shown to the user

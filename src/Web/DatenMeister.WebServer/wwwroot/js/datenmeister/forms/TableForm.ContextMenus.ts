@@ -236,19 +236,19 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                     // Ok, get the package url
                     const packageUrl = selectItemControl.getSelectedItem();
 
-                    // Prepare the action
-                    const actionParameter = new Mof.DmObject(_DatenMeister._Actions._Forms.__CreateFormUponViewAction_Uri);
+                    // Prepare the action to store the current viewset into the selected package
+                    const actionParameter = new Mof.DmObject(_DatenMeister._Actions._Forms.__AddQueryInPackageAction_Uri);
                     actionParameter.set(
-                        _DatenMeister._Actions._Forms._CreateFormUponViewAction.name, name);
+                        _DatenMeister._Actions._Forms._AddQueryInPackageAction.name, name);
                     actionParameter.set(
-                        _DatenMeister._Actions._Forms._CreateFormUponViewAction.targetPackageUri, packageUrl.uri);
+                        _DatenMeister._Actions._Forms._AddQueryInPackageAction.targetPackageUri, packageUrl.uri);
                     actionParameter.set(
-                        _DatenMeister._Actions._Forms._CreateFormUponViewAction.targetPackageWorkspace, packageUrl.workspace);
+                        _DatenMeister._Actions._Forms._AddQueryInPackageAction.targetPackageWorkspace, packageUrl.workspace);
 
                     const queryBuilder = tableForm.tableState.queryStatement;
                     queryBuilder.set(_NamedElement._name_, name);
                     actionParameter.set(
-                        _DatenMeister._Actions._Forms._CreateFormUponViewAction.query, queryBuilder);
+                        _DatenMeister._Actions._Forms._AddQueryInPackageAction.query, queryBuilder);
 
                     const result =
                         await Actions.executeActionDirectly("Execute", {

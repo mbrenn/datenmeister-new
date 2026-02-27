@@ -242,7 +242,7 @@
       </packagedElement>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="97ddd1b8-bd3d-4c43-82ed-5c55abda0929" name="Forms">
-      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="b8333b8d-ac49-4a4e-a7f4-c3745e0a0237" name="CreateFormUponViewAction">
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="b8333b8d-ac49-4a4e-a7f4-c3745e0a0237" name="AddQueryInPackageAction">
         <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a42debe1-7d09-49f9-9c90-920885f3877f" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="392b1dc2-21e0-4714-a2ad-06700b0a2d96" name="query" isID="false" isComposite="false" type-ref="#DatenMeister.Models.DataViews.QueryStatement"></ownedAttribute>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="30dd0a69-f9fa-4bff-a6cd-3ec2cf1c564c" type-ref="dm:///_internal/model/primitivetypes#String" name="targetPackageUri" isID="false" isComposite="false" />

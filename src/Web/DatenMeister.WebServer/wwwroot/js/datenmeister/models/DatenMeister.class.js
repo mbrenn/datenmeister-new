@@ -321,15 +321,15 @@ export var _Actions;
     })(_ClientActions = _Actions._ClientActions || (_Actions._ClientActions = {}));
     let _Forms;
     (function (_Forms) {
-        class _CreateFormUponViewAction {
+        class _AddQueryInPackageAction {
         }
-        _CreateFormUponViewAction.query = "query";
-        _CreateFormUponViewAction.targetPackageUri = "targetPackageUri";
-        _CreateFormUponViewAction.targetPackageWorkspace = "targetPackageWorkspace";
-        _CreateFormUponViewAction._name_ = "name";
-        _CreateFormUponViewAction.isDisabled = "isDisabled";
-        _Forms._CreateFormUponViewAction = _CreateFormUponViewAction;
-        _Forms.__CreateFormUponViewAction_Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237";
+        _AddQueryInPackageAction.query = "query";
+        _AddQueryInPackageAction.targetPackageUri = "targetPackageUri";
+        _AddQueryInPackageAction.targetPackageWorkspace = "targetPackageWorkspace";
+        _AddQueryInPackageAction._name_ = "name";
+        _AddQueryInPackageAction.isDisabled = "isDisabled";
+        _Forms._AddQueryInPackageAction = _AddQueryInPackageAction;
+        _Forms.__AddQueryInPackageAction_Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237";
         class _CreateFormByMetaClass {
         }
         _CreateFormByMetaClass.metaClass = "metaClass";

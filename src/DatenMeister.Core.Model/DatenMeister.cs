@@ -809,7 +809,7 @@ public class _Actions
     {
         [TypeUri(Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237",
             TypeKind = TypeKind.ClassTree)]
-        public class _CreateFormUponViewAction
+        public class _AddQueryInPackageAction
         {
             public static readonly string @query = "query";
             public IElement? @_query = null;
@@ -828,8 +828,8 @@ public class _Actions
 
         }
 
-        public _CreateFormUponViewAction @CreateFormUponViewAction = new ();
-        public MofObjectShadow @__CreateFormUponViewAction = new ("dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237");
+        public _AddQueryInPackageAction @AddQueryInPackageAction = new ();
+        public MofObjectShadow @__AddQueryInPackageAction = new ("dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237");
 
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass",
             TypeKind = TypeKind.ClassTree)]

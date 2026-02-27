@@ -370,7 +370,7 @@ export namespace _Actions
 
         export namespace _Forms
         {
-                export class _CreateFormUponViewAction
+                export class _AddQueryInPackageAction
                 {
                     static query = "query";
                     static targetPackageUri = "targetPackageUri";
@@ -379,7 +379,7 @@ export namespace _Actions
                     static isDisabled = "isDisabled";
                 }
 
-                export const __CreateFormUponViewAction_Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237";
+                export const __AddQueryInPackageAction_Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237";
                 export class _CreateFormByMetaClass
                 {
                     static metaClass = "metaClass";

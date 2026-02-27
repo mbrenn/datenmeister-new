@@ -2069,16 +2069,16 @@ public class Actions
     {
         [TypeUri(Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237",
             TypeKind = TypeKind.WrappedClass)]
-        public class CreateFormUponViewAction_Wrapper : IElementWrapper
+        public class AddQueryInPackageAction_Wrapper : IElementWrapper
         {
             private readonly IElement _wrappedElement;
 
-            public CreateFormUponViewAction_Wrapper(IElement innerDmElement)
+            public AddQueryInPackageAction_Wrapper(IElement innerDmElement)
             {
                 _wrappedElement = innerDmElement;
             }
 
-            public CreateFormUponViewAction_Wrapper(IFactory factory)
+            public AddQueryInPackageAction_Wrapper(IFactory factory)
             {
                 _wrappedElement = factory.create(_metaClass);
             }
@@ -2087,7 +2087,7 @@ public class Actions
 
             private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237");
 
-            public static CreateFormUponViewAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+            public static AddQueryInPackageAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
             // DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper
             public DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper? @query

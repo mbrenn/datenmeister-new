@@ -9,89 +9,6 @@ using DatenMeister.Core.Provider.InMemory;
 namespace DatenMeister.Core.Runtime.Copier;
 
 /// <summary>
-/// Provides predefined copy option configurations for common copying scenarios.
-/// </summary>
-public static class CopyOptions
-{
-    /// <summary>
-    /// Gets the default copy options which create new ids for each copied element.
-    /// This is the standard behavior for creating independent copies.
-    /// </summary>
-    public static CopyOption None { get; } = new();
-
-    /// <summary>
-    /// Gets the copy options which also copies the ids from source to target elements.
-    /// Use this when preserving original identifiers is required.
-    /// </summary>
-    public static CopyOption CopyId => new() {CopyId = true};
-}
-
-/// <summary>
-/// Encapsulates the parameters passed to the PredicateToClone function in CopyOption.
-/// Used to provide context information for determining whether an object should be cloned.
-/// </summary>
-public struct CopyParameters
-{
-    /// <summary>
-    /// Gets or sets the source object from which the property is being copied.
-    /// </summary>
-    public object SourceObject { get; set; }
-
-    /// <summary>
-    /// Gets or sets the object that is being evaluated for copying.
-    /// </summary>
-    public object ObjectToBeCopied { get; set; }
-
-    /// <summary>
-    /// Gets or sets the name of the property being copied.
-    /// </summary>
-    public string PropertyName { get; set; }
-
-    /// <summary>
-    /// Gets or sets the target object that will receive the copied property.
-    /// </summary>
-    public IObject TargetObject { get; set; }
-}
-
-/// <summary>
-/// Defines options that control the behavior of the object copying process.
-/// These options allow fine-grained control over ID handling, reference cloning,
-/// recursion depth, and custom copy predicates.
-/// </summary>
-public class CopyOption
-{
-    /// <summary>
-    /// Gets or sets a value indicating whether the IDs of the objects shall be copied
-    /// or whether a new ID shall be generated for each copied element.
-    /// Default is false (new IDs are generated).
-    /// </summary>
-    public bool CopyId { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether all references shall be cloned,
-    /// preventing the creation of URI references to external extents.
-    /// When true, all referenced objects are copied rather than referenced.
-    /// Default is false.
-    /// </summary>
-    public bool CloneAllReferences { get; set; }
-
-    /// <summary>
-    /// Gets or sets the predicate function that determines whether a given object should be cloned
-    /// during the copy process. The predicate is evaluated based on specific parameters such as the
-    /// source object, property name, and target object. When this predicate returns true,
-    /// the object will be forcefully copied regardless of other options.
-    /// </summary>
-    public Predicate<CopyParameters>? PredicateToClone { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether only primitive elements shall be copied
-    /// without any recursive copying of nested objects. When true, complex nested structures
-    /// are not traversed. Default is false.
-    /// </summary>
-    public bool NoRecursion { get; set; }
-}
-
-/// <summary>
 /// Provides functionality to copy MOF (Meta Object Facility) elements and their properties.
 /// The ObjectCopier handles deep copying of objects, including nested structures, collections,
 /// and cross-extent references. It supports configurable behavior through CopyOption settings.
@@ -103,6 +20,30 @@ public class ObjectCopier
     /// This prevents infinite recursion in case of circular references.
     /// </summary>
     private const int MaxRecursionDepth = 100;
+
+    /// <summary>
+    /// Tracks the number of times the CopyValue method has been called.
+    /// Used for performance monitoring and instrumentation.
+    /// Thread-safe counter using Interlocked operations.
+    /// </summary>
+    private static long _copyValueCallCount;
+
+    /// <summary>
+    /// Gets the number of times the CopyValue method has been called.
+    /// </summary>
+    public static long CopyValueCallCount => _copyValueCallCount;
+
+    /// <summary>
+    /// Tracks the number of times the PredicateToClone in CopyOption has been invoked.
+    /// Used for performance monitoring and instrumentation.
+    /// Thread-safe counter using Interlocked operations.
+    /// </summary>
+    private static long _predicateInvocationCount;
+
+    /// <summary>
+    /// Gets the number of times the PredicateToClone in CopyOption has been invoked.
+    /// </summary>
+    public static long PredicateInvocationCount => _predicateInvocationCount;
 
     /// <summary>
     /// The factory used to create new instances of MOF elements during the copy process.
@@ -219,11 +160,13 @@ public class ObjectCopier
             {
                 var parameters = new CopyParameters
                 {
+                    SourceObject = sourceElement,
                     ObjectToBeCopied = value,
                     PropertyName = property,
                     TargetObject = targetElement
                 };
-                
+
+                Interlocked.Increment(ref _predicateInvocationCount);
                 forceCopy = copyOptions.PredicateToClone(parameters);
             }
             
@@ -245,6 +188,8 @@ public class ObjectCopier
     /// <returns>The copied value, which may be a new instance, a reference, or the original value depending on type and options.</returns>
     private object? CopyValue(object? value, CopyOption? copyOptions = null, bool forceCopy = false)
     {
+        Interlocked.Increment(ref _copyValueCallCount);
+
         copyOptions ??= CopyOptions.None;
         var noRecursion = copyOptions.NoRecursion;
 

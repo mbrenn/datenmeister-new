@@ -3,6 +3,7 @@ using DatenMeister.Actions;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.TypeIndexAssembly;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
@@ -139,6 +140,14 @@ public class AboutModel : PageModel
         {
             "FormCreation: Forms Created", () =>
                 $"{FormCreation.FormCreationCount}"
+        },
+        {
+            "ObjectCopier: CopyValue Calls", () =>
+                $"{ObjectCopier.CopyValueCallCount}"
+        },
+        {
+            "ObjectCopier: Predicate Invocations", () =>
+                $"{ObjectCopier.PredicateInvocationCount}"
         }
     };
 }

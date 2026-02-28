@@ -184,17 +184,22 @@ public class ObjectCopier
             case IElement valueAsElement:
             {
                 var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
-                if (propertyExtent == null || propertyExtent == _sourceExtent || copyOptions.CloneAllReferences)
-                {
-                    // If element is not associated to an extent
-                    // Or is associated to the source extent (as it should be)
-                    // Or if all references shall be cloned
-                    // The element will be copied.
-                    return Copy(valueAsElement, copyOptions);
-                }
-
-                // See above... Don't copy the elements which are references by another extent
-                return value;
+                
+                // We will do a full copy
+                var doCopy = false;
+                
+                // 1) The extent in which the property itself relies is null
+                doCopy |= propertyExtent == null;
+                
+                // 2) The value is copied within the same extent
+                doCopy |= propertyExtent == _sourceExtent;
+                
+                // 3) If the flag CloneAllReference is set
+                doCopy |= copyOptions.CloneAllReferences;
+                
+                return doCopy 
+                    ? Copy(valueAsElement, copyOptions) // It was decided to copy 
+                    : value;
             }
             case IReflectiveCollection _ when noRecursion:
                 return null;

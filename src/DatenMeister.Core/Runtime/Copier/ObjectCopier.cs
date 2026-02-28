@@ -185,7 +185,7 @@ public class ObjectCopier
         if (_currentDepth >= MaxRecursionDepth)
         {
             // Can't go deeper
-            return;
+            throw new InvalidOperationException("Max recursion depth reached");
         }
 
         copyOptions ??= CopyOptions.None;

@@ -96,11 +96,12 @@ public class CopierTests
             checkNodeInputOfFilter.getOrDefault<string>(_DataViews._Source._SelectFromAllWorkspacesNode.name),
             Is.EqualTo("AllFromWorkspace"));
         
+        // STEP 2
         // Ok, now we copy it and check if we have done a full copy
         var copiedElement = ObjectCopier.Copy(new MofFactory(mofOtherExtent!), mofObject1, new CopyOption());
         mofOtherExtent!.elements().add(copiedElement);
         
-        // STEP 2
+        // STEP 3
         // Check that the element and ALL its children are copied and just referencing to new extent
         Assert.That((copiedElement as IHasExtent)?.Extent, Is.EqualTo(mofOtherExtent));
         var checkNodeInputOfFlatten2 = copiedElement.getOrDefault<IElement>(_DataViews._QueryStatement.resultNode);

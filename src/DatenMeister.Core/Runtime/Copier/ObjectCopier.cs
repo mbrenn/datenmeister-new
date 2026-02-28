@@ -28,11 +28,15 @@ public class CopyOption
     /// </summary>
     public bool CopyId { get; set; }
 
-
     /// <summary>
     /// Gets or sets a value indicating whether references shall be cloned, so there will no UriReferences
     /// </summary>
     public bool CloneAllReferences { get; set; }
+
+    /// <summary>
+    /// P
+    /// </summary>
+    public Predicate<IObject>? PredicateToClone;
 
     /// <summary>
     /// True, if only the primitive elements shall be copied and not any recursion

@@ -84,8 +84,6 @@ public class WrapperTreeGenerator : WalkPackageClass
         Result.AppendLine();
         Result.AppendLine($"{stack.Indentation}    public IElement GetWrappedElement() => _wrappedElement;");
         Result.AppendLine();
-        Result.AppendLine($"{stack.Indentation}    public static implicit operator IElement?({name}_Wrapper? wrapper) => wrapper?._wrappedElement;");
-        Result.AppendLine();
         Result.AppendLine($"{stack.Indentation}    private static readonly MofObjectShadow _metaClass = new (\"{asElement.GetUri()}\");");
         Result.AppendLine();
         Result.AppendLine($"{stack.Indentation}    public static {name}_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));");

@@ -15,7 +15,7 @@ namespace DatenMeister.TemporaryExtent;
 /// </summary>
 public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
-    public const string InternalTempUri = "dm:///_internal/temp";
+    public const string InternalTempUri = WorkspaceNames.UriTemporaryExtent;
 
     /// <summary>
     /// Defines the logger

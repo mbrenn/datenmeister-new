@@ -17,6 +17,8 @@ public static class WorkspaceNames
     public const string UriExtentInternalTypes = "dm:///_internal/types/internal";
     public const string UriExtentUserTypes = "dm:///_internal/types/user";
 
+    public const string UriTemporaryExtent = "dm:///_internal/temp";
+
 
     /// <summary>
     /// Defines the uri of the view to the view extents

@@ -107,10 +107,12 @@ public class CopyOption
     /// };
     /// </code>
     /// </example>
-    public static Predicate<CopyParameters> GetPredicateForUmlCopying(CopyPredicateParameter copyPredicateParameter = default)
+    public static Predicate<CopyParameters> GetPredicateForUmlCopying(CopyPredicateParameter? copyPredicateParameter = null)
     {
         return parameters =>
         {
+            copyPredicateParameter ??= new CopyPredicateParameter();
+            
             var sourceExtent = (parameters.SourceObject as IHasExtent)?.Extent as IUriExtent;
             var targetExtent = (parameters.TargetObject as MofObject)?.ReferencedExtent as IUriExtent;
 
@@ -188,19 +190,12 @@ public class CopyOption
 /// var predicate2 = CopyOption.GetPredicateForUmlCopying(param);
 /// </code>
 /// </example>
-public struct CopyPredicateParameter
+public record CopyPredicateParameter
 {
-    /// <summary>
-    /// Initializes a new instance of CopyPredicateParameter with default values.
-    /// </summary>
-    public CopyPredicateParameter()
-    {
-    }
-
     /// <summary>
     /// Gets or sets a value indicating whether objects should be copied when
     /// the source and target are in different extents.
-    /// Default is false.
+    /// Default is true.
     /// </summary>
     /// <remarks>
     /// When true, any property value referencing an object in a different extent
@@ -208,10 +203,10 @@ public struct CopyPredicateParameter
     /// This is useful when you want to create completely self-contained copies
     /// that don't depend on other extents.
     ///
-    /// When false (default), cross-extent references are preserved unless other
+    /// When false, cross-extent references are preserved unless other
     /// conditions (like CopyAcrossWorkspaces or composite relationships) force copying.
     /// </remarks>
-    public bool CopyAcrossExtents = false;
+    public bool CopyAcrossExtents = true;
 
     /// <summary>
     /// Gets or sets a value indicating whether objects should be copied when

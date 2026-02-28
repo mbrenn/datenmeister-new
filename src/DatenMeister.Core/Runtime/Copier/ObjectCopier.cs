@@ -111,6 +111,17 @@ public class ObjectCopier
 
     /// <summary>
     /// Copies all properties from a source element to a target element.
+    /// </summary>
+    /// <param name="sourceElement">Element from which the properties shall be taken</param>
+    /// <param name="targetElement">Element to which the properties shall be put to </param>
+    /// <param name="copyOptions">The options for copying. In case of null, the default is used</param>
+    public void CopyProperties(IObject sourceElement, IObject targetElement, CopyOption? copyOptions = null)
+    {
+        InternalCopyProperties(sourceElement, targetElement, copyOptions);
+    }
+    
+    /// <summary>
+    /// Copies all properties from a source element to a target element.
     /// This method recursively copies properties based on the provided copy options,
     /// handling IDs, nested objects, and collections. The recursion depth is tracked
     /// to prevent stack overflow in case of circular references.
@@ -120,7 +131,7 @@ public class ObjectCopier
     /// <param name="copyOptions">Options controlling the copy behavior. If null, default options are used.</param>
     /// <exception cref="ArgumentNullException">Thrown when sourceElement or targetElement is null.</exception>
     /// <exception cref="ArgumentException">Thrown when sourceElement does not implement IObjectAllProperties.</exception>
-    public void CopyProperties(IObject sourceElement, IObject targetElement, CopyOption? copyOptions = null)
+    private void InternalCopyProperties(IObject sourceElement, IObject targetElement, CopyOption? copyOptions = null)
     {
         _currentDepth++;
         if (_currentDepth >= MaxRecursionDepth)
@@ -153,6 +164,12 @@ public class ObjectCopier
         // Transfers the properties
         foreach (var property in elementAsExt.getPropertiesBeingSet())
         {
+            if (!sourceElement.isSet(property))
+            {
+                // Element is not set or has its default value,so skip it. 
+                continue;
+            }
+            
             var value = sourceElement.get<object>(property, !copyOptions.CloneAllReferences);
             
             var forceCopy = false;
@@ -213,8 +230,11 @@ public class ObjectCopier
                 doCopy |= propertyExtent == null;
                 
                 // 2) The value is copied within the same extent
-                doCopy |= propertyExtent == _sourceExtent;
-                
+                if (!doCopy && propertyExtent == _sourceExtent && MofExtent.GlobalSlimUmlEvaluation)
+                {
+                    doCopy = true;
+                }
+
                 // 3) If the flag CloneAllReference is set
                 doCopy |= copyOptions.CloneAllReferences;
                 

@@ -4,6 +4,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Extent.Manager.ExtentStorage;
@@ -38,6 +39,178 @@ public class CopierTests
         Assert.That(result1.get(property2)?.ToString(), Is.EqualTo("Mainz"));
         Assert.That(result2.get(property1)?.ToString(), Is.EqualTo("65474"));
         Assert.That(result2.get(property2)?.ToString(), Is.EqualTo("Bischofsheim"));
+    }
+    
+    [Test]
+    public void TestCopyIncludingSubItems()
+    {
+        var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///", null);
+        var mofObject = new MofFactory(mofExtent).create(null);
+        var mofChild = new MofFactory(mofExtent).create(null);
+
+        mofObject.set(property1, "55130");
+        mofObject.set(property2, "Mainz");
+        mofChild.set("Name", "Martin");
+        mofObject.set("Mayor", mofChild);
+
+        var copier = new ObjectCopier(new MofFactory(mofExtent));
+        var result1 = copier.Copy(mofObject);
+
+        Assert.That(result1, Is.Not.Null);
+        Assert.That(result1.get(property1)?.ToString(), Is.EqualTo("55130"));
+        Assert.That(result1.get(property2)?.ToString(), Is.EqualTo("Mainz"));
+        
+        // Check that the mayor is copied. We expect this in case of unknown metaclasses
+        var mayor = result1.getOrDefault<IElement>("Mayor");
+        Assert.That(mayor, Is.Not.Null);
+        Assert.That((mayor as MofObject)?.ProviderObject, Is.Not.Null);
+        Assert.That((mayor as MofObject)?.ProviderObject, Is.Not.EqualTo((mofChild as MofObject)?.ProviderObject));
+        Assert.That(
+            mayor.getOrDefault<string>("Name"),
+            Is.EqualTo("Martin"));
+    }
+    
+    [Test]
+    public async Task TestCopyOfCompositesWithCopyingAcrossExtents()
+    {
+        await InternalTestForCompositingObjects(true);
+    }
+    
+    [Test]
+    public async Task TestCopyOfCompositesWithoutCopyingAcrossExtents()
+    {
+        await InternalTestForCompositingObjects(false);
+    }
+
+    private static async Task InternalTestForCompositingObjects(bool copyAcrossExtents)
+    {
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var extentManager = dm.Resolve<ExtentManager>();
+        
+        var mofExtent = (await extentManager.LoadExtent(
+            new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+            {
+                extentUri = "dm:///extent",
+                dropExisting = true
+            }.GetWrappedElement())).Extent;
+        Assert.That(mofExtent, Is.Not.Null);
+        
+        var mofExtent2 = (await extentManager.LoadExtent(
+            new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+            {
+                extentUri = "dm:///extent2",
+                dropExisting = true
+            }.GetWrappedElement())).Extent;
+        Assert.That(mofExtent2, Is.Not.Null);
+        
+        // Prepare a compositing object with two fields
+        var factory = new MofFactory(mofExtent!);
+        var rowForm = factory.create(_Forms.TheOne.__RowForm);
+        var fieldCheckbox = factory.create(_Forms.TheOne.__CheckboxFieldData);
+        fieldCheckbox.set(_Forms._CheckboxFieldData.name, "Checkbox");
+        var fieldText = factory.create(_Forms.TheOne.__TextFieldData);
+        fieldText.set(_Forms._TextFieldData.name, "Textbox");
+        rowForm.set(_Forms._RowForm.field, new List<object> {fieldCheckbox, fieldText});
+        mofExtent!.elements().add(rowForm);
+        
+        // Copy it
+        var copiedElement = ObjectCopier.Copy(
+            new MofFactory(mofExtent2!),
+            rowForm,
+            new CopyOption
+            {
+                PredicateToClone = CopyOption.GetPredicateForUmlCopying(new CopyPredicateParameter {
+                    CopyAcrossExtents = copyAcrossExtents
+                })
+            });
+        
+        // Check that the new object is existing and of metaclass rowform
+        Assert.That(copiedElement, Is.Not.Null);
+        Assert.That(copiedElement.getMetaClass(), Is.EqualTo(_Forms.TheOne.__RowForm));
+        
+        // Check that there are two fields and identify each for checking of names by metaclass
+        var field = copiedElement.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
+        Assert.That(field, Is.Not.Null);
+        Assert.That(field.OfType<IElement>().Count(), Is.EqualTo(2));
+        
+        var fieldCheckbox2 = field.OfType<IElement>().FirstOrDefault(x => x.getMetaClass()?.Equals( _Forms.TheOne.__CheckboxFieldData) == true);
+        Assert.That(fieldCheckbox2, Is.Not.Null);
+        Assert.That(fieldCheckbox2!.getOrDefault<string>(_Forms._CheckboxFieldData.name), Is.EqualTo("Checkbox"));
+        
+        var fieldText2 = field.OfType<IElement>().FirstOrDefault(x => x.getMetaClass()?.Equals(_Forms.TheOne.__TextFieldData) == true);
+        Assert.That(fieldText2, Is.Not.Null);
+        Assert.That(fieldText2!.getOrDefault<string>(_Forms._TextFieldData.name), Is.EqualTo("Textbox"));
+        
+        // Confirm that the providerobjects behind each field are not the same
+        Assert.That((fieldCheckbox2 as MofObject)?.ProviderObject, Is.Not.Null);
+        Assert.That((fieldCheckbox2 as MofObject)?.ProviderObject, Is.Not.EqualTo((fieldCheckbox as MofObject)?.ProviderObject));
+        Assert.That((fieldText2 as MofObject)?.ProviderObject, Is.Not.EqualTo((fieldText as MofObject)?.ProviderObject));
+    }
+
+    [Test]
+    public async Task TestCopyOfReferencesWithCopyingAcrossExtents()
+    {
+        await InteralTestCopyOfReferences(true);
+    }
+
+    [Test]
+    public async Task TestCopyOfReferencesWithoutCopyingAcrossExtents()
+    {
+        await InteralTestCopyOfReferences(false);
+    }
+
+    private static async Task InteralTestCopyOfReferences(bool copyAcrossExtents)
+    {
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var extentManager = dm.Resolve<ExtentManager>();
+        
+        var mofExtent = (await extentManager.LoadExtent(
+            new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+            {
+                extentUri = "dm:///extent",
+                dropExisting = true
+            }.GetWrappedElement())).Extent;
+        Assert.That(mofExtent, Is.Not.Null);
+        
+        var mofExtent2 = (await extentManager.LoadExtent(
+            new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+            {
+                extentUri = "dm:///extent2",
+                dropExisting = true
+            }.GetWrappedElement())).Extent;
+        Assert.That(mofExtent2, Is.Not.Null);
+
+        var factory = new MofFactory(mofExtent!);
+        var mofObject = factory.create(_DataViews.TheOne.__QueryStatement);
+        var mofResultNode = factory.create(_DataViews.TheOne.Source.__SelectFromAllWorkspacesNode);
+        mofResultNode.set(_DataViews._Source._SelectByWorkspaceNode.name, "AllFromWorkspace");
+        mofObject.set(_DataViews._QueryStatement.resultNode, mofResultNode);
+        
+        mofExtent!.elements().add(mofObject);
+        
+        // Copy it
+        var copiedElement = ObjectCopier.Copy(
+            new MofFactory(mofExtent2!),
+            mofObject,
+            new CopyOption
+            {
+                PredicateToClone = CopyOption.GetPredicateForUmlCopying(new CopyPredicateParameter {
+                    CopyAcrossExtents = copyAcrossExtents
+                })
+            });
+        
+        // Depending on the copyAcross, different results could happen
+        Assert.That(copiedElement, Is.Not.Null);
+        Assert.That(copiedElement.getMetaClass()?.Equals(_DataViews.TheOne.__QueryStatement), Is.True);
+
+        var copiedResultNode = copiedElement.getOrDefault<IElement>(_DataViews._QueryStatement.resultNode);
+        Assert.That(copiedResultNode, Is.Not.Null);
+
+        Assert.That(
+            (copiedResultNode as MofObject)?.ProviderObject,
+            copyAcrossExtents
+                ? Is.Not.EqualTo((mofResultNode as MofObject)?.ProviderObject)
+                : Is.EqualTo((mofResultNode as MofObject)?.ProviderObject));
     }
 
     /// <summary>
@@ -103,9 +276,7 @@ public class CopierTests
             mofObject1,
             new CopyOption
             {
-                PredicateToClone = CopyOption.GetPredicateForUmlCopying(
-                    new CopyPredicateParameter
-                    {
+                PredicateToClone = CopyOption.GetPredicateForUmlCopying(new CopyPredicateParameter {
                         CopyAcrossExtents = true
                     })
             });

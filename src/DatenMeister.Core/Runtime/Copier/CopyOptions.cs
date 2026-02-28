@@ -72,5 +72,9 @@ public static class CopyOptions
     /// If you need both ID copying and custom predicate behavior, create a new CopyOption
     /// and set both CopyId = true and PredicateToClone explicitly.
     /// </remarks>
-    public static CopyOption CopyId => new() {CopyId = true};
+    public static CopyOption CopyId => new()
+    {
+        CopyId = true,
+        PredicateToClone = CopyOption.GetPredicateForUmlCopying()
+    };
 }

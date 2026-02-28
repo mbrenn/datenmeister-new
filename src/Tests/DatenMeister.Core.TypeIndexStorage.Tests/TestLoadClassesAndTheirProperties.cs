@@ -133,7 +133,6 @@ public class TestLoadClassesAndTheirProperties
         Assert.That(reportDefinition, Is.Not.Null);
         var reportDefinitionElements = reportDefinition!.Attributes.FirstOrDefault(x => x.Name == "elements");
         Assert.That(reportDefinitionElements, Is.Not.Null);
-
         Assert.That(reportDefinitionElements!.IsMultiple, Is.True);
     }
     

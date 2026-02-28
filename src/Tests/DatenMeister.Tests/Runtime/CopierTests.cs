@@ -150,16 +150,16 @@ public class CopierTests
     [Test]
     public async Task TestCopyOfReferencesWithCopyingAcrossExtents()
     {
-        await InteralTestCopyOfReferences(true);
+        await InternalTestCopyOfReferences(true);
     }
 
     [Test]
     public async Task TestCopyOfReferencesWithoutCopyingAcrossExtents()
     {
-        await InteralTestCopyOfReferences(false);
+        await InternalTestCopyOfReferences(false);
     }
 
-    private static async Task InteralTestCopyOfReferences(bool copyAcrossExtents)
+    private static async Task InternalTestCopyOfReferences(bool copyAcrossExtents)
     {
         await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
         var extentManager = dm.Resolve<ExtentManager>();

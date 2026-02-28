@@ -18,7 +18,7 @@ public class CopierTests
     private static string property2 = "Prop2";
 
     [Test]
-    public void TestCopyOfObject()
+    public void TestCopyOfObjectJustForAttributes()
     {
         var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///", null);
         var mofObject = new MofFactory(mofExtent).create(null);
@@ -98,23 +98,47 @@ public class CopierTests
         
         // STEP 2
         // Ok, now we copy it and check if we have done a full copy
-        var copiedElement = ObjectCopier.Copy(new MofFactory(mofOtherExtent!), mofObject1, new CopyOption());
+        var copiedElement = ObjectCopier.Copy(
+            new MofFactory(mofOtherExtent!),
+            mofObject1,
+            new CopyOption
+            {
+                PredicateToClone = CopyOption.GetPredicateForUmlCopying(
+                    new CopyPredicateParameter
+                    {
+                        CopyAcrossExtents = true
+                    })
+            });
         mofOtherExtent!.elements().add(copiedElement);
         
         // STEP 3
-        // Check that the element and ALL its children are copied and just referencing to new extent
+        // Check that the element and ALL its children are copied and just referencing to new extent.
+        // Assert also that the copied object in resultNode is exactly the same as the one in the attribute 'nodes'
         Assert.That((copiedElement as IHasExtent)?.Extent, Is.EqualTo(mofOtherExtent));
-        var checkNodeInputOfFlatten2 = copiedElement.getOrDefault<IElement>(_DataViews._QueryStatement.resultNode);
-        Assert.That(checkNodeInputOfFlatten2.GetUri()?.Contains("extent2") == true, Is.True);
-        
         var nodes = copiedElement.getOrDefault<IReflectiveCollection>(_DataViews._QueryStatement.nodes);
         Assert.That(nodes.OfType<IElement>().Count(), Is.EqualTo(3));
 
+        IElement? foundFlattenNodeInNodes = null;
         foreach (var node in nodes.OfType<IElement>())
         {
             Assert.That(node.GetUri()?.Contains("extent2") == true, Is.True);
+            if (node.getOrDefault<string>(_DataViews._Row._RowFlattenNode.name) == "RowFlatten")
+            {
+                foundFlattenNodeInNodes = node;
+            }
         }
         
+        Assert.That(foundFlattenNodeInNodes, Is.Not.Null);
+        
+        var checkNodeInputOfFlatten2 = copiedElement.getOrDefault<IElement>(_DataViews._QueryStatement.resultNode);
+        Assert.That(checkNodeInputOfFlatten2, Is.Not.Null);
+        Assert.That(checkNodeInputOfFlatten2.GetUri()?.Contains("extent2") == true, Is.True);
+
+        // Check that the node and the result node are the same
+        Assert.That(foundFlattenNodeInNodes!.GetUri(), Is.EqualTo(checkNodeInputOfFlatten2.GetUri()));
+        Assert.That((foundFlattenNodeInNodes as MofObject)?.ProviderObject, Is.Not.Null);
+        Assert.That((foundFlattenNodeInNodes as MofObject)?.ProviderObject, Is.EqualTo((checkNodeInputOfFlatten2 as MofObject)?.ProviderObject));
+            
         // Now check the input chain
         var checkColumnFilter = checkNodeInputOfFlatten2.getOrDefault<IElement>(_DataViews._Row._RowFlattenNode.input);
         Assert.That(checkColumnFilter.GetUri()?.Contains("extent2") == true, Is.True);

@@ -2,21 +2,75 @@ namespace DatenMeister.Core.Runtime.Copier;
 
 /// <summary>
 /// Provides predefined copy option configurations for common copying scenarios.
+/// This static class offers convenient, pre-configured CopyOption instances that can be used
+/// with the ObjectCopier to control copying behavior.
 /// </summary>
+/// <remarks>
+/// CopyOptions provides factory methods for commonly used copy configurations. Each option
+/// can be customized further by modifying properties like PredicateToClone, CloneAllReferences,
+/// or NoRecursion after obtaining an instance.
+///
+/// The PredicateToClone property accepts a function that receives a CopyParameters struct,
+/// which provides context about the copying operation including:
+/// - SourceObject: The parent object containing the property
+/// - ObjectToBeCopied: The actual value being considered for copying
+/// - PropertyName: The name of the property being copied
+/// - TargetObject: The destination object receiving the copied value
+///
+/// The predicate function should return true to force a deep copy of the value,
+/// or false to follow the default copy behavior based on extent relationships.
+/// </remarks>
+/// <example>
+/// Basic usage:
+/// <code>
+/// // Use default options
+/// var copiedElement = ObjectCopier.Copy(factory, sourceElement, CopyOptions.None);
+///
+/// // Use copy with ID preservation
+/// var copiedElement = ObjectCopier.Copy(factory, sourceElement, CopyOptions.CopyId);
+///
+/// // Customize with a predicate
+/// var customOption = CopyOptions.None;
+/// customOption.PredicateToClone = parameters =>
+/// {
+///     // Force copy for "children" property
+///     return parameters.PropertyName == "children";
+/// };
+/// var copiedElement = ObjectCopier.Copy(factory, sourceElement, customOption);
+/// </code>
+/// </example>
 public static class CopyOptions
 {
     /// <summary>
     /// Gets the default copy options which create new ids for each copied element.
     /// This is the standard behavior for creating independent copies.
+    /// Includes a predicate for UML-specific copying behavior.
     /// </summary>
+    /// <remarks>
+    /// This option uses GetPredicateForUmlCopying() which provides intelligent copying
+    /// decisions for UML model elements. New IDs are generated for all copied elements,
+    /// ensuring that the copies are distinct entities in the system.
+    /// </remarks>
     public static CopyOption None { get; } = new()
     {
-        PredicateToClone = CopyOption.PredicateForUmlCopying
+        PredicateToClone = CopyOption.GetPredicateForUmlCopying()
     };
 
     /// <summary>
     /// Gets the copy options which also copies the ids from source to target elements.
-    /// Use this when preserving original identifiers is required.
+    /// Use this when preserving original identifiers is required, such as when creating
+    /// synchronized replicas or maintaining identity relationships.
     /// </summary>
+    /// <remarks>
+    /// When using this option, the copied elements will retain the same IDs as their source elements.
+    /// This is useful for scenarios like:
+    /// - Creating backup copies that need to maintain identity
+    /// - Synchronizing elements between extents
+    /// - Duplicating elements where ID preservation is semantically important
+    ///
+    /// Note: This option does not include the UML copying predicate by default.
+    /// If you need both ID copying and custom predicate behavior, create a new CopyOption
+    /// and set both CopyId = true and PredicateToClone explicitly.
+    /// </remarks>
     public static CopyOption CopyId => new() {CopyId = true};
 }

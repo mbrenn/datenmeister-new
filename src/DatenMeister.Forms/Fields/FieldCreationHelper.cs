@@ -86,12 +86,13 @@ public static class FieldCreationHelper
             if (column.Form != null)
             {
                 rowOrObjectForm.get<IReflectiveCollection>(_Forms._RowForm.field).add(column.Form);
-            }
 
-            FormCreationResult.AddToFormCreationProtocol(
-                rowOrObjectForm,
-                "[FormCreator.AddFieldsToRowOrObjectFormByMetaClass]: Added field by Metaclass for property: " +
-                NamedElementMethods.GetName(propertyName));
+                FormCreationResult.AddToFormCreationProtocol(
+                    rowOrObjectForm,
+                    $"[FormCreator.AddFieldsToRowOrObjectFormByMetaClass]: Added field by Metaclass " +
+                    $"'{NamedElementMethods.GetName(column.Form?.getMetaClass())}' for property: " +
+                    $"{NamedElementMethods.GetName(propertyName)}");
+            }
         }
 
 #if DEBUG

@@ -46,17 +46,6 @@ public static class CopyOptions
     /// Use this when preserving original identifiers is required, such as when creating
     /// synchronized replicas or maintaining identity relationships.
     /// </summary>
-    /// <remarks>
-    /// When using this option, the copied elements will retain the same IDs as their source elements.
-    /// This is useful for scenarios like:
-    /// - Creating backup copies that need to maintain identity
-    /// - Synchronizing elements between extents
-    /// - Duplicating elements where ID preservation is semantically important
-    ///
-    /// Note: This option does not include the UML copying predicate by default.
-    /// If you need both ID copying and custom predicate behavior, create a new CopyOption
-    /// and set both CopyId = true and PredicateToClone explicitly.
-    /// </remarks>
     public static CopyOption CopyId => new()
     {
         CopyId = true,

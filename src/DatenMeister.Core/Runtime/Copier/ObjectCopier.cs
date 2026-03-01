@@ -222,23 +222,35 @@ public class ObjectCopier
             case IElement valueAsElement:
             {
                 var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
-                
+
                 // 1) The extent in which the property itself relies is null
-                if (copyType == CopyType.Undefined && propertyExtent == null) 
+                if (copyType == CopyType.Undefined && propertyExtent == null)
                     copyType = CopyType.Clone;
-                
+
                 // 2) The value is copied within the same extent
-                if (copyType == CopyType.Undefined 
-                    && propertyExtent == _sourceExtent && MofExtent.GlobalSlimUmlEvaluation) 
+                if (copyType == CopyType.Undefined
+                    && propertyExtent == _sourceExtent && MofExtent.GlobalSlimUmlEvaluation)
                     copyType = CopyType.Clone;
 
                 // 3) If the flag CloneAllReference is set
-                if(copyOptions.CloneAllReferences)
+                if (copyOptions.CloneAllReferences)
                     copyType = CopyType.Clone;
-                
-                return copyType == CopyType.Clone 
-                    ? Copy(valueAsElement, copyOptions) // It was decided to copy 
-                    : value;
+
+                switch (copyType)
+                {
+                    case CopyType.Undefined:
+                        throw new InvalidOperationException
+                            ("Copy type is undefined, but should be defined by now");
+                    case CopyType.Clone:
+                        return Copy(valueAsElement, copyOptions);
+                    case CopyType.KeepReference:
+                        return value;
+                    case CopyType.FindClonedReference:
+                        break;
+                }
+
+                throw new ArgumentOutOfRangeException(nameof(copyType), copyType, null);
+
             }
             case IReflectiveCollection _ when noRecursion:
                 return null;

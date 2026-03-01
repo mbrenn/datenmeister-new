@@ -64,16 +64,6 @@ public class CopyOption
     /// source object, property name, and target object. When this predicate returns true,
     /// the object will be forcefully copied regardless of other options.
     /// </summary>
-    /// <remarks>
-    /// The predicate function receives a CopyParameters struct containing:
-    /// - SourceObject: The parent object containing the property being copied
-    /// - ObjectToBeCopied: The value being evaluated for copying
-    /// - PropertyName: The name of the property being copied
-    /// - TargetObject: The destination object that will receive the copied value
-    ///
-    /// Return true to force a deep copy, or false to follow the default copy behavior.
-    /// Use GetPredicateForUmlCopying() to obtain a predicate optimized for UML model copying.
-    /// </remarks>
     public Func<CopyParameters, CopyType>? PredicateToClone { get; set; }
 
     /// <summary>
@@ -91,10 +81,6 @@ public class CopyOption
     /// Configuration parameters that control the predicate's behavior regarding extent boundaries,
     /// workspace boundaries, and temporary extent handling. Uses default values if not specified.
     /// </param>
-    /// <returns>
-    /// A predicate function that can be assigned to PredicateToClone. This function receives
-    /// CopyParameters and returns true to force a deep copy, or false to maintain a reference.
-    /// </returns>
     /// <example>
     /// <code>
     /// // Use with default parameters (copy across workspaces and from temporary extents)
@@ -125,7 +111,11 @@ public class CopyOption
             var sourceExtent = (parameters.SourceObject as IHasExtent)?.Extent as IUriExtent;
             var targetExtent = (parameters.TargetObject as MofObject)?.ReferencedExtent as IUriExtent;
 
-            // First, check, if the source or target extent is null. If that is the case, then
+            var sourceObject = parameters.SourceObject as MofObject; 
+            var attribute = sourceObject?.GetClassModel()?.FindAttribute(parameters.PropertyName);
+            var isComposite = attribute?.IsComposite == true;
+            
+            // First check, if the source or target extent is null. If that is the case, then
             // we will copy because we will never find the values again!
             if (sourceExtent == null || targetExtent == null)
                 return CopyType.Clone;
@@ -133,14 +123,14 @@ public class CopyOption
             if (copyPredicateParameter.CopyAcrossExtents)
             {
                 if (sourceExtent != targetExtent)
-                    return CopyType.Clone;
+                    return isComposite ? CopyType.Clone : CopyType.FindClonedReference;
             }
 
             if (copyPredicateParameter.CopyFromTemporaryExtent)
             {
                 if (sourceExtent.contextURI() == WorkspaceNames.UriTemporaryExtent
                     && targetExtent.contextURI() != WorkspaceNames.UriTemporaryExtent)
-                    return CopyType.Clone;
+                    return isComposite ? CopyType.Clone : CopyType.FindClonedReference;
             }
 
             if (copyPredicateParameter.CopyAcrossWorkspaces)
@@ -151,18 +141,18 @@ public class CopyOption
                 var targetWorkspace = (targetExtent as IHasWorkspace)?.Workspace;
 
                 if (sourceWorkspace != null && targetWorkspace != null && sourceWorkspace != targetWorkspace)
-                    return CopyType.Clone;
+                    
+                    return isComposite ? CopyType.Clone : CopyType.FindClonedReference;
             }
 
             // Ok, now we figure out, if we are a composite. If yes, then perform a copy
-            if (parameters.SourceObject is not MofObject sourceObject)
+            if (sourceObject == null)
             {
                 // In case we are not a MofObject, we fall back to not copy
                 return CopyType.KeepReference;
             }
 
-            var attribute = sourceObject.GetClassModel()?.FindAttribute(parameters.PropertyName);
-            return attribute.IsComposite ? CopyType.Clone : CopyType.KeepReference;
+            return isComposite ? CopyType.Clone : CopyType.KeepReference;
         };
     }
 }

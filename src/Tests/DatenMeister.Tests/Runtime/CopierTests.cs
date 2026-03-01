@@ -2,6 +2,7 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
@@ -73,16 +74,28 @@ public class CopierTests
     [Test]
     public async Task TestCopyOfCompositesWithCopyingAcrossExtents()
     {
-        await InternalTestForCompositingObjects(true);
+        await InternalTestForCompositingObjects(true, false);
     }
     
     [Test]
     public async Task TestCopyOfCompositesWithoutCopyingAcrossExtents()
     {
-        await InternalTestForCompositingObjects(false);
+        await InternalTestForCompositingObjects(false, false);
+    }
+    
+    [Test]
+    public async Task TestCopyOfCompositesWithCopyingAcrossExtentsWithinSameExtent()
+    {
+        await InternalTestForCompositingObjects(true, true);
+    }
+    
+    [Test]
+    public async Task TestCopyOfCompositesWithoutCopyingAcrossExtentsWithinSameExtent()
+    {
+        await InternalTestForCompositingObjects(false, true);
     }
 
-    private static async Task InternalTestForCompositingObjects(bool copyAcrossExtents)
+    private static async Task InternalTestForCompositingObjects(bool copyAcrossExtents, bool withinSameExtent)
     {
         await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
         var extentManager = dm.Resolve<ExtentManager>();
@@ -94,15 +107,24 @@ public class CopierTests
                 dropExisting = true
             }.GetWrappedElement())).Extent;
         Assert.That(mofExtent, Is.Not.Null);
-        
-        var mofExtent2 = (await extentManager.LoadExtent(
-            new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
-            {
-                extentUri = "dm:///extent2",
-                dropExisting = true
-            }.GetWrappedElement())).Extent;
-        Assert.That(mofExtent2, Is.Not.Null);
-        
+
+        IUriExtent? mofExtent2;
+
+        if (withinSameExtent)
+        {
+            mofExtent2 = mofExtent;
+        }
+        else
+        {
+            mofExtent2 = (await extentManager.LoadExtent(
+                new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+                {
+                    extentUri = "dm:///extent2",
+                    dropExisting = true
+                }.GetWrappedElement())).Extent;
+            Assert.That(mofExtent2, Is.Not.Null);
+        }
+
         // Prepare a compositing object with two fields
         var factory = new MofFactory(mofExtent!);
         var rowForm = factory.create(_Forms.TheOne.__RowForm);
@@ -150,16 +172,28 @@ public class CopierTests
     [Test]
     public async Task TestCopyOfReferencesWithCopyingAcrossExtents()
     {
-        await InternalTestCopyOfReferences(true);
+        await InternalTestCopyOfReferences(true, false);
     }
 
     [Test]
     public async Task TestCopyOfReferencesWithoutCopyingAcrossExtents()
     {
-        await InternalTestCopyOfReferences(false);
+        await InternalTestCopyOfReferences(false, false);
     }
 
-    private static async Task InternalTestCopyOfReferences(bool copyAcrossExtents)
+    [Test]
+    public async Task TestCopyOfReferencesWithCopyingAcrossExtentsInSameExtent()
+    {
+        await InternalTestCopyOfReferences(true, true);
+    }
+
+    [Test]
+    public async Task TestCopyOfReferencesWithoutCopyingAcrossExtentsInSameExtent()
+    {
+        await InternalTestCopyOfReferences(false, true);
+    }
+
+    private static async Task InternalTestCopyOfReferences(bool copyAcrossExtents, bool withinSameExtent)
     {
         await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
         var extentManager = dm.Resolve<ExtentManager>();
@@ -171,13 +205,22 @@ public class CopierTests
                 dropExisting = true
             }.GetWrappedElement())).Extent;
         Assert.That(mofExtent, Is.Not.Null);
-        
-        var mofExtent2 = (await extentManager.LoadExtent(
-            new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
-            {
-                extentUri = "dm:///extent2",
-                dropExisting = true
-            }.GetWrappedElement())).Extent;
+
+        IUriExtent? mofExtent2;
+        if (withinSameExtent)
+        {
+            mofExtent2 = mofExtent;
+        }
+        else
+        {
+            mofExtent2 = (await extentManager.LoadExtent(
+                new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+                {
+                    extentUri = "dm:///extent2",
+                    dropExisting = true
+                }.GetWrappedElement())).Extent;
+        }
+
         Assert.That(mofExtent2, Is.Not.Null);
 
         var factory = new MofFactory(mofExtent!);
@@ -206,11 +249,28 @@ public class CopierTests
         var copiedResultNode = copiedElement.getOrDefault<IElement>(_DataViews._QueryStatement.resultNode);
         Assert.That(copiedResultNode, Is.Not.Null);
 
-        Assert.That(
-            (copiedResultNode as MofObject)?.ProviderObject,
-            copyAcrossExtents
-                ? Is.Not.EqualTo((mofResultNode as MofObject)?.ProviderObject)
-                : Is.EqualTo((mofResultNode as MofObject)?.ProviderObject));
+        if (withinSameExtent)
+        {
+            // If same extent, then the result node is the same since the reference can be reused
+            Assert.That(
+                ((mofResultNode as IHasExtent)?.Extent as IUriExtent)?.contextURI(), 
+                Is.EqualTo(mofExtent.contextURI()));
+            Assert.That(copiedResultNode.GetUri(), Is.EqualTo(mofResultNode.GetUri()));
+            Assert.That((copiedResultNode as MofObject)?.ProviderObject, Is.Not.Null);
+            Assert.That((copiedResultNode as MofObject)?.ProviderObject, 
+                Is.EqualTo((mofResultNode as MofObject)?.ProviderObject));
+        }
+        else
+        {
+            // If between different extents, it depends upon the copy across extent flag
+            // In case we want to copy the element, then the result node shall be copied
+            // In case we want not to copy the element, the result node shall be referenced
+            Assert.That(
+                (copiedResultNode as MofObject)?.ProviderObject,
+                copyAcrossExtents
+                    ? Is.Not.EqualTo((mofResultNode as MofObject)?.ProviderObject)
+                    : Is.EqualTo((mofResultNode as MofObject)?.ProviderObject));
+        }
     }
 
     /// <summary>

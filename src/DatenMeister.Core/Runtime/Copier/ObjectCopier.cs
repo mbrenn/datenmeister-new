@@ -172,7 +172,7 @@ public class ObjectCopier
             
             var value = sourceElement.get<object>(property, !copyOptions.CloneAllReferences);
             
-            var forceCopy = false;
+            var forceCopy = CopyType.Undefined;
             if (copyOptions.PredicateToClone != null)
             {
                 var parameters = new CopyParameters
@@ -201,9 +201,9 @@ public class ObjectCopier
     /// </summary>
     /// <param name="value">The property value to be copied.</param>
     /// <param name="copyOptions">Copy options controlling the behavior. If null, default options are used.</param>
-    /// <param name="forceCopy">When true, forces a deep copy regardless of extent relationships or other copy options.</param>
+    /// <param name="copyType">When true, forces a deep copy regardless of extent relationships or other copy options.</param>
     /// <returns>The copied value, which may be a new instance, a reference, or the original value depending on type and options.</returns>
-    private object? CopyValue(object? value, CopyOption? copyOptions = null, bool forceCopy = false)
+    private object? CopyValue(object? value, CopyOption? copyOptions = null, CopyType copyType = CopyType.KeepReference)
     {
         Interlocked.Increment(ref _copyValueCallCount);
 
@@ -223,22 +223,20 @@ public class ObjectCopier
             {
                 var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
                 
-                // We will do a full copy, if required
-                var doCopy = forceCopy;
-                
                 // 1) The extent in which the property itself relies is null
-                doCopy |= propertyExtent == null;
+                if (copyType == CopyType.Undefined && propertyExtent == null) 
+                    copyType = CopyType.Clone;
                 
                 // 2) The value is copied within the same extent
-                if (!doCopy && propertyExtent == _sourceExtent && MofExtent.GlobalSlimUmlEvaluation)
-                {
-                    doCopy = true;
-                }
+                if (copyType == CopyType.Undefined 
+                    && propertyExtent == _sourceExtent && MofExtent.GlobalSlimUmlEvaluation) 
+                    copyType = CopyType.Clone;
 
                 // 3) If the flag CloneAllReference is set
-                doCopy |= copyOptions.CloneAllReferences;
+                if(copyOptions.CloneAllReferences)
+                    copyType = CopyType.Clone;
                 
-                return doCopy 
+                return copyType == CopyType.Clone 
                     ? Copy(valueAsElement, copyOptions) // It was decided to copy 
                     : value;
             }
@@ -246,7 +244,8 @@ public class ObjectCopier
                 return null;
             case IReflectiveCollection valueAsCollection:
                 return valueAsCollection
-                    .Select(innerValue => CopyValue(innerValue, copyOptions, forceCopy));
+                    .Select(innerValue => CopyValue(innerValue, copyOptions, 
+                        copyType));
             default:
                 return value;
         }

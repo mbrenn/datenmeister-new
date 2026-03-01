@@ -5,21 +5,6 @@ namespace DatenMeister.Core.Runtime.Copier;
 /// This static class offers convenient, pre-configured CopyOption instances that can be used
 /// with the ObjectCopier to control copying behavior.
 /// </summary>
-/// <remarks>
-/// CopyOptions provides factory methods for commonly used copy configurations. Each option
-/// can be customized further by modifying properties like PredicateToClone, CloneAllReferences,
-/// or NoRecursion after obtaining an instance.
-///
-/// The PredicateToClone property accepts a function that receives a CopyParameters struct,
-/// which provides context about the copying operation including:
-/// - SourceObject: The parent object containing the property
-/// - ObjectToBeCopied: The actual value being considered for copying
-/// - PropertyName: The name of the property being copied
-/// - TargetObject: The destination object receiving the copied value
-///
-/// The predicate function should return true to force a deep copy of the value,
-/// or false to follow the default copy behavior based on extent relationships.
-/// </remarks>
 /// <example>
 /// Basic usage:
 /// <code>

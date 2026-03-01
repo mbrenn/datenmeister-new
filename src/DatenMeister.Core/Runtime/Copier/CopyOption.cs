@@ -6,6 +6,37 @@ using DatenMeister.Core.Runtime.Workspaces;
 namespace DatenMeister.Core.Runtime.Copier;
 
 /// <summary>
+/// Defines the potential copy types which are returned by the CloneCallbackFucntion
+/// </summary>
+public enum CopyType
+{
+    /// <summary>
+    /// Stores the default value
+    /// </summary>
+    Undefined,
+    
+    /// <summary>
+    /// The item must be cloned. This means that a copy will be started.
+    /// All including attributes are queried again
+    /// </summary>
+    Clone,
+    
+    /// <summary>
+    /// The reference will be kept. This means that the copied attribute will
+    /// just reference on the old item. 
+    /// </summary>
+    KeepReference,
+    
+    /// <summary>
+    /// It will be assumed that the referenced attribute is cloned during the copying process
+    /// and that after everything has been cloned, the corresponding item will be
+    /// set as a reference to the cloned attribute. This ensures that no duplicate composition will be
+    /// executed
+    /// </summary>
+    FindClonedReference
+}
+
+/// <summary>
 /// Defines options that control the behavior of the object copying process.
 /// These options allow fine-grained control over ID handling, reference cloning,
 /// recursion depth, and custom copy predicates.
@@ -43,7 +74,7 @@ public class CopyOption
     /// Return true to force a deep copy, or false to follow the default copy behavior.
     /// Use GetPredicateForUmlCopying() to obtain a predicate optimized for UML model copying.
     /// </remarks>
-    public Predicate<CopyParameters>? PredicateToClone { get; set; }
+    public Func<CopyParameters, CopyType>? PredicateToClone { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether only primitive elements shall be copied
@@ -64,28 +95,6 @@ public class CopyOption
     /// A predicate function that can be assigned to PredicateToClone. This function receives
     /// CopyParameters and returns true to force a deep copy, or false to maintain a reference.
     /// </returns>
-    /// <remarks>
-    /// This predicate implements UML-aware copying logic that considers:
-    ///
-    /// 1. **Null extent handling**: Always copies if source or target extent is null,
-    ///    since elements without extents cannot be reliably referenced.
-    ///
-    /// 2. **Cross-extent copying**: If CopyAcrossExtents is enabled, copies when source
-    ///    and target extents differ.
-    ///
-    /// 3. **Temporary extent handling**: If CopyFromTemporaryExtent is enabled (default: true),
-    ///    copies objects from temporary extents to permanent extents.
-    ///
-    /// 4. **Cross-workspace copying**: If CopyAcrossWorkspaces is enabled (default: true),
-    ///    copies objects when source and target workspaces differ, avoiding problematic
-    ///    cross-workspace references.
-    ///
-    /// 5. **Composite relationships**: Always copies composite properties (UML composition),
-    ///    where the contained object is considered part of the container's lifecycle.
-    ///
-    /// The predicate evaluates these conditions in order and returns true for the first
-    /// matching condition. If no condition matches, it returns false (use reference).
-    /// </remarks>
     /// <example>
     /// <code>
     /// // Use with default parameters (copy across workspaces and from temporary extents)
@@ -107,7 +116,7 @@ public class CopyOption
     /// };
     /// </code>
     /// </example>
-    public static Predicate<CopyParameters> GetPredicateForUmlCopying(CopyPredicateParameter? copyPredicateParameter = null)
+    public static Func<CopyParameters, CopyType>? GetPredicateForUmlCopying(CopyPredicateParameter? copyPredicateParameter = null)
     {
         return parameters =>
         {
@@ -119,19 +128,19 @@ public class CopyOption
             // First, check, if the source or target extent is null. If that is the case, then
             // we will copy because we will never find the values again!
             if (sourceExtent == null || targetExtent == null)
-                return true;
+                return CopyType.Clone;
 
             if (copyPredicateParameter.CopyAcrossExtents)
             {
                 if (sourceExtent != targetExtent)
-                    return true;
+                    return CopyType.Clone;
             }
 
             if (copyPredicateParameter.CopyFromTemporaryExtent)
             {
                 if (sourceExtent.contextURI() == WorkspaceNames.UriTemporaryExtent
                     && targetExtent.contextURI() != WorkspaceNames.UriTemporaryExtent)
-                    return true;
+                    return CopyType.Clone;
             }
 
             if (copyPredicateParameter.CopyAcrossWorkspaces)
@@ -142,18 +151,18 @@ public class CopyOption
                 var targetWorkspace = (targetExtent as IHasWorkspace)?.Workspace;
 
                 if (sourceWorkspace != null && targetWorkspace != null && sourceWorkspace != targetWorkspace)
-                    return true;
+                    return CopyType.Clone;
             }
 
             // Ok, now we figure out, if we are a composite. If yes, then perform a copy
             if (parameters.SourceObject is not MofObject sourceObject)
             {
                 // In case we are not a MofObject, we fall back to not copy
-                return false;
+                return CopyType.KeepReference;
             }
 
             var attribute = sourceObject.GetClassModel()?.FindAttribute(parameters.PropertyName);
-            return attribute is { IsComposite: true };
+            return attribute.IsComposite ? CopyType.Clone : CopyType.KeepReference;
         };
     }
 }

@@ -41,8 +41,8 @@ public class DatenMeisterTests
         IntegrationSettings? integrationSettings = null)
     {
         TheLog.ClearProviders();
-        TheLog.AddProvider(new ConsoleProvider());
-        TheLog.AddProvider(new DebugProvider());
+        TheLog.AddProvider(new ConsoleProvider(), LogLevel.Trace);
+        TheLog.AddProvider(new DebugProvider(), LogLevel.Trace);
         TheLog.FilterThreshold = LogLevel.Trace;
 
         integrationSettings ??= GetIntegrationSettings(dropDatabase);

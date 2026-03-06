@@ -40,4 +40,13 @@ public class WorkspaceModel
     {
         return ClassModels.FirstOrDefault(x => x.Uri == uri);
     }
+
+    /// <summary>
+    /// Converts the workspacemodel to a string with WorkspaceModel as name
+    /// </summary>
+    /// <returns></returns>
+    public override string ToString()
+    {
+        return WorkspaceId;
+    }
 }

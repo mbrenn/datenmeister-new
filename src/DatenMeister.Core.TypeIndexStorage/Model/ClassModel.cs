@@ -79,4 +79,9 @@ public class ClassModel
 
         return Attributes.FirstOrDefault(x => x.Name == attribute);
     }
+
+    public override string ToString()
+    {
+        return Name;
+    }
 }

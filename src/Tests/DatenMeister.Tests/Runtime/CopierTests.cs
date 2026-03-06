@@ -1,11 +1,11 @@
 ﻿using Autofac;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Extent.Manager.ExtentStorage;
@@ -16,6 +16,7 @@ namespace DatenMeister.Tests.Runtime;
 [TestFixture]
 public class CopierTests
 {
+    private static readonly ILogger Logger = new ClassLogger(typeof(CopierTests));
     private static string property1 = "Prop1";
     private static string property2 = "Prop2";
 
@@ -30,6 +31,8 @@ public class CopierTests
         var mofObject2 = new MofFactory(mofExtent).create(null);
         mofObject2.set(property1, "65474");
         mofObject2.set(property2, "Bischofsheim");
+        
+        Logger.Info("Starting COPYING");
 
         var copier = new ObjectCopier(new MofFactory(mofExtent));
         var result1 = copier.Copy(mofObject);
@@ -55,6 +58,7 @@ public class CopierTests
         mofObject.set("Mayor", mofChild);
 
         var copier = new ObjectCopier(new MofFactory(mofExtent));
+        Logger.Info("Starting COPYING");
         var result1 = copier.Copy(mofObject);
 
         Assert.That(result1, Is.Not.Null);
@@ -136,6 +140,8 @@ public class CopierTests
         mofExtent!.elements().add(rowForm);
         
         // Copy it
+        ObjectCopier.FullDebug = true;
+        Logger.Info("Starting COPYING");
         var copiedElement = ObjectCopier.Copy(
             new MofFactory(mofExtent2!),
             rowForm,
@@ -145,10 +151,13 @@ public class CopierTests
                     CopyAcrossExtents = copyAcrossExtents
                 })
             });
+        Logger.Info("Ended COPYING");
+        
+        ObjectCopier.FullDebug = false;
         
         // Check that the new object is existing and of metaclass rowform
         Assert.That(copiedElement, Is.Not.Null);
-        Assert.That(copiedElement.getMetaClass(), Is.EqualTo(_Forms.TheOne.__RowForm));
+        Assert.That(copiedElement.getMetaClass()?.equals(_Forms.TheOne.__RowForm), Is.True);
         
         // Check that there are two fields and identify each for checking of names by metaclass
         var field = copiedElement.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
@@ -232,6 +241,9 @@ public class CopierTests
         mofExtent!.elements().add(mofObject);
         
         // Copy it
+        
+        ObjectCopier.FullDebug = true;
+        Logger.Info("Starting COPYING");
         var copiedElement = ObjectCopier.Copy(
             new MofFactory(mofExtent2!),
             mofObject,
@@ -241,6 +253,9 @@ public class CopierTests
                     CopyAcrossExtents = copyAcrossExtents
                 })
             });
+        ObjectCopier.FullDebug = false;
+        Logger.Info("Ended COPYING");
+
         
         // Depending on the copyAcross, different results could happen
         Assert.That(copiedElement, Is.Not.Null);
@@ -331,6 +346,9 @@ public class CopierTests
         
         // STEP 2
         // Ok, now we copy it and check if we have done a full copy
+        
+        ObjectCopier.FullDebug = true;
+        Logger.Info("Starting COPYING");
         var copiedElement = ObjectCopier.Copy(
             new MofFactory(mofOtherExtent!),
             mofObject1,
@@ -340,6 +358,9 @@ public class CopierTests
                         CopyAcrossExtents = true
                     })
             });
+        
+        ObjectCopier.FullDebug = false;
+        
         mofOtherExtent!.elements().add(copiedElement);
         
         // STEP 3

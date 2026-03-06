@@ -82,4 +82,9 @@ public class AttributeModel
             IsPrimitiveType = IsPrimitiveType
         };
     }
+
+    public override string ToString()
+    {
+        return Name;
+    }
 }

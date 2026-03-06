@@ -113,7 +113,7 @@ public class CopyOption
 
             var sourceObject = parameters.SourceObject as MofObject; 
             var attribute = sourceObject?.GetClassModel()?.FindAttribute(parameters.PropertyName);
-            var isComposite = attribute?.IsComposite == true;
+            var isComposite = attribute == null || attribute?.IsComposite == true;
             
             // First check, if the source or target extent is null. If that is the case, then
             // we will copy because we will never find the values again!

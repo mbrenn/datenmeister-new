@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
+﻿using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
@@ -15,6 +16,17 @@ namespace DatenMeister.Core.Runtime.Copier;
 /// </summary>
 public class ObjectCopier
 {
+    /// <summary>
+    /// Defines the logger
+    /// </summary>
+    private static ILogger Logger = new ClassLogger(typeof(ObjectCopier));
+
+    /// <summary>
+    /// Stores a flag which activates the full debugging of each copying by adding information
+    /// via the classlogger. This helps to figure out issues in the debugging
+    /// </summary>
+    public static bool FullDebug { get; set; } = false;
+
     /// <summary>
     /// Defines the maximum recursion depth that is accepted by the object copier.
     /// This prevents infinite recursion in case of circular references.
@@ -65,6 +77,24 @@ public class ObjectCopier
     private IExtent? _sourceExtent;
 
     /// <summary>
+    /// Gets or sets a flag indicating, that the copying is active
+    /// This is set by the PreCopyActions and reset by the PostCopyActions
+    /// In case a copying is started while it is already active, an exception is being thrown
+    /// </summary>
+    private bool _isActive;
+
+    /// <summary>
+    /// Stores a dictionary of cloned items. The key is the old uri of the element.
+    /// The value is the cloned element. 
+    /// </summary>
+    private readonly Dictionary<string, IElement> _cloneDictionary = new();
+
+    /// <summary>
+    /// These actions are performed after the full copy has been done
+    /// </summary>
+    private readonly List<Action> _postCopyActions = new();
+
+    /// <summary>
     /// Initializes a new instance of the ObjectCopier class.
     /// </summary>
     /// <param name="factory">The factory used to create new MOF elements during copying.</param>
@@ -85,6 +115,16 @@ public class ObjectCopier
     /// <exception cref="InvalidOperationException">Thrown when the element has no associated extent.</exception>
     public IElement Copy(IObject element, CopyOption? copyOptions = null)
     {
+        ExecutePreCopyActions();
+        
+        var targetElement = InternalCopy(element, copyOptions);
+
+        ExecutePostCopyActions();
+        return targetElement;
+    }
+
+    private IElement InternalCopy(IObject element, CopyOption? copyOptions)
+    {
         copyOptions ??= CopyOptions.None;
 
         // Gets the source extent
@@ -104,8 +144,7 @@ public class ObjectCopier
             targetElement = _factory.create((element as IElement)?.getMetaClass());
         }
 
-        CopyProperties(element, targetElement, copyOptions);
-
+        InternalCopyProperties(element, targetElement, copyOptions);
         return targetElement;
     }
 
@@ -117,7 +156,36 @@ public class ObjectCopier
     /// <param name="copyOptions">The options for copying. In case of null, the default is used</param>
     public void CopyProperties(IObject sourceElement, IObject targetElement, CopyOption? copyOptions = null)
     {
+        ExecutePreCopyActions();
         InternalCopyProperties(sourceElement, targetElement, copyOptions);
+        ExecutePostCopyActions();
+    }
+
+    /// <summary>
+    /// Executes all necessary actions that have to be done before the
+    /// copying is started
+    /// </summary>
+    private void ExecutePreCopyActions()
+    {
+        if (_isActive)
+            throw new InvalidOperationException("Copying is requested while another copying is active");
+
+        _isActive = true;
+        _cloneDictionary.Clear();
+    }
+
+    /// <summary>
+    /// Executes all post-copy actions that have been queued during the copy process.
+    /// </summary>
+    private void ExecutePostCopyActions()
+    {
+        foreach (var action in _postCopyActions)
+        {
+            action();
+        }
+
+        _postCopyActions.Clear();
+        _isActive = false;
     }
     
     /// <summary>
@@ -187,11 +255,74 @@ public class ObjectCopier
                 forceCopy = copyOptions.PredicateToClone(parameters);
             }
             
-            var result = CopyValue(value, copyOptions, forceCopy);
-            targetElement.set(property, result);
+            var result = InternalCopyValue(value, copyOptions, forceCopy);
+            if (result.CopyType == CopyType.KeepReference)
+            {
+                _postCopyActions.Add(() =>
+                {
+                    if (result.IndirectResult == null)
+                    {
+                        throw new InvalidOperationException("IndirectResult is null");
+                    }
+                    
+                    targetElement.set(property, result.IndirectResult());
+                });
+            }
+            else
+            {
+                targetElement.set(property, result.DirectResult);
+            }
         }
 
         _currentDepth--;
+    }
+
+    /// <summary>
+    /// Defines the structure that is used to return information of the copying
+    /// </summary>
+    public struct CopyResult
+    {
+        /// <summary>
+        /// Defines the type of the copy that had been executed
+        /// </summary>
+        public CopyType CopyType;
+
+        /// <summary>
+        /// Returns the direct result in case there is no CopyType.FindClonedReference returned
+        /// </summary>
+        public object? DirectResult;
+
+        /// <summary>
+        /// Returns the indirect result in case there is a CopyType.FindClonedReference returned
+        /// </summary>
+        public Func<object?>? IndirectResult;
+
+        public static CopyResult CreateResultForInstance(object? result)
+        {
+            return new CopyResult
+            {
+                CopyType = CopyType.Clone,
+                DirectResult = result
+            };
+        }
+        
+        public static CopyResult CreateResultForReference(object? reference)
+        {
+            return new CopyResult
+            {
+                CopyType = CopyType.FindClonedReference,
+                DirectResult = reference
+            };
+        }
+
+        public static CopyResult CreateResultForKeepReference(Func<object?> reference)
+        {
+            return new CopyResult
+            {
+                CopyType = CopyType.KeepReference,
+                IndirectResult = reference
+            };
+        }
     }
 
     /// <summary>
@@ -203,7 +334,7 @@ public class ObjectCopier
     /// <param name="copyOptions">Copy options controlling the behavior. If null, default options are used.</param>
     /// <param name="copyType">When true, forces a deep copy regardless of extent relationships or other copy options.</param>
     /// <returns>The copied value, which may be a new instance, a reference, or the original value depending on type and options.</returns>
-    private object? CopyValue(object? value, CopyOption? copyOptions = null, CopyType copyType = CopyType.KeepReference)
+    private CopyResult InternalCopyValue(object? value, CopyOption? copyOptions, CopyType copyType)
     {
         Interlocked.Increment(ref _copyValueCallCount);
 
@@ -214,10 +345,10 @@ public class ObjectCopier
         {
             case null:
             case IElement _ when noRecursion:
-                return null;
+                return CopyResult.CreateResultForInstance(null);
 
             case MofObjectShadow asMofObjectShadow:
-                return asMofObjectShadow;
+                return CopyResult.CreateResultForInstance(asMofObjectShadow);
 
             case IElement valueAsElement:
             {
@@ -236,30 +367,74 @@ public class ObjectCopier
                 if (copyOptions.CloneAllReferences)
                     copyType = CopyType.Clone;
 
+                if (FullDebug)
+                {
+                    Logger.Trace($"{value?.ToString() ?? "Unknown"} copied via {copyType}");
+                }
+
                 switch (copyType)
                 {
                     case CopyType.Undefined:
                         throw new InvalidOperationException
                             ("Copy type is undefined, but should be defined by now");
                     case CopyType.Clone:
-                        return Copy(valueAsElement, copyOptions);
+                        var result = InternalCopy(valueAsElement, copyOptions);
+                        var uri = valueAsElement.GetUri();
+                        if (!string.IsNullOrEmpty(uri))
+                        {
+                            _cloneDictionary[uri] = result;
+                        }
+
+                        return CopyResult.CreateResultForInstance(result);
                     case CopyType.KeepReference:
-                        return value;
+                        return CopyResult.CreateResultForReference(value);
                     case CopyType.FindClonedReference:
-                        break;
+                        var referenceUri = valueAsElement.GetUri();
+                        if (!string.IsNullOrEmpty(referenceUri))
+                        {
+                            return CopyResult.CreateResultForKeepReference(() =>
+                            {
+                                if (_cloneDictionary.TryGetValue(referenceUri, out var reference))
+                                {
+                                    if (FullDebug)
+                                        Logger.Trace($"PostCopyAction: Adding reference for: ${referenceUri}");
+                                    return reference;
+                                }
+                                else
+                                {
+                                    if (FullDebug)
+                                        Logger.Trace($"PostCopyAction: Did not find: ${referenceUri}");
+
+                                    return null;
+                                }
+                            });
+                        }
+                        
+                        return CopyResult.CreateResultForInstance(value);
                 }
 
                 throw new ArgumentOutOfRangeException(nameof(copyType), copyType, null);
 
             }
             case IReflectiveCollection _ when noRecursion:
-                return null;
+                return CopyResult.CreateResultForInstance(value);
             case IReflectiveCollection valueAsCollection:
-                return valueAsCollection
-                    .Select(innerValue => CopyValue(innerValue, copyOptions, 
-                        copyType));
+                var copyTypeCopy = copyType;
+                return CopyResult.CreateResultForInstance(
+                    valueAsCollection.Select(innerValue =>
+                    {
+                        var result = InternalCopyValue(innerValue, copyOptions, copyTypeCopy);
+                        if (result.CopyType == CopyType.KeepReference)
+                        {
+                            return null;
+                        }
+                        else
+                        {
+                            return result.DirectResult;
+                        }
+                    }));
             default:
-                return value;
+                return CopyResult.CreateResultForInstance(value);
         }
     }
 

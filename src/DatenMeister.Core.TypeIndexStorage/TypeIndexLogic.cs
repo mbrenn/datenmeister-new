@@ -20,6 +20,12 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     private static readonly ILogger Logger = new ClassLogger(typeof(TypeIndexLogic));
 
     /// <summary>
+    /// Stores a flag which activates the full debugging of lock operations by adding information
+    /// via the classlogger. This helps to figure out issues in the debugging
+    /// </summary>
+    public static bool FullDebug { get; set; } = false;
+
+    /// <summary>
     /// Stores the scope storage
     /// </summary>
     private IScopeStorage ScopeStorage { get; set; } 
@@ -81,13 +87,15 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
             if (!TypeIndexStore.IndexIsUpToDateEvent.WaitOne(0))
             {
                 Logger.Info("We received a trigger, but the index is already being built.");
-                
-                // We reset the event, so we are sure 
+
+                // We reset the event, so we are sure
+                if (FullDebug) Logger.Info("Resetting IndexIsUpToDateEvent (trigger during build)");
                 TypeIndexStore.IndexIsUpToDateEvent.Reset();
                 TypeIndexStore.TriggerOccuredDuringIndexing = true;
                 return;
             }
             // First, mark that we are updating the index
+            if (FullDebug) Logger.Info("Resetting IndexIsUpToDateEvent (starting index update)");
             TypeIndexStore.IndexIsUpToDateEvent.Reset();
         }
         
@@ -111,6 +119,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                     continue;
                 }
 
+                if (FullDebug) Logger.Info("Setting IndexIsUpToDateEvent (first run completed)");
                 TypeIndexStore.IndexIsUpToDateEvent.Set();
 
                 break;
@@ -167,6 +176,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
                 }
 
                 // Only, if everything is done, we set the indexing
+                if (FullDebug) Logger.Info("Setting IndexIsUpToDateEvent (async indexing completed)");
                 TypeIndexStore.IndexIsUpToDateEvent.Set();
             }, token);
 
@@ -209,8 +219,9 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
     public void StopListening()
     {
         _cancellationTokenSource.Cancel();
-        
+
         // We also reset the information that the index is being built since it might be out of date
+        if (FullDebug) Logger.Info("Resetting IndexIsUpToDateEvent (stopping listener)");
         TypeIndexStore.IndexIsUpToDateEvent.Reset();
     }
 
@@ -577,6 +588,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic)
         {
             storage.Current = storage.Next;
             storage.Next = null;
+            if (FullDebug) Logger.Info("Setting IndexFirstBuiltEvent (index first time built)");
             storage.IndexFirstBuiltEvent.Set();
         }
     }

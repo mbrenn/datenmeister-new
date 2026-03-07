@@ -538,7 +538,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     {
         // Performs the cloning
         form = ObjectCopier.Copy(
-            new MofFactory(form), form, new CopyOption());
+            new MofFactory(form), form, CopyOptions.None);
 
         // Sets the original ori and workspace, so the client can reference to the original uri
         var originalUrl =

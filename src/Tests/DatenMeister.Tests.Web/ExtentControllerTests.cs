@@ -155,13 +155,13 @@ public class ExtentControllerTests
     public async Task TestExportXmiOfManagement()
     {
         var dm = await DatenMeisterTests.GetDatenMeisterScope();
-            
+
         var extentController = new ExtentController(dm.WorkspaceLogic, dm.ScopeStorage);
         var result = extentController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces");
-            
-        Assert.That(result.Value!.Xmi.Contains("dm:///_internal/temp"), Is.True);
+
+        Assert.That(result.Value!.Xmi.Contains(WorkspaceNames.UriTemporaryExtent), Is.True);
     }
-        
+
 
     [Test]
     public async Task TestImportXmi()

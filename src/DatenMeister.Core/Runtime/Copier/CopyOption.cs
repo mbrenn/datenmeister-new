@@ -51,14 +51,6 @@ public class CopyOption
     public bool CopyId { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether all references shall be cloned,
-    /// preventing the creation of URI references to external extents.
-    /// When true, all referenced objects are copied rather than referenced.
-    /// Default is false.
-    /// </summary>
-    public bool CloneAllReferences { get; set; }
-
-    /// <summary>
     /// Gets or sets the predicate function that determines whether a given object should be cloned
     /// during the copy process. The predicate is evaluated based on specific parameters such as the
     /// source object, property name, and target object. When this predicate returns true,
@@ -123,14 +115,18 @@ public class CopyOption
             if (copyPredicateParameter.CopyAcrossExtents)
             {
                 if (sourceExtent != targetExtent)
+                {
                     return isComposite ? CopyType.Clone : CopyType.FindClonedReference;
+                }
             }
 
             if (copyPredicateParameter.CopyFromTemporaryExtent)
             {
                 if (sourceExtent.contextURI() == WorkspaceNames.UriTemporaryExtent
                     && targetExtent.contextURI() != WorkspaceNames.UriTemporaryExtent)
+                {
                     return isComposite ? CopyType.Clone : CopyType.FindClonedReference;
+                }
             }
 
             if (copyPredicateParameter.CopyAcrossWorkspaces)
@@ -141,8 +137,9 @@ public class CopyOption
                 var targetWorkspace = (targetExtent as IHasWorkspace)?.Workspace;
 
                 if (sourceWorkspace != null && targetWorkspace != null && sourceWorkspace != targetWorkspace)
-                    
+                {
                     return isComposite ? CopyType.Clone : CopyType.FindClonedReference;
+                }
             }
 
             // Ok, now we figure out, if we are a composite. If yes, then perform a copy

@@ -43,7 +43,7 @@ public static class ObjectOperations
     /// <returns>The copied element</returns>
     public static IElement CopyObject(IObject value, IObject targetContainer)
     {
-        var options = new CopyOption { CloneAllReferences = false };
+        var options = CopyOptions.None;
         var copied = ObjectCopier.Copy(new MofFactory(targetContainer), value, options);
         DefaultClassifierHints.AddToExtentOrElement(targetContainer, copied);
         return copied;

@@ -2,7 +2,6 @@ using BurnSystems.Logging;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.Fields;
@@ -12,10 +11,8 @@ using DatenMeister.Forms.RowForm;
 
 namespace DatenMeister.Forms.ObjectForm;
 
-public class ObjectFormFromData(IWorkspaceLogic workspaceLogic) : FormFactoryBase, IObjectFormFactory
+public class ObjectFormFromData : FormFactoryBase, IObjectFormFactory
 {
-    private static readonly ILogger Logger = new ClassLogger(typeof(ObjectFormFromData));
-
     /// <summary>
     /// Creates an object form for one specific item.
     /// The values and metaclass of the item are evaluated to create the form.  

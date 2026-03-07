@@ -1,4 +1,5 @@
-﻿using BurnSystems.Logging;
+﻿using System.Diagnostics;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
@@ -240,7 +241,7 @@ public class ObjectCopier
                 continue;
             }
             
-            var value = sourceElement.get<object>(property);
+            var value = sourceElement.get<object>(property, true);
             
             var forceCopy = CopyType.Undefined;
             if (copyOptions.PredicateToClone != null)
@@ -309,17 +310,14 @@ public class ObjectCopier
             {
                 var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
 
-                // 1) The extent in which the property itself relies is null
+                // 1) The extent in which the property itself relies is not existing
                 if (copyType == CopyType.Undefined && propertyExtent == null)
                     copyType = CopyType.Clone;
 
                 // 2) The value is copied within the same extent
                 if (copyType == CopyType.Undefined
-                    && propertyExtent == _sourceExtent && MofExtent.GlobalSlimUmlEvaluation)
-                    copyType = CopyType.Clone;
-
-                // 3) If the flag CloneAllReference is set
-                if (copyOptions.CloneAllReferences)
+                    && propertyExtent == _sourceExtent 
+                    && MofExtent.GlobalSlimUmlEvaluation)
                     copyType = CopyType.Clone;
 
                 if (FullDebug)
@@ -368,7 +366,6 @@ public class ObjectCopier
                 }
 
                 throw new ArgumentOutOfRangeException(nameof(copyType), copyType, null);
-
             }
             case IReflectiveCollection _ when noRecursion:
                 return CopyResult.CreateResultForInstance(value);

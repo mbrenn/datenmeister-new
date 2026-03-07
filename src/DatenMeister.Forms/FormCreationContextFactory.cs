@@ -67,7 +67,7 @@ public class FormCreationContextFactory(IWorkspaceLogic workspaceLogic, IScopeSt
 
         context.Global.ObjectFormFactories.Add(new ObjectFormFromMetaClass(workspaceLogic)
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
-        context.Global.ObjectFormFactories.Add(new ObjectFormFromData(workspaceLogic)
+        context.Global.ObjectFormFactories.Add(new ObjectFormFromData()
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.ObjectFormFactories.Add(new AddTableFormForPackagedElements());
         context.Global.ObjectFormFactories.Add(new ValidateObjectOrCollectionForm

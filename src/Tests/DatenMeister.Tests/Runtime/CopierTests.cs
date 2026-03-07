@@ -234,16 +234,14 @@ public class CopierTests
 
         var factory = new MofFactory(mofExtent!);
         var mofObject = factory.create(_DataViews.TheOne.__QueryStatement);
+        mofExtent!.elements().add(mofObject);
         var mofResultNode = factory.create(_DataViews.TheOne.Source.__SelectFromAllWorkspacesNode);
         mofResultNode.set(_DataViews._Source._SelectByWorkspaceNode.name, "AllFromWorkspace");
         
         mofObject.set(_DataViews._QueryStatement.nodes, new List<object> {mofResultNode});
         mofObject.set(_DataViews._QueryStatement.resultNode, mofResultNode);
         
-        mofExtent!.elements().add(mofObject);
-        
         // Copy it
-        
         ObjectCopier.FullDebug = true;
         Logger.Info("Starting COPYING");
         var copiedElement = ObjectCopier.Copy(
@@ -256,6 +254,7 @@ public class CopierTests
                 })
             });
         ObjectCopier.FullDebug = false;
+        mofExtent2!.elements().add(copiedElement);
         Logger.Info("Ended COPYING");
 
         

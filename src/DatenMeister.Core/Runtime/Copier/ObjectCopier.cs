@@ -240,7 +240,7 @@ public class ObjectCopier
                 continue;
             }
             
-            var value = sourceElement.get<object>(property, !copyOptions.CloneAllReferences);
+            var value = sourceElement.get<object>(property);
             
             var forceCopy = CopyType.Undefined;
             if (copyOptions.PredicateToClone != null)

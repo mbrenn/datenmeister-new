@@ -260,6 +260,7 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         var attributeModel = GetClassModel()?.FindAttribute(property);
         
         // Checks if the value is a default value. If yes, it can be removed...
+        // TODO: Remove this statement since it violates 
         if (MofHelper.IsDefaultValueOfAttributeType(this, property, value))
         {
             ProviderObject.DeleteProperty(property);

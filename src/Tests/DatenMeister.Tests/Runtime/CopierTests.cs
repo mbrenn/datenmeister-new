@@ -360,6 +360,7 @@ public class CopierTests
             });
         
         ObjectCopier.FullDebug = false;
+        Logger.Info("Ended COPYING");
         
         mofOtherExtent!.elements().add(copiedElement);
         

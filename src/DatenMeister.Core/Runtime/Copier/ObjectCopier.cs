@@ -5,6 +5,8 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.InMemory;
 
 namespace DatenMeister.Core.Runtime.Copier;
@@ -256,7 +258,7 @@ public class ObjectCopier
             }
             
             var result = InternalCopyValue(value, copyOptions, forceCopy);
-            if (result.CopyType == CopyType.KeepReference)
+            if (result.CopyType == CopyType.FindClonedReference)
             {
                 _postCopyActions.Add(() =>
                 {
@@ -275,54 +277,6 @@ public class ObjectCopier
         }
 
         _currentDepth--;
-    }
-
-    /// <summary>
-    /// Defines the structure that is used to return information of the copying
-    /// </summary>
-    public struct CopyResult
-    {
-        /// <summary>
-        /// Defines the type of the copy that had been executed
-        /// </summary>
-        public CopyType CopyType;
-
-        /// <summary>
-        /// Returns the direct result in case there is no CopyType.FindClonedReference returned
-        /// </summary>
-        public object? DirectResult;
-
-        /// <summary>
-        /// Returns the indirect result in case there is a CopyType.FindClonedReference returned
-        /// </summary>
-        public Func<object?>? IndirectResult;
-
-        public static CopyResult CreateResultForInstance(object? result)
-        {
-            return new CopyResult
-            {
-                CopyType = CopyType.Clone,
-                DirectResult = result
-            };
-        }
-        
-        public static CopyResult CreateResultForReference(object? reference)
-        {
-            return new CopyResult
-            {
-                CopyType = CopyType.FindClonedReference,
-                DirectResult = reference
-            };
-        }
-
-        public static CopyResult CreateResultForKeepReference(Func<object?> reference)
-        {
-            return new CopyResult
-            {
-                CopyType = CopyType.KeepReference,
-                IndirectResult = reference
-            };
-        }
     }
 
     /// <summary>
@@ -392,7 +346,7 @@ public class ObjectCopier
                         var referenceUri = valueAsElement.GetUri();
                         if (!string.IsNullOrEmpty(referenceUri))
                         {
-                            return CopyResult.CreateResultForKeepReference(() =>
+                            return CopyResult.CreateResultForToFindClonedReference(() =>
                             {
                                 if (_cloneDictionary.TryGetValue(referenceUri, out var reference))
                                 {
@@ -404,7 +358,6 @@ public class ObjectCopier
                                 {
                                     if (FullDebug)
                                         Logger.Trace($"PostCopyAction: Did not find: ${referenceUri}");
-
                                     return null;
                                 }
                             });
@@ -419,20 +372,76 @@ public class ObjectCopier
             case IReflectiveCollection _ when noRecursion:
                 return CopyResult.CreateResultForInstance(value);
             case IReflectiveCollection valueAsCollection:
-                var copyTypeCopy = copyType;
-                return CopyResult.CreateResultForInstance(
-                    valueAsCollection.Select(innerValue =>
+                if (copyType == CopyType.FindClonedReference)
+                {
+                    var uris = 
+                        valueAsCollection.Select(innerValue =>
+                        {
+                            if (innerValue is IObject asObject)
+                            {
+                                var uri = asObject.GetUri();
+                                return string.IsNullOrEmpty(uri)? null : new UriReference(uri);
+                            }
+
+                            return innerValue;
+
+                        }).ToList();
+                    
+                    return CopyResult.CreateResultForToFindClonedReference(() =>
                     {
-                        var result = InternalCopyValue(innerValue, copyOptions, copyTypeCopy);
-                        if (result.CopyType == CopyType.KeepReference)
+                        var listResult = new List<object?>();
+                        foreach (var innerValue in uris)
                         {
-                            return null;
+                            if (innerValue is UriReference uriReference)
+                            {
+                                var referenceUri = uriReference.Uri;
+                                if (string.IsNullOrEmpty(referenceUri))
+                                {
+                                    if (FullDebug)
+                                        Logger.Trace($"PostCopyAction: Having a null");
+                                    listResult.Add(null);
+                                }
+                                else if (_cloneDictionary.TryGetValue(referenceUri, out var reference))
+                                {
+                                    if (FullDebug)
+                                        Logger.Trace($"PostCopyAction: Adding reference for: ${referenceUri}");
+                                    listResult.Add(reference);
+                                }
+                                else
+                                {
+                                    if (FullDebug)
+                                        Logger.Trace($"PostCopyAction: Did not find: ${referenceUri}");
+                                    return null;
+                                }
+                            }
+                            else
+                            {
+                                Logger.Trace($"PostCopyAction: Adding value: ${innerValue}");
+                                listResult.Add(innerValue);
+                            }
                         }
-                        else
+
+                        return listResult;
+
+                    });
+                }
+                else
+                {
+                    var listResult = valueAsCollection.Select(innerValue =>
+                    {
+                        var innerResult = InternalCopyValue(innerValue, copyOptions, copyType);
+                        if (innerResult.CopyType != CopyType.Clone && innerResult.CopyType != CopyType.KeepReference)
                         {
-                            return result.DirectResult;
+                            throw new InvalidOperationException("Something obscure happened");
                         }
-                    }));
+
+                        return innerResult.DirectResult;
+                    }).ToList();
+
+                    return CopyResult.CreateResultForInstance(listResult);
+
+                }
+
             default:
                 return CopyResult.CreateResultForInstance(value);
         }

@@ -33,7 +33,7 @@ public struct CopyResult
     {
         return new CopyResult
         {
-            CopyType = CopyType.FindClonedReference,
+            CopyType = CopyType.KeepReference,
             DirectResult = reference
         };
     }

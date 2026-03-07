@@ -236,6 +236,8 @@ public class CopierTests
         var mofObject = factory.create(_DataViews.TheOne.__QueryStatement);
         var mofResultNode = factory.create(_DataViews.TheOne.Source.__SelectFromAllWorkspacesNode);
         mofResultNode.set(_DataViews._Source._SelectByWorkspaceNode.name, "AllFromWorkspace");
+        
+        mofObject.set(_DataViews._QueryStatement.nodes, new List<object> {mofResultNode});
         mofObject.set(_DataViews._QueryStatement.resultNode, mofResultNode);
         
         mofExtent!.elements().add(mofObject);

@@ -260,14 +260,15 @@ public class ObjectCopier
             var result = InternalCopyValue(value, copyOptions, forceCopy);
             if (result.CopyType == CopyType.FindClonedReference)
             {
+                var indirectResult = result.IndirectResult;
+                if (indirectResult == null)
+                {
+                    throw new InvalidOperationException("IndirectResult is null");
+                }
+                
                 _postCopyActions.Add(() =>
                 {
-                    if (result.IndirectResult == null)
-                    {
-                        throw new InvalidOperationException("IndirectResult is null");
-                    }
-                    
-                    targetElement.set(property, result.IndirectResult());
+                    targetElement.set(property, indirectResult());
                 });
             }
             else

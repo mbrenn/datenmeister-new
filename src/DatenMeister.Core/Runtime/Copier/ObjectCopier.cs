@@ -240,9 +240,8 @@ public class ObjectCopier
                 // Element is not set or has its default value,so skip it. 
                 continue;
             }
-            
+
             var value = sourceElement.get<object>(property, true);
-            
             var forceCopy = CopyType.Undefined;
             if (copyOptions.PredicateToClone != null)
             {
@@ -256,6 +255,11 @@ public class ObjectCopier
 
                 Interlocked.Increment(ref _predicateInvocationCount);
                 forceCopy = copyOptions.PredicateToClone(parameters);
+
+                if (value is UriReference && forceCopy == CopyType.Clone)
+                {
+                    value = sourceElement.get<object>(property);
+                }
             }
             
             var result = InternalCopyValue(value, copyOptions, forceCopy);
@@ -305,6 +309,43 @@ public class ObjectCopier
 
             case MofObjectShadow asMofObjectShadow:
                 return CopyResult.CreateResultForInstance(asMofObjectShadow);
+            case UriReference uriReference:
+                switch (copyType)
+                {
+                    case CopyType.Undefined:
+                        throw new InvalidOperationException
+                            ("Copy type is undefined, but should be defined by now");
+                    case CopyType.Clone:
+                        throw new InvalidOperationException("UriReference cannot be cloned (at least now)");
+                    case CopyType.KeepReference:
+                        return CopyResult.CreateResultForReference(value);
+                    case CopyType.FindClonedReference:
+                        var referenceUri = uriReference.Uri;
+                        if (!string.IsNullOrEmpty(referenceUri))
+                        {
+                            return CopyResult.CreateResultForToFindClonedReference(() =>
+                            {
+                                if (_cloneDictionary.TryGetValue(referenceUri, out var reference))
+                                {
+                                    if (FullDebug)
+                                        Logger.Trace($"PostCopyAction: Adding reference for: ${referenceUri}");
+                                    return reference;
+                                }
+                                else
+                                {
+                                    if (FullDebug)
+                                        Logger.Trace($"PostCopyAction: Did not find: ${referenceUri}");
+                                    return null;
+                                }
+                            });
+                        }
+                        
+                        return CopyResult.CreateResultForInstance(value);
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(copyType), copyType, null);
+                }
+
+                break;
 
             case IElement valueAsElement:
             {

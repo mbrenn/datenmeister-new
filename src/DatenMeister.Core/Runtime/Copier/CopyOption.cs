@@ -1,6 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Provider;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.Runtime.Copier;
@@ -105,7 +106,13 @@ public class CopyOption
 
             var sourceObject = parameters.SourceObject as MofObject; 
             var attribute = sourceObject?.GetClassModel()?.FindAttribute(parameters.PropertyName);
+            if (attribute == null && parameters.ObjectToBeCopied is UriReference)
+            {
+                return CopyType.KeepReference;
+            }
+            
             var isComposite = attribute == null || attribute?.IsComposite == true;
+            
             
             // First check, if the source or target extent is null. If that is the case, then
             // we will copy because we will never find the values again!

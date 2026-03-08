@@ -24,7 +24,7 @@ public class DataViewPlugin(
     /// <summary>
     /// Stores the logger
     /// </summary>
-    private ILogger logger = new ClassLogger(typeof(DataViewPlugin));
+    private static readonly ILogger Logger = new ClassLogger(typeof(DataViewPlugin));
 
     /// <summary>
     /// Starts the plugin

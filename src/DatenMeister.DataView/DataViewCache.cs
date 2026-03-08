@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.Interfaces.MOF.Reflection;
+﻿using BurnSystems.Logging;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
 namespace DatenMeister.DataView;
 
@@ -7,6 +8,10 @@ namespace DatenMeister.DataView;
 /// </summary>
 public class DataViewCache
 {
+    /// <summary>
+    /// Stores the logger
+    /// </summary>
+    private static readonly ILogger Logger = new ClassLogger(typeof(DataViewCache));
     /// <summary>
     /// Gets or sets a value indicating whether the cache is dirty and needs to be rebuilt
     /// </summary>
@@ -22,6 +27,11 @@ public class DataViewCache
     /// </summary>
     public void MarkAsDirty()
     {
+        if (!IsDirty)
+        {
+            Logger.Info("Management workspace marked as dirty");
+        }
+        
         IsDirty = true;
     }
 }

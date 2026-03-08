@@ -261,8 +261,11 @@ public class ObjectCopier
                     value = sourceElement.get<object>(property);
                 }
             }
-            
-            var result = InternalCopyValue(value, copyOptions, forceCopy);
+
+            var result = InternalCopyValue(value, copyOptions, forceCopy,
+                FullDebug
+                    ? ((sourceElement as IElement)?.getMetaClass()?.ToString() ?? "Unknown") + "." + property
+                    : "");
             if (result.CopyType == CopyType.FindClonedReference)
             {
                 var indirectResult = result.IndirectResult;
@@ -270,11 +273,8 @@ public class ObjectCopier
                 {
                     throw new InvalidOperationException("IndirectResult is null");
                 }
-                
-                _postCopyActions.Add(() =>
-                {
-                    targetElement.set(property, indirectResult());
-                });
+
+                _postCopyActions.Add(() => { targetElement.set(property, indirectResult()); });
             }
             else
             {
@@ -286,6 +286,27 @@ public class ObjectCopier
     }
 
     /// <summary>
+    /// Logs a trace message for CopyType operations when FullDebug is enabled.
+    /// The message is indented based on the current recursion depth and formatted with fixed column widths.
+    /// </summary>
+    /// <param name="copyType">The type of copy operation being performed.</param>
+    /// <param name="value">The value being copied.</param>
+    /// <param name="typeLabel">Optional label to identify the type of value (e.g., "UriReference", "IElement").</param>
+    /// <param name="propertyName">Optional property name being copied.</param>
+    private void TraceCopyType(CopyType copyType, object? value, string? typeLabel = null, string? propertyName = null)
+    {
+        if (!FullDebug) return;
+
+        var indent = new string(' ', _currentDepth * 2);
+        var copyTypeStr = copyType.ToString().Length > 10 ? copyType.ToString()[..10] : copyType.ToString().PadRight(10);
+        var typeStr = (typeLabel ?? "").Length > 10 ? (typeLabel ?? "")[..10] : (typeLabel ?? "").PadRight(10);
+        var propStr = (propertyName ?? "").Length > 30 ? (propertyName ?? "")[..30] : (propertyName ?? "").PadRight(30);
+        var valueStr = value?.ToString() ?? "null";
+
+        Logger.Trace($"{copyTypeStr}|{typeStr}|{propStr}:{indent}{valueStr}");
+    }
+
+    /// <summary>
     /// Copies a single property value, determining whether to create a deep copy,
     /// maintain a reference, or return the value as-is based on its type and copy options.
     /// This method handles different value types including null, elements, collections, and primitives.
@@ -293,8 +314,9 @@ public class ObjectCopier
     /// <param name="value">The property value to be copied.</param>
     /// <param name="copyOptions">Copy options controlling the behavior. If null, default options are used.</param>
     /// <param name="copyType">When true, forces a deep copy regardless of extent relationships or other copy options.</param>
+    /// <param name="propertyName">Optional name of the property being copied, used for tracing.</param>
     /// <returns>The copied value, which may be a new instance, a reference, or the original value depending on type and options.</returns>
-    private CopyResult InternalCopyValue(object? value, CopyOption? copyOptions, CopyType copyType)
+    private CopyResult InternalCopyValue(object? value, CopyOption? copyOptions, CopyType copyType, string? propertyName = null)
     {
         Interlocked.Increment(ref _copyValueCallCount);
 
@@ -310,11 +332,11 @@ public class ObjectCopier
             case MofObjectShadow asMofObjectShadow:
                 return CopyResult.CreateResultForInstance(asMofObjectShadow);
             case UriReference uriReference:
+                TraceCopyType(copyType, value, "UriRef", propertyName);
                 switch (copyType)
                 {
                     case CopyType.Undefined:
-                        throw new InvalidOperationException
-                            ("Copy type is undefined, but should be defined by now");
+                        throw new InvalidOperationException("Copy type is undefined, but should be defined by now");
                     case CopyType.Clone:
                         throw new InvalidOperationException("UriReference cannot be cloned (at least now)");
                     case CopyType.KeepReference:
@@ -345,8 +367,6 @@ public class ObjectCopier
                         throw new ArgumentOutOfRangeException(nameof(copyType), copyType, null);
                 }
 
-                break;
-
             case IElement valueAsElement:
             {
                 var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
@@ -357,20 +377,16 @@ public class ObjectCopier
 
                 // 2) The value is copied within the same extent
                 if (copyType == CopyType.Undefined
-                    && propertyExtent == _sourceExtent 
+                    && propertyExtent == _sourceExtent
                     && MofExtent.GlobalSlimUmlEvaluation)
                     copyType = CopyType.Clone;
 
-                if (FullDebug)
-                {
-                    Logger.Trace($"{value?.ToString() ?? "Unknown"} copied via {copyType}");
-                }
+                TraceCopyType(copyType, value, "IElement", propertyName);
 
                 switch (copyType)
                 {
                     case CopyType.Undefined:
-                        throw new InvalidOperationException
-                            ("Copy type is undefined, but should be defined by now");
+                        throw new InvalidOperationException("Copy type is undefined, but should be defined by now");
                     case CopyType.Clone:
                         var result = InternalCopy(valueAsElement, copyOptions);
                         var uri = valueAsElement.GetUri();
@@ -404,13 +420,14 @@ public class ObjectCopier
                         }
                         
                         return CopyResult.CreateResultForInstance(value);
+                    default: 
+                        throw new ArgumentOutOfRangeException(nameof(copyType), copyType, null);
                 }
-
-                throw new ArgumentOutOfRangeException(nameof(copyType), copyType, null);
             }
             case IReflectiveCollection _ when noRecursion:
                 return CopyResult.CreateResultForInstance(value);
             case IReflectiveCollection valueAsCollection:
+                TraceCopyType(copyType, value, "IReflColl", propertyName);
                 if (copyType == CopyType.FindClonedReference)
                 {
                     var uris = 
@@ -468,7 +485,7 @@ public class ObjectCopier
                 {
                     var listResult = valueAsCollection.Select(innerValue =>
                     {
-                        var innerResult = InternalCopyValue(innerValue, copyOptions, copyType);
+                        var innerResult = InternalCopyValue(innerValue, copyOptions, copyType, propertyName);
                         if (innerResult.CopyType != CopyType.Clone && innerResult.CopyType != CopyType.KeepReference)
                         {
                             throw new InvalidOperationException("Something obscure happened");

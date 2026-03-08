@@ -140,9 +140,7 @@ public class CopierTests
         mofExtent!.elements().add(rowForm);
         
         // Copy it
-        ObjectCopier.FullDebug = true;
-        Logger.Info("Starting COPYING");
-        var copiedElement = ObjectCopier.Copy(
+        Logger.Info("Starting COPYING"); var copiedElement = ObjectCopier.Copy(
             new MofFactory(mofExtent2!),
             rowForm,
             new CopyOption
@@ -151,9 +149,6 @@ public class CopierTests
                     CopyAcrossExtents = copyAcrossExtents
                 })
             });
-        Logger.Info("Ended COPYING");
-        
-        ObjectCopier.FullDebug = false;
         
         // Check that the new object is existing and of metaclass rowform
         Assert.That(copiedElement, Is.Not.Null);
@@ -242,8 +237,6 @@ public class CopierTests
         mofObject.set(_DataViews._QueryStatement.resultNode, mofResultNode);
         
         // Copy it
-        ObjectCopier.FullDebug = true;
-        Logger.Info("Starting COPYING");
         var copiedElement = ObjectCopier.Copy(
             new MofFactory(mofExtent2!),
             mofObject,
@@ -253,10 +246,7 @@ public class CopierTests
                     CopyAcrossExtents = copyAcrossExtents
                 })
             });
-        ObjectCopier.FullDebug = false;
         mofExtent2!.elements().add(copiedElement);
-        Logger.Info("Ended COPYING");
-
         
         // Depending on the copyAcross, different results could happen
         Assert.That(copiedElement, Is.Not.Null);
@@ -346,9 +336,6 @@ public class CopierTests
         
         // STEP 2
         // Ok, now we copy it and check if we have done a full copy
-        
-        ObjectCopier.FullDebug = true;
-        Logger.Info("Starting COPYING");
         var copiedElement = ObjectCopier.Copy(
             new MofFactory(mofOtherExtent!),
             mofObject1,
@@ -358,9 +345,6 @@ public class CopierTests
                         CopyAcrossExtents = true
                     })
             });
-        
-        ObjectCopier.FullDebug = false;
-        Logger.Info("Ended COPYING");
         
         mofOtherExtent!.elements().add(copiedElement);
         
@@ -414,8 +398,6 @@ public class CopierTests
     [Test]
     public async Task TestFullTracingOfDatenMeisterInitializationCopying()
     {
-        ObjectCopier.FullDebug = true;
         await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
-        ObjectCopier.FullDebug = false;
     }
 }

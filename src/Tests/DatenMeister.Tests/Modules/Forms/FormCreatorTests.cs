@@ -234,7 +234,6 @@ public class FormCreatorTests
 
         var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create(string.Empty);
-        ObjectCopier.FullDebug = true;
         var createdForm =
             FormCreation.CreateObjectForm(
                 new ObjectFormFactoryParameter
@@ -242,7 +241,6 @@ public class FormCreatorTests
                     Element = packageModel,
                     MetaClass = _UML.TheOne.Packages.__Package
                 }, context).Form;
-        ObjectCopier.FullDebug = false;
 
         Assert.That(createdForm, Is.Not.Null);
 

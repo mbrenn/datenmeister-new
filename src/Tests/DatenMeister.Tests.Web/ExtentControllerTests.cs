@@ -160,9 +160,7 @@ public class ExtentControllerTests
         var dm = await DatenMeisterTests.GetDatenMeisterScope();
             
         var extentController = new ExtentController(dm.WorkspaceLogic, dm.ScopeStorage);
-        ObjectCopier.FullDebug = true;
         var result = extentController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces");
-        ObjectCopier.FullDebug = false;
 
         Assert.That(result.Value!.Xmi.Contains(WorkspaceNames.UriTemporaryExtent), Is.True);
     }

@@ -15,7 +15,11 @@ namespace DatenMeister.TemporaryExtent;
 /// </summary>
 public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
-    public const string InternalTempUri = WorkspaceNames.UriTemporaryExtent;
+    /// <summary>
+    /// Stores the extent Uri
+    /// </summary>
+    [Obsolete]
+    public const string InternalTempUri = TemporaryExtentPlugin.ExtentUri;
 
     /// <summary>
     /// Defines the logger
@@ -30,12 +34,12 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// <summary>
     /// Gets the name of the workspace
     /// </summary>
-    public IWorkspace? Workspace => workspaceLogic.TryGetDataWorkspace();
+    public IWorkspace? Workspace => workspaceLogic.GetWorkspace(WorkspaceName);
 
     /// <summary>
     /// Gets the name of the workspace
     /// </summary>
-    public string WorkspaceName => Workspace?.id ?? throw new InvalidOperationException("Workspace is null");
+    public string WorkspaceName => WorkspaceNames.WorkspaceManagement;
 
     /// <summary>
     /// Maps the element to a datetime until when it shall be deleted.
@@ -58,7 +62,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
                 return InMemoryProvider.TemporaryExtent;
             }
             
-            if (workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri)
+            if (workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.ExtentUri)
                 is not IUriExtent foundExtent)
             {
                 // Somebody deleted the extent... So, we will create a new one
@@ -77,7 +81,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// <returns>Found extent or null, if not found</returns>
     public IUriExtent? TryGetTemporaryExtent()
     {
-        return workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri);
+        return workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.ExtentUri);
     }
 
     /// <summary>
@@ -175,7 +179,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
         }
         
         var temporaryProvider = new InMemoryProvider();
-        var extent = new MofUriExtent(temporaryProvider, InternalTempUri, scopeStorage);
+        var extent = new MofUriExtent(temporaryProvider, TemporaryExtentPlugin.ExtentUri, scopeStorage);
         workspaceLogic.AddExtent(workspace, extent);
         return extent;
     }

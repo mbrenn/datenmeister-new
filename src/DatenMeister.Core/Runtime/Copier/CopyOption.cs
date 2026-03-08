@@ -113,17 +113,29 @@ public class CopyOption
             
             var isComposite = attribute == null || attribute?.IsComposite == true;
             
-            
             // First check, if the source or target extent is null. If that is the case, then
             // we will copy because we will never find the values again!
             if (sourceExtent == null || targetExtent == null)
                 return CopyType.Clone;
 
+            // Small helper method which identifies whether a uri refernce is within the sourceExtent
+            bool IsValueWithinSourceExtent()
+            {
+                if (parameters.ObjectToBeCopied is UriReference uriReference)
+                {
+                    return uriReference.Uri.StartsWith(sourceExtent.contextURI());
+                }
+
+                return false;
+            }
+
             if (copyPredicateParameter.CopyAcrossExtents)
             {
                 if (sourceExtent != targetExtent)
                 {
-                    return isComposite ? CopyType.Clone : CopyType.FindClonedReference;
+                    return isComposite ? CopyType.Clone 
+                        : IsValueWithinSourceExtent() ? CopyType.FindClonedReference 
+                        : CopyType.KeepReference;
                 }
             }
 
@@ -132,7 +144,9 @@ public class CopyOption
                 if (sourceExtent.contextURI() == WorkspaceNames.UriTemporaryExtent
                     && targetExtent.contextURI() != WorkspaceNames.UriTemporaryExtent)
                 {
-                    return isComposite ? CopyType.Clone : CopyType.FindClonedReference;
+                    return isComposite ? CopyType.Clone 
+                        : IsValueWithinSourceExtent() ? CopyType.FindClonedReference 
+                        : CopyType.KeepReference;
                 }
             }
 
@@ -145,7 +159,9 @@ public class CopyOption
 
                 if (sourceWorkspace != null && targetWorkspace != null && sourceWorkspace != targetWorkspace)
                 {
-                    return isComposite ? CopyType.Clone : CopyType.FindClonedReference;
+                    return isComposite ? CopyType.Clone 
+                        : IsValueWithinSourceExtent() ? CopyType.FindClonedReference 
+                        : CopyType.KeepReference;
                 }
             }
 

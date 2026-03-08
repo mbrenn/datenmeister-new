@@ -4,6 +4,7 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
@@ -419,9 +420,11 @@ public class ItemsControllerTests
         var dm = await DatenMeisterTests.GetDatenMeisterScope();
             
         var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+        ObjectCopier.FullDebug = true;
         var result = itemsController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces#Management");
+        ObjectCopier.FullDebug = false;
             
-        Assert.That(result.Value!.Xmi.Contains("dm:///_internal/temp"), Is.True);
+        Assert.That(result.Value!.Xmi.Contains(WorkspaceNames.UriTemporaryExtent), Is.True);
     }
 
     [Test]

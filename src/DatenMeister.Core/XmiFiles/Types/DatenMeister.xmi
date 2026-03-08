@@ -783,13 +783,13 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ba5dad40-2615-4f90-ba8f-15a0e531b2ed" name="autoEnumerateType" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="463b5a55-2895-4fd7-a8e4-3e641d59deaa" name="state" type-ref="#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="6ea1b043-e28c-4ff6-b515-0d7f2836866e" name="failMessage" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="10c82cc6-6372-457a-9e11-a37385c522e1" name="properties" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="10c82cc6-6372-457a-9e11-a37385c522e1" name="properties" isComposite="true" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="10c82cd6-6372-457a-9e11-a37385c522e1" name="loadingConfiguration" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.ManagementProvider.Workspace" name="Workspace">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="61dcc951-45ef-4f37-8d08-0ec91dda03f6" name="id" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="07406b81-2227-4fc0-b278-dd7e9eae5986" name="annotation" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="086539ec-e110-4481-808c-8172ff4ed00f" name="extents" type-ref="#DatenMeister.Models.ManagementProvider.Extent" upper="2" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="086539ec-e110-4481-808c-8172ff4ed00f" name="extents" type-ref="#DatenMeister.Models.ManagementProvider.Extent" upper="2" isComposite="true" />/>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel" name="CreateNewWorkspaceModel">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4da53eb9-911d-42b5-aa14-14d955ff7541" name="id" type-ref="dm:///_internal/model/primitivetypes#String" />

@@ -52,19 +52,10 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
         var targetExtent = formMethods.GetInternalFormExtent();
         var localTypeExtent = localTypeSupport.GetInternalTypeExtent();
         
-        ObjectCopier.FullDebug = true;
-        new ClassLogger(typeof(ExtentFormPlugin)).Info("---- IMPORTING FORMS");
-        
         PackageMethods.ImportByStream(
             scopeStorage, GetXmiStreamForForms(), null, targetExtent, "DatenMeister.Extent.Forms");
-        
-        new ClassLogger(typeof(ExtentFormPlugin)).Info("---- IMPORTING TYPES");
-        
         PackageMethods.ImportByStream(
             scopeStorage, GetXmiStreamForTypes(), null, localTypeExtent, "DatenMeister.Extent.Forms");
-        
-        new ClassLogger(typeof(ExtentFormPlugin)).Info("---- IMPORTING DONE");
-        ObjectCopier.FullDebug = false;
     }
 
 

@@ -26,7 +26,6 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
 
     public Task Start(PluginLoadingPosition position)
     {
-        // TODO: Reactivate the constraints
         switch (position)
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:

@@ -33,13 +33,14 @@ public class DataViewPlugin(
     /// <returns>A task representing the operation</returns>
     public Task Start(PluginLoadingPosition position)
     {
+        var managementWorkspace = workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement);
+        
         switch (position)
         {
             case PluginLoadingPosition.AfterBootstrapping:
-                var managementWorkspace = workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement);
                 if (managementWorkspace == null)
                 {
-                    logger.Warn("Management workspace not found. Automated registering will not be performed");
+                    Logger.Warn("Management workspace not found. Automated registering will not be performed");
                 }
 
                 var workspace = new Workspace(WorkspaceNames.WorkspaceViews,
@@ -54,22 +55,24 @@ public class DataViewPlugin(
                 scopeStorage.Get<DataViewCache>().MarkAsDirty();
                 scopeStorage.Get<ResolveHookContainer>().Add(new DataViewResolveHook());
 
+
+                break;
+            case PluginLoadingPosition.AfterLoadingOfExtents:
+                var factories = GetDefaultViewNodeFactories();
+                scopeStorage.Add(factories);
+
+                // Adds the change management to identify changes in Management Workspace. 
+                // After a change is notified, the views are marked as dirty
                 if (managementWorkspace != null)
                 {
                     workspaceLogic.ChangeEventManager.RegisterFor(
                         managementWorkspace,
                         (w, e, o) => Task.Run(() =>
                         {
-                            logger.Info("Management workspace changed");
                             scopeStorage.Get<DataViewCache>().MarkAsDirty();
                         }));
                 }
 
-
-                break;
-            case PluginLoadingPosition.AfterLoadingOfExtents:
-                var factories = GetDefaultViewNodeFactories();
-                scopeStorage.Add(factories);
                 break;
         }
 

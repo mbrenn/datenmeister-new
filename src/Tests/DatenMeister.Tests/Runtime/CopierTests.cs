@@ -338,7 +338,6 @@ public class CopierTests
             checkNodeInputOfFlatten.getOrDefault<string>(_DataViews._Source._SelectFromAllWorkspacesNode.name),
             Is.EqualTo("ColumnFilter"));
 
-
         var checkNodeInputOfFilter = dataNodeColumnFilter.getOrDefault<IElement>(_DataViews._Column._ColumnFilterExcludeNode.input);
         Assert.That(checkNodeInputOfFilter, Is.Not.Null);
         Assert.That(
@@ -406,5 +405,17 @@ public class CopierTests
         Assert.That(checkSource.getOrDefault<string>(
             _DataViews._Source._SelectFromAllWorkspacesNode.name), 
             Is.EqualTo("AllFromWorkspace"));
+    }
+    
+    /// <summary>
+    /// This is just a test which can be used to check the copying of objects during initialization
+    /// by looking at the tracing
+    /// </summary>
+    [Test]
+    public async Task TestFullTracingOfDatenMeisterInitializationCopying()
+    {
+        ObjectCopier.FullDebug = true;
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        ObjectCopier.FullDebug = false;
     }
 }

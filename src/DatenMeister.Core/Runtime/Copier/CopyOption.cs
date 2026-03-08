@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
+﻿using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Provider;
@@ -44,6 +45,11 @@ public enum CopyType
 /// </summary>
 public class CopyOption
 {
+    /// <summary>
+    /// Stores the logger
+    /// </summary>
+    private static readonly ILogger Logger = new ClassLogger(typeof(CopyOption));
+    
     /// <summary>
     /// Gets or sets a value indicating whether the IDs of the objects shall be copied
     /// or whether a new ID shall be generated for each copied element.
@@ -123,10 +129,21 @@ public class CopyOption
             {
                 if (parameters.ObjectToBeCopied is UriReference uriReference)
                 {
-                    return uriReference.Uri.StartsWith(sourceExtent.contextURI());
+                    if (ObjectCopier.FullDebug)
+                    {
+                        Logger.Info($"Checking {uriReference.Uri} for being within {sourceExtent.contextURI()}");
+                    }
+                    
+                    return uriReference.Uri.StartsWith('#') || 
+                        uriReference.Uri.StartsWith(sourceExtent.contextURI());
                 }
 
-                return false;
+                if (parameters.ObjectToBeCopied is IHasExtent hasExtent)
+                {
+                    return hasExtent.Extent?.equals(sourceExtent) == true;
+                }
+
+                return true;
             }
 
             if (copyPredicateParameter.CopyAcrossExtents)

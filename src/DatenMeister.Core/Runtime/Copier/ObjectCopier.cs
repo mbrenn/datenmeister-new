@@ -350,13 +350,13 @@ public class ObjectCopier
                                 if (_cloneDictionary.TryGetValue(referenceUri, out var reference))
                                 {
                                     if (FullDebug)
-                                        Logger.Trace($"PostCopyAction: Adding reference for: ${referenceUri}");
+                                        Logger.Trace($"PostCopyAction: Adding reference for: {referenceUri}");
                                     return reference;
                                 }
                                 else
                                 {
                                     if (FullDebug)
-                                        Logger.Trace($"PostCopyAction: Did not find: ${referenceUri}");
+                                        Logger.Trace($"PostCopyAction: Did not find: {referenceUri}");
                                     return null;
                                 }
                             });
@@ -407,13 +407,13 @@ public class ObjectCopier
                                 if (_cloneDictionary.TryGetValue(referenceUri, out var reference))
                                 {
                                     if (FullDebug)
-                                        Logger.Trace($"PostCopyAction: Adding reference for: ${referenceUri}");
+                                        Logger.Trace($"PostCopyAction: Adding reference for: {referenceUri}");
                                     return reference;
                                 }
                                 else
                                 {
                                     if (FullDebug)
-                                        Logger.Trace($"PostCopyAction: Did not find: ${referenceUri}");
+                                        Logger.Trace($"PostCopyAction: Did not find: {referenceUri}");
                                     return null;
                                 }
                             });
@@ -460,19 +460,20 @@ public class ObjectCopier
                                 else if (_cloneDictionary.TryGetValue(referenceUri, out var reference))
                                 {
                                     if (FullDebug)
-                                        Logger.Trace($"PostCopyAction: Adding reference for: ${referenceUri}");
+                                        Logger.Trace($"PostCopyAction: Adding reference for: {referenceUri}");
                                     listResult.Add(reference);
                                 }
                                 else
                                 {
                                     if (FullDebug)
-                                        Logger.Trace($"PostCopyAction: Did not find: ${referenceUri}");
+                                        Logger.Trace($"PostCopyAction: Did not find: {referenceUri}");
                                     return null;
                                 }
                             }
                             else
                             {
-                                Logger.Trace($"PostCopyAction: Adding value: ${innerValue}");
+                                if (FullDebug)
+                                    Logger.Trace($"PostCopyAction: Adding value: {innerValue}");
                                 listResult.Add(innerValue);
                             }
                         }

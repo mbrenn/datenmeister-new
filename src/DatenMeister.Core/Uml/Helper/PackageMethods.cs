@@ -249,11 +249,14 @@ public static class PackageMethods
             targetPackage.GetExtentOf() ??
             throw new InvalidOperationException("targetPackage does not belong to an extent")));
 
+        objectCopier.ExecutePreCopyActions();
         foreach (var subElement in GetPackagedObjects(sourcePackage).OfType<IObject>())
         {
-            var copiedObject = objectCopier.Copy(subElement, copyOptions);
+            var copiedObject = objectCopier.InternalCopy(subElement, copyOptions);
             AddObjectToPackage(targetPackage, copiedObject);
         }
+        
+        objectCopier.ExecutePostCopyActions();
     }
 
     /// <summary>

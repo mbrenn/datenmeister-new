@@ -1,12 +1,10 @@
-﻿using System.Diagnostics;
-using BurnSystems.Logging;
+﻿using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.InMemory;
 
@@ -126,7 +124,7 @@ public class ObjectCopier
         return targetElement;
     }
 
-    private IElement InternalCopy(IObject element, CopyOption? copyOptions)
+    public IElement InternalCopy(IObject element, CopyOption? copyOptions)
     {
         copyOptions ??= CopyOptions.None;
 
@@ -145,6 +143,12 @@ public class ObjectCopier
         else
         {
             targetElement = _factory.create((element as IElement)?.getMetaClass());
+        }
+        
+        var uri = element.GetUri();
+        if (!string.IsNullOrEmpty(uri))
+        {
+            _cloneDictionary[CleanUri(uri)] = targetElement;
         }
 
         InternalCopyProperties(element, targetElement, copyOptions);
@@ -168,7 +172,7 @@ public class ObjectCopier
     /// Executes all necessary actions that have to be done before the
     /// copying is started
     /// </summary>
-    private void ExecutePreCopyActions()
+    public void ExecutePreCopyActions()
     {
         if (_isActive)
             throw new InvalidOperationException("Copying is requested while another copying is active");
@@ -180,7 +184,7 @@ public class ObjectCopier
     /// <summary>
     /// Executes all post-copy actions that have been queued during the copy process.
     /// </summary>
-    private void ExecutePostCopyActions()
+    public void ExecutePostCopyActions()
     {
         foreach (var action in _postCopyActions)
         {
@@ -301,7 +305,10 @@ public class ObjectCopier
         var copyTypeStr = copyType.ToString().Length > 10 ? copyType.ToString()[..10] : copyType.ToString().PadRight(10);
         var typeStr = (typeLabel ?? "").Length > 10 ? (typeLabel ?? "")[..10] : (typeLabel ?? "").PadRight(10);
         var propStr = (propertyName ?? "").Length > 30 ? (propertyName ?? "")[..30] : (propertyName ?? "").PadRight(30);
-        var valueStr = value?.ToString() ?? "null";
+        var valueStr = 
+            value is IHasId asHasId && asHasId.Id != null 
+                ? $"{value}[{asHasId.Id}]" 
+                : value?.ToString() ?? "null";
 
         Logger.Trace($"{copyTypeStr}|{typeStr}|{propStr}:{indent}{valueStr}");
     }
@@ -347,7 +354,7 @@ public class ObjectCopier
                         {
                             return CopyResult.CreateResultForToFindClonedReference(() =>
                             {
-                                if (_cloneDictionary.TryGetValue(referenceUri, out var reference))
+                                if (_cloneDictionary.TryGetValue(CleanUri(referenceUri), out var reference))
                                 {
                                     if (FullDebug)
                                         Logger.Trace($"PostCopyAction: Adding reference for: {referenceUri}");
@@ -389,12 +396,6 @@ public class ObjectCopier
                         throw new InvalidOperationException("Copy type is undefined, but should be defined by now");
                     case CopyType.Clone:
                         var result = InternalCopy(valueAsElement, copyOptions);
-                        var uri = valueAsElement.GetUri();
-                        if (!string.IsNullOrEmpty(uri))
-                        {
-                            _cloneDictionary[uri] = result;
-                        }
-
                         return CopyResult.CreateResultForInstance(result);
                     case CopyType.KeepReference:
                         return CopyResult.CreateResultForReference(value);
@@ -404,7 +405,7 @@ public class ObjectCopier
                         {
                             return CopyResult.CreateResultForToFindClonedReference(() =>
                             {
-                                if (_cloneDictionary.TryGetValue(referenceUri, out var reference))
+                                if (_cloneDictionary.TryGetValue(CleanUri(referenceUri), out var reference))
                                 {
                                     if (FullDebug)
                                         Logger.Trace($"PostCopyAction: Adding reference for: {referenceUri}");
@@ -457,7 +458,7 @@ public class ObjectCopier
                                         Logger.Trace($"PostCopyAction: Having a null");
                                     listResult.Add(null);
                                 }
-                                else if (_cloneDictionary.TryGetValue(referenceUri, out var reference))
+                                else if (_cloneDictionary.TryGetValue(CleanUri(referenceUri), out var reference))
                                 {
                                     if (FullDebug)
                                         Logger.Trace($"PostCopyAction: Adding reference for: {referenceUri}");
@@ -502,6 +503,18 @@ public class ObjectCopier
             default:
                 return CopyResult.CreateResultForInstance(value);
         }
+    }
+
+    /// <summary>
+    /// Cleans up ur by just considering the part of the uri after the hash '#'.
+    /// This allows being independent of the absolute or relative links
+    /// </summary>
+    /// <param name="cleanUri">Uri to be cleaned</param>
+    /// <returns></returns>
+    private static string CleanUri(string cleanUri)
+    {
+        var hashIndex = cleanUri.IndexOf('#');
+        return hashIndex >= 0 ? cleanUri.Substring(hashIndex + 1) : cleanUri;
     }
 
     /// <summary>

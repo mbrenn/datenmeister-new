@@ -25,12 +25,14 @@ public class ExtentCopier(IFactory factory)
         copyOptions ??= CopyOptions.None;
 
         var copier = new ObjectCopier(_factory);
+        copier.ExecutePreCopyActions();
         foreach (var copiedElement in sourceSequence
                      .Select(element => element as IElement)
-                     .Select(elementAsElement => copier.Copy(elementAsElement!, copyOptions)))
+                     .Select(elementAsElement => copier.InternalCopy(elementAsElement!, copyOptions)))
         {
             targetSequence.add(copiedElement);
         }
+        copier.ExecutePostCopyActions();
     }
 
     public void Copy(IEnumerable<object> sourceSequence, IReflectiveCollection targetSequence, CopyOption? copyOptions = null)
@@ -38,12 +40,14 @@ public class ExtentCopier(IFactory factory)
         copyOptions ??= CopyOptions.None;
 
         var copier = new ObjectCopier(_factory);
+        copier.ExecutePreCopyActions();
         foreach (var copiedElement in sourceSequence
                      .Select(element => element as IElement)
                      .Where(x => x != null)
-                     .Select(elementAsElement => copier.Copy(elementAsElement!, copyOptions)))
+                     .Select(elementAsElement => copier.InternalCopy(elementAsElement!, copyOptions)))
         {
             targetSequence.add(copiedElement);
         }
+        copier.ExecutePostCopyActions();       
     }
 }

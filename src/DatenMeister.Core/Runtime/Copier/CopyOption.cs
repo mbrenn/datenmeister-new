@@ -124,18 +124,20 @@ public class CopyOption
             if (sourceExtent == null || targetExtent == null)
                 return CopyType.Clone;
 
-            // Small helper method which identifies whether a uri refernce is within the sourceExtent
+            // Small helper method which identifies whether a uri reference is within the sourceExtent
             bool IsValueWithinSourceExtent()
             {
                 if (parameters.ObjectToBeCopied is UriReference uriReference)
                 {
+                    var result = uriReference.Uri.StartsWith('#') ||
+                                 uriReference.Uri.StartsWith(sourceExtent.contextURI());
+                    
                     if (ObjectCopier.FullDebug)
                     {
-                        Logger.Info($"Checking {uriReference.Uri} for being within {sourceExtent.contextURI()}");
+                        Logger.Trace($"Checking {uriReference.Uri} for being within {sourceExtent.contextURI()}: {result}");
                     }
-                    
-                    return uriReference.Uri.StartsWith('#') || 
-                        uriReference.Uri.StartsWith(sourceExtent.contextURI());
+
+                    return result;
                 }
 
                 if (parameters.ObjectToBeCopied is IHasExtent hasExtent)

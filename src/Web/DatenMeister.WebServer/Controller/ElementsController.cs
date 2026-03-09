@@ -121,7 +121,7 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
         {
             Success = true,
             Id = result.GetId(),
-            Workspace = logic.WorkspaceName,
+            Workspace = TemporaryExtentLogic.WorkspaceName,
             Uri = result.GetUri() ?? throw new InvalidOperationException("No uri defined"),
             MetaClassUri = result.metaclass?.GetUri() ?? string.Empty,
             MetaClassWorkspace = result.metaclass?.GetUriExtentOf()?.GetWorkspace()?.id ?? string.Empty

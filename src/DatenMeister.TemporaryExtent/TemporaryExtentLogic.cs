@@ -16,12 +16,6 @@ namespace DatenMeister.TemporaryExtent;
 public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
     /// <summary>
-    /// Stores the extent Uri
-    /// </summary>
-    [Obsolete]
-    public const string InternalTempUri = TemporaryExtentPlugin.ExtentUri;
-
-    /// <summary>
     /// Defines the logger
     /// </summary>
     private static readonly ILogger ClassLogger = new ClassLogger(typeof(TemporaryExtentLogic));
@@ -39,7 +33,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// <summary>
     /// Gets the name of the workspace
     /// </summary>
-    public string WorkspaceName => WorkspaceNames.WorkspaceManagement;
+    public static string WorkspaceName => WorkspaceNames.WorkspaceTemporary;
 
     /// <summary>
     /// Maps the element to a datetime until when it shall be deleted.
@@ -170,14 +164,9 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// </summary>
     public IUriExtent CreateTemporaryExtent()
     {
-        var workspace = Workspace;
-        if (workspace == null)
-        {
-            // In case, that we are not in a good context while having a Data Workspace, we just return the temporary extent,
-            // so most unit tests will be working
-            return InMemoryProvider.TemporaryExtent;
-        }
-        
+        var workspace = Workspace ?? workspaceLogic.AddWorkspace(
+            new Workspace(WorkspaceName, WorkspaceNames.WorkspaceTemporaryAnnotation));
+
         var temporaryProvider = new InMemoryProvider();
         var extent = new MofUriExtent(temporaryProvider, TemporaryExtentPlugin.ExtentUri, scopeStorage);
         workspaceLogic.AddExtent(workspace, extent);

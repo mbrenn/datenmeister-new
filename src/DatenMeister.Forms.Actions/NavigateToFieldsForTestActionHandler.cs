@@ -19,7 +19,7 @@ internal class NavigateToFieldsForTestActionHandler : IActionHandler
 
         // Second, navigate the user to the recently created object with the testing form
         var navigateToItem = InMemoryObject.CreateEmpty(_Actions.TheOne.ClientActions.__NavigateToItemClientAction);
-        navigateToItem.set(_Actions._ClientActions._NavigateToItemClientAction.workspaceId, temporaryExtentLogic.WorkspaceName);
+        navigateToItem.set(_Actions._ClientActions._NavigateToItemClientAction.workspaceId, TemporaryExtentLogic.WorkspaceName);
         navigateToItem.set(_Actions._ClientActions._NavigateToItemClientAction.itemUrl, temporaryObject.GetUri());
         navigateToItem.set(_Actions._ClientActions._NavigateToItemClientAction.formUri, Uris.TestFormUri);
 

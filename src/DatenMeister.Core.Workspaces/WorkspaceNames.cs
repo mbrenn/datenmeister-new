@@ -4,6 +4,10 @@ public static class WorkspaceNames
 {
     public const string WorkspaceManagement = "Management";
     public const string WorkspaceData = "Data";
+    public const string WorkspaceTemporary = "TemporaryData";
+
+    public const string WorkspaceTemporaryAnnotation =
+        "Workspace for temporary data which is not expected to be stored";
     public const string WorkspaceTypes = "Types";
     public const string WorkspaceUml = "UML";
     public const string WorkspaceMof = "MOF";

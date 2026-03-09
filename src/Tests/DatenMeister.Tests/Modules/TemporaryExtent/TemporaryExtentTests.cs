@@ -76,20 +76,21 @@ public class TemporaryExtentTests
     {
         await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
         var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
-            
+
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);
 
         var element = temporaryLogic.CreateTemporaryElement(null);
         Assert.That(element, Is.Not.Null);
 
-        (scope.WorkspaceLogic.GetManagementWorkspace() as Workspace)?.RemoveExtent(TemporaryExtentPlugin.ExtentUri);
+        var workspace = (scope.WorkspaceLogic.GetWorkspace(TemporaryExtentLogic.WorkspaceName) as Workspace);
+        workspace?.RemoveExtent(TemporaryExtentPlugin.ExtentUri);
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Null);
-            
+
         element = temporaryLogic.CreateTemporaryElement(null);
         Assert.That(element, Is.Not.Null);
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);
 
-        (scope.WorkspaceLogic.GetManagementWorkspace() as Workspace)?.RemoveExtent(TemporaryExtentPlugin.ExtentUri);
+        workspace?.RemoveExtent(TemporaryExtentPlugin.ExtentUri);
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Null);
         temporaryLogic.CleanElements();
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);

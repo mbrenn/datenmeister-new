@@ -22,7 +22,7 @@ public class TemporaryExtentPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage
     /// <summary>
     /// Stores the extent in which the temporary extent is stored
     /// </summary>
-    public const string WorkspaceName = WorkspaceNames.WorkspaceManagement;
+    public const string WorkspaceName = WorkspaceNames.WorkspaceTemporary;
 
     private CancellationToken _taskCancellation;
     private CancellationTokenSource? _taskCancellationSource;

@@ -421,7 +421,9 @@ public class ItemsControllerTests
         var dm = await DatenMeisterTests.GetDatenMeisterScope();
             
         var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
-        var result = itemsController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces#Management");
+        var result = itemsController.ExportXmi(
+            WorkspaceNames.WorkspaceManagement, 
+            $"dm:///_internal/workspaces#{TemporaryExtentLogic.WorkspaceName}");
             
         Assert.That(result.Value!.Xmi.Contains(WorkspaceNames.UriTemporaryExtent), Is.True);
     }

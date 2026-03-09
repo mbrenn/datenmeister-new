@@ -13,7 +13,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Forms.Actions;
 
-public class CreateFormUponViewActionHandler : IActionHandler
+public class AddQueryInPackageActionHandler : IActionHandler
 {
     public bool IsResponsible(IElement node)
     {

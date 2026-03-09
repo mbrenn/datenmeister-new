@@ -12,7 +12,7 @@ internal class Plugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
     {
         var actionLogicState = ScopeStorage.Get<ActionLogicState>();
         actionLogicState.AddActionHandler(new NavigateToFieldsForTestActionHandler());
-        actionLogicState.AddActionHandler(new CreateFormUponViewActionHandler());
+        actionLogicState.AddActionHandler(new AddQueryInPackageActionHandler());
 
         return Task.CompletedTask;
     }

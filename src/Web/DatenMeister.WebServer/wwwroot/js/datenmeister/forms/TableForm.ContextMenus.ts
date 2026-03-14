@@ -8,9 +8,9 @@ import {truncateText} from "../../burnsystems/StringManipulation.js";
 import TableForm from "./TableForm.js";
 import * as SelectItemControl from "../controls/SelectItemControl.js";
 import * as Settings from "../Settings.js";
-import * as CollectionForm from "./CollectionForm.js";
 import * as Navigator from "../Navigator.js"
 import {_UML} from "../models/uml.js";
+import * as ClientItems from "../client/Items.js";
 import _NamedElement = _UML._CommonStructure._NamedElement;
 
 /**
@@ -170,8 +170,7 @@ export function createFunctionToLoadCurrentView(tableForm: TableForm) {
 
                 selectItemControl.itemSelected.addListener(
                     async (item) => {
-                        tableForm.tableState.overrideQueryWorkspace = item.workspace;
-                        tableForm.tableState.overrideQueryItem = item.uri;
+                        tableForm.tableState.queryStatement = await ClientItems.getObjectByUri(item.workspace, item.uri);
                         popup.closePopup();
 
                         await tableForm.reloadTable();

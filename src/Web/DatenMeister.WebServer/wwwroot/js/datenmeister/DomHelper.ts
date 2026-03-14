@@ -37,8 +37,8 @@ export async function convertDmObjectToDom(item: DmObject, params?: IConvertItem
     return convertItemWithNameAndIdToDom(x, params);
 }
 
-export function debugElementToDom(mofElement: any, domSelector: string) {
-    const domElement = $(domSelector);
+export function debugElementToDom(mofElement: any, domSelector: string | JQuery) {
+    const domElement = typeof domSelector === 'string' ? $(domSelector) : domSelector;
     domElement.empty();
     if (domElement.length > 0) {
         domElement.append(convertToDom(mofElement));
@@ -159,6 +159,15 @@ export function convertToDom(mofElement: any): JQuery {
                 .attr('title', asElement.metaClass.uri)
                 .text("[[MetaClass: " + asElement.metaClass.fullName + "]]");
                 
+            list.append(row);
+        }
+        
+        if(asElement.id !== undefined)
+        {
+            const row = $("<li><em></em></li>");
+            $("em", row)
+                .attr('title', asElement.id)
+                .text("{{Id: " + asElement.id + "}}");
             list.append(row);
         }
 

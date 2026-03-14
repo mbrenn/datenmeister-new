@@ -286,7 +286,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
         var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
 
-        var converter = new MofJsonConverter { MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true };
+        var converter = new MofJsonConverter { MaxRecursionDepth = 2, ResolveCompositesRecursively = true };
         var convertedElement = converter.ConvertToJson(foundElement);
 
         return convertedElement;

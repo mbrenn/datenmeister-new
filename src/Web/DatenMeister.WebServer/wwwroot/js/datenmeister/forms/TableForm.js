@@ -8,6 +8,7 @@ import * as ClientItem from "../client/Items.js";
 import * as ContextMenu from "./TableForm.ContextMenus.js";
 import { TableState } from "./TableState.js";
 var _FieldData = _DatenMeister._Forms._FieldData;
+import { debugElementToDom } from "../DomHelper.js";
 export class TableFormParameter {
     constructor() {
         this.shortenFullText = true;
@@ -21,6 +22,10 @@ class TableJQueryCaches {
 }
 class TableForm {
     constructor() {
+        /**
+         * Flag to enable debug features like the query debug link
+         */
+        this.isDebug = false;
         this.tableParameter = new TableFormParameter();
         this.tableState = new TableState();
         this.tableCache = new TableJQueryCaches();
@@ -98,6 +103,9 @@ class TableForm {
         // Loads the data
         if (this.firstRun) {
             this.firstRun = false;
+            // Check if debug mode is enabled via URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            this.isDebug = urlParams.get('debug') === 'true';
             this.tableCache.cacheContainer = $("<div class='dm-tableform-container'></div>");
             parent.append(this.tableCache.cacheContainer);
             this.tableCache.cacheHeadline = $("<h2><a></a></h2>");
@@ -117,6 +125,15 @@ class TableForm {
             await this.initializeTableSettingsButton();
             this.tableCache.cacheQueryText = $('<div class="dm-tableform-querytext"></div>');
             this.tableCache.cacheSettings.append(this.tableCache.cacheQueryText);
+            this.tableCache.cacheQueryDebugLink = $('<a class="dm-tableform-debugquery" href="#">Debug Query</a>');
+            this.tableCache.cacheQueryDebugLink.on('click', (e) => {
+                e.preventDefault();
+                this.ShowQueryStatementForDebug();
+            });
+            if (this.isDebug) {
+                this.tableCache.cacheSettings.append(this.tableCache.cacheQueryDebugLink);
+            }
+            this.tableCache.cacheSettings.append(this.tableCache.cacheQueryDebugOutput = $("<span class=\"dm-tableform-debugquery-content\"></span>"));
             this.tableCache.cacheEmptyDiv = $("<div></div>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheEmptyDiv);
             this.tableCache.cacheTableContainer = $("<div class='dm-tableform-tablecontainer'></div>");
@@ -469,6 +486,12 @@ class TableForm {
             }
         }
         return result;
+    }
+    /**
+     * Shows the query statement for debugging purposes
+     */
+    ShowQueryStatementForDebug() {
+        debugElementToDom(this.tableState.queryStatement, this.tableCache.cacheQueryDebugOutput);
     }
     /**
      * Gets the summary text which is read by the user to understand the effective filtering

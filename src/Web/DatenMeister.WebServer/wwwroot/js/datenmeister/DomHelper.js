@@ -23,7 +23,7 @@ export async function convertDmObjectToDom(item, params) {
     return convertItemWithNameAndIdToDom(x, params);
 }
 export function debugElementToDom(mofElement, domSelector) {
-    const domElement = $(domSelector);
+    const domElement = typeof domSelector === 'string' ? $(domSelector) : domSelector;
     domElement.empty();
     if (domElement.length > 0) {
         domElement.append(convertToDom(mofElement));
@@ -116,6 +116,13 @@ export function convertToDom(mofElement) {
             $("em", row)
                 .attr('title', asElement.metaClass.uri)
                 .text("[[MetaClass: " + asElement.metaClass.fullName + "]]");
+            list.append(row);
+        }
+        if (asElement.id !== undefined) {
+            const row = $("<li><em></em></li>");
+            $("em", row)
+                .attr('title', asElement.id)
+                .text("{{Id: " + asElement.id + "}}");
             list.append(row);
         }
         if (asElement.uri !== undefined) {

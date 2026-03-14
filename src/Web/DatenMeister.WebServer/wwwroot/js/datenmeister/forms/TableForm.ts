@@ -10,6 +10,7 @@ import * as ClientItem from "../client/Items.js"
 import * as ContextMenu from "./TableForm.ContextMenus.js"
 import {TableState} from "./TableState.js"
 import _FieldData = _DatenMeister._Forms._FieldData;
+import {debugElementToDom} from "../DomHelper.js";
 
 interface MenuItemData
 {
@@ -76,10 +77,17 @@ class TableJQueryCaches {
      */
     cacheSettingsButton: JQuery;
     cacheQueryText: JQuery;
+    cacheQueryDebugLink: JQuery;
+    cacheQueryDebugOutput: JQuery;
     parentHtml: JQuery<HTMLElement>;
 }
 
 class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesForms.IObjectFormElement {
+
+    /**
+     * Flag to enable debug features like the query debug link
+     */
+    isDebug: boolean = false;
 
     /**
      * Caches the elements to allow direct manipulation without additional server round-trip
@@ -196,7 +204,11 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
         // Loads the data
         if (this.firstRun) {
             this.firstRun = false;
-            
+
+            // Check if debug mode is enabled via URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            this.isDebug = urlParams.get('debug') === 'true';
+
             this.tableCache.cacheContainer = $("<div class='dm-tableform-container'></div>");
             parent.append(this.tableCache.cacheContainer);
             
@@ -223,6 +235,17 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
             
             this.tableCache.cacheQueryText = $('<div class="dm-tableform-querytext"></div>');
             this.tableCache.cacheSettings.append(this.tableCache.cacheQueryText);
+
+            this.tableCache.cacheQueryDebugLink = $('<a class="dm-tableform-debugquery" href="#">Debug Query</a>');
+            this.tableCache.cacheQueryDebugLink.on('click', (e) => {
+                e.preventDefault();
+                this.ShowQueryStatementForDebug();
+            });
+            if (this.isDebug) {
+                this.tableCache.cacheSettings.append(this.tableCache.cacheQueryDebugLink);
+            }
+            
+            this.tableCache.cacheSettings.append(this.tableCache.cacheQueryDebugOutput = $("<span class=\"dm-tableform-debugquery-content\"></span>"));
 
             this.tableCache.cacheEmptyDiv = $("<div></div>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheEmptyDiv);
@@ -682,6 +705,13 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
     }
 
     /**
+     * Shows the query statement for debugging purposes
+     */
+    ShowQueryStatementForDebug() {
+        debugElementToDom(this.tableState.queryStatement, this.tableCache.cacheQueryDebugOutput);
+    }
+
+    /**
      * Gets the summary text which is read by the user to understand the effective filtering
      * @returns The summary text
      */
@@ -707,6 +737,7 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
             andText = ' AND ';
         }
 
+        
         const freeTextFilter = this.tableState.getFreeTextFilter();
         if (freeTextFilter !== undefined && freeTextFilter !== "") {
             result += `${andText}Free-Textfilter: ${freeTextFilter}`;

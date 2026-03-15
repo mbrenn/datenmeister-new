@@ -1,5 +1,6 @@
 ﻿using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Provider;
@@ -109,10 +110,12 @@ public class CopyOption
             
             var sourceExtent = (parameters.SourceObject as IHasExtent)?.Extent as IUriExtent;
             var targetExtent = (parameters.TargetObject as MofObject)?.ReferencedExtent as IUriExtent;
-
+            var objectToBeCopiedExtent = (parameters.ObjectToBeCopied as IHasExtent)?.Extent as IUriExtent;
+            var objectToBeCopiedWorkspace = objectToBeCopiedExtent?.GetWorkspace()?.id;
+            
             var sourceObject = parameters.SourceObject as MofObject; 
             var attribute = sourceObject?.GetClassModel()?.FindAttribute(parameters.PropertyName);
-            if (attribute == null && parameters.ObjectToBeCopied is UriReference)
+            if (parameters.ObjectToBeCopied is UriReference)
             {
                 return CopyType.KeepReference;
             }
@@ -181,6 +184,15 @@ public class CopyOption
                     return isComposite ? CopyType.Clone 
                         : IsValueWithinSourceExtent() ? CopyType.FindClonedReference 
                         : CopyType.KeepReference;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(copyPredicateParameter.DoNotCopyIfSourceWorkspaceIsDifferentTo)
+                && !string.IsNullOrEmpty(objectToBeCopiedWorkspace))
+            {
+                if (objectToBeCopiedWorkspace != copyPredicateParameter.DoNotCopyIfSourceWorkspaceIsDifferentTo)
+                {
+                    return isComposite ? CopyType.Clone : CopyType.KeepReference;
                 }
             }
 
@@ -262,6 +274,13 @@ public record CopyPredicateParameter
     /// This setting only applies when both source and target have identifiable workspaces.
     /// </remarks>
     public bool CopyAcrossWorkspaces = false;
+
+    /// <summary>
+    /// Checks, if the target workspace is different to the given string. If yes, then we do not copy
+    /// the lelement. We only copy in case the target workspace is the same as the source workspace or if
+    /// it is null.  
+    /// </summary>
+    public string DoNotCopyIfSourceWorkspaceIsDifferentTo = string.Empty;
 
     /// <summary>
     /// Gets or sets a value indicating whether objects should be copied when

@@ -273,7 +273,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         itemId = MvcUrlEncoder.DecodePathOrEmpty(itemId);
 
         var foundElement = _internal.GetItemInternal(workspaceId, extentUri, itemId, out var converter);
-        var convertedElement = converter.ConvertToJson(foundElement);
+        var convertedElement = converter.ConvertToJsonString(foundElement);
 
         return convertedElement;
     }
@@ -287,7 +287,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
 
         var converter = new MofJsonConverter { MaxRecursionDepth = 2, ResolveCompositesRecursively = true };
-        var convertedElement = converter.ConvertToJson(foundElement);
+        var convertedElement = converter.ConvertToJsonString(foundElement);
 
         return convertedElement;
     }
@@ -371,7 +371,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         foreach (var item in finalElements)
         {
             result.Append(komma);
-            result.Append(converter.ConvertToJson(item));
+            result.Append(converter.ConvertToJsonString(item));
 
             komma = ", ";
         }
@@ -659,7 +659,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         
         var converter = new MofJsonConverter { MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true };
         // return an array of two values. The first value whether the element is set, the second value the element itself
-        return Content($"{{\"v\": [{converter.ConvertToJson(isSet)},{converter.ConvertToJson(value)}]}}", "application/json", Encoding.UTF8);
+        return Content($"{{\"v\": [{converter.ConvertToJsonString(isSet)},{converter.ConvertToJsonString(value)}]}}", "application/json", Encoding.UTF8);
     }
 
     [HttpPut("api/items/set/{workspaceId}/{itemUri}")]

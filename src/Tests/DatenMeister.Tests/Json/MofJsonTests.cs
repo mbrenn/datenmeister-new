@@ -23,7 +23,7 @@ public class MofJsonTests
         element.set("child", childElement);
         element.set("array", new[] { arrayElement1, arrayElement2 });
 
-        var jsonText = MofJsonConverter.ConvertToJsonWithDefaultParameter(element);
+        var jsonText = MofJsonConverter.ConvertToJsonStringWithDefaultParameter(element);
 
         Assert.That(jsonText.Contains("child"));
         Assert.That(jsonText.Contains("array1"));
@@ -44,7 +44,7 @@ public class MofJsonTests
             .SetProperty("legs", 2)
             .SetProperty("coffeePerDay", 2.8);
 
-        var jsonText = MofJsonConverter.ConvertToJsonWithDefaultParameter(element);
+        var jsonText = MofJsonConverter.ConvertToJsonStringWithDefaultParameter(element);
 
         var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
         Assert.That(asJsonObject, Is.Not.Null);
@@ -74,7 +74,7 @@ public class MofJsonTests
         element.set("child", childElement);
         element.set("array", new[] { arrayElement1, arrayElement2 });
 
-        var jsonText = MofJsonConverter.ConvertToJsonWithDefaultParameter(element);
+        var jsonText = MofJsonConverter.ConvertToJsonStringWithDefaultParameter(element);
 
         var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
         Assert.That(asJsonObject, Is.Not.Null);
@@ -106,7 +106,7 @@ public class MofJsonTests
         element.set("name", "parent");
         element.set("child", childElement);
 
-        var jsonText = MofJsonConverter.ConvertToJsonWithDefaultParameter(element);
+        var jsonText = MofJsonConverter.ConvertToJsonStringWithDefaultParameter(element);
 
         var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
         Assert.That(asJsonObject, Is.Not.Null);

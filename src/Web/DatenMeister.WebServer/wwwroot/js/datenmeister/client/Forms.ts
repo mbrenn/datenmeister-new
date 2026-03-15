@@ -145,14 +145,14 @@ export interface IGetDefaultViewModesResult {
     viewMode: Mof.DmObject;
 }
 
-export async function getDefaultViewMode(workspace: string, extentUri: string){
+export async function getDefaultViewMode(workspace: string, extentUri: string): Promise<IGetDefaultViewModesResult> {
     const apiResult = await ApiConnection.get<IGetDefaultViewModesResult>(
         Settings.baseUrl +
         "api/forms/get_default_viewmode/" +
         encodeURIComponent(workspace) +
         "/" +
         encodeURIComponent(extentUri));
-        
+
     return {
         viewMode: Mof.convertJsonObjectToDmObject(apiResult.viewMode)
     }

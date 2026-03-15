@@ -73,7 +73,7 @@ public class ExtentController(IWorkspaceLogic workspaceLogic, IScopeStorage scop
         var metaObject = (foundExtent as MofExtent)?.GetMetaObject();
         return metaObject == null
             ? new ActionResult<string?>(null as string)
-            : new MofJsonConverter().ConvertToJson(metaObject);
+            : new MofJsonConverter().ConvertToJsonString(metaObject);
     }
 
     /// <summary>

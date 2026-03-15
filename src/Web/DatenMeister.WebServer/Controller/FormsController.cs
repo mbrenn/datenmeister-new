@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
+﻿using System.Text.Json.Nodes;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -22,7 +23,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     private readonly FormsControllerInternal _internal = new(workspaceLogic, scopeStorage);
 
     [HttpGet("api/forms/get/{formUri}")]
-    public ActionResult<string> Get(string formUri, string? formType)
+    public ActionResult<JsonObject?> Get(string formUri, string? formType)
     {
         formUri = MvcUrlEncoder.DecodePathOrEmpty(formUri);
         var form = _internal.GetInternal(formUri);
@@ -41,11 +42,11 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return new MofJsonConverter
         {
             ResolveCompositesRecursively = true
-        }.ConvertToJson(form);
+        }.ConvertToJsonObject(form);
     }
 
     [HttpGet("api/forms/default_for_item/{workspaceId}/{itemUrl}/{viewMode?}")]
-    public ActionResult<string> GetDefaultForItem(string workspaceId, string itemUrl, string? viewMode)
+    public ActionResult<JsonObject?> GetDefaultForItem(string workspaceId, string itemUrl, string? viewMode)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         itemUrl = MvcUrlEncoder.DecodePathOrEmpty(itemUrl);
@@ -56,11 +57,11 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return new MofJsonConverter
         {
             ResolveCompositesRecursively = true
-        }.ConvertToJson(form);
+        }.ConvertToJsonObject(form);
     }
 
     [HttpGet("api/forms/default_for_extent/{workspaceId}/{extentUri}/{viewMode?}")]
-    public ActionResult<string> GetDefaultForExtent(string workspaceId, string extentUri, string? viewMode)
+    public ActionResult<JsonObject?> GetDefaultForExtent(string workspaceId, string extentUri, string? viewMode)
     {
         viewMode = MvcUrlEncoder.DecodePath(viewMode);
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -71,7 +72,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return new MofJsonConverter
         {
             ResolveCompositesRecursively = true
-        }.ConvertToJson(form);
+        }.ConvertToJsonObject(form);
     }
 
     /// <summary>
@@ -193,7 +194,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
 
     [HttpGet("api/forms/default_object_for_metaclass/{metaClass?}/{viewMode?}")]
-    public ActionResult<string> GetDefaultObjectForMetaClass(string? metaClass, string? viewMode) 
+    public ActionResult<JsonObject?> GetDefaultObjectForMetaClass(string? metaClass, string? viewMode) 
     {
         viewMode = MvcUrlEncoder.DecodePath(viewMode);
         metaClass = MvcUrlEncoder.DecodePath(metaClass);
@@ -206,7 +207,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
         var form = _internal.GetObjectFormForMetaClassInternal(metaClass, viewMode ?? string.Empty);
 
-        return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
+        return new MofJsonConverter().ConvertToJsonObject(form);
     }
 
     [HttpGet("api/forms/get_viewmodes")]
@@ -216,7 +217,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return new GetViewModesResult
         {
             ViewModes = viewModes
-                .Select(x=> MofJsonConverter.ConvertToJsonWithDefaultParameter(x))
+                .Select(x => new MofJsonConverter().ConvertToJsonObject(x))
                 .ToList()
         };
     }
@@ -226,7 +227,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         /// <summary>
         /// A list of view modes
         /// </summary>
-        public List<string> ViewModes { get; set; } = [];
+        public List<JsonObject?> ViewModes { get; set; } = [];
     }
 
     [HttpGet("api/forms/get_default_viewmode/{workspaceId}/{extentUri}")]
@@ -248,7 +249,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
         return new GetDefaultViewModeResult()
         {
-            ViewMode = MofJsonConverter.ConvertToJsonWithDefaultParameter(viewMode)
+            ViewMode = new MofJsonConverter().ConvertToJsonObject(viewMode)
         };
     }
 
@@ -257,6 +258,6 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         /// <summary>
         /// A list of view modes
         /// </summary>
-        public string ViewMode { get; set; } = ViewModes.Default;
+        public JsonObject? ViewMode { get; set; }
     }
 }

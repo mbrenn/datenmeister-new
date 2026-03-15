@@ -29,7 +29,7 @@ public class ExtentControllerTests
         data.set(ExtentConfiguration.NameProperty, "name");
         data.set(ExtentConfiguration.ExtentTypeProperty, "extentType");
 
-        var asJson = MofJsonConverter.ConvertToJsonWithDefaultParameter(data);
+        var asJson = MofJsonConverter.ConvertToJsonStringWithDefaultParameter(data);
         var deserialized = JsonSerializer.Deserialize<MofObjectAsJson>(asJson)
                            ?? throw new InvalidOperationException("Serialization failed");
 
@@ -53,7 +53,7 @@ public class ExtentControllerTests
         data.set(ExtentConfiguration.NameProperty, "name");
         data.set(ExtentConfiguration.ExtentTypeProperty, "extentType");
 
-        var asJson = MofJsonConverter.ConvertToJsonWithDefaultParameter(data);
+        var asJson = MofJsonConverter.ConvertToJsonStringWithDefaultParameter(data);
         var deserialized = JsonSerializer.Deserialize<MofObjectAsJson>(asJson)
                            ?? throw new InvalidOperationException("Serialization failed");
 

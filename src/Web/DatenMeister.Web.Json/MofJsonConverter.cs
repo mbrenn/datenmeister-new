@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Web;
+using System.Text.Json.Nodes;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
@@ -12,7 +13,7 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 namespace DatenMeister.Web.Json;
 
 /// <summary>
-/// Converts an object or a mof element to a json element in which
+/// Converts an object or a mof element to a json string in which
 /// the metaclass and other meta information is available for the json interface.
 ///
 /// The corresponding JavaScript function Mof.ts::createObjectFromJson
@@ -74,11 +75,22 @@ public class MofJsonConverter
     }
 
     /// <summary>
+    /// Converts the object to a json object by just converting it to a string and then back to an object
+    /// </summary>
+    /// <param name="value">Value to be converted</param>
+    /// <returns>The resulting object</returns>
+    public JsonObject? ConvertToJsonObject(object? value)
+    {
+        var jsonAsString = ConvertToJsonString(value);
+        return JsonNode.Parse(jsonAsString)?.AsObject();
+    }
+
+    /// <summary>
     ///     Converts the given element to a json object
     /// </summary>
     /// <param name="value">Value to be converted</param>
     /// <returns>The converted element</returns>
-    public string ConvertToJson(object? value)
+    public string ConvertToJsonString(object? value)
     {
         var builder = new StringBuilder();
 
@@ -108,9 +120,9 @@ public class MofJsonConverter
     /// </summary>
     /// <param name="value">Value to be converted</param>
     /// <returns>The converted value</returns>
-    public static string ConvertToJsonWithDefaultParameter(IObject value)
+    public static string ConvertToJsonStringWithDefaultParameter(IObject value)
     {
-        return new MofJsonConverter().ConvertToJson(value);
+        return new MofJsonConverter().ConvertToJsonString(value);
     }
 
     /// <summary>
@@ -120,7 +132,7 @@ public class MofJsonConverter
     /// <param name="value">Value to be converted</param>
     /// <param name="isReference">true, if the value is a reference</param>
     /// <param name="recursionDepth">Defines the recursion depth to be handled</param>
-    private void ConvertToJson(StringBuilder builder, IObject value, bool isReference, int recursionDepth = 0)
+    private void ConvertToJsonString(StringBuilder builder, IObject value, bool isReference, int recursionDepth = 0)
     {
         if (value is MofObjectShadow asShadow)
         {
@@ -304,7 +316,7 @@ public class MofJsonConverter
         }
         else if (DotNetHelper.IsOfMofObject(propertyValue))
         {
-            ConvertToJson(builder, (propertyValue as IObject)!, !isComposite, recursionDepth + 1);
+            ConvertToJsonString(builder, (propertyValue as IObject)!, !isComposite, recursionDepth + 1);
         }
         else if (DotNetHelper.IsOfEnumeration(propertyValue)
                  && propertyValue is IEnumerable enumeration)

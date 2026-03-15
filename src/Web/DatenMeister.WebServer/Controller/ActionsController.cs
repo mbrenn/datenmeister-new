@@ -68,7 +68,7 @@ public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage sco
                     var resultText = string.Empty;
                     if (resultOfAction != null)
                     {
-                        resultText = MofJsonConverter.ConvertToJsonWithDefaultParameter(resultOfAction);
+                        resultText = MofJsonConverter.ConvertToJsonStringWithDefaultParameter(resultOfAction);
                     }
 
                     return new ExecuteActionResult(true, string.Empty, string.Empty, resultText);
@@ -106,7 +106,7 @@ public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage sco
             var resultText = string.Empty;
             if (result != null)
             {
-                resultText = MofJsonConverter.ConvertToJsonWithDefaultParameter(result);
+                resultText = MofJsonConverter.ConvertToJsonStringWithDefaultParameter(result);
             }
 
             return new ExecuteActionResult(true, string.Empty, string.Empty, resultText);

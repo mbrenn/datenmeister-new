@@ -8,7 +8,7 @@ export function includeTests() {
             it('Querying Elements - API Check', async () => {
                 // We are just querying the temporary extent and verify that the result is not null
                 var query = new Query.QueryBuilder();
-                var extentViewNode = Query.getElementsOfExtent(query, "Data", "dm:///_internal/temp");
+                var extentViewNode = Query.getElementsOfExtent(query, "TemporaryData", "dm:///_internal/temp");
                 chai.expect(extentViewNode).to.not.be.null;
                 var result = await ClientElements.queryObject(query.queryStatement);
                 chai.expect(result).to.not.be.null;

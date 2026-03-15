@@ -8,8 +8,8 @@ export function includeTests() {
                 chai.assert.isTrue(result.success, "Element was not successfully created");
                 const uri = result.uri;
                 chai.assert.isTrue(uri !== undefined && uri !== null && uri !== "", "Uri was not set");
-                await ClientItems.setProperty("Data", uri, "name", "Test");
-                const property = await ClientItems.getProperty("Data", uri, "name");
+                await ClientItems.setProperty(result.workspace, uri, "name", "Test");
+                const property = await ClientItems.getProperty(result.workspace, uri, "name");
                 chai.assert.isTrue(property === "Test", "Property could not be set correctly");
             });
             it('Test Temporary Element with MetaClass', async () => {
@@ -17,7 +17,7 @@ export function includeTests() {
                 chai.assert.isTrue(result.success, "Element was not successfully created");
                 const uri = result.uri;
                 chai.assert.isTrue(uri !== undefined && uri !== null && uri !== "", "Uri was not set");
-                const element = await ClientItems.getObjectByUri("Data", uri);
+                const element = await ClientItems.getObjectByUri(result.workspace, uri);
                 chai.assert.isTrue(element !== undefined, "Element is unexpectedly null");
                 chai.assert.isTrue(element.metaClass !== undefined, "Element.metaClass is unexpectedly null");
                 chai.assert.isTrue(element.metaClass.uri === "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");

@@ -28,7 +28,7 @@ public class FormControllerTests
             zipExtent.contextURI(),
             ViewModes.Default);
         Assert.That(foundForm, Is.Not.Null);
-        Assert.That(foundForm.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
+        Assert.That(foundForm.Value!.ToString().IndexOf("tab", StringComparison.Ordinal) != -1);
             
         dm.Dispose();
     }
@@ -43,7 +43,7 @@ public class FormControllerTests
             + "?metaclass=" + HttpUtility.UrlEncode( "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode"),
             ViewModes.Default);
         Assert.That(foundForm, Is.Not.Null);
-        Assert.That(foundForm.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
+        Assert.That(foundForm.Value!.ToString().IndexOf("tab", StringComparison.Ordinal) != -1);
             
         dm.Dispose();
     }
@@ -61,7 +61,7 @@ public class FormControllerTests
 
         Assert.That(foundForm, Is.Not.Null);
         Assert.That(foundForm.Value, Is.Not.Null);
-        Assert.That(foundForm.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
+        Assert.That(foundForm.Value!.ToString().IndexOf("tab", StringComparison.Ordinal) != -1);
             
         dm.Dispose();
     }

@@ -105,7 +105,7 @@ class TableForm {
             this.firstRun = false;
             // Check if debug mode is enabled via URL parameter
             const urlParams = new URLSearchParams(window.location.search);
-            this.isDebug = urlParams.get('debug') === 'true';
+            this.isDebug = urlParams.get('debug') === 'true' || urlParams.get('debug') === '1';
             this.tableCache.cacheContainer = $("<div class='dm-tableform-container'></div>");
             parent.append(this.tableCache.cacheContainer);
             this.tableCache.cacheHeadline = $("<h2><a></a></h2>");

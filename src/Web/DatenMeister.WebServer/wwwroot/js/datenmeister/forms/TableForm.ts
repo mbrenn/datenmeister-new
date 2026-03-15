@@ -207,7 +207,7 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
 
             // Check if debug mode is enabled via URL parameter
             const urlParams = new URLSearchParams(window.location.search);
-            this.isDebug = urlParams.get('debug') === 'true';
+            this.isDebug = urlParams.get('debug') === 'true' || urlParams.get('debug') === '1';
 
             this.tableCache.cacheContainer = $("<div class='dm-tableform-container'></div>");
             parent.append(this.tableCache.cacheContainer);

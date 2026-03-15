@@ -153,11 +153,18 @@ export function convertToDom(mofElement: any): JQuery {
         const asElement = mofElement as DmObject;
         const list = $("<ul></ul>");
 
-        if (asElement.metaClass !== undefined && asElement.metaClass.fullName !== undefined) {
+        if (asElement.metaClass !== undefined) {
+            const name =  asElement.metaClass.fullName ?? asElement.metaClass.uri;
             const row = $("<li><em></em></li>");
             $("em", row)
                 .attr('title', asElement.metaClass.uri)
-                .text("[[MetaClass: " + asElement.metaClass.fullName + "]]");
+                .text("[[MetaClass: " + name + "]]");
+            
+            ElementClient.loadNameByUri(asElement.metaClass.workspace, asElement.metaClass.uri).then(
+                (x) => {
+                    $("em", row).text("[[MetaClass: " + x.name + "]]");
+                }           
+            );
                 
             list.append(row);
         }
@@ -186,7 +193,7 @@ export function convertToDom(mofElement: any): JQuery {
 
                 const row = $("<li></li>");
                 const span = $("<span></span>");
-                span.text(n + ": ");
+                span.text(`[${n}]: `);
                 span.append(convertToDom(value));
                 row.append(span);
 

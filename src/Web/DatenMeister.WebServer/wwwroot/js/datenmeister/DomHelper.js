@@ -111,11 +111,15 @@ export function convertToDom(mofElement) {
     else if ((typeof mofElement === "object" || typeof mofElement === "function") && (mofElement !== null)) {
         const asElement = mofElement;
         const list = $("<ul></ul>");
-        if (asElement.metaClass !== undefined && asElement.metaClass.fullName !== undefined) {
+        if (asElement.metaClass !== undefined) {
+            const name = asElement.metaClass.fullName ?? asElement.metaClass.uri;
             const row = $("<li><em></em></li>");
             $("em", row)
                 .attr('title', asElement.metaClass.uri)
-                .text("[[MetaClass: " + asElement.metaClass.fullName + "]]");
+                .text("[[MetaClass: " + name + "]]");
+            ElementClient.loadNameByUri(asElement.metaClass.workspace, asElement.metaClass.uri).then((x) => {
+                $("em", row).text("[[MetaClass: " + x.name + "]]");
+            });
             list.append(row);
         }
         if (asElement.id !== undefined) {
@@ -138,7 +142,7 @@ export function convertToDom(mofElement) {
                 let value = asElement.get(n);
                 const row = $("<li></li>");
                 const span = $("<span></span>");
-                span.text(n + ": ");
+                span.text(`[${n}]: `);
                 span.append(convertToDom(value));
                 row.append(span);
                 list.append(row);

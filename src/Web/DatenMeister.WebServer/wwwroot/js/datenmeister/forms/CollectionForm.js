@@ -13,49 +13,7 @@ var _TableForm = _DatenMeister._Forms._TableForm;
 import * as ActionField from "../fields/ActionField.js";
 import { StatusFieldControl } from "../controls/StatusFieldControl.js";
 import { ElementBreadcrumb } from "../controls/ElementBreadcrumb.js";
-import * as QueryEngine from "../modules/QueryEngine.js";
 export class CollectionFormHtmlElements {
-}
-/**
- * Creates a query builder with the provided filters, ordering, and limit options.
- *
- * @param {QueryFilterParameter} query - The query filter parameter containing filter properties, ordering, and free-text filter.
- * @param {number} [limit] - An optional limit for the number of results. If undefined, a default limit is applied. If less than 0, no limit is applied.
- * @return {QueryEngine.QueryBuilder} - An instance of the QueryEngine's QueryBuilder configured with the specified parameters.
- */
-export function createQueryBuilder(query, limit) {
-    const builder = new QueryEngine.QueryBuilder();
-    if (query.queryWorkspace !== undefined && query.queryUrl !== undefined) {
-        // In case we are just using quzery, we use that one as input. 
-        QueryEngine.referenceExistingNode(builder, query.queryWorkspace, query.queryUrl);
-    }
-    else {
-        QueryEngine.addDynamicSource(builder, "input");
-    }
-    for (const property in query.filterByProperties) {
-        QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
-    }
-    if (query.orderBy !== undefined) {
-        QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
-    }
-    if (query.filterByFreetext) {
-        QueryEngine.filterByFreetext(builder, query.filterByFreetext);
-    }
-    if (query.columnsIncludeOnly) {
-        QueryEngine.columnFilterIncludeOnly(builder, query.columnsIncludeOnly);
-    }
-    if (query.columnsExclude) {
-        QueryEngine.columnFilterExclude(builder, query.columnsExclude);
-    }
-    // Imposes only a limit in case it is not defined or positive
-    // in case the given limit < 0, then no limit is applied
-    if (limit === undefined) {
-        QueryEngine.limit(builder, 101);
-    }
-    if (limit > 0) {
-        QueryEngine.limit(builder, limit);
-    }
-    return builder;
 }
 /*
     Creates a form containing a collection of root items of an extent
@@ -145,7 +103,14 @@ export class CollectionFormCreator {
         this.statusTextControl.setListStatus("Loading Form", true);
         // Wait for both
         tthis.formElement = form;
-        debugElementToDom(form, "#debug_formelement");
+        const debugSpan = $("<span>")
+            .text("Debug FormObject")
+            .addClass("btn btn-light")
+            .on('click', () => {
+            debugElementToDom(form, "#debug_formelement");
+            debugSpan.remove();
+        });
+        $("#debug_formelement").append(debugSpan);
         this.statusTextControl.setListStatus("Create Form", false);
         await tthis.createFormByCollection(configuration);
         this.statusTextControl.setListStatus("Create Form", true);

@@ -115,7 +115,7 @@ public class CopyOption
             
             var sourceObject = parameters.SourceObject as MofObject; 
             var attribute = sourceObject?.GetClassModel()?.FindAttribute(parameters.PropertyName);
-            if (parameters.ObjectToBeCopied is UriReference)
+            if (attribute == null && parameters.ObjectToBeCopied is UriReference)
             {
                 return CopyType.KeepReference;
             }
@@ -125,7 +125,7 @@ public class CopyOption
             // First check, if the source or target extent is null. If that is the case, then
             // we will copy because we will never find the values again!
             if (sourceExtent == null || targetExtent == null)
-                return CopyType.Clone;
+                return parameters.ObjectToBeCopied is UriReference ? CopyType.KeepReference : CopyType.Clone;
 
             // Small helper method which identifies whether a uri reference is within the sourceExtent
             bool IsValueWithinSourceExtent()
@@ -203,7 +203,7 @@ public class CopyOption
                 return CopyType.KeepReference;
             }
 
-            return isComposite ? CopyType.Clone : CopyType.KeepReference;
+            return isComposite && parameters.ObjectToBeCopied is not UriReference ? CopyType.Clone : CopyType.KeepReference;
         };
     }
 }

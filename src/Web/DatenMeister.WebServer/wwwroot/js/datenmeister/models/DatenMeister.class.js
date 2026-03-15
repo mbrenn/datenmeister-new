@@ -444,6 +444,7 @@ export var _DataViews;
         _RowOrderByNode.input = "input";
         _RowOrderByNode.propertyName = "propertyName";
         _RowOrderByNode.orderDescending = "orderDescending";
+        _RowOrderByNode._name_ = "name";
         _Row._RowOrderByNode = _RowOrderByNode;
         _Row.__RowOrderByNode_Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9";
         class _RowFilterOnPositionNode {
@@ -451,6 +452,7 @@ export var _DataViews;
         _RowFilterOnPositionNode.input = "input";
         _RowFilterOnPositionNode.amount = "amount";
         _RowFilterOnPositionNode.position = "position";
+        _RowFilterOnPositionNode._name_ = "name";
         _Row._RowFilterOnPositionNode = _RowFilterOnPositionNode;
         _Row.__RowFilterOnPositionNode_Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f";
         class _RowFlattenNode {
@@ -498,6 +500,7 @@ export var _DataViews;
         }
         _SelectByPathNode.workspaceId = "workspaceId";
         _SelectByPathNode.path = "path";
+        _SelectByPathNode._name_ = "name";
         _Source._SelectByPathNode = _SelectByPathNode;
         _Source.__SelectByPathNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode";
         class _DynamicSourceNode {

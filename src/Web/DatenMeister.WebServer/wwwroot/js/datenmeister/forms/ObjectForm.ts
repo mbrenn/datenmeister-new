@@ -11,16 +11,13 @@ import * as VML from "./ViewModeLogic.js";
 import * as ClientForms from "../client/Forms.js";
 import {debugElementToDom} from "../DomHelper.js";
 import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl.js";
-import {FormSelectionControl} from "../controls/FormSelectionControl.js"
 import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 import {FormMode} from "./Forms.js";
 import * as IForm from "./Interfaces.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-import {ItemLink} from "../ApiModels.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
-import {WorkspaceData} from "../Settings.js";
 
 export class ObjectFormHtmlElements
 {
@@ -334,8 +331,25 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
             this.statusTextControl.setListStatus("Load Form", true);
             
             // First the debug information
-            debugElementToDom(element1, "#debug_mofelement");
-            debugElementToDom(form, "#debug_formelement");
+            const debugMofSpan = $("<span>")
+                .text("Debug MofObject")
+                .addClass("btn btn-light")
+                .on('click', () => {
+                    debugElementToDom(element1, "#debug_mofelement");
+                    debugMofSpan.remove();
+                });
+
+            $("#debug_mofelement").append(debugMofSpan);
+
+            const debugFormSpan = $("<span>")
+                .text("Debug FormObject")
+                .addClass("btn btn-light")
+                .on('click', () => {
+                    debugElementToDom(form, "#debug_formelement");
+                    debugFormSpan.remove();
+                });
+
+            $("#debug_formelement").append(debugFormSpan);
 
             // Now created the object form
             this.htmlElements.itemContainer.empty();

@@ -258,8 +258,6 @@ public class ObjectCopier
                     TargetObject = targetElement
                 };
 
-                if ((value as MofElement)?.Id.Contains("Property") == true) Debugger.Break(); 
-
                 Interlocked.Increment(ref _predicateInvocationCount);
                 forceCopy = copyOptions.PredicateToClone(parameters);
 

@@ -159,7 +159,6 @@ public class MofJsonConverter
             ? classModel.Attributes.Select(x => x.Name)
             : allProperties.getPropertiesBeingSet();
         
-        
         foreach (var property in propertyList)
         {
             var isPropertySet = value.isSet(property);
@@ -208,6 +207,11 @@ public class MofJsonConverter
             {
                 builder.Append($",\r\n{IndentString}\"r\": ");
                 AppendValue(builder, uri);
+
+                if (value.GetUriExtentOf()?.GetWorkspace() == null)
+                {
+                    Debugger.Break();
+                }
             }
         }
 

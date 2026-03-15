@@ -217,8 +217,22 @@ export class ObjectFormCreatorForItem {
             this.statusTextControl.setListStatus("Load Object", true);
             this.statusTextControl.setListStatus("Load Form", true);
             // First the debug information
-            debugElementToDom(element1, "#debug_mofelement");
-            debugElementToDom(form, "#debug_formelement");
+            const debugMofSpan = $("<span>")
+                .text("Debug MofObject")
+                .addClass("btn btn-light")
+                .on('click', () => {
+                debugElementToDom(element1, "#debug_mofelement");
+                debugMofSpan.remove();
+            });
+            $("#debug_mofelement").append(debugMofSpan);
+            const debugFormSpan = $("<span>")
+                .text("Debug FormObject")
+                .addClass("btn btn-light")
+                .on('click', () => {
+                debugElementToDom(form, "#debug_formelement");
+                debugFormSpan.remove();
+            });
+            $("#debug_formelement").append(debugFormSpan);
             // Now created the object form
             this.htmlElements.itemContainer.empty();
             const objectFormCreator = new ObjectFormCreator(this.htmlElements);

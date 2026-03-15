@@ -536,9 +536,22 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// <returns>The cloned form including the original uri and workspalce</returns>
     public static IElement CloneForm(IElement form)
     {
+        var copyOptions = new CopyOption()
+        {
+            PredicateToClone = CopyOption.GetPredicateForUmlCopying(
+                new CopyPredicateParameter
+                {
+                    DoNotCopyIfSourceWorkspaceIsDifferentTo = WorkspaceNames.WorkspaceManagement,
+                    CopyAcrossExtents = false,
+                    CopyAcrossWorkspaces = false
+                })
+        };
+        
         // Performs the cloning
+        ObjectCopier.FullDebug = true;
         form = ObjectCopier.Copy(
-            new MofFactory(form), form, CopyOptions.None);
+            new MofFactory(form), form, copyOptions);
+        ObjectCopier.FullDebug = false;
 
         // Sets the original ori and workspace, so the client can reference to the original uri
         var originalUrl =

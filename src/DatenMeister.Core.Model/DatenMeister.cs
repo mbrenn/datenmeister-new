@@ -1097,6 +1097,9 @@ public class _DataViews
             public static readonly string @orderDescending = "orderDescending";
             public IElement? @_orderDescending = null;
 
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
         }
 
         public _RowOrderByNode @RowOrderByNode = new ();
@@ -1114,6 +1117,9 @@ public class _DataViews
 
             public static readonly string @position = "position";
             public IElement? @_position = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
 
         }
 
@@ -1231,6 +1237,9 @@ public class _DataViews
 
             public static readonly string @path = "path";
             public IElement? @_path = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
 
         }
 

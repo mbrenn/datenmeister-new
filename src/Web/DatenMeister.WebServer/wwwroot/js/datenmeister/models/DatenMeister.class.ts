@@ -509,6 +509,7 @@ export namespace _DataViews
                     static input = "input";
                     static propertyName = "propertyName";
                     static orderDescending = "orderDescending";
+                    static _name_ = "name";
                 }
 
                 export const __RowOrderByNode_Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9";
@@ -517,6 +518,7 @@ export namespace _DataViews
                     static input = "input";
                     static amount = "amount";
                     static position = "position";
+                    static _name_ = "name";
                 }
 
                 export const __RowFilterOnPositionNode_Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f";
@@ -572,6 +574,7 @@ export namespace _DataViews
                 {
                     static workspaceId = "workspaceId";
                     static path = "path";
+                    static _name_ = "name";
                 }
 
                 export const __SelectByPathNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode";

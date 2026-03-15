@@ -2771,6 +2771,14 @@ public class DataViews
                     _wrappedElement.set("orderDescending", value);
             }
 
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f",
@@ -2830,6 +2838,14 @@ public class DataViews
                     _wrappedElement.getOrDefault<int>("position");
                 set => 
                     _wrappedElement.set("position", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
             }
 
         }
@@ -3171,6 +3187,14 @@ public class DataViews
                     _wrappedElement.getOrDefault<string?>("path");
                 set => 
                     _wrappedElement.set("path", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
             }
 
         }
@@ -8367,20 +8391,18 @@ public class Forms
 
         public static UriReferenceFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
-        // Not found
-        public object? @defaultWorkspace
+        public string? @defaultWorkspace
         {
             get =>
-                _wrappedElement.getOrDefault<object?>("defaultWorkspace");
+                _wrappedElement.getOrDefault<string?>("defaultWorkspace");
             set => 
                 _wrappedElement.set("defaultWorkspace", value);
         }
 
-        // Not found
-        public object? @defaultExtent
+        public string? @defaultExtent
         {
             get =>
-                _wrappedElement.getOrDefault<object?>("defaultExtent");
+                _wrappedElement.getOrDefault<string?>("defaultExtent");
             set => 
                 _wrappedElement.set("defaultExtent", value);
         }

@@ -321,11 +321,13 @@
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="d4911f0d-61d9-401e-9afb-bcc667a6dfa1" name="comparisonMode" type-ref="#DatenMeister.Models.DataViews.ComparisonMode" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="e6948145-e1b7-4542-84e5-269dab1aa4c9" name="RowOrderByNode">
+        <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="65fdf89e-e9bc-4d7f-acf1-bcdfdd5fb6ab" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e6d02456-c3dd-4975-936b-9c530d371675" name="input" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f15fecaf-9db0-4df6-8779-297bfe2ed71e" name="propertyName" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="2a958352-bfdf-4e41-8a67-f17923655f8d" name="orderDescending" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="d705b34b-369f-4b44-9a00-013e1daa759f" name="RowFilterOnPositionNode">
+        <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="65fdf89e-e9bc-4d7f-acf1-bcd98d5fbaab" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8dda35ff-32b8-4597-85e4-f7c0f0488fbd" name="input" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="db1c165b-92cb-4bb6-a6d2-fcdb7c522f0c" type-ref="dm:///_internal/model/primitivetypes#Integer" name="amount" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="3e952af8-b5db-4ce3-9ff0-144857095eba" name="position" type-ref="dm:///_internal/model/primitivetypes#Integer" />
@@ -360,6 +362,7 @@
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a93e4d0b-d9cf-4b55-ac8f-a3d08713d0d1" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.SelectByPathNode" name="SelectByPathNode">
+        <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="65fdf89e-e9bc-4d7f-acf1-bcd98d5fb6ab" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f7932d28-cb5d-47a3-9f09-e57cfe6175b8" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4300e582-e75a-46c9-aafe-65871b3dbb46" name="path" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>

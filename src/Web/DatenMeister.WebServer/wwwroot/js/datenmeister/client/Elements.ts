@@ -145,12 +145,18 @@ export async function queryObject(query: Mof.DmObject, parameters?: IQueryObject
         parameters.query = Mof.createJsonFromObject(query);
     }
 
-    const result = await ApiConnection.post<any>(
+    const resultFromServer = await ApiConnection.post<any>(
         Settings.baseUrl +
         "api/elements/query_object",
         parameters);
 
+    const result = new Array<Mof.DmObject>();
+    for (const n in resultFromServer.result) {
+        const v = resultFromServer.result[n];
+        result.push(Mof.convertJsonObjectToDmObject(v));
+    }
+
     return {
-        result: convertToMofObjects(result.result)
+        result: result
     };
 }

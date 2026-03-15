@@ -1,7 +1,6 @@
 import * as ApiConnection from "../ApiConnection.js";
 import * as Settings from "../Settings.js";
 import * as Mof from "../Mof.js";
-import { convertToMofObjects } from "./Items.js";
 export function getAllWorkspaces() {
     return load(undefined, undefined);
 }
@@ -69,10 +68,15 @@ export async function queryObject(query, parameters) {
     if (parameters.query === undefined || parameters.query === null) {
         parameters.query = Mof.createJsonFromObject(query);
     }
-    const result = await ApiConnection.post(Settings.baseUrl +
+    const resultFromServer = await ApiConnection.post(Settings.baseUrl +
         "api/elements/query_object", parameters);
+    const result = new Array();
+    for (const n in resultFromServer.result) {
+        const v = resultFromServer.result[n];
+        result.push(Mof.convertJsonObjectToDmObject(v));
+    }
     return {
-        result: convertToMofObjects(result.result)
+        result: result
     };
 }
 //# sourceMappingURL=Elements.js.map

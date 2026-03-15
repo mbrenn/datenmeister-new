@@ -238,9 +238,10 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
         }
 
         // Third, convert the query result to the json interface
+        var resultConverter = new MofJsonConverter { MaxRecursionDepth = 2 };
         var result = new QueryObjectResult
         {
-            Result = ItemsController.ConvertToJson(results)
+            Result = results.Select(x => resultConverter.ConvertToJsonObject(x)).ToList()
         };
 
         return result;
@@ -249,9 +250,8 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
     public class QueryObjectResult
     {
         /// <summary>
-        /// Gets or sets the result of the query as a jsonized string of MofObjects. 
-        /// The client side has to convert back the information
+        /// Gets or sets the result of the query as a list of MofObjects. 
         /// </summary>
-        public string Result { get; set; } = string.Empty;
+        public List<System.Text.Json.Nodes.JsonObject?> Result { get; set; } = [];
     }
 }

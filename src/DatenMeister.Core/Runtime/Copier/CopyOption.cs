@@ -261,7 +261,7 @@ public record CopyPredicateParameter
     ///
     /// This setting only applies when both source and target have identifiable workspaces.
     /// </remarks>
-    public bool CopyAcrossWorkspaces = true;
+    public bool CopyAcrossWorkspaces = false;
 
     /// <summary>
     /// Gets or sets a value indicating whether objects should be copied when

@@ -80,7 +80,7 @@ public class TemporaryExtentPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage
             {
                 await Task.Delay(CleaningPeriod, cancellationToken);
                 logic.CleanElements();
-                ClassLogger.Info("Cleaning task executed");   
+                ClassLogger.Trace("Cleaning task executed");   
             }
         }
         catch (OperationCanceledException)

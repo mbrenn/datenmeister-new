@@ -148,7 +148,7 @@ public class LockingLogic
             n++;
         }
             
-        Logger.Info($"Updated {n} Lockfiles");
+        Logger.Trace($"Updated {n} Lockfiles");
     }
 
     /// <summary>

@@ -20,11 +20,14 @@ export class TableState {
     setOrderBy(property, descending) {
         let node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
         if (!node) {
-            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
+            node = QueryEngine.createForOrderByProperty(undefined, property, descending);
             this.addNode(node);
         }
-        node.set(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, property);
-        node.set(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, descending);
+        else {
+            node.set(_DatenMeister._DataViews._Row._RowOrderByNode.name, "Order by '" + property + "' " + (descending ? "descending" : "ascending"));
+            node.set(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, property);
+            node.set(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, descending);
+        }
     }
     removeOrderBy() {
         this.removeNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
@@ -36,10 +39,13 @@ export class TableState {
     setFreeTextFilter(text) {
         let node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
         if (!node) {
-            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
+            node = QueryEngine.createForFilterByFreetext(undefined, text);
             this.addNode(node);
         }
-        node.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, text);
+        else {
+            node.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.name, "Filter by free text '" + text + "'");
+            node.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, text);
+        }
     }
     removeFreeTextFilter() {
         this.removeNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
@@ -50,13 +56,15 @@ export class TableState {
     }
     setFilterByProperty(property, value) {
         let node = this.findFilterByPropertyNode(property);
+        const comparisonMode = _DatenMeister._DataViews.___ComparisonMode.Equal;
         if (!node) {
-            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri);
-            node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, property);
-            node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.comparisonMode, _DatenMeister._DataViews._ComparisonMode.Equal);
+            node = QueryEngine.createForFilterByProperty(undefined, property, value, comparisonMode);
             this.addNode(node);
         }
-        node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, value);
+        else {
+            node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.name, "Filter by property '" + property + "' " + comparisonMode + " '" + value + "'");
+            node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, value);
+        }
     }
     removeFilterByProperty(property) {
         const node = this.findFilterByPropertyNode(property);
@@ -70,14 +78,14 @@ export class TableState {
     }
     setLimit(limit) {
         let node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterOnPositionNode_Uri);
-        if (node) {
-            node.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.amount, limit);
-        }
-        else {
-            node = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterOnPositionNode_Uri);
-            node.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.amount, limit);
+        if (node === undefined) {
+            node = QueryEngine.createForLimit(undefined, limit);
             node.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.position, 0);
             this.addNode(node);
+        }
+        else {
+            node.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.name, "Limit to " + limit + " items");
+            node.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.amount, limit);
         }
     }
     removeLimit() {

@@ -1,5 +1,8 @@
 ﻿import * as ClientWorkspace from "../client/Workspace.js"
 
+import '../../node_modules/chai/register-assert.js';
+declare var assert: Chai.AssertStatic;
+
 export function includeTests() {
 
     describe('Client', function () {
@@ -9,15 +12,15 @@ export function includeTests() {
                         return ClientWorkspace.createWorkspace("Test", "Annotation")
                     })
                         .then(result => {
-                            chai.assert.isTrue(result.success);
+                            assert.isTrue(result.success);
                             return ClientWorkspace.createWorkspace("Test", "Annotation");
                         })
                         .then(result => {
-                            chai.assert.isFalse(result.success);
+                            assert.isFalse(result.success);
                             return ClientWorkspace.deleteWorkspace("Test");
                         })
                         .then(result => {
-                            chai.assert.isTrue(result.success);
+                            assert.isTrue(result.success);
                             done();
                         }).catch(e => done(e));
                 }

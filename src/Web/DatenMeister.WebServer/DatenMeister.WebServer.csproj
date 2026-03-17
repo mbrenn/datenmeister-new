@@ -86,6 +86,7 @@
   <Target Name="CopyNodeModules" BeforeTargets="BeforeBuild">
     <ItemGroup>
       <NodeModules Include="./node_modules/**/*.js" />
+      <NodeModules Include="./node_modules/**/*.d.ts" />
       <NodeModules Include="./node_modules/**/*.css" />
     </ItemGroup>
     <Copy SourceFiles="@(NodeModules)" DestinationFolder="wwwroot/js/node_modules/%(RecursiveDir)" SkipUnchangedFiles="true" />

@@ -4,35 +4,55 @@ import { EntentType } from "../ApiModels.js";
 import { UserEvent } from "../../burnsystems/Events.js";
 import { convertItemWithNameAndIdToDom } from "../DomHelper.js";
 export class Settings {
-    constructor() {
-        this.showBreadcrumb = true;
-        this.showWorkspaceInBreadcrumb = false;
-        this.showExtentInBreadcrumb = false;
-        this.showCancelButton = true;
-        this.hideButtonRow = false;
-        this.hideAtStartup = false;
-        this.setButtonText = "Set";
-        this.headline = undefined;
-    }
+    showBreadcrumb = true;
+    showWorkspaceInBreadcrumb = false;
+    showExtentInBreadcrumb = false;
+    showCancelButton = true;
+    hideButtonRow = false;
+    hideAtStartup = false;
+    setButtonText = "Set";
+    headline = undefined;
 }
 /**
  * Creates a webcontrol which allows the user to select a specific item
  */
 export class SelectItemControl {
-    constructor() {
-        this.loadedWorkspaces = new Array();
-        this.loadedExtents = new Array();
-        /*
-         * Thsee events that can be subscribed
-         */
-        // This method will be called whenever the user has selected an item via the 'Set' button 
-        this.itemSelected = new UserEvent();
-        /**
-         * This method will be called whenever the user has selected an item in the dropdown
-         */
-        this.itemClicked = new UserEvent();
-        this.isDomInitializationDone = false;
-    }
+    // Defines the dropdown element in which the user can select the extent
+    htmlExtentSelect;
+    // Defines the dropdown element in which the user can select the active works
+    htmlWorkspaceSelect;
+    // Defines the element in which the user can select the corresponding list item. 
+    // This element is a clickable list
+    htmlItemsList;
+    // Shows the name of the selected elemnt
+    htmlSelectedElements;
+    // Shows the bread crumb list
+    htmlBreadcrumbList;
+    // Defines the settings of the Select Item
+    settings;
+    loadedWorkspaces = new Array();
+    loadedExtents = new Array();
+    selectedItem;
+    containerDiv;
+    // Defines the id of the workspace, when the workspace shall be pre-selected
+    // This value is set to undefined, when no selection shall be given
+    preSelectWorkspaceById;
+    // Defines the id of the extent, when the extent shall be pre-selected
+    // This value is set to undefined, when no selection shall be given
+    preSelectExtentByUri;
+    // Defines the id of the extent, when the extent shall be pre-selected
+    // This value is set to undefined, when no selection shall be given
+    preSelectItemUri;
+    /*
+     * Thsee events that can be subscribed
+     */
+    // This method will be called whenever the user has selected an item via the 'Set' button 
+    itemSelected = new UserEvent();
+    /**
+     * This method will be called whenever the user has selected an item in the dropdown
+     */
+    itemClicked = new UserEvent();
+    isDomInitializationDone = false;
     // Initializes the Select Item Control and adds it to the given parent
     init(parent, settings) {
         // Performs the initialization of the DOM, providing all elements

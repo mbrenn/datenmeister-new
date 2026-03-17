@@ -15,21 +15,21 @@ export var _MOF;
     let _CMOFExtension;
     (function (_CMOFExtension) {
         class _Tag {
+            static tagOwner = "tagOwner";
+            static ownedComment = "ownedComment";
+            static ownedElement = "ownedElement";
+            static owner = "owner";
         }
-        _Tag.tagOwner = "tagOwner";
-        _Tag.ownedComment = "ownedComment";
-        _Tag.ownedElement = "ownedElement";
-        _Tag.owner = "owner";
         _CMOFExtension._Tag = _Tag;
         _CMOFExtension.__Tag_Uri = "dm:///_internal/model/mof#_MOF-CMOFExtension-Tag";
     })(_CMOFExtension = _MOF._CMOFExtension || (_MOF._CMOFExtension = {}));
     let _Extension;
     (function (_Extension) {
         class _Tag {
+            static _name_ = "name";
+            static value = "value";
+            static element = "element";
         }
-        _Tag._name_ = "name";
-        _Tag.value = "value";
-        _Tag.element = "element";
         _Extension._Tag = _Tag;
         _Extension.__Tag_Uri = "dm:///_internal/model/mof#_MOF-Extension-Tag";
     })(_Extension = _MOF._Extension || (_MOF._Extension = {}));
@@ -55,9 +55,9 @@ export var _MOF;
         _CMOFReflection._Element = _Element;
         _CMOFReflection.__Element_Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Element";
         class _Argument {
+            static _name_ = "name";
+            static value = "value";
         }
-        _Argument._name_ = "name";
-        _Argument.value = "value";
         _CMOFReflection._Argument = _Argument;
         _CMOFReflection.__Argument_Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Argument";
         class _Extent {
@@ -65,25 +65,25 @@ export var _MOF;
         _CMOFReflection._Extent = _Extent;
         _CMOFReflection.__Extent_Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Extent";
         class _Link {
+            static firstElement = "firstElement";
+            static secondElement = "secondElement";
+            static association = "association";
         }
-        _Link.firstElement = "firstElement";
-        _Link.secondElement = "secondElement";
-        _Link.association = "association";
         _CMOFReflection._Link = _Link;
         _CMOFReflection.__Link_Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Link";
         class _Exception {
+            static objectInError = "objectInError";
+            static elementInError = "elementInError";
+            static description = "description";
         }
-        _Exception.objectInError = "objectInError";
-        _Exception.elementInError = "elementInError";
-        _Exception.description = "description";
         _CMOFReflection._Exception = _Exception;
         _CMOFReflection.__Exception_Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Exception";
     })(_CMOFReflection = _MOF._CMOFReflection || (_MOF._CMOFReflection = {}));
     let _Reflection;
     (function (_Reflection) {
         class _Factory {
+            static _package_ = "package";
         }
-        _Factory._package_ = "package";
         _Reflection._Factory = _Factory;
         _Reflection.__Factory_Uri = "dm:///_internal/model/mof#_MOF-Reflection-Factory";
         class _Type {
@@ -95,8 +95,8 @@ export var _MOF;
         _Reflection._Object = _Object;
         _Reflection.__Object_Uri = "dm:///_internal/model/mof#_MOF-Reflection-Object";
         class _Element {
+            static metaclass = "metaclass";
         }
-        _Element.metaclass = "metaclass";
         _Reflection._Element = _Element;
         _Reflection.__Element_Uri = "dm:///_internal/model/mof#_MOF-Reflection-Element";
     })(_Reflection = _MOF._Reflection || (_MOF._Reflection = {}));

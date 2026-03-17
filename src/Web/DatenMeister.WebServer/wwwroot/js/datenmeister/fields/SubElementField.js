@@ -12,6 +12,31 @@ import * as FormActions from "../FormActions.js";
 import * as Navigator from '../Navigator.js';
 import { _UML } from "../models/uml.js";
 export class Control {
+    configuration;
+    isReadOnly;
+    // Is connected to the item url of the element being connected to that element
+    itemUrl;
+    form;
+    /**
+     * Name of the property which contains the subelements
+     */
+    propertyName;
+    /**
+     * The name of the action that shall be executed when the user clicks on the item
+     */
+    itemActionName;
+    /**
+     * Stores the property type. This information is used to pre-select the
+     * SubElementField in which the user can define the metaclass for a element to be created
+     */
+    propertyType;
+    /**
+     * Additional Types to be directly created.
+     * Each of these types will receive a button on which the user can directly
+     * create an object
+     */
+    additionalTypes;
+    _list;
     constructor() {
         this._list = $("<div></div>");
     }
@@ -234,6 +259,8 @@ export class Control {
     }
 }
 export class Field extends Control {
+    _element;
+    field;
     reloadValuesFromServer() {
         const tthis = this;
         const url = this._element.uri;

@@ -9,6 +9,7 @@ export async function exists(workspaceId, extent) {
     return await ApiConnection.get(url);
 }
 export class ExportXmiResult {
+    xmi;
 }
 export async function exportXmi(workspace, extentUri) {
     let url = Settings.baseUrl +
@@ -18,6 +19,7 @@ export async function exportXmi(workspace, extentUri) {
     return await ApiConnection.get(url);
 }
 export class ImportXmiResult {
+    success;
 }
 export async function importXmi(workspace, extentUri, xmi) {
     let url = Settings.baseUrl +

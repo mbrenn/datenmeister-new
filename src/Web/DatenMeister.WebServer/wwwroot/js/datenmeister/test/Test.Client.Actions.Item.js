@@ -3,6 +3,7 @@ import * as ClientExtent from "../client/Extents.js";
 import * as ClientItems from "../client/Items.js";
 import * as ClientActionsItem from "../client/Actions.Items.js";
 import * as Mof from "../Mof.js";
+import '../../node_modules/chai/register-assert.js';
 export function includeTests() {
     describe('Client', () => {
         describe('Actions', () => {
@@ -26,19 +27,19 @@ export function includeTests() {
                     const subChild3 = await ClientItems.createItemAsChild("Test", "dm:///unittest#" + result.itemId, { property: "packagedElement", asList: true });
                     await ClientItems.setProperty("Test", subChild3.itemId, "name", "Child 3");
                     const children = await ClientItems.getProperty("Test", result.itemId, "packagedElement");
-                    chai.assert.isTrue(Array.isArray(children) === true, "Array has to be true");
-                    chai.assert.isTrue(children.length === 3, "Length of array has to be 3");
+                    assert.isTrue(Array.isArray(children) === true, "Array has to be true");
+                    assert.isTrue(children.length === 3, "Length of array has to be 3");
                     const child2Name = children[1].get("name", Mof.ObjectType.String);
-                    chai.assert.isTrue(child2Name === "Child 2", "Name is not found");
+                    assert.isTrue(child2Name === "Child 2", "Name is not found");
                     await ClientActionsItem.moveItemInCollectionUp("Test", result.itemId, "packagedElement", subChild2.itemId);
                     const newChildren = await ClientItems.getProperty("Test", result.itemId, "packagedElement");
                     const child1Name = newChildren[1].get("name", Mof.ObjectType.String);
-                    chai.assert.isTrue(child1Name === "Child 1", "Item has not been moved");
+                    assert.isTrue(child1Name === "Child 1", "Item has not been moved");
                     await ClientActionsItem.moveItemInCollectionDown("Test", result.itemId, "packagedElement", subChild2.itemId);
                     await ClientActionsItem.moveItemInCollectionDown("Test", result.itemId, "packagedElement", subChild2.itemId);
                     const newChildren2 = await ClientItems.getProperty("Test", result.itemId, "packagedElement");
                     const child1Name2 = newChildren2[2].get("name", Mof.ObjectType.String);
-                    chai.assert.isTrue(child1Name2 === "Child 2", "Item has not been moved back");
+                    assert.isTrue(child1Name2 === "Child 2", "Item has not been moved back");
                 });
                 it('MoveUp/Down in Extent', async () => {
                     await ClientItems.deleteRootElements("Test", "dm:///unittest");
@@ -50,21 +51,21 @@ export function includeTests() {
                     await ClientItems.setProperty("Test", subChild3.itemId, "name", "Child 3");
                     const children = (await ClientItems.getRootElements("Test", "dm:///unittest"))
                         .rootElementsAsObjects;
-                    chai.assert.isTrue(Array.isArray(children) === true, "Array has to be true");
-                    chai.assert.isTrue(children.length === 3, "Length of array has to be 3");
+                    assert.isTrue(Array.isArray(children) === true, "Array has to be true");
+                    assert.isTrue(children.length === 3, "Length of array has to be 3");
                     const child2Name = children[1].get("name", Mof.ObjectType.String);
-                    chai.assert.isTrue(child2Name === "Child 2", "Name is not found");
+                    assert.isTrue(child2Name === "Child 2", "Name is not found");
                     await ClientActionsItem.moveItemInExtentUp("Test", "dm:///unittest", subChild2.itemId);
                     const newChildren = (await ClientItems.getRootElements("Test", "dm:///unittest"))
                         .rootElementsAsObjects;
                     const child1Name = newChildren[1].get("name", Mof.ObjectType.String);
-                    chai.assert.isTrue(child1Name === "Child 1", "Item has not been moved");
+                    assert.isTrue(child1Name === "Child 1", "Item has not been moved");
                     await ClientActionsItem.moveItemInExtentDown("Test", "dm:///unittest", subChild2.itemId);
                     await ClientActionsItem.moveItemInExtentDown("Test", "dm:///unittest", subChild2.itemId);
                     const newChildren2 = (await ClientItems.getRootElements("Test", "dm:///unittest"))
                         .rootElementsAsObjects;
                     const child1Name2 = newChildren2[2].get("name", Mof.ObjectType.String);
-                    chai.assert.isTrue(child1Name2 === "Child 2", "Item has not been moved back");
+                    assert.isTrue(child1Name2 === "Child 2", "Item has not been moved back");
                 });
                 after(async function () {
                     await ClientExtent.deleteExtent({

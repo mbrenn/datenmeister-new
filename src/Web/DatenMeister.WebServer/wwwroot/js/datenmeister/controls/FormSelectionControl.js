@@ -6,16 +6,20 @@ import * as DomHelper from "../DomHelper.js";
  * Creates control in which the user can select a specific form
  */
 export class FormSelectionControl {
-    constructor() {
-        /**
-         * This event is thrown when the user has selected a specific form
-         */
-        this.formSelected = new Events.UserEvent();
-        /**
-         * This event is thrown when the user has selected a specific form
-         */
-        this.formResetted = new Events.UserEvent();
-    }
+    selectionField;
+    /**
+     * This event is thrown when the user has selected a specific form
+     */
+    formSelected = new Events.UserEvent();
+    /**
+     * This event is thrown when the user has selected a specific form
+     */
+    formResetted = new Events.UserEvent();
+    /**
+     * Defines the current form url which is used to link the current form
+     * @private
+     */
+    currentFormUrl;
     /**
      * Sets the current form url..
      * This method must be called before calling createControl

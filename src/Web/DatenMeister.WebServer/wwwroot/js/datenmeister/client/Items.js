@@ -275,6 +275,7 @@ export async function removeReferenceFromCollection(workspaceId, itemUrl, parame
     });
 }
 export class ExportXmiResult {
+    xmi;
 }
 export async function exportXmi(workspace, itemUri) {
     let url = Settings.baseUrl +
@@ -284,6 +285,7 @@ export async function exportXmi(workspace, itemUri) {
     return await ApiConnection.get(url);
 }
 export class ImportXmiResult {
+    success;
 }
 export async function importXmi(workspace, itemUri, property, addToCollection, xmi) {
     let url = Settings.baseUrl +

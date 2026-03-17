@@ -1,7 +1,7 @@
 {
   "type": "module",
   "devDependencies": {
-    "@types/chai": "5.2.3",
+    "@types/chai": "^5.2.3",
     "@types/jquery": "4.0.0",
     "@types/mocha": "10.0.10",
     "bootstrap": "5.3.8",

@@ -7,13 +7,15 @@ export var FieldType;
     FieldType[FieldType["References"] = 1] = "References";
 })(FieldType || (FieldType = {}));
 export class DropDownBaseField extends BaseField {
-    constructor() {
-        super(...arguments);
-        this.loadedFields = [];
-        this.fieldType = FieldType.Strings;
-        this.counter = 0;
-        this._loadedFields = [];
-    }
+    loadedFields = [];
+    fieldType = FieldType.Strings;
+    _dropDown;
+    /**
+     * Stores the element to which the DOM needs to be created
+     */
+    _element;
+    counter = 0;
+    _loadedFields = [];
     async createDom(dmElement) {
         const fieldName = this.field.get('name')?.toString() ?? "";
         this._element = dmElement;

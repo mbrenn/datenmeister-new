@@ -4,6 +4,13 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 var _UriReferenceFieldData = _DatenMeister._Forms._UriReferenceFieldData;
 import * as SIC from "../controls/SelectItemControl.js";
 export class Field extends BaseField {
+    _textBox;
+    _elementSelection;
+    _fullNameField;
+    _compositeSelection;
+    _propertyField;
+    _buildUriButton;
+    _selectField;
     async createDom(dmElement) {
         const fieldName = this.field.get('name')?.toString() ?? "";
         /* Returns a list element in case an array is given */

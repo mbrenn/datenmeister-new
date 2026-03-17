@@ -4,6 +4,8 @@ import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 export class Field extends BaseField {
+    button;
+    inConfirmation;
     async createDom(dmElement) {
         const tthis = this;
         const title = this.field.get(_DatenMeister._Forms._ActionFieldData.title, Mof.ObjectType.String);

@@ -1,4 +1,5 @@
 import { UserEvent } from "../Events.js";
+import '../../node_modules/chai/register-assert.js';
 export function includeTests() {
     describe('BurnSystems', function () {
         describe('Events', function () {
@@ -13,7 +14,7 @@ export function includeTests() {
                 event.addListener(data => ev += data.x);
                 // Nothing should happen
                 event.invoke({ x: 3, y: 2 });
-                chai.assert.isTrue(ev === 3, 'Event was not called with proper data');
+                assert.isTrue(ev === 3, 'Event was not called with proper data');
             });
             it('Add and remove one Event', function () {
                 const event = new UserEvent();
@@ -22,7 +23,7 @@ export function includeTests() {
                 event.removeListener(handle);
                 // Nothing should happen
                 event.invoke({ x: 3, y: 2 });
-                chai.assert.isTrue(ev === 0, 'Event was not deleted with proper data');
+                assert.isTrue(ev === 0, 'Event was not deleted with proper data');
             });
             it('Add and remove three Events', function () {
                 const event = new UserEvent();
@@ -32,20 +33,20 @@ export function includeTests() {
                 const handle3 = event.addListener(data => ev += data.x + data.y);
                 // Nothing should happen
                 event.invoke({ x: 3, y: 2 });
-                chai.assert.isTrue(ev === 10, 'Step 1');
+                assert.isTrue(ev === 10, 'Step 1');
                 event.removeListener(handle1);
                 event.invoke({ x: 3, y: 4 });
-                chai.assert.isTrue(ev === 21, 'Step 2');
+                assert.isTrue(ev === 21, 'Step 2');
                 // Remove again
                 event.removeListener(handle1);
                 event.invoke({ x: 3, y: 4 });
-                chai.assert.isTrue(ev === 32, 'Step 3');
+                assert.isTrue(ev === 32, 'Step 3');
                 event.removeListener(handle2);
                 event.invoke({ x: 3, y: 4 });
-                chai.assert.isTrue(ev === 39, 'Step 4');
+                assert.isTrue(ev === 39, 'Step 4');
                 event.removeListener(handle3);
                 event.invoke({ x: 3, y: 4 });
-                chai.assert.isTrue(ev === 39, 'Step 5');
+                assert.isTrue(ev === 39, 'Step 5');
             });
         });
     });

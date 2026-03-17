@@ -3,12 +3,10 @@ import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import { UserEvent } from "../../burnsystems/Events.js";
 export class ViewModeSelectionControl {
-    constructor() {
-        /**
-         * Describes the event which is called when the user selects another viewMode
-         */
-        this.viewModeSelected = new UserEvent();
-    }
+    /**
+     * Describes the event which is called when the user selects another viewMode
+     */
+    viewModeSelected = new UserEvent();
     /**
      * Creates the form itself
      * @param overridedViewMode Can be set, if the view mode is overridden by the caller of the method.

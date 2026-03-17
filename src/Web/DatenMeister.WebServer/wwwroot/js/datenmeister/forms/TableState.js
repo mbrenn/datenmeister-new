@@ -2,11 +2,9 @@ import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as QueryEngine from "../modules/QueryEngine.js";
 export class TableState {
-    constructor() {
-        this.queryStatement = new Mof.DmObject(_DatenMeister._DataViews.__QueryStatement_Uri);
-        this.overrideQueryWorkspace = undefined;
-        this.overrideQueryItem = undefined;
-    }
+    queryStatement = new Mof.DmObject(_DatenMeister._DataViews.__QueryStatement_Uri);
+    overrideQueryWorkspace = undefined;
+    overrideQueryItem = undefined;
     getOrderBy() {
         const node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
         if (node) {

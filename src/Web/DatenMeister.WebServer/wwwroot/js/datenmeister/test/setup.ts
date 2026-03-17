@@ -23,7 +23,7 @@ const assert: any =
         }
     }
 
-// Provide a minimal chai.assert shim for Node/Mocha runs (Rider)
+// Provide a minimal assert shim for Node/Mocha runs (Rider)
 // In the browser, real chai is already provided via a script tag.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const chaiShim: any = {

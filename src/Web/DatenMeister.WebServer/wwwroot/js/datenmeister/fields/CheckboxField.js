@@ -1,6 +1,7 @@
 import { BaseField } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 export class Field extends BaseField {
+    _checkbox;
     async createDom(dmElement) {
         this._checkbox = $("<input type='checkbox'/>");
         const fieldName = this.field.get('name').toString();

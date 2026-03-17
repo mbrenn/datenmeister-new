@@ -2,6 +2,8 @@ import { BaseField } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 export class Field extends BaseField {
+    _dateInput;
+    _timeInput;
     async createDom(dmElement) {
         const fieldName = this.field.get('name')?.toString() ?? "";
         const hideDate = this.field.get(_DatenMeister._Forms._DateTimeFieldData.hideDate, Mof.ObjectType.Boolean) ?? false;

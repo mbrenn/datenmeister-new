@@ -3,6 +3,26 @@
  */
 export class BaseField {
     /**
+     * The configuration for the form
+     */
+    configuration;
+    /**
+     * Defines the field definition (metamodel)
+     */
+    field;
+    /**
+     * Indicates whether the field is in read-only mode
+     */
+    isReadOnly;
+    /**
+     * The navigation interface for the parent form
+     */
+    form;
+    /**
+     * The URL of the item to which this field is connected
+     */
+    itemUrl;
+    /**
      * Gets a value indicating whether the value of the field is shown.
      * Default implementation returns true.
      * @returns True

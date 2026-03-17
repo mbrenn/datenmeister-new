@@ -20,7 +20,7 @@ const assert = {
         }
     }
 };
-// Provide a minimal chai.assert shim for Node/Mocha runs (Rider)
+// Provide a minimal assert shim for Node/Mocha runs (Rider)
 // In the browser, real chai is already provided via a script tag.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const chaiShim = {
@@ -33,4 +33,5 @@ const chaiShim = {
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 globalThis.chai = chaiShim;
+export {};
 //# sourceMappingURL=setup.js.map

@@ -15,5 +15,10 @@
   "compileOnSave": true,
   "include": [
     "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "bin",
+    "obj"
   ]
 }

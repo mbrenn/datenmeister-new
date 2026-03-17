@@ -1,4 +1,6 @@
 class ListStatusItem {
+    statusText;
+    success;
 }
 /**
  * Implements the Status Field Control in which a user can
@@ -9,21 +11,27 @@ class ListStatusItem {
  * the method detects whether it already has been initialized
  */
 export class StatusFieldControl {
+    htmlElement;
+    textElement;
+    static hostElement;
+    static listElement;
+    static listStatusCollection;
+    statusText;
+    configuration;
     /**
      * Initializes the status field container.
      * @param htmlElement The element to be used
      * @param configuration Configuration to be used
      */
     constructor(htmlElement, configuration) {
-        var _a;
-        htmlElement ?? (htmlElement = $(".dm-status-text-container"));
+        htmlElement ??= $(".dm-status-text-container");
         this.htmlElement = htmlElement;
-        StatusFieldControl.listStatusCollection ?? (StatusFieldControl.listStatusCollection = new Array());
+        StatusFieldControl.listStatusCollection ??= new Array();
         this.configuration = configuration;
-        this.configuration ?? (this.configuration = {
+        this.configuration ??= {
             hideOnComplete: false
-        });
-        (_a = this.configuration).hideOnComplete ?? (_a.hideOnComplete = false);
+        };
+        this.configuration.hideOnComplete ??= false;
         this.initIfNotInitialized();
     }
     initIfNotInitialized() {

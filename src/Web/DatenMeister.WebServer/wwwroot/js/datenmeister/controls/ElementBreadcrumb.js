@@ -2,6 +2,7 @@ import * as ClientItems from '../client/Items.js';
 import { EntentType } from "../ApiModels.js";
 import * as Navigator from '../Navigator.js';
 export class ElementBreadcrumb {
+    _container;
     constructor(container) {
         this._container = container;
     }

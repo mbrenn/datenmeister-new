@@ -2,7 +2,7 @@ import * as Mof from '/js/datenmeister/Mof.js'
 import * as FormActions from '/js/datenmeister/FormActions.js'
 import * as IIForms from "/js/datenmeister/forms/Interfaces.js";
 import { SubmitMethod } from "/js/datenmeister/forms/Forms.js";
-import { IFormConfiguration } from '../../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/forms/IFormConfiguration';
+import { IFormConfiguration } from '/js/datenmeister/forms/IFormConfiguration.js';
 import * as FormFactory from "/js/datenmeister/forms/FormFactory.js"
 import * as Model from "./DatenMeister.Reports.Types.js"
 import * as ActionClient from '/js/datenmeister/client/Actions.js'

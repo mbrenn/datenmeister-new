@@ -2,6 +2,7 @@ import * as QueryBuilder from '../modules/QueryEngine.js';
 import * as ElementClient from '../client/Elements.js';
 import * as DomHelper from '../DomHelper.js';
 export class Control {
+    _control;
     /**
      *
      * Initializes the control and adds all necessary elements to the container

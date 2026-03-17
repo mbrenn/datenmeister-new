@@ -1,4 +1,8 @@
-﻿import * as VML from "../forms/ViewModeLogic.js";
+﻿/// <reference types="chai" />
+import * as VML from "../forms/ViewModeLogic.js";
+
+import '../../node_modules/chai/register-assert.js';
+declare var assert: Chai.AssertStatic;
 
 
 export function includeTests() {
@@ -7,15 +11,15 @@ export function includeTests() {
         {   
             VML.clearCurrentViewMode();
             let viewMode = VML.getCurrentViewMode();            
-            chai.assert.isTrue(viewMode === "ViewMode.Default", "viewMode needs to be 'Default'");
+            assert.isTrue(viewMode === "ViewMode.Default", "viewMode needs to be 'Default'");  
             
             VML.setCurrentViewMode('Test');
             viewMode = VML.getCurrentViewMode();
-            chai.assert.isTrue(viewMode === "Test", "viewMode needs to be 'Test'");
+            assert.isTrue(viewMode === "Test", "viewMode needs to be 'Test'");
 
             VML.clearCurrentViewMode();
             viewMode = VML.getCurrentViewMode();
-            chai.assert.isTrue(viewMode === "ViewMode.Default", "viewMode needs to be 'Default'");
+            assert.isTrue(viewMode === "ViewMode.Default", "viewMode needs to be 'Default'");
         });
     });
 }

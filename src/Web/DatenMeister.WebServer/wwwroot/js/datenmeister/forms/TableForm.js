@@ -10,27 +10,80 @@ import { TableState } from "./TableState.js";
 var _FieldData = _DatenMeister._Forms._FieldData;
 import { debugElementToDom } from "../DomHelper.js";
 export class TableFormParameter {
-    constructor() {
-        this.shortenFullText = true;
-        this.allowSortingOfColumn = true;
-        this.allowFilteringOnProperty = true;
-        this.allowFreeTextFiltering = true;
-        this.showFilterQuery = true;
-    }
+    shortenFullText = true;
+    allowSortingOfColumn = true;
+    allowFilteringOnProperty = true;
+    allowFreeTextFiltering = true;
+    showFilterQuery = true;
+    /**
+     * MetaClass that is used to filter only upon the items having that specific metaclass
+     */
+    metaClass;
 }
 class TableJQueryCaches {
+    /*
+    Stores the overall div which hosts the full Table Form including all Buttons, Headline, Table, etc.
+     */
+    cacheContainer;
+    cacheHeadline;
+    /**
+     * Stores the infotext which will contain the message
+     * that is returned from the loader
+     */
+    cacheLoadingInfoText;
+    /*
+    We store the table itself in a container to allow a dedicated scrolling of the table
+     */
+    cacheTableContainer;
+    cacheTable;
+    cacheEmptyDiv;
+    cacheButtons;
+    /*
+    Stores the empty div which gets filled to provide the type in case the user clicks on 'Create new Item'
+     */
+    cacheButtonsTypeSelection;
+    cacheFreeTextField;
+    /*
+    Stores the option top provide some settings and also shows the query text
+     */
+    cacheSettings;
+    /*
+    Stores the button which opens the form settings
+     */
+    cacheSettingsButton;
+    cacheQueryText;
+    cacheQueryDebugLink;
+    cacheQueryDebugOutput;
+    parentHtml;
 }
 class TableForm {
-    constructor() {
-        /**
-         * Flag to enable debug features like the query debug link
-         */
-        this.isDebug = false;
-        this.tableParameter = new TableFormParameter();
-        this.tableState = new TableState();
-        this.tableCache = new TableJQueryCaches();
-        this.firstRun = true;
-    }
+    /**
+     * Flag to enable debug features like the query debug link
+     */
+    isDebug = false;
+    /**
+     * Caches the elements to allow direct manipulation without additional server round-trip
+     */
+    elements;
+    /**
+     * To be set, if only the element's of a property shall be shown
+     * the type of the element is retrieved by the tab form
+     */
+    element;
+    extentUri;
+    formElement;
+    itemUrl;
+    workspace;
+    configuration;
+    tableParameter = new TableFormParameter();
+    tableState = new TableState();
+    tableCache = new TableJQueryCaches();
+    pageNavigation;
+    /**
+     * This callback allows to load the items in case the user has changed the QueryFilterParameters
+     */
+    callbackLoadItems;
+    firstRun = true;
     /**
      * Refreshes the complete form including the parent item which might contain multiple tables
      */

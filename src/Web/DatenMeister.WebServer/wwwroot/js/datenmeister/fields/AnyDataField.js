@@ -11,6 +11,17 @@ var ModeValue;
     ModeValue[ModeValue["Reference"] = 2] = "Reference";
 })(ModeValue || (ModeValue = {}));
 export class Field extends BaseField {
+    _textBox;
+    // The texts on which the user can click to modify the type of the element
+    _aValue;
+    _aCollection;
+    _aReference;
+    _mode;
+    // This is the element containing the property
+    _element;
+    _domElement;
+    // This is the element describing the property value; the element that shall be shown in this
+    _fieldValue;
     // Creates the overall DOM
     async createDom(dmElement) {
         const tthis = this;

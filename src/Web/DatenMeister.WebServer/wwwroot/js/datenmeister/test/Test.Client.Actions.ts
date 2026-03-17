@@ -6,6 +6,9 @@ import * as ClientWorkspace from "../client/Workspace.js";
 import * as ClientItems from "../client/Items.js";
 import {_UML} from "../models/uml.js";
 
+import '../../node_modules/chai/register-assert.js';
+declare var assert: Chai.AssertStatic;
+
 export function includeTests() {
     describe('Client', function () {
         describe('Actions', async function () {
@@ -41,9 +44,9 @@ export function includeTests() {
                     {parameter: parameter}
                 );
 
-                chai.assert.isTrue(result.success === true);
-                chai.assert.isTrue(result.resultAsDmObject !== undefined);
-                chai.assert.isTrue(result.resultAsDmObject.get("returnText", Mof.ObjectType.String) === "Returned");
+                assert.isTrue(result.success === true);
+                assert.isTrue(result.resultAsDmObject !== undefined);
+                assert.isTrue(result.resultAsDmObject.get("returnText", Mof.ObjectType.String) === "Returned");
             });
 
             it('No success Echo', async () => {
@@ -56,13 +59,13 @@ export function includeTests() {
                     {parameter: parameter}
                 );
 
-                chai.assert.isTrue(result.success === false);
+                assert.isTrue(result.success === false);
             });
 
             it('Create Extent via Action', async () => {
                 
                 let success = await ClientExtent.exists("Test", "dm:///unittestaction");
-                chai.assert.isTrue(success.exists === false, "dm:///unittestaction may not exist");
+                assert.isTrue(success.exists === false, "dm:///unittestaction may not exist");
 
                 const parameter = new Mof.DmObject();
                 parameter.setMetaClassByUri(_DatenMeister._Actions.__LoadExtentAction_Uri, 'Types');
@@ -77,7 +80,7 @@ export function includeTests() {
                 await ClientActions.executeActionDirectly("Execute", {parameter: parameter});
 
                 success = await ClientExtent.exists("Test", "dm:///unittestaction");
-                chai.assert.isTrue(success.exists === true, "dm:///unittestaction should exist");
+                assert.isTrue(success.exists === true, "dm:///unittestaction should exist");
 
                 const drop = new Mof.DmObject();
                 drop.setMetaClassByUri(_DatenMeister._Actions.__DropExtentAction_Uri, 'Types');
@@ -87,7 +90,7 @@ export function includeTests() {
                 await ClientActions.executeActionDirectly("Execute", {parameter: drop});
 
                 success = await ClientExtent.exists("Test", "dm:///unittestaction");
-                chai.assert.isTrue(success.exists === false, "dm:///unittestaction should have been deleted");
+                assert.isTrue(success.exists === false, "dm:///unittestaction should have been deleted");
             });
 
             it('Copy item', async () => {
@@ -124,8 +127,8 @@ export function includeTests() {
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Copy);
 
                 const copyResult = await ClientActions.executeActionDirectly("Execute", {parameter: action});
-                chai.assert.isTrue(copyResult !== undefined, "Copy Result should have a return");
-                chai.assert.isTrue(copyResult.resultAsDmObject !== undefined,"Copy Result should have a result");
+                assert.isTrue(copyResult !== undefined, "Copy Result should have a return");
+                assert.isTrue(copyResult.resultAsDmObject !== undefined,"Copy Result should have a result");
                 const copyResultUri =
                     copyResult.resultAsDmObject.get(
                         _DatenMeister._Actions._MoveOrCopyActionResult.targetUrl,
@@ -137,7 +140,7 @@ export function includeTests() {
                         Mof.ObjectType.String
                     );
                 
-                chai.assert.isTrue(
+                assert.isTrue(
                     copyResultUri !== undefined && copyResultUri !== "",
                     "Uri of Copy Result is empty"
                 );
@@ -146,20 +149,20 @@ export function includeTests() {
                 const check = await ClientItems.getObjectByUri(
                     copyResultWorkspace, copyResultUri
                 );
-                chai.assert.isTrue(check !== undefined, "Copied item was not found");
-                chai.assert.isTrue(check.get('name', Mof.ObjectType.String) === 'Yes',
+                assert.isTrue(check !== undefined, "Copied item was not found");
+                assert.isTrue(check.get('name', Mof.ObjectType.String) === 'Yes',
                     "Copied item does not have the property");
                 
                 // Check, that Parent 2 has one child
                 const checkList = await ClientItems.getObjectByUri("Test", parent2.itemId);
                 const checkedProperty = checkList.get(_UML._Packages._Package.packagedElement, Mof.ObjectType.Array);
-                chai.assert.isTrue(checkedProperty.length === 1,
+                assert.isTrue(checkedProperty.length === 1,
                     "New List does not contain copied item");
 
                 // Check, that Parent 1 has one child
                 const checkList2 = await ClientItems.getObjectByUri("Test", parent1.itemId);
                 const checkedProperty2 = checkList2.get(_UML._Packages._Package.packagedElement, Mof.ObjectType.Array);
-                chai.assert.isTrue(checkedProperty2.length === 1,
+                assert.isTrue(checkedProperty2.length === 1,
                     "Old List does not contain anymore");
             });
 
@@ -198,8 +201,8 @@ export function includeTests() {
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Move);
 
                 const copyResult = await ClientActions.executeActionDirectly("Execute", {parameter: action});
-                chai.assert.isTrue(copyResult !== undefined);
-                chai.assert.isTrue(copyResult.resultAsDmObject !== undefined);
+                assert.isTrue(copyResult !== undefined);
+                assert.isTrue(copyResult.resultAsDmObject !== undefined);
                 const copyResultUri =
                     copyResult.resultAsDmObject.get(
                         _DatenMeister._Actions._MoveOrCopyActionResult.targetUrl,
@@ -211,7 +214,7 @@ export function includeTests() {
                         Mof.ObjectType.String
                     );
 
-                chai.assert.isTrue(
+                assert.isTrue(
                     copyResultUri !== undefined && copyResultUri !== ""
                 );
 
@@ -219,18 +222,18 @@ export function includeTests() {
                 const check = await ClientItems.getObjectByUri(
                     copyResultWorkspace, copyResultUri
                 );
-                chai.assert.isTrue(check !== undefined);
-                chai.assert.isTrue(check.get('name', Mof.ObjectType.String) === 'Yes');
+                assert.isTrue(check !== undefined);
+                assert.isTrue(check.get('name', Mof.ObjectType.String) === 'Yes');
 
                 // Check, that Parent 2 has one child
                 const checkList = await ClientItems.getObjectByUri("Test", parent2.itemId);
                 const checkedProperty = checkList.get(_UML._Packages._Package.packagedElement, Mof.ObjectType.Array);
-                chai.assert.isTrue(checkedProperty.length === 1);
+                assert.isTrue(checkedProperty.length === 1);
 
                 // Check, that Parent 1 has no child
                 const checkList2 = await ClientItems.getObjectByUri("Test", parent1.itemId);
                 const checkedProperty2 = checkList2.get(_UML._Packages._Package.packagedElement, Mof.ObjectType.Array);
-                chai.assert.isTrue(checkedProperty2.length === 0,
+                assert.isTrue(checkedProperty2.length === 0,
                     "Old List still contains the item");
             });
 

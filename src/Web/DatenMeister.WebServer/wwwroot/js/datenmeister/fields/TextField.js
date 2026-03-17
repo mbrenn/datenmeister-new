@@ -5,6 +5,10 @@ var _TextFieldData = _DatenMeister._Forms._TextFieldData;
 import { truncateText } from "../../burnsystems/StringManipulation.js";
 import { injectNameByUri } from "../DomHelper.js";
 export class Field extends BaseField {
+    // Gets or sets the method which allows to override the method to 
+    // retrieve the property key
+    OverridePropertyValue;
+    _textBox;
     async createDom(dmElement) {
         const fieldName = this.field.get('name')?.toString() ?? "";
         /* Returns a list element in case an array is given */

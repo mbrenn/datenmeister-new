@@ -6,10 +6,15 @@ import * as ClientExtent from "../client/Extents.js";
 import * as ClientForms from "../client/Forms.js";
 import * as ClientWorkspace from "../client/Workspace.js";
 var _ViewMode = _DatenMeister._Forms._ViewMode;
+import '../../node_modules/chai/register-assert.js';
 class X {
-    constructor() {
-        this.type = "X";
-    }
+    pageNavigation;
+    element;
+    extentUri;
+    formElement;
+    itemUrl;
+    workspace;
+    type = "X";
     createFormByObject(parent, configuration) {
         return Promise.resolve(undefined);
     }
@@ -20,14 +25,20 @@ class X {
     }
 }
 class Y {
-    constructor() {
-        this.type = "Y";
-    }
+    callbackLoadItems;
+    pageNavigation;
+    element;
+    extentUri;
+    formElement;
+    itemUrl;
+    workspace;
+    type = "Y";
     async refreshForm() {
     }
     storeFormValuesIntoDom(reuseExistingElement) {
         return Promise.resolve(undefined);
     }
+    elements;
     createFormByCollection(parent, configuration, refresh) {
         return Promise.resolve(undefined);
     }
@@ -43,16 +54,16 @@ export function includeTests() {
         it('Test Register Database', () => {
             FormFactory.registerCollectionForm("collectionForm", () => new Y());
             FormFactory.registerObjectForm("objectForm", () => new X());
-            chai.assert.isTrue(FormFactory.getObjectFormFactory("no") === undefined);
-            chai.assert.isTrue(FormFactory.getCollectionFormFactory("no") === undefined);
-            chai.assert.isTrue(FormFactory.getObjectFormFactory("objectForm") !== undefined);
-            chai.assert.isTrue(FormFactory.getCollectionFormFactory("collectionForm") !== undefined);
-            chai.assert.isTrue(FormFactory.getObjectFormFactory("objectForm")().type === "X");
-            chai.assert.isTrue(FormFactory.getCollectionFormFactory("collectionForm")().type === "Y");
+            assert.isTrue(FormFactory.getObjectFormFactory("no") === undefined);
+            assert.isTrue(FormFactory.getCollectionFormFactory("no") === undefined);
+            assert.isTrue(FormFactory.getObjectFormFactory("objectForm") !== undefined);
+            assert.isTrue(FormFactory.getCollectionFormFactory("collectionForm") !== undefined);
+            assert.isTrue(FormFactory.getObjectFormFactory("objectForm")().type === "X");
+            assert.isTrue(FormFactory.getCollectionFormFactory("collectionForm")().type === "Y");
         });
         it('Test Default Database', () => {
             ModuleFormLoader.loadDefaultForms();
-            chai.assert.isTrue(FormFactory.getCollectionFormFactory(_DatenMeister._Forms.__TableForm_Uri)
+            assert.isTrue(FormFactory.getCollectionFormFactory(_DatenMeister._Forms.__TableForm_Uri)
                 !== undefined);
         });
         it('Test GetDefaultViewMode', async () => {
@@ -63,13 +74,13 @@ export function includeTests() {
                 skipIfExisting: true
             });
             const defaultViewMode = await ClientForms.getDefaultViewMode("Test", "dm:///newexisting");
-            chai.assert.isTrue(defaultViewMode !== undefined, "Default ViewMode is not defined");
-            chai.assert.isTrue(defaultViewMode.viewMode.get(_ViewMode._name_, Mof.ObjectType.String) === "Default", "ViewMode is not Default ViewMode");
+            assert.isTrue(defaultViewMode !== undefined, "Default ViewMode is not defined");
+            assert.isTrue(defaultViewMode.viewMode.get(_ViewMode._name_, Mof.ObjectType.String) === "Default", "ViewMode is not Default ViewMode");
         });
         it('Test GetDefaultViewModes', async () => {
             const viewModes = await ClientForms.getViewModes();
-            chai.assert.isTrue(viewModes !== undefined, "ViewMode is not defined");
-            chai.assert.isTrue(viewModes.viewModes.length > 0, "Length of ViewModes > 0");
+            assert.isTrue(viewModes !== undefined, "ViewMode is not defined");
+            assert.isTrue(viewModes.viewModes.length > 0, "Length of ViewModes > 0");
             let found = false;
             for (const n in viewModes.viewModes) {
                 const viewMode = viewModes.viewModes[n];
@@ -77,7 +88,7 @@ export function includeTests() {
                     found = true;
                 }
             }
-            chai.assert.isTrue(found, "Default ViewMode has not been found");
+            assert.isTrue(found, "Default ViewMode has not been found");
         });
         after(async function () {
             await ClientExtent.deleteExtent({

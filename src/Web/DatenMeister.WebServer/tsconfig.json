@@ -6,18 +6,15 @@
     "sourceMap": true,
     "target": "ES2022",
     "module": "Node16",
-    "moduleResolution": "node16"
+    "moduleResolution": "node16",
+    "types": [ "chai", "mocha", "jquery" ]
   },
   "compileOnSave": true,
   "exclude": [
-    "node_modules",
     "bin",
     "obj"
   ],
   "include": [
     "**/*.ts"
-  ],
-  "types": [ 
-    "chai" 
   ]
 }

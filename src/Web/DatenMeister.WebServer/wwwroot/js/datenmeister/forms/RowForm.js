@@ -6,6 +6,9 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import { SubmitMethod } from "./Forms.js";
 import * as ClientItem from "../client/Items.js";
 class FieldInForm {
+    fieldElement;
+    field;
+    checkbox;
     setCheckboxState(isSet) {
         this.checkbox.prop("checked", isSet);
         if (isSet) {
@@ -35,6 +38,17 @@ class FieldInForm {
     }
 }
 export class RowForm {
+    pageNavigation;
+    workspace;
+    extentUri;
+    itemUrl;
+    element;
+    formElement;
+    fieldElements;
+    onCancel;
+    onChange;
+    parentHtml;
+    configuration;
     async refreshForm() {
         this.createFormByObject(this.parentHtml, this.configuration);
     }

@@ -5,6 +5,13 @@ import * as ClientItem from "../client/Items.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as DomHelper from "../DomHelper.js";
 export class Control extends BaseField {
+    propertyName;
+    /** Defines whether the field flag to create the selection fields directly
+     * at form creation shall be skipped, even if isSelectionInline is being set.
+     * This flag will be set when user has clicked on 'Set'.  */
+    inhibitInline;
+    referenceSetCall;
+    _list;
     /** Initializes a new instance
      *
      * @param field This field contains the definition according ReferenceFieldData. It may be undefined,
@@ -127,6 +134,10 @@ export class Control extends BaseField {
     }
 }
 export class Field extends Control {
+    // The element being shown
+    element;
+    // The name of the field being derived from the field
+    fieldName;
     async createDom(dmElement) {
         this.element = dmElement;
         this.referenceSetCall = this.callbackSetReference;

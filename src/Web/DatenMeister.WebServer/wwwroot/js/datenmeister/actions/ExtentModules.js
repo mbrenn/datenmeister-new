@@ -58,9 +58,14 @@ class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase 
     }
 }
 class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase {
+    isForExtent = false;
+    workspace;
+    itemUri;
+    metaClass;
+    property;
+    metaclassWorkspace;
     constructor() {
         super("Extent.CreateNewItem");
-        this.isForExtent = false;
         this.actionVerb = "Create New Item";
     }
     loadParameterFromUrl() {

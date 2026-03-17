@@ -9,6 +9,10 @@ import * as ClientForms from "../client/Forms.js";
 import * as ClientWorkspace from "../client/Workspace.js";
 import _ViewMode = _DatenMeister._Forms._ViewMode;
 
+
+import '../../node_modules/chai/register-assert.js';
+declare var assert: Chai.AssertStatic;
+
 class X implements IForm.IObjectFormElement {
     pageNavigation: IForm.IPageNavigation;
     element: Mof.DmObject;
@@ -73,17 +77,17 @@ export function includeTests() {
             FormFactory.registerCollectionForm("collectionForm", () => new Y());
             FormFactory.registerObjectForm("objectForm", () => new X());
 
-            chai.assert.isTrue(FormFactory.getObjectFormFactory("no") === undefined);
-            chai.assert.isTrue(FormFactory.getCollectionFormFactory("no") === undefined);
-            chai.assert.isTrue(FormFactory.getObjectFormFactory("objectForm") !== undefined);
-            chai.assert.isTrue(FormFactory.getCollectionFormFactory("collectionForm") !== undefined);
-            chai.assert.isTrue((FormFactory.getObjectFormFactory("objectForm")() as X).type === "X");
-            chai.assert.isTrue((FormFactory.getCollectionFormFactory("collectionForm")() as Y).type === "Y");
+            assert.isTrue(FormFactory.getObjectFormFactory("no") === undefined);
+            assert.isTrue(FormFactory.getCollectionFormFactory("no") === undefined);
+            assert.isTrue(FormFactory.getObjectFormFactory("objectForm") !== undefined);
+            assert.isTrue(FormFactory.getCollectionFormFactory("collectionForm") !== undefined);
+            assert.isTrue((FormFactory.getObjectFormFactory("objectForm")() as X).type === "X");
+            assert.isTrue((FormFactory.getCollectionFormFactory("collectionForm")() as Y).type === "Y");
         });
 
         it('Test Default Database', () => {
             ModuleFormLoader.loadDefaultForms();
-            chai.assert.isTrue(
+            assert.isTrue(
                 FormFactory.getCollectionFormFactory(_DatenMeister._Forms.__TableForm_Uri)
                 !== undefined);
         });
@@ -99,16 +103,16 @@ export function includeTests() {
                 });
 
             const defaultViewMode = await ClientForms.getDefaultViewMode("Test", "dm:///newexisting");
-            chai.assert.isTrue(defaultViewMode !== undefined, "Default ViewMode is not defined");
-            chai.assert.isTrue(defaultViewMode.viewMode.get(_ViewMode._name_, Mof.ObjectType.String) === "Default", "ViewMode is not Default ViewMode");
+            assert.isTrue(defaultViewMode !== undefined, "Default ViewMode is not defined");
+            assert.isTrue(defaultViewMode.viewMode.get(_ViewMode._name_, Mof.ObjectType.String) === "Default", "ViewMode is not Default ViewMode");
         });
 
 
         it('Test GetDefaultViewModes', async () => {
 
             const viewModes = await ClientForms.getViewModes();
-            chai.assert.isTrue(viewModes !== undefined, "ViewMode is not defined");
-            chai.assert.isTrue(viewModes.viewModes.length > 0, "Length of ViewModes > 0");
+            assert.isTrue(viewModes !== undefined, "ViewMode is not defined");
+            assert.isTrue(viewModes.viewModes.length > 0, "Length of ViewModes > 0");
             
             let found = false;
             for (const n in viewModes.viewModes)
@@ -120,7 +124,7 @@ export function includeTests() {
                 }
             }
             
-            chai.assert.isTrue(found, "Default ViewMode has not been found");
+            assert.isTrue(found, "Default ViewMode has not been found");
         });
 
 

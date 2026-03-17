@@ -1,5 +1,5 @@
 ﻿import * as Settings from "./Settings.js";
-import * as Mof from "./Mof";
+import * as Mof from "./Mof.js";
 
 export function getLinkForNavigateToWorkspaces() {
     return Settings.baseUrl + "ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces";

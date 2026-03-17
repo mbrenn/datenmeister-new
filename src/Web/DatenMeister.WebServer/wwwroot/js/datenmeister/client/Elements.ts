@@ -2,8 +2,6 @@
 import * as ApiConnection from "../ApiConnection.js"
 import * as Settings from "../Settings.js"
 import * as Mof from "../Mof.js";
-import { convertToMofObjects } from "./Items.js"
-import {param} from "jquery";
 
 export function getAllWorkspaces(): Promise<ItemWithNameAndId[]> {
     return load(undefined, undefined);

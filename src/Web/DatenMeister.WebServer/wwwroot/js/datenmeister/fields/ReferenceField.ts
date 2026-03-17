@@ -6,19 +6,10 @@ import {injectNameByUri} from "../DomHelper.js";
 import * as ClientItem from "../client/Items.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as DomHelper from "../DomHelper.js";
-import {ItemWithNameAndId} from "../ApiModels";
+import {ItemWithNameAndId} from "../ApiModels.js";
 
 export class Control extends BaseField {
-    configuration: IFormConfiguration;
-    isReadOnly: boolean;
-
-    /** Is connected to the item url of the element being connected to that element */
-    itemUrl: string;
-    form: IFormNavigation;
     propertyName: string;
-    
-    /** Defines the field properties */
-    field: Mof.DmObject;
 
     /** Defines whether the field flag to create the selection fields directly 
      * at form creation shall be skipped, even if isSelectionInline is being set.
@@ -180,8 +171,6 @@ export class Control extends BaseField {
 }
 
 export class Field extends Control implements IFormField {
-    // The information about the field configuration
-    field: Mof.DmObject;
 
     // The element being shown
     element: Mof.DmObject;

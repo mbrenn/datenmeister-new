@@ -4,10 +4,8 @@ import * as FormClient from "../client/Forms.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ActionClient from "../client/Actions.js";
 import * as Navigation from "../Navigator.js";
-import {IFormNavigation} from "../forms/Interfaces";
-import {SubmitMethod} from "../forms/Forms";
-import {ItemWithNameAndId} from "../ApiModels";
-import {param} from "jquery";
+import {IFormNavigation} from "../forms/Interfaces.js";
+import {SubmitMethod} from "../forms/Forms.js";
 
 export function loadModules() {
     FormActions.addModule(new FormsCreateByMetaClassAction());

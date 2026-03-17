@@ -1,4 +1,4 @@
-﻿import * as burnJsPopup from "../../burnJsPopup";
+﻿import * as burnJsPopup from "../../burnJsPopup.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as Actions from "../client/Actions.js";
 import _FieldData = _DatenMeister._Forms._FieldData;

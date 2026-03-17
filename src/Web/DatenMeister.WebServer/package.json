@@ -1,18 +1,18 @@
 {
   "type": "module",
   "devDependencies": {
-    "@types/chai": "4.3.9",
-    "@types/jquery": "3.5.25",
-    "@types/mocha": "10.0.3",
-    "bootstrap": "5.3.2",
-    "chai": "4.3.10",
-    "jquery": "3.7.1",
-    "typescript": "5.2.2"
+    "@types/chai": "5.2.3",
+    "@types/jquery": "4.0.0",
+    "@types/mocha": "10.0.10",
+    "bootstrap": "5.3.8",
+    "chai": "6.2.2",
+    "jquery": "4.0.0",
+    "typescript": "5.9.3"
   },
   "dependencies": {
-    "amd-loader": "0.0.8",
     "@mbrenn/burnjspopup": "1.0.0",
-    "mocha": "10.2.0"
+    "amd-loader": "0.0.8",
+    "mocha": "^11.7.5"
   },
   "scripts": {
     "test": "mocha \"wwwroot/js/datenmeister/test/Test.Mof.ts\" --require ts-node/register --require ./wwwroot/js/datenmeister/test/setup.ts --ui bdd --reporter spec"

@@ -361,8 +361,6 @@ public static class WorkspaceExtensions
     /// <param name="collection">Collection to be used</param>
     /// <param name="workspaceId">Id of the workspace being queried</param>
     /// <param name="extentUri">Uri of the extent being used</param>
-    /// <param name="workspace">The found workspace</param>
-    /// <param name="extent">The found extent</param>
     /// <returns>The tuple containing workspace and extent</returns>
     public static (IWorkspace? workspace, IExtent? extent) FindExtentAndWorkspace(
         this IWorkspaceLogic collection,

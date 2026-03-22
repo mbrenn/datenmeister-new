@@ -17,7 +17,7 @@ export interface ExecuteActionResult
     /**
      * Defines the result text which can be returned
      */
-    result: string;
+    result: any;
 }
 
 export interface ExecuteActionWithDmObjectResult

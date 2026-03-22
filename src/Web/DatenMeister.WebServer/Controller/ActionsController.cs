@@ -65,10 +65,10 @@ public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage sco
                         mofParameter
                     );
                         
-                    var resultText = string.Empty;
+                    object? resultText = null;
                     if (resultOfAction != null)
                     {
-                        resultText = MofJsonConverter.ConvertToJsonStringWithDefaultParameter(resultOfAction);
+                        resultText = new MofJsonConverter().ConvertToJsonObject(resultOfAction);
                     }
 
                     return new ExecuteActionResult(true, string.Empty, string.Empty, resultText);
@@ -103,10 +103,10 @@ public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage sco
                 action
             );
 
-            var resultText = string.Empty;
+            object? resultText = null;
             if (result != null)
             {
-                resultText = MofJsonConverter.ConvertToJsonStringWithDefaultParameter(result);
+                resultText = new MofJsonConverter().ConvertToJsonObject(result);
             }
 
             return new ExecuteActionResult(true, string.Empty, string.Empty, resultText);
@@ -133,7 +133,7 @@ public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage sco
     /// <param name="Reason">Reason why it was not created successfully</param>
     /// <param name="StackTrace">The corresponding stacktrace</param>
     /// <param name="Result">The resulting Json Text</param>
-    public record ExecuteActionResult(bool Success, string Reason, string StackTrace, string? Result = null)
+    public record ExecuteActionResult(bool Success, string Reason, string StackTrace, object? Result = null)
     {
         public override string ToString()
         {

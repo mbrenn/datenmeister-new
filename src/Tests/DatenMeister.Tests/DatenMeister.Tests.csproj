@@ -83,5 +83,16 @@
     </EmbeddedResource>
     <None Remove="Xmi\PackageTest.xmi" />
     <EmbeddedResource Include="Xmi\PackageTest.xmi" />
+    <EmbeddedResource Update="DatenMeisterTestsResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DatenMeisterTestsResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="DatenMeisterTestsResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DatenMeisterTestsResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

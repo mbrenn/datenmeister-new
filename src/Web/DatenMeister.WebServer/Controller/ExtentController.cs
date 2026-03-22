@@ -25,8 +25,10 @@ public class ExtentController(IWorkspaceLogic workspaceLogic, IScopeStorage scop
         public bool Exists { get; set; }
     }
 
-    [HttpGet("api/extent/exists/{workspace}/{extent}")]
-    public ActionResult<ExistsResults> Exists(string workspace, string extent)
+    [HttpGet("api/extent/exists")]
+    public ActionResult<ExistsResults> Exists(
+        [FromQuery(Name = "w")] string workspace,
+        [FromQuery(Name = "e")] string extent)
     {
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
@@ -37,8 +39,10 @@ public class ExtentController(IWorkspaceLogic workspaceLogic, IScopeStorage scop
             : new ExistsResults { Exists = true };
     }
 
-    [HttpPost("api/extent/set_properties/{workspace}/{extent}")]
-    public ActionResult<object> SetProperties(string workspace, string extent,
+    [HttpPost("api/extent/set_properties")]
+    public ActionResult<object> SetProperties(
+        [FromQuery(Name = "w")] string workspace,
+        [FromQuery(Name = "e")] string extent,
         [FromBody] MofObjectAsJson properties)
     {
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
@@ -62,8 +66,10 @@ public class ExtentController(IWorkspaceLogic workspaceLogic, IScopeStorage scop
         return new {success = true};
     }
 
-    [HttpGet("api/extent/get_properties/{workspace}/{extent}")]
-    public ActionResult<string?> GetProperties(string workspace, string extent)
+    [HttpGet("api/extent/get_properties")]
+    public ActionResult<string?> GetProperties(
+        [FromQuery(Name = "w")] string workspace,
+        [FromQuery(Name = "e")] string extent)
     {
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
@@ -208,8 +214,10 @@ public class ExtentController(IWorkspaceLogic workspaceLogic, IScopeStorage scop
         public string Xmi { get; set; } = string.Empty;
     }
 
-    [HttpGet("api/extent/export_xmi/{workspace}/{extent}")]
-    public ActionResult<ExportXmiResult> ExportXmi(string workspace, string extent)
+    [HttpGet("api/extent/export_xmi")]
+    public ActionResult<ExportXmiResult> ExportXmi(
+        [FromQuery(Name = "w")] string workspace,
+        [FromQuery(Name = "e")] string extent)
     {
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
@@ -242,8 +250,11 @@ public class ExtentController(IWorkspaceLogic workspaceLogic, IScopeStorage scop
         public bool Success { get; set; }
     }
 
-    [HttpPost("api/extent/import_xmi/{workspace}/{extent}")]
-    public async Task<ActionResult<ImportXmiResult>> ImportXmi(string workspace, string extent, [FromBody] ImportXmiParams param)
+    [HttpPost("api/extent/import_xmi")]
+    public async Task<ActionResult<ImportXmiResult>> ImportXmi(
+        [FromQuery(Name = "w")] string workspace,
+        [FromQuery(Name = "e")] string extent,
+        [FromBody] ImportXmiParams param)
     {
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         extent = MvcUrlEncoder.DecodePathOrEmpty(extent);

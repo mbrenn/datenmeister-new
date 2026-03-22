@@ -3,8 +3,8 @@ import * as ApiConnection from "../ApiConnection.js";
 import * as Mof from "../Mof.js";
 export async function exists(workspaceId, extent) {
     let url = Settings.baseUrl +
-        "api/extent/exists/"
-        + encodeURIComponent(workspaceId) + "/"
+        "api/extent/exists?w="
+        + encodeURIComponent(workspaceId) + "&e="
         + encodeURIComponent(extent);
     return await ApiConnection.get(url);
 }
@@ -13,8 +13,8 @@ export class ExportXmiResult {
 }
 export async function exportXmi(workspace, extentUri) {
     let url = Settings.baseUrl +
-        "api/extent/export_xmi/"
-        + encodeURIComponent(workspace) + "/"
+        "api/extent/export_xmi?w="
+        + encodeURIComponent(workspace) + "&e="
         + encodeURIComponent(extentUri);
     return await ApiConnection.get(url);
 }
@@ -23,8 +23,8 @@ export class ImportXmiResult {
 }
 export async function importXmi(workspace, extentUri, xmi) {
     let url = Settings.baseUrl +
-        "api/extent/import_xmi/"
-        + encodeURIComponent(workspace) + "/"
+        "api/extent/import_xmi?w="
+        + encodeURIComponent(workspace) + "&e="
         + encodeURIComponent(extentUri);
     return await ApiConnection.post(url, { xmi: xmi });
 }
@@ -56,13 +56,13 @@ export function clearExtent(params) {
     });
 }
 export function setProperties(workspace, extentUri, properties) {
-    return ApiConnection.post(Settings.baseUrl + "api/extent/set_properties/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri), Mof.createJsonFromObject(properties));
+    return ApiConnection.post(Settings.baseUrl + "api/extent/set_properties?w=" + encodeURIComponent(workspace) + "&e=" + encodeURIComponent(extentUri), Mof.createJsonFromObject(properties));
 }
 export function getProperties(workspace, extentUri) {
     return new Promise(resolve => {
-        ApiConnection.get(Settings.baseUrl + "api/extent/get_properties/"
+        ApiConnection.get(Settings.baseUrl + "api/extent/get_properties?w="
             + encodeURIComponent(workspace)
-            + "/" + encodeURIComponent(extentUri))
+            + "&e=" + encodeURIComponent(extentUri))
             .then(x => {
             const dmObject = Mof.convertJsonObjectToDmObject(x);
             resolve(dmObject);

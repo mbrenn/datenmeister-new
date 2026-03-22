@@ -9,8 +9,8 @@ export async function createItemInExtent(workspaceId, extentUri, param) {
     if (param.properties !== undefined && param.properties !== null) {
         evaluatedParameter.properties = Mof.createJsonFromObject(param.properties);
     }
-    return await ApiConnection.post(Settings.baseUrl + "api/items/create_in_extent/"
-        + encodeURIComponent(workspaceId) + "/"
+    return await ApiConnection.post(Settings.baseUrl + "api/items/create_in_extent?w="
+        + encodeURIComponent(workspaceId) + "&e="
         + encodeURIComponent(extentUri), evaluatedParameter);
 }
 export async function createItemAsChild(workspaceId, itemUri, param) {
@@ -23,41 +23,41 @@ export async function createItemAsChild(workspaceId, itemUri, param) {
     if (param.properties !== undefined && param.properties !== null) {
         evaluatedParameter.properties = Mof.createJsonFromObject(param.properties);
     }
-    return await ApiConnection.post(Settings.baseUrl + "api/items/create_child/"
-        + encodeURIComponent(workspaceId) + "/"
+    return await ApiConnection.post(Settings.baseUrl + "api/items/create_child?w="
+        + encodeURIComponent(workspaceId) + "&u="
         + encodeURIComponent(itemUri), evaluatedParameter);
 }
 export async function deleteRootElements(workspaceId, extentUri) {
-    return await ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete_root_elements/"
-        + encodeURIComponent(workspaceId) + "/"
+    return await ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete_root_elements?w="
+        + encodeURIComponent(workspaceId) + "&e="
         + encodeURIComponent(extentUri), {});
 }
 export async function deleteItem(workspaceId, itemUri) {
-    return await ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
-        + encodeURIComponent(workspaceId) + "/"
+    return await ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete?w="
+        + encodeURIComponent(workspaceId) + "&u="
         + encodeURIComponent(itemUri), {});
 }
 export async function deleteItemFromExtent(workspaceId, itemUrl) {
-    return await ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete_from_extent/"
-        + encodeURIComponent(workspaceId) + "/"
+    return await ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete_from_extent?w="
+        + encodeURIComponent(workspaceId) + "&u="
         + encodeURIComponent(itemUrl), {});
 }
 export async function getObject(workspace, extent, id) {
     const resultFromServer = ApiConnection.get(Settings.baseUrl +
-        "api/items/get/" +
+        "api/items/get_by_id?w=" +
         encodeURIComponent(workspace) +
-        "/" +
+        "&e=" +
         encodeURIComponent(extent) +
-        "/" +
+        "&i=" +
         encodeURIComponent(id));
     return Mof.convertJsonObjectToDmObject(resultFromServer, extent, workspace);
 }
 export async function getObjectByUri(workspace, url) {
     try {
         const resultFromServer = await ApiConnection.get(Settings.baseUrl +
-            "api/items/get/" +
+            "api/items/get?w=" +
             encodeURIComponent(workspace) +
-            "/" +
+            "&u=" +
             encodeURIComponent(url));
         return Mof.convertJsonObjectToDmObject(resultFromServer, undefined, workspace);
     }
@@ -68,9 +68,9 @@ export async function getObjectByUri(workspace, url) {
 export async function getItemWithNameAndId(workspace, url) {
     try {
         const resultFromServer = await ApiConnection.get(Settings.baseUrl +
-            "api/items/get_itemwithnameandid/" +
+            "api/items/get_itemwithnameandid?w=" +
             encodeURIComponent(workspace) +
-            "/" +
+            "&u=" +
             encodeURIComponent(url));
         return resultFromServer;
     }
@@ -84,9 +84,9 @@ export async function getRootElements(workspace, extentUri, parameter) {
         workspace = "Data";
     }
     let url = Settings.baseUrl +
-        "api/items/get_root_elements/" +
+        "api/items/get_root_elements?w=" +
         encodeURIComponent(workspace) +
-        "/" +
+        "&e=" +
         encodeURIComponent(extentUri);
     const queryParams = [];
     // Checks if there is a view node being attached
@@ -111,7 +111,7 @@ export async function getRootElements(workspace, extentUri, parameter) {
     }
     // Join query parameters with '&' and append them to the URL
     if (queryParams.length > 0) {
-        url += '?' + queryParams.join('&');
+        url += '&' + queryParams.join('&');
     }
     const resultFromServer = await ApiConnection.get(url);
     resultFromServer.rootElementsAsObjects = convertToMofObjects(resultFromServer.rootElements, extentUri, workspace);
@@ -140,16 +140,16 @@ export function convertToMofObjects(resultFromServer, extent, workspace) {
 }
 export async function getElements(queryUri) {
     let url = Settings.baseUrl +
-        "api/items/get_elements/" +
+        "api/items/get_elements?queryUri=" +
         encodeURIComponent(queryUri);
     const resultFromServer = await ApiConnection.get(url);
     return convertToMofObjects(resultFromServer);
 }
 export async function setId(workspaceId, itemUrl, newId) {
     let url = Settings.baseUrl +
-        "api/items/set_id/" +
+        "api/items/set_id?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     return await ApiConnection.post(url, { id: newId });
 }
@@ -159,71 +159,71 @@ export async function getRootElementsAsItem(workspace, extentUri, parameter) {
         workspace = "Data";
     }
     let url = Settings.baseUrl +
-        "api/items/get_root_elements_as_item/" +
+        "api/items/get_root_elements_as_item?w=" +
         encodeURIComponent(workspace) +
-        "/" +
+        "&e=" +
         encodeURIComponent(extentUri);
     // Checks, if there is a view node being attached
     if (parameter?.viewNode !== undefined) {
-        url += "?viewNode=" + encodeURIComponent(parameter.viewNode);
+        url += "&viewNode=" + encodeURIComponent(parameter.viewNode);
     }
     return await ApiConnection.get(url);
 }
 export async function getElementsAsItem(queryUri) {
     // Handle issue that empty urls cannot be resolved by ASP.Net, so we need to include a Workspace Name    
     let url = Settings.baseUrl +
-        "api/items/get_elements_as_item/" +
+        "api/items/get_elements_as_item?queryUri=" +
         encodeURIComponent(queryUri);
     return await ApiConnection.get(url);
 }
 export async function getContainer(workspaceId, itemUri, self) {
-    let uri = Settings.baseUrl + "api/items/get_container/"
-        + encodeURIComponent(workspaceId) + "/"
+    let uri = Settings.baseUrl + "api/items/get_container?w="
+        + encodeURIComponent(workspaceId) + "&u="
         + encodeURIComponent(itemUri);
     if (self === true) {
-        uri += "?self=true";
+        uri += "&self=true";
     }
     return await ApiConnection.get(uri);
 }
 export async function setProperty(workspaceId, itemUrl, property, value) {
     let url = Settings.baseUrl +
-        "api/items/set_property/" +
+        "api/items/set_property?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     return await ApiConnection.put(url, { key: property, value: value });
 }
 export async function unsetProperty(workspaceId, itemUrl, property) {
     let url = Settings.baseUrl +
-        "api/items/unset_property/" +
+        "api/items/unset_property?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     return await ApiConnection.post(url, { property: property });
 }
 export async function setPropertiesByStringValues(workspaceId, itemUrl, params) {
     let url = Settings.baseUrl +
-        "api/items/set_properties/" +
+        "api/items/set_properties?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     return await ApiConnection.post(url, params);
 }
 export async function setProperties(workspaceId, itemUrl, properties) {
     let url = Settings.baseUrl +
-        "api/items/set/" +
+        "api/items/set?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     return await ApiConnection.put(url, Mof.createJsonFromObject(properties));
 }
 export async function getProperty(workspaceId, itemUrl, property) {
     let url = Settings.baseUrl +
-        "api/items/get_property/" +
+        "api/items/get_property?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl) +
-        "?property=" +
+        "&property=" +
         encodeURIComponent(property);
     const result = await ApiConnection.get(url);
     // Result.v is an array of two items. The first one whether it is set, 
@@ -232,17 +232,17 @@ export async function getProperty(workspaceId, itemUrl, property) {
 }
 export async function setMetaclass(workspaceId, itemUrl, newMetaClass) {
     let url = Settings.baseUrl +
-        "api/items/set_metaclass/" +
+        "api/items/set_metaclass?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     return await ApiConnection.post(url, { metaclass: newMetaClass });
 }
 export async function addReferenceToCollection(workspaceId, itemUrl, parameter) {
     let url = Settings.baseUrl +
-        "api/items/add_ref_to_collection/" +
+        "api/items/add_ref_to_collection?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     await ApiConnection.post(url, {
         property: parameter.property,
@@ -252,9 +252,9 @@ export async function addReferenceToCollection(workspaceId, itemUrl, parameter) 
 }
 export async function setPropertyReference(workspaceId, itemUrl, parameter) {
     let url = Settings.baseUrl +
-        "api/items/set_property_reference/" +
+        "api/items/set_property_reference?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     return await ApiConnection.post(url, {
         property: parameter.property,
@@ -264,9 +264,9 @@ export async function setPropertyReference(workspaceId, itemUrl, parameter) {
 }
 export async function removeReferenceFromCollection(workspaceId, itemUrl, parameter) {
     let url = Settings.baseUrl +
-        "api/items/remove_ref_to_collection/" +
+        "api/items/remove_ref_to_collection?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     await ApiConnection.post(url, {
         property: parameter.property,
@@ -279,8 +279,8 @@ export class ExportXmiResult {
 }
 export async function exportXmi(workspace, itemUri) {
     let url = Settings.baseUrl +
-        "api/items/export_xmi/"
-        + encodeURIComponent(workspace) + "/"
+        "api/items/export_xmi?w="
+        + encodeURIComponent(workspace) + "&u="
         + encodeURIComponent(itemUri);
     return await ApiConnection.get(url);
 }
@@ -289,10 +289,10 @@ export class ImportXmiResult {
 }
 export async function importXmi(workspace, itemUri, property, addToCollection, xmi) {
     let url = Settings.baseUrl +
-        "api/items/import_xmi/"
-        + encodeURIComponent(workspace) + "/"
+        "api/items/import_xmi?w="
+        + encodeURIComponent(workspace) + "&u="
         + encodeURIComponent(itemUri)
-        + "?property=" + encodeURIComponent(property)
+        + "&property=" + encodeURIComponent(property)
         + "&addToCollection=" + (addToCollection ? "true" : "false");
     return await ApiConnection.post(url, { xmi: xmi });
 }

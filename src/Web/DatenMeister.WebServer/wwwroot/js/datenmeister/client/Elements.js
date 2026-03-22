@@ -19,20 +19,23 @@ export function getAllChildItems(workspaceId, itemUrl) {
  * or may be an item (then the composite children will be loaded)
  */
 async function load(workspaceId, itemUri) {
-    let url = "/api/elements/get_composites";
+    let url = "/api/elements/get_composites?";
     if (workspaceId !== undefined && workspaceId !== null) {
-        url += '/' + encodeURIComponent(workspaceId);
+        url += "w=" + encodeURIComponent(workspaceId);
         if (itemUri !== undefined && itemUri !== null) {
-            url += '/' + encodeURIComponent(itemUri);
+            url += "&u=" + encodeURIComponent(itemUri);
         }
+    }
+    else if (itemUri !== undefined && itemUri !== null) {
+        url += "u=" + encodeURIComponent(itemUri);
     }
     return await ApiConnection.get(url);
 }
 export async function loadNameOf(workspaceId, extentUri, itemUri) {
     return await ApiConnection.get(Settings.baseUrl +
-        "api/elements/get_name/" +
-        encodeURIComponent(workspaceId) + "/" +
-        encodeURIComponent(extentUri) + "/" +
+        "api/elements/get_name?w=" +
+        encodeURIComponent(workspaceId) + "&e=" +
+        encodeURIComponent(extentUri) + "&i=" +
         encodeURIComponent(itemUri));
 }
 export async function loadNameByUri(workspaceId, elementUri) {
@@ -40,8 +43,8 @@ export async function loadNameByUri(workspaceId, elementUri) {
         workspaceId = "_";
     }
     const getUrl = Settings.baseUrl +
-        "api/elements/get_name/" +
-        encodeURIComponent(workspaceId) + "/" +
+        "api/elements/get_name_by_uri?w=" +
+        encodeURIComponent(workspaceId) + "&u=" +
         encodeURIComponent(elementUri);
     return await ApiConnection.get(getUrl);
 }

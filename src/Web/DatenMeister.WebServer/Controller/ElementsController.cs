@@ -19,8 +19,11 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
 {
     public readonly ElementsControllerInternal Internal = new(workspaceLogic, scopeStorage);
 
-    [HttpGet("api/elements/get_name/{workspace}/{extentUri}/{itemId}")]
-    public ActionResult<object> GetName(string workspace, string extentUri, string itemId)
+    [HttpGet("api/elements/get_name")]
+    public ActionResult<object> GetName(
+        [FromQuery(Name = "w")] string workspace,
+        [FromQuery(Name = "e")] string extentUri,
+        [FromQuery(Name = "i")] string itemId)
     {
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
@@ -35,8 +38,10 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
         return ItemWithNameAndId.Create(foundItem)!;
     }
 
-    [HttpGet("api/elements/get_name/{workspace}/{uri}")]
-    public ActionResult<ItemWithNameAndId> GetName(string? workspace, string uri)
+    [HttpGet("api/elements/get_name_by_uri")]
+    public ActionResult<ItemWithNameAndId> GetNameByUri(
+        [FromQuery(Name = "w")] string? workspace,
+        [FromQuery(Name = "u")] string uri)
     {
         workspace = MvcUrlEncoder.DecodePath(workspace);
         uri = MvcUrlEncoder.DecodePathOrEmpty(uri);
@@ -61,8 +66,10 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
         return ItemWithNameAndId.Create(foundItem)!;
     }
 
-    [HttpGet("api/elements/get_composites/{workspaceId?}/{itemUrl?}")]
-    public ActionResult<ItemWithNameAndId[]> GetComposites(string? workspaceId, string? itemUrl)
+    [HttpGet("api/elements/get_composites")]
+    public ActionResult<ItemWithNameAndId[]> GetComposites(
+        [FromQuery(Name = "w")] string? workspaceId,
+        [FromQuery(Name = "u")] string? itemUrl)
     {
         workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
         itemUrl = MvcUrlEncoder.DecodePath(itemUrl);

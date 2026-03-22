@@ -34,9 +34,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 {
     private readonly ItemsControllerInternal _internal = new(workspaceLogic, scopeStorage);
 
-    [HttpPost("api/items/create_in_extent/{workspaceId}/{extentUri}")]
+    [HttpPost("api/items/create_in_extent")]
     public ActionResult<object> CreateItemInExtent(
-        string workspaceId, string extentUri,
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "e")] string extentUri,
         [FromBody] CreateItemInExtentParams createParams)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -119,9 +120,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         public string Workspace { get; set; } = string.Empty;
     }
 
-    [HttpPost("api/items/create_child/{workspaceId}/{itemUri}")]
+    [HttpPost("api/items/create_child")]
     public ActionResult<object> CreateItemAsChild(
-        string workspaceId, string itemUri,
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri,
         [FromBody] CreateItemAsChildParams createItemAsParams)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -203,8 +205,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         public string Workspace { get; set; } = string.Empty;
     }
 
-    [HttpDelete("api/items/delete/{workspaceId}/{itemUrl}")]
-    public ActionResult<object> DeleteItem(string workspaceId, string itemUrl)
+    [HttpDelete("api/items/delete")]
+    public ActionResult<object> DeleteItem(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUrl)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         itemUrl = MvcUrlEncoder.DecodePathOrEmpty(itemUrl);
@@ -222,8 +226,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <param name="workspaceId">Id of the workspace in which the extent is residing</param>
     /// <param name="extentUri">Uri of the extent</param>
     /// <returns>The action result</returns>
-    [HttpDelete("api/items/delete_root_elements/{workspaceId}/{extentUri}")]
-    public ActionResult<SuccessResult> DeleteRootElements(string workspaceId, string extentUri)
+    [HttpDelete("api/items/delete_root_elements")]
+    public ActionResult<SuccessResult> DeleteRootElements(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "e")] string extentUri)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
@@ -246,10 +252,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <param name="workspaceId">Id of the workspace</param>
     /// <param name="itemUri">Uri of the item to be deleted</param>
     /// <returns>the value indicating the success or not</returns>
-    [HttpPost("api/items/delete_from_extent/{workspaceId}/{itemUri}")]
+    [HttpPost("api/items/delete_from_extent")]
     public ActionResult<object> DeleteItemFromExtent(
-        string workspaceId,
-        string itemUri)
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
@@ -265,8 +271,11 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return new { success = true };
     }
 
-    [HttpGet("api/items/get/{workspaceId}/{extentUri}/{itemId}")]
-    public ActionResult<object> GetItem(string workspaceId, string extentUri, string itemId)
+    [HttpGet("api/items/get_by_id")]
+    public ActionResult<object> GetItem(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "e")] string extentUri,
+        [FromQuery(Name = "i")] string itemId)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
@@ -278,8 +287,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return convertedElement;
     }
 
-    [HttpGet("api/items/get/{workspaceId}/{itemUri}")]
-    public ActionResult<object> GetItem(string workspaceId, string itemUri)
+    [HttpGet("api/items/get")]
+    public ActionResult<object> GetItem(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
@@ -292,8 +303,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return convertedElement;
     }
 
-    [HttpGet("api/items/get_itemwithnameandid/{workspaceId}/{itemUri}")]
-    public ActionResult<object> GetItemWithNameAndId(string workspaceId, string itemUri)
+    [HttpGet("api/items/get_itemwithnameandid")]
+    public ActionResult<object> GetItemWithNameAndId(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
@@ -321,10 +334,17 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <param name="filterByProperties">Serialized properties to be set</param>
     /// <param name="filterByFreeText">Gets or sets the value whether the free text</param>
     /// <returns></returns>
-    [HttpGet("api/items/get_root_elements/{workspaceId}/{extentUri}")]
-    public ActionResult<GetRootElementsResult> GetRootElements(string workspaceId, string extentUri, string? viewNode = null,
-        string? orderBy = null, bool? orderByDescending = false, string? filterByProperties = null,
-        string? filterByFreeText = null, string? columnsIncludeOnly = null, string? columnsExclude = null)
+    [HttpGet("api/items/get_root_elements")]
+    public ActionResult<GetRootElementsResult> GetRootElements(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "e")] string extentUri,
+        [FromQuery] string? viewNode = null,
+        [FromQuery] string? orderBy = null,
+        [FromQuery] bool? orderByDescending = false,
+        [FromQuery] string? filterByProperties = null,
+        [FromQuery] string? filterByFreeText = null,
+        [FromQuery] string? columnsIncludeOnly = null,
+        [FromQuery] string? columnsExclude = null)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
@@ -386,8 +406,8 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// </summary>
     /// <param name="queryUri">Uri to be queried</param>
     /// <returns>Enumeration of items being queried</returns>
-    [HttpGet("api/items/get_elements/{queryUri}")]
-    public ActionResult<string> GetElements(string queryUri)
+    [HttpGet("api/items/get_elements")]
+    public ActionResult<string> GetElements([FromQuery] string queryUri)
     {
         queryUri = MvcUrlEncoder.DecodePathOrEmpty(queryUri);
         var result = workspaceLogic.Resolve(queryUri, ResolveType.Default, true);
@@ -411,9 +431,11 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <param name="extentUri">Uri of the extent from which the items are retrieved</param>
     /// <param name="viewNode">The view node being used to filter the items</param>
     /// <returns></returns>
-    [HttpGet("api/items/get_root_elements_as_item/{workspaceId}/{extentUri}")]
-    public ActionResult<IEnumerable<ItemWithNameAndId>> GetRootElementsAsItem(string workspaceId, string extentUri,
-        string? viewNode = null)
+    [HttpGet("api/items/get_root_elements_as_item")]
+    public ActionResult<IEnumerable<ItemWithNameAndId>> GetRootElementsAsItem(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "e")] string extentUri,
+        [FromQuery] string? viewNode = null)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
@@ -433,8 +455,8 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// </summary>
     /// <param name="queryUri">Uri to be queried</param>
     /// <returns>Enumeration of items being queried</returns>
-    [HttpGet("api/items/get_elements_as_item/{queryUri}")]
-    public ActionResult<IEnumerable<ItemWithNameAndId>> GetElementsAsItem(string queryUri)
+    [HttpGet("api/items/get_elements_as_item")]
+    public ActionResult<IEnumerable<ItemWithNameAndId>> GetElementsAsItem([FromQuery] string queryUri)
     {
         queryUri = MvcUrlEncoder.DecodePathOrEmpty(queryUri);
         var result = workspaceLogic.Resolve(queryUri, ResolveType.Default, true);
@@ -451,8 +473,11 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return NotFound($"{queryUri} did not return a reflective collection");
     }
 
-    [HttpGet("api/items/get_container/{workspaceId}/{itemUri}")]
-    public ActionResult<List<ItemWithNameAndId>> GetContainer(string workspaceId, string itemUri, bool? self = false)
+    [HttpGet("api/items/get_container")]
+    public ActionResult<List<ItemWithNameAndId>> GetContainer(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri,
+        [FromQuery] bool? self = false)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
@@ -526,8 +551,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return result;
     }
 
-    [HttpPut("api/items/set_property/{workspaceId}/{itemUri}")]
-    public ActionResult<object> SetProperty(string workspaceId, string itemUri,
+    [HttpPut("api/items/set_property")]
+    public ActionResult<object> SetProperty(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri,
         [FromBody] SetPropertyParams propertyParams)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -539,8 +566,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return new { success = true };
     }
 
-    [HttpPost("api/items/set_property_reference/{workspaceId}/{itemUri}")]
-    public ActionResult<SuccessResult> SetPropertyReference(string workspaceId, string itemUri,
+    [HttpPost("api/items/set_property_reference")]
+    public ActionResult<SuccessResult> SetPropertyReference(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri,
         [FromBody] SetPropertyReferenceParams parameters)
     {
 
@@ -579,8 +608,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         public string WorkspaceId { get; set; } = string.Empty;
     }
 
-    [HttpPost("api/items/unset_property/{workspaceId}/{itemUri}")]
-    public ActionResult<object> UnsetProperty(string workspaceId, string itemUri,
+    [HttpPost("api/items/unset_property")]
+    public ActionResult<object> UnsetProperty(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri,
         [FromBody] UnsetPropertyParams propertyParams)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -604,8 +635,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         public string Property { get; init; } = string.Empty;
     }
 
-    [HttpPost("api/items/set_properties/{workspaceId}/{itemUri}")]
-    public ActionResult<object> SetProperties(string workspaceId, string itemUri,
+    [HttpPost("api/items/set_properties")]
+    public ActionResult<object> SetProperties(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri,
         [FromBody] SetPropertiesParams propertiesParams)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -645,8 +678,11 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         public List<SetPropertyParams> Properties { get; set; } = new();
     }
 
-    [HttpGet("api/items/get_property/{workspaceId}/{itemUri}")]
-    public ActionResult<object> GetProperty(string workspaceId, string itemUri, string property)
+    [HttpGet("api/items/get_property")]
+    public ActionResult<object> GetProperty(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri,
+        [FromQuery] string property)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
@@ -662,8 +698,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return Content($"{{\"v\": [{converter.ConvertToJsonString(isSet)},{converter.ConvertToJsonString(value)}]}}", "application/json", Encoding.UTF8);
     }
 
-    [HttpPut("api/items/set/{workspaceId}/{itemUri}")]
-    public ActionResult<SuccessResult> Set(string workspaceId, string itemUri,
+    [HttpPut("api/items/set")]
+    public ActionResult<SuccessResult> Set(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri,
         [FromBody] MofObjectAsJson jsonObject)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -682,8 +720,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return new SuccessResult { Success = true };
     }
 
-    [HttpPost("api/items/set_metaclass/{workspaceId}/{itemUri}")]
-    public ActionResult<object> SetMetaClass(string workspaceId, string itemUri,
+    [HttpPost("api/items/set_metaclass")]
+    public ActionResult<object> SetMetaClass(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri,
         [FromBody] SetMetaClassParams parameter)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -710,8 +750,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <param name="itemUri">Uri of the item to whose property shall be added</param>
     /// <param name="parameters">Parameters describing the property and the reference</param>
     /// <returns></returns>
-    [HttpPost("api/items/add_ref_to_collection/{workspaceId}/{itemUri}")]
-    public ActionResult<object> AddReferenceToCollection(string workspaceId, string itemUri,
+    [HttpPost("api/items/add_ref_to_collection")]
+    public ActionResult<object> AddReferenceToCollection(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri,
         [FromBody] AddReferenceToCollectionParams parameters)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -758,8 +800,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <param name="itemUri">Uri of the item to whose property shall be added</param>
     /// <param name="parameters">Parameters describing the property and the reference</param>
     /// <returns></returns>
-    [HttpPost("api/items/remove_ref_to_collection/{workspaceId}/{itemUri}")]
-    public ActionResult<object> RemoveReferenceToCollection(string workspaceId, string itemUri,
+    [HttpPost("api/items/remove_ref_to_collection")]
+    public ActionResult<object> RemoveReferenceToCollection(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri,
         [FromBody] RemoveReferenceToCollectionParams parameters)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -797,8 +841,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         public string Xmi { get; set; } = string.Empty;
     }
 
-    [HttpGet("api/items/export_xmi/{workspace}/{itemUri}")]
-    public ActionResult<ExportXmiResult> ExportXmi(string workspace, string itemUri)
+    [HttpGet("api/items/export_xmi")]
+    public ActionResult<ExportXmiResult> ExportXmi(
+        [FromQuery(Name = "w")] string workspace,
+        [FromQuery(Name = "u")] string itemUri)
     {
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
@@ -834,9 +880,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         public bool Success { get; init; }
     }
 
-    [HttpPost("api/items/import_xmi/{workspace}/{itemUri}")]
+    [HttpPost("api/items/import_xmi")]
     public async Task<ActionResult<ImportXmiResult>> ImportXmi(
-        string workspace, string itemUri,
+        [FromQuery(Name = "w")] string workspace,
+        [FromQuery(Name = "u")] string itemUri,
         [FromQuery(Name = "property")] string property,
         [FromQuery(Name = "addToCollection")] bool addToCollection,
         [FromBody] ImportXmiParams parameter)
@@ -878,8 +925,11 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <param name="itemUri">Uri of the item whose id shall be changed</param>
     /// <param name="parameter">Defines the new Id of the item</param>
     /// <returns></returns>
-    [HttpPost("api/items/set_id/{workspace}/{itemUri}")]
-    public ActionResult<SetIdResult> SetId(string workspace, string itemUri, [FromBody] SetIdParams parameter)
+    [HttpPost("api/items/set_id")]
+    public ActionResult<SetIdResult> SetId(
+        [FromQuery(Name = "w")] string workspace,
+        [FromQuery(Name = "u")] string itemUri,
+        [FromBody] SetIdParams parameter)
     {
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);

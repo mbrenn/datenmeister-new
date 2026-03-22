@@ -15,8 +15,8 @@ export async function createItemInExtent(workspaceId: string, extentUri: string,
     }
 
     return await ApiConnection.post<ICreateItemInExtentResult>(
-        Settings.baseUrl + "api/items/create_in_extent/"
-        + encodeURIComponent(workspaceId) + "/"
+        Settings.baseUrl + "api/items/create_in_extent?w="
+        + encodeURIComponent(workspaceId) + "&e="
         + encodeURIComponent(extentUri),
         evaluatedParameter
     );
@@ -49,8 +49,8 @@ export async function createItemAsChild(workspaceId: string, itemUri: string, pa
     }
 
     return await ApiConnection.post<ICreateItemAsChildResult>(
-        Settings.baseUrl + "api/items/create_child/"
-        + encodeURIComponent(workspaceId) + "/"
+        Settings.baseUrl + "api/items/create_child?w="
+        + encodeURIComponent(workspaceId) + "&u="
         + encodeURIComponent(itemUri),
         evaluatedParameter
     );
@@ -74,16 +74,16 @@ export interface ICreateItemAsChildResult
 export async function deleteRootElements(workspaceId: string, extentUri: string)
 {
     return await ApiConnection.deleteRequest<ISuccessResult>(
-        Settings.baseUrl + "api/items/delete_root_elements/"
-        + encodeURIComponent(workspaceId) + "/"
+        Settings.baseUrl + "api/items/delete_root_elements?w="
+        + encodeURIComponent(workspaceId) + "&e="
         + encodeURIComponent(extentUri), {}
     );
 }
 
 export async function deleteItem(workspaceId: string, itemUri: string) {
     return await ApiConnection.deleteRequest<ISuccessResult>(
-        Settings.baseUrl + "api/items/delete/"
-        + encodeURIComponent(workspaceId) + "/"
+        Settings.baseUrl + "api/items/delete?w="
+        + encodeURIComponent(workspaceId) + "&u="
         + encodeURIComponent(itemUri),
         {}
     );
@@ -91,8 +91,8 @@ export async function deleteItem(workspaceId: string, itemUri: string) {
 
 export async function deleteItemFromExtent(workspaceId: string, itemUrl: string) {
     return await ApiConnection.deleteRequest<ISuccessResult>(
-        Settings.baseUrl + "api/items/delete_from_extent/"
-        + encodeURIComponent(workspaceId) + "/"
+        Settings.baseUrl + "api/items/delete_from_extent?w="
+        + encodeURIComponent(workspaceId) + "&u="
         + encodeURIComponent(itemUrl),
         {}
     );
@@ -101,11 +101,11 @@ export async function deleteItemFromExtent(workspaceId: string, itemUrl: string)
 export async function getObject(workspace: string, extent: string, id: string) {
     const resultFromServer = ApiConnection.get<object>(
         Settings.baseUrl +
-        "api/items/get/" +
+        "api/items/get_by_id?w=" +
         encodeURIComponent(workspace) +
-        "/" +
+        "&e=" +
         encodeURIComponent(extent) +
-        "/" +
+        "&i=" +
         encodeURIComponent(id)
     );
 
@@ -116,9 +116,9 @@ export async function getObjectByUri(workspace: string, url: string): Promise<Mo
     try {
         const resultFromServer = await ApiConnection.get<object>(
             Settings.baseUrl +
-            "api/items/get/" +
+            "api/items/get?w=" +
             encodeURIComponent(workspace) +
-            "/" +
+            "&u=" +
             encodeURIComponent(url)
         );
 
@@ -134,9 +134,9 @@ export async function getItemWithNameAndId(workspace: string, url: string): Prom
     try {
         const resultFromServer = await ApiConnection.get<ItemWithNameAndId>(
             Settings.baseUrl +
-            "api/items/get_itemwithnameandid/" +
+            "api/items/get_itemwithnameandid?w=" +
             encodeURIComponent(workspace) +
-            "/" +
+            "&u=" +
             encodeURIComponent(url)
         );
 
@@ -173,9 +173,9 @@ export async function getRootElements(workspace: string, extentUri: string, para
     }
     
     let url = Settings.baseUrl +
-        "api/items/get_root_elements/" +
+        "api/items/get_root_elements?w=" +
         encodeURIComponent(workspace) +
-        "/" +
+        "&e=" +
         encodeURIComponent(extentUri);
 
     const queryParams: string[] = [];
@@ -207,7 +207,7 @@ export async function getRootElements(workspace: string, extentUri: string, para
 
     // Join query parameters with '&' and append them to the URL
     if (queryParams.length > 0) {
-        url += '?' + queryParams.join('&');
+        url += '&' + queryParams.join('&');
     }
 
     const resultFromServer = await ApiConnection.get<IGetRootElementsResult>(url);
@@ -242,7 +242,7 @@ export function convertToMofObjects(resultFromServer: string, extent?: string, w
 
 export async function getElements(queryUri: string): Promise<Array<Mof.DmObject>> {    
     let url = Settings.baseUrl +
-        "api/items/get_elements/" +
+        "api/items/get_elements?queryUri=" +
         encodeURIComponent(queryUri);
 
     const resultFromServer = await ApiConnection.get<string>(url);
@@ -260,9 +260,9 @@ export interface ISetIdResult {
 
 export async function setId(workspaceId: string, itemUrl: string, newId: string) {
     let url = Settings.baseUrl +
-        "api/items/set_id/" +
+        "api/items/set_id?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     return await ApiConnection.post<ISetIdResult>(url, {id: newId} as ISetIdParams);
 }
@@ -274,14 +274,14 @@ export async function getRootElementsAsItem(workspace: string, extentUri: string
     }
 
     let url = Settings.baseUrl +
-        "api/items/get_root_elements_as_item/" +
+        "api/items/get_root_elements_as_item?w=" +
         encodeURIComponent(workspace) +
-        "/" +
+        "&e=" +
         encodeURIComponent(extentUri);
 
     // Checks, if there is a view node being attached
     if (parameter?.viewNode !== undefined) {
-        url += "?viewNode=" + encodeURIComponent(parameter.viewNode);
+        url += "&viewNode=" + encodeURIComponent(parameter.viewNode);
     }
 
     return await ApiConnection.get<Array<ItemWithNameAndId>>(url);
@@ -290,7 +290,7 @@ export async function getRootElementsAsItem(workspace: string, extentUri: string
 export async function getElementsAsItem(queryUri: string): Promise<Array<ItemWithNameAndId>> {
     // Handle issue that empty urls cannot be resolved by ASP.Net, so we need to include a Workspace Name    
     let url = Settings.baseUrl +
-        "api/items/get_elements_as_item/" +
+        "api/items/get_elements_as_item?queryUri=" +
         encodeURIComponent(queryUri);
     
     return await ApiConnection.get<Array<ItemWithNameAndId>>(url);
@@ -298,12 +298,12 @@ export async function getElementsAsItem(queryUri: string): Promise<Array<ItemWit
 
 export async function getContainer(workspaceId: string, itemUri: string, self?: boolean): Promise<Array<ItemWithNameAndId>> {
     
-    let uri = Settings.baseUrl + "api/items/get_container/"
-        + encodeURIComponent(workspaceId) + "/"
+    let uri = Settings.baseUrl + "api/items/get_container?w="
+        + encodeURIComponent(workspaceId) + "&u="
         + encodeURIComponent(itemUri);
     
     if (self === true) {
-        uri += "?self=true";
+        uri += "&self=true";
     }
     
     return await ApiConnection.get<Array<ItemWithNameAndId>>(uri);
@@ -312,18 +312,18 @@ export async function getContainer(workspaceId: string, itemUri: string, self?: 
 export async function setProperty(
     workspaceId: string, itemUrl: string, property: string, value: any): Promise<ISuccessResult> {
     let url = Settings.baseUrl +
-        "api/items/set_property/" +
+        "api/items/set_property?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     return await ApiConnection.put<any>(url, {key: property, value: value});
 }
 export async function unsetProperty(
     workspaceId: string, itemUrl: string, property: string): Promise<ISuccessResult> {
     let url = Settings.baseUrl +
-        "api/items/unset_property/" +
+        "api/items/unset_property?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
 
     return await ApiConnection.post<any>(url, {property: property});
@@ -331,9 +331,9 @@ export async function unsetProperty(
 
 export async function setPropertiesByStringValues(workspaceId: string, itemUrl: string, params: ISetPropertiesParams): Promise<ISuccessResult> {
     let url = Settings.baseUrl +
-        "api/items/set_properties/" +
+        "api/items/set_properties?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     
     return await ApiConnection.post(url, params);    
@@ -351,9 +351,9 @@ export interface ISetPropertiesParams {
 
 export async function setProperties(workspaceId: string, itemUrl: string, properties: Mof.DmObject): Promise<ISuccessResult> {    
     let url = Settings.baseUrl +
-        "api/items/set/" +
+        "api/items/set?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
 
     return await ApiConnection.put(
@@ -365,11 +365,11 @@ export async function getProperty(
     workspaceId: string, itemUrl: string, property: string): Promise<any> {
 
     let url = Settings.baseUrl +
-        "api/items/get_property/" +
+        "api/items/get_property?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl) +
-        "?property=" +
+        "&property=" +
         encodeURIComponent(property);
     const result = await ApiConnection.get<IGetPropertyResult>(url);
     
@@ -380,9 +380,9 @@ export async function getProperty(
 
 export async function setMetaclass(workspaceId: string, itemUrl: string, newMetaClass: string) {
     let url = Settings.baseUrl +
-        "api/items/set_metaclass/" +
+        "api/items/set_metaclass?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
     return await ApiConnection.post(
         url,
@@ -396,9 +396,9 @@ export interface IGetPropertyResult {
 export async function addReferenceToCollection(
     workspaceId: string, itemUrl: string, parameter: IAddReferenceToCollectionParameter) {
     let url = Settings.baseUrl +
-        "api/items/add_ref_to_collection/" +
+        "api/items/add_ref_to_collection?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
 
     await ApiConnection.post(
@@ -421,9 +421,9 @@ export interface IAddReferenceToCollectionParameter {
 export async function setPropertyReference(
     workspaceId: string, itemUrl: string, parameter: ISetPropertyReferenceParams): Promise<ISuccessResult> {
     let url = Settings.baseUrl +
-        "api/items/set_property_reference/" +
+        "api/items/set_property_reference?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
 
     return await ApiConnection.post(
@@ -445,9 +445,9 @@ export interface ISetPropertyReferenceParams {
 export async function removeReferenceFromCollection(
     workspaceId: string, itemUrl: string, parameter: IRemoveReferenceFromCollectionParameter) {
     let url = Settings.baseUrl +
-        "api/items/remove_ref_to_collection/" +
+        "api/items/remove_ref_to_collection?w=" +
         encodeURIComponent(workspaceId) +
-        "/" +
+        "&u=" +
         encodeURIComponent(itemUrl);
 
     await ApiConnection.post(
@@ -473,8 +473,8 @@ export class ExportXmiResult
 }
 export async function exportXmi(workspace: string, itemUri: string) {
     let url = Settings.baseUrl +
-        "api/items/export_xmi/"
-        + encodeURIComponent(workspace) + "/"
+        "api/items/export_xmi?w="
+        + encodeURIComponent(workspace) + "&u="
         + encodeURIComponent(itemUri);
     return await ApiConnection.get<ExportXmiResult>(url);
 }
@@ -486,10 +486,10 @@ export class ImportXmiResult
 
 export async function importXmi(workspace: string, itemUri: string, property: string, addToCollection: boolean, xmi: string) {
     let url = Settings.baseUrl +
-        "api/items/import_xmi/"
-        + encodeURIComponent(workspace) + "/"
+        "api/items/import_xmi?w="
+        + encodeURIComponent(workspace) + "&u="
         + encodeURIComponent(itemUri)
-        + "?property=" + encodeURIComponent(property)
+        + "&property=" + encodeURIComponent(property)
         + "&addToCollection=" + (addToCollection ? "true" : "false");
 
     return await ApiConnection.post<ImportXmiResult>(url, {xmi: xmi});

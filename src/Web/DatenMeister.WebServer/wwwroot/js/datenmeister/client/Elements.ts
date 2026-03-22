@@ -25,13 +25,15 @@ export function getAllChildItems(workspaceId: string, itemUrl: string): Promise<
  * or may be an item (then the composite children will be loaded)
  */
 async function load(workspaceId: string, itemUri: string): Promise<ItemWithNameAndId[]> {
-    let url = "/api/elements/get_composites";
+    let url = "/api/elements/get_composites?";
     if (workspaceId !== undefined && workspaceId !== null) {
-        url += '/' + encodeURIComponent(workspaceId);
+        url += "w=" + encodeURIComponent(workspaceId);
 
         if (itemUri !== undefined && itemUri !== null) {
-            url += '/' + encodeURIComponent(itemUri);
+            url += "&u=" + encodeURIComponent(itemUri);
         }
+    } else if (itemUri !== undefined && itemUri !== null) {
+        url += "u=" + encodeURIComponent(itemUri);
     }
 
     return await ApiConnection.get<ItemWithNameAndId[]>(url);
@@ -40,9 +42,9 @@ async function load(workspaceId: string, itemUri: string): Promise<ItemWithNameA
 export async function loadNameOf(workspaceId: string, extentUri: string, itemUri: string): Promise<ItemWithNameAndId> {
     return await ApiConnection.get<ItemWithNameAndId>(
         Settings.baseUrl +
-        "api/elements/get_name/" +
-        encodeURIComponent(workspaceId) + "/" +
-        encodeURIComponent(extentUri) + "/" +
+        "api/elements/get_name?w=" +
+        encodeURIComponent(workspaceId) + "&e=" +
+        encodeURIComponent(extentUri) + "&i=" +
         encodeURIComponent(itemUri));
 }
 
@@ -53,8 +55,8 @@ export async function loadNameByUri(workspaceId: string, elementUri: string): Pr
     }
 
     const getUrl = Settings.baseUrl +
-        "api/elements/get_name/" +
-        encodeURIComponent(workspaceId) + "/" +
+        "api/elements/get_name_by_uri?w=" +
+        encodeURIComponent(workspaceId) + "&u=" +
         encodeURIComponent(elementUri);
 
     return await ApiConnection.get<ItemWithNameAndId>(getUrl);

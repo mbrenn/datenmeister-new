@@ -3,6 +3,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Web.Json;
 using NUnit.Framework;
@@ -177,7 +178,7 @@ public class MofJsonTests
     }
 
     [Test]
-    public void TestQueryObjectExample()
+    public async Task TestQueryObjectExample()
     {
        var json = """
                   {
@@ -271,14 +272,18 @@ public class MofJsonTests
                      }
                   }
                   """;
+       
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();        
 
         var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(json);
-        var deconverted = new DirectJsonDeconverter().ConvertToObject(asJsonObject!) as IElement;
+        var deconverted = new DirectJsonDeconverter(dm.WorkspaceLogic, dm.ScopeStorage).ConvertToObject(asJsonObject!) as IElement;
         Assert.That(deconverted, Is.Not.Null);
         
         var query = deconverted.get<IElement>("query");
         Assert.That(query, Is.Not.Null);
         Assert.That(query.getOrDefault<string>("name"), Is.EqualTo("test"));
+        Assert.That(query.metaclass, Is.Not.Null);
+        Assert.That(query.metaclass!.equals (_DataViews.TheOne.__QueryStatement));
         
         var nodes = query.get<IReflectiveCollection>("nodes");
         Assert.That(nodes, Is.Not.Null);
@@ -296,9 +301,12 @@ public class MofJsonTests
         Assert.That(input, Is.Not.Null);
         Assert.That(input.getOrDefault<string>("name"), Is.EqualTo("Dynamic source input"));
         Assert.That(input.equals(node1), Is.True);
+        Assert.That(input.equals(node2), Is.False);
+        Assert.That(node2.equals(node1), Is.False);
         
         var resultNode = query.get<IElement>("resultNode");
         Assert.That(resultNode, Is.Not.Null);
         Assert.That(resultNode.getOrDefault<string>("name"), Is.EqualTo("Limit to 101 elements"));
+        Assert.That(resultNode.equals(node2), Is.True);
     }
 }

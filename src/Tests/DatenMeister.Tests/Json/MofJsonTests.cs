@@ -175,4 +175,130 @@ public class MofJsonTests
         item2!.set("name", "New Name");
         Assert.That(referenceItem1.getOrDefault<string>("name"), Is.EqualTo("New Name"));
     }
+
+    [Test]
+    public void TestQueryObjectExample()
+    {
+       var json = """
+                  {
+                     "m":{
+                        "uri":"dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237",
+                        "workspace":"Types"
+                     },
+                     "id":"local_169",
+                     "v":{
+                        "_AddQueryInPackageAction":[
+                           true,
+                           "test"
+                        ],
+                        "targetPackageUri":[
+                           true,
+                           "dm:///_internal/forms/user"
+                        ],
+                        "targetPackageWorkspace":[
+                           true,
+                           "Management"
+                        ],
+                        "query":[
+                           true,
+                           {
+                              "m":{
+                                 "uri":"dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement",
+                                 "workspace":"Types"
+                              },
+                              "id":"local_63",
+                              "v":{
+                                 "nodes":[
+                                    true,
+                                    {
+                                       "0":{
+                                          "m":{
+                                             "uri":"dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode",
+                                             "workspace":"Types"
+                                          },
+                                          "id":"local_64",
+                                          "v":{
+                                             "nodeName":[
+                                                true,
+                                                "input"
+                                             ],
+                                             "name":[
+                                                true,
+                                                "Dynamic source input"
+                                             ]
+                                          }
+                                       },
+                                       "1":{
+                                          "m":{
+                                             "uri":"dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f",
+                                             "workspace":"Types"
+                                          },
+                                          "id":"local_66",
+                                          "v":{
+                                             "input":[
+                                                true,
+                                                {
+                                                   "r":"#local_64",
+                                                   "id":"local_64"
+                                                }
+                                             ],
+                                             "amount":[
+                                                true,
+                                                101
+                                             ],
+                                             "name":[
+                                                true,
+                                                "Limit to 101 elements"
+                                             ]
+                                          }
+                                       }
+                                    }
+                                 ],
+                                 "resultNode":[
+                                    true,
+                                    {
+                                       "r":"#local_66",
+                                       "id":"local_66"
+                                    }
+                                 ],
+                                 "name":[
+                                    true,
+                                    "test"
+                                 ]
+                              }
+                           }
+                        ]
+                     }
+                  }
+                  """;
+
+        var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(json);
+        var deconverted = new DirectJsonDeconverter().ConvertToObject(asJsonObject!) as IElement;
+        Assert.That(deconverted, Is.Not.Null);
+        
+        var query = deconverted.get<IElement>("query");
+        Assert.That(query, Is.Not.Null);
+        Assert.That(query.getOrDefault<string>("name"), Is.EqualTo("test"));
+        
+        var nodes = query.get<IReflectiveCollection>("nodes");
+        Assert.That(nodes, Is.Not.Null);
+        Assert.That(nodes.size(), Is.EqualTo(2));
+        
+        var node1 = nodes.OfType<IElement>().FirstOrDefault(x => x.getOrDefault<string>("name") == "Dynamic source input");
+        Assert.That(node1, Is.Not.Null);
+        Assert.That(node1!.getOrDefault<string>("name"), Is.EqualTo("Dynamic source input"));
+        
+        var node2 = nodes.OfType<IElement>().FirstOrDefault(x => x.getOrDefault<string>("name") == "Limit to 101 elements");
+        Assert.That(node2, Is.Not.Null);
+        Assert.That(node2!.getOrDefault<int>("amount"), Is.EqualTo(101));
+        Assert.That(node2.getOrDefault<string>("name"), Is.EqualTo("Limit to 101 elements"));
+        var input = node2.get<IElement>("input");
+        Assert.That(input, Is.Not.Null);
+        Assert.That(input.getOrDefault<string>("name"), Is.EqualTo("Dynamic source input"));
+        Assert.That(input.equals(node1), Is.True);
+        
+        var resultNode = query.get<IElement>("resultNode");
+        Assert.That(resultNode, Is.Not.Null);
+        Assert.That(resultNode.getOrDefault<string>("name"), Is.EqualTo("Limit to 101 elements"));
+    }
 }

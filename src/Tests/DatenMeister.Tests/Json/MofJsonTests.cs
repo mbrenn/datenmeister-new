@@ -189,6 +189,11 @@ public class MofJsonTests
         Assert.That(deconverted, Is.Not.Null);
         
         var query = deconverted.get<IElement>("query");
+        ValidateQueryProperties(query);
+    }
+
+    public static void ValidateQueryProperties(IElement query)
+    {
         Assert.That(query, Is.Not.Null);
         Assert.That(query.getOrDefault<string>("name"), Is.EqualTo("test"));
         Assert.That(query.metaclass, Is.Not.Null);

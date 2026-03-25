@@ -25,18 +25,18 @@ public class DirectJsonDeconverter
     /// <summary>
     /// This helper class supports the dereferencing of shadows to actual objects
     /// </summary>
-    /// <param name="Shadow">Shadow being used</param>
-    /// <param name="ActionToSetShadow">This method sets the new object instead of the shadow</param>
-    private class ShadowInformation(MofObjectShadow Shadow, Action<IObject> ActionToSetShadow)
+    /// <param name="shadow">Shadow being used</param>
+    /// <param name="actionToSetShadow">This method sets the new object instead of the shadow</param>
+    private class ShadowInformation(MofObjectShadow shadow, Action<IObject> actionToSetShadow)
     {
-        public MofObjectShadow Shadow { get; } = Shadow;
-        public Action<IObject> ActionToSetShadow { get; } = ActionToSetShadow;
+        public MofObjectShadow Shadow { get; } = shadow;
+        public Action<IObject> ActionToSetShadow { get; } = actionToSetShadow;
     }
 
     private readonly IWorkspaceLogic? _workspaceLogic;
     private readonly IScopeStorage? _scopeStorage;
 
-    private string prefixCounter = string.Empty;
+    private string _prefixCounter = string.Empty;
 
     /// <summary>
     /// Defines a list of shadow object that are created during the conversion and are used to resolve references within each conversion
@@ -56,6 +56,12 @@ public class DirectJsonDeconverter
         _workspaceLogic = workspaceLogic;
         _scopeStorage = scopeStorage;
     }
+    
+    /// <summary>
+    /// Specifies the factory to be used to create the Mof elements.
+    /// In case the factory is null, the temporary extent is used.
+    /// </summary>
+    public MofFactory? MofFactory { get; set; }
 
     /// <summary>
     /// Converts the given json value to a .Net value
@@ -145,7 +151,7 @@ public class DirectJsonDeconverter
         try
         {
             _isInCall = true;
-            prefixCounter = GetNextCounter();
+            _prefixCounter = GetNextCounter();
             Shadows.Clear();
             References.Clear();
 
@@ -204,21 +210,35 @@ public class DirectJsonDeconverter
         {
             if (_workspaceLogic != null && _scopeStorage != null)
             {
-                var temporaryExtentLogic = new TemporaryExtentLogic(_workspaceLogic, _scopeStorage);
-                var temporaryExtent = temporaryExtentLogic.TryGetTemporaryExtent();
-                if (temporaryExtent != null)
+                if (MofFactory == null)
                 {
-                    if (isRoot)
+                    var temporaryExtentLogic = new TemporaryExtentLogic(_workspaceLogic, _scopeStorage);
+                    var temporaryExtent = temporaryExtentLogic.TryGetTemporaryExtent();
+                    if (temporaryExtent != null)
                     {
-                        result = temporaryExtentLogic.CreateTemporaryElementByUri(
-                            jsonObject.m?.uri ?? string.Empty);
+                        if (isRoot)
+                        {
+                            result = temporaryExtentLogic.CreateTemporaryElementByUri(
+                                jsonObject.m?.uri ?? string.Empty);
+                        }
+                        else
+                        {
+                            result = MofFactory.CreateElementWithMetaClassUri(
+                                temporaryExtentLogic.TemporaryExtent,
+                                jsonObject.m?.uri ?? string.Empty);
+                        }
                     }
-                    else
+                }
+                else
+                {
+                    if (MofFactory.Extent == null)
                     {
-                        result = MofFactory.CreateElementWithMetaClassUri(
-                            temporaryExtentLogic.TemporaryExtent,
-                            jsonObject.m?.uri ?? string.Empty);
+                        throw new InvalidOperationException("MofFactory.Extent is null");
                     }
+
+                    result = MofFactory.CreateElementWithMetaClassUri(
+                        MofFactory.Extent,
+                        jsonObject.m?.uri ?? string.Empty);
                 }
             }
 
@@ -227,7 +247,7 @@ public class DirectJsonDeconverter
             // Sets the id, if the id is given
             if (!string.IsNullOrEmpty(jsonObject.id) && result.GetId() != jsonObject.id)
             {
-                result.SetId(prefixCounter + jsonObject.id);
+                result.SetId(_prefixCounter + jsonObject.id);
             }
 
             // Adds the element to the references
@@ -252,7 +272,7 @@ public class DirectJsonDeconverter
                     var value = valueObject[1];
                     if (value is MofObjectShadow shadow)
                     {
-                        shadow.Uri = "#" + prefixCounter + shadow.Uri.Replace("#", "");
+                        shadow.Uri = "#" + _prefixCounter + shadow.Uri.Replace("#", "");
                         Shadows.Add(new ShadowInformation(
                             shadow,
                             x => result.set(pair.Key, x)));

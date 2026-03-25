@@ -41,7 +41,7 @@ public class TestFlattening
 
             var (extent, viewExtent) = await TestRowFilters.LoadAndValidateExtents(extentManager);
             
-            var factory = new MofFactory(extent);
+            var factory = new MofFactory(viewExtent);
 
             // Create the data!
             var viewNode = factory.create(_DataViews.TheOne.__ViewNode);

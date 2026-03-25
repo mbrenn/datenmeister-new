@@ -16,8 +16,7 @@ namespace DatenMeister.Forms.Actions;
 public class AddQueryInPackageActionHandler : IActionHandler
 {
     public bool IsResponsible(IElement node)
-    {
-        
+    {    
         return node.getMetaClass()?.equals(
             _Actions.TheOne.Forms.__AddQueryInPackageAction) == true;
     }

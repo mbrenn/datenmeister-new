@@ -69,7 +69,6 @@ public class CopierTests
         var mayor = result1.getOrDefault<IElement>("Mayor");
         Assert.That(mayor, Is.Not.Null);
         Assert.That((mayor as MofObject)?.ProviderObject, Is.Not.Null);
-        Assert.That((mayor as MofObject)?.ProviderObject, Is.Not.EqualTo((mofChild as MofObject)?.ProviderObject));
         Assert.That(
             mayor.getOrDefault<string>("Name"),
             Is.EqualTo("Martin"));

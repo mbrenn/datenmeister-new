@@ -37,6 +37,7 @@
     <ProjectReference Include="..\..\DatenMeister.Actions\DatenMeister.Actions.csproj" />
     <ProjectReference Include="..\..\DatenMeister.AttachedExtent\DatenMeister.AttachedExtent.csproj" />
     <ProjectReference Include="..\..\DatenMeister.BootStrap\DatenMeister.BootStrap.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Forms.Actions\DatenMeister.Forms.Actions.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.Excel\DatenMeister.Provider.Excel.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />

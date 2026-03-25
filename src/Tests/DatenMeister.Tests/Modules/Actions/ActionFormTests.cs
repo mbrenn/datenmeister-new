@@ -1,9 +1,19 @@
-﻿using DatenMeister.Actions.Forms;
+﻿using System.ComponentModel;
+using System.Text.Json;
+using Autofac;
+using DatenMeister.Actions;
+using DatenMeister.Actions.Forms;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Copier;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
+using DatenMeister.Tests.Json;
+using DatenMeister.Web.Json;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.Actions;
@@ -88,5 +98,59 @@ public class ActionFormTests
             }, context, result);
         Assert.That(result.IsManaged, Is.False);
         result.IsManaged = false;
+    }
+
+    [Test]
+    public async Task TestAddQueryInPackage()
+    {
+        var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var actionHandler = new ActionLogic(dm.WorkspaceLogic, dm.ScopeStorage);
+
+        // Gets the command
+        var json = DatenMeisterTestsResources.MofJsonTests_TestQueryObjectExample;
+
+        var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(json);
+        var deconverted =
+            new DirectJsonDeconverter(dm.WorkspaceLogic, dm.ScopeStorage).ConvertToObject(asJsonObject!) as IElement;
+        Assert.That(deconverted, Is.Not.Null);
+
+        // Now copy that thing to an extent
+        var extentManager = dm.Resolve<ExtentManager>();
+        var loadedExtent = (await extentManager.LoadExtent(
+            new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+            {
+                name = "dm:///test",
+                extentUri = "dm:///test",
+                workspaceId = "Data"
+            }.GetWrappedElement())).Extent;
+        Assert.That(loadedExtent, Is.Not.Null);
+
+        ObjectCopier.FullDebug = true;
+        var action = new DatenMeister.Core.Models.Actions.Forms.AddQueryInPackageAction_Wrapper(
+            new MofFactory(loadedExtent!))
+        {
+            query = new DataViews.QueryStatement_Wrapper(
+                deconverted!.getOrDefault<IElement>(_Actions._Forms._AddQueryInPackageAction.query)),
+            targetPackageUri = "dm:///test",
+            targetPackageWorkspace = "Data"
+        };
+        
+        MofJsonTests.ValidateQueryProperties(action.query.GetWrappedElement());
+        ObjectCopier.FullDebug = false;
+
+        var result =
+            new DatenMeister.Core.Models.Actions.ParameterTypes.CreateFormUponViewResult_Wrapper(
+                await actionHandler.ExecuteAction(action.GetWrappedElement())
+                ?? throw new InvalidOperationException("Result was null"));
+
+        // Now gets the new item
+        var newElement = dm.WorkspaceLogic.FindElement(
+            "Data",
+            result.resultingPackageUrl ??
+            throw new InvalidAsynchronousStateException(
+                "Resulting package was null"));
+        
+        Assert.That(newElement, Is.Not.Null);
+        MofJsonTests.ValidateQueryProperties(newElement!);
     }
 }

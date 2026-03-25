@@ -621,7 +621,7 @@ public class MofExtent :
                 var result = (MofElement)ObjectCopier.Copy(
                     new MofFactory(extent),
                     asMofObject,
-                    CopyOptions.CopyId);
+                    CopyOptions.None);
                 return result.ProviderObject;
             }
 

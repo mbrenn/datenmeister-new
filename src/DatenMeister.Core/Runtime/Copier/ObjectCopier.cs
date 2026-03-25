@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using BurnSystems.Logging;
+﻿using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
@@ -21,13 +20,13 @@ public class ObjectCopier
     /// <summary>
     /// Defines the logger
     /// </summary>
-    private static ILogger Logger = new ClassLogger(typeof(ObjectCopier));
+    private static readonly ILogger Logger = new ClassLogger(typeof(ObjectCopier));
 
     /// <summary>
     /// Stores a flag which activates the full debugging of each copying by adding information
     /// via the classlogger. This helps to figure out issues in the debugging
     /// </summary>
-    public static bool FullDebug { get; set; } = false;
+    public static bool FullDebug { get; set; }
 
     /// <summary>
     /// Defines the maximum recursion depth that is accepted by the object copier.
@@ -226,7 +225,9 @@ public class ObjectCopier
         }
 
         // Transfers the id, if requested by the copy options
-        if (copyOptions.CopyId
+        // We transfer the id, in case the element is not within an extent (so ID is not occupied)
+        // or in case the copying was explicitly requested
+        if (((sourceElement as IHasExtent)?.Extent == null || copyOptions.CopyId)
             && sourceElement is IHasId sourceWithId
             && targetElement is ICanSetId targetCanSetId)
         {

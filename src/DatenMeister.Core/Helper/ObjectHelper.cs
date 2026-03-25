@@ -249,6 +249,16 @@ public static class ObjectHelper
                 }
             }
 
+            if (valueAsElement is int propertyValueAsInt)
+            {
+                return (T) Enum.ToObject(typeof(T), propertyValueAsInt);
+            }
+
+            if (valueAsElement is double propertyValueAsDouble)
+            {
+                return (T) Enum.ToObject(typeof(T), (int) propertyValueAsDouble);
+            }
+
             if (valueAsElement is IElement propertyObject && value is MofObject mofObject)
             {
                 // Get Enumeration Instance

@@ -325,13 +325,7 @@ class ExtentsListDeleteItemAction extends FormActions.ItemFormActionModuleBase {
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
-        const data = await ApiConnection.deleteRequest<IDeleteCallbackData>(
-            Settings.baseUrl + "api/items/delete/"
-            + encodeURIComponent(form.workspace) + "/" +
-            encodeURIComponent(element.uri),
-            {}
-        );
-
+        const data = await ClientItems.deleteItem(form.workspace, element.uri);
         const success = data.success;
         if (success) {
             document.location.reload();

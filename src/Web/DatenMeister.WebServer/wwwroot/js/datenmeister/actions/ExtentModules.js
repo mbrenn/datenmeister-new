@@ -247,9 +247,7 @@ class ExtentsListDeleteItemAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     async execute(form, element, parameter, submitMethod) {
-        const data = await ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
-            + encodeURIComponent(form.workspace) + "/" +
-            encodeURIComponent(element.uri), {});
+        const data = await ClientItems.deleteItem(form.workspace, element.uri);
         const success = data.success;
         if (success) {
             document.location.reload();

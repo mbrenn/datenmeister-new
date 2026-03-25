@@ -580,6 +580,11 @@ class TableForm {
                 andText = ' AND ';
             }
         }
+        const limitFilter = this.tableState.getLimit();
+        if (limitFilter !== undefined) {
+            result += `${andText}Limit: ${limitFilter}`;
+            andText = ' AND ';
+        }
         if (result === "") {
             return "No Filter";
         }

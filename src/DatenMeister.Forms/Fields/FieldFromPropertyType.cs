@@ -178,7 +178,7 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                     referenceField.set(_Forms._TextFieldData.title, propertyName);
                     result.Form = referenceField;
                 }
-                else if (!attributeModel.IsComposite)
+                else if (false && !attributeModel.IsComposite)
                 {
                     // Gets the workspace of the object
                     var workspace = parameter.Extent?.GetWorkspace();

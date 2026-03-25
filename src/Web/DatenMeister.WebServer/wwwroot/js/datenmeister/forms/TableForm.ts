@@ -750,8 +750,14 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
                 const value = filterByProperties[key];
 
                 result += `${andText + key} is '${value}'`;
-                andText = ' AND ' 
+                andText = ' AND ';
             }
+        }
+        
+        const limitFilter = this.tableState.getLimit();
+        if(limitFilter !== undefined) {
+            result += `${andText}Limit: ${limitFilter}`;
+            andText = ' AND ';
         }
 
         if (result === "") {

@@ -429,6 +429,25 @@ export namespace _Actions
         }
 
         export const __RefreshTypeIndexAction_Uri = "dm:///_internal/types/internal#9d43decb-aa2f-4461-b680-3ec595b518d1";
+        export class _StoreElementAction
+        {
+            static workspace = "workspace";
+            static url = "url";
+            static element = "element";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
+        }
+
+        export const __StoreElementAction_Uri = "dm:///_internal/types/internal#c7dcb24c-e53c-46f9-9e8a-3704095193a8";
+        export class _LoadElementAction
+        {
+            static workspace = "workspace";
+            static url = "url";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
+        }
+
+        export const __LoadElementAction_Uri = "dm:///_internal/types/internal#65f30a58-9f6c-4bc6-9290-2349265dceaa";
 }
 
 export namespace _DataViews

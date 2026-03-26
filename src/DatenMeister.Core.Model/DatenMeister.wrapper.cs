@@ -2416,6 +2416,127 @@ public class Actions
 
     }
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#c7dcb24c-e53c-46f9-9e8a-3704095193a8",
+        TypeKind = TypeKind.WrappedClass)]
+    public class StoreElementAction_Wrapper : IElementWrapper
+    {
+        private readonly IElement _wrappedElement;
+
+        public StoreElementAction_Wrapper(IElement innerDmElement)
+        {
+            _wrappedElement = innerDmElement;
+        }
+
+        public StoreElementAction_Wrapper(IFactory factory)
+        {
+            _wrappedElement = factory.create(_metaClass);
+        }
+
+        public IElement GetWrappedElement() => _wrappedElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#c7dcb24c-e53c-46f9-9e8a-3704095193a8");
+
+        public static StoreElementAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+        public string? @workspace
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("workspace");
+            set => 
+                _wrappedElement.set("workspace", value);
+        }
+
+        public string? @url
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("url");
+            set => 
+                _wrappedElement.set("url", value);
+        }
+
+        // Not found
+        public object? @element
+        {
+            get =>
+                _wrappedElement.getOrDefault<object?>("element");
+            set => 
+                _wrappedElement.set("element", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
+    }
+
+    [TypeUri(Uri = "dm:///_internal/types/internal#65f30a58-9f6c-4bc6-9290-2349265dceaa",
+        TypeKind = TypeKind.WrappedClass)]
+    public class LoadElementAction_Wrapper : IElementWrapper
+    {
+        private readonly IElement _wrappedElement;
+
+        public LoadElementAction_Wrapper(IElement innerDmElement)
+        {
+            _wrappedElement = innerDmElement;
+        }
+
+        public LoadElementAction_Wrapper(IFactory factory)
+        {
+            _wrappedElement = factory.create(_metaClass);
+        }
+
+        public IElement GetWrappedElement() => _wrappedElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#65f30a58-9f6c-4bc6-9290-2349265dceaa");
+
+        public static LoadElementAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+        public string? @workspace
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("workspace");
+            set => 
+                _wrappedElement.set("workspace", value);
+        }
+
+        public string? @url
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("url");
+            set => 
+                _wrappedElement.set("url", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
+    }
+
 }
 
 public class DataViews

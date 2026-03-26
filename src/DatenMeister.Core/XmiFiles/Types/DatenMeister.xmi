@@ -279,6 +279,17 @@
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="9d43decb-aa2f-4461-b680-3ec595b518d1" name="RefreshTypeIndexAction">
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="168f386d-7b52-473c-bcbb-abd5651d81d8" name="waitForRefresh" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
     </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="c7dcb24c-e53c-46f9-9e8a-3704095193a8" name="StoreElementAction">
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c84275a5-b7f8-4dac-94cd-ae2d4f250e8a" type-ref="dm:///_internal/model/primitivetypes#String" name="workspace" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b94eb150-78dd-4d2b-aea6-12b9bf579acc" type-ref="dm:///_internal/model/primitivetypes#String" name="url" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4445ee8d-eb54-4318-8f5b-117fd2cd5a4d" name="element" />
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="265754ea-f3cd-48b8-a4c6-daf6c0c2941e" general-ref="dm:///_internal/types/internal#Actions.Action" />
+    </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="65f30a58-9f6c-4bc6-9290-2349265dceaa" name="LoadElementAction">
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d189deb5-c092-4240-aa7d-62c818731f24" type-ref="dm:///_internal/model/primitivetypes#String" name="workspace" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a7d495da-74b1-41ae-90cc-611ccbfcc60b" type-ref="dm:///_internal/model/primitivetypes#String" name="url" />
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="d6c06abb-1cab-4d32-8163-3e010adfb380" general-ref="dm:///_internal/types/internal#Actions.Action" />
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DataView" name="DataView">

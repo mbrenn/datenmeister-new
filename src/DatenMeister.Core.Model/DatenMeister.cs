@@ -940,6 +940,51 @@ public class _Actions
     public _RefreshTypeIndexAction @RefreshTypeIndexAction = new ();
     public MofObjectShadow @__RefreshTypeIndexAction = new ("dm:///_internal/types/internal#9d43decb-aa2f-4461-b680-3ec595b518d1");
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#c7dcb24c-e53c-46f9-9e8a-3704095193a8",
+        TypeKind = TypeKind.ClassTree)]
+    public class _StoreElementAction
+    {
+        public static readonly string @workspace = "workspace";
+        public IElement? @_workspace = null;
+
+        public static readonly string @url = "url";
+        public IElement? @_url = null;
+
+        public static readonly string @element = "element";
+        public IElement? @_element = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
+    }
+
+    public _StoreElementAction @StoreElementAction = new ();
+    public MofObjectShadow @__StoreElementAction = new ("dm:///_internal/types/internal#c7dcb24c-e53c-46f9-9e8a-3704095193a8");
+
+    [TypeUri(Uri = "dm:///_internal/types/internal#65f30a58-9f6c-4bc6-9290-2349265dceaa",
+        TypeKind = TypeKind.ClassTree)]
+    public class _LoadElementAction
+    {
+        public static readonly string @workspace = "workspace";
+        public IElement? @_workspace = null;
+
+        public static readonly string @url = "url";
+        public IElement? @_url = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
+    }
+
+    public _LoadElementAction @LoadElementAction = new ();
+    public MofObjectShadow @__LoadElementAction = new ("dm:///_internal/types/internal#65f30a58-9f6c-4bc6-9290-2349265dceaa");
+
     public static readonly _Actions TheOne = new ();
 
 }

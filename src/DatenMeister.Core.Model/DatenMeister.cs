@@ -696,18 +696,6 @@ public class _Actions
         public _LoadExtentActionResult @LoadExtentActionResult = new ();
         public MofObjectShadow @__LoadExtentActionResult = new ("dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5");
 
-        [TypeUri(Uri = "dm:///_internal/types/internal#124e202d-e8b3-4d39-bbc2-4c95896e811b",
-            TypeKind = TypeKind.ClassTree)]
-        public class _CreateFormUponViewResult
-        {
-            public static readonly string @resultingPackageUrl = "resultingPackageUrl";
-            public IElement? @_resultingPackageUrl = null;
-
-        }
-
-        public _CreateFormUponViewResult @CreateFormUponViewResult = new ();
-        public MofObjectShadow @__CreateFormUponViewResult = new ("dm:///_internal/types/internal#124e202d-e8b3-4d39-bbc2-4c95896e811b");
-
     }
 
     public _ParameterTypes ParameterTypes = new ();
@@ -807,30 +795,6 @@ public class _Actions
 
     public class _Forms
     {
-        [TypeUri(Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237",
-            TypeKind = TypeKind.ClassTree)]
-        public class _AddQueryInPackageAction
-        {
-            public static readonly string @query = "query";
-            public IElement? @_query = null;
-
-            public static readonly string @targetPackageUri = "targetPackageUri";
-            public IElement? @_targetPackageUri = null;
-
-            public static readonly string @targetPackageWorkspace = "targetPackageWorkspace";
-            public IElement? @_targetPackageWorkspace = null;
-
-            public static readonly string @name = "name";
-            public IElement? @_name = null;
-
-            public static readonly string @isDisabled = "isDisabled";
-            public IElement? @_isDisabled = null;
-
-        }
-
-        public _AddQueryInPackageAction @AddQueryInPackageAction = new ();
-        public MofObjectShadow @__AddQueryInPackageAction = new ("dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237");
-
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass",
             TypeKind = TypeKind.ClassTree)]
         public class _CreateFormByMetaClass

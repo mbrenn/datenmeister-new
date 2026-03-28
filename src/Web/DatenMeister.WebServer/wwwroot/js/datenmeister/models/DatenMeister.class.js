@@ -276,11 +276,6 @@ export var _Actions;
         }
         _ParameterTypes._LoadExtentActionResult = _LoadExtentActionResult;
         _ParameterTypes.__LoadExtentActionResult_Uri = "dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5";
-        class _CreateFormUponViewResult {
-            static resultingPackageUrl = "resultingPackageUrl";
-        }
-        _ParameterTypes._CreateFormUponViewResult = _CreateFormUponViewResult;
-        _ParameterTypes.__CreateFormUponViewResult_Uri = "dm:///_internal/types/internal#124e202d-e8b3-4d39-bbc2-4c95896e811b";
     })(_ParameterTypes = _Actions._ParameterTypes || (_Actions._ParameterTypes = {}));
     class _ActionResult {
         static isSuccess = "isSuccess";
@@ -321,15 +316,6 @@ export var _Actions;
     })(_ClientActions = _Actions._ClientActions || (_Actions._ClientActions = {}));
     let _Forms;
     (function (_Forms) {
-        class _AddQueryInPackageAction {
-            static query = "query";
-            static targetPackageUri = "targetPackageUri";
-            static targetPackageWorkspace = "targetPackageWorkspace";
-            static _name_ = "name";
-            static isDisabled = "isDisabled";
-        }
-        _Forms._AddQueryInPackageAction = _AddQueryInPackageAction;
-        _Forms.__AddQueryInPackageAction_Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237";
         class _CreateFormByMetaClass {
             static metaClass = "metaClass";
             static creationMode = "creationMode";

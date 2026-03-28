@@ -1789,38 +1789,6 @@ public class Actions
 
         }
 
-        [TypeUri(Uri = "dm:///_internal/types/internal#124e202d-e8b3-4d39-bbc2-4c95896e811b",
-            TypeKind = TypeKind.WrappedClass)]
-        public class CreateFormUponViewResult_Wrapper : IElementWrapper
-        {
-            private readonly IElement _wrappedElement;
-
-            public CreateFormUponViewResult_Wrapper(IElement innerDmElement)
-            {
-                _wrappedElement = innerDmElement;
-            }
-
-            public CreateFormUponViewResult_Wrapper(IFactory factory)
-            {
-                _wrappedElement = factory.create(_metaClass);
-            }
-
-            public IElement GetWrappedElement() => _wrappedElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#124e202d-e8b3-4d39-bbc2-4c95896e811b");
-
-            public static CreateFormUponViewResult_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-            public string? @resultingPackageUrl
-            {
-                get =>
-                    _wrappedElement.getOrDefault<string?>("resultingPackageUrl");
-                set => 
-                    _wrappedElement.set("resultingPackageUrl", value);
-            }
-
-        }
-
     }
 
     [TypeUri(Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d",
@@ -2067,83 +2035,6 @@ public class Actions
 
     public class Forms
     {
-        [TypeUri(Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237",
-            TypeKind = TypeKind.WrappedClass)]
-        public class AddQueryInPackageAction_Wrapper : IElementWrapper
-        {
-            private readonly IElement _wrappedElement;
-
-            public AddQueryInPackageAction_Wrapper(IElement innerDmElement)
-            {
-                _wrappedElement = innerDmElement;
-            }
-
-            public AddQueryInPackageAction_Wrapper(IFactory factory)
-            {
-                _wrappedElement = factory.create(_metaClass);
-            }
-
-            public IElement GetWrappedElement() => _wrappedElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237");
-
-            public static AddQueryInPackageAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-            // DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper
-            public DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper? @query
-            {
-                get
-                {
-                    var foundElement = _wrappedElement.getOrDefault<IElement?>("query");
-                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper(foundElement);
-                }
-                set 
-                {
-                    if(value is IElementWrapper wrappedElement)
-                    {
-                        _wrappedElement.set("query", wrappedElement.GetWrappedElement());
-                    }
-                    else
-                    {
-                        _wrappedElement.set("query", value);
-                    }
-                }
-            }
-
-            public string? @targetPackageUri
-            {
-                get =>
-                    _wrappedElement.getOrDefault<string?>("targetPackageUri");
-                set => 
-                    _wrappedElement.set("targetPackageUri", value);
-            }
-
-            public string? @targetPackageWorkspace
-            {
-                get =>
-                    _wrappedElement.getOrDefault<string?>("targetPackageWorkspace");
-                set => 
-                    _wrappedElement.set("targetPackageWorkspace", value);
-            }
-
-            public string? @name
-            {
-                get =>
-                    _wrappedElement.getOrDefault<string?>("name");
-                set => 
-                    _wrappedElement.set("name", value);
-            }
-
-            public bool @isDisabled
-            {
-                get =>
-                    _wrappedElement.getOrDefault<bool>("isDisabled");
-                set => 
-                    _wrappedElement.set("isDisabled", value);
-            }
-
-        }
-
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass",
             TypeKind = TypeKind.WrappedClass)]
         public class CreateFormByMetaClass_Wrapper : IElementWrapper

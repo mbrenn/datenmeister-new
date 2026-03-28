@@ -34,30 +34,31 @@ public class ActionLogicState
     public static ActionLogicState GetDefaultLogicState()
     {
         var logicState = new ActionLogicState();
-        logicState.AddActionHandler(new LoggingWriterActionHandler());
-        logicState.AddActionHandler(new CommandExecutionActionHandler());
-        logicState.AddActionHandler(new CreateWorkspaceActionHandler());
-        logicState.AddActionHandler(new DropExtentActionHandler());
-        logicState.AddActionHandler(new StoreExtentActionHandler());
-        logicState.AddActionHandler(new DropWorkspaceActionHandler());
-        logicState.AddActionHandler(new LoadExtentActionHandler());
-        logicState.AddActionHandler(new CopyElementsActionHandler());
-        logicState.AddActionHandler(new ExportToXmiActionHandler());
-        logicState.AddActionHandler(new ClearCollectionActionHandler());
         logicState.AddActionHandler(new ActionSetActionHandler());
-        logicState.AddActionHandler(new ItemTransformationActionHandler());
-        logicState.AddActionHandler(new SimpleReportActionHandler());
         logicState.AddActionHandler(new AdocReportActionHandler());
-        logicState.AddActionHandler(new HtmlReportActionHandler());
-        logicState.AddActionHandler(new OpenDocumentActionHandler());
-        logicState.AddActionHandler(new EchoActionHandler());
+        logicState.AddActionHandler(new ClearCollectionActionHandler());
+        logicState.AddActionHandler(new CommandExecutionActionHandler());
+        logicState.AddActionHandler(new ConsoleWriteActionHandler());
+        logicState.AddActionHandler(new CopyElementsActionHandler());
         logicState.AddActionHandler(new CreateFormByMetaclassActionHandler());
+        logicState.AddActionHandler(new CreateWorkspaceActionHandler());
+        logicState.AddActionHandler(new DeletePropertyFromCollectionActionHandler());
+        logicState.AddActionHandler(new DropExtentActionHandler());
+        logicState.AddActionHandler(new DropWorkspaceActionHandler());
+        logicState.AddActionHandler(new EchoActionHandler());
+        logicState.AddActionHandler(new ExportToXmiActionHandler());
+        logicState.AddActionHandler(new HtmlReportActionHandler());
+        logicState.AddActionHandler(new ImportXmiActionHandler());
+        logicState.AddActionHandler(new ItemTransformationActionHandler());
+        logicState.AddActionHandler(new LoadExtentActionHandler());
+        logicState.AddActionHandler(new LoggingWriterActionHandler());
         logicState.AddActionHandler(new MoveOrCopyActionHandler());
         logicState.AddActionHandler(new MoveUpDownActionHandler());
-        logicState.AddActionHandler(new ImportXmiActionHandler());
-        logicState.AddActionHandler(new DeletePropertyFromCollectionActionHandler());
-        logicState.AddActionHandler(new ConsoleWriteActionHandler());
+        logicState.AddActionHandler(new OpenDocumentActionHandler());
         logicState.AddActionHandler(new RefreshTypeIndexActionHandler());
+        logicState.AddActionHandler(new SimpleReportActionHandler());
+        logicState.AddActionHandler(new StoreElementActionHandler());
+        logicState.AddActionHandler(new StoreExtentActionHandler());
         return logicState;
     }
 }

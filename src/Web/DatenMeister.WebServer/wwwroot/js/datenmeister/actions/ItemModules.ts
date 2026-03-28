@@ -79,8 +79,8 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         );
 
         if (result.success) {
-            const itemUrl = result.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl, Mof.ObjectType.String);
-            const workspace = result.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace, Mof.ObjectType.String);
+            const itemUrl = result.resultAsDmObject.get(_DatenMeister._Actions._TargetReferenceResult.targetUrl, Mof.ObjectType.String);
+            const workspace = result.resultAsDmObject.get(_DatenMeister._Actions._TargetReferenceResult.targetWorkspace, Mof.ObjectType.String);
             Navigator.navigateToItemByUrl(workspace, itemUrl);
         } else {
             alert('Failure: \r\n' + result.reason + "\r\n\r\n" + result.stackTrace);

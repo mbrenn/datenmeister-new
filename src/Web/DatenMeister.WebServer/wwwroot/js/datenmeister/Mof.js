@@ -41,6 +41,12 @@ let runningId = 0;
  * or contains a default value. This distinction is important for change tracking and synchronization.
  */
 export class ObjectValue {
+    /** Indicates whether the property has been explicitly set (true) or contains a default value (false) */
+    isSet;
+    /** The default value used when isSet is false */
+    defaultValue;
+    /** The actual property value when isSet is true */
+    value;
 }
 /**
  * DmObject - Core class representing a MOF (Meta Object Facility) object.
@@ -53,6 +59,23 @@ export class ObjectValue {
  * - Serialization support for server communication
  */
 export class DmObject {
+    /** Internal storage for property values, using internalized keys to avoid conflicts with array methods */
+    values;
+    /** The metaclass defining the type of this object */
+    metaClass;
+    /** The URI identifying this object within its extent */
+    uri;
+    /** Indicates whether this object is a reference to another object (true) or a full object (false) */
+    isReference = false;
+    /** The object this object is a reference to (if isReference is true). May be undefined
+     * in case the reference is not known within the local context */
+    referencedObject;
+    /** The URI of the extent (collection) containing this object */
+    extentUri;
+    /** The workspace ID where this object resides */
+    workspace;
+    /** Unique identifier for this object instance (format: 'local_N' for new objects) */
+    id;
     /**
      * Creates a new instance of the DmObject.
      * Automatically generates a unique ID for the object.
@@ -61,8 +84,6 @@ export class DmObject {
      * @param metaclassWorkspace The workspace containing the metaclass (defaults to "Types" if not specified)
      */
     constructor(metaClassUri, metaclassWorkspace) {
-        /** Indicates whether this object is a reference to another object (true) or a full object (false) */
-        this.isReference = false;
         this.values = new Array();
         if (metaClassUri !== undefined) {
             this.setMetaClassByUri(metaClassUri, metaclassWorkspace);
@@ -98,6 +119,7 @@ export class DmObject {
         result.isReference = true;
         // Extract ID from DmObject if needed
         if (id.id !== undefined) {
+            result.referencedObject = id;
             id = id.id;
         }
         result.uri = '#' + id;
@@ -408,6 +430,15 @@ export class DmObject {
  * - Provides clearSync() to reset change tracking after successful synchronization
  */
 export class DmObjectWithSync extends DmObject {
+    /**
+     * Tracks which properties have been modified since the last sync.
+     * Keys correspond to property names, values are true if modified.
+     */
+    propertiesSet;
+    /**
+     * Indicates whether the metaclass has been set or modified.
+     */
+    isMetaClassSet;
     /**
      * Creates a new DmObjectWithSync with change tracking initialized.
      *

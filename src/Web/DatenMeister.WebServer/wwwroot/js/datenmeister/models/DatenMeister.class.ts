@@ -293,13 +293,13 @@ export namespace _Actions
         }
 
         export const __DeletePropertyFromCollectionAction_Uri = "dm:///_internal/types/internal#b631bb00-ab11-4a8a-a148-e28abc398503";
-        export class _MoveOrCopyActionResult
+        export class _TargetReferenceResult
         {
             static targetUrl = "targetUrl";
             static targetWorkspace = "targetWorkspace";
         }
 
-        export const __MoveOrCopyActionResult_Uri = "dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1";
+        export const __TargetReferenceResult_Uri = "dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1";
         export namespace _ParameterTypes
         {
                 export class _NavigationDefineActionParameter
@@ -439,15 +439,6 @@ export namespace _Actions
         }
 
         export const __StoreElementAction_Uri = "dm:///_internal/types/internal#c7dcb24c-e53c-46f9-9e8a-3704095193a8";
-        export class _LoadElementAction
-        {
-            static workspace = "workspace";
-            static url = "url";
-            static _name_ = "name";
-            static isDisabled = "isDisabled";
-        }
-
-        export const __LoadElementAction_Uri = "dm:///_internal/types/internal#65f30a58-9f6c-4bc6-9290-2349265dceaa";
 }
 
 export namespace _DataViews

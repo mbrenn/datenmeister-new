@@ -125,7 +125,6 @@ public class ActionFormTests
             }.GetWrappedElement())).Extent;
         Assert.That(loadedExtent, Is.Not.Null);
 
-        ObjectCopier.FullDebug = true;
         var action = new DatenMeister.Core.Models.Actions.Forms.AddQueryInPackageAction_Wrapper(
             new MofFactory(loadedExtent!))
         {
@@ -136,7 +135,6 @@ public class ActionFormTests
         };
         
         MofJsonTests.ValidateQueryProperties(action.query.GetWrappedElement());
-        ObjectCopier.FullDebug = false;
 
         var result =
             new DatenMeister.Core.Models.Actions.ParameterTypes.CreateFormUponViewResult_Wrapper(
@@ -147,6 +145,60 @@ public class ActionFormTests
         var newElement = dm.WorkspaceLogic.FindElement(
             "Data",
             result.resultingPackageUrl ??
+            throw new InvalidAsynchronousStateException(
+                "Resulting package was null"));
+        
+        Assert.That(newElement, Is.Not.Null);
+        MofJsonTests.ValidateQueryProperties(newElement!);
+    }
+
+    [Test]
+    public async Task TestStoreAsElement()
+    {
+        var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var actionHandler = new ActionLogic(dm.WorkspaceLogic, dm.ScopeStorage);
+
+        // Gets the command
+        var json = DatenMeisterTestsResources.MofJsonTests_TestQueryObjectExample;
+
+        var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(json);
+        var deconverted =
+            new DirectJsonDeconverter(dm.WorkspaceLogic, dm.ScopeStorage).ConvertToObject(asJsonObject!) as IElement;
+        Assert.That(deconverted, Is.Not.Null);
+
+        // Now copy that thing to an extent
+        var extentManager = dm.Resolve<ExtentManager>();
+        var loadedExtent = (await extentManager.LoadExtent(
+            new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+            {
+                name = "dm:///test",
+                extentUri = "dm:///test",
+                workspaceId = "Data"
+            }.GetWrappedElement())).Extent;
+        Assert.That(loadedExtent, Is.Not.Null);
+
+        var action = new DatenMeister.Core.Models.Actions.StoreElementAction_Wrapper(
+            new MofFactory(loadedExtent!))
+        {
+            element = 
+                deconverted!.getOrDefault<IElement>(_Actions._Forms._AddQueryInPackageAction.query),
+            url = "dm:///test",
+            workspace = "Data"
+        };
+
+        var asElement = action.element as IElement;
+        Assert.That(asElement, Is.Not.Null);
+        MofJsonTests.ValidateQueryProperties(asElement!);
+
+        var result =
+            new DatenMeister.Core.Models.Actions.TargetReferenceResult_Wrapper(
+                await actionHandler.ExecuteAction(action.GetWrappedElement())
+                ?? throw new InvalidOperationException("Result was null"));
+
+        // Now gets the new item
+        var newElement = dm.WorkspaceLogic.FindElement(
+            result.targetWorkspace ?? throw new InvalidAsynchronousStateException("Workspace was null"),
+            result.targetUrl ??
             throw new InvalidAsynchronousStateException(
                 "Resulting package was null"));
         

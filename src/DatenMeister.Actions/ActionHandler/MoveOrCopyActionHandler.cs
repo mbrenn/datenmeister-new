@@ -18,7 +18,7 @@ public class MoveOrCopyActionHandler : IActionHandler
     {
         return await Task.Run(() =>
         {
-            var result = InMemoryObject.CreateEmpty();
+            var result = InMemoryObject.CreateEmpty(_Actions.TheOne.__TargetReferenceResult);
             var source = action.getOrDefault<IObject>(_Actions._MoveOrCopyAction.source)
                          ?? throw new InvalidOperationException("'Source' is not set.");
             var value = action.getOrDefault<IObject>(_Actions._MoveOrCopyAction.target)
@@ -37,11 +37,11 @@ public class MoveOrCopyActionHandler : IActionHandler
                 if (copyWorkspace != null)
                 {   
                     result.set(
-                        _Actions._MoveOrCopyActionResult.targetWorkspace,
+                        _Actions._TargetReferenceResult.targetWorkspace,
                         copyWorkspace.id);
                 }
                     
-                result.set(_Actions._MoveOrCopyActionResult.targetUrl,
+                result.set(_Actions._TargetReferenceResult.targetUrl,
                     resultItem.GetUri());
             }
 
@@ -55,11 +55,11 @@ public class MoveOrCopyActionHandler : IActionHandler
                 var moveWorkspace = resultItem.GetExtentOf()?.GetWorkspace();
                 if (moveWorkspace != null)
                 {   
-                    result.set(_Actions._MoveOrCopyActionResult.targetWorkspace,
+                    result.set(_Actions._TargetReferenceResult.targetWorkspace,
                         moveWorkspace.id);
                 }
                     
-                result.set(_Actions._MoveOrCopyActionResult.targetUrl,
+                result.set(_Actions._TargetReferenceResult.targetUrl,
                     resultItem.GetUri());
             }
             else

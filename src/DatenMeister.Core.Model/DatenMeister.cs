@@ -648,7 +648,7 @@ public class _Actions
 
     [TypeUri(Uri = "dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1",
         TypeKind = TypeKind.ClassTree)]
-    public class _MoveOrCopyActionResult
+    public class _TargetReferenceResult
     {
         public static readonly string @targetUrl = "targetUrl";
         public IElement? @_targetUrl = null;
@@ -658,8 +658,8 @@ public class _Actions
 
     }
 
-    public _MoveOrCopyActionResult @MoveOrCopyActionResult = new ();
-    public MofObjectShadow @__MoveOrCopyActionResult = new ("dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1");
+    public _TargetReferenceResult @TargetReferenceResult = new ();
+    public MofObjectShadow @__TargetReferenceResult = new ("dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1");
 
     public class _ParameterTypes
     {
@@ -963,27 +963,6 @@ public class _Actions
 
     public _StoreElementAction @StoreElementAction = new ();
     public MofObjectShadow @__StoreElementAction = new ("dm:///_internal/types/internal#c7dcb24c-e53c-46f9-9e8a-3704095193a8");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#65f30a58-9f6c-4bc6-9290-2349265dceaa",
-        TypeKind = TypeKind.ClassTree)]
-    public class _LoadElementAction
-    {
-        public static readonly string @workspace = "workspace";
-        public IElement? @_workspace = null;
-
-        public static readonly string @url = "url";
-        public IElement? @_url = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @isDisabled = "isDisabled";
-        public IElement? @_isDisabled = null;
-
-    }
-
-    public _LoadElementAction @LoadElementAction = new ();
-    public MofObjectShadow @__LoadElementAction = new ("dm:///_internal/types/internal#65f30a58-9f6c-4bc6-9290-2349265dceaa");
 
     public static readonly _Actions TheOne = new ();
 

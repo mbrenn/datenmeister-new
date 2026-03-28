@@ -170,7 +170,8 @@ export function createFunctionToLoadCurrentView(tableForm: TableForm) {
 
                 selectItemControl.itemSelected.addListener(
                     async (item) => {
-                        tableForm.tableState.queryStatement = await ClientItems.getObjectByUri(item.workspace, item.uri);
+                        tableForm.tableState.queryStatement = 
+                            await ClientItems.getObjectByUri(item.workspace, item.uri);
                         popup.closePopup();
 
                         await tableForm.reloadTable();
@@ -236,27 +237,30 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                     const packageUrl = selectItemControl.getSelectedItem();
 
                     // Prepare the action to store the current viewset into the selected package
-                    const actionParameter = new Mof.DmObject(_DatenMeister._Actions._Forms.__AddQueryInPackageAction_Uri);
+                    const actionParameter = new Mof.DmObject(_DatenMeister._Actions.__StoreElementAction_Uri);
                     actionParameter.set(
-                        _DatenMeister._Actions._Forms._AddQueryInPackageAction.name, name);
+                        _DatenMeister._Actions._StoreElementAction.name, name);
                     actionParameter.set(
-                        _DatenMeister._Actions._Forms._AddQueryInPackageAction.targetPackageUri, packageUrl.uri);
+                        _DatenMeister._Actions._StoreElementAction.url, packageUrl.uri);
                     actionParameter.set(
-                        _DatenMeister._Actions._Forms._AddQueryInPackageAction.targetPackageWorkspace, packageUrl.workspace);
+                        _DatenMeister._Actions._StoreElementAction.workspace, packageUrl.workspace);
 
                     const queryBuilder = tableForm.tableState.queryStatement;
                     queryBuilder.set(_NamedElement._name_, name);
                     actionParameter.set(
-                        _DatenMeister._Actions._Forms._AddQueryInPackageAction.query, queryBuilder);
+                        _DatenMeister._Actions._StoreElementAction.element, queryBuilder);
 
                     const result =
                         await Actions.executeActionDirectly("Execute", {
                             parameter: actionParameter
                         });
 
-                    const workspace = packageUrl.workspace;
-                    const item = result.resultAsDmObject.get(
-                        _DatenMeister._Actions._ParameterTypes._CreateFormUponViewResult.resultingPackageUrl, Mof.ObjectType.String);
+                    const uri = result.resultAsDmObject.get(
+                        _DatenMeister._Actions._TargetReferenceResult.targetUrl,
+                        Mof.ObjectType.String);
+                    const workspace = result.resultAsDmObject.get(
+                        _DatenMeister._Actions._TargetReferenceResult.targetWorkspace,
+                        Mof.ObjectType.String);
 
                     // If we have the result, we show it with a link to navigate
                     if (result.resultAsDmObject !== undefined) {
@@ -266,7 +270,7 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                         anchor.attr("href",
                             Navigator.getLinkForNavigateToItemByUrl(
                                 workspace,
-                                item));
+                                uri));
                         resultCell.empty();
                         resultCell.append(resultText);
                     } else {

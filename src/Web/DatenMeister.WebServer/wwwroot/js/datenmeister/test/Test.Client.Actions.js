@@ -78,10 +78,10 @@ export function includeTests() {
                 const copyResult = await ClientActions.executeActionDirectly("Execute", { parameter: action });
                 assert.isTrue(copyResult !== undefined, "Copy Result should have a return");
                 assert.isTrue(copyResult.resultAsDmObject !== undefined, "Copy Result should have a result");
-                const copyResultUri = copyResult.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl, Mof.ObjectType.String);
-                const copyResultWorkspace = copyResult.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace, Mof.ObjectType.String);
+                const copyResultUri = copyResult.resultAsDmObject.get(_DatenMeister._Actions._TargetReferenceResult.targetUrl, Mof.ObjectType.String);
+                const copyResultWorkspace = copyResult.resultAsDmObject.get(_DatenMeister._Actions._TargetReferenceResult.targetWorkspace, Mof.ObjectType.String);
                 assert.isTrue(copyResultUri !== undefined && copyResultUri !== "", "Uri of Copy Result is empty");
-                // Check, if the new item is exsting
+                // Check, if the new item is existing
                 const check = await ClientItems.getObjectByUri(copyResultWorkspace, copyResultUri);
                 assert.isTrue(check !== undefined, "Copied item was not found");
                 assert.isTrue(check.get('name', Mof.ObjectType.String) === 'Yes', "Copied item does not have the property");
@@ -111,8 +111,8 @@ export function includeTests() {
                 const copyResult = await ClientActions.executeActionDirectly("Execute", { parameter: action });
                 assert.isTrue(copyResult !== undefined);
                 assert.isTrue(copyResult.resultAsDmObject !== undefined);
-                const copyResultUri = copyResult.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl, Mof.ObjectType.String);
-                const copyResultWorkspace = copyResult.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace, Mof.ObjectType.String);
+                const copyResultUri = copyResult.resultAsDmObject.get(_DatenMeister._Actions._TargetReferenceResult.targetUrl, Mof.ObjectType.String);
+                const copyResultWorkspace = copyResult.resultAsDmObject.get(_DatenMeister._Actions._TargetReferenceResult.targetWorkspace, Mof.ObjectType.String);
                 assert.isTrue(copyResultUri !== undefined && copyResultUri !== "");
                 // Check, if the new item is exsting
                 const check = await ClientItems.getObjectByUri(copyResultWorkspace, copyResultUri);

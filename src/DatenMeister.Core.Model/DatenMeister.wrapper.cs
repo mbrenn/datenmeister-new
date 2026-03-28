@@ -1661,16 +1661,16 @@ public class Actions
 
     [TypeUri(Uri = "dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1",
         TypeKind = TypeKind.WrappedClass)]
-    public class MoveOrCopyActionResult_Wrapper : IElementWrapper
+    public class TargetReferenceResult_Wrapper : IElementWrapper
     {
         private readonly IElement _wrappedElement;
 
-        public MoveOrCopyActionResult_Wrapper(IElement innerDmElement)
+        public TargetReferenceResult_Wrapper(IElement innerDmElement)
         {
             _wrappedElement = innerDmElement;
         }
 
-        public MoveOrCopyActionResult_Wrapper(IFactory factory)
+        public TargetReferenceResult_Wrapper(IFactory factory)
         {
             _wrappedElement = factory.create(_metaClass);
         }
@@ -1679,7 +1679,7 @@ public class Actions
 
         private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1");
 
-        public static MoveOrCopyActionResult_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+        public static TargetReferenceResult_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @targetUrl
         {
@@ -2461,62 +2461,6 @@ public class Actions
                 _wrappedElement.getOrDefault<object?>("element");
             set => 
                 _wrappedElement.set("element", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public bool @isDisabled
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isDisabled");
-            set => 
-                _wrappedElement.set("isDisabled", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#65f30a58-9f6c-4bc6-9290-2349265dceaa",
-        TypeKind = TypeKind.WrappedClass)]
-    public class LoadElementAction_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public LoadElementAction_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public LoadElementAction_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#65f30a58-9f6c-4bc6-9290-2349265dceaa");
-
-        public static LoadElementAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @workspace
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("workspace");
-            set => 
-                _wrappedElement.set("workspace", value);
-        }
-
-        public string? @url
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("url");
-            set => 
-                _wrappedElement.set("url", value);
         }
 
         public string? @name

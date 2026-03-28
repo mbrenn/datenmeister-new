@@ -95,6 +95,10 @@ export class DmObject {
 
     /** Indicates whether this object is a reference to another object (true) or a full object (false) */
     isReference: boolean = false;
+    
+    /** The object this object is a reference to (if isReference is true). May be undefined
+     * in case the reference is not known within the local context */
+    referencedObject: DmObject | undefined;
 
     /** The URI of the extent (collection) containing this object */
     extentUri: string;
@@ -155,6 +159,7 @@ export class DmObject {
 
         // Extract ID from DmObject if needed
         if ((id as DmObject).id !== undefined) {
+            result.referencedObject = id as DmObject;
             id = (id as DmObject).id;
         }
         result.uri = '#' + id;

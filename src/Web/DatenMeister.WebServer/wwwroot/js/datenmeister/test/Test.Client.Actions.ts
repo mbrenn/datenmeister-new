@@ -131,12 +131,12 @@ export function includeTests() {
                 assert.isTrue(copyResult.resultAsDmObject !== undefined,"Copy Result should have a result");
                 const copyResultUri =
                     copyResult.resultAsDmObject.get(
-                        _DatenMeister._Actions._MoveOrCopyActionResult.targetUrl,
+                        _DatenMeister._Actions._TargetReferenceResult.targetUrl,
                         Mof.ObjectType.String
                     );
                 const copyResultWorkspace =
                     copyResult.resultAsDmObject.get(
-                        _DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace,
+                        _DatenMeister._Actions._TargetReferenceResult.targetWorkspace,
                         Mof.ObjectType.String
                     );
                 
@@ -145,7 +145,7 @@ export function includeTests() {
                     "Uri of Copy Result is empty"
                 );
                 
-                // Check, if the new item is exsting
+                // Check, if the new item is existing
                 const check = await ClientItems.getObjectByUri(
                     copyResultWorkspace, copyResultUri
                 );
@@ -205,12 +205,12 @@ export function includeTests() {
                 assert.isTrue(copyResult.resultAsDmObject !== undefined);
                 const copyResultUri =
                     copyResult.resultAsDmObject.get(
-                        _DatenMeister._Actions._MoveOrCopyActionResult.targetUrl,
+                        _DatenMeister._Actions._TargetReferenceResult.targetUrl,
                         Mof.ObjectType.String
                     );
                 const copyResultWorkspace =
                     copyResult.resultAsDmObject.get(
-                        _DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace,
+                        _DatenMeister._Actions._TargetReferenceResult.targetWorkspace,
                         Mof.ObjectType.String
                     );
 

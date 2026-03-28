@@ -91,7 +91,7 @@ export class TableState {
     }
     getFilterByProperties() {
         const result = {};
-        for (const node of this.viewNodes) {
+        for (const node of this.getViewNodes()) {
             if (node.metaClass?.uri === _DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri) {
                 const prop = node.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, Mof.ObjectType.String);
                 const val = node.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, Mof.ObjectType.String);
@@ -105,7 +105,7 @@ export class TableState {
     /**
      * Gets the nodes of the query statement in the order from source to result
      */
-    get viewNodes() {
+    getViewNodes() {
         const result = [];
         let currentNode = this.queryStatement.get(_DatenMeister._DataViews._QueryStatement.resultNode, Mof.ObjectType.Object);
         while (currentNode) {
@@ -115,10 +115,10 @@ export class TableState {
         return result.reverse();
     }
     findNodeByMetaClass(metaClassUri) {
-        return this.viewNodes.find(n => n.metaClass?.uri === metaClassUri);
+        return this.getViewNodes().find(n => n.metaClass?.uri === metaClassUri);
     }
     findFilterByPropertyNode(property) {
-        return this.viewNodes.find(n => n.metaClass?.uri === _DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri &&
+        return this.getViewNodes().find(n => n.metaClass?.uri === _DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri &&
             n.get(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, Mof.ObjectType.String) === property);
     }
     addNode(node) {

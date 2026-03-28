@@ -113,7 +113,7 @@ export function createForFilterByProperty(input: Mof.DmObject | undefined,
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, value);
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.comparisonMode,
         comparisonMode ?? _DatenMeister._DataViews._ComparisonMode.Equal);
-    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode._name_, "Filter by property " + property + " with value " + value + " (" + comparisonMode + ")");
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode._name_, "Filter by property " + property + " with value '" + value + "' (" + comparisonMode + ")");
     return viewNode;
 }
 

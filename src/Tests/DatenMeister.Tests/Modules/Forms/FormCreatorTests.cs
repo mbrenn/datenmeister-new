@@ -6,7 +6,6 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;

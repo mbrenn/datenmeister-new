@@ -1,12 +1,10 @@
 ﻿using System.Xml.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Provider.Xmi;
-using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Types.Actions;
 using NUnit.Framework;

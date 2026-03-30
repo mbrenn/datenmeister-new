@@ -26,7 +26,8 @@ export function includeTests() {
             });
 
             it('Query elements of extent', async () => {
-                // Loads the extent from dm:///_internal/types/internal and check that there are items within
+                let i;
+// Loads the extent from dm:///_internal/types/internal and check that there are items within
                 const query = new Query.QueryBuilder();
                 const extentViewNode = Query.getElementsOfExtent(query, "Types", "dm:///_internal/types/internal");
                 expect(extentViewNode).to.not.be.null;
@@ -37,8 +38,8 @@ export function includeTests() {
                 expect(result.result.length > 2).to.be.true;
 
                 // Second, expect that at least one package is called DatenMeister
-                var found = null;
-                for (var i = 0; i < result.result.length; i++) {
+                let found = null;
+                for (i = 0; i < result.result.length; i++) {
                     if (result.result[i].get("name", Mof.ObjectType.String) === "DatenMeister") {
                         found = result.result[i];
                         break;
@@ -49,8 +50,8 @@ export function includeTests() {
                 expect((found as Mof.DmObject).metaClass.name == "Package");
 
                 // Checks, that LoadExtentAction as deep element is not found
-                var found = null;
-                for (var i = 0; i < result.result.length; i++) {
+                found = null;
+                for (i = 0; i < result.result.length; i++) {
                     if (result.result[i].get("name", Mof.ObjectType.String) === "LoadExtentAction") {
                         found = result.result[i];
                         break;
@@ -61,7 +62,8 @@ export function includeTests() {
             });
 
             it('Query elements of extent with flattening', async () => {
-                // Loads the extent from dm:///_internal/types/internal and check that there are items within
+                let i;
+// Loads the extent from dm:///_internal/types/internal and check that there are items within
                 const query = new Query.QueryBuilder();
                 const extentViewNode = Query.getElementsOfExtent(query, "Types", "dm:///_internal/types/internal");
                 const flattenNode = Query.flatten(query);
@@ -74,8 +76,8 @@ export function includeTests() {
                 expect(result.result.length > 2).to.be.true;
 
                 // Second, expect that at least one package is called LoadExtentAction
-                var found = null;
-                for (var i = 0; i < result.result.length; i++) {
+                let found = null;
+                for (i = 0; i < result.result.length; i++) {
                     if (result.result[i].get("name", Mof.ObjectType.String) === "LoadExtentAction") {
                         found = result.result[i];
                         break;
@@ -87,8 +89,8 @@ export function includeTests() {
 
 
                 // Second, expect that at least one package is called DatenMeister
-                var found = null;
-                for (var i = 0; i < result.result.length; i++) {
+                found = null;
+                for (i = 0; i < result.result.length; i++) {
                     if (result.result[i].get("name", Mof.ObjectType.String) === "DatenMeister") {
                         found = result.result[i];
                         break;
@@ -100,7 +102,8 @@ export function includeTests() {
             });
 
             it('Query elements by just looking for flatted classes', async () => {
-                // Loads the extent from dm:///_internal/types/internal and check that there are items within
+                let i;
+// Loads the extent from dm:///_internal/types/internal and check that there are items within
                 const query = new Query.QueryBuilder();
                 const extentViewNode = Query.getElementsOfExtent(query, "Types", "dm:///_internal/types/internal");
                 const flattenNode = Query.flatten(query);
@@ -116,8 +119,8 @@ export function includeTests() {
                 expect(result.result.length > 2).to.be.true;
 
                 // Second, expect that at least one package is called Actions
-                var found = null;
-                for (var i = 0; i < result.result.length; i++) {
+                let found = null;
+                for (i = 0; i < result.result.length; i++) {
                     if (result.result[i].get("name", Mof.ObjectType.String) === "LoadExtentAction") {
                         found = result.result[i];
                         break;
@@ -128,8 +131,8 @@ export function includeTests() {
                 expect((found as Mof.DmObject).metaClass.name == "Class");
 
                 // Second, expect that DatenMeister Package is filtered
-                var found = null;
-                for (var i = 0; i < result.result.length; i++) {
+                found = null;
+                for (i = 0; i < result.result.length; i++) {
                     if (result.result[i].get("name", Mof.ObjectType.String) === "DatenMeister") {
                         found = result.result[i];
                         break;

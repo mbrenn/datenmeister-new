@@ -12,6 +12,7 @@ import * as ClientActionsItems from "./Test.Client.Actions.Item.js"
 import * as ControlSelectItemControl from "./Test.Controls.SelectItemControl.js"
 import * as Forms from "./Test.Forms.js"
 import * as ViewModeLogic from "./Test.Forms.ViewModeLogic.js"
+import * as TableState from "./Test.TableState.js"
 import * as UserEvents from "../../burnsystems/tests/events.test.js"
 
 export function includeTests()
@@ -30,5 +31,6 @@ export function includeTests()
     ClientSync.includeTests();
     ControlSelectItemControl.includeTests();
     ViewModeLogic.includeTests();
+    TableState.includeTests();
     Forms.includeTests();
 }

@@ -34,6 +34,18 @@ pipeline {
             }
         }
 
+        stage ('JS Tests')
+        {
+            steps
+            {
+                sh """
+                    cd src/Web/DatenMeister.WebServer
+                    npm test
+                    cd ../../..
+                """
+            }
+        }
+
 
         stage('Cake Install')
         {

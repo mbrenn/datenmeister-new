@@ -252,8 +252,24 @@ export class DmObject {
 
         switch (objectType) {
             case ObjectType.Default:
+                if(result instanceof DmObject)
+                {
+                    if(result.isReference && result.referencedObject !== undefined)
+                    {
+                        return result.referencedObject as DmObjectReturnType<T>;
+                    }
+                }
+                
                 return result as DmObjectReturnType<T>;
             case ObjectType.Object:
+                if(result instanceof DmObject)
+                {
+                    if(result.isReference && result.referencedObject !== undefined)
+                    {
+                        return result.referencedObject as DmObjectReturnType<T>;
+                    }
+                }
+                
                 return result as DmObjectReturnType<T>;
             case ObjectType.Single:
                 if (Array.isArray(result)) {

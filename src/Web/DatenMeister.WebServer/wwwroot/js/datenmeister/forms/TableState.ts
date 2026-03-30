@@ -125,7 +125,7 @@ export class TableState {
             result.push(currentNode);
             currentNode = currentNode.get("input", Mof.ObjectType.Object);
         }
-        return result.reverse();
+        return result;
     }
 
     private findNodeByMetaClass(metaClassUri: string): Mof.DmObject | undefined {

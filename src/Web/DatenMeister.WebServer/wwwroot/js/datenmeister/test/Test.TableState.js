@@ -2,6 +2,7 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import { TableState } from "../forms/TableState.js";
 import '../../node_modules/chai/register-assert.js';
 import '../../node_modules/chai/register-expect.js';
+import { _DataViews } from "../models/DatenMeister.class.js";
 export function includeTests() {
     describe('Forms', () => {
         describe('TableState', () => {
@@ -82,6 +83,22 @@ export function includeTests() {
                 expect(tableState.getOrderBy()).to.be.undefined;
                 expect(tableState.getFreeTextFilter()).to.equal("test");
                 expect(tableState.getLimit()).to.equal(10);
+            });
+            it('Check that Limit Node is always the first node', () => {
+                const tableState = new TableState();
+                tableState.initialize();
+                // Per default, the first node shall be of type limit node
+                let viewNodes = tableState.getViewNodes();
+                expect(viewNodes[0].metaClass.uri).to.equal(_DataViews._Row.__RowFilterOnPositionNode_Uri);
+                tableState.setOrderBy("Test", true);
+                viewNodes = tableState.getViewNodes();
+                expect(viewNodes[0].metaClass.uri).to.equal(_DataViews._Row.__RowFilterOnPositionNode_Uri);
+                tableState.setFreeTextFilter("test");
+                viewNodes = tableState.getViewNodes();
+                expect(viewNodes[0].metaClass.uri).to.equal(_DataViews._Row.__RowFilterOnPositionNode_Uri);
+                tableState.setFilterByProperty("Test", "test");
+                viewNodes = tableState.getViewNodes();
+                expect(viewNodes[0].metaClass.uri).to.equal(_DataViews._Row.__RowFilterOnPositionNode_Uri);
             });
         });
     });

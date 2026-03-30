@@ -199,8 +199,18 @@ export class DmObject {
         let result = objectValue?.value;
         switch (objectType) {
             case ObjectType.Default:
+                if (result instanceof DmObject) {
+                    if (result.isReference && result.referencedObject !== undefined) {
+                        return result.referencedObject;
+                    }
+                }
                 return result;
             case ObjectType.Object:
+                if (result instanceof DmObject) {
+                    if (result.isReference && result.referencedObject !== undefined) {
+                        return result.referencedObject;
+                    }
+                }
                 return result;
             case ObjectType.Single:
                 if (Array.isArray(result)) {

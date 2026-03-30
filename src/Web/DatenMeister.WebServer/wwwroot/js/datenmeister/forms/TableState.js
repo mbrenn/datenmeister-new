@@ -112,7 +112,7 @@ export class TableState {
             result.push(currentNode);
             currentNode = currentNode.get("input", Mof.ObjectType.Object);
         }
-        return result.reverse();
+        return result;
     }
     findNodeByMetaClass(metaClassUri) {
         return this.getViewNodes().find(n => n.metaClass?.uri === metaClassUri);

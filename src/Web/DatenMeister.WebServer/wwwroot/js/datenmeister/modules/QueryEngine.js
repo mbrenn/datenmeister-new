@@ -30,7 +30,7 @@ export function referenceExistingNode(builder, workspaceId, nodeUri) {
 }
 export function createForFilterByMetaClass(input, metaClass, includeInherits) {
     const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByMetaclassNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByMetaclassNode.input, input);
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByMetaclassNode.input, Mof.DmObject.createAsReferenceFromLocalId(input));
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByMetaclassNode.metaClass, metaClass);
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByMetaclassNode._name_, "Filter by metaclass " + metaClass.uri);
     if (includeInherits !== undefined) {
@@ -46,7 +46,7 @@ export function filterByMetaClass(builder, metaClass, includeInherits) {
 }
 export function createForOrderByProperty(input, property, descending) {
     const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._Row._RowOrderByNode.input, input);
+    viewNode.set(_DatenMeister._DataViews._Row._RowOrderByNode.input, Mof.DmObject.createAsReferenceFromLocalId(input));
     viewNode.set(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, property);
     viewNode.set(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, descending);
     viewNode.set(_DatenMeister._DataViews._Row._RowOrderByNode._name_, "Order by " + property + (descending ? " descending" : " ascending"));
@@ -60,7 +60,7 @@ export function orderByProperty(builder, property, descending) {
 }
 export function createForLimit(input, limit) {
     const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterOnPositionNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.input, input);
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.input, Mof.DmObject.createAsReferenceFromLocalId(input));
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.amount, limit);
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode._name_, "Limit to " + limit + " elements");
     return viewNode;
@@ -73,7 +73,7 @@ export function limit(builder, limitValue) {
 }
 export function createForFilterByFreetext(input, freeText) {
     const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
-    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.input, input);
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.input, Mof.DmObject.createAsReferenceFromLocalId(input));
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, freeText);
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere._name_, "Filter by free text " + freeText);
     return viewNode;
@@ -86,7 +86,7 @@ export function filterByFreetext(builder, freeText) {
 }
 export function createForFilterByProperty(input, property, value, comparisonMode) {
     const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.input, input);
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.input, Mof.DmObject.createAsReferenceFromLocalId(input));
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, property);
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, value);
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.comparisonMode, comparisonMode ?? _DatenMeister._DataViews._ComparisonMode.Equal);
@@ -101,7 +101,7 @@ export function filterByProperty(builder, property, value, comparisonMode) {
 }
 export function createForFlatten(input) {
     const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFlattenNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._Row._RowFlattenNode.input, input);
+    viewNode.set(_DatenMeister._DataViews._Row._RowFlattenNode.input, Mof.DmObject.createAsReferenceFromLocalId(input));
     viewNode.set(_DatenMeister._DataViews._Row._RowFlattenNode._name_, "Flatten");
     return viewNode;
 }
@@ -151,7 +151,7 @@ export function getElementsByPath(builder, workspaceId, path) {
 }
 export function createForColumnFilterIncludeOnly(input, columnNamesComma) {
     const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Column.__ColumnFilterIncludeOnlyNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._Column._ColumnFilterIncludeOnlyNode.input, input);
+    viewNode.set(_DatenMeister._DataViews._Column._ColumnFilterIncludeOnlyNode.input, Mof.DmObject.createAsReferenceFromLocalId(input));
     viewNode.set(_DatenMeister._DataViews._Column._ColumnFilterIncludeOnlyNode.columnNamesComma, columnNamesComma);
     viewNode.set(_DatenMeister._DataViews._Column._ColumnFilterIncludeOnlyNode._name_, "Include-Only columns " + columnNamesComma);
     return viewNode;
@@ -164,7 +164,7 @@ export function columnFilterIncludeOnly(builder, columnNamesComma) {
 }
 export function createForColumnFilterExclude(input, columnNamesComma) {
     const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Column.__ColumnFilterExcludeNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._Column._ColumnFilterExcludeNode.input, input);
+    viewNode.set(_DatenMeister._DataViews._Column._ColumnFilterExcludeNode.input, Mof.DmObject.createAsReferenceFromLocalId(input));
     viewNode.set(_DatenMeister._DataViews._Column._ColumnFilterExcludeNode.columnNamesComma, columnNamesComma);
     viewNode.set(_DatenMeister._DataViews._Column._ColumnFilterExcludeNode._name_, "Exclude columns " + columnNamesComma);
     return viewNode;

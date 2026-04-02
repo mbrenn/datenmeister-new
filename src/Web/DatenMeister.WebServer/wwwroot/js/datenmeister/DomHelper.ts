@@ -129,7 +129,7 @@ export function convertItemWithNameAndIdToDom(
     return result;
 }
 
-export function convertToDom(mofElement: any): JQuery {
+export function convertToDom(mofElement: any, isReferenced?: boolean): JQuery {
     if (Array.isArray(mofElement)) {
         let count = 0;
         const arrayList = $("<ol></ol>");
@@ -142,7 +142,7 @@ export function convertToDom(mofElement: any): JQuery {
                 break;
             }
 
-            li.append(convertToDom(mofElement[m]));
+            li.append(convertToDom(mofElement[m], isReferenced));
             arrayList.append(li);
             count++;
         }
@@ -152,6 +152,7 @@ export function convertToDom(mofElement: any): JQuery {
     } else if ((typeof mofElement === "object" || typeof mofElement === "function") && (mofElement !== null)) {
         const asElement = mofElement as DmObject;
         const list = $("<ul></ul>");
+        isReferenced ??= asElement.isReference;
 
         if (asElement.metaClass !== undefined) {
             const name =  asElement.metaClass.fullName ?? asElement.metaClass.uri;
@@ -171,10 +172,12 @@ export function convertToDom(mofElement: any): JQuery {
         
         if(asElement.id !== undefined)
         {
+            const isReferenceText = 
+                isReferenced ? " [Reference]" : "";
             const row = $("<li><em></em></li>");
             $("em", row)
                 .attr('title', asElement.id)
-                .text("{{Id: " + asElement.id + "}}");
+                .text("{{Id: " + asElement.id + "}}" + isReferenceText);
             list.append(row);
         }
 
@@ -184,19 +187,19 @@ export function convertToDom(mofElement: any): JQuery {
             span.html("<em>Uri</em>: ");
             span.append(convertToDom(asElement.uri));
             row.append(span);
-
             list.append(row);
         }
-        if (asElement.getPropertyValues !== undefined) {
+        
+        if (isReferenced !== true && asElement.getPropertyValues !== undefined) {
             for (let n in asElement.getPropertyValues()) {
-                let value = asElement.get(n);
+                const isReferenced = asElement.isReferenced(n);
+                const value = asElement.get(n);
 
                 const row = $("<li></li>");
                 const span = $("<span></span>");
                 span.text(`[${n}]: `);
-                span.append(convertToDom(value));
+                span.append(convertToDom(value, isReferenced));
                 row.append(span);
-
                 list.append(row);
             }
         }

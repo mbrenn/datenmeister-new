@@ -153,7 +153,9 @@ export class DmObject {
      * @param id Either a string ID or a DmObject (from which the ID will be extracted)
      * @returns A DmObject configured as a local reference
      */
-    static createAsReferenceFromLocalId(id: string | DmObject) {
+    static createAsReferenceFromLocalId(id: string | DmObject | undefined) {
+        if(id === undefined) return undefined;
+        
         const result = new DmObject();
         result.isReference = true;
 
@@ -307,6 +309,18 @@ export class DmObject {
         }
 
         return result as DmObjectReturnType<T>;
+    }
+    
+    isReferenced(key: string): boolean {
+        const objectValue = this.values[DmObject.internalizeKey(key)];
+        if(objectValue instanceof ObjectValue)
+        {
+            if(objectValue.value instanceof DmObject) {
+                return objectValue.value.isReference === true;
+            }
+        }
+        
+        return false;
     }
 
     /**

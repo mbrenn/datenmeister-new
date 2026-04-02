@@ -115,6 +115,8 @@ export class DmObject {
      * @returns A DmObject configured as a local reference
      */
     static createAsReferenceFromLocalId(id) {
+        if (id === undefined)
+            return undefined;
         const result = new DmObject();
         result.isReference = true;
         // Extract ID from DmObject if needed
@@ -241,6 +243,15 @@ export class DmObject {
                 return result === undefined ? undefined : Number(result);
         }
         return result;
+    }
+    isReferenced(key) {
+        const objectValue = this.values[DmObject.internalizeKey(key)];
+        if (objectValue instanceof ObjectValue) {
+            if (objectValue.value instanceof DmObject) {
+                return objectValue.value.isReference === true;
+            }
+        }
+        return false;
     }
     /**
      * Retrieves a property value as an array, converting if necessary.

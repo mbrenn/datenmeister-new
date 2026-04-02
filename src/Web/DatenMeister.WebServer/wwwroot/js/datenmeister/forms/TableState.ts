@@ -147,15 +147,15 @@ export class TableState {
             // So we insert the new node BEFORE the limit node
             const inputOfLimit = limitNode.get("input", Mof.ObjectType.Object);
             if (inputOfLimit) {
-                node.set("input", inputOfLimit);
+                node.set("input", Mof.DmObject.createAsReferenceFromLocalId(inputOfLimit));
             }
-            limitNode.set("input", node);
+            limitNode.set("input", Mof.DmObject.createAsReferenceFromLocalId(node));
 
             this.queryStatement.appendToArray(_DatenMeister._DataViews._QueryStatement.nodes, node);
         } else {
             const resultNode = this.queryStatement.get(_DatenMeister._DataViews._QueryStatement.resultNode, Mof.ObjectType.Object);
             if (resultNode) {
-                node.set("input", resultNode);
+                node.set("input", Mof.DmObject.createAsReferenceFromLocalId(resultNode));
             }
             this.queryStatement.appendToArray(_DatenMeister._DataViews._QueryStatement.nodes, node);
             this.queryStatement.set(_DatenMeister._DataViews._QueryStatement.resultNode, node);

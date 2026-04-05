@@ -497,9 +497,14 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
         {
             var converted = CollectionFormHelper.CreateCollectionFormFromTabs(form);
             converted.set(_Forms._Form.originalUri, form.GetUri());
-            converted.set(
-                _Forms._Form.originalWorkspace,
-                form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
+            
+            var workspace = form.GetExtentOf()?.GetWorkspace();
+            if(workspace != null)
+            {
+                converted.set(
+                    _Forms._Form.originalWorkspace,
+                    workspace.id);
+            }
 
             FormCreationResult.AddToFormCreationProtocol(
                 converted,
@@ -514,9 +519,13 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
         {
             var converted = FormMethods.GetObjectFormForSubforms(form);
             converted.set(_Forms._Form.originalUri, form.GetUri());
-            converted.set(
-                _Forms._Form.originalWorkspace,
-                form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
+            var objectWorkspace = form.GetExtentOf()?.GetWorkspace();
+            if (objectWorkspace != null)
+            {
+                converted.set(
+                    _Forms._Form.originalWorkspace,
+                    objectWorkspace.id);
+            }
 
             FormCreationResult.AddToFormCreationProtocol(
                 converted,
@@ -546,10 +555,6 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
                     CopyAcrossWorkspaces = false
                 })
         };
-        
-        // Performs the cloning
-        form = ObjectCopier.Copy(
-            new MofFactory(form), form, copyOptions);
 
         // Sets the original ori and workspace, so the client can reference to the original uri
         var originalUrl =
@@ -569,6 +574,10 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
         {
             form.set(_Forms._Form.originalWorkspace, originalWorkspace);
         }
+        
+        // Performs the cloning
+        form = ObjectCopier.Copy(
+            new MofFactory(form), form, copyOptions);
 
         return form;
     }

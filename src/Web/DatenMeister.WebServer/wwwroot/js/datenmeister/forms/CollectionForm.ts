@@ -11,15 +11,15 @@ import {debugElementToDom} from "../DomHelper.js";
 import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl.js";
 import * as IForm from "./Interfaces.js";
 import * as Mof from "../Mof.js";
+import {ObjectType} from "../Mof.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Navigator from "../Navigator.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-import _TableForm = _DatenMeister._Forms._TableForm;
+import {_Actions, _Forms} from "../models/DatenMeister.class.js";
 import * as ActionField from "../fields/ActionField.js";
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
-import * as QueryEngine from "../modules/QueryEngine.js";
-import {QueryFilterParameter} from "./Interfaces.js";
+import _TableForm = _DatenMeister._Forms._TableForm;
 
 export class CollectionFormHtmlElements
 {
@@ -331,10 +331,12 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                 }
 
                 const callbackLoadItems = async (query: Mof.DmObject) => {
-                    
-                    const queryResult = await ClientElements.queryObject(
+
+                    const queryResult: ClientElements.IQueryObjectResult = await ClientElements.queryObject(
                         query,
                         {
+                            dynamicSourceViewNodeWorkspace: tthis.formElement.get(_Forms._Form.originalWorkspace, ObjectType.Single),
+                            dynamicSourceViewNode: parameter.viewNode ?? "",
                             dynamicSourceWorkspaceId: tthis.workspace,
                             dynamicSourceItemUri: tthis.extentUri
                         });

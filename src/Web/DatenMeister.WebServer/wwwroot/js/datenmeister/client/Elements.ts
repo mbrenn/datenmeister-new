@@ -115,6 +115,18 @@ export interface IQueryObjectParameter {
     dynamicSourceItemUri?: string;
 
     /**
+     * Defines the view node of the dynamic source which will be added as 'input'. 
+     * In case that value is set, the query will be executed against this node and not against the collection
+     * as defined in dynamicSourceWorkspaceId and dynamicSourceItemUri
+     */
+    dynamicSourceViewNode?: string;
+
+    /**
+     * Defines the workspace of the view node of the dynamic source which will be added as 'input'.
+     */
+    dynamicSourceViewNodeWorkspace?: string;
+
+    /**
      * Defines the timeout in seconds. If the query is not finished in the given time, the query will be aborted.
      */
     timeout?: number;

@@ -35,7 +35,7 @@
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="719ad81f-6192-4400-87e3-89a6e859e140" />
         </tab>
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm" p1:id="IssuePackageList" name="Packages - List">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm" p1:id="IssuePackageList" name="Issues - List">
         <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm" name="In Work Issues" metaClass-ref="dm:///intern.types.issues.datenmeister/#IssueMeister.Issue" property="packagedElement" viewNode-ref="#IssueMeister.InWorkIssuesViews" p1:id="bfc908cd-0a11-4312-a321-9fd9b022f76e">
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" isReadOnly="True" width="10" p1:id="727f2cc9-fa0f-4252-85e2-f0292ef1feaf" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" p1:id="fcd7dabe-59ed-4f1a-978c-ae4961aba2c8" />

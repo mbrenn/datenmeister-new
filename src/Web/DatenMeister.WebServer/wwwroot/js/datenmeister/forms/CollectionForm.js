@@ -6,13 +6,15 @@ import { debugElementToDom } from "../DomHelper.js";
 import { ViewModeSelectionControl } from "../controls/ViewModeSelectionControl.js";
 import * as IForm from "./Interfaces.js";
 import * as Mof from "../Mof.js";
+import { ObjectType } from "../Mof.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Navigator from "../Navigator.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-var _TableForm = _DatenMeister._Forms._TableForm;
+import { _Forms } from "../models/DatenMeister.class.js";
 import * as ActionField from "../fields/ActionField.js";
 import { StatusFieldControl } from "../controls/StatusFieldControl.js";
 import { ElementBreadcrumb } from "../controls/ElementBreadcrumb.js";
+var _TableForm = _DatenMeister._Forms._TableForm;
 export class CollectionFormHtmlElements {
     /*
     Here, the items themselves will be added.
@@ -245,6 +247,8 @@ export class CollectionFormCreator {
                 }
                 const callbackLoadItems = async (query) => {
                     const queryResult = await ClientElements.queryObject(query, {
+                        dynamicSourceViewNodeWorkspace: tthis.formElement.get(_Forms._Form.originalWorkspace, ObjectType.Single),
+                        dynamicSourceViewNode: parameter.viewNode ?? "",
                         dynamicSourceWorkspaceId: tthis.workspace,
                         dynamicSourceItemUri: tthis.extentUri
                     });

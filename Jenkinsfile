@@ -110,6 +110,10 @@ pipeline {
                     npm test
                     cd ../../..
                 """
+
+                xunit(
+                    tools: [JUnit(pattern: 'src/Web/DatenMeister.WebServer/jstests.xml')]
+                )
             }
         }
     }

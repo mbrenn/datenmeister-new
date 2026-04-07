@@ -15,6 +15,6 @@
     "mocha": "^11.7.5"
   },
   "scripts": {
-    "test": "mocha \"wwwroot/js/datenmeister/test/Test.Mof.js\" \"wwwroot/js/datenmeister/test/Test.TableState.js\" --ui bdd --reporter spec"
+    "test": "mocha \"wwwroot/js/datenmeister/test/Test.Mof.js\" \"wwwroot/js/datenmeister/test/Test.TableState.js\" --require ../../node_modules/chai/register-assert.js --require ../../node_modules/chai/register-expect.js --ui bdd --reporter spec"
   }
 }

@@ -210,7 +210,7 @@ public class MofJsonConverter
 
                 if (value.GetUriExtentOf()?.GetWorkspace() == null)
                 {
-                    Debugger.Break();
+                    // Debugger.Break();
                 }
             }
         }

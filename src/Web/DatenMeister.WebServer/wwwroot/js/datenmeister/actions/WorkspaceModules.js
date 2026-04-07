@@ -50,7 +50,7 @@ class WorkspaceExtentLoadOrCreateAction extends FormActions.ItemFormActionModule
     async execute(form, element, parameter, submitMethod) {
         let p = new URLSearchParams(window.location.search);
         const workspaceIdParameter = p?.get('workspaceId') ?? "";
-        const extentType = await ItemClient.getProperty("Data", element.uri, "extentType");
+        const extentType = await ItemClient.getProperty(element.workspace, element.uri, "extentType");
         if (extentType === null || extentType === undefined) {
             alert('No Extent Type has been selected');
         }

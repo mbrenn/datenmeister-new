@@ -1,7 +1,5 @@
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import { TableState } from "../forms/TableState.js";
-import '../../node_modules/chai/register-assert.js';
-import '../../node_modules/chai/register-expect.js';
 import { _DataViews } from "../models/DatenMeister.class.js";
 export function includeTests() {
     describe('Forms', () => {

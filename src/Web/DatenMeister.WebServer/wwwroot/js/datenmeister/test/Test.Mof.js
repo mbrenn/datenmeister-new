@@ -1,6 +1,5 @@
 import * as mof from "../Mof.js";
 import { moveItemInArrayDownByUri, moveItemInArrayUpByUri } from "../MofArray.js";
-import '../../node_modules/chai/register-assert.js';
 export function includeTests() {
     describe('Mof', function () {
         describe('Element', function () {

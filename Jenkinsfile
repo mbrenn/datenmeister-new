@@ -48,6 +48,7 @@ pipeline {
                     cd src/Web/DatenMeister.WebServer
                     dotnet new tool-manifest --force
                     dotnet tool install Cake.Tool --version 5.0.0
+                    dotnet tool install BS_Remove_File_Attribute_From_JUnit
                     cd ../../..
                 """
             }
@@ -108,6 +109,7 @@ pipeline {
                 sh """
                     cd src/Web/DatenMeister.WebServer
                     npm test
+                    dotnet tool run bs-remove-file-attribute-from-junit .\jstests.xml 
                     cd ../../..
                 """
 

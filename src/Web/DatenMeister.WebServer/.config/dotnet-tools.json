@@ -15,6 +15,13 @@
         "dotnet-cake"
       ],
       "rollForward": false
+    },
+    "bs_remove_file_attribute_from_junit": {
+      "version": "1.0.0",
+      "commands": [
+        "bs-remove-file-attribute-from-junit"
+      ],
+      "rollForward": false
     }
   }
 }

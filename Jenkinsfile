@@ -109,7 +109,7 @@ pipeline {
                 sh """
                     cd src/Web/DatenMeister.WebServer
                     npm test
-                    dotnet tool run bs-remove-file-attribute-from-junit .\jstests.xml 
+                    dotnet tool run bs-remove-file-attribute-from-junit ./jstests.xml 
                     cd ../../..
                 """
 

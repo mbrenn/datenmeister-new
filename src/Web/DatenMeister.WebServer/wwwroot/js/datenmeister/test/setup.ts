@@ -37,3 +37,5 @@ const chaiShim: any = {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (globalThis as any).chai = chaiShim;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(globalThis as any).assert = assert;

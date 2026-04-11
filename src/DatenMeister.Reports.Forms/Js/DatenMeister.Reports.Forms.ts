@@ -70,7 +70,7 @@ export class ReportForm implements IIForms.IObjectFormElement {
         
     }
 
-    async storeFormValuesIntoDom?(reuseExistingElement?: boolean): Promise<Mof.DmObject> {
+    async storeFormValuesIntoDom?(reuseExistingElement?: boolean): Promise<Mof.DmObject | undefined> {
         return Promise.resolve(undefined);
     }
     

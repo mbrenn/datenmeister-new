@@ -47,7 +47,7 @@ export class ItemFormActionModuleBase {
         return Promise.resolve(undefined);
     }
     preparePage(element, form) {
-        return Promise.resolve(undefined);
+        return Promise.resolve();
     }
     loadObject() {
         if (this.defaultMetaClassUri !== undefined) {

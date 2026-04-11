@@ -37,7 +37,7 @@ export interface IFormNavigation {
      * @param reuseExistingElement This parameter decides whether the already provided element shall be 
      * directly returned or if a completely new element shall be created to only consider the diff
      */
-    storeFormValuesIntoDom?(reuseExistingElement?: boolean): Promise<Mof.DmObject>;
+    storeFormValuesIntoDom?(reuseExistingElement?: boolean): Promise<Mof.DmObject | undefined>;
 }
 
 export interface IForm extends IFormNavigation

@@ -33,5 +33,7 @@ const chaiShim = {
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 globalThis.chai = chaiShim;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+globalThis.assert = assert;
 export {};
 //# sourceMappingURL=setup.js.map

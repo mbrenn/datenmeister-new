@@ -139,8 +139,8 @@ export class ItemFormActionModuleBase implements IItemFormActionModule {
         return Promise.resolve(undefined);
     }
 
-    preparePage(element: Mof.DmObject, form: IIForms.IFormNavigation): Promise<void> | undefined {
-        return Promise.resolve(undefined);
+    preparePage(element: Mof.DmObject, form: IIForms.IFormNavigation): Promise<void> {
+        return Promise.resolve();
     }
 
     loadObject(): Promise<Mof.DmObjectWithSync> | undefined {

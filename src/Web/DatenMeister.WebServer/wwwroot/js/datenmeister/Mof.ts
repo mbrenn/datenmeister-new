@@ -244,7 +244,7 @@ export class DmObject {
      * @param objectType Optional type specification for conversion
      * @returns The property value, converted according to objectType
      */
-    get<T extends ObjectType>(key: string, objectType?: T): DmObjectReturnType<T> {
+    get<T extends ObjectType>(key: string, objectType?: T): DmObjectReturnType<T> | undefined {
         const objectValue = this.values[DmObject.internalizeKey(key)];
         
         if(objectValue !== undefined && objectValue.isSet === false) 

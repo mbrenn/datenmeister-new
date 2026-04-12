@@ -251,7 +251,7 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
 
             viewLogic.AddDynamicSource("input", innerViewLogic.GetElementsForViewNode(foundElement));
         }
-        else
+        else if(foundCollection != null)
         {
             // We have no view node, so we add the item directly. 
             viewLogic.AddDynamicSource("input", foundCollection);

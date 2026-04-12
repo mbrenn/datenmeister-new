@@ -146,9 +146,13 @@ public class PublicSettingHandler
         {
             settings = DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
 
+            Logger.Info($"DatabasePath before: {settings.DatabasePath ?? "None"}");
+            
             settings.DatabasePath = settings.DatabasePath != null
                 ? Environment.ExpandEnvironmentVariables(settings.DatabasePath)
                 : null;
+            
+            Logger.Info($"DatabasePath after: {settings.DatabasePath ?? "None"}");
 
             foreach (var variable in settings.EnvironmentVariable
                          .Where(variable => variable.Key != null && variable.Value != null))

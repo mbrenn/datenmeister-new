@@ -38,6 +38,10 @@ public class PublicIntegrationSettings
     public List<PublicEnvironmentVariable> EnvironmentVariable { get; } = new();
 }
 
+/// <summary>
+/// Stores the environmental variable as defined in PublicSettings.xml
+/// </summary>
+// ReSharper disable once ClassNeverInstantiated.Global
 public class PublicEnvironmentVariable
 {
     public string? Key { get; set; }

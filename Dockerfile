@@ -29,7 +29,9 @@ WORKDIR /src
 RUN dotnet publish src/Web/DatenMeister.WebServer/DatenMeister.WebServer.csproj \
     -c Release \
     -o /app/publish \
-    --no-self-contained
+    --no-self-contained 
+
+RUN mv /app/publish/DatenMeister.Settings.Docker.xmi /app/publish/DatenMeister.Settings.xmi  
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime

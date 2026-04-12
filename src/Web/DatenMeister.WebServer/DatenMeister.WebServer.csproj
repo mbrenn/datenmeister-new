@@ -72,6 +72,9 @@
     <None Update="DatenMeister.Settings.Example.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="DatenMeister.Settings.Docker.xmi">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <Target Name="RunCakeBuild" BeforeTargets="Build">

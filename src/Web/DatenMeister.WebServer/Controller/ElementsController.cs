@@ -176,19 +176,19 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
     {
         public MofObjectAsJson Query { get; set; } = new();
 
-        public string DynamicSourceWorkspaceId { get; set; } = string.Empty;
+        public string? DynamicSourceWorkspaceId { get; set; } = string.Empty;
         
-        public string DynamicSourceItemUri { get; set; } = string.Empty;
-        
-        /// <summary>
-        /// In case a view node is provided, the query will be executed against this node
-        /// </summary>
-        public string DynamicSourceViewNode { get; set; } = string.Empty; 
+        public string? DynamicSourceItemUri { get; set; } = string.Empty;
         
         /// <summary>
         /// In case a view node is provided, the query will be executed against this node
         /// </summary>
-        public string DynamicSourceViewNodeWorkspace { get; set; } = string.Empty; 
+        public string? DynamicSourceViewNode { get; set; } = string.Empty; 
+        
+        /// <summary>
+        /// In case a view node is provided, the query will be executed against this node
+        /// </summary>
+        public string? DynamicSourceViewNodeWorkspace { get; set; } = string.Empty; 
 
         public int? Timeout = 0;
     }

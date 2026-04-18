@@ -59,7 +59,7 @@ pipeline {
             steps 
             {
                 // Shell build step
-                dotnetBuild project: 'datenmeister-new.sln', workDirectory: 'src'
+                dotnetBuild project: 'datenmeister-new.slnx', workDirectory: 'src'
             }
         }
 
@@ -68,7 +68,7 @@ pipeline {
             steps
             {
 
-                dotnetBuild configuration: 'Release', project: 'datenmeister-new.sln', workDirectory: 'src'
+                dotnetBuild configuration: 'Release', project: 'datenmeister-new.slnx', workDirectory: 'src'
             }
         }
 

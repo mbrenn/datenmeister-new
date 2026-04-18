@@ -1,5 +1,5 @@
 # Base stage with system dependencies
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS base
 RUN apt-get update && apt-get install -y python3 npm && rm -rf /var/lib/apt/lists/*
 RUN npm install -g typescript@5.9.2
 
@@ -34,7 +34,7 @@ RUN dotnet publish src/Web/DatenMeister.WebServer/DatenMeister.WebServer.csproj 
 RUN mv /app/publish/DatenMeister.Settings.Docker.xmi /app/publish/DatenMeister.Settings.xmi  
 
 # Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
 COPY --from=build /app/publish .

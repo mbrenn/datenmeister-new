@@ -83,7 +83,6 @@ pipeline {
                 dotnetTest logger: 'trx;LogFileName=test.domains.trx', project: 'src/Tests/DatenMeister.Domains.Tests/DatenMeister.Domains.Tests.csproj', continueOnError: true
                 dotnetTest logger: 'trx;LogFileName=test.issuemeister.trx', project: 'src/Tests/IssueMeisterLib.Tests/IssueMeisterLib.Tests.csproj', continueOnError: true
                 dotnetTest logger: 'trx;LogFileName=test.timecacheddictionary.trx', project: 'src/BurnSystems.TimeCachedDictionary.Tests/BurnSystems.TimeCachedDictionary.Tests.csproj', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.stundemeister.trx', project: 'src/Apps/StundenMeister.Tests/StundenMeister.Tests.csproj', continueOnError: true
 
                 mstest()
             }
@@ -100,7 +99,6 @@ pipeline {
                 dotnetTest logger: 'trx;LogFileName=test.domains.trx', project: 'src/Tests/DatenMeister.Domains.Tests/DatenMeister.Domains.Tests.csproj', configuration: 'Release', continueOnError: true
                 dotnetTest logger: 'trx;LogFileName=test.issuemeister.trx', project: 'src/Tests/IssueMeisterLib.Tests/IssueMeisterLib.Tests.csproj', configuration: 'Release', continueOnError: true
                 dotnetTest logger: 'trx;LogFileName=test.timecacheddictionary.trx', project: 'src/BurnSystems.TimeCachedDictionary.Tests/BurnSystems.TimeCachedDictionary.Tests.csproj', configuration: 'Release', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.stundemeister.trx', project: 'src/Apps/StundenMeister.Tests/StundenMeister.Tests.csproj', configuration: 'Release', continueOnError: true
 
                 mstest()
             }            

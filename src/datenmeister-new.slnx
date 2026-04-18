@@ -1,0 +1,244 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+    <BuildType Name="ViewLogicAdditionalInfo" />
+    <BuildType Name="WPF" />
+  </Configurations>
+  <Folder Name="/Applications/">
+    <Project Path="Apps/StundenMeister/StundenMeister.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <Build Solution="Debug|*" Project="false" />
+      <Build Solution="Release|*" Project="false" />
+      <Build Solution="ViewLogicAdditionalInfo|*" Project="false" />
+    </Project>
+    <Project Path="DatenMeisterWPF/DatenMeisterWPF.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <Build Solution="Debug|*" Project="false" />
+      <Build Solution="Release|*" Project="false" />
+      <Build Solution="ViewLogicAdditionalInfo|*" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Applications/IssueMeister/">
+    <Project Path="Apps/IssueMeister/IssueMeisterLib/IssueMeisterLib.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="Tests/IssueMeisterLib.Tests/IssueMeisterLib.Tests.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/BurnSystems/">
+    <Project Path="BurnSystems.TimeCache/BurnSystems.TimeCache.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="BurnSystems.TimeCachedDictionary.Tests/BurnSystems.TimeCachedDictionary.Tests.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/Library - .Net Standard/">
+    <Project Path="DatenMeister.Actions/DatenMeister.Actions.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.AttachedExtent/DatenMeister.AttachedExtent.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.BootStrap/DatenMeister.BootStrap.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.DataView/DatenMeister.DataView.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.DependencyInjection/DatenMeister.DependencyInjection.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Extent.Forms/DatenMeister.Extent.Forms.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Extent.Manager/DatenMeister.Extent.Manager.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Extent.Verifier/DatenMeister.Extent.Verifier.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.FastViewFilter/DatenMeister.FastViewFilter.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Forms.Actions/DatenMeister.Forms.Actions.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Forms/DatenMeister.Forms.csproj" />
+    <Project Path="DatenMeister.Html/DatenMeister.Html.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.HtmlEngine/DatenMeister.HtmlEngine.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Locking/DatenMeister.Locking.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Modules.ZipCodeExample/DatenMeister.Modules.ZipCodeExample.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Reports.Forms/DatenMeister.Reports.Forms.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Reports/DatenMeister.Reports.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.SourcecodeGenerator/DatenMeister.SourcecodeGenerator.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.TemporaryExtent/DatenMeister.TemporaryExtent.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.TextTemplates/DatenMeister.TextTemplates.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Types/DatenMeister.Types.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Users/DatenMeister.Users.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Validators/DatenMeister.Validators.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/Library - .Net Standard/Core/">
+    <Project Path="DatenMeister.Core.Extensions/DatenMeister.Core.Extensions.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Core.Interfaces/DatenMeister.Core.Interfaces.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Core.Model/DatenMeister.Core.Model.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Core.TypeIndexStorage/DatenMeister.Core.TypeIndexStorage.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Core.Workspaces/DatenMeister.Core.Workspaces.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Core/DatenMeister.Core.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Integration.DotNet/DatenMeister.Integration.DotNet.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Plugins/DatenMeister.Plugins.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="Tests/DatenMeister.Core.TypeIndexStorage.Tests/DatenMeister.Core.TypeIndexStorage.Tests.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/Library - .Net Standard/Domains/">
+    <Project Path="DatenMeister.Domains/DatenMeister.Domains.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="Tests/DatenMeister.Domains.Tests/DatenMeister.Domains.Tests.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/Library - .Net Standard/Provider/">
+    <Project Path="DatenMeister.Provider.CSV/DatenMeister.Provider.CSV.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Provider.DynamicRuntime/DatenMeister.Provider.DynamicRuntime.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Provider.Environmental/DatenMeister.Provider.Environmental.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Provider.Excel/DatenMeister.Provider.Excel.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Provider.ExtentManagement/DatenMeister.Provider.ExtentManagement.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Provider.Json/DatenMeister.Provider.Json.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Provider.NumberProvider/DatenMeister.Provider.NumberProvider.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Provider.Xmi/DatenMeister.Provider.Xmi.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="Tests/DatenMeister.Provider.Json.Test/DatenMeister.Provider.Json.Test.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/Library - .Net Standard/Tools/">
+    <Project Path="DatenMeister.Mail/DatenMeister.Mail.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="DatenMeister.Zip/DatenMeister.Zip.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Apps/StundenMeister.Tests/StundenMeister.Tests.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <Build Solution="Debug|*" Project="false" />
+      <Build Solution="Release|*" Project="false" />
+      <Build Solution="ViewLogicAdditionalInfo|*" Project="false" />
+    </Project>
+    <Project Path="Tests/DatenMeister.Benchmark/DatenMeister.Benchmark.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="Tests/DatenMeister.Tests.Web/DatenMeister.Tests.Web.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="Tests/DatenMeister.Tests/DatenMeister.Tests.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="Tests/ScriptTests/ScriptTests.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/Tools/">
+    <Project Path="DatenMeister.SourceGeneration.Console/DatenMeister.SourceGeneration.Console.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/Web/" />
+  <Folder Name="/Web/DatenMeisterWeb/">
+    <Project Path="Web/DatenMeister.Web.Json/DatenMeister.Web.Json.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="Web/DatenMeister.WebServer.Library/DatenMeister.WebServer.Library.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+    <Project Path="Web/DatenMeister.WebServer/DatenMeister.WebServer.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+  </Folder>
+</Solution>

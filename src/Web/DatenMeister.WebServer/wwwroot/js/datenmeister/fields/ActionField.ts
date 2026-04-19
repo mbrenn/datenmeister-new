@@ -5,6 +5,7 @@ import * as Mof from "../Mof.js";
 import * as ClientItems from "../client/Items.js";
 import * as MofSync from "../MofSync.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
+import {addKeyBindingEvent} from "../../burnsystems/Events.js";
 
 export class Field extends BaseField implements IFormField {
 
@@ -28,6 +29,14 @@ export class Field extends BaseField implements IFormField {
 
         this.button = $("<button class='btn btn-secondary' type='button'></button>");
         this.button.text(buttonText ?? title ?? action);
+
+        const bindingKey = this.field.get(_DatenMeister._Forms._ActionFieldData.bindingKey, Mof.ObjectType.String);
+        if (bindingKey) {
+            const bindingKeyModifierCtrl = this.field.get(_DatenMeister._Forms._ActionFieldData.bindingKeyModifierCtrl, Mof.ObjectType.Boolean) === true;
+            const bindingKeyModifierShift = this.field.get(_DatenMeister._Forms._ActionFieldData.bindingKeyModifierShift, Mof.ObjectType.Boolean) === true;
+            const bindingKeyModifierAlt = this.field.get(_DatenMeister._Forms._ActionFieldData.bindingKeyModifierAlt, Mof.ObjectType.Boolean) === true;
+            addKeyBindingEvent(this.button, bindingKey, bindingKeyModifierCtrl, bindingKeyModifierShift, bindingKeyModifierAlt);
+        }
 
         this.button.on('click',
             async () => {

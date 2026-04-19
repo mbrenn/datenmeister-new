@@ -13,6 +13,7 @@ import {debugElementToDom} from "../DomHelper.js";
 import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl.js";
 import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
+import {addKeyBindingEvent} from "../../burnsystems/Events.js";
 import {FormMode} from "./Forms.js";
 import * as IForm from "./Interfaces.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
@@ -364,6 +365,7 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
             if (this.formMode === FormMode.ViewMode) {
                 const domEditButton = $('<a class="btn btn-primary" ">Edit Item</a>');
                 domEditButton.on('click', () => tthis.switchToMode(FormMode.EditMode));
+                addKeyBindingEvent(domEditButton, 'e');
                 this.htmlElements.itemContainer.append(domEditButton);
             }
 

@@ -3,6 +3,7 @@ import { BaseField } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
+import { addKeyBindingEvent } from "../../burnsystems/Events.js";
 export class Field extends BaseField {
     button;
     inConfirmation;
@@ -17,6 +18,13 @@ export class Field extends BaseField {
         const requireConfirmation = module?.requiresConfirmation === true;
         this.button = $("<button class='btn btn-secondary' type='button'></button>");
         this.button.text(buttonText ?? title ?? action);
+        const bindingKey = this.field.get(_DatenMeister._Forms._ActionFieldData.bindingKey, Mof.ObjectType.String);
+        if (bindingKey) {
+            const bindingKeyModifierCtrl = this.field.get(_DatenMeister._Forms._ActionFieldData.bindingKeyModifierCtrl, Mof.ObjectType.Boolean) === true;
+            const bindingKeyModifierShift = this.field.get(_DatenMeister._Forms._ActionFieldData.bindingKeyModifierShift, Mof.ObjectType.Boolean) === true;
+            const bindingKeyModifierAlt = this.field.get(_DatenMeister._Forms._ActionFieldData.bindingKeyModifierAlt, Mof.ObjectType.Boolean) === true;
+            addKeyBindingEvent(this.button, bindingKey, bindingKeyModifierCtrl, bindingKeyModifierShift, bindingKeyModifierAlt);
+        }
         this.button.on('click', async () => {
             // There is the option whether a form action requires a separate confirmation
             // If this is the case, then the button itself is asking for confirmation upon the first 

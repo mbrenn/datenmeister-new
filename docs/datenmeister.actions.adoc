@@ -1,0 +1,749 @@
+﻿= Action Handlers Documentation
+
+This document describes the various action handlers available in DatenMeister. Each action handler implements the `IActionHandler` interface and is responsible for executing specific logic when a corresponding action is triggered.
+
+== ImportXmiActionHandler
+
+The ImportXmiActionHandler is responsible for importing data from an XMI (XML Metadata Interchange) file into a specified workspace. This handler is particularly useful for migrating or loading large models that have been exported from other UML or modeling tools. During execution, it reads the source file from the provided file path and processes its contents to populate the target workspace. The handler manages the loading process and ensures that the imported elements are correctly integrated into the DatenMeister environment. It provides a structured way to handle external data sources in a standardized format. The handler also returns a result indicating the success and details of the import process.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `filePath`
+| The absolute or relative path to the XMI file that should be imported into the system.
+
+| `workspaceId`
+| The identifier of the workspace where the imported elements will be stored.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== ExportToXmiActionHandler
+
+The ExportToXmiActionHandler allows users to export the contents of a specific workspace or a part of it into an XMI formatted file. This functionality is essential for data portability, allowing models created or managed within DatenMeister to be used in other compliant tools. The handler takes the source elements from the specified workspace and serializes them into the XMI format at the given destination path. It ensures that the hierarchical structure and properties of the elements are preserved during the export. This tool is frequently used for creating backups or for sharing model data with external stakeholders. The handler supports specifying exactly which part of the workspace should be included in the export.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `filePath`
+| The destination file path where the exported XMI data will be saved.
+
+| `workspaceId`
+| The identifier of the workspace from which the data will be exported.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== ActionSetActionHandler
+
+The ActionSetActionHandler serves as a container for executing a sequence of multiple actions in a single logical block. It allows for the orchestration of complex workflows by grouping several individual actions together under a single action set. When executed, it iterates through its collection of child actions and evaluates each one using the ActionLogic. This handler is crucial for creating composite operations where multiple steps must be performed in a specific order. It manages the execution flow and can pass information between individual actions within the set. By using ActionSets, users can define reusable and modular pieces of logic within the system.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `actions`
+| A collection of individual action elements that will be executed sequentially by this handler.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| `isSuccess`
+| A boolean value indicating whether all actions in the set were executed successfully.
+
+| `clientActions`
+| A collection of client-side actions that were collected during the execution of the action set.
+|===
+
+== ClearCollectionActionHandler
+
+The ClearCollectionActionHandler provides a straightforward way to remove all elements from a specified collection or extent. It is commonly used in cleanup operations or when a collection needs to be reset before being repopulated with new data. The handler identifies the target collection using a URL and, once resolved, iterates through its contents to remove every item. This operation is destructive and ensures that the collection becomes empty after execution. It handles both simple reflective collections and entire URI extents by clearing their primary element lists. This handler is essential for maintaining data hygiene and managing temporary or transient data sets.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `collectionUrl`
+| The URL or path that identifies the specific collection or extent to be cleared.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== CommandExecutionActionHandler
+
+The CommandExecutionActionHandler is used to execute external system commands or executable files from within the DatenMeister environment. It facilitates integration with the underlying operating system by allowing the triggering of external processes. The handler takes a command string, which can include arguments, and starts a new process to run that command. It can also be configured with a working directory where the command should be executed. This is particularly useful for triggering build scripts, external tools, or system utilities as part of a larger workflow. The handler waits for the process to complete before continuing, ensuring synchronous execution.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `command`
+| The actual command line string or executable path to be run by the operating system.
+
+| `arguments`
+| Optional arguments that are passed to the command or executable during its startup.
+
+| `workingDirectory`
+| The directory in which the external command will be executed; defaults to the current path if not set.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== CopyElementsActionHandler
+
+The CopyElementsActionHandler facilitates the copying of elements from a source location to a target collection or extent. This handler is versatile as it can handle single elements, collections, or entire extents as the source of the copy operation. It resolves the source and target paths and performs a deep copy of the identified objects into the destination. This is a fundamental operation for data manipulation, allowing for the duplication and reorganization of model data. The handler ensures that all properties and child elements are correctly replicated in the new location. It provides a powerful way to move data between different workspaces or different parts of the same workspace.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `source`
+| The source element, collection, or path from which the data will be copied.
+
+| `target`
+| The destination collection or path where the copied elements will be placed.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== CreateWorkspaceActionHandler
+
+The CreateWorkspaceActionHandler is responsible for programmatically creating new workspaces within the DatenMeister environment. Workspaces are high-level containers for extents and models, and this handler allows for their dynamic creation during runtime. The handler requires a unique workspace ID to identify the new workspace and can optionally be given a more descriptive name. If a workspace with the same ID already exists, it can be configured to either fail or ignore the request. This handler is essential for setting up dynamic environments or organizing data into logical segments on the fly. It empowers users to build complex, multi-workspace architectures through automated actions.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `workspaceId`
+| The unique identifier for the new workspace to be created within the system.
+
+| `name`
+| An optional, human-readable name for the workspace for display and organizational purposes.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== DropExtentActionHandler
+
+The DropExtentActionHandler is used to remove an entire extent from a specified workspace. This operation effectively unloads the data and removes the extent's registration from the workspace logic. It is a critical tool for managing the lifecycle of data within DatenMeister, allowing for the removal of no longer needed models or data sets. The handler requires both the workspace ID and the unique URI of the extent to be dropped. Once executed, the extent is no longer accessible through the workspace, although the underlying storage (like a file) might remain depending on provider settings. This handler is often used in cleanup scripts or when reconfiguring a workspace's data sources.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `workspaceId`
+| The identifier of the workspace from which the extent will be removed.
+
+| `extentUri`
+| The unique URI of the extent that is to be dropped from the workspace.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== DeletePropertyFromCollectionActionHandler
+
+The DeletePropertyFromCollectionActionHandler is designed to remove a specific property from every item within a given collection. This is a powerful batch operation used for refactoring or cleaning up data models where a particular attribute is no longer required. The handler resolves the target collection via a URL and then iterates through every object within it, unsetting the specified property name. This ensures consistency across the collection by removing stale or unnecessary data fields. It is particularly useful when changing the schema of a model and needing to migrate existing data. The operation is performed in-memory and affects all elements currently residing in the collection.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `collectionUrl`
+| The URL or path to the collection containing the elements to be modified.
+
+| `propertyName`
+| The name of the property that should be removed from every element in the collection.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== DropWorkspaceActionHandler
+
+The DropWorkspaceActionHandler allows for the complete removal of a workspace from the DatenMeister environment. This is a high-level management action that deletes the workspace and all of its associated extents and data from the runtime logic. It is used when an entire project or data segment is no longer needed and should be completely purged from the system's memory. The handler requires the unique ID of the workspace to be removed. After execution, the workspace and its contents are no longer reachable. This action is irreversible within the runtime and should be used with caution to avoid accidental data loss.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `workspaceId`
+| The unique identifier of the workspace that is to be completely removed from the system.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== EchoActionHandler
+
+The EchoActionHandler is a simple utility handler primarily used for testing and verification purposes, especially in web and integration tests. Its function is to receive a parameter and return a successful result if the parameter matches a specific value. If the 'shallSuccess' parameter is set to "OK", it returns a result object containing a success message; otherwise, it throws an exception. This allows developers to verify that the action execution pipeline is working correctly without performing any complex operations. It serves as a "ping" or "smoke test" for the action handling system. The returned result can be inspected to confirm that the handler was triggered and executed as expected.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `shallSuccess`
+| A string value that determines if the action should succeed ("OK") or fail.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| `returnText`
+| A string with the value "Returned", indicating a successful echo execution.
+|===
+
+== LoadExtentActionHandler
+
+The LoadExtentActionHandler is a vital component for dynamically adding data to DatenMeister by loading extents based on provided configurations. It supports various storage providers by utilizing an extent manager to process the loader configurations. Users can specify the workspace where the extent should be loaded and provide a detailed configuration for the loader. The handler can also be configured to drop any existing extent with the same URI before loading the new one. This allows for refreshing data or switching between different data sources seamlessly. Upon successful execution, it returns a result containing the workspace ID and the URI of the newly loaded extent.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `configuration`
+| An element containing the specific configuration details for the extent loader, including URI and provider info.
+
+| `dropExisting`
+| A boolean flag indicating whether an existing extent with the same URI should be removed before loading.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| `workspaceId`
+| The identifier of the workspace where the extent was loaded.
+
+| `extentUri`
+| The URI of the successfully loaded extent.
+|===
+
+== LoggingWriterActionHandler
+
+The LoggingWriterActionHandler provides a way to output messages to the system's internal logging infrastructure during action execution. This is extremely useful for debugging, auditing, or providing progress updates during long-running workflows. The handler takes a message string as input and writes it to the log using an INFO level. It also stores the last logged message in a static property, which can be useful for unit testing and verifying that certain points in a workflow were reached. By integrating logging into the action system, users can gain visibility into the internal state and flow of their automated processes. It helps in monitoring the health and activity of the DatenMeister environment.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `message`
+| The text message that will be written to the system log.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== MoveOrCopyActionHandler
+
+The MoveOrCopyActionHandler is a versatile tool for relocating or duplicating objects within the DatenMeister model. It supports two distinct modes: 'Copy', which creates a new instance of the source object at the target, and 'Move', which relocates the existing object. The handler resolves the source and target objects and performs the requested operation using standardized object operations. This is essential for restructuring data, such as moving an item from one package to another or creating a template-based copy. The handler returns a result that includes the target workspace and the new URL of the moved or copied item. It ensures that the hierarchical integrity of the model is maintained during the process.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `source`
+| The source object that is to be moved or copied.
+
+| `target`
+| The destination object or collection where the source will be moved or copied to.
+
+| `copyMode`
+| Specifies whether the operation should be a 'Copy' or a 'Move' (using MoveOrCopyType).
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| `targetWorkspace`
+| The ID of the workspace where the object was moved or copied.
+
+| `targetUrl`
+| The URI of the object at its new destination.
+|===
+
+== MoveUpDownActionHandler
+
+The MoveUpDownActionHandler is used to reorder elements within an ordered collection or extent. It provides functionality to move a specific element one position "Up" or "Down" within its containing sequence. This is particularly useful for user interface applications where the order of items in a list is significant, such as in menus or prioritized lists. The handler identifies the element to be moved, its container, and the direction of movement. It then performs the swap within the underlying reflective sequence. If the element cannot be found or the move is invalid, it throws an informative exception. This handler simplifies the task of managing sequence ordering via automated actions.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `direction`
+| The direction to move the element, either 'Up' or 'Down'.
+
+| `element`
+| The specific element within the collection that is to be moved.
+
+| `property`
+| The name of the property on the container that holds the collection (if not an extent).
+
+| `container`
+| The object or extent that contains the collection of elements.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== OpenDocumentActionHandler
+
+The OpenDocumentActionHandler allows for the opening of files or documents using the operating system's default application for the given file type. It takes a file path as input, expands any environment variables it contains, and then creates a new process to open the file. This is useful for integrating DatenMeister with external documentation, spreadsheets, or other media files. For example, an action could be triggered to open a PDF manual or an Excel report directly from the modeling environment. It leverages the underlying system's file association settings to determine which program to use. This handler bridges the gap between the structured model data and the local file system.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `filePath`
+| The path to the document or file that should be opened by the system.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== PowershellExecutionActionHandler
+
+The PowershellExecutionActionHandler enables the execution of PowerShell scripts directly from DatenMeister. It works by taking a script string, saving it to a temporary file, and then launching a PowerShell process to execute that file. This provides a very powerful and flexible way to perform complex system administration tasks, data processing, or integration with other Windows-based tools. The handler can be configured with a working directory and it waits for the script to finish execution before completing. It logs the start and end of the PowerShell process for auditability. This is a key feature for advanced users who need to extend the capabilities of DatenMeister using scripting.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `script`
+| The actual PowerShell script code that will be executed.
+
+| `workingDirectory`
+| The directory from which the PowerShell script will be executed.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== RefreshTypeIndexActionHandler
+
+The RefreshTypeIndexActionHandler is used to trigger an update of the system's type index. The type index is used to quickly locate classes and types across different extents and workspaces. As models change, the index may need to be refreshed to ensure that type lookups are accurate and up-to-date. This handler provides a way to initiate this process programmatically, for example, after a large import or a series of model modifications. It can be configured to wait for the refresh to complete before returning or to trigger it asynchronously. Maintaining an accurate type index is crucial for the performance and correctness of many system features, including form generation and validation.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `waitForRefresh`
+| A boolean indicating whether the action should wait until the index refresh is fully complete.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== StoreExtentActionHandler
+
+The StoreExtentActionHandler is responsible for manually triggering the persistence of an extent to its underlying storage provider. While many providers handle saving automatically, this handler allows for explicit control over when data is written back to the source (e.g., saving a file). It identifies the extent by its workspace and URI and calls the corresponding provider's store method. This is important for ensuring that changes made in-memory are committed to permanent storage at specific points in a workflow. It can also be used to force a save before performing an external operation that might read from the same file. The handler logs a message upon successful storage of the extent.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `workspaceId`
+| The ID of the workspace containing the extent to be stored; defaults to "Data".
+
+| `extentUri`
+| The unique URI of the extent that should be persisted to storage.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== AdocReportActionHandler
+
+The AdocReportActionHandler is used to generate documentation reports in the AsciiDoc format based on a report instance. It takes a report definition (instance) and a destination file path, then uses the AdocReportCreator to generate the content. This is a key part of the reporting system, allowing for the automated creation of high-quality, text-based documentation from model data. The handler ensures that the target directory exists and normalizes the file path before starting the generation. The resulting AsciiDoc file can then be converted into HTML, PDF, or other formats using external tools. This enables seamless integration of modeling data into the overall project documentation workflow.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `reportInstance`
+| An element containing the definition and data for the report to be generated.
+
+| `filePath`
+| The destination path where the generated AsciiDoc report file will be saved.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== HtmlReportActionHandler
+
+The HtmlReportActionHandler generates interactive HTML reports from model data based on a provided report instance. Similar to the Adoc report handler, it uses a specialized creator (HtmlReportCreator) to transform the report definition into a web-friendly format. This is extremely useful for creating dashboards, model browsers, or shared documentation that can be easily viewed in any web browser. The handler handles file system operations, such as creating the target directory and writing the HTML content to the specified file path. It allows for the rapid creation of visual representations of model data for stakeholders and team members. The generated reports provide a clear and accessible way to share insights from the DatenMeister environment.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `reportInstance`
+| The report definition and data that serves as the source for the HTML report.
+
+| `filePath`
+| The destination file path where the generated HTML report will be saved.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== SimpleReportActionHandler
+
+The SimpleReportActionHandler provides a quick and easy way to generate a basic HTML report for a specific item or collection. It uses a simplified configuration that can be defaulted if not provided, making it ideal for "one-click" report generation. Users can specify the workspace and path of the root element to be reported on. The handler generates a hierarchical report showing the element and its descendants, including their names and descriptions. It is a great tool for quickly exporting a part of the model for review or documentation without needing a complex report definition. The output is a self-contained HTML file saved to a specified location or the user's desktop by default.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `workspaceId`
+| The identifier of the workspace containing the root element for the report.
+
+| `path`
+| The path or URL of the element from which the report generation should start.
+
+| `filePath`
+| The destination path for the HTML report; defaults to the user's desktop if not set.
+
+| `configuration`
+| Optional element defining report settings like whether to show descendants or full names.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== ItemTransformationActionHandler
+
+The ItemTransformationActionHandler is used to apply custom transformations to a set of items within a collection. It works by loading a transformation class at runtime and applying its logic to each item that matches a specific metaclass. This provides a highly extensible way to perform bulk updates, data conversions, or complex model manipulations. Users specify the target collection, the metaclass of items to transform, and the runtime class of the transformer to use. The handler iterates through the collection, identifies matching elements, and executes the transformation logic on each one. This is a powerful tool for maintaining and evolving large models by automating repetitive modification tasks.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `metaClass`
+| The metaclass that items must belong to in order to be transformed; if null, all items are processed.
+
+| `runtimeClass`
+| The fully qualified name of the C# class that implements the transformation logic.
+
+| `workspaceId`
+| The ID of the workspace containing the collection of items to be transformed.
+
+| `path`
+| The path to the root element or collection where the transformation should be applied.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== DomainCreateFoundationActionHandler
+
+The DomainCreateFoundationActionHandler is a specialized tool for setting up the basic infrastructure of a new modeling domain. It automates the creation of several key extents: a Management extent for forms, a Types extent for UML classes, and optionally a Data extent for actual instances. This handler ensures that each extent is correctly configured with the appropriate extent type and stored in the specified directory. It uses a naming convention based on the domain name to create a consistent set of XMI files. This simplifies the process of starting a new project or domain within DatenMeister by handling the repetitive setup work. It provides a standardized foundation upon which more complex models can be built.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `name`
+| The base name of the domain being created, used in file naming and URIs.
+
+| `filePath`
+| The root directory where the XMI files for the new domain will be created.
+
+| `extentUriPrefix`
+| An optional prefix added to the URIs of the created extents.
+
+| `extentUriPostfix`
+| An optional postfix added to the URIs of the created extents.
+
+| `createDataExtent`
+| A boolean flag indicating whether a dedicated data extent should also be created.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== ZipLogicActionHandler
+
+The ZipLogicActionHandler handles the extraction of ZIP archive files into a specified target directory. It includes intelligent features such as checking if the file has already been extracted and optionally overwriting only if the ZIP file is newer than the target. This makes it efficient for managing resources that are distributed as archives, such as documentation sets or external data plugins. The handler uses the system's ZIP libraries to perform the extraction and tracks the success and status of the operation. It returns a result indicating whether the extraction was successful, if the files already existed, or if they were already up-to-date. This handler is essential for automating the deployment and updates of file-based assets.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `sourcePath`
+| The full path to the source ZIP archive file that is to be extracted.
+
+| `targetPath`
+| The destination directory where the contents of the ZIP file will be extracted.
+
+| `overwriteIfExisting`
+| A boolean flag indicating whether existing files in the target path should be overwritten.
+
+| `overwriteOnlyIfNewer`
+| A flag to only overwrite existing files if the source ZIP file has a newer timestamp.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| `success`
+| A boolean indicating whether the extraction was successful.
+
+| `alreadyExisting`
+| A boolean indicating whether the target files already existed before extraction.
+
+| `isAlreadyUpToDate`
+| A boolean indicating whether the target was already up-to-date (no extraction needed).
+|===
+
+== ConsoleWriteActionHandler
+
+The ConsoleWriteActionHandler is a simple utility that outputs a specific text string to the standard console output. It is primarily used for debugging purposes or for providing immediate feedback during the execution of a set of actions in a console-based environment. The handler uses a wrapper to access the text property of the action and then calls the standard `Console.WriteLine` method. This allows developers to track the progress of automated workflows and verify that certain milestones have been reached. It is a lightweight alternative to the full logging system when only immediate console feedback is required. The handler does not return any result and completes as soon as the text is written to the console.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `text`
+| The string of text that will be written to the standard console output.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== PerformMassImportActionHandler
+
+The PerformMassImportActionHandler facilitates the bulk importation of data into a specific extent based on a mass import definition. It identifies the target extent using management metadata and processes the provided input text to populate the extent with new elements. This handler is essential for scenarios where large amounts of data need to be ingested from text-based sources or predefined import formats. It utilizes specialized mass import logic to handle the data transformation and insertion process efficiently. Upon completion, it returns a client action that navigates the user to the affected extent, providing immediate visual confirmation of the import. This makes it a powerful tool for data migration and bulk update tasks within the system.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `item`
+| An object representing the extent definition where the data will be imported.
+
+| `text`
+| The raw text data that will be parsed and imported into the target extent.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| `clientActions`
+| A collection of client-side actions, including a navigation action to the target extent.
+|===
+
+== RequestReportAction
+
+The RequestReportAction is used to generate a report on-demand and return its content as a result, rather than saving it to a file. It locates a report instance within the specified workspace and uses the report logic to generate an HTML representation of the data. This handler is particularly useful for web-based applications where a report needs to be displayed directly to the user in their browser. By embedding the report in an existing page or returning it as a string, it allows for dynamic report viewing without the need for temporary files. The resulting HTML content is included in the action result, making it easily accessible to the calling client. It provides a seamless way to integrate the reporting engine into interactive user interfaces.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `workspace`
+| The identifier of the workspace where the report instance is located.
+
+| `itemUri`
+| The unique URI of the report instance that should be used to generate the report.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| `report`
+| The generated HTML content of the report as a string.
+|===
+
+== CreateFormByMetaclassActionHandler
+
+The CreateFormByMetaclassActionHandler is used to automatically generate UI forms (Object or Collection forms) for a specific metaclass. This is a core part of the DatenMeister form system, allowing for the rapid creation of user interfaces based on the underlying data model. The handler can create different types of forms depending on the 'creationMode', such as single object forms, collection forms, or both, including optional associations. It uses a form factory to generate the form elements and adds them to a target container or the user's default form extent. This automation drastically reduces the manual effort required to build UIs for new model types. It ensures that the generated forms are consistent with the metaclass definition and ready for use in the environment.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `metaClass`
+| The metaclass for which the forms (Object or Collection) should be generated.
+
+| `creationMode`
+| Specifies the type of forms to create (e.g., Object, Collection, or both with associations).
+
+| `targetContainer`
+| The optional container or extent where the generated forms will be stored.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| (No Result)
+| This action handler does not return a result.
+|===
+
+== CreateFormUponViewActionHandler
+
+The CreateFormUponViewActionHandler is designed to create a new query-based form or view within a specified target package. It takes a query statement as input and creates a corresponding view object in the target collection, copying the query properties into it. This is useful for programmatically creating customized views of data based on specific search or filter criteria. The handler resolves the target workspace and package URI, ensures the target collection is accessible, and then uses a factory to create the new view element. This allows for the dynamic generation of data views that can be used by the UI to present specific subsets of information. It returns the URL of the newly created view object for further reference.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| `targetPackageWorkspace`
+| The identifier of the workspace where the new form/view will be placed.
+
+| `targetPackageUri`
+| The URI of the package or element that will own the new form/view.
+
+| `query`
+| The query statement element that defines the logic for the new form/view.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| `resultingPackageUrl`
+| The URI of the successfully created view object.
+|===
+
+== NavigateToFieldsForTestActionHandler
+
+The NavigateToFieldsForTestActionHandler is a specialized utility used for testing form fields within the DatenMeister environment. It facilitates the testing process by creating a temporary object that exists for a limited time (e.g., one hour). After creating the object, it generates a client-side navigation action that directs the user to the newly created object using a specific test form. This allows developers to quickly see how different field types and configurations behave with live data in a safe, transient environment. It is an internal tool primarily intended for development and quality assurance of the form system itself. The handler returns an action result that contains the necessary client-side navigation instructions.
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+| (No Parameters)
+| This handler does not take any specific input parameters from the action element.
+|===
+
+[cols="1,3"]
+|===
+| Result | Description
+
+| `clientActions`
+| A collection of client-side actions, including a navigation action to the temporary test object.
+|===

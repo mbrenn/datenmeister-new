@@ -1,0 +1,71 @@
+﻿= DateTimeField Explanation
+:author: Junie
+:revdate: 2026-01-30
+
+The `DateTimeField.ts` provides a robust and user-friendly interface for managing date and time data within DatenMeister forms. It leverages modern web standards to ensure cross-browser compatibility and data integrity.
+
+== Features
+
+* **Native Browser Integration**: Uses HTML5 `<input type="date">` and `<input type="time">` for intuitive data entry.
+* **Timezone Awareness**: Automatically handles the conversion between UTC storage and the user's local timezone.
+* **Flexible Visibility**: Supports hiding either the date or time component via configuration.
+* **Read-Only Optimization**: Provides a clean, formatted text view when the field is not editable.
+* **One-Click Updates**: Includes a "Now" button to quickly set the current date and time.
+
+== UI Implementation
+
+=== Edit Mode
+In edit mode, the field renders labeled input containers:
+
+* **Date Input**: A native HTML5 date picker prepended with the label "Date: ".
+* **Time Input**: A native HTML5 time picker prepended with the label "Time: ".
+* **Layout**: Uses Bootstrap classes (`d-flex`, `align-items-center`) for alignment and a line break (`<br/>`) to separate components when both are visible.
+
+=== Read-Only Mode
+When `isReadOnly` is set to true, the interactive inputs are replaced by a single `<div>` containing a formatted string:
+
+* **Format**: `YYYY-MM-DD HH:mm`.
+* **Dynamic Formatting**: Automatically adjusts based on `hideDate` and `hideTime` settings.
+* **Undefined State**: Displays an italicized _undefined_ label (using the `dm-undefined` CSS class) if no value is set.
+
+== Data Handling and Timezones
+
+The field follows a strict policy to ensure data consistency across different geographic locations.
+
+=== Storage Format
+Data is stored as a standardized ISO 8601 string in **UTC** (e.g., `2023-10-27T14:30:00.000Z`).
+
+* **Extraction**: During `evaluateDom`, the local input values are parsed into a JavaScript `Date` object using the local timezone.
+* **Serialization**: The `toISOString()` method is used to convert this local time into UTC for storage in the model.
+
+=== Display Logic
+When loading data in `createDom`, the browser's local timezone is automatically applied:
+
+* **Parsing**: The stored ISO string is loaded into a `Date` object.
+* **Localization**: Standard methods like `getFullYear()`, `getMonth()`, `getHours()`, etc., are used, which naturally return the time components according to the user's system clock.
+
+== Configuration Properties
+
+The behavior of the field is controlled by `DateTimeFieldData` properties:
+
+[cols="1,5"]
+|===
+|Property |Description
+
+|`hideDate`
+|If true, the date input and display are suppressed. Only the time part is managed.
+
+|`hideTime`
+|If true, the time input and display are suppressed. Only the date part is managed.
+
+|`isReadOnly`
+|Inherited from `FieldData`. Toggles between the interactive picker UI and the static text view.
+|===
+
+== Technical Details
+
+* **File Location**: `Web/DatenMeister.WebServer/wwwroot/js/datenmeister/fields/DateTimeField.ts`
+* **Dependencies**:
+** `JQuery`: Used for DOM manipulation and event handling.
+** `Mof`: Used for data model interaction (`DmObject`).
+** `_DatenMeister`: Used for accessing metadata and property constants.

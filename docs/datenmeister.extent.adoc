@@ -1,0 +1,50 @@
+= Extents
+
+An extent is a collection of objects in a self-contained container. Within the DatenMeister, this is a file, a database, or a dynamic object collection, each of which has been loaded via a configuration (LoaderConfig).
+
+== Resolving Objects
+
+Each UriExtent has one or more addresses through which it can be found.
+
+Elements can be retrieved via an ID.
+
+The UriExtent supports the following query scheme:
+
+[%header, cols="2,5"]
+|===
+|Type|Description
+|Query by ID a|The URI of the extent is appended with an '#' and the object ID. The text following this identifies the object by ID.
+
+- dm:///database/#objectid
+|Query by Name a|The URI of the extent is appended with '?fn=' and the full name of the object.
+
+- dm:///database/?fn=team_Frankfurt::player_1
+|Query a Property a|After the element has been identified via one of the above methods, a property of the object can be selected via the QueryString parameter 'prop'. The content of the property is returned.
+
+- dm:///database/?fn=team_Frankfurt::player_1&prop=age
+- dm:///database/?prop=age#objectid
+|Query a Data View a|After a reflective collection (reflectiveCollection) has been selected via one of the above schemes, it can be modified via a data view. The collection is passed to this data view as an 'input' node.
+
+Note: The URL of the data view must be URL-encoded.
+
+- dm:///database/?fn=team_Frankfurt::player_1&prop=children&dataview=dm:///views/%23childrenView
+
+|Composites a|By specifying the parameter &composites=, it can be indicated whether the containing elements should also be returned.
+
+There are various values:
+
+- includingSelf: In addition to the composite elements, the selected values are also returned.
+- onlyComposites: Only the composite elements are returned.
+- allReferenced: All referenced elements are returned, regardless of whether they are composites or not.
+- allReferencedIncludingSelf: All referenced elements, but also the selected elements, are returned, regardless of whether they are composites or not.
+
+Example: dm:///database/&composites=onlyComposites
+
+|Filter by Metaclass a|A metaclass can be filtered here.
+
+- dm:///database/?metaclass={dm:///_internal/types/#DatenMeister.Package}
+- dm:///database/?metaclass=dm%3A%2F%2F%2F_internal%2Ftypes%2F%23DatenMeister.Package
+
+Note: The parameter in curly braces must be URL-encoded and is only not encoded here for clear presentation.
+
+|===

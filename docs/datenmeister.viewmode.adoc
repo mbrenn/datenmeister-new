@@ -1,0 +1,12 @@
+= Viewmode (View Mode)
+
+Through the view mode, the user can set from which perspective the current form (Form) should be identified and created.
+
+The following standard view modes are generated:
+
+* Default (ViewMode.Default): This is the standard view node and can be overridden by extensions so that special views can be displayed for special objects or extents.
+* Auto Generation (ViewMode.AutoGenerate): This view forces the automatic generation of the form based on the set properties and object types. The search for best-fitting forms is not performed.
+* Data Manipulation (ViewMode.DataManipulation): In contrast to the default view mode, no visual representations of the object are displayed here. Through this view, the user is given the opportunity to manipulate the object itself.
+* Switch to Automatic: This option is only displayed in the graphical representation and is not an actual view mode. By selecting this item, the system attempts to select the best view mode based on the extent type.
+
+

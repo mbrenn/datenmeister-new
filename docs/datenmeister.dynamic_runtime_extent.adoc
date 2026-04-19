@@ -1,0 +1,44 @@
+= Dynamic Runtime Provider
+
+A dynamic runtime extent (Dynamic Runtime Provider) is a programmable provider whose content is generated via a class rather than a database.
+
+The class itself must be loaded into the DatenMeister via the existing plugin infrastructure.
+
+== Configuration
+
+The provider is configured via _DynamicRuntimeLoaderConfig_ and contains the following properties:
+
+[%header,cols="1,5"]
+|===
+|Name|Description
+|name|Name of the provider
+|extentUri|URI of the extent to be loaded
+|workspaceId|ID of the workspace into which the corresponding extent is loaded
+|runtimeClass|Full path (FullName) to the class containing the elements
+|configuration|Configuration that is then passed to this class. The type of this configuration is not specifically defined.
+|===
+
+== Implementation
+
+The runtime provider is made available via an interface _IDynamicRuntimeProvider_. This contains the following method:
+
+*IEnumerable<IProviderObject> Get(IElement configuration)*
+
+Here, the parameter _configuration_ contains the configuration parameter defined in the LoaderConfig via _configuration_. This value can also be null.
+
+The runtime provider returns a list of provider elements upon request. For simplicity, these can be of type _InMemoryProviderObject_.
+
+== Example Implementations
+
+=== Modules.DynamicRuntimeProvider.NumberProvider
+
+Takes an instance of _NumberProviderSettings_ and returns a listing of numbers in binary, octal, decimal, and hexadecimal.
+
+The properties of the settings:
+
+[%header,cols="1,5"]
+|===
+|Name|Description
+|start|First value of the list. Default value is 0
+|end|Last value of the list. Default value is 100
+|===

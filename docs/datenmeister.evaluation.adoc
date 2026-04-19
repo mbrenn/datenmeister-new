@@ -1,0 +1,16 @@
+= Evaluated Texts
+
+In addition to the static assignment of object property content to texts, the DatenMeister also offers the possibility to evaluate these properties using the https://github.com/lunet-io/scriban[Scriban] framework, thus displaying object content more dynamically.
+
+The Scriban object {{i}} contains the current element being processed. If the current object is a person, "{{i.name}}" returns the person's name. They are greeted via "Hello {{i.prename}} {{i.name}}".
+
+The prefix <% is reserved to support future alternative evaluators.
+
+Typically, the evaluation of a text can be controlled via the 'eval{Property}' property, where Property is the name of the property that usually defines the static assignment between the content to be displayed and the object property.
+
+[%header,cols="1,5"]
+|===
+|Item Name|Description
+|i|The element used in the parser. Depending on the context, this can be an extent, a collection, or an element itself.
+|v|If the parser is currently in the context of a view object, the variable 'v' contains the instance of the view. This can be, for example, the paragraph, the table, or the cell description.
+|===

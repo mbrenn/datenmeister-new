@@ -1,0 +1,26 @@
+= Issue 43
+
+A Milestone shall be created and the user shall be able to plan an item for a certain Milestone
+
+This usecase has the following activities:
+
+* The user can create a new milestone
+* When the user creates a new issue, he can select the milestone via a selection field
+** The selection field is automatically created out of the form generator
+** The selection field is a highly optimized reference field approach
+
+== Execution
+
+The following activities have to be performed:
+
+* [x] We need to have an iteration type: #IssueMeister.Iteration
+* [x] The issue needs to have a reference to the milestone -> Done
+* [x] The automatic form creation evaluates the reference to the milestone and creates a corresponding automatic field
+* [x] The automatic form is evaluated for simple usage. Another issue might be created out of that
+* [x] In addition, the automatic form shall include the enumeration of IssueState: #IssueMeister.IssueState
+
+Used branch: feature/issue_repair
+
+Other bugs in that context:
+
+* [ ] Items with unset state are not regarded as 'Open' in the overviewform

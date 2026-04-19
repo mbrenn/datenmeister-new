@@ -1,0 +1,43 @@
+= SW-API
+
+== DatenMeister.dll
+
+=== Module Runtime.ExtentStorage
+
+In principle, the DatenMeister is capable of working with decoupled extents. This means that extents can be loaded, used, edited, and saved again without centralized registration.
+
+However, the DatenMeister also supports centralized registration via the *ExtentManager*, which supports loading, locking, and secured saving upon termination of the application.
+
+There are thus two databases in total where the extents are stored.
+
+1. Within the workspaces (_WorkspaceLogic.GetWorkspaces()_), the extents are inserted. Through this, extents can be found in the normal database principle. However, it is not known here which ProviderLoader was used to load the extent from which source.
+
+2. Via the registration of the ExtentManager (_ExtentStorageData_), loaded extents are stored for tracking during locking and saving. The ExtentManager also assigns the utilized ProviderLoader configuration to the extent.
+
+The following methods are used when utilizing extents:
+
+* When loading via _LoadExtent_, the extent is loaded and registered. Upon loading, the extent is also locked via its provider.
+
+* When unloading via _DetachExtent_, the extent is deregistered but not saved. The extent is also unlocked via its provider.
+
+* Via _LoadAllExtents_, the loading of the ExtentLoaderConfig takes place, which stores from the previous instance which extents are to be loaded upon startup. The loading then also occurs via _LoadExtent_ and thus leads to a locking of the extents.
+
+* Via _StoreAllExtents_, a write trigger occurs over all loaded and registered events.
+
+* Via _DeleteExtent_, the extent is not only removed from the registration but also taken out of the workspace.
+
+* Via _UnloadManager_, the extents are unloaded and access to the registration file is completely revoked. The extents themselves are still in the workspaces but are no longer tracked via the ExtentManager.
+
+
+== Module.Reports
+
+The generation of reports is supported by two report generators:
+
+* SimpleReport
+* TextReport
+
+=== Simple Report
+
+Implemented in the classes _SimpleReportConfiguration_ and _SimpleReportCreator_
+
+=== Text Report

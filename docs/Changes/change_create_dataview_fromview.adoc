@@ -1,0 +1,115 @@
+= Change 
+
+Create Dataview out of the current view
+
+== Goal of the activity
+
+The user can navigate in the table view and we would like to be able a stored Dataview out of the current settings that the user has set within that Dataview
+
+The filtering, the sorting and Freetext filtering shall be automatically acknowledged and stored. 
+
+The name of the dataview shall be user-given.
+
+The dataview shall be stored in an automatic Package specifically for that activity. 
+
+The user shall be able to easily use that dataview. 
+
+== Workpackage Breakdown
+
+* [x] Check that the user can filter and sort as intended
+** [x] Migrate Dataview to use Dynamic Views
+* [x] Activate Storage of the current view
+** [x] Provide Storage button
+** [x] By activation of the Storage button, the user shall be able to define the name of the created DataView
+** [x] Define package in which the user-defined storages shall be done
+** [x] Store current DataView into the defined Package
+* [x] Provide the action which allows the storage
+** [x] Creates the package
+** [x] Stores the view itself
+** [x] Creates the QueryStatement
+** [x] Check that the references are correctly added!
+* [x] Define Mechanism to retrieve the stored view
+** [x] Include Form Selector into the Table View
+** [x] User shall be able to select the DataView
+** [x] Instead of client-defined Query Statement, a server-selected QueryStatement shall be chosen.
+
+=== Check that the user can filter and sort as intended
+
+Feature Branch: feature/migrate_collecitonform_to_queries
+
+* Everything seems to work correctly, we have added the option to remove sorting by third click (4b38be356d0b2a98e82b38c5a6831c584b7ded82)
+ 
+=== Activate Storage of the current view
+
+The implementation is done in the function of 'createFunctionToStoreCurrentView' in the TableForm.ContextMenus.ts file. 
+
+==== Provide and define Storage button
+
+
+
+==== Define package in which the user-defined storages shall be done
+
+==== Store current DataView into the defined Package
+
+The defined dataview shall contain a dynamic mechanism which allows also the use of the DataView for other tables
+
+=== Creates the dataview
+
+The implemenation will happen in
+
+* Assembly: DatenMeister.Forms.Actions
+* Action: CreateFormUponView
+
+The action parameters are: 
+
+* name: Name of the package
+* viewnode: The full set of the viewnode
+* package: The package in which the viewnode shall be stored
+
+=== Define Mechanism to retrieve the stored view
+
+==== Include Form Selector into the Table View
+
+Done via clickable butteon which shows the export
+
+==== User shall be able to select the DataVie
+
+Done via ItemSelectControl
+
+==== Instead of client-defined Query Statement, a server-selected QueryStatement shall be chosen.
+
+The Clients.Elements.queryObject is required to load also from a 
+pre-selected QueryStatement. 
+
+Here are two options open: 
+
+* Option 1: Directly use the existing API and reference to the query and its url
+* Option 2: Use the existing API but implement another server call
+* Option 3 Create an intermediate QueryStatement object which is just gatewaying to another option
+
+
+===== Option 1
+
+* We get a quite cluttering API call signature on client side
+* No increased # of API Calls
+* Dependent on whether the server call by just referencing the target querystatement is working
+
+===== Opton 2
+
+* Would be quite clean
+* Dependent on whether the server call by just referencing the target querystatement is working
+
+===== Option 3
+
+* New object is being created 
+* Might be useful also in future for indirect requests
+* No change on existing Server API and Client API
+
+===== Decision
+
+We will choose for option 3 to allow also future usages of that new type. 
+The name of the new ViewNode will be called 'ReferenceViewNode' and will contain the following properties: 
+
+* name: As always
+* workspaceId: Id of the workspace in which the referenced item is being located
+* itemUri: Uri which is used to dereference the workitem. 

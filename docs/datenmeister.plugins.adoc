@@ -1,0 +1,30 @@
+= Plugins
+
+Plugins are a way to extend the functionality of the DatenMeister. They can be loaded at different phases of the integration process.
+
+== Phases
+
+The following phases are supported and called in the given order within `Integrator.cs`:
+
+[cols="1,5"]
+|===
+|Phase|Description
+
+|BeforeBootstrapping
+|Plugins are started before the MOF and UML extents are loaded. The workspaces for MOF and UML are not yet available. This phase is used to register providers or to perform very early initialization.
+
+|AfterBootstrapping
+|Called after the workspaces for MOF and UML have been bootstrapped and are available. Internal types and forms are not yet loaded.
+
+|AfterInitialization
+|Called after the internal data types and forms have been imported from the embedded XMI resources. The Extent Manager is ready, but user-defined workspaces and extents are not yet loaded.
+
+|AfterLoadingOfExtents
+|Called after the `WorkspaceLoader` has finished and the `ExtentManager` has loaded all active extents. The full data environment is now established.
+
+|AfterFinalizationOfIntegration
+|Called after the complete integration process is finished and the update flags of temporary extents have been reset.
+
+|AfterShutdownStarted
+|Called when the `UnuseDatenMeister` method is executed, allowing plugins to perform cleanup or save data.
+|===

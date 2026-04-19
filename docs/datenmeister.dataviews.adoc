@@ -1,0 +1,10 @@
+= Data Views (DataViews)
+
+Through data views, the modeler and user gain access to collections of objects or instances of objects.
+
+The data views are defined in the namespace _DatenMeister.Models.Namespace_.
+
+A data view references a view node (ViewNode) that returns one or more objects. These nodes can be chained together to enable complex data aggregations.
+
+If a data node represents only one specific object, it is the only one present in the data collection.
+

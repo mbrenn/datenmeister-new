@@ -1,0 +1,40 @@
+﻿= Issue 119
+
+We would like to add an field type which allows the user to set a date or a timespan. 
+
+The following requirements are valid: 
+
+* The field can be configured, that only the time can be shown and set (hideTime)
+* The field can be configured, that only the date can be shown and set (hideDate)
+* The data is stored as a string, which can be read by converting the String to a .Net DateTime value.
+* The set time shall be regarded as a server-local time.
+* The user must have a button to set the current date
+* The user must have a button to set the current time
+
+== Plan
+
+* [x] The definition of the FieldData is available: http://frosch:5000/Item/Types/dm%3A%2F%2F%2F_internal%2Ftypes%2Finternal%23DatenMeister.Models.Forms.DateTimeFieldData
+** It has the attributes, hideData, hideTime.
+* [x] Create a .ts-file in datenmeister/fields called 'DateTimeField' implementing the IFormField interface and extending the BaseField
+* [x] Create the createDom 
+** which provides 3 fields for date according ISO format, YYYY, MM, DD in case the date is not hidden
+** which provides 2 fields for time according HH, MM in case the date is not hidden.
+** Add a button to add today's time and date
+** Read the current value and interpret it as string how it is also written later within the evaluateDom method. It must be compatible according .Net DateTime Format
+* [x] Create evaluateDom
+** Evaluates the content as given by the user and sets the property in the given dmElement
+* [x] Register that new Field in the FieldFactory.ts
+
+=== Fix 1
+
+* [x] The creation of five textboxes in read-only does not look good. Replace it by a text according date YYYY-MM-DD HH:MM, dependent of the setting whether fields shall be hidden
+
+=== Fix 2
+
+* [x] When creating the textbox for date and time, please add the term 'Date:' before the boxes assigned for the data, a new line for the Time and a colon between HH and MM. Please take care that there shall be no new line in case one of the two fields are hidden. 
+
+=== Fix 3
+
+* [x] Leverage Native HTML5 Input Types: Use `<input type="date">`, `<input type="time">`, or `<input type="datetime-local">` to simplify code and improve UX.
+* [x] Standardize Data Storage Format: Use ISO 8601 (e.g., `2023-10-27T14:30:00`) for unambiguous, culture-independent storage.
+* [x] Clarify Timezone Handling: Store in UTC and display in user's local time, or include offset in ISO string if server-local is required.

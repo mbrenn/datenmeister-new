@@ -1,0 +1,58 @@
+﻿= CheckboxField Explanation
+:author: Junie
+:revdate: 2026-01-30
+
+The `CheckboxField.ts` provides a simple and effective interface for managing boolean data within DatenMeister forms. It utilizes the standard HTML5 checkbox input to represent "true/false" or "on/off" states.
+
+== Features
+
+* **Standard HTML5 Input**: Uses `<input type="checkbox">` for a familiar and native user experience.
+* **Boolean State Management**: Directly maps the checkbox's checked state to a boolean value in the data model.
+* **Read-Only Support**: Correctly disables user interaction while still showing the current state of the data.
+* **Event Integration**: Automatically notifies the form system of changes to ensure real-time data synchronization.
+
+== UI Implementation
+
+=== Edit Mode
+In edit mode, the field renders a single standard checkbox:
+
+* **Input Type**: `<input type='checkbox'/>`.
+* **State Initialization**: The `checked` property is set based on the boolean value retrieved from the `dmElement`.
+* **Interactivity**: Responds to the `change` event to trigger field updates.
+
+=== Read-Only Mode
+When `isReadOnly` is set to true:
+
+* **Disabled State**: The checkbox is assigned the `disabled` property (`this._checkbox.prop('disabled', 'disabled')`).
+* **Visual Representation**: The checkbox remains visible, showing its current state (checked or unchecked), but cannot be toggled by the user.
+
+== Data Handling
+
+The `CheckboxField` specifically targets boolean data types.
+
+=== Extraction
+During `createDom`, the field retrieves the value from the data element using:
+`dmElement.get(fieldName, Mof.ObjectType.Boolean)`
+
+=== Storage
+During `evaluateDom`, the current state of the checkbox is written back to the model:
+`dmElement.set(fieldName, this._checkbox.prop('checked'))`
+
+== Configuration Properties
+
+The behavior of the field is controlled by `CheckboxFieldData` properties:
+
+[cols="1,5"]
+|===
+|Property |Description
+
+|`isReadOnly`
+|Inherited from `FieldData`. Determines whether the checkbox is interactive or disabled.
+|===
+
+== Technical Details
+
+* **File Location**: `Web/DatenMeister.WebServer/wwwroot/js/datenmeister/fields/CheckboxField.ts`
+* **Dependencies**:
+** `JQuery`: Used for DOM creation, property management (`.prop()`), and event binding (`.on()`).
+** `Mof`: Used for data model interaction and type-safe value retrieval.

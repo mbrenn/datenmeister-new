@@ -1,0 +1,17 @@
+= Loading of the DatenMeister
+
+At start of the DatenMeister, the configuration file _DatenMeister.Settings.xmi_ will be loaded. The loading will usually occur before initialization of the DatenMeister engine and the standard values are described in the section <<dm_public_settings, Public Settings>>.
+
+The following additional configuration can be set:
+
+ <xmi>
+    <settings>
+        <web backgroundColor='#ffeedd' />
+    </settings>
+ </xmi>
+
+|===
+|Key|Description
+
+|web.backgroundColor|Override of the background color of the webpages to signal special server configurations.
+|===

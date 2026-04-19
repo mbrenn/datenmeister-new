@@ -1,0 +1,115 @@
+﻿= Load and stores view from Query
+
+In case, a user is reading a stored QueryStatement, we would like to incorporate the settings of the query directly in the selection fields. 
+
+Currently, the TableForm just collects the filters, the ordering and the freetext just as specific attributes. We need to extend the logic that there is no intermediate storing, so the TableForm explicitly works directly on the Query.
+
+This brings some challenges since the Query might not be exactly in the form as it was stored. A Query may be changed by the user in every potential direction, not fitting to the rules of how a query was created. Even a fully 'free' may be created.
+
+So, we rely here on some heuristics.
+
+== Current Implementation
+
+Currently, the table form supports:
+
+* OrderBy: Name of the column and direction (ascending or descending) 
+* FreeTextFilter: Just a freetext filter
+* FilterByProperty: An array of column names and the corresponding text being used for filter. 
+
+In addition, the table also supports a definition that the Query may be overridden including its Workspace and Item Uri.
+
+The current implementation is done in CollectionForm.createQueryBuilder, it creates the form in the following order:
+
+. Defines the input query
+. Adds the column filter queryies by parsing through all of them
+. Ordering the content
+. Adding the Freetext
+. Check, if all columns or just a subset shall be regarded
+. Limitation of output (Default value is 101)
+
+The Query shall be modified according the following rules: 
+
+* At start of the TableForm, create an empty Query by QueryEngine.QueryBuilder. Use the DynamicSource with `input` as Sourcename. Add also a Limit of 101 per default. 
+* Walkthrough the viewNodes by parsing through the `input` nodes. Do not just walk through the node-collection. We have to understand the source
+* When changing the query, walk from the result node and take the first node which can be navigated. In case there is no specific node, just add the filter as input to the resultnode and 're-wire' the input chain. 
+* Take care that the Limitation is always the resulting node, if available. The Limitation may only be applied 'AFTER' all the filtering and ordering. When adding a new filter or ordering node, if the current `resultNode` is a `LimitationNode`, the new node must be inserted **before** the Limitation. Specifically: the new node's `input` becomes the Limitation's previous `input`, and the Limitation's `input` is updated to point to the new node.
+* FilterByProperty needs to walk through all FilterByProperty nodes since multiple, different Properties may be filtered. In case an additional property is added, an existing node with same propertyname has to be updated. In case, a FilterByProperty does not exist, it can be added. The getter for `FilterByProperty` should return the value of the node closest to the `resultNode` (most recently added). The setter should update all matching nodes or remove older ones to avoid ambiguous filter states in the UI.
+* If the walking logic encounters an unknown node type, it should treat that node and its entire upstream chain as 'Protected'. New UI-driven filters should only be added downstream (as children) of the last unknown node.
+* Do not a filter for metaclasses, even though it might be a beneficial improvement for the future
+
+== Required changes
+
+* [x] Change TableState Method to include a Query
+** [x] Implement several helper methods (get*, set* and remove*) in TableState
+*** [x] Heuristics, that the Query is understood
+*** [x] Getter for the different filters
+*** [x] Setter to modify the query, instead of completely recreate these. The setter to filterByProperty needs to have an argument of the propertyname
+*** [x] Remove Methods for each Setter to remove the node from the query
+** [x] Remove the Properties: `orderBy`, `orderByDescending`, `freeTextFilter`, and `filterByProperty` are replaced by the `queryStatement`. Every consumer of these methods have to use the getter. 
+* [x] getQueryParameter can be completely removed since the TableState already contains the information
+** [x] updateFilterQueryText does not to get updated.  
+* [x] Same applies for 'callbackLoadItems' callback function
+* [x] Update the Inputbox for the FreeText. An empty text shall remove the Freetext search.
+* [ ] createSortingButton must be able to read-out the ordering information out the query. If a user toggles sorting off, the `RowOrderByNode` should be removed and the chain re-wired, similar to how filters are handled.
+* [ ] Impact on `TableForm.ContextMenus.ts`
+** **`createFunctionToFilterInProperty()`**:
+*** [ ] **Change**: The `onSubmitForm` callback must call `tableForm.tableState.setFilterByProperty()` instead of directly modifying the `filterByProperty` array.
+*** [ ] **Change**: `callbackButtonText` must check the `queryStatement` for existing filters on that property.
+** [ ] **`createFunctionToLoadCurrentView()`**: **Change**: Instead of setting `overrideQueryItem`, it will now load the entire `QueryStatement` into `tableForm.tableState.queryStatement`.
+** [ ] **`createFunctionToStoreCurrentView()`**: **Change**: Can directly use `tableForm.tableState.queryStatement` instead of building a new one via `CollectionForm.createQueryBuilder()`.
+* [ ] getSummaryOfQuery needs to be able to manage the Query structure
+* [ ] CreateEmptyQuery in case a fresh table is used while no QueryStatement is available, here the logic of  CollectionForm.createQueryBuilder can be considered
+* [ ] Remove createQueryBuilder.
+* [ ] Refresh the view by calling refreshForm() after loading of the view
+
+=== Plan from Junie
+
+Based on your updated `.adoc` file and the impact analysis, here is the detailed **Plan of Modifications** for review. This plan outlines the steps required to transition `TableForm` to a Query-centric model without modifying any code at this stage.
+
+### Phase 1: TableState Infrastructure
+1.  **State Extension**: Add `queryStatement: Mof.DmObject` to the `TableState` class in `TableForm.ts`.
+2.  **Initialization**: Implement `initializeQuery()` which:
+*   Creates a `DynamicSource` node named `input`.
+*   Appends a `LimitationNode` with a default value of `101`.
+*   Sets the `LimitationNode` as the `resultNode`.
+3.  **The "Walker" Heuristic**: Implement a core utility that traverses the query by following the `input` property of nodes (starting from the `resultNode`) to understand the functional chain.
+
+### Phase 2: Heuristic Getters and Setters (Single Source of Truth)
+1.  **Ordering**:
+*   `getOrderBy()`: Scans the chain for the first `RowOrderByNode`.
+*   `setOrderBy(property, descending)`:
+*   If it exists: Update properties.
+*   If new: Insert **before** the `LimitationNode` (re-wiring the `input` chain).
+*   If reset: Remove the node and bridge its parent/child.
+2.  **Property Filters**:
+*   `getFilterByProperty(propertyName)`: Finds the most recent `RowFilterByPropertyValueNode` for that property.
+*   `setFilterByProperty(propertyName, value)`:
+*   Finds and updates existing nodes for that property.
+*   If `value` is empty: Removes matching nodes and re-wires the chain.
+*   If new: Inserts **before** the `LimitationNode`.
+3.  **Free-Text Search**:
+*   `getFreeTextFilter()` / `setFreeTextFilter(text)`: Manages `RowFilterByFreeTextAnywhere` using the same re-wiring and removal logic.
+
+### Phase 3: UI and Interaction Refactoring
+1.  **Property Removal**: Remove legacy fields (`orderBy`, `filterByProperty`, etc.) from `TableState`. Update all UI components (column headers, search boxes) to fetch values via the new getters.
+2.  **Context Menus (`TableForm.ContextMenus.ts`)**:
+*   Refactor `createFunctionToFilterInProperty` to use `setFilterByProperty()`.
+*   Refactor `createFunctionToLoadCurrentView` to assign the loaded `QueryStatement` directly to `TableState.queryStatement` and call `refreshForm()`.
+*   Refactor `createFunctionToStoreCurrentView` to grab the `queryStatement` directly from state, bypassing the need for a builder.
+
+### Phase 4: Protected Chains & Complexity Handling
+1.  **Complexity Detection**: During the "Walkthrough", if a node type is encountered that the UI doesn't manage (e.g., a `JoinNode` or `FlattenNode`), mark the upstream chain as **'Protected'**.
+2.  **Injection Point**: Ensure that new UI-driven filters are only injected **downstream** of any 'Protected' nodes but **upstream** of the final `LimitationNode`.
+
+### Phase 5: Cleanup and Removal
+1.  **Method Deletion**: Delete `getQueryParameter()` from `TableForm.ts` as it is now redundant.
+2.  **Builder Deletion**: Delete `createQueryBuilder()` from `CollectionForm.ts`.
+3.  **Lifecycle Update**: Update `CollectionFormCreator` to pass the initial `QueryStatement` directly into the `TableForm` during initialization.
+
+### Verification Checklist
+*   [ ] The `LimitationNode` is always the last node in the chain (the `resultNode`).
+*   [ ] Clearing a search box or filter correctly removes the node and bridges the gap (re-wiring).
+*   [ ] Loading a view triggers `refreshForm()` and updates all UI filter indicators.
+*   [ ] Unknown nodes are preserved and not accidentally removed or bypassed.
+
+**No code has been modified.** This plan is ready for review based on the instructions in your `.adoc` file.

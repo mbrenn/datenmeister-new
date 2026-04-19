@@ -1,0 +1,113 @@
+= Extents
+
+== Loading Extents
+
+=== Configurations
+
+==== ExtentLoaderConfig
+
+==== ExtentFileLoaderConfig
+
+|===
+|Derived from|ExtentLoaderConfig
+|Registered via|_Abstract configuration_
+|===
+
+==== ExcelExtentLoaderConfig
+
+|===
+|Derived from|ExtentFileLoaderConfig
+|Registered via|DatenMeister.Provider.Excel.Integration.ExcelPlugin
+|===
+
+Loads the Excel file and uses the Excel file directly for MOF operations. The loader uses the `ExcelProvider` which interacts directly with the Excel file using the NPOI library. No importing into a temporary extent will be performed, which means the structure within the Excel file remains as is. This configuration is useful when the Excel file itself should be treated as the primary data source and is modified outside of DatenMeister. However, the current implementation of `ExcelFileProviderLoader` does not support storing changes back to the Excel file.
+
+==== ExcelImportLoaderConfig
+
+|===
+|Derived from|ExcelExtentLoaderConfig
+|Registered via|DatenMeister.Provider.Excel.Integration.ExcelPlugin
+|===
+
+Creates a parallel extent type and loads the specific Excel file into that extent. Specifically, it creates an XMI-backed storage using the `XmiStorageLoaderConfig` and copies the data from the Excel file into it. During the loading process, all existing elements in the target extent are removed and replaced with the content from the Excel file. This allows for a persistent storage of the Excel data in a format that is more suitable for DatenMeister's internal operations. Changes made to the extent are stored in the XMI file, but not back to the original Excel file.
+
+==== ExcelReferenceLoaderConfig
+
+|===
+|Derived from|ExcelExtentLoaderConfig
+|Registered via|DatenMeister.Provider.Excel.Integration.ExcelPlugin
+|===
+
+Loads the Excel and copies all elements from the Excel file into a temporary extent containing a provider called `InMemoryProvider`. This allows fast and easy access to the Excel data within the DatenMeister environment. The `ExcelReferenceLoader` performs a one-time import of the Excel content into the memory-based extent. Writings to the extent are only kept in memory and are discarded when the extent is unloaded or the application is rebooted. This is ideal for read-only access or temporary data manipulations where the original Excel file should remain untouched.
+
+==== ExcelHierarchicalLoaderConfig
+
+|===
+|Derived from|ExcelExtentLoaderConfig
+|Registered via|DatenMeister.Provider.Excel.Integration.ExcelPlugin
+|===
+
+Loads the Excel and treats it as a hierarchical structure based on the configuration of hierarchical columns. The `ExcelHierarchicalLoader` uses an `InMemoryProvider` and organizes the Excel rows into a tree-like structure. It uses the `hierarchicalColumns` property in the configuration to determine how rows are nested under each other. This is particularly useful for representing data that has a natural parent-child relationship within a flat Excel table. Like other reference loaders, changes are only kept in memory and are not persisted back to the source file.
+
+==== InMemoryLoaderConfig
+
+|===
+|Derived from|ExtentLoaderConfig
+|Registered via|DatenMeister.BootStrap.Integrator
+|===
+
+Creates a purely in-memory extent using the `InMemoryProvider`. This loader is used when data does not need to be persisted to any external storage and should only exist during the runtime of the application. It supports different internal structures, such as a linked list if the `isLinkedList` property is set in the configuration. The `InMemoryProviderLoader` can also be associated with a `TypeIndex` to improve performance for type-based queries within a specific workspace. Since it is entirely memory-based, all data is lost when the extent is unloaded or the application restarts.
+
+==== XmiStorageLoaderConfig
+
+|===
+|Derived from|ExtentFileLoaderConfig
+|Registered via|DatenMeister.Provider.Xmi.Provider.XMI.XmiPlugin
+|===
+
+Loads and stores data in the XMI (XML Metadata Interchange) format, which is the standard format used by DatenMeister for persistent storage. The `XmiStorageProviderLoader` uses the `XmiProvider` to manage the XML document and supports both loading from and saving to a file. It handles file creation if the specified file does not exist, provided the creation flags allow it. This loader also implements locking mechanisms to prevent concurrent access issues during file operations. It is the primary choice for persistent data that needs to be fully managed by DatenMeister.
+
+==== XmlReferenceLoaderConfig
+
+|===
+|Derived from|ExtentFileLoaderConfig
+|Registered via|DatenMeister.BootStrap.Integrator
+|===
+
+Loads an XML file and converts its content into an `InMemoryProvider` for fast access. Unlike the XMI loader, this loader is intended for general XML files and uses a converter to map the XML structure to DatenMeister's object model. The `XmlReferenceLoader` supports reloading the data from the source file, which allows updating the in-memory extent if the underlying XML file changes. Changes made within DatenMeister are only kept in memory and are not stored back to the original XML file. This makes it suitable for scenarios where DatenMeister acts as a consumer of XML-based data.
+
+==== CsvExtentLoaderConfig
+
+|===
+|Derived from|ExtentFileLoaderConfig
+|Registered via|DatenMeister.Provider.CSV.CsvPlugin
+|===
+
+Loads and stores data from and to CSV (Comma-Separated Values) files. The `CsvProviderLoader` uses an internal `CsvLoader` to handle the parsing and serialization of the CSV data into an `InMemoryProvider`. The configuration includes various settings such as encoding, separators, and column mappings to correctly interpret the CSV format. While the loader can store the data back to a CSV file, the changes are not automatically persistent unless explicitly saved. This loader is ideal for integrating with external systems that use CSV as a simple data exchange format.
+
+==== DynamicRuntimeLoaderConfig
+
+|===
+|Derived from|ExtentLoaderConfig
+|Registered via|DatenMeister.Provider.DynamicRuntime.DynamicRuntimeProviderPlugin
+|===
+
+Provides a mechanism to load a provider dynamically by specifying a class name in the configuration. The `DynamicRuntimeProviderLoader` uses reflection to instantiate the specified `runtimeClass` at runtime. This allows for highly flexible and extensible provider configurations where the actual provider logic can be provided by external assemblies. The instantiated provider is wrapped in a `DynamicRuntimeProviderWrapper` which manages the interaction between DatenMeister and the dynamically loaded instance. This loader is typically used for specialized providers that are not known at compile time.
+
+==== EnvironmentalVariableLoaderConfig
+
+|===
+|Derived from|ExtentLoaderConfig
+|Registered via|DatenMeister.Provider.Environmental.EnvironmentalVariablePlugin
+|===
+
+Loads the operating system's environment variables into an `InMemoryProvider`. Each environment variable is represented as an element with properties for its name and value. The `EnvironmentalProvider` loader does not support storing changes, as environment variables are considered read-only within this context. This loader is useful for providing access to system-level configuration and environment information within the DatenMeister environment. It is typically used for internal management purposes or to provide system context to other operations.
+
+==== ShadowConfigurationForNonPersistent
+
+|===
+|Derived from|ExtentLoaderConfig
+|Registered via|_Hardcoded in ProviderToProviderLoaderMapper_
+|===
+
+Used for non-persistent extents that are not backed by any storage and are handled internally by the system. The `NonPersistentProviderLoader` acts as a placeholder that satisfies the interface requirements without providing any loading or storing logic. It is specifically designed for extents that are created and managed purely in memory without the need for a configuration-driven loading process. This loader prevents nullability issues in the system by providing a default, no-op implementation for non-persistent data. Changes made to such extents are never persisted.

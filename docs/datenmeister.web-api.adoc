@@ -1,0 +1,504 @@
+= DatenMeister WebAPI Documentation
+
+This document provides a comprehensive overview of the WebAPI endpoints available in the DatenMeister WebServer. The API allows for programmatic interaction with the DatenMeister environment, including management of workspaces, extents, and individual data items. Users can perform CRUD operations, execute actions, query objects, and manage data models through these RESTful endpoints. Each section details the functionality, access method, and expected inputs and outputs for specific controllers. This documentation is intended for developers who wish to integrate with or extend the DatenMeister platform via its web interface.
+
+== ActionsController
+
+The `ActionsController` is responsible for triggering and executing actions within the DatenMeister system. It provides endpoints to run actions either by providing the action definition directly in the request body or by referencing an existing action stored in a workspace. This controller acts as the primary gateway for automating tasks and workflows through the WebAPI. By leveraging the `ActionLogic`, it can handle a wide variety of operations defined in the DatenMeister model. Execution results, including success status and any returned data, are provided back to the caller in a standardized format. This allows for seamless integration of complex backend logic into web-based applications.
+
+=== ExecuteAction (Direct)
+
+This endpoint allows for the immediate execution of an action by passing its definition as a JSON object in the request body. The user specifies the action name, which determines the specific logic to be applied to the provided parameters. It is particularly useful for ad-hoc operations that do not require a persisted action element in the workspace. The handler de-converts the JSON parameter into a DatenMeister element and evaluates it using the appropriate action handler. This method supports a broad range of actions, from simple logging to complex workspace manipulations like XMI import.
+
+* **Endpoint:** `api/action/execute_directly/{actionName}`
+* **Method:** `POST`
+
+.Input Arguments
+[cols="1,3"]
+|===
+| Parameter | Description
+| `actionName` | The name of the action to be executed (e.g., "Execute" for general action evaluation).
+|===
+
+.POST Variables
+[cols="1,3"]
+|===
+| Variable | Description
+| `Parameter` | A JSON representation of the action parameters (MofObjectAsJson).
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `Success` | A boolean indicating whether the action was executed successfully.
+| `Reason` | A string explaining why the action failed, if applicable.
+| `StackTrace` | The stack trace of the exception if an error occurred during execution.
+| `Result` | The resulting JSON text returned by the action execution.
+|===
+
+=== ExecuteAction (by URI)
+
+This endpoint triggers the execution of a pre-defined action that is already stored within a DatenMeister workspace. The caller provides the workspace ID and the unique URI of the action element to be evaluated. This approach is ideal for running complex, reusable workflows that have been configured and persisted in the modeling environment. The system resolves the action element from the specified workspace and executes it using the standard `ActionLogic` framework. It provides a way to decouple the triggering of an action from its detailed configuration. The result of the execution is returned in a standard format, including any output data.
+
+* **Endpoint:** `api/action/execute/{workspaceId}/{itemUri}`
+* **Method:** `POST`
+
+.Input Arguments
+[cols="1,3"]
+|===
+| Parameter | Description
+| `workspaceId` | The ID of the workspace containing the action to be executed.
+| `itemUri` | The unique URI of the action element within the workspace.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `Success` | A boolean indicating whether the action was executed successfully.
+| `Reason` | A string explaining why the action failed, if applicable.
+| `StackTrace` | The stack trace of the exception if an error occurred during execution.
+| `Result` | The resulting JSON text returned by the action execution.
+|===
+
+== ElementsController
+
+The `ElementsController` provides specialized operations for interacting with DatenMeister elements at a high level. It includes functionality for retrieving names and composite structures, searching for items, and managing temporary objects. This controller is essential for building user interfaces that need to navigate the model hierarchy and display human-readable information. It also supports complex object querying using the DatenMeister query language. By providing a bridge between the raw model data and UI-friendly representations, it simplifies the development of web-based modeling tools. Temporary element creation is particularly useful for "sandbox" operations or multi-step creation processes.
+
+=== GetName (by ID)
+
+This method retrieves a human-readable representation of a specific item identified by its workspace, extent, and item ID. It returns an `ItemWithNameAndId` object, which contains the item's display name and unique identifier. This is a common operation for UI components that need to show labels for model elements without fetching their entire property set. The endpoint handles URL-encoded parameters to ensure that workspace and extent names are correctly processed. If the item cannot be found, a 404 Not Found response is returned. It is a fundamental building block for model browsing and navigation features.
+
+* **Endpoint:** `api/elements/get_name/{workspace}/{extentUri}/{itemId}`
+* **Method:** `GET`
+
+.Input Arguments
+[cols="1,3"]
+|===
+| Parameter | Description
+| `workspace` | The ID of the workspace where the item is located.
+| `extentUri` | The URI of the extent containing the item.
+| `itemId` | The unique ID of the item within the extent.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `Name` | The display name of the retrieved item.
+| `Id` | The unique ID of the retrieved item.
+| `Workspace` | The workspace ID where the item resides.
+| `Uri` | The full URI of the item.
+|===
+
+=== FindBySearchString
+
+This endpoint allows users to search for model elements using a simple text-based search string. It is useful for implementing global search or quick-find features in a modeling application. The search logic can return various types of results, such as direct references to items or extent-level references. The controller processes the search string and returns a structured result indicating the type of find and the associated item information. This simplifies the task of locating elements across large and complex model structures. The returned information is typically used to navigate the user to the found element.
+
+* **Endpoint:** `api/elements/find_by_searchstring`
+* **Method:** `GET`
+
+.Input Arguments
+[cols="1,3"]
+|===
+| Parameter | Description
+| `search` | The text string to search for within the DatenMeister environment.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `ResultType` | The type of result found (e.g., "none", "reference", "referenceExtent").
+| `Reference` | The item information if a reference was found (ItemWithNameAndId).
+|===
+
+=== CreateTemporaryElement
+
+This method creates a new, temporary DatenMeister element that is not yet persisted to a permanent workspace. Users can optionally specify a metaclass for the new element to define its structure and properties. The temporary element is stored in a special temporary workspace and is assigned a unique URI and ID. This feature is ideal for implementing "Create New" wizards where the user fills in data before committing the item to its final location. The resulting object contains all the information needed to identify and interact with the temporary element. It helps in managing the lifecycle of transient data during user interactions.
+
+* **Endpoint:** `api/elements/create_temporary_element`
+* **Method:** `PUT`
+
+.POST Variables
+[cols="1,3"]
+|===
+| Variable | Description
+| `MetaClassUri` | Optional URI of the metaclass for the temporary element.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `Success` | A boolean indicating if the temporary element was created.
+| `Id` | The unique ID assigned to the temporary element.
+| `Workspace` | The name of the temporary workspace.
+| `Uri` | The full URI of the created temporary element.
+| `MetaClassUri` | The URI of the metaclass assigned to the element.
+| `MetaClassWorkspace` | The workspace ID where the metaclass is located.
+|===
+
+=== QueryObject
+
+The `QueryObject` endpoint provides a powerful way to execute complex queries against the DatenMeister model. Users pass a query statement as a JSON object, which can include filtering, sorting, and transformation logic. The method evaluates the query using the `DataView` engine and returns the resulting objects or data sets. It also supports dynamic sources, allowing the query to be applied to specific collections or extents at runtime. This is the primary method for retrieving structured data from the system for reports, dashboards, or complex UI views. The response includes the query result and metadata like execution time and any error messages.
+
+* **Endpoint:** `api/elements/query_object`
+* **Method:** `POST`
+
+.POST Variables
+[cols="1,3"]
+|===
+| Variable | Description
+| `Query` | The JSON representation of the query statement.
+| `DynamicSourceWorkspaceId` | Optional workspace ID for a dynamic data source.
+| `DynamicSourceItemUri` | Optional item URI for a dynamic data source.
+| `Timeout` | Optional timeout in seconds for query execution.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `Result` | The JSON representation of the query result.
+| `ExecutionTime` | The time taken to execute the query in milliseconds.
+| `Success` | A boolean indicating if the query was successful.
+| `Message` | Any error or status message related to the query execution.
+|===
+
+== ItemsController
+
+The `ItemsController` is the core controller for performing CRUD (Create, Read, Update, Delete) operations on DatenMeister items. it provides a comprehensive set of endpoints for managing individual elements, their properties, and their relationships. Users can create items within extents or as children of existing elements, update property values, and manage collections. This controller also handles more advanced tasks like setting metaclasses and managing cross-item references. It is the primary API for data manipulation within the DatenMeister environment. Most endpoints operate on items identified by their workspace and URI, ensuring precise targeting of model data.
+
+=== CreateItemInExtent
+
+This method creates a new model item directly within a specified extent. The caller provides the workspace ID, the extent URI, and a set of parameters including the desired metaclass and initial property values. The controller uses a factory to instantiate the element and adds it to the root elements of the extent. This is the standard way to add new top-level items to a data model. The response includes the ID and URI of the newly created item, allowing the caller to perform further operations on it immediately. Initial properties are set during creation to ensure the item is in a valid state from the start.
+
+* **Endpoint:** `api/items/create_in_extent/{workspaceId}/{extentUri}`
+* **Method:** `POST`
+
+.Input Arguments
+[cols="1,3"]
+|===
+| Parameter | Description
+| `workspaceId` | The ID of the workspace where the extent resides.
+| `extentUri` | The URI of the extent where the item will be created.
+|===
+
+.POST Variables
+[cols="1,3"]
+|===
+| Variable | Description
+| `MetaClass` | The URI of the metaclass for the new item.
+| `Properties` | A JSON object containing the initial property values.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `Success` | A boolean indicating if the item was created successfully.
+| `ItemId` | The unique ID of the newly created item.
+| `ItemUrl` | The full URI of the created item.
+| `Workspace` | The ID of the workspace containing the item.
+|===
+
+=== CreateItemAsChild
+
+This endpoint allows for the creation of a new item as a child of an existing element. The parent element is identified by its workspace and URI, and the new item is added to its containment structure. This is essential for building hierarchical models where elements are nested within one another. The caller can specify the metaclass for the child and whether it should be added to a specific list property. This method ensures that the parent-child relationship is correctly established in the underlying model. Like other creation methods, it returns the ID and URI of the new child element for further use.
+
+* **Endpoint:** `api/items/create_child/{workspaceId}/{itemUri}`
+* **Method:** `POST`
+
+.Input Arguments
+[cols="1,3"]
+|===
+| Parameter | Description
+| `workspaceId` | The ID of the workspace containing the parent item.
+| `itemUri` | The URI of the parent item.
+|===
+
+.POST Variables
+[cols="1,3"]
+|===
+| Variable | Description
+| `MetaClass` | The URI of the metaclass for the child item.
+| `Property` | The name of the property on the parent where the child should be added.
+| `AsList` | A boolean indicating if the child should be added to a collection.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `Success` | A boolean indicating if the child item was created successfully.
+| `ItemId` | The unique ID of the newly created child item.
+| `ItemUrl` | The full URI of the created child item.
+| `Workspace` | The ID of the workspace containing the item.
+|===
+
+=== DeleteItem
+
+This method removes a specific item from the DatenMeister environment. The item is identified by its workspace ID and its full URL or URI. The controller resolves the item and uses the standard deletion logic to remove it from its container. This operation is permanent and will remove the item and all its contained children from the model. It is a fundamental part of the data lifecycle management provided by the API. The response indicates whether the deletion was successful.
+
+* **Endpoint:** `api/items/delete/{workspaceId}/{itemUrl}`
+* **Method:** `DELETE`
+
+.Input Arguments
+[cols="1,3"]
+|===
+| Parameter | Description
+| `workspaceId` | The ID of the workspace containing the item to be deleted.
+| `itemUrl` | The full URI or URL of the item to be deleted.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `success` | A boolean indicating if the item was successfully deleted.
+|===
+
+=== GetItem
+
+This endpoint retrieves a single item from the model and returns its full JSON representation. It can be accessed either by specifying the workspace, extent, and item ID, or by providing the workspace and item URI. The controller uses a JSON converter to serialize the element, including its properties and potentially its immediate children. The recursion depth and reference resolution can be configured to control the size and detail of the returned JSON. This is the primary method for fetching the state of a specific model element for display or processing. If the item is not found, a 404 response is returned.
+
+* **Endpoint:** `api/items/get/{workspaceId}/{itemUri}`
+* **Method:** `GET`
+
+.Input Arguments
+[cols="1,3"]
+|===
+| Parameter | Description
+| `workspaceId` | The ID of the workspace containing the item.
+| `itemUri` | The unique URI of the item to be retrieved.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| (JSON Object) | The full serialized representation of the DatenMeister item.
+|===
+
+=== SetProperty
+
+This method updates the value of a specific property on a DatenMeister element. The element is identified by its workspace and URI, and the property is specified by its key in the request body. The value is passed as a string and is assigned to the property, potentially overwriting any existing value. This is a common operation for fine-grained updates to model data. The controller ensures that the property is correctly set and returns a success indication. It is ideal for simple attribute updates like changing a name or description.
+
+* **Endpoint:** `api/items/set_property/{workspaceId}/{itemUri}`
+* **Method:** `PUT`
+
+.Input Arguments
+[cols="1,3"]
+|===
+| Parameter | Description
+| `workspaceId` | The ID of the workspace containing the item.
+| `itemUri` | The unique URI of the item to be modified.
+|===
+
+.POST Variables
+[cols="1,3"]
+|===
+| Variable | Description
+| `Key` | The name of the property to be set.
+| `Value` | The new value to be assigned to the property.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `success` | A boolean indicating if the property was successfully set.
+|===
+
+== ExtentController
+
+The `ExtentController` focuses on the management of extents within DatenMeister workspaces. Extents are the primary containers for model elements, often corresponding to physical storage like XMI files. This controller provides endpoints to check for extent existence, manage extent-level properties, and perform bulk operations like clearing or deleting entire extents. It also supports specialized tasks such as creating new XMI-backed extents and performing XMI export and import at the extent level. By providing these management functions, it allows for administrative control over the data structure of a workspace. This is essential for configuring data sources and managing large sets of model data.
+
+=== Exists
+
+This simple endpoint checks whether an extent with a given URI exists within a specific workspace. It is a useful utility for checking the state of the system before performing operations that depend on the presence of certain data sets. The method returns a structured result containing a boolean flag. It helps in implementing defensive programming patterns in client applications. The check is performed efficiently against the workspace logic. It requires the workspace ID and the extent URI as input.
+
+* **Endpoint:** `api/extent/exists/{workspace}/{extent}`
+* **Method:** `GET`
+
+.Input Arguments
+[cols="1,3"]
+|===
+| Parameter | Description
+| `workspace` | The ID of the workspace to check.
+| `extent` | The URI of the extent whose existence is being verified.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `Exists` | A boolean indicating if the specified extent exists in the workspace.
+|===
+
+=== CreateXmi
+
+This endpoint enables the creation of a new Xmi-backed extent in a specified workspace. The caller provides a file path where the XMI data will be stored and a unique URI for the extent. This is a powerful feature for dynamically adding new file-based data sources to the DatenMeister environment. The controller uses the `ExtentManager` to create the extent and register it with the workspace. It can also be configured to skip creation if an extent with the same URI already exists. This method is crucial for setting up persistent data storage via the WebAPI.
+
+* **Endpoint:** `api/extent/create_xmi`
+* **Method:** `POST`
+
+.POST Variables
+[cols="1,3"]
+|===
+| Variable | Description
+| `FilePath` | The physical file path where the XMI file should be created or loaded from.
+| `ExtentUri` | The unique URI to be assigned to the new extent.
+| `Workspace` | The ID of the workspace where the extent should be added.
+| `SkipIfExisting` | A boolean indicating whether to skip creation if the extent already exists.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `Success` | A boolean indicating if the extent was created or loaded successfully.
+| `Skipped` | A boolean indicating if the operation was skipped because the extent already existed.
+| `Message` | An error message if the operation failed.
+|===
+
+=== DeleteExtent
+
+This method removes an entire extent from a workspace, effectively unloading the data. The caller specifies the workspace ID and the URI of the extent to be deleted. The controller uses the `ExtentManager` to perform the removal, which unregisters the extent from the workspace logic. This operation does not necessarily delete the underlying physical file, depending on the provider configuration. It is an essential tool for managing the lifecycle of data containers. The result indicates whether the deletion was successful or if it was skipped.
+
+* **Endpoint:** `api/extent/delete`
+* **Method:** `DELETE`
+
+.POST Variables
+[cols="1,3"]
+|===
+| Variable | Description
+| `Workspace` | The ID of the workspace from which to delete the extent.
+| `ExtentUri` | The unique URI of the extent to be deleted.
+| `SkipIfNotExisting` | A boolean indicating whether to skip the operation if the extent is not found.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `Success` | A boolean indicating if the extent was successfully deleted.
+| `Skipped` | A boolean indicating if the operation was skipped.
+|===
+
+== WorkspaceController
+
+The `WorkspaceController` provides high-level management functions for DatenMeister workspaces. Workspaces are the top-level organizational units that contain extents and provide a scope for element resolution. This controller allows for the creation of new workspaces and the deletion of existing ones. These operations are fundamental for managing the overall structure of a DatenMeister instance. Users can define unique IDs and optional annotations for new workspaces to help organize their data models. Deleting a workspace will remove it and all its associated data from the current runtime environment.
+
+=== CreateWorkspace
+
+This endpoint allows for the programmatic creation of a new workspace in the DatenMeister environment. The caller provides a unique ID for the workspace and an optional annotation for descriptive purposes. The controller registers the new workspace with the global workspace logic, making it available for adding extents and elements. This is essential for setting up multi-workspace architectures dynamically. The method returns a success status indicating whether the workspace was created. If a workspace with the same ID already exists, the operation might fail depending on system state.
+
+* **Endpoint:** `api/workspace/create`
+* **Method:** `PUT`
+
+.POST Variables
+[cols="1,3"]
+|===
+| Variable | Description
+| `id` | The unique identifier for the new workspace.
+| `annotation` | A descriptive annotation or comment for the workspace.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `success` | A boolean indicating if the workspace was successfully created.
+|===
+
+=== DeleteWorkspace
+
+This method removes a specified workspace from the DatenMeister environment. The workspace is identified by its unique ID passed in the request body. Deleting a workspace is a major operation that unregisters it from the system and makes its contents inaccessible. It is used for cleaning up entire projects or data segments that are no longer required. The controller performs the removal through the workspace logic and returns a success status. This operation should be used with caution as it affects all data contained within the workspace.
+
+* **Endpoint:** `api/workspace/delete`
+* **Method:** `DELETE`
+
+.POST Variables
+[cols="1,3"]
+|===
+| Variable | Description
+| `Id` | The unique ID of the workspace to be deleted.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `success` | A boolean indicating if the workspace was successfully deleted.
+|===
+
+== TypesController
+
+The `TypesController` provides endpoints for retrieving information about types and metaclasses within the DatenMeister environment. It includes functionality to list all available types and to look up the expected type of a specific property within a metaclass. This controller is crucial for building dynamic forms and editors that need to know the schema of the data they are manipulating. By providing access to the type system, it enables client applications to perform validation and provide type-specific UI components. The information is retrieved from the specialized types workspaces in DatenMeister. It helps in maintaining data integrity by ensuring that elements are created and modified according to their defined types.
+
+=== GetTypes
+
+This endpoint returns a list of all types and metaclasses currently registered in the DatenMeister environment. The result is a collection of `ItemWithNameAndId` objects, providing a summary of each type. This is useful for populating type selection lists in user interfaces. The controller queries the local type support to gather all relevant type definitions from the system. It provides a quick way to see what kinds of elements can be created. The returned list can be used to navigate to detailed type definitions if needed.
+
+* **Endpoint:** `api/types/all`
+* **Method:** `GET`
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| (List) | A list of `ItemWithNameAndId` objects representing all available types.
+|===
+
+=== GetPropertyType
+
+This method retrieves the specific type defined for a certain property within a given metaclass. It requires the workspace ID where the metaclass is located, the metaclass URI, and the name of the property. This information is highly valuable for building smart UI components that can adapt to the expected data type of a property (e.g., choosing a checkbox for a boolean or a date picker for a timestamp). The controller resolves the metaclass and inspects its properties using the UML classifier methods. It returns an `ItemWithNameAndId` representing the property's type. This ensures that the UI remains consistent with the underlying model definition.
+
+* **Endpoint:** `api/types/propertytype/{workspace}/{metaClass}/{propertyName}`
+* **Method:** `GET`
+
+.Input Arguments
+[cols="1,3"]
+|===
+| Parameter | Description
+| `workspace` | The ID of the workspace containing the metaclass.
+| `metaClass` | The URI of the metaclass to be inspected.
+| `propertyName` | The name of the property whose type is being requested.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| (ItemWithNameAndId) | The name and ID of the type associated with the specified property.
+|===
+
+== ZipController
+
+The `ZipController` provides specialized functionality related to ZIP archive operations within DatenMeister. Currently, it features an endpoint to create a pre-defined ZIP archive example, which is useful for demonstration and testing purposes. This controller demonstrates how specific module-level logic can be exposed through the WebAPI. It leverages the `ZipCodeExampleManager` to perform its tasks, showing the extensibility of the DatenMeister web server. In the future, this controller could be expanded to include general-purpose ZIP extraction and creation features. It provides a simple way to trigger complex, module-specific operations.
+
+=== CreateZipExample
+
+This endpoint triggers the creation of a pre-defined ZIP code example within a specified workspace. It is primarily used to demonstrate the system's ability to handle ZIP archives and to provide a sample data set for users. The caller provides the target workspace ID where the example data should be added. The controller executes the example creation logic and returns the ID of the workspace and the URI of the newly created extent. This serves as a quick start guide for users exploring ZIP-related features. The operation is performed asynchronously to ensure a responsive API.
+
+* **Endpoint:** `api/zip/create`
+* **Method:** `POST`
+
+.POST Variables
+[cols="1,3"]
+|===
+| Variable | Description
+| `Workspace` | The ID of the workspace where the ZIP example should be created.
+|===
+
+.Return Arguments
+[cols="1,3"]
+|===
+| Property | Description
+| `Success` | A boolean indicating if the example creation was successful.
+| `WorkspaceId` | The ID of the workspace containing the new example.
+| `ExtentUri` | The URI of the created extent containing the ZIP example data.
+|===

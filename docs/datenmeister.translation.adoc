@@ -1,0 +1,13 @@
+= Translations
+
+The following translations apply between German and English:
+
+[%header]
+|===
+|German|English
+|Arbeitsbereich|Workspace
+|Datenansicht|Dataview
+|Formular-Zuordnung|FormAssociation
+|Öffentliche Einstellung|Public Setting
+|Reiter|Tab
+|===

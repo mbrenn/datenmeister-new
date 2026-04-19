@@ -1,0 +1,88 @@
+= Public Settings
+[dm_public_settings]
+
+The public settings (PublicSettings) are configured via the file 'DatenMeister.Settings.xmi', which must be located in the directory of the executable file (.exe).
+
+This file is an XMI file with a settings node and looks like this, for example:
+
+ <xmi>
+     <settings
+ 		windowTitle = "The IssueMeister" 
+         databasePath="%LOCALAPPDATA%/IssueMeister">
+         <environmentVariable key="import_path" value="c:\import-folder" />
+     </settings>
+ </xmi>
+
+The following properties are supported:
+
+[%header,cols="1,5"]
+|===
+|Name|Property
+|windowTitle|Name of the main window. Default is 'DatenMeister'
+|databasePath|Path where the main configuration is stored. These are usually the user-defined types and forms, but also the registration of workspaces.
+|isReadOnly|Flag indicating whether the DatenMeister should be started in read-only mode.
+|logLocation a|Defines where logging should be performed.
+
+* Application: In the application directory (Default)
+* LocalAppData: In the 'DatenMeister' subdirectory of LocalAppData
+* Desktop: Directly on the desktop
+* None: No logging takes place in a file.
+|environmentVariable a|Additional environment variables can be inserted here. These are inserted directly into the process's environment variables without a prefix.
+
+Several environment variables can be specified, which can have the following properties:
+
+* key: Name of the variable
+* value: Value of the variable
+|===
+
+== Environment Variables
+
+When loading the public settings, the database path is transferred to the environment variable "dm_databasepath" and is thus available for loading the extents.
+
+Furthermore, the environment variables are transferred according to the properties of 'environmentVariable'.
+
+=== Standard Environment Variables
+
+The following environment variables are supported and set by default:
+
+[%header,cols="1,5,3"]
+|===
+|Name|Purpose|Default
+|dm_ImportPath|Suggested import path|{Desktop}/import
+|dm_ReportPath|Suggested report path|{Desktop}/report
+|dm_ExportPath|Suggested export path|{Desktop}/export
+|dm_ApplicationPath|Path in which the application was executed.|---
+|dm_DatabasePath|The path where the database is located|According to the 'databasePath' configuration.
+|===
+
+== Web Settings
+
+The settings for the web server are also defined in the 'DatenMeister.Settings.xmi' file mentioned above.
+
+To do this, add an XML node 'web' in which the following settings are defined:
+
+ <xmi>
+     <settings>        
+        <!-- This is the way to have a public webserver, listening to all IPs 
+        <web webServerIsPublic="true" webServerUseHttps="false" />
+        -->
+        <!-- This is more the 'kiosk' mode in which the user directly gets to a certain page. Be aware that this cannnot
+             be used to hide information since the user has access to everything 
+        <web layoutHideSideToolbar="true" layoutHideTopToolbar="true" startPage="/ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces" designBackgroundColor="#EEEEEE" />
+        -->
+     </settings>
+ </xmi>
+
+ The following configurations are supported:
+
+[%header,cols="1,5"]
+|===
+|Key|Description
+|designBackgroundColor|Background color of the web client.
+|layoutHideSideToolbar|Flag indicating whether the left sidebar should be hidden.
+|layoutHideTopToolbar|Flag indicating whether the top toolbar should be hidden.
+|startPage|When navigating to '/', the user is directed to this page.
+|webServerIsPublic|Flag indicating whether the web server should listen on all IPs or only on localhost.
+|webServerUseHttps|Flag indicating whether an HTTPS server should also be opened. Note that the certificate must also be configured via appsettings.json. Otherwise, only a local developer certificate is used.
+|===
+  

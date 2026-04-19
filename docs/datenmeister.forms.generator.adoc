@@ -1,0 +1,22 @@
+= Form Generators
+
+The following form generators exist:
+
+. For a single element: GetExtentFormForItem
+. For a single element as DetailForm: GetDetailFormForItem
+. For a non-existent object of a specific metaclass: GetExtentFormForItemsMetaClass
+. For a list of items: GetListFormForCollection
+. For a list of root elements: GetExtentFormForExtent
+. For a list of elements of a property: GetListFormForPropertyValues
+
+
+== Types of Form Generators
+
+There are:
+
+. FormFinder: Finds the best form from existing definitions via FormAssociation.
+. FormCreator: Creates the best form from available data.
+. FormFactory: First calls the FormFinder, then the FormCreator if the corresponding form was not found.
+
+Additionally, there are FormModifications, which subsequently change a form that has already been generated.
+

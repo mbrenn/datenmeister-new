@@ -1,0 +1,228 @@
+= Field Element
+
+The DatenMeister forms support different types of field forms.
+This chapter contains a description of these.
+
+
+== FieldData
+
+This base class provides the generic properties that should be supported by every field.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|name|Name of the field and the underlying property of the object
+|title|Title displayed in the form
+|isEnumeration|Flag indicating whether the content behind the property is an enumeration or a single element. This property is used by some field types for automatic design.
+|defaultValue|If the value is not set, the value of the default property can be defined here.
+|isReadOnly|Flag indicating whether the field is not writable.
+|isAttached|Flag indicating whether the field is attached to the object itself rather than being a property of the object.
+|===
+
+== TextFieldData
+
+This field represents a text input field in which the user can enter free text.
+
+In addition to the properties of FieldData, the following properties are supported:
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|lineHeight|Number of lines that should be displayed by default. If it is 1 or empty, a simple input field is shown. If it is larger than 1, a textarea is shown.
+|width|Width in logical pixels (size/cols) that the field should have by default.
+|shortenTextLength|If set and greater than 0, the text will be truncated to this length in read-only mode.
+|supportClipboardCopy|If true, a "Copy to Clipboard" button is shown in read-only mode.
+|===
+
+
+== EvalTextFieldData
+
+This extension of the text field supports the dynamic evaluation of content. This is particularly relevant for report creation, as the format and other properties can be evaluated dynamically here.
+
+In addition to the properties of TextFieldData, the following properties are supported:
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|evalCellProperties a|The script evaluated for creating the cell.
+
+- The variable 'i' describes the element currently being considered.
+
+- The variable 'c' is the current cell. The cell's properties depend on the report used.
+
+- The variable 'r' is the state of the current row, as can be defined in the ListForm in the 'evalRowProperties' property.
+|===
+
+== AnyDataFieldData
+
+A generic field that can display different types of data. It is often used as a fallback.
+
+== CheckboxFieldData
+
+Displays a checkbox for boolean values.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|lineHeight|Can be used to define the height of the field.
+|===
+
+== ActionFieldData
+
+Displays a button that triggers a specific action when clicked.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|actionName|Name of the action to be executed.
+|parameter|Parameter passed to the action.
+|buttonText|Text displayed on the button.
+|===
+
+== DateTimeFieldData
+
+Provides a field to input date and time.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|hideDate|If true, only the time part is shown.
+|hideTime|If true, only the date part is shown.
+|===
+
+== DropDownFieldData
+
+Displays a dropdown menu with predefined values.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|values|A list of ValuePairs (name and value) to be displayed in the dropdown.
+|valuesByEnumeration|An enumeration of values to be used for the dropdown.
+|===
+
+== DropDownByCollection
+
+A dropdown where the options are retrieved from a collection in a workspace.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|defaultWorkspace|The ID of the workspace containing the collection.
+|collection|The path or URI to the collection containing the items.
+|===
+
+== DropDownByQueryData
+
+A dropdown where the options are retrieved via a query.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|query|The query string used to retrieve the options.
+|===
+
+== MetaClassElementFieldData
+
+A field that displays or allows display of a metaclass element.
+
+== ReferenceFieldData
+
+Allows the selection of a reference to another element in the DatenMeister.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|isSelectionInline|If true, the selection is made inline, e.g., via a dropdown or search field, rather than a separate dialog.
+|defaultWorkspace|Default workspace to search for references.
+|defaultItemUri|Default URI of the item to be referenced.
+|showAllChildren|If true, all children are shown in the selection dialog.
+|showWorkspaceSelection|If true, the user can select the workspace.
+|showExtentSelection|If true, the user can select the extent.
+|metaClassFilter|A filter to restrict the selectable elements to a certain metaclass.
+|===
+
+== UriReferenceFieldData
+
+A field to store a reference as a URI string.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|defaultWorkspace|Default workspace for the reference.
+|defaultExtent|Default extent for the reference.
+|===
+
+== SubElementFieldData
+
+Through this field element, the user can assign several sub-elements to a property.
+This field expresses a 1:n relationship between the property and its sub-elements.
+
+In addition to the properties of FieldData, the following properties are supported:
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|metaClass|The metaclass of the sub-elements.
+|form|A ListForm used to build the SubForm. If this is empty, the metaclass is used to build the form. If the metaclass is also empty, the form is created depending on the properties contained.
+|allowOnlyExistingElements|True if only references to existing elements should be allowed.
+|defaultTypesForNewElements|Contains a list of metaclasses used to enable easy creation of items.
+|includeSpecializationsForDefaultTypes|If true, specialized types of the default types are also allowed.
+|defaultWorkspaceOfNewElements|Workspace where new elements are created.
+|defaultExtentOfNewElements|Extent where new elements are created.
+|actionName|Name of an action to be executed when a sub-element is manipulated.
+|===
+
+
+== FileSelectionFieldData
+
+Allows the selection of a file from the file system.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|defaultExtension|Default file extension (e.g., .txt).
+|isSaving|If true, a "Save As" dialog is shown; otherwise, an "Open" dialog is shown.
+|initialPathToDirectory|The initial directory shown in the dialog.
+|filter|File filter (e.g., "Text files (*.txt)\|*.txt").
+|===
+
+== FileNameFieldData
+
+Similar to FileSelectionFieldData, but specifically for file names.
+
+== FullNameFieldData
+
+Displays the full name of an element.
+
+== CheckboxListTaggingFieldData
+
+Displays a list of checkboxes to tag an element with multiple values.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|values|Possible values for tagging.
+|separator|Separator used when storing multiple values in a single string property.
+|containsFreeText|If true, the user can also enter free text tags.
+|===
+
+== NumberFieldData
+
+A field for numeric input.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|format|The format string for displaying the number.
+|isInteger|If true, only integer values are allowed.
+|===
+
+== SeparatorLineFieldData
+
+Displays a horizontal separator line in the form.
+
+[%header,cols="1,5"]
+|===
+|Name|Meaning
+|Height|The height of the separator line.
+|===

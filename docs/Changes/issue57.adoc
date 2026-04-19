@@ -1,0 +1,39 @@
+= Issue 57
+
+The user shall be able to create a data, a type and a forms extent within a single dialogue.
+
+== Requirements
+
+* The new domain has a name. For example: 'IssueMeister'
+* The name of the action is called 'DomainCreateFoundation'.
+** It creates one Management extent, one Type Extent and one example Data Extent
+* The Management extent contains one additional ExtentType which will be automatically included
+* The user can select the following information
+** Name of the Domain
+** Storage Location where the .xmi files are to be created
+** Flag, whether a Data Extent shall also be created
+* The .xmi files have the following namings:
+** {Domain}_Data.xmi --> dm:///{prefix}data.{Postfix}
+** {Domain}_Types.xmi --> dm:///{prefix}types.{Postfix}
+** {Domain}_Management.xmi --> dm:///{prefix}management.{Postfix}
+* In case a prefix is set but does not end with a '.', it will be automatically added
+
+
+== Realization
+
+* An action will be created as being called 'DomainCreateFoundation'. This action will be stored in a subpackage of 'Domain'
+* The implementation will be performed in its own Assembly, including SourceCodeGeneration and Model. It will be automatically loaded into the internal Types and Management.
+
+
+== Tasks
+
+* [x] Create Feature Branch - feature/issue_57_domains
+* [x] Create new Assembly and Test-Assembly
+* [x] Create two .xmi files
+* [x] Load these .xmi files as plugin
+* [x] Define Action in type
+* [x] Extent createSourceCode also for the Domain Action Handler
+* [x] Implement Action Handler and let it load at Plugin Start-up
+* [x] Implement Unit Test for the action
+* [x] Get it running
+

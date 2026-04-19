@@ -1,0 +1,78 @@
+== Type Index Storaage
+
+=== Use Cases
+
+* We would like to have a fast evaluation of the defined Types
+* The MofObject management shall use that information to perform better setting and referencing of types
+
+=== Requirements
+
+* Updates within the types shall be reflected within the internal database within seconds (max 5 seconds delay before reindexing)
+* The database shall be built up during start of the server
+* Multiple workspaces are to be supported as long as they contain types
+
+=== Realization
+
+New Feature Branch: /feature/type_index_storage
+
+Approach:
+
+* We create a specific indexing service which walksthrough all items during start up and recreates the index in case of changes.
+* The database to the service is available via ScopeStorage. Synchronization also has to be performed upon that data
+* The MofObject contains a reference to the ScopeStorage and is therefore capable to find the right Type. In addition, the extent is connected to a workspace, so we can find the meta inheritence
+
+==== How to perform the updates
+
+The updates of the Index Logic are executed in a seperate thread while having an event which signals that the index
+has been built up. 
+
+After the full loading of extent has been performed, the indexer is run the first time. 
+
+After an update of the type extent, we type extent, a wait time of 5 seconds is performed. If within the 5 seconds, 
+no additional changes are executed, the index is rebuilt. While the index is rebuilt, the old index is staying as the
+relevant until the index is finally being done. If during the rebuilt time, the types are updated again, the index creation is finalized, but repeated after the closing. 
+
+This ensures that the index is always available and also avoids that the index is recreated for each update.
+
+==== The MofReference logic
+
+In case the MofObject is required to get the properties of a connected attribute (which is derived out of the propertyname), the TypeDefinitionIndexLogic can be queried to figure out the information. 
+
+This information must be retrieved in a fast, indexed way and the information is being supplied back to the MofObject. 
+
+In case no attribute can be found, we return a default defintion and provide a log entry. 
+
+==== The database
+
+The structure itself contains just the information which is needed by the current implementation of the MofObjects. This is: 
+
+* All Types
+* including their attributes 
+** Required properties: Composition, # of instances, default value
+* including their generalisation logic
+
+==== The Workspace meta-dependency tree
+
+To support the easy finding of the Workspaces containing the types, we will include a workspace meta-dependency tree. This means that the types for an object is just being looked up in the dependent meta-dependency tree.
+
+
+
+=== Workpackage Breakdown
+
+* [x] Creation of TypeIndexStorage Assembly
+
+Here, we want to create one DatenMeister.TypeIndexStorage assembly which is referenced by the DatenMeister.Core. 
+Since we need to have access to some Extent information, we need to move some interface to DatenMeister.Core.Interfaces.
+
+* [x] Move Interfaces to DatenMeister.Core.Interfaces
+
+* [x] Start the indexing
+
+* [x] Definition of the class storage
+* [x] Creation of the WorkspaceLogic inheritence tree
+* [x] Find enumeration of workspaces containing the type out of the MofObject
+* [x] Create the Index Class
+* [x] Establish the notification logic to retrieve changes within the types (only then, a new update shall be established)
+* [x] Walk-through the classes and create the class structures
+* [x] Walk-through the attributes and create the attribute structure
+* [x] Walk-through the generalizations

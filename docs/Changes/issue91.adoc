@@ -1,0 +1,61 @@
+= Issue 91
+
+As described in the corresponding diagram, we need to satisfy the requirements. 
+
+== Sorting the items
+
+To satisfy the requirement to sort the items, the user needs a certain position where to click upon. 
+The idea is to add two arrows at the top of each column on which the user can click. The decision for two errors comes for simplicity.
+
+The sorting itself is to be done on server-side to allow future paging algorithms to restrict the amount of data being sent to the client. 
+
+The arrows are added by the table method itself upon configuration by the Table Creator (TableForm). When the user clicks on one of these arrows, the event is called, so the Table Creator can perform a new server request and update the table. 
+
+We will introduce a new structure which defines the specific query parameters on server for filtering.
+
+ interface IQueryFilterParameter
+ {
+    orderBy: string; // Property to which the ordering shall be done
+    orderByDescending: boolean; // Flag, whether ordering shall be done by descending
+    filterByProperties: Array<string>; // Property filters. Key is Propertyname, Value is textfilter
+    filterByFreetext: string; // Additional freetext
+ }
+
+A callback can be sent to RowForm which alles the query by RowForm using these parameters.
+
+ function async callbackGetElements(filter: IQueryFilterParameter) : Task<Array<MofObject>>;
+
+This function has to return the parameter according these filters.
+
+=== Sorting the items for ItemsOverview
+The server endpoint "api/items/get_root_elements" can be used for ItemsOverview. 
+
+=== Sorting the items for Items Detail (Property with multiple subitems)
+
+The server endpoint for ObjectForm.createFormByObject requires a modified handling of the subtables, but this modified handling of the subtables is required to reduce loading times for objects with many subitems. 
+
+This means that during creation of the sub table, an explicit server query will be execited to get the children. This allows the reloading of the table upon a click in sorting or filtering. 
+
+This means that the RowForm needs to get a callback by which it can retrieve the data from the hosting method.
+
+== Column-Based Filtering
+
+Each colum-heading cell has a small icon on which the user can extend the menus. Currently, a drop down is opened, but we want to have a full pop-up window containing the potential options. 
+
+This means, we have to implement a Pop-Up handling.
+
+This Pop-Up contains the button for the already existing 'Clear Property' implementation but will also include a Drop-Down with potential values for filtering. 
+
+== Text-based Filtering
+
+To allow the text-based filtering, we need to have one Textbox in which the user can type-in the need to filter.
+
+This filter has an event-capture via JavaScript. 
+
+To avoid cluttering, every table has its own text-filter which is resided at the right top of the table.
+
+*The question is about who triggers whom?*
+
+The RowForm creates the javascript and in case the user types in a certain text, a fast filtering is done within the RowForm. This is done by hiding the non-required rows of the table via CSS. 
+
+In case, the RowForm has implemented paging, a time-out mechanism is implemented, that after two seconds of non-activity within the field, the RowForm is reloading via the hook as described in the sorting. 

@@ -1,0 +1,12 @@
+= Design for UrlReferenceField
+
+The user can select a workspace, an extent or an item according by using the default reference dialog. 
+
+When the user selects the workspace, the link to the Management is being created
+
+When the user selects an extent, the link to the Extent is being created
+
+When the user selects an object, the link to the Element is being created
+
+If user selects an object, he can also add a property name which contains the elements to be listed. Here, the additional url parameter 'prop' will be added.
+

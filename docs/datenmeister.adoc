@@ -1,0 +1,53 @@
+= The DatenMeister
+
+* http://www.datenmeister.net [Website of DatenMeister]
+* http://github.com/mbrenn/datenmeister-new [Source of DatenMeister]
+
+== Contents
+
+This document gives you a short, unordered overview of various aspects of the DatenMeister.
+
+Each feature is covered in a chapter of the document and is divided into three sub-areas:
+
+. A description for the end user
+. A description for the modeler of the data model
+. A description of the internal behavior of the DatenMeister for developers
+. A description of the software architecture and the source code
+
+Each feature is reviewed in relation to these four aspects. Finally, the software architecture is discussed as a whole.
+
+* link:datenmeister.extent.html[Extent] - Describes the concept of extents as self-contained containers for object collections.
+* link:datenmeister.actions.html[Actions] - Explains the action system for defining and executing sequences of activities.
+* link:datenmeister.plugins.html[Plugins] - Details the plugin infrastructure used to extend DatenMeister's functionality.
+* link:datenmeister.excelimport.html[Excel Import] - Instructions and configurations for importing hierarchical data from Excel documents.
+* link:datenmeister.publicsettings.html[Public Settings] - Overview of global application and web server settings.
+* link:datenmeister.extentloader.html[Extent Loader] - Technical details on various configurations for loading extents from different sources.
+* link:datenmeister.dataviews.html[Data Views] - Describes how modelers and users gain access to filtered collections of objects.
+* link:datenmeister.evaluation.html[Evaluation] - Explains the dynamic text evaluation using the Scriban framework.
+* link:datenmeister.forms.html[Forms] - Overview of the form system used to represent objects and collections in the GUI.
+* link:datenmeister.forms.fields.html[Forms Fields] - Detailed description of the available field types for data entry in forms.
+* link:datenmeister.field.checkboxfield.explanation.html[Checkbox Field] - Specific explanation for the checkbox field implementation.
+* link:datenmeister.field.datetimefield.explanation.html[DateTime Field] - Specific explanation for the date and time input field.
+* link:datenmeister.forms.fields.urlreferencefield.design.html[URL Reference Field Design] - Design considerations for referencing objects via URLs.
+* link:datenmeister.forms.generator.html[Form Generator] - Describes the different types of form generators and their logic.
+* link:datenmeister.formfinder.html[Form Finder] - Details how the system finds the appropriate form for a given object or collection.
+* link:datenmeister.reports.html[Reports] - Covers the generation of simple reports and more complex HTML/ADoc reports.
+* link:datenmeister.swapi.html[SW API] - Technical documentation for the software API and internal runtime modules.
+* link:datenmeister.translation.html[Translation] - Mapping of technical terms between German and English.
+* link:datenmeister.dynamic_runtime_extent.html[Dynamic Runtime Extent] - Guide for implementing programmable providers for dynamic data.
+* link:datenmeister.viewmode.html[View Mode] - Explains how different perspectives affect form identification and creation.
+* link:datenmeister.web.html[Web] - Overview of the web interface and its main navigation points.
+* link:datenmeister.web.load.html[Web Loading] - Specific configurations related to web server startup and layout.
+* link:datenmeister.web-api.html[Web API] - Comprehensive documentation of the web server's REST API.
+* link:datenmeister.stundenmeister.html[Stundenmeister] - Documentation for the hour planning module (StundenplanMeister).
+* link:datenmeister.massimport.html[Mass Import] - Describes the mass importer for CSV-based data updates.
+
+== Issues and Change Requests
+
+* link:Changes/issue43.html[Issue 43 - Iterations] - Planning items for milestones and iterations.
+* link:Changes/issue57.html[Issue 57 - Triple] - Creating data, type, and form extents in a single dialogue.
+* link:Changes/change_create_dataview_fromview.html[Create Dataview from View] - Functionality to save current view settings as a persistent DataView.
+* link:Changes/issue91.html[Issue 91] - Implementation of sorting and filtering in the web interface.
+* link:Changes/create_source_for_factory_support.html[Create Source for Factory Support] - Enhancing source code generation for typed wrapper elements.
+* link:Changes/issue117.html[Issue 117 - Add Action to Index Page] - Adding a "Create Action" button to the dashboard.
+* link:Changes/issue119.html[Issue 119] - Requirements and implementation plan for the DateTime field.

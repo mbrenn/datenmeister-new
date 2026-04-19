@@ -1,0 +1,42 @@
+== The Massimporter
+
+The massimporter allows the import of a textfile into an extent. The textfile shall be of a CSV format, but has semikolon as separator between the fields. 
+The first line of the importtext is an enumeration of fieldnames which are used to import the data itself. 
+
+If the import contains a field with the name 'id', this field is used first to find whether an existing field element shall be overwritten. The search will only include the current package which is selected for the massimport. 
+
+Fields having an empty data content will not be overridden. 
+
+If a new item is to be created, the item does not have any type 
+
+Here, we have an example: 
+
+ id,name,prename,age
+ 1,Brenn,Martin,42
+ 2,Ulrich,Megator,50
+ 3,,Ramontisch,12
+ 4,,,30
+ 5,Swift
+
+Let's assume, we are having the following dataset within the extent: 
+
+|===
+|id|name|prename|age|location
+
+|2|Herbert|Der Große|12|_null_
+|5|_null_|Taylor|28|USA
+|3|Rambo|Ramon|23|Hessen
+|===
+
+After performing the import, the following data will be available. New or changed data is marked as bold:
+
+
+|===
+|id|name|prename|age|location
+
+|2|*Ulrich*|*Megator*|*50*|_null_
+|5|*Swift*|Taylor|28|USA
+|3|Rambo|*Ramontisch*|*12*|Hessen
+|*1*|*Brenn*|*Martin*|*42*|*_null_*
+|*4*|*_null_*|*_null_*|*30*|*_null_*
+|===

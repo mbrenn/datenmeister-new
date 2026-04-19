@@ -1,0 +1,20 @@
+﻿= Issue 70
+
+== Description
+For the detail form, the actions should be able to have a keyboard shortcut, so the user can activate an action via a shortcut. A typical shortcut used Ctrl-Alt.
+
+== What do we need? 
+
+* [ ] The Action Butten property can register a key binding
+** The attributes are to be called:
+*** bindingKey
+*** bindingKeyModifierCtrl
+*** bindingKeyModifierShift
+*** bindingKeyModifierAlt
+* [ ] We need to have a library which allows to bind a key to a button. 
+** In case the Key Binding is pressed, the button shall be submitted.
+** The key binding can be set-up including Ctrl, Alt and Shift taggging.
+** Upon hover of the button, the keybinding shall be shown
+** The register shall be possible upon a JQuery object, representing the button itself
+** When an action button is created by the field factory, the binding shall be automatically added.
+

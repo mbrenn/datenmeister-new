@@ -1,0 +1,29 @@
+= Create Typed Wrapper Elements out of Factory
+
+== Current Situation
+
+At the moment, we are not able to create directly typed instances out the generated Source as in DatenMeister.Wrapper.
+
+== Solution
+
+During Source Code Generation, we add one static method into each class according the following principle:
+
+ public class XXX_Wrapper
+ {
+    public static XXX_Wrapper Create(IFactory factory)
+    {
+        return new XXX_Wrapper(factory.create(_metaclass reference_));
+    }
+ }
+
+The metaclass reference is available within the Shadow objects.
+
+=== Steps
+
+* [x] Create Feature Branch 'feature/source_generator_for_factories'
+* [x] Update Source Generator
+* [x] Check on example
+* [x] Create Unittest
+* [x] Merge 
+
+Let's start

@@ -189,3 +189,6 @@ package-lock.json
 
 .nyc_output/
 Cake.Npm.5.0.0
+/.idea/.gitignore
+/.idea/indexLayout.xml
+/src/Web/DatenMeister.WebServer/test-results.xml

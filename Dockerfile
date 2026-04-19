@@ -16,14 +16,14 @@ WORKDIR /src/src/DatenMeister.Reports.Forms
 RUN npm install
 RUN tsc
 RUN dotnet new tool-manifest --force
-RUN dotnet tool install Cake.Tool --version 5.0.0
+RUN dotnet tool install Cake.Tool --version 6.1.0
 WORKDIR /src
 
 WORKDIR /src/src/Web/DatenMeister.WebServer
 RUN npm install
 RUN tsc
 RUN dotnet new tool-manifest --force
-RUN dotnet tool install Cake.Tool --version 5.0.0
+RUN dotnet tool install Cake.Tool --version 6.1.0
 WORKDIR /src
 
 RUN dotnet publish src/Web/DatenMeister.WebServer/DatenMeister.WebServer.csproj \

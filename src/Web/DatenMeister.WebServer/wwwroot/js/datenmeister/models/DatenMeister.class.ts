@@ -1008,6 +1008,10 @@ export namespace _Forms
             static actionName = "actionName";
             static parameter = "parameter";
             static buttonText = "buttonText";
+            static bindingKey = "bindingKey";
+            static bindingKeyModifierCtrl = "bindingKeyModifierCtrl";
+            static bindingKeyModifierShift = "bindingKeyModifierShift";
+            static bindingKeyModifierAlt = "bindingKeyModifierAlt";
             static isAttached = "isAttached";
             static _name_ = "name";
             static title = "title";

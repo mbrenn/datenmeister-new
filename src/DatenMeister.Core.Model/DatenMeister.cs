@@ -2255,6 +2255,18 @@ public class _Forms
         public static readonly string @buttonText = "buttonText";
         public IElement? @_buttonText = null;
 
+        public static readonly string @bindingKey = "bindingKey";
+        public IElement? @_bindingKey = null;
+
+        public static readonly string @bindingKeyModifierCtrl = "bindingKeyModifierCtrl";
+        public IElement? @_bindingKeyModifierCtrl = null;
+
+        public static readonly string @bindingKeyModifierShift = "bindingKeyModifierShift";
+        public IElement? @_bindingKeyModifierShift = null;
+
+        public static readonly string @bindingKeyModifierAlt = "bindingKeyModifierAlt";
+        public IElement? @_bindingKeyModifierAlt = null;
+
         public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 

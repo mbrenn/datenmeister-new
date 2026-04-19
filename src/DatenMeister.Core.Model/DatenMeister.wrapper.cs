@@ -5967,6 +5967,38 @@ public class Forms
                 _wrappedElement.set("buttonText", value);
         }
 
+        public string? @bindingKey
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("bindingKey");
+            set => 
+                _wrappedElement.set("bindingKey", value);
+        }
+
+        public bool @bindingKeyModifierCtrl
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("bindingKeyModifierCtrl");
+            set => 
+                _wrappedElement.set("bindingKeyModifierCtrl", value);
+        }
+
+        public bool @bindingKeyModifierShift
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("bindingKeyModifierShift");
+            set => 
+                _wrappedElement.set("bindingKeyModifierShift", value);
+        }
+
+        public bool @bindingKeyModifierAlt
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("bindingKeyModifierAlt");
+            set => 
+                _wrappedElement.set("bindingKeyModifierAlt", value);
+        }
+
         public bool @isAttached
         {
             get =>

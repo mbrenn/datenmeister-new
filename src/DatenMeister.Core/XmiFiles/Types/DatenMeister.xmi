@@ -577,6 +577,10 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5dac053a-d3d8-1115-9c70-af81f4b7d896" name="actionName" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5dac053a-d3d8-1115-9c70-af81f4b7d832" name="parameter" isComposite="true" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="714f0b57-9631-454d-bd96-929f2fe56629" name="buttonText" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4dc41919-4f2d-47b5-b309-4d8eb7ec060c" name="bindingKey" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e22596a9-afbb-4151-ba2c-d60b7d1899be" name="bindingKeyModifierCtrl" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="11573939-1549-4fef-b988-f62c8aa344ee" name="bindingKeyModifierShift" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5175190d-7be8-46a2-bf30-c946c0159b55" name="bindingKeyModifierAlt" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.DateTimeFieldData" name="DateTimeFieldData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="a1ffbbdf-9302-40d2-99f7-d94bdbe8f978" general-ref="#DatenMeister.Models.Forms.FieldData" />

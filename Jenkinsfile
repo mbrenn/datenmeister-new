@@ -120,17 +120,5 @@ pipeline {
                 )
             }
         }
-
-        stage ('Docker Build')
-        {
-            when
-            {
-                branch 'develop'
-            }
-            steps
-            {
-                sh 'docker compose build'
-            }
-        }
     }
 }

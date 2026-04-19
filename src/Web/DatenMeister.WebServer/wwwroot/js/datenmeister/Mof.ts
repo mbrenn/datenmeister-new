@@ -246,11 +246,13 @@ export class DmObject {
      */
     get<T extends ObjectType>(key: string, objectType?: T): DmObjectReturnType<T> | undefined {
         const objectValue = this.values[DmObject.internalizeKey(key)];
-        
-        if(objectValue !== undefined && objectValue.isSet === false) 
-            return objectValue.defaultValue;
-        
+
         let result = objectValue?.value;
+        if (objectValue !== undefined && objectValue.isSet === false) {
+            result = objectValue.defaultValue;
+            if(result === undefined || result === null)
+                return undefined;
+        }
 
         switch (objectType) {
             case ObjectType.Default:
@@ -290,7 +292,7 @@ export class DmObject {
                 return [result] as DmObjectReturnType<T>;
 
             case ObjectType.String:
-                const resultString = this.get(key, ObjectType.Single);
+                const resultString = Array.isArray(result) ? result[0] : result;
                 if (resultString === undefined) {
                     return undefined;
                 }

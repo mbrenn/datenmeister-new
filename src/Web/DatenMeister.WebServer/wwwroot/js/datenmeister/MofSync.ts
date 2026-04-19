@@ -33,13 +33,18 @@ export async function sync(element : Mof.DmObjectWithSync) : Promise<void> {
     for (const key in element.propertiesSet) {
         const value = element.get(key, Mof.ObjectType.Default);
 
-        if (value === undefined || value === null) {
+        if (value === undefined || value === null || Array.isArray(value) && value.length === 0) {
             // Element is not set, so unset it
             await ClientItem.unsetProperty(element.workspace, element.uri, key);            
             console.log('MofSync: Unsetting: ' + element.uri + " - " + key);
-        } else if ((typeof value === "object" || value === "function") && (value !== null)) {
+        } else if ((typeof value === "object" || value === "function") && (value !== null)) {            
             // Element is a reference, so we need to set the reference directly
             const referenceValue = value as Mof.DmObject;
+            
+            // Check for obscure errors
+            if(referenceValue.workspace === undefined || referenceValue.uri === undefined)
+                throw new Error("referenceValue.workspace or referenceValue.uri is undefined");
+            
             await ClientItem.setPropertyReference(element.workspace, element.uri,
                 {
                     property: key,

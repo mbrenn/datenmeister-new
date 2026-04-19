@@ -24,7 +24,7 @@ export async function sync(element) {
     const paras = new Array();
     for (const key in element.propertiesSet) {
         const value = element.get(key, Mof.ObjectType.Default);
-        if (value === undefined || value === null) {
+        if (value === undefined || value === null || Array.isArray(value) && value.length === 0) {
             // Element is not set, so unset it
             await ClientItem.unsetProperty(element.workspace, element.uri, key);
             console.log('MofSync: Unsetting: ' + element.uri + " - " + key);
@@ -32,6 +32,9 @@ export async function sync(element) {
         else if ((typeof value === "object" || value === "function") && (value !== null)) {
             // Element is a reference, so we need to set the reference directly
             const referenceValue = value;
+            // Check for obscure errors
+            if (referenceValue.workspace === undefined || referenceValue.uri === undefined)
+                throw new Error("referenceValue.workspace or referenceValue.uri is undefined");
             await ClientItem.setPropertyReference(element.workspace, element.uri, {
                 property: key,
                 workspaceId: referenceValue.workspace,

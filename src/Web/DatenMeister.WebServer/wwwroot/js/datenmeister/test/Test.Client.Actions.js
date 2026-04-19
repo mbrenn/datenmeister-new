@@ -72,7 +72,7 @@ export function includeTests() {
                 // Now create the copy action to copy the child 1 to parent2
                 const action = new Mof.DmObject();
                 action.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri, 'Types');
-                action.set(_DatenMeister._Actions._MoveOrCopyAction.source, Mof.DmObject.createFromReference("Test", child1.itemUrl));
+                action.set(_DatenMeister._Actions._MoveOrCopyAction.source, Mof.DmObject.createFromReference("Test", child1.itemUri));
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.target, Mof.DmObject.createFromReference("Test", parent2.itemUrl));
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Copy);
                 const copyResult = await ClientActions.executeActionDirectly("Execute", { parameter: action });
@@ -105,7 +105,7 @@ export function includeTests() {
                 // Now create the copy action to copy the child 1 to parent2
                 const action = new Mof.DmObject();
                 action.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri, 'Types');
-                action.set(_DatenMeister._Actions._MoveOrCopyAction.source, Mof.DmObject.createFromReference("Test", child1.itemUrl));
+                action.set(_DatenMeister._Actions._MoveOrCopyAction.source, Mof.DmObject.createFromReference("Test", child1.itemUri));
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.target, Mof.DmObject.createFromReference("Test", parent2.itemUrl));
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Move);
                 const copyResult = await ClientActions.executeActionDirectly("Execute", { parameter: action });

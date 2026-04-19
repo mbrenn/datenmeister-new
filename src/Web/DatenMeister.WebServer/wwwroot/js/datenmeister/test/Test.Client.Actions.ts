@@ -121,7 +121,7 @@ export function includeTests() {
                 const action = new Mof.DmObject();
                 action.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri, 'Types');
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.source,
-                    Mof.DmObject.createFromReference("Test", child1.itemUrl));
+                    Mof.DmObject.createFromReference("Test", child1.itemUri));
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.target,
                     Mof.DmObject.createFromReference("Test", parent2.itemUrl));
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Copy);
@@ -195,7 +195,7 @@ export function includeTests() {
                 const action = new Mof.DmObject();
                 action.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri, 'Types');
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.source,
-                    Mof.DmObject.createFromReference("Test", child1.itemUrl));
+                    Mof.DmObject.createFromReference("Test", child1.itemUri));
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.target,
                     Mof.DmObject.createFromReference("Test", parent2.itemUrl)); 
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Move);

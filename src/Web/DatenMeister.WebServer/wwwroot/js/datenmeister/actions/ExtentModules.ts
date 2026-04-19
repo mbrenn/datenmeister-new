@@ -82,7 +82,7 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
     
     constructor() {
         super("Extent.CreateNewItem");
-        this.actionVerb = "Create New Item";        
+        this.actionVerb = "Create";        
     }
 
     loadParameterFromUrl()
@@ -132,7 +132,7 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
 
         // Adds the additional button 
         const actionButton = new Mof.DmObject(_DatenMeister._Forms.__ActionFieldData_Uri);
-        actionButton.set(_ActionFieldData.title, "Create Item and another one");
+        actionButton.set(_ActionFieldData.title, "Create and go back");
         actionButton.set(_ActionFieldData.parameter, parameter);
         actionButton.set(_ActionFieldData.actionName, this.actionName);
         fields.push(actionButton);
@@ -190,7 +190,7 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
      */
     async extentCreateItemInProperty(element: Mof.DmObject, submitMethod?: SubmitMethod)
     {
-        await ClientItems.createItemAsChild(this.workspace, this.itemUri,
+        const result = await ClientItems.createItemAsChild(this.workspace, this.itemUri,
             {
                 metaClass: (this.metaClass === undefined || this.metaClass === null) ? "" : this.metaClass,
                 property: this.property,
@@ -200,13 +200,12 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
         );
 
         if (submitMethod === SubmitMethod.UserDefined1) {
-            // Recreate a new item, because user clicked on the userdefined item
-            Navigator.navigateToCreateItemInProperty(
-                this.workspace, this.itemUri, this.metaClass, this.metaclassWorkspace, this.property);
+            // Recreate a new item, because user clicked on the userdefined item            
+            Navigator.navigateToItemByUrl(this.workspace, this.itemUri);
         }
         else {
             // If user has clicked on the save button (without closing), the form shall just be updated            
-            Navigator.navigateToItemByUrl(this.workspace, this.itemUri);
+            Navigator.navigateToItemByUrl(result.workspace, result.itemUri);
         }
     }
 }

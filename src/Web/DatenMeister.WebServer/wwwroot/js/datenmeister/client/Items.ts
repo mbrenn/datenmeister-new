@@ -67,7 +67,7 @@ export interface ICreateItemAsChildResult
 {
     success: boolean;
     itemId: string;
-    itemUrl: string;
+    itemUri: string;
     workspace: string;
 }
 

@@ -173,7 +173,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             Success = true,
             ItemId = (child as IHasId)?.Id ?? string.Empty,
             Workspace = workspaceId,
-            ItemUrl = child.GetUri() ?? string.Empty
+            ItemUri = child.GetUri() ?? string.Empty
         };
     }
 
@@ -209,7 +209,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         /// <summary>
         /// Gets or sets the item url
         /// </summary>
-        public string ItemUrl { get; set; } = string.Empty;
+        public string ItemUri { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the workspace

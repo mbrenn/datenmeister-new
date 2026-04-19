@@ -1,5 +1,6 @@
 ﻿import * as Mof from "../Mof.js";
 import { SubmitMethod } from "./Forms.js";
+import {FormType} from "./Interfaces.js";
 
 export interface IFormConfiguration {
     allowAddingNewProperties?: boolean;
@@ -8,6 +9,7 @@ export interface IFormConfiguration {
     submitName?: string;
     showCancelButton?: boolean;
     formElement?: Mof.DmObject;
+    formType: FormType;
 
     // Form Uri to be set, if the caller wants to have an explicit form
     formUri?: string;

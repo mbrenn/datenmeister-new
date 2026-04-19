@@ -19,6 +19,8 @@ import * as IForm from "./Interfaces.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
+import {config} from "chai";
+import {FormType} from "./Interfaces.js";
 
 export class ObjectFormHtmlElements
 {
@@ -266,6 +268,8 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
                 }
             };
         }
+        
+        configuration.formType = FormType.Object;
 
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = async () => {
@@ -361,6 +365,7 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
             objectFormCreator.element = element1;
             objectFormCreator.extentUri = element1.extentUri;
             objectFormCreator.formElement = form;
+            
 
             if (this.formMode === FormMode.ViewMode) {
                 const domEditButton = $('<a class="btn btn-primary" ">Edit Item</a>');
@@ -372,54 +377,6 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
             this.statusTextControl.setListStatus("Create Form", false);
             await objectFormCreator.createFormByObject(configuration);
             this.statusTextControl.setListStatus("Create Form", true);
-
-            // Creates the form selection
-            /*if (this.htmlElements.formSelectorContainer !== undefined
-                && this.htmlElements.formSelectorContainer !== null) {
-                this.statusTextControl.setListStatus("Create Form Selection", false);
-                
-                this.htmlElements.formSelectorContainer.empty();
-
-                const formControl = new FormSelectionControl();
-                formControl.formSelected.addListener(
-                    async selectedItem => {
-                        this._overrideFormUrl = selectedItem.selectedForm.uri;
-                        await this.rebuildForm();
-                    });
-                formControl.formResetted.addListener(
-                    async () => {
-                        this._overrideFormUrl = undefined;
-                        await this.rebuildForm();
-                    });
-                
-                let formUrl: ItemLink;
-                if (this._overrideFormUrl !== undefined) {
-                    formUrl = {
-                        workspace: "Management",
-                        uri: this._overrideFormUrl
-                    };
-                } else {
-                    const originalUri = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
-                    const originalWorkspace = form.get(_DatenMeister._Forms._Form.originalWorkspace, Mof.ObjectType.String)
-                    if (form.uri !== undefined && originalUri === undefined) {
-                        formUrl = {
-                            workspace: form.workspace,
-                            uri: form.uri
-                        };
-                    } else if (originalUri !== undefined) {
-                        formUrl = {
-                            workspace: originalWorkspace ?? WorkspaceData,
-                            uri: originalUri
-                        };
-                    }
-                }
-
-                formControl.setCurrentFormUrl(formUrl);
-
-                await formControl.createControl(this.htmlElements.formSelectorContainer);
-
-                this.statusTextControl.setListStatus("Create Form Selection", true);
-            }*/
         });
     }
 }

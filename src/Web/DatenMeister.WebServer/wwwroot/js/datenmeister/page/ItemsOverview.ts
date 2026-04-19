@@ -1,5 +1,6 @@
 ﻿import * as CollectionForm from "../forms/CollectionForm.js"
 import {loadDefaultModules} from "../actions/DefaultLoader.js";
+import {FormType} from "../forms/Interfaces.js";
 
 export async function init(workspace: string, extentUri: string) : Promise<void> {
     loadDefaultModules();
@@ -20,7 +21,7 @@ export async function init(workspace: string, extentUri: string) : Promise<void>
     await listForm.createCollectionForRootElements(        
         workspace,
         extentUri,
-        {isReadOnly: true});
+        {isReadOnly: true, formType: FormType.Collection});
     
     // Sets the window title for the page
     if (listForm.extentUri !== undefined)

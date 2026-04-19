@@ -17,7 +17,8 @@ import * as UnknownField from "../fields/UnknownField.js";
 import {IFormField} from "../fields/Interfaces.js";
 import * as Mof from "../Mof.js";
 import {IFormConfiguration} from "./IFormConfiguration.js";
-import {IFormNavigation} from "./Interfaces.js";
+import {IFormNavigation, FormType} from "./Interfaces.js";
+
 
 interface ICreateFieldParameter {
     configuration: IFormConfiguration,

@@ -13,6 +13,33 @@ export class ItemFormActionModuleBase {
         this.actionName = actionName;
         this.actionMetaClassUri = actionMetaClassUri;
     }
+    /**
+     * Name of the action as a coded information
+     */
+    actionName;
+    /**
+     * Defines the uri of the metaclass of the action which provides a unique and
+     */
+    actionMetaClassUri;
+    /**
+     * Defines the headline of the action form. Can be undefined, so actionVerb is used.
+     */
+    actionHeading;
+    /**
+     * Represents an action verb that is used for the button or heading, if actionHeading is not set
+     */
+    actionVerb;
+    requiresConfirmation;
+    /**
+     * Defines the default metaclass that will be used to create an empty item in the temporary extent.
+     */
+    defaultMetaClassUri;
+    /**
+     * Gets or sets a flag indicating, whether the action shall trigger a saving of the shown item
+     * This can be set to true, in case the action is just a navigation or does not require the storage
+     * of an item.
+     */
+    skipSaving;
     execute(form, element, parameter, submitMethod) {
         return Promise.resolve(undefined);
     }
@@ -75,7 +102,7 @@ export async function execute(actionName, form, element, parameter, submitMethod
     alert("Unknown action type: " + actionName);
 }
 export async function executeClientAction(clientAction, form, parameter, submitMethod) {
-    submitMethod ?? (submitMethod = SubmitMethod.Save);
+    submitMethod ??= SubmitMethod.Save;
     const moduleName = clientAction.get(_DatenMeister._Actions._ClientActions._ClientAction.actionName);
     let module = getModule(moduleName);
     if (module === undefined) {

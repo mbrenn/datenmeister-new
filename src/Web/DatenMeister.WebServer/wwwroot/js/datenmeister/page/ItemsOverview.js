@@ -1,5 +1,6 @@
 import * as CollectionForm from "../forms/CollectionForm.js";
 import { loadDefaultModules } from "../actions/DefaultLoader.js";
+import { FormType } from "../forms/Interfaces.js";
 export async function init(workspace, extentUri) {
     loadDefaultModules();
     let listForm = new CollectionForm.CollectionFormCreator({
@@ -11,7 +12,7 @@ export async function init(workspace, extentUri) {
         formSelectorContainer: $("#form_selection_container")
     });
     $("#items_collection_uri").text(extentUri);
-    await listForm.createCollectionForRootElements(workspace, extentUri, { isReadOnly: true });
+    await listForm.createCollectionForRootElements(workspace, extentUri, { isReadOnly: true, formType: FormType.Collection });
     // Sets the window title for the page
     if (listForm.extentUri !== undefined) {
         window.document.title = "Items Overview - '" + listForm.extentUri + "' - Der DatenMeister";

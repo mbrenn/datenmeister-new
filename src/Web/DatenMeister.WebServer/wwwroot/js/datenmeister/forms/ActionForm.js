@@ -9,6 +9,7 @@ import * as ClientItems from '../client/Items.js';
 import * as MofSync from "../MofSync.js";
 import { StatusFieldControl } from "../controls/StatusFieldControl.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
+import { FormType } from "./Interfaces.js";
 export async function createActionFormForEmptyObject(parent, metaClass, configuration, actionName) {
     const statusOverview = new StatusFieldControl();
     const module = FormActions.getModule(actionName);
@@ -114,6 +115,7 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
     creator.itemUrl = element.uri;
     creator.extentUri = creator.element.extentUri;
     configuration.viewMode = "ViewMode.DataManipulation";
+    configuration.formType = FormType.Object;
     configuration.submitName = module.actionVerb;
     // Finally, we have everything together, create the form
     statusOverview.setListStatus("Create Form By Object", false);

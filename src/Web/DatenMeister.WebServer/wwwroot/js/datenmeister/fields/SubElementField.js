@@ -4,6 +4,7 @@ import * as FieldFactory from "../forms/FieldFactory.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as ClientItems from "../client/Items.js";
 import * as ClientTypes from "../client/Types.js";
+import { FormType } from "../forms/Interfaces.js";
 import { injectNameByUri } from "../DomHelper.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as TypeSelectionControl from "../controls/TypeSelectionControl.js";
@@ -37,13 +38,27 @@ export class Control {
      */
     additionalTypes;
     _list;
+    /**
+     * Initializes the container that holds the rendered subelement list and controls.
+     */
     constructor() {
         this._list = $("<div></div>");
     }
+    /**
+     * Creates the DOM for the subelement list based on the given field value.
+     *
+     * Relevant steps:
+     * - For read-only mode, render a simple list with optional click actions.
+     * - For edit mode, render a table with fields and row actions (delete / move).
+     * - Attach creation/attach and refresh actions and return the root element.
+     *
+     * @param fieldValue The current property value, expected to be an array of referenced subelements.
+     */
     async createDomByFieldValue(fieldValue) {
         const tthis = this;
         this._list.empty();
         if (this.isReadOnly) {
+            // In read-only mode we only display links/names and optional action callbacks.
             if (!Array.isArray(fieldValue)) {
                 return $("<div><em>Element is not an Array</em></div>");
             }
@@ -72,6 +87,7 @@ export class Control {
             this._list.append(ul);
         }
         else {
+            // In edit mode we provide a table with field preview columns and modification actions.
             if (!Array.isArray(fieldValue)) {
                 fieldValue = [];
             }
@@ -111,7 +127,7 @@ export class Control {
                             field: fieldData,
                             isReadOnly: true,
                             itemUrl: innerValue.uri,
-                            configuration: {},
+                            configuration: { formType: this.configuration.formType },
                             form: tthis.form
                         });
                         const dom = await field.createDom(innerValue);
@@ -154,92 +170,12 @@ export class Control {
                     table.append(tr);
                 }
             }
-            const attachItem = $("<div>" +
-                "<div>" +
-                "<btn class='btn btn-secondary dm-subelements-attachitem-btn'>Attach Item</btn>" +
-                "<btn class='btn btn-secondary dm-subelements-createitem-btn'>Create Item</btn>" +
-                "<span class='dm-subelements-createadditional'></span>" +
-                "</div>" +
-                "<div class='dm-subelements-attachitem-box'></div>" +
-                "<div class='dm-subelements-createitem-box'></div>" +
-                "</div>");
-            // Adds the button which allows the user to attach an existing item
-            $(".dm-subelements-attachitem-btn", attachItem).on("click", () => {
-                const containerDiv = $(".dm-subelements-attachitem-box", attachItem);
-                containerDiv.empty();
-                const selectItem = new SIC.SelectItemControl();
-                const settings = new SIC.Settings();
-                settings.showWorkspaceInBreadcrumb = true;
-                settings.showExtentInBreadcrumb = true;
-                selectItem.itemSelected.addListener(selectedItem => {
-                    ClientItems.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
-                        property: tthis.propertyName,
-                        referenceUri: selectedItem.uri,
-                        workspaceId: selectItem.getUserSelectedWorkspaceId()
-                    }).then(() => {
-                        this.reloadValuesFromServer();
-                    });
-                });
-                selectItem.init(containerDiv, settings);
-                return false;
-            });
-            // Adds the button which allows the user to create a new item
-            $(".dm-subelements-createitem-btn", attachItem).on("click", async () => {
-                const container = $(".dm-subelements-createitem-box", attachItem);
-                container.empty();
-                // Create the Type Selection Control element in which the user can select the right 
-                const control = new TypeSelectionControl.TypeSelectionControl(container);
-                // Get the property type
-                if (this.propertyType !== undefined) {
-                    control.setCurrentTypeUrl(this.propertyType);
-                }
-                control.typeSelected.addListener(async (x) => {
-                    if (x === undefined ||
-                        x.selectedType === undefined ||
-                        x.selectedType.uri === undefined) {
-                        alert("Nothing is selected.");
-                        return;
-                    }
-                    document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, x.selectedType.uri, x.selectedType.workspace, tthis.propertyName);
-                });
-                await control.createControl();
-            });
-            // Adds additional types which are allocated to that subelement field
-            const containerAdditional = $(".dm-subelements-createadditional", attachItem);
-            if (this.additionalTypes !== undefined) {
-                for (const m in this.additionalTypes) {
-                    const additionalTypeTemp = this.additionalTypes[m];
-                    let additionalType = await MofResolver.resolve(additionalTypeTemp);
-                    if (additionalType === undefined)
-                        continue;
-                    let name;
-                    let metaClassUri;
-                    let metaClassWorkspace;
-                    // There are two options to reference a metaclass in DefaultTypeForNewElements
-                    if (additionalType.metaClass.uri === _DatenMeister._Forms.__DefaultTypeForNewElement_Uri) {
-                        // One is by using an instance of DefaultTypeForNewElement
-                        name = additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement._name_, Mof.ObjectType.String);
-                        const metaClass = await MofResolver.resolve(additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, Mof.ObjectType.Object));
-                        metaClassUri = metaClass.uri;
-                        metaClassWorkspace = metaClass.workspace;
-                    }
-                    else {
-                        // The other one is to directly reference
-                        name = additionalType.get(_UML._CommonStructure._NamedElement._name_, Mof.ObjectType.String);
-                        metaClassUri = additionalType.uri;
-                        metaClassWorkspace = additionalType.workspace;
-                    }
-                    const buttonAdditionalType = $("<button type='button' class='btn btn-secondary'></button>");
-                    buttonAdditionalType.text('Create ' + name);
-                    buttonAdditionalType.on('click', () => {
-                        document.location.href =
-                            Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, metaClassUri, metaClassWorkspace, tthis.propertyName);
-                    });
-                    containerAdditional.append(buttonAdditionalType);
-                }
-            }
-            this._list.append(attachItem);
         }
+        if (this.configuration.formType !== FormType.Collection) {
+            // In collection forms, we don't want to see the modification buttons.
+            await this.createAndAttachModificationButtons(tthis);
+        }
+        // Allows explicit reloading if the user changed data in another part of the UI.
         const refreshBtn = $("<div><btn class='dm-subelements-refresh-btn'><img src='/img/refresh-16.png' alt='Refresh' /></btn></div>");
         $(".dm-subelements-refresh-btn", refreshBtn).on("click", () => {
             tthis.reloadValuesFromServer();
@@ -247,12 +183,113 @@ export class Control {
         this._list.append(refreshBtn);
         return this._list;
     }
+    /**
+     * Creates and attaches controls for attaching existing items and creating new subelements.
+     *
+     * Relevant steps:
+     * - Add an attach button that opens a selector and appends references to the collection.
+     * - Add a create button that navigates to item creation based on selected type.
+     * - Render optional shortcut buttons for preconfigured additional creation types.
+     *
+     * @param tthis Captured instance reference used inside asynchronous callbacks.
+     */
+    async createAndAttachModificationButtons(tthis) {
+        const attachItem = $("<div>" +
+            "<div>" +
+            "<btn class='btn btn-secondary dm-subelements-attachitem-btn'>Attach</btn>" +
+            "<btn class='btn btn-secondary dm-subelements-createitem-btn'>Create</btn>" +
+            "<span class='dm-subelements-createadditional'></span>" +
+            "</div>" +
+            "<div class='dm-subelements-attachitem-box'></div>" +
+            "<div class='dm-subelements-createitem-box'></div>" +
+            "</div>");
+        // Adds the button which allows the user to attach an existing item
+        $(".dm-subelements-attachitem-btn", attachItem).on("click", () => {
+            const containerDiv = $(".dm-subelements-attachitem-box", attachItem);
+            containerDiv.empty();
+            const selectItem = new SIC.SelectItemControl();
+            const settings = new SIC.Settings();
+            settings.showWorkspaceInBreadcrumb = true;
+            settings.showExtentInBreadcrumb = true;
+            selectItem.itemSelected.addListener(selectedItem => {
+                ClientItems.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
+                    property: tthis.propertyName,
+                    referenceUri: selectedItem.uri,
+                    workspaceId: selectItem.getUserSelectedWorkspaceId()
+                }).then(() => {
+                    this.reloadValuesFromServer();
+                });
+            });
+            selectItem.init(containerDiv, settings);
+            return false;
+        });
+        // Adds the button which allows the user to create a new item
+        $(".dm-subelements-createitem-btn", attachItem).on("click", async () => {
+            const container = $(".dm-subelements-createitem-box", attachItem);
+            container.empty();
+            // Create the Type Selection Control element in which the user can select the right 
+            const control = new TypeSelectionControl.TypeSelectionControl(container);
+            // Get the property type
+            if (this.propertyType !== undefined) {
+                control.setCurrentTypeUrl(this.propertyType);
+            }
+            control.typeSelected.addListener(async (x) => {
+                if (x === undefined ||
+                    x.selectedType === undefined ||
+                    x.selectedType.uri === undefined) {
+                    alert("Nothing is selected.");
+                    return;
+                }
+                document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, x.selectedType.uri, x.selectedType.workspace, tthis.propertyName);
+            });
+            await control.createControl();
+        });
+        // Adds additional types which are allocated to that subelement field
+        const containerAdditional = $(".dm-subelements-createadditional", attachItem);
+        if (this.additionalTypes !== undefined) {
+            for (const m in this.additionalTypes) {
+                const additionalTypeTemp = this.additionalTypes[m];
+                let additionalType = await MofResolver.resolve(additionalTypeTemp);
+                if (additionalType === undefined)
+                    continue;
+                let name;
+                let metaClassUri;
+                let metaClassWorkspace;
+                // There are two options to reference a metaclass in DefaultTypeForNewElements
+                if (additionalType.metaClass.uri === _DatenMeister._Forms.__DefaultTypeForNewElement_Uri) {
+                    // One is by using an instance of DefaultTypeForNewElement
+                    name = additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement._name_, Mof.ObjectType.String);
+                    const metaClass = await MofResolver.resolve(additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, Mof.ObjectType.Object));
+                    metaClassUri = metaClass.uri;
+                    metaClassWorkspace = metaClass.workspace;
+                }
+                else {
+                    // The other one is to directly reference
+                    name = additionalType.get(_UML._CommonStructure._NamedElement._name_, Mof.ObjectType.String);
+                    metaClassUri = additionalType.uri;
+                    metaClassWorkspace = additionalType.workspace;
+                }
+                const buttonAdditionalType = $("<button type='button' class='btn btn-secondary'></button>");
+                buttonAdditionalType.text('Create ' + name);
+                buttonAdditionalType.on('click', () => {
+                    document.location.href =
+                        Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, metaClassUri, metaClassWorkspace, tthis.propertyName);
+                });
+                containerAdditional.append(buttonAdditionalType);
+            }
+        }
+        this._list.append(attachItem);
+    }
+    /**
+     * Reloads subelement values from server-side data.
+     * Must be overridden by concrete field implementations.
+     */
     reloadValuesFromServer() {
         alert("reloadValuesFromServer is not overridden.");
     }
     /**
-     * Returns the default definition of a name.
-     * method can be overridden by the right field definitions
+     * Returns the field definitions used for rendering each row column.
+     * Can be overridden by implementations that provide custom field definitions.
      */
     getFieldDefinitions() {
         return undefined;
@@ -261,14 +298,30 @@ export class Control {
 export class Field extends Control {
     _element;
     field;
+    /**
+     * Reloads the current property from the backend and re-renders the subelement list.
+     */
     reloadValuesFromServer() {
         const tthis = this;
         const url = this._element.uri;
         ClientItems.getProperty(this.form.workspace, url, this.propertyName).then(x => tthis.createDomByFieldValue(x));
     }
+    /**
+     * Resolves row field definitions from the current form definition.
+     */
     getFieldDefinitions() {
         return this.field.get("form", Mof.ObjectType.Single)?.get("field", Mof.ObjectType.Array);
     }
+    /**
+     * Creates the subelement field DOM for the provided element.
+     *
+     * Relevant steps:
+     * - Read field configuration (property name, action, additional default types).
+     * - For new items, return a hint because subelements cannot be edited yet.
+     * - For persisted items, optionally resolve property type metadata and render values.
+     *
+     * @param dmElement The element for which this field is rendered.
+     */
     async createDom(dmElement) {
         this.propertyName = this.field.get(_DatenMeister._Forms._SubElementFieldData._name_, Mof.ObjectType.String);
         this.itemActionName = this.field.get(_DatenMeister._Forms._SubElementFieldData.actionName, Mof.ObjectType.String);
@@ -289,6 +342,13 @@ export class Field extends Control {
             return this._list;
         }
     }
+    /**
+     * Evaluates and persists DOM changes back to the model.
+     * This field currently performs all write operations immediately via UI actions,
+     * therefore no additional evaluation step is required here.
+     *
+     * @param dmElement The element whose field value would be evaluated.
+     */
     async evaluateDom(dmElement) {
     }
 }

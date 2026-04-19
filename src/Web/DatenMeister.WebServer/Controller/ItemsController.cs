@@ -147,14 +147,26 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
         var values = createItemAsParams.Properties?.v;
         if (values != null)
-            foreach (var propertyParam in values)
+        {
+            var jsonConverter = new DirectJsonDeconverter(workspaceLogic, scopeStorage);
+            foreach (var (key, valueObject) in values)
             {
-                var value = propertyParam.Value;
-                var propertyValue = new DirectJsonDeconverter(workspaceLogic, scopeStorage)
-                    .ConvertJsonValue(value);
+                var valueAsArray = (jsonConverter.ConvertJsonValue(valueObject) as IEnumerable<object?>)?.ToArray();
+                if (valueAsArray == null)
+                {
+                    throw new InvalidOperationException("Value is not an array");
+                }
 
-                if (propertyValue != null) child.set(propertyParam.Key, propertyValue);
+                var isSet = DotNetHelper.AsBoolean(valueAsArray[0]);
+                var value = valueAsArray[1];
+                if (isSet)
+                {
+                    var propertyValue = jsonConverter.ConvertJsonValue(value);
+
+                    if (propertyValue != null) child.set(key, propertyValue);
+                }
             }
+        }
 
         return new CreateItemAsChildResult
         {

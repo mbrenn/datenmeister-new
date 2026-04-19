@@ -1,4 +1,43 @@
 ﻿
+/**
+ * Registers a keyboard shortcut that triggers a click on the given button.
+ * Also appends the shortcut label to the button's title attribute for hover display.
+ */
+export function addKeyBindingEvent(
+    button: JQuery,
+    bindingKey: string,
+    bindingKeyModifierCtrl: boolean = false,
+    bindingKeyModifierShift: boolean = false,
+    bindingKeyModifierAlt: boolean = false
+): void {
+    const parts: string[] = [];
+    if (bindingKeyModifierCtrl) parts.push('Ctrl');
+    if (bindingKeyModifierShift) parts.push('Shift');
+    if (bindingKeyModifierAlt) parts.push('Alt');
+    parts.push(bindingKey);
+    const shortcutLabel = "Shortcut: " + parts.join('+');
+
+    const existingTitle = button.attr('title') ?? '';
+    button.attr('title', existingTitle ? `${existingTitle} (${shortcutLabel})` : shortcutLabel);
+
+    $(document).on('keydown', (e: JQuery.KeyDownEvent) => {
+        const tag = (e.target as HTMLElement).tagName;
+        const isEditable = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT'
+            || (e.target as HTMLElement).isContentEditable;
+        if (isEditable) return;
+
+        if (
+            e.key === bindingKey &&
+            e.ctrlKey === bindingKeyModifierCtrl &&
+            e.shiftKey === bindingKeyModifierShift &&
+            e.altKey === bindingKeyModifierAlt
+        ) {
+            e.preventDefault();
+            button.trigger('click');
+        }
+    });
+}
+
 export interface SubscriptionHandle<T> {
 
 }

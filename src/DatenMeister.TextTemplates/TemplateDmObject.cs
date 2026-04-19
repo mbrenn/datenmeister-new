@@ -51,7 +51,7 @@ public class TemplateDmObject(IObject? value) : ScriptObject
         return false;
     }
 
-    public override bool TrySetValue(TemplateContext context, SourceSpan span, string member, object value1, bool readOnly)
+    public override bool TrySetValue(TemplateContext context, SourceSpan span, string member, object? value1, bool readOnly)
     {
         value?.set(member, value1);
         return true;

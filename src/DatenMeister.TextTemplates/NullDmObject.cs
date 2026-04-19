@@ -6,7 +6,7 @@ namespace DatenMeister.TextTemplates;
 
 public class NullDmObject : ScriptObject, IConvertible
 {
-    public override string ToString(string format, IFormatProvider formatProvider)
+    public override string ToString(string? format, IFormatProvider? formatProvider)
     {
         return string.Empty;
     }

@@ -230,7 +230,7 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
         }
         
         // In case the view node is set, we try to execute the viewnode from the 
-        if (!string.IsNullOrEmpty(parameter.DynamicSourceViewNode))
+        if (!string.IsNullOrEmpty(parameter.DynamicSourceViewNode) && !string.IsNullOrEmpty(parameter.DynamicSourceViewNodeWorkspace))
         {
             // Find the viewnode
             var foundElement = workspaceLogic.FindElement(

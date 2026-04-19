@@ -111,13 +111,25 @@ pipeline {
                 sh """
                     cd src/Web/DatenMeister.WebServer
                     npm test
-                    dotnet tool run bs-remove-file-attribute-from-junit ./jstests.xml 
+                    dotnet tool run bs-remove-file-attribute-from-junit ./jstests.xml
                     cd ../../..
                 """
 
                 xunit(
                     tools: [JUnit(pattern: 'src/Web/DatenMeister.WebServer/jstests.xml')]
                 )
+            }
+        }
+
+        stage ('Docker Build')
+        {
+            when
+            {
+                branch 'develop'
+            }
+            steps
+            {
+                sh 'docker compose build'
             }
         }
     }

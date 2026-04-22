@@ -4,10 +4,47 @@
 var configuration = Argument("configuration", "Debug");
 var target = Argument("target", "Build");
 
-Task("Build")
-	.Does(() =>
+Task("Install Npm")
+    .Does(() =>
 {
 	NpmInstall();
+});
+
+Task("Copy-NodeModules")
+	.Does(() =>
+{
+    var nodeModules = Directory("./node_modules");
+    var target = Directory("./wwwroot/js/node_modules");
+
+    var files = GetFiles("./node_modules/**/*.js");
+    files.Add(GetFiles("./node_modules/**/*.d.ts"));
+    files.Add(GetFiles("./node_modules/**/*.css"));
+
+    foreach (var file in files)
+    {
+        var positionNodeModules = file.ToString().IndexOf("node_modules/"); 
+        if(positionNodeModules == -1 )
+        {
+            Console.WriteLine("Some obscure error occured");
+        }
+        
+        var relativePath = file.ToString().Substring(positionNodeModules + "node_modules/".Length);
+        var targetDir = System.IO.Path.GetDirectoryName(target.Path.Combine(relativePath).ToString());
+        
+        if (!DirectoryExists(targetDir))
+        {
+            CreateDirectory(targetDir);
+        }
+        
+        CopyFileToDirectory(file, targetDir);
+    }
+});
+
+Task("Build")
+    .IsDependentOn("Install Npm")
+	.IsDependentOn("Copy-NodeModules")
+	.Does(() =>
+{
 
 	Information("Copying burnJsPopup Files to wwwroot");
 	

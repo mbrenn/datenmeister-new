@@ -4,8 +4,15 @@ import * as _DatenMeister from '../models/DatenMeister.class.js'
 import * as FormActions from '../FormActions.js'
 import { loadDefaultModules } from "../actions/DefaultLoader.js"
 import * as PathQueryDebugControl from "../controls/PathQueryDebugControl.js"
+import * as ElementsTreeView from "../controls/ElementsTreeView.js"
 
 loadDefaultModules();
+
+export async function pageTestTreeView()
+{
+    const treeView = new ElementsTreeView.ElementsTreeView();
+    treeView.init();
+}
 
 export async function pageTestFormFields() {
     var action = new Mof.DmObject(_DatenMeister._Forms.__NavigateToFieldsForTestAction_Uri);

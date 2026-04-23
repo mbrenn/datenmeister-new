@@ -8,7 +8,7 @@
     "module": "Node16",
     "moduleResolution": "node16",
     "strictPropertyInitialization": false,
-    "types": [ "chai", "mocha", "jquery" ]
+    "types": [ "chai", "mocha", "jquery", "jquery.fancytree" ]
   },
   "compileOnSave": true,
   "exclude": [

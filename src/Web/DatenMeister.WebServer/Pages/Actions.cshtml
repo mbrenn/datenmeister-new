@@ -57,6 +57,10 @@
 <div>
     <ul>
         <li>
+            <a href="#" onclick="testTreeView(); return false;">Test Tree View</a>
+            <div id="test_tree_view"></div>
+        </li>
+        <li>
             <a href="#" onclick="testFormFields(); return false;">Test Form Fields</a>
         </li>
         <li>
@@ -93,7 +97,12 @@
 
 <script type="module">
 
-    import * as Action from './js/datenmeister/page/Actions.js';
+    import * as Action from './js/datenmeister/page/Actions.js'
+    
+    window.testTreeView = function testTreeView() {
+        Action.pageTestTreeView();
+        return false;
+    }
 
     window.testFormFields = function testFormFields() {
         Action.pageTestFormFields();

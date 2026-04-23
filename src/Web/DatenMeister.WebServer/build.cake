@@ -45,12 +45,19 @@ Task("Build")
 	.IsDependentOn("Copy-NodeModules")
 	.Does(() =>
 {
-
 	Information("Copying burnJsPopup Files to wwwroot");
 	
 	CopyFiles("node_modules/burnJsPopup/dist/js/*.*", "wwwroot/js", false);
 	CopyFiles("node_modules/burnJsPopup/dist/css/*.*", "wwwroot/css", false);
-		
+	
+	Information("Copying JQuery FancyTree");
+	
+	CopyFiles("node_modules/jquery.fancytree/dist/*.min.js", "wwwroot/js", false);
+	CopyFiles("node_modules/jquery.fancytree/dist/skin-win8/*.css", "wwwroot/css/jquery.fancytree/css", false);
+	CopyFiles("node_modules/jquery.fancytree/dist/skin-win8/*.gif", "wwwroot/css/jquery.fancytree/skin-win8", false);
+	
+	Information("Building");
+    		
     var process = new System.Diagnostics.Process
     {
         StartInfo =
@@ -63,7 +70,6 @@ Task("Build")
     };
     process.Start();
     process.WaitForExit();
-	
 });
 
 RunTarget(target);

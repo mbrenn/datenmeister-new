@@ -42,7 +42,6 @@
     <Project Path="src/DatenMeister.Actions/DatenMeister.Actions.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>
-    <Project Path="src/DatenMeister.AdminUserSettings/DatenMeister.AdminUserSettings.csproj" />
     <Project Path="src/DatenMeister.AttachedExtent/DatenMeister.AttachedExtent.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
       <BuildType Solution="WPF|*" Project="Debug" />
@@ -115,7 +114,6 @@
     <Project Path="src/DatenMeister.Validators/DatenMeister.Validators.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>
-    <Project Path="src/DatenMeister.WPF/DatenMeister.WPF.csproj" />
   </Folder>
   <Folder Name="/Library - .Net Standard/Core/">
     <Project Path="src/DatenMeister.Core.Extensions/DatenMeister.Core.Extensions.csproj">

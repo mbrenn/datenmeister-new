@@ -1,4 +1,10 @@
 
+export class ElementsTreeViewConfig
+{
+    workspace: string;
+    extentUri: string;
+}
+
 export class ElementsTreeView {
     init()
     {

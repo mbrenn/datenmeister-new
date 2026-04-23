@@ -1,3 +1,7 @@
+export class ElementsTreeViewConfig {
+    workspace;
+    extentUri;
+}
 export class ElementsTreeView {
     init() {
         $("#test_tree_view").fancytree({

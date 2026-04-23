@@ -1,0 +1,18 @@
+= Issue 46
+
+== Requirements
+
+* We would like to implement a treeview control which lists all root elements and its composites as a treeview.
+* When the user clicks on one of the elements, he shall be directed to the detail page
+* The tree view shall implement lazy loading.
+* The control shall be configured about which workspace and which extent to be used.
+
+== Solution
+
+The treeview control is implemented using `jquery.fancytree`. The following approach is taken to fulfill the requirements:
+
+* **Configuration**: The `ElementsTreeView` class uses a configuration object of type `ElementsTreeViewConfig` which defines the `workspace` and `extentUri`. This allows the control to be reused for different data sources.
+* **Initialization**: During initialization, the control is attached to a DOM element. The initial root elements are fetched using the `Elements.getAllRootItems` function with the configured workspace and extent.
+* **Lazy Loading**: To support large trees, the `lazyLoad` feature of Fancytree is used. When a node is expanded, a request is sent to the server using the `Elements` client module (specifically `Elements.getAllRootItems` for the initial load and `Elements.getAllChildItems` for subsequent expansions). These functions call the `/api/elements/get_composites` endpoint, which returns the immediate children of the specific element to be injected into the tree.
+* **Navigation**: The `activate` event of Fancytree is used to detect user clicks. When an element is selected, the control uses the `Navigator` module (specifically `Navigator.navigateToItemByUrl`) to redirect the user to the detail page of the selected element.
+* **Data Mapping**: The elements returned by the `Elements` module are of type `ItemWithNameAndId`. These are mapped to Fancytree's node format: `name` is used for the node's `title`, and `id` (which contains the element's URI or path) is stored as the node's `key` to facilitate further child lookups and navigation.

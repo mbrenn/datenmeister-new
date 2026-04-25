@@ -12,7 +12,7 @@ export async function pageTestTreeView() {
         extentUri: "dm:///_internal/types/internal"
     };
     const treeView = new ElementsTreeView.ElementsTreeView();
-    treeView.addEventToNavigateToItem(config.workspace);
+    treeView.addEventToNavigateToItem();
     treeView.init("#test_tree_view", config);
 }
 export async function pageTestFormFields() {

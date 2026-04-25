@@ -8,69 +8,80 @@
     ViewData["Title"] = "Items Overview - Der DatenMeister";
 }
 
-<h1>Items Overview</h1>
-
-<div class="dm-status-text-container"></div>
-
-<div class="dm-breadcrumb-page">
-
-</div>
-
-<script type="module">
-
-import * as Page from './js/datenmeister/page/ItemsOverview.js';
-
-$(function()
-{    
-    Page.init(
-        "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
-        "@HttpUtility.JavaScriptStringEncode(Model.Extent)");
-
-});
-
-</script>
-
-<div class="dm-collectionform-buttons">
-    <a href="~/ItemAction/Extent.CreateNewItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&item=@HttpUtility.HtmlAttributeEncode(Model.Extent)" class="btn btn-secondary">Create unclassified Item</a>
-    <btn class="btn btn-secondary" id="dm-btn-create-item-with-metaclass">Create Item w/ MetaClass</btn>
-</div>
-
-<div id="dm-btn-create-item-metaclass"></div>
-<div id="dm-items"></div>
-
-<table class="table table-striped table-bordered dm-table-nofullwidth align-top">
-    <tbody>
-        <tr>
-            <th>Collection-Uri:</th>
-            <td><span id="items_collection_uri"></span></td>
-        </tr>
-    </tbody>
-</table>
-<div class="accordion" id="debug_accordion">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="debug_mofelement_heading">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#debug_mofelement_body" aria-expanded="true" aria-controls="collapseOne">
-                Element
-            </button>
-        </h2>
-        <div id="debug_mofelement_body" class="accordion-collapse collapse" aria-labelledby="debug_mofelement_heading" data-bs-parent="#debug_accordion">
-            <div class="accordion-body" id="debug_mofelement">
-            </div>
-        </div>
+<div class="dm-splitter-container" id="dm-main-splitter">
+    <div class="dm-splitter-left" id="dm-treeview-container">
+        <!-- TreeView will be injected here -->
+        <div id="elements-treeview"></div>
     </div>
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="debug_formelement_heading">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#debug_formelement_body" aria-expanded="true" aria-controls="collapseOne">
-                Form
-            </button>
-        </h2>
-        <div id="debug_formelement_body" class="accordion-collapse collapse" aria-labelledby="debug_formelement_heading" data-bs-parent="#debug_accordion">
-            <div class="accordion-body">
-                <div id="form_selection_container"></div>
-                <div>
-                    <button class="btn btn-light" id="dm-store-current-form-btn">Store auto-generated form</button>
+    <div class="dm-splitter-resizer"></div>
+    <div class="dm-splitter-right">
+        <h1>Items Overview</h1>
+
+        <div class="dm-status-text-container"></div>
+
+        <div class="dm-breadcrumb-page">
+
+        </div>
+
+        <script type="module">
+
+        import * as Page from './js/datenmeister/page/ItemsOverview.js';
+        import {Splitter} from './js/datenmeister/controls/Splitter.js';
+
+        $(function()
+        {    
+            Page.init(
+                "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
+                "@HttpUtility.JavaScriptStringEncode(Model.Extent)");
+
+            Splitter.init('#dm-main-splitter');
+        });
+
+        </script>
+
+        <div class="dm-collectionform-buttons">
+            <a href="~/ItemAction/Extent.CreateNewItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&item=@HttpUtility.HtmlAttributeEncode(Model.Extent)" class="btn btn-secondary">Create unclassified Item</a>
+            <btn class="btn btn-secondary" id="dm-btn-create-item-with-metaclass">Create Item w/ MetaClass</btn>
+        </div>
+
+        <div id="dm-btn-create-item-metaclass"></div>
+        <div id="dm-items"></div>
+
+        <table class="table table-striped table-bordered dm-table-nofullwidth align-top">
+            <tbody>
+                <tr>
+                    <th>Collection-Uri:</th>
+                    <td><span id="items_collection_uri"></span></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="accordion" id="debug_accordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="debug_mofelement_heading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#debug_mofelement_body" aria-expanded="true" aria-controls="collapseOne">
+                        Element
+                    </button>
+                </h2>
+                <div id="debug_mofelement_body" class="accordion-collapse collapse" aria-labelledby="debug_mofelement_heading" data-bs-parent="#debug_accordion">
+                    <div class="accordion-body" id="debug_mofelement">
+                    </div>
                 </div>
-                <div id="debug_formelement">
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="debug_formelement_heading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#debug_formelement_body" aria-expanded="true" aria-controls="collapseOne">
+                        Form
+                    </button>
+                </h2>
+                <div id="debug_formelement_body" class="accordion-collapse collapse" aria-labelledby="debug_formelement_heading" data-bs-parent="#debug_accordion">
+                    <div class="accordion-body">
+                        <div id="form_selection_container"></div>
+                        <div>
+                            <button class="btn btn-light" id="dm-store-current-form-btn">Store auto-generated form</button>
+                        </div>
+                        <div id="debug_formelement">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

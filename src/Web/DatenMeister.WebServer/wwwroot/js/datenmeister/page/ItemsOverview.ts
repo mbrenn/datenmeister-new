@@ -1,9 +1,19 @@
 ﻿import * as CollectionForm from "../forms/CollectionForm.js"
 import {loadDefaultModules} from "../actions/DefaultLoader.js";
 import {FormType} from "../forms/Interfaces.js";
+import {ElementsTreeView} from "../controls/ElementsTreeView.js";
 
 export async function init(workspace: string, extentUri: string) : Promise<void> {
     loadDefaultModules();
+
+    const treeView = new ElementsTreeView();
+    treeView.init(
+        "#elements-treeview",
+        {
+            workspace: workspace,
+            extentUri: extentUri
+        });
+    treeView.addEventToNavigateToItem();   
     
     let listForm = new CollectionForm.CollectionFormCreator(
         {

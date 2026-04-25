@@ -10,7 +10,9 @@ export class ElementsTreeView {
      * This event is called when an item is activated in the tree
      */
     itemActivated = new UserEvent();
+    configuration;
     init(elementSelector, config) {
+        this.configuration = config;
         $(elementSelector).fancytree({
             checkbox: false,
             source: Elements.getAllRootItems(config.workspace, config.extentUri).then(items => this.mapItems(items)),
@@ -29,9 +31,9 @@ export class ElementsTreeView {
      * Adds the event to navigate to the item when it is activated
      * @param workspace The workspace to navigate in
      */
-    addEventToNavigateToItem(workspace) {
+    addEventToNavigateToItem() {
         this.itemActivated.addListener(itemUrl => {
-            Navigator.navigateToItemByUrl(workspace, itemUrl);
+            Navigator.navigateToItemByUrl(this.configuration.workspace, itemUrl);
         });
     }
     mapItems(items) {

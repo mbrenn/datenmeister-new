@@ -11,7 +11,11 @@ loadDefaultModules();
 export async function pageTestTreeView()
 {
     const treeView = new ElementsTreeView.ElementsTreeView();
-    treeView.init();
+    treeView.init("#test_tree_view",
+        {
+            workspace: "Types",
+            extentUri: "dm:///_internal/types/internal"
+        });
 }
 
 export async function pageTestFormFields() {

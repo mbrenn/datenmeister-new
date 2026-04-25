@@ -8,7 +8,10 @@ import * as ElementsTreeView from "../controls/ElementsTreeView.js";
 loadDefaultModules();
 export async function pageTestTreeView() {
     const treeView = new ElementsTreeView.ElementsTreeView();
-    treeView.init();
+    treeView.init("#test_tree_view", {
+        workspace: "Types",
+        extentUri: "dm:///_internal/types/internal"
+    });
 }
 export async function pageTestFormFields() {
     var action = new Mof.DmObject(_DatenMeister._Forms.__NavigateToFieldsForTestAction_Uri);

@@ -1,10 +1,15 @@
 import * as Elements from "../client/Elements.js";
 import * as Navigator from "../Navigator.js";
+import { UserEvent } from "../../burnsystems/Events.js";
 export class ElementsTreeViewConfig {
     workspace;
     extentUri;
 }
 export class ElementsTreeView {
+    /**
+     * This event is called when an item is activated in the tree
+     */
+    itemActivated = new UserEvent();
     init(elementSelector, config) {
         $(elementSelector).fancytree({
             checkbox: false,
@@ -15,9 +20,18 @@ export class ElementsTreeView {
             activate: (event, data) => {
                 const itemUrl = data.node.key;
                 if (itemUrl) {
-                    Navigator.navigateToItemByUrl(config.workspace, itemUrl);
+                    this.itemActivated.invoke(itemUrl);
                 }
             }
+        });
+    }
+    /**
+     * Adds the event to navigate to the item when it is activated
+     * @param workspace The workspace to navigate in
+     */
+    addEventToNavigateToItem(workspace) {
+        this.itemActivated.addListener(itemUrl => {
+            Navigator.navigateToItemByUrl(workspace, itemUrl);
         });
     }
     mapItems(items) {

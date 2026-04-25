@@ -7,11 +7,13 @@ import * as PathQueryDebugControl from "../controls/PathQueryDebugControl.js";
 import * as ElementsTreeView from "../controls/ElementsTreeView.js";
 loadDefaultModules();
 export async function pageTestTreeView() {
-    const treeView = new ElementsTreeView.ElementsTreeView();
-    treeView.init("#test_tree_view", {
+    const config = {
         workspace: "Types",
         extentUri: "dm:///_internal/types/internal"
-    });
+    };
+    const treeView = new ElementsTreeView.ElementsTreeView();
+    treeView.addEventToNavigateToItem(config.workspace);
+    treeView.init("#test_tree_view", config);
 }
 export async function pageTestFormFields() {
     var action = new Mof.DmObject(_DatenMeister._Forms.__NavigateToFieldsForTestAction_Uri);

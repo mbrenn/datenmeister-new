@@ -10,12 +10,13 @@ loadDefaultModules();
 
 export async function pageTestTreeView()
 {
+    const config = {
+        workspace: "Types",
+        extentUri: "dm:///_internal/types/internal"
+    };
     const treeView = new ElementsTreeView.ElementsTreeView();
-    treeView.init("#test_tree_view",
-        {
-            workspace: "Types",
-            extentUri: "dm:///_internal/types/internal"
-        });
+    treeView.addEventToNavigateToItem();
+    treeView.init("#test_tree_view", config);
 }
 
 export async function pageTestFormFields() {

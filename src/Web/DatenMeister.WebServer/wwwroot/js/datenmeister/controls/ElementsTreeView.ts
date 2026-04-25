@@ -2,6 +2,7 @@
 import {ItemWithNameAndId} from "../ApiModels.js";
 import * as Elements from "../client/Elements.js";
 import * as Navigator from "../Navigator.js";
+import {UserEvent} from "../../burnsystems/Events.js";
 
 export class ElementsTreeViewConfig
 {
@@ -10,8 +11,16 @@ export class ElementsTreeViewConfig
 }
 
 export class ElementsTreeView {
+    /**
+     * This event is called when an item is activated in the tree
+     */
+    itemActivated: UserEvent<string> = new UserEvent<string>();
+    
+    configuration: ElementsTreeViewConfig;
+
     init(elementSelector: string, config: ElementsTreeViewConfig)
     {
+        this.configuration = config;
         $(elementSelector).fancytree({
             checkbox: false,
             source: Elements.getAllRootItems(config.workspace, config.extentUri).then(items => this.mapItems(items)),
@@ -21,10 +30,20 @@ export class ElementsTreeView {
             activate: (event, data) => {
                 const itemUrl = data.node.key;
                 if (itemUrl) {
-                    Navigator.navigateToItemByUrl(config.workspace, itemUrl);
+                    this.itemActivated.invoke(itemUrl);
                 }
             }
         });        
+    }
+
+    /**
+     * Adds the event to navigate to the item when it is activated
+     * @param workspace The workspace to navigate in
+     */
+    addEventToNavigateToItem() {
+        this.itemActivated.addListener(itemUrl => {
+            Navigator.navigateToItemByUrl(this.configuration.workspace, itemUrl);
+        });
     }
 
     private mapItems(items: ItemWithNameAndId[]): any[] {

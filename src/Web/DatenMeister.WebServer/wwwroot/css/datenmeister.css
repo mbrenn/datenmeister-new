@@ -70,7 +70,9 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    /* margin-bottom: 60px; -- Removed for grid layout */
+    margin: 0;
+    padding: 0;
 }
 
 .footer {
@@ -96,14 +98,46 @@ a.nounderline{
     margin-right: 2px;
 }
 
-.dm-sidebar {
-    width: 64px;
-    margin-left: 5px;
-    position: absolute;
+
+.dm-grid-container {
+    display: grid;
+    grid-template-areas:
+        "topbar topbar"
+        "sidebar content";
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.dm-topbar {
+    grid-area: topbar;
+}
+
+.dm-sidebar-container {
+    grid-area: sidebar;
+    overflow-y: auto;
+    width: min-content;
 }
 
 .dm-maincontent {
-    margin-left: 69px;
+    grid-area: content;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+/* 12-column grid for the content area or general usage if needed */
+.dm-content-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 10px;
+}
+
+.dm-sidebar {
+    width: 64px;
+    margin-left: 5px;
+    /* position: absolute;  -- Removed to work with grid */
 }
 
 .dm-breadcrumb {

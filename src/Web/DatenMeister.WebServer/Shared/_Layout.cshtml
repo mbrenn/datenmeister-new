@@ -28,7 +28,7 @@
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/jquery.fancytree-all-deps.min.js"></script>
 </head>
-<body style="@WebServerSettingHandler.TheOne.BodyCssStyle">
+<body class="dm-grid-container" style="@WebServerSettingHandler.TheOne.BodyCssStyle">
 @{
     
 var hideSideToolbar = WebServerSettingHandler.TheOne.WebServerSettings.layoutHideSideToolbar;
@@ -37,7 +37,7 @@ var hideTopToolbar = WebServerSettingHandler.TheOne.WebServerSettings.layoutHide
 }
 @if (!hideTopToolbar)
 {
-    <div>
+    <div class="dm-topbar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">DatenMeister</a>
@@ -80,8 +80,8 @@ var hideTopToolbar = WebServerSettingHandler.TheOne.WebServerSettings.layoutHide
 }
 @if (!hideSideToolbar)
 {
-    <div>
-        <nav class="navbar fixed-left dm-sidebar">
+    <div class="dm-sidebar-container">
+        <nav class="navbar dm-sidebar">
             <ul class="navbar-nav">
                 @foreach (var item in AppNavigationDefinition.Items)
                 {

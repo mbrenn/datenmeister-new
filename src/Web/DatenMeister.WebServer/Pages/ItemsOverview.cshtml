@@ -16,7 +16,7 @@
         
     </div>
     <div class="dm-item-resizer dm-splitter-resizer"></div>
-    <div class="dm-item-detail dm-splitter-resizer">
+    <div class="dm-item-detail dm-splitter-right">
         <h1>Items Overview</h1>
 
         <div class="dm-status-text-container"></div>
@@ -36,7 +36,7 @@
                 "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
                 "@HttpUtility.JavaScriptStringEncode(Model.Extent)");
 
-            SplitterControl.init('#dm-main-splitter');
+            SplitterControl.init('#dm-item-container');
         });
 
         </script>

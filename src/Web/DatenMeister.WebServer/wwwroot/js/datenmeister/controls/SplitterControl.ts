@@ -6,12 +6,12 @@
      */
     static init(containerSelector: string) {
         const container = document.querySelector(containerSelector);
-        if (!container) return;
+        if (!container) throw "containerSelector not found";
         
         const leftSide = container.querySelector('.dm-splitter-left') as HTMLElement;
         const resizer = container.querySelector('.dm-splitter-resizer') as HTMLElement;
         const splitterDebugDom = container.querySelector('.dm-splitter-debug') as HTMLElement | null;
-        if (!leftSide || !resizer) return;
+        if (!leftSide || !resizer) throw "Did not find leftSide or resizer";
 
         let x = 0;
         let leftWidth = 0;

@@ -1,4 +1,12 @@
 ﻿
+
+/* 12-column grid for the content area or general usage if needed */
+.dm-content-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 10px;
+}
+
 .footer {
     position: absolute;
     bottom: 0;
@@ -6,8 +14,6 @@
     white-space: nowrap;
     line-height: 60px; /* Vertically center the text there */
 }
-
-
 
 .dm-grid-container {
     display: grid;
@@ -37,15 +43,7 @@
     padding: 10px;
 }
 
-/* 12-column grid for the content area or general usage if needed */
-.dm-content-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 10px;
-}
-
 .dm-sidebar {
     width: 64px;
     margin-left: 5px;
-    /* position: absolute;  -- Removed to work with grid */
 }

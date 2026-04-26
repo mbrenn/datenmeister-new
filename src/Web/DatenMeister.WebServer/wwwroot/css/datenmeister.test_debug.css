@@ -1,0 +1,20 @@
+﻿
+/* Mocha Configuration
+-------------------------------------------------- */
+#mocha
+{
+    margin: 10px !important;
+}
+
+#mocha #mocha-stats {
+    position: relative;
+}
+
+#server_errors div
+{
+    font-size: 9px;
+    white-space: pre-wrap;
+    font-family: monospace;
+
+}
+

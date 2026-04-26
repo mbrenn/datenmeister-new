@@ -40,8 +40,49 @@ Task("Copy-NodeModules")
     }
 });
 
+Task("Compress CSS")
+    .Does(() =>
+    {
+        Information("Compressing CSS Files");
+        
+        var cssFiles = System.IO.Directory.GetFiles("wwwroot/css/", "*.css").Where(x=>x.StartsWith("wwwroot/css/datenmeister.")).ToList();
+        cssFiles.Add("wwwroot/css/splitter.css");
+        cssFiles.Add("wwwroot/css/burnJsPopup.css");
+        
+        foreach(var file in cssFiles)
+        {
+            Console.WriteLine(file);
+        }
+     	
+     	var outputFile = "wwwroot/css/datenmeister-web.min.css";
+     	var args = new ProcessArgumentBuilder()
+     		.Append("-o")
+     		.AppendQuoted(outputFile);
+     		
+     	foreach(var file in cssFiles)
+     	{
+     		args.AppendQuoted(file);
+     	}
+     
+        // Run the minimum                        
+        var process = new System.Diagnostics.Process
+        {
+            StartInfo =
+            {
+                FileName = "npx",
+                UseShellExecute = true,            
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,    
+                Arguments = "cleancss --format keep-breaks --source-map " + args.Render(),
+            }
+        };
+        process.Start();
+        process.WaitForExit();
+    });
+
 Task("Build")
     .IsDependentOn("Install Npm")
+    .IsDependentOn("Compress CSS")
 	.IsDependentOn("Copy-NodeModules")
 	.Does(() =>
 {
@@ -55,7 +96,7 @@ Task("Build")
 	CopyFiles("node_modules/jquery.fancytree/dist/*.min.js", "wwwroot/js", false);
 	CopyFiles("node_modules/jquery.fancytree/dist/skin-win8/*.css", "wwwroot/css/jquery.fancytree/css", false);
 	CopyFiles("node_modules/jquery.fancytree/dist/skin-win8/*.gif", "wwwroot/css/jquery.fancytree/skin-win8", false);
-	
+
 	Information("Building");
     		
     var process = new System.Diagnostics.Process

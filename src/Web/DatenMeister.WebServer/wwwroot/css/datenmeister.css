@@ -8,16 +8,6 @@ a.navbar-brand {
     word-break: break-all;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-    color: #0366d6;
-}
-
-a.nolink
-{
-    text-decoration: none;
-    color: black;
-}
 
 .btn-primary {
     color: #fff;
@@ -31,12 +21,6 @@ a.nolink
     border-color: #1861ac;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-    font-size: 14px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
 
 @media (min-width: 768px) {
     html {
@@ -64,16 +48,8 @@ button.accept-policy {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-    position: relative;
-    min-height: 100%;
 }
 
-body {
-    /* Margin bottom by footer height */
-    /* margin-bottom: 60px; -- Removed for grid layout */
-    margin: 0;
-    padding: 0;
-}
 
 .footer {
     position: absolute;
@@ -83,13 +59,6 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
-a {
-    text-decoration: underline;
-}
-
-a.nounderline{
-    text-decoration: none;
-}
 
 /* Restyle the buttons that they are a bit more beautiful */
 .btn{
@@ -572,23 +541,3 @@ div .dm-tableform-querytext {
     background-color: #005a9e;
     color: #fff;
 }
-
-/* Mocha Configuration
--------------------------------------------------- */
-#mocha
-{    
-    margin: 10px !important;
-}
-
-#mocha #mocha-stats {
-    position: relative;
-}
-
-#server_errors div
-{
-    font-size: 9px;
-    white-space: pre-wrap;
-    font-family: monospace;
-    
-}
-

@@ -1,0 +1,28 @@
+﻿
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    /* margin-bottom: 60px; -- Removed for grid layout */
+    margin: 0;
+    padding: 0;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+    text-decoration: underline;
+}
+
+a.nolink
+{
+    text-decoration: none;
+    color: black;
+}

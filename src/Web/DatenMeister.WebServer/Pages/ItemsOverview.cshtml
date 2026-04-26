@@ -8,15 +8,15 @@
     ViewData["Title"] = "Items Overview - Der DatenMeister";
 }
 
-<div class="dm-splitter-container" id="dm-main-splitter">
-    <div class="dm-splitter-left" id="dm-treeview-container">
+<div class="dm-item-container" id="dm-item-container">
+    <div class="dm-item-browsetree dm-splitter-left" id="dm-treeview-container">
         <!-- TreeView will be injected here -->
         <h1>Navigation</h1>
         <div id="elements-treeview"></div>
         
     </div>
-    <div class="dm-splitter-resizer"></div>
-    <div class="dm-splitter-right">
+    <div class="dm-item-resizer dm-splitter-resizer"></div>
+    <div class="dm-item-detail dm-splitter-resizer">
         <h1>Items Overview</h1>
 
         <div class="dm-status-text-container"></div>
@@ -28,7 +28,7 @@
         <script type="module">
 
         import * as Page from './js/datenmeister/page/ItemsOverview.js';
-        import {Splitter} from './js/datenmeister/controls/Splitter.js';
+        import {SplitterControl} from './js/datenmeister/controls/SplitterControl.js';
 
         $(function()
         {    
@@ -36,7 +36,7 @@
                 "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
                 "@HttpUtility.JavaScriptStringEncode(Model.Extent)");
 
-            Splitter.init('#dm-main-splitter');
+            SplitterControl.init('#dm-main-splitter');
         });
 
         </script>
@@ -65,7 +65,7 @@
                     </button>
                 </h2>
                 <div id="debug_mofelement_body" class="accordion-collapse collapse" aria-labelledby="debug_mofelement_heading" data-bs-parent="#debug_accordion">
-                    <div class="accordion-body" id="debug_mofelement">
+                    <div class="accordion-body" id="debug_mofelement"> 
                     </div>
                 </div>
             </div>

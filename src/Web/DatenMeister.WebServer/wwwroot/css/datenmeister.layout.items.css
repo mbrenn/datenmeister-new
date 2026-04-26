@@ -1,20 +1,21 @@
 ﻿
 /* Resizable Splitter Styles */
-.dm-splitter-container {
+.dm-item-container {
     display: flex;
     width: 100%;
     height: 100%;
     overflow: auto;
 }
 
-.dm-splitter-left {
+.dm-item-browsetree {
     min-width: 50px;
     width: 250px; /* Default width */
     overflow: auto;
     align-items: stretch;
+    margin: 10px;
 }
 
-.dm-splitter-resizer {
+.dm-item-resizer {
     width: 5px;
     cursor: col-resize;
     background-color: #ddd;
@@ -23,13 +24,15 @@
     align-items: stretch;
 }
 
-.dm-splitter-resizer:hover {
+.dm-item-resizer:hover {
     background-color: #bbb;
 }
 
-.dm-splitter-right {
+.dm-item-detail {
     flex-grow: 1;
     overflow: scroll;
     min-width: 100px;
     align-items: stretch;
+    margin: 10px;
+    padding-bottom: 20vh;
 }

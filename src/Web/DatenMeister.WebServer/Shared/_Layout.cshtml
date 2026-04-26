@@ -83,7 +83,7 @@ var hideTopToolbar = WebServerSettingHandler.TheOne.WebServerSettings.layoutHide
             <ul class="navbar-nav">
                 @foreach (var item in AppNavigationDefinition.Items)
                 {
-                    <li class="navbar-item">
+                    <li class="dm-sidebar-item">
                         <a href="@item.Url" class="nav-link">
                             <img src="img/@(item.Image)-48.png" alt="@item.Title"/>
                         </a>
@@ -100,12 +100,16 @@ var hideTopToolbar = WebServerSettingHandler.TheOne.WebServerSettings.layoutHide
     <div id="server_errors"></div>
 </div>
 
+<div class="dm-footer">
+    Alle Rechte vorbehalten - Martin Brenn - <a href="http://github.com/mbrenn/datenmeister-new" target="_blank" rel="noopener noreferrer">Commit ID: @Commit.Id</a>
+</div>
+
 
 <script src="~/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/datenmeister/init.js" type="module"></script>
 @{
 
-        var dataForJs = GiveMe.Scope.ScopeStorage.Get<PageRegistrationData>();
+    var dataForJs = GiveMe.Scope.ScopeStorage.Get<PageRegistrationData>();
 
     var n = 0;
     foreach (var item in dataForJs.JavaScriptFiles)

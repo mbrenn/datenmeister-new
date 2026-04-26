@@ -1,4 +1,4 @@
-export class Splitter {
+export class SplitterControl {
     /**
      * Initializes the splitter on a given container
      * @param containerSelector The selector for the container element
@@ -53,4 +53,4 @@ export class Splitter {
         resizer.addEventListener('mousedown', mouseDownHandler);
     }
 }
-//# sourceMappingURL=Splitter.js.map
+//# sourceMappingURL=SplitterControl.js.map

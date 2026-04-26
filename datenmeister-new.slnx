@@ -221,9 +221,6 @@
     <Project Path="src/Tests/DatenMeister.Tests/DatenMeister.Tests.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>
-    <Project Path="src/Tests/ScriptTests/ScriptTests.csproj">
-      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
-    </Project>
   </Folder>
   <Folder Name="/Tools/">
     <Project Path="src/DatenMeister.SourceGeneration.Console/DatenMeister.SourceGeneration.Console.csproj">

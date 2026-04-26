@@ -1,6 +1,4 @@
-﻿import {left} from "@popperjs/core";
-
-export class Splitter {
+﻿export class SplitterControl {
     
     /**
      * Initializes the splitter on a given container

@@ -13,6 +13,7 @@
 }
 
 .dm-layout-resizable-browsetree {
+    display: none;
     min-width: 50px;
     width: 250px; /* Default width */
     overflow: auto;
@@ -21,12 +22,23 @@
 }
 
 .dm-layout-resizable-resizer {
+    display: none;
     width: 5px;
     cursor: col-resize;
     background-color: #ddd;
     flex-shrink: 0;
     height: 100%;
     align-items: stretch;
+}
+
+@media (min-width: 768px) {
+    .dm-layout-resizable-browsetree{
+        display: block;
+    }
+    
+    .dm-layout-resizable-resizer{
+        display: block;
+    }
 }
 
 .dm-layout-resizable-resizer:hover {

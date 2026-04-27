@@ -9,14 +9,17 @@
     ViewData["Title"] = "Logging - Der DatenMeister";
 }
 
-<h1>Logging</h1>
+<div class="dm-layout-single">
 
-<div class="dm-logging">
+    <h1>Logging</h1>
 
-    @foreach (var logging in InMemoryDatabaseProvider.TheOne.Messages)
-    {
-        <p class="dm-logging-@logging.LogMessage.LogLevel.ToString().ToLower()">
-            @logging.Created.ToString(CultureInfo.InvariantCulture) @logging.LogMessage.ToString()
-        </p>
-    }
+    <div class="dm-logging">
+
+        @foreach (var logging in InMemoryDatabaseProvider.TheOne.Messages)
+        {
+            <p class="dm-logging-@logging.LogMessage.LogLevel.ToString().ToLower()">
+                @logging.Created.ToString(CultureInfo.InvariantCulture) @logging.LogMessage.ToString()
+            </p>
+        }
+    </div>
 </div>

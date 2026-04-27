@@ -7,36 +7,39 @@
     ViewData["Title"] = "Client Test Cases - Der DatenMeister";
 }
 <link href="js/node_modules/mocha/mocha.css" rel="stylesheet" />
-<h1>Test Cases</h1>
 
-<h2>Test Result</h2>
+<div class="dm-layout-single">
+    <h1>Test Cases</h1>
 
-<div id="dom_test">
+    <h2>Test Result</h2>
+
+    <div id="dom_test">
     
-</div>
-<div id="mocha">
+    </div>
+    <div id="mocha">
     
-</div>
+    </div>
 
-<div id="test_area">
+    <div id="test_area">
     
+    </div>
+
+    <script src="js/node_modules/mocha/mocha.js"></script>
+    <script src="js/node_modules/chai/chai.js" type="module"></script>
+    <script>mocha.setup('bdd')</script>
+
+    <script type="module">
+
+    import * as Test from './js/datenmeister/test/TestLibrary.js';
+     
+    $(() =>
+    {
+        mocha.timeout(200000);
+        Test.includeTests();
+        mocha.run();
+    
+    });
+    
+    
+    </script>
 </div>
-
-<script src="js/node_modules/mocha/mocha.js"></script>
-<script src="js/node_modules/chai/chai.js" type="module"></script>
-<script>mocha.setup('bdd')</script>
-
-<script type="module">
-
-import * as Test from './js/datenmeister/test/TestLibrary.js';
- 
-$(() =>
-{
-    mocha.timeout(200000);
-    Test.includeTests();
-    mocha.run();
-
-});
-
-
-</script>

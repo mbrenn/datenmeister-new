@@ -8,45 +8,47 @@
     ViewData["Title"] = "Workspaces and Extents - Der DatenMeister";
 }
 
-<h1>Workspaces and Extents</h1>
+<div class="dm-layout-single">
+    <h1>Workspaces and Extents</h1>
 
-<ul>
-    @foreach (var workspace in Model.Workspaces)
-    {
-        var uriExtent = ManagementProviderPlugin.UriExtentWorkspaces;
-        var workspaceUrl = HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(
-            uriExtent + "#" + Model.GetIdOfWorkspace(workspace)));
+    <ul>
+        @foreach (var workspace in Model.Workspaces)
+        {
+            var uriExtent = ManagementProviderPlugin.UriExtentWorkspaces;
+            var workspaceUrl = HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(
+                uriExtent + "#" + Model.GetIdOfWorkspace(workspace)));
 
-        <li>
-            <a href="~/Item/Management/@Html.Raw(workspaceUrl)">@workspace.id - @workspace.annotation</a>
-        </li>
-        <ul>
-            @foreach (var extent in workspace.extents)
-            {
-                try
+            <li>
+                <a href="~/Item/Management/@Html.Raw(workspaceUrl)">@workspace.id - @workspace.annotation</a>
+            </li>
+            <ul>
+                @foreach (var extent in workspace.extents)
                 {
-                    var extentId = Model.GetIdOfExtent(workspace, extent);
-                    var extentUrl = HttpUtility.HtmlAttributeEncode(
-                        HttpUtility.UrlEncode(uriExtent + "#" + extentId));
-                    var extentsPropertiesId = HttpUtility.HtmlAttributeEncode(
-                        HttpUtility.UrlEncode(
-                            uriExtent + "#" + Model.GetIdOfExtentsProperties(workspace, extent)));
- 
-                    var extentName = extent.uri;
-                    if (string.IsNullOrEmpty(extentName))
+                    try
                     {
-                        extentName = "No Uri given";
+                        var extentId = Model.GetIdOfExtent(workspace, extent);
+                        var extentUrl = HttpUtility.HtmlAttributeEncode(
+                            HttpUtility.UrlEncode(uriExtent + "#" + extentId));
+                        var extentsPropertiesId = HttpUtility.HtmlAttributeEncode(
+                            HttpUtility.UrlEncode(
+                                uriExtent + "#" + Model.GetIdOfExtentsProperties(workspace, extent)));
+ 
+                        var extentName = extent.uri;
+                        if (string.IsNullOrEmpty(extentName))
+                        {
+                            extentName = "No Uri given";
+                        }
+                        <li>
+                            <a href="~/Item/Management/@Html.Raw(extentUrl)">@extentName</a>
+                            (<a href="~/Item/Management/@Html.Raw(extentsPropertiesId)">Properties</a>)
+                        </li>
                     }
-                    <li>
-                        <a href="~/Item/Management/@Html.Raw(extentUrl)">@extentName</a>
-                        (<a href="~/Item/Management/@Html.Raw(extentsPropertiesId)">Properties</a>)
-                    </li>
+                    catch (Exception)
+                    {
+                        <li>Error during extent retrieval of @extent.ToString()</li>
+                    }
                 }
-                catch (Exception)
-                {
-                    <li>Error during extent retrieval of @extent.ToString()</li>
-                }
-            }
-        </ul>
-    }
-</ul>
+            </ul>
+        }
+    </ul>
+</div>

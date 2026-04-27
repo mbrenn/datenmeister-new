@@ -1,13 +1,18 @@
 ﻿
+.dm-layout-single
+{
+    margin: 10px;
+}
+
 /* Resizable Splitter Styles */
-.dm-item-container {
+.dm-layout-resizable-container {
     display: flex;
     width: 100%;
     height: 100%;
     overflow: auto;
 }
 
-.dm-item-browsetree {
+.dm-layout-resizable-browsetree {
     min-width: 50px;
     width: 250px; /* Default width */
     overflow: auto;
@@ -15,7 +20,7 @@
     margin: 10px;
 }
 
-.dm-item-resizer {
+.dm-layout-resizable-resizer {
     width: 5px;
     cursor: col-resize;
     background-color: #ddd;
@@ -24,11 +29,11 @@
     align-items: stretch;
 }
 
-.dm-item-resizer:hover {
+.dm-layout-resizable-resizer:hover {
     background-color: #bbb;
 }
 
-.dm-item-detail {
+.dm-layout-resizable-detail {
     flex-grow: 1;
     overflow: scroll;
     min-width: 100px;

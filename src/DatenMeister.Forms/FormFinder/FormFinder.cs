@@ -62,8 +62,7 @@ public class FormFinder
         using var stopWatch = new StopWatchLogger(Logger, $"Find Form: {query}", LogLevel.Trace);
         var formAssociations = _formsMethods.GetAllFormAssociations().Select(x => x as IElement).ToList();
         InternalDebug("---");
-        InternalDebug("# of FormAssociations: " + formAssociations.Count);
-        stopWatch.IntermediateLog("# of FormAssociations: " + formAssociations.Count);
+        InternalDebug("# of FormAssociations: " + formAssociations.Count);;
 
         var foundForms = new List<FoundForm>();
         var queryViewModeIds = query.ViewModeId.Split(' ');

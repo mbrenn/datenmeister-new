@@ -10,92 +10,95 @@
     ViewData["Title"] = "Action - Der DatenMeisters";
 }
 
-<h1>Actions</h1>
 
-<h2>Global</h2>
+<div class="dm-layout-single">
+
+    <h1>Actions</h1>
+
+    <h2>Global</h2>
 
 
-<div>
-    <ul>
-        <li>
-            <a href="~/Logging">Show log</a>
-        </li>
-        <li>
-            <a href="~/TestCases">Browser Test Cases</a>
-        </li>
-        <li>
-            <a href="~/ResetDatenMeister">Reset all data</a>
-        </li>
-    </ul>
-</div>
+    <div>
+        <ul>
+            <li>
+                <a href="~/Logging">Show log</a>
+            </li>
+            <li>
+                <a href="~/TestCases">Browser Test Cases</a>
+            </li>
+            <li>
+                <a href="~/ResetDatenMeister">Reset all data</a>
+            </li>
+        </ul>
+    </div>
 
-<h2>Workspaces</h2>
-<div>
-    <ul>
-        <li>
-            <a href="~/WorkspacesAndExtent">Workspaces and Extents</a>
-        </li>
-        <li>
-            <a href="~/ItemAction/Workspace.Extent.LoadOrCreate">Load or create an Extent</a>
-        </li>
-        <li>
-            <a href="~/ItemAction/Workspace.Extent.Xmi.Create?metaclass=@HttpUtility.UrlEncode((_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig as MofObjectShadow).Uri)">Create a new Xmi extent</a>
-        </li>
-    </ul>
-</div>
+    <h2>Workspaces</h2>
+    <div>
+        <ul>
+            <li>
+                <a href="~/WorkspacesAndExtent">Workspaces and Extents</a>
+            </li>
+            <li>
+                <a href="~/ItemAction/Workspace.Extent.LoadOrCreate">Load or create an Extent</a>
+            </li>
+            <li>
+                <a href="~/ItemAction/Workspace.Extent.Xmi.Create?metaclass=@HttpUtility.UrlEncode((_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig as MofObjectShadow).Uri)">Create a new Xmi extent</a>
+            </li>
+        </ul>
+    </div>
 
-<h2>Actions</h2>
-<div>
-    <ul>
-        <li>
-            <a href="~/ItemAction/Item.Create.Temporary.SetMetaclass">Create temporary action</a>
-        </li>
-    </ul>
-</div>
+    <h2>Actions</h2>
+    <div>
+        <ul>
+            <li>
+                <a href="~/ItemAction/Item.Create.Temporary.SetMetaclass">Create temporary action</a>
+            </li>
+        </ul>
+    </div>
 
-<h2>Test and Debugging</h2>
-<div>
-    <ul>
-        <li>
-            <a href="#" onclick="testTreeView(); return false;">Test Tree View</a>
-            <div id="test_tree_view"></div>
-        </li>
-        <li>
-            <a href="#" onclick="testFormFields(); return false;">Test Form Fields</a>
-        </li>
-        <li>
-            <a href="#" onclick="debugQueryElements(); return false;">Debug Query Elements</a>
-            <div id="debug_query_elements"></div>
-        </li>
-        <li>
-            <a href="~/ItemAction/JSON.Item.Alert">Alerting of an empty object</a>
-        </li>
-        <li>
-            <a href="~/ItemAction/Zipcode.Test?metaclass=@HttpUtility.UrlEncode(Model.GetZipCodeMetaClassUri())">Alerting of a Zipcode (Form Creation by Meta Class)</a>
-        </li>
-        <li>
-            <a onclick="openSelectItemControl(); return false;" href="#">Open Select Item Control</a>
-        </li>
-        <li>
-            <a onclick="openSelectItemControlFullBreadcrumb(); return false;" href="#">Open Select Item Control w/ Full Breadcrumb</a>
-        </li>
-        <li>
-            <a onclick="openSelectItemControlWorkspace(); return false;" href="#">Open Select Item Control with Workspace</a>
-        </li>
-        <li>
-            <a onclick="openSelectItemControlExtent(); return false;" href="#">Open Select Item Control with Extent</a>
-        </li>
-        <li>
-            <a onclick="openSelectItemControlItem(); return false;" href="#">Open Select Item Control with Item</a>
-        </li>
-        <li>
-            <a onclick="openNavigateToExtentPropertiesViaClientNavigation(); return false;" href="#">Navigate to Extent Properties via ClientNavigation</a>
-        </li>
-    </ul>
-</div>
-<div id="selectitemcontrol"></div>
+    <h2>Test and Debugging</h2>
+    <div>
+        <ul>
+            <li>
+                <a href="#" onclick="testTreeView(); return false;">Test Tree View</a>
+                <div id="test_tree_view"></div>
+            </li>
+            <li>
+                <a href="#" onclick="testFormFields(); return false;">Test Form Fields</a>
+            </li>
+            <li>
+                <a href="#" onclick="debugQueryElements(); return false;">Debug Query Elements</a>
+                <div id="debug_query_elements"></div>
+            </li>
+            <li>
+                <a href="~/ItemAction/JSON.Item.Alert">Alerting of an empty object</a>
+            </li>
+            <li>
+                <a href="~/ItemAction/Zipcode.Test?metaclass=@HttpUtility.UrlEncode(Model.GetZipCodeMetaClassUri())">Alerting of a Zipcode (Form Creation by Meta Class)</a>
+            </li>
+            <li>
+                <a onclick="openSelectItemControl(); return false;" href="#">Open Select Item Control</a>
+            </li>
+            <li>
+                <a onclick="openSelectItemControlFullBreadcrumb(); return false;" href="#">Open Select Item Control w/ Full Breadcrumb</a>
+            </li>
+            <li>
+                <a onclick="openSelectItemControlWorkspace(); return false;" href="#">Open Select Item Control with Workspace</a>
+            </li>
+            <li>
+                <a onclick="openSelectItemControlExtent(); return false;" href="#">Open Select Item Control with Extent</a>
+            </li>
+            <li>
+                <a onclick="openSelectItemControlItem(); return false;" href="#">Open Select Item Control with Item</a>
+            </li>
+            <li>
+                <a onclick="openNavigateToExtentPropertiesViaClientNavigation(); return false;" href="#">Navigate to Extent Properties via ClientNavigation</a>
+            </li>
+        </ul>
+    </div>
+    <div id="selectitemcontrol"></div>
 
-<script type="module">
+    <script type="module">
 
     import * as Action from './js/datenmeister/page/Actions.js'
     
@@ -152,11 +155,12 @@
     }
 </script>
 
-<h2>Forms</h2>
-<div>
-    <ul>
-        <li>
-            <a href="~/ItemAction/Forms.Create.ByMetaClass">Create a Form by MetaClass</a>
-        </li>
-    </ul>
+    <h2>Forms</h2>
+    <div>
+        <ul>
+            <li>
+                <a href="~/ItemAction/Forms.Create.ByMetaClass">Create a Form by MetaClass</a>
+            </li>
+        </ul>
+    </div>
 </div>

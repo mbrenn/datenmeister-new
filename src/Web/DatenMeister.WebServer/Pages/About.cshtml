@@ -10,107 +10,110 @@
     ViewData["Title"] = "About - Der DatenMeister";
 }
 
-<h1>About</h1>
+<div class="dm-layout-single">
 
-<h2>DatenMeister.Net</h2>
-Welcome to the About-Page
+    <h1>About</h1>
 
-<table class="table table-striped">
-    <tbody>
-    <tr>
-        <th>Key</th>
-        <th>Value</th>
-    </tr>
-    </tbody>
-    <tr>
-        <td>Git Commit-Id</td>
-        <td>
-            <a href="https://github.com/mbrenn/datenmeister-new/commit/@Commit.Id">@Commit.Id</a>
-        </td>
-    </tr>
-    <tr>
-        <td>Workspace-Folder</td>
-        <td>
-            <a href="#" onclick="setWorkspaceToClipboard(); return false;">@Model.WorkspacePath</a>
-        </td>
-    </tr>
-    <tr>
-        <td>Known ExtentTypes</td>
-        <td>
-            <ul>
-                @foreach (var knownExtentType in AboutModel.KnownExtentTypes)
-                {
-                    <li>@knownExtentType</li>
-                }
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>Loaded Plugins</td>
-        <td>
-            <ul>
-                @foreach (var knownExtentType in AboutModel.LoadedPlugins)
-                {
-                    <li>@knownExtentType</li>
-                }
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>Registered ActionHandlers</td>
-        <td>
-            <ul>
-                @foreach (var actionHandler in AboutModel.ActionHandlers)
-                {
-                    <li>@actionHandler</li>
-                }
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>Registered Form-Modification-Plugins</td>
-        <td>
-            <ul>
-                @foreach (var formModificationTypes in AboutModel.FormModificationTypes)
-                {
-                    <li>@formModificationTypes</li>
-                }
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>Type Index Logic</td>
-        <td>
-            <div>Dependencies of Workspaces:</div>
-            <ul>
-                @foreach (var dependency in AboutModel.WorkspaceDependencies)
-                {
-                    <li>@dependency</li>
-                }
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>Instrumentation</td>
-        <td>
-            <table class="table table-sm">
-                @foreach (var instrumentationPoint in AboutModel.InstrumentationPoints.OrderBy(x => x.Key))
-                {
-                    <tr>
-                        <td>@instrumentationPoint.Key</td>
-                        <td>@instrumentationPoint.Value()</td>
-                    </tr>
-                }
-            </table>
-        </td>
-    </tr>
+    <h2>DatenMeister.Net</h2>
+    Welcome to the About-Page
+
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+        </tbody>
+        <tr>
+            <td>Git Commit-Id</td>
+            <td>
+                <a href="https://github.com/mbrenn/datenmeister-new/commit/@Commit.Id">@Commit.Id</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Workspace-Folder</td>
+            <td>
+                <a href="#" onclick="setWorkspaceToClipboard(); return false;">@Model.WorkspacePath</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Known ExtentTypes</td>
+            <td>
+                <ul>
+                    @foreach (var knownExtentType in AboutModel.KnownExtentTypes)
+                    {
+                        <li>@knownExtentType</li>
+                    }
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Loaded Plugins</td>
+            <td>
+                <ul>
+                    @foreach (var knownExtentType in AboutModel.LoadedPlugins)
+                    {
+                        <li>@knownExtentType</li>
+                    }
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Registered ActionHandlers</td>
+            <td>
+                <ul>
+                    @foreach (var actionHandler in AboutModel.ActionHandlers)
+                    {
+                        <li>@actionHandler</li>
+                    }
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Registered Form-Modification-Plugins</td>
+            <td>
+                <ul>
+                    @foreach (var formModificationTypes in AboutModel.FormModificationTypes)
+                    {
+                        <li>@formModificationTypes</li>
+                    }
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Type Index Logic</td>
+            <td>
+                <div>Dependencies of Workspaces:</div>
+                <ul>
+                    @foreach (var dependency in AboutModel.WorkspaceDependencies)
+                    {
+                        <li>@dependency</li>
+                    }
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Instrumentation</td>
+            <td>
+                <table class="table table-sm">
+                    @foreach (var instrumentationPoint in AboutModel.InstrumentationPoints.OrderBy(x => x.Key))
+                    {
+                        <tr>
+                            <td>@instrumentationPoint.Key</td>
+                            <td>@instrumentationPoint.Value()</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
     
-</table>
+    </table>
 
-<script type="text/ecmascript">
+    <script type="text/ecmascript">
     function setWorkspaceToClipboard()
     {
         navigator.clipboard.writeText("@HttpUtility.JavaScriptStringEncode(Model.WorkspacePath)");
         alert('Path copied');
     }
-</script>
+    </script>
+</div>

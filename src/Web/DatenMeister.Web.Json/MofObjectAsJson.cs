@@ -24,7 +24,7 @@ public class MofObjectAsJson
     /// The first item reflects a boolean whether a value is set, the second value
     /// stores the value itself or the default value in case the item is not set. 
     /// </summary>
-    public Dictionary<string, object> v { get; set; }= new();
+    public Dictionary<string, object?> v { get; set; }= new();
 
     /// <summary>
     /// The metaclass of the element including some additional information

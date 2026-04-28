@@ -1,17 +1,22 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.TemporaryExtent;
+using DatenMeister.Web.Json;
 using DatenMeister.WebServer.Controller;
 using DatenMeister.WebServer.Library.Helper;
+using IssueMeisterLib.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -476,6 +481,50 @@ public class ItemsControllerTests
         Assert.That(elements![0].isSet("value"), Is.False);
 
         dm.Dispose();
+    }
+
+    [Test]
+    public async Task TestSettingOfId()
+    {
+        var dm = await DatenMeisterTests.GetDatenMeisterScope(
+            true,
+            DatenMeisterTests.GetIntegrationSettings());
+        var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
+        var loadedExtent = (await extentManager.LoadExtent(
+            new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+            {
+                dropExisting = true,
+                extentUri = "dm:///test",
+            }.GetWrappedElement())).Extent;
+        
+        Assert.That(loadedExtent, Is.Not.Null);
+        loadedExtent!.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Ordinal;
+        
+        // Check the direct creation to confirm that we have the ids created 
+        var factory = new MofFactory(loadedExtent!);
+        var issue = factory.create(_IssueMeister.TheOne.__Issue);
+        issue.get("id");
+        Assert.That(issue.get("id"), Is.Not.Null);
+        
+        // Now use the ItemsController Function
+        var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+        var element = new ItemsController.CreateItemInExtentParams();
+        element.MetaClass = _IssueMeister.TheOne.__Issue.Uri;
+        element.Properties = new MofObjectAsJson();
+        var values = new Dictionary<string, object?>
+        {
+            { _IssueMeister._Issue.id, new object?[] { false, null } },
+            { _IssueMeister._Issue.name, new object[] { true, "Year" } }
+        };
+        element.Properties.v = values;
+        
+        itemsController.CreateItemInExtent(WorkspaceNames.WorkspaceData, "dm:///test", element);
+        
+        // Now find the value in the loaded extent
+        var foundElement = loadedExtent!.elements().OfType<IElement>()
+            .FirstOrDefault(x => x.getOrDefault<string>(_IssueMeister._Issue.name) == "Year");
+        Assert.That(foundElement, Is.Not.Null);
+        Assert.That(foundElement!.getOrDefault<string>("id"), Is.Not.Null.Or.Empty);
     }
 
     public static async Task<(IDatenMeisterScope, IUriExtent)> CreateExampleExtentForSorting()

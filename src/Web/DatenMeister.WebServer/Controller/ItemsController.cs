@@ -73,10 +73,6 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
                     if (propertyValue != null) item.set(key, propertyValue);
                 }
-                else
-                {
-                    item.unset(key);
-                }
             }
         }
 

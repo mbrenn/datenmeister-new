@@ -170,20 +170,11 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
                 .ToList();
         }
 
-#if DEBUG
-#warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
-        return new GetRootElementsInternalResult
-        {
-            Elements = finalElements.Take(100).ToList(),
-            IsCapped = finalElements.Count > 100
-        };
-#else
         return new GetRootElementsInternalResult
         {
             Elements = finalElements,
             IsCapped = false
         };
-#endif
     }
 
     private class PropertyComparer(string property, bool descending) : IComparer<IObject>

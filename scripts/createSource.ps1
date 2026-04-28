@@ -49,6 +49,10 @@ if(!$onlyOne)
 
     Write-Output "-- Creating for DatenMeister.Domains"
     dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net10.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Domains/Xmi/DatenMeister.Domains.Types.xmi" "./DatenMeister.Domains/Model" "DatenMeister.Domains.Model" "dm:///intern.types.domains.datenmeister/"
+
+    Write-Output "-- IssueMeister"
+    dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net10.0/DatenMeister.SourceGeneration.Console.dll "Apps/IssueMeister/IssueMeisterLib/Xmi/IssueMeister.Types.xml" "./Apps/IssueMeister/IssueMeisterLib/Models" "IssueMeisterLib.Models" "dm:///intern.types.issues.datenmeister/"
+
 }
 
 Write-Output "-- Creating for DatenMeister.Zip"

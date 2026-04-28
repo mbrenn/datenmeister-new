@@ -46,6 +46,7 @@
             const newLeftWidth = leftWidth + dx;
             lastWidth = newLeftWidth;
             leftSide.style.width = `${newLeftWidth}px`;
+            leftSide.style.minWidth = `${newLeftWidth}px`;
             if (splitterDebugDom) {
                 splitterDebugDom.innerText = `Continue: ${newLeftWidth}px, ${e.clientX}px, dx: ${dx}px`;
             }

@@ -14,7 +14,7 @@
 
 .dm-layout-resizable-browsetree {
     display: none;
-    min-width: 50px;
+    min-width: 250px;
     width: 250px; /* Default width */
     overflow: auto;
     align-items: stretch;

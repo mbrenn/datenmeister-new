@@ -97,7 +97,9 @@ public class FormsControllerInternal
         IElement? resolvedMetaClass = null;
         if (!string.IsNullOrEmpty(metaClass))
         {
-            resolvedMetaClass = WorkspaceLogic.Resolve(metaClass, ResolveType.IncludeMetaWorkspaces) as IElement;
+            resolvedMetaClass = WorkspaceLogic.Resolve(
+                metaClass, 
+                ResolveType.IncludeMetaWorkspaces) as IElement;
             if (resolvedMetaClass == null)
             {
                 throw new InvalidOperationException("MetaClass for Form Creation is not found: " + metaClass);

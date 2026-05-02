@@ -146,7 +146,7 @@ public class ExtentTypeFormModification
             foreach (var listForm in tableForms)
             {
                 // Selects only the listform which do not have a classifier
-                if (listForm.getOrDefault<IElement>(_Forms._TableForm.metaClass) != null)
+                if (listForm.getOrDefault<IElement?>(_Forms._TableForm.metaClass) != null)
                 {
                     continue;
                 }
@@ -251,7 +251,13 @@ public class ExtentTypeFormModification
                             }
 
                             changed = true;
-                            defaultTypesForNewElements.add(resolvedMetaClass);
+
+                            var defaultTypeInstance =
+                                context.Global.Factory.create(_Forms.TheOne.__DefaultTypeForNewElement);
+                            defaultTypeInstance.set(_Forms._DefaultTypeForNewElement.metaClass, resolvedMetaClass);
+                            defaultTypeInstance.set(_Forms._DefaultTypeForNewElement.name,
+                                NamedElementMethods.GetName(resolvedMetaClass));
+                            defaultTypesForNewElements.add(defaultTypeInstance);
 
                             result.AddToFormCreationProtocol(
                                 $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}' to PackagedElement");

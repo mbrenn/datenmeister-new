@@ -1,0 +1,28 @@
+= Issue 62 - Fast Import of Excel
+
+== Use Case
+
+The user shall be able to import an Excel file by just selecting the Excel File and performing some configurations.
+
+== Requirements
+
+* The user shall be able to start importing of an Excel just by cliking a button in the workspace overview
+* The user shall be able to define out of one of the followimg actions directly via a dropdown
+** Onetime import: Just adding it in an Xmi Extent
+** Read-Only connection: The Excel is internally converted to an InMemory Extent and changes will be lost at next start-up
+** Synchronization: The Excel is loaded, but changes are written back to Excel when writing is activated
+
+== Design
+
+* The three different Extent Loader Configs are to be harmonized
+** [ ] An import type enumeration will be added 'ExcelLoaderImportType'
+** [ ] An attribute called 'importType' will be added by that enumeration
+** [ ] The three existing ExtentLoaderConfigs are to be replaced by one 'ExcelLoaderConfig'.
+** [ ] The Provider are to be merged and execution is dependent on the import type
+* [ ] We need to add a button at the Workspace Detail View
+* [ ] We need to add an action which just shows the new ExtentLoader which can be filled out by the user
+
+== Verification
+
+* [ ] Create a unit test which gives evidence that all ExtentLoaderConfig import types are working property
+* [ ] Perform a manual check on the website that the import is working

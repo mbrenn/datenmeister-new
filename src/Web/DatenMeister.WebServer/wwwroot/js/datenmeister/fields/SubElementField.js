@@ -60,31 +60,33 @@ export class Control {
         if (this.isReadOnly) {
             // In read-only mode we only display links/names and optional action callbacks.
             if (!Array.isArray(fieldValue)) {
-                return $("<div><em>Element is not an Array</em></div>");
+                this._list.add($("<div><em>Element is not an Array</em></div>"));
             }
-            let ul = $("<ul class='list-unstyled'></ul>");
-            let foundElements = 0;
-            for (let m in fieldValue) {
-                if (Object.prototype.hasOwnProperty.call(fieldValue, m)) {
-                    let innerValue = fieldValue[m];
-                    const item = $("<li></li>");
-                    const injectParams = {};
-                    if (this.itemActionName !== undefined && this.itemActionName !== null) {
-                        injectParams.onClick = async (x) => {
-                            const readObject = await ClientItems.getObjectByUri(x.workspace, x.uri);
-                            await FormActions.execute(this.itemActionName, tthis.form, readObject);
-                            return false;
-                        };
+            else {
+                let ul = $("<ul class='list-unstyled'></ul>");
+                let foundElements = 0;
+                for (let m in fieldValue) {
+                    if (Object.prototype.hasOwnProperty.call(fieldValue, m)) {
+                        let innerValue = fieldValue[m];
+                        const item = $("<li></li>");
+                        const injectParams = {};
+                        if (this.itemActionName !== undefined && this.itemActionName !== null) {
+                            injectParams.onClick = async (x) => {
+                                const readObject = await ClientItems.getObjectByUri(x.workspace, x.uri);
+                                await FormActions.execute(this.itemActionName, tthis.form, readObject);
+                                return false;
+                            };
+                        }
+                        let _ = injectNameByUri(item, innerValue.workspace, innerValue.uri, injectParams);
+                        ul.append(item);
+                        foundElements++;
                     }
-                    let _ = injectNameByUri(item, innerValue.workspace, innerValue.uri, injectParams);
-                    ul.append(item);
-                    foundElements++;
                 }
+                if (foundElements === 0) {
+                    ul = $("<em>No items</em>");
+                }
+                this._list.append(ul);
             }
-            if (foundElements === 0) {
-                ul = $("<em>No items</em>");
-            }
-            this._list.append(ul);
         }
         else {
             // In edit mode we provide a table with field preview columns and modification actions.
@@ -170,7 +172,7 @@ export class Control {
                     table.append(tr);
                 }
             }
-        }
+        } // if (this.isReadOnly)
         if (this.configuration.formType !== FormType.Collection) {
             // In collection forms, we don't want to see the modification buttons.
             await this.createAndAttachModificationButtons(tthis);

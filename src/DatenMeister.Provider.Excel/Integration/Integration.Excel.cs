@@ -17,10 +17,10 @@ public static class Integration
     public static ExcelProvider LoadExcel(this IDatenMeisterScope container, string url, string filePath)
     {
         var settings = InMemoryObject.CreateEmpty(
-            _ExtentLoaderConfigs.TheOne.__ExcelExtentLoaderConfig);
-        settings.set(_ExtentLoaderConfigs._ExcelExtentLoaderConfig.extentUri,
+            _ExtentLoaderConfigs.TheOne.__ExcelFullSyncLoaderConfig);
+        settings.set(_ExtentLoaderConfigs._ExcelFullSyncLoaderConfig.extentUri,
             url);
-        settings.set(_ExtentLoaderConfigs._ExcelExtentLoaderConfig.xmiFilePath,
+        settings.set(_ExtentLoaderConfigs._ExcelFullSyncLoaderConfig.filePath,
             filePath);
             
         return ExcelFullSyncLoader.LoadProvider(settings);

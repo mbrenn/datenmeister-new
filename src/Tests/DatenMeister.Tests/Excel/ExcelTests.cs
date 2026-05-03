@@ -54,14 +54,14 @@ public class ExcelTests
         {
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var excelReferenceSettings =
-                InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__ExcelReferenceLoaderConfig);
-            excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.extentUri,
+                InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__ExcelReadOnlyLoaderConfig);
+            excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.extentUri,
                 "dm:///excel2");
-            excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.filePath,
+            excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.filePath,
                 Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
-            excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.hasHeader,
+            excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.hasHeader,
                 true);
-            excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.sheetName,
+            excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.sheetName,
                 "Tabelle1");
 
             var extentManager = dm.Resolve<ExtentManager>();
@@ -105,17 +105,17 @@ public class ExcelTests
 
         var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         var excelReferenceSettings =
-            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__ExcelReferenceLoaderConfig);
-        excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.extentUri,
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__ExcelReadOnlyLoaderConfig);
+        excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.extentUri,
             "dm:///excel2");
-        excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.filePath,
+        excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.filePath,
             Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
-        excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.hasHeader,
+        excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.hasHeader,
             true);
-        excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.sheetName,
+        excelReferenceSettings.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.sheetName,
             "Tabelle2");
         excelReferenceSettings.set(
-            _ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
+            _ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.skipEmptyRowsCount,
             0);
 
         var extentManager = dm.Resolve<ExtentManager>();
@@ -125,22 +125,22 @@ public class ExcelTests
 
 
         var excelReferenceSettings2 =
-            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__ExcelReferenceLoaderConfig);
-        excelReferenceSettings2.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.extentUri,
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__ExcelReadOnlyLoaderConfig);
+        excelReferenceSettings2.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.extentUri,
             "dm:///excel2");
-        excelReferenceSettings2.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.filePath,
+        excelReferenceSettings2.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.filePath,
             Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
-        excelReferenceSettings2.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.hasHeader,
+        excelReferenceSettings2.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.hasHeader,
             true);
-        excelReferenceSettings2.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.sheetName,
+        excelReferenceSettings2.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.sheetName,
             "Tabelle2");
         excelReferenceSettings2.set(
-            _ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
+            _ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.skipEmptyRowsCount,
             0);
-        excelReferenceSettings2.set(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig.extentUri,
+        excelReferenceSettings2.set(_ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.extentUri,
             "dm:///excel3");
         excelReferenceSettings2.set(
-            _ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
+            _ExtentLoaderConfigs._ExcelReadOnlyLoaderConfig.skipEmptyRowsCount,
             5);
 
         var loadedExtent2 = await extentManager.LoadExtent(excelReferenceSettings2, ExtentCreationFlags.LoadOrCreate);
@@ -157,17 +157,17 @@ public class ExcelTests
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             var excelImportLoaderConfig =
-                InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__ExcelImportLoaderConfig);
+                InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__ExcelConvertToXmiOnceConfig);
 
-            excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri,
+            excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelConvertToXmiOnceConfig.extentUri,
                 "dm:///excel2");
-            excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath,
+            excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelConvertToXmiOnceConfig.filePath,
                 Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
-            excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.xmiFilePath,
+            excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelConvertToXmiOnceConfig.xmiFilePath,
                 Path.Combine(currentDirectory!, "test.xmi"));
-            excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.hasHeader,
+            excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelConvertToXmiOnceConfig.hasHeader,
                 true);
-            excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.sheetName,
+            excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelConvertToXmiOnceConfig.sheetName,
                 "Tabelle1");
 
             var extentManager = dm.Resolve<ExtentManager>();

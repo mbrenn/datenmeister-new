@@ -4392,14 +4392,6 @@ public class ExtentLoaderConfigs
             }
         }
 
-        public string? @xmiFilePath
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("xmiFilePath");
-            set => 
-                _wrappedElement.set("xmiFilePath", value);
-        }
-
         public string? @name
         {
             get =>
@@ -4436,16 +4428,16 @@ public class ExtentLoaderConfigs
 
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig",
         TypeKind = TypeKind.WrappedClass)]
-    public class ExcelReferenceLoaderConfig_Wrapper : IElementWrapper
+    public class ExcelReadOnlyLoaderConfig_Wrapper : IElementWrapper
     {
         private readonly IElement _wrappedElement;
 
-        public ExcelReferenceLoaderConfig_Wrapper(IElement innerDmElement)
+        public ExcelReadOnlyLoaderConfig_Wrapper(IElement innerDmElement)
         {
             _wrappedElement = innerDmElement;
         }
 
-        public ExcelReferenceLoaderConfig_Wrapper(IFactory factory)
+        public ExcelReadOnlyLoaderConfig_Wrapper(IFactory factory)
         {
             _wrappedElement = factory.create(_metaClass);
         }
@@ -4454,7 +4446,7 @@ public class ExtentLoaderConfigs
 
         private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig");
 
-        public static ExcelReferenceLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+        public static ExcelReadOnlyLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public bool @fixRowCount
         {
@@ -4581,14 +4573,6 @@ public class ExtentLoaderConfigs
             }
         }
 
-        public string? @xmiFilePath
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("xmiFilePath");
-            set => 
-                _wrappedElement.set("xmiFilePath", value);
-        }
-
         public string? @name
         {
             get =>
@@ -4625,16 +4609,16 @@ public class ExtentLoaderConfigs
 
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig",
         TypeKind = TypeKind.WrappedClass)]
-    public class ExcelImportLoaderConfig_Wrapper : IElementWrapper
+    public class ExcelConvertToXmiOnceConfig_Wrapper : IElementWrapper
     {
         private readonly IElement _wrappedElement;
 
-        public ExcelImportLoaderConfig_Wrapper(IElement innerDmElement)
+        public ExcelConvertToXmiOnceConfig_Wrapper(IElement innerDmElement)
         {
             _wrappedElement = innerDmElement;
         }
 
-        public ExcelImportLoaderConfig_Wrapper(IFactory factory)
+        public ExcelConvertToXmiOnceConfig_Wrapper(IFactory factory)
         {
             _wrappedElement = factory.create(_metaClass);
         }
@@ -4643,7 +4627,7 @@ public class ExtentLoaderConfigs
 
         private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig");
 
-        public static ExcelImportLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+        public static ExcelConvertToXmiOnceConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @xmiFilePath
         {
@@ -4814,16 +4798,16 @@ public class ExtentLoaderConfigs
 
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig",
         TypeKind = TypeKind.WrappedClass)]
-    public class ExcelExtentLoaderConfig_Wrapper : IElementWrapper
+    public class ExcelFullSyncLoaderConfig_Wrapper : IElementWrapper
     {
         private readonly IElement _wrappedElement;
 
-        public ExcelExtentLoaderConfig_Wrapper(IElement innerDmElement)
+        public ExcelFullSyncLoaderConfig_Wrapper(IElement innerDmElement)
         {
             _wrappedElement = innerDmElement;
         }
 
-        public ExcelExtentLoaderConfig_Wrapper(IFactory factory)
+        public ExcelFullSyncLoaderConfig_Wrapper(IFactory factory)
         {
             _wrappedElement = factory.create(_metaClass);
         }
@@ -4832,7 +4816,7 @@ public class ExtentLoaderConfigs
 
         private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig");
 
-        public static ExcelExtentLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+        public static ExcelFullSyncLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public bool @fixRowCount
         {
@@ -4957,14 +4941,6 @@ public class ExtentLoaderConfigs
                     _wrappedElement.set("columns", value);
                 }
             }
-        }
-
-        public string? @xmiFilePath
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("xmiFilePath");
-            set => 
-                _wrappedElement.set("xmiFilePath", value);
         }
 
         public string? @name
@@ -5658,14 +5634,6 @@ public class ExtentLoaderConfigs
                     _wrappedElement.set("columns", value);
                 }
             }
-        }
-
-        public string? @xmiFilePath
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("xmiFilePath");
-            set => 
-                _wrappedElement.set("xmiFilePath", value);
         }
 
         public string? @name

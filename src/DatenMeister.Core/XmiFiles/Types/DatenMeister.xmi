@@ -490,7 +490,6 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="idColumnName" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="3f3be2dc-3f46-414d-bfe4-9c3403c32d36" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="88f22e39-88fe-484f-b969-f98286500ce8" name="skipEmptyRowsCount" type-ref="dm:///_internal/model/primitivetypes#Integer" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5c545cfe-04b8-430f-a648-6c65c788ede1" name="columns" type-ref="dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a" upper="*" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8ad18174-54b2-4b9d-a67d-70b7c0f8910f" name="xmiFilePath" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig" name="ExcelReadOnlyLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig" p1:id="c76ee46f-0e09-43bf-9628-c6d3ad4952af" />

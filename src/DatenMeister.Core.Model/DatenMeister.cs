@@ -1691,9 +1691,6 @@ public class _ExtentLoaderConfigs
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
 
-        public static readonly string @xmiFilePath = "xmiFilePath";
-        public IElement? @_xmiFilePath = null;
-
         public static readonly string @name = "name";
         public IElement? @_name = null;
 
@@ -1713,7 +1710,7 @@ public class _ExtentLoaderConfigs
 
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
-    public class _ExcelReferenceLoaderConfig
+    public class _ExcelReadOnlyLoaderConfig
     {
         public static readonly string @fixRowCount = "fixRowCount";
         public IElement? @_fixRowCount = null;
@@ -1757,9 +1754,6 @@ public class _ExtentLoaderConfigs
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
 
-        public static readonly string @xmiFilePath = "xmiFilePath";
-        public IElement? @_xmiFilePath = null;
-
         public static readonly string @name = "name";
         public IElement? @_name = null;
 
@@ -1774,12 +1768,12 @@ public class _ExtentLoaderConfigs
 
     }
 
-    public _ExcelReferenceLoaderConfig @ExcelReferenceLoaderConfig = new ();
-    public MofObjectShadow @__ExcelReferenceLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig");
+    public _ExcelReadOnlyLoaderConfig @ExcelReadOnlyLoaderConfig = new ();
+    public MofObjectShadow @__ExcelReadOnlyLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig");
 
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
-    public class _ExcelImportLoaderConfig
+    public class _ExcelConvertToXmiOnceConfig
     {
         public static readonly string @xmiFilePath = "xmiFilePath";
         public IElement? @_xmiFilePath = null;
@@ -1840,12 +1834,12 @@ public class _ExtentLoaderConfigs
 
     }
 
-    public _ExcelImportLoaderConfig @ExcelImportLoaderConfig = new ();
-    public MofObjectShadow @__ExcelImportLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig");
+    public _ExcelConvertToXmiOnceConfig @ExcelConvertToXmiOnceConfig = new ();
+    public MofObjectShadow @__ExcelConvertToXmiOnceConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig");
 
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
-    public class _ExcelExtentLoaderConfig
+    public class _ExcelFullSyncLoaderConfig
     {
         public static readonly string @fixRowCount = "fixRowCount";
         public IElement? @_fixRowCount = null;
@@ -1889,9 +1883,6 @@ public class _ExtentLoaderConfigs
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
 
-        public static readonly string @xmiFilePath = "xmiFilePath";
-        public IElement? @_xmiFilePath = null;
-
         public static readonly string @name = "name";
         public IElement? @_name = null;
 
@@ -1906,8 +1897,8 @@ public class _ExtentLoaderConfigs
 
     }
 
-    public _ExcelExtentLoaderConfig @ExcelExtentLoaderConfig = new ();
-    public MofObjectShadow @__ExcelExtentLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig");
+    public _ExcelFullSyncLoaderConfig @ExcelFullSyncLoaderConfig = new ();
+    public MofObjectShadow @__ExcelFullSyncLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig");
 
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
@@ -2131,9 +2122,6 @@ public class _ExtentLoaderConfigs
 
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
-
-        public static readonly string @xmiFilePath = "xmiFilePath";
-        public IElement? @_xmiFilePath = null;
 
         public static readonly string @name = "name";
         public IElement? @_name = null;

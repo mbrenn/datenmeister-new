@@ -28,7 +28,7 @@ public class ExcelConvertToXmiOnceLoader : IProviderLoader
 
         var xmiExtentPath =
             configuration.getOrDefault<string>(
-                _ExtentLoaderConfigs._ExcelImportLoaderConfig.xmiFilePath) 
+                _ExtentLoaderConfigs._ExcelConvertToXmiOnceConfig.xmiFilePath) 
             ?? throw new InvalidOperationException("extentPath == null");
             
         // Creates the XMI being used as a target
@@ -39,10 +39,10 @@ public class ExcelConvertToXmiOnceLoader : IProviderLoader
             xmiExtentPath);
         xmiConfiguration.set(
             _ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
-            configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri));
+            configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExcelConvertToXmiOnceConfig.extentUri));
         xmiConfiguration.set(
             _ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
-            configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExcelImportLoaderConfig.workspaceId));
+            configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExcelConvertToXmiOnceConfig.workspaceId));
 
         var loadedInfo = await extentManager.LoadExtent(xmiConfiguration, extentCreationFlags);
         if (loadedInfo.LoadingState == ExtentLoadingState.Failed || loadedInfo.Extent == null)

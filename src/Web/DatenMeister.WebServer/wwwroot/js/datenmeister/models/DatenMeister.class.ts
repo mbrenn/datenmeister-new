@@ -782,7 +782,6 @@ export namespace _ExtentLoaderConfigs
             static idColumnName = "idColumnName";
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
-            static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";
@@ -790,33 +789,8 @@ export namespace _ExtentLoaderConfigs
         }
 
         export const __ExcelLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig";
-        export class _ExcelReferenceLoaderConfig
+        export class _ExcelReadOnlyLoaderConfig
         {
-            static fixRowCount = "fixRowCount";
-            static fixColumnCount = "fixColumnCount";
-            static filePath = "filePath";
-            static sheetName = "sheetName";
-            static offsetRow = "offsetRow";
-            static offsetColumn = "offsetColumn";
-            static countRows = "countRows";
-            static countColumns = "countColumns";
-            static hasHeader = "hasHeader";
-            static tryMergedHeaderCells = "tryMergedHeaderCells";
-            static onlySetColumns = "onlySetColumns";
-            static idColumnName = "idColumnName";
-            static skipEmptyRowsCount = "skipEmptyRowsCount";
-            static columns = "columns";
-            static xmiFilePath = "xmiFilePath";
-            static _name_ = "name";
-            static extentUri = "extentUri";
-            static workspaceId = "workspaceId";
-            static dropExisting = "dropExisting";
-        }
-
-        export const __ExcelReferenceLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig";
-        export class _ExcelImportLoaderConfig
-        {
-            static xmiFilePath = "xmiFilePath";
             static fixRowCount = "fixRowCount";
             static fixColumnCount = "fixColumnCount";
             static filePath = "filePath";
@@ -837,8 +811,32 @@ export namespace _ExtentLoaderConfigs
             static dropExisting = "dropExisting";
         }
 
-        export const __ExcelImportLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig";
-        export class _ExcelExtentLoaderConfig
+        export const __ExcelReadOnlyLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig";
+        export class _ExcelConvertToXmiOnceConfig
+        {
+            static xmiFilePath = "xmiFilePath";
+            static fixRowCount = "fixRowCount";
+            static fixColumnCount = "fixColumnCount";
+            static filePath = "filePath";
+            static sheetName = "sheetName";
+            static offsetRow = "offsetRow";
+            static offsetColumn = "offsetColumn";
+            static countRows = "countRows";
+            static countColumns = "countColumns";
+            static hasHeader = "hasHeader";
+            static tryMergedHeaderCells = "tryMergedHeaderCells";
+            static onlySetColumns = "onlySetColumns";
+            static idColumnName = "idColumnName";
+            static skipEmptyRowsCount = "skipEmptyRowsCount";
+            static columns = "columns";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
+        }
+
+        export const __ExcelConvertToXmiOnceConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig";
+        export class _ExcelFullSyncLoaderConfig
         {
             static fixRowCount = "fixRowCount";
             static fixColumnCount = "fixColumnCount";
@@ -854,14 +852,13 @@ export namespace _ExtentLoaderConfigs
             static idColumnName = "idColumnName";
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
-            static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";
             static dropExisting = "dropExisting";
         }
 
-        export const __ExcelExtentLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig";
+        export const __ExcelFullSyncLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig";
         export class _InMemoryLoaderConfig
         {
             static isLinkedList = "isLinkedList";
@@ -951,7 +948,6 @@ export namespace _ExtentLoaderConfigs
             static idColumnName = "idColumnName";
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
-            static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";

@@ -105,12 +105,12 @@
       <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Select Meta Class" title="Select your MetaClass" p1:id="Forms.Create.ByMetaClass.Detail" name="Select Extent Type">
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="metaClass" title="Type of MetaClass" defaultWorkspace="Types" isSelectionInline="true" p1:id="2cd08ab1-de63-453e-b5e3-903c30bb8a16" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" name="creationMode" title="Creation Strategy" p1:id="4e536826-8cb6-4217-8c5d-459516ecd616">
-          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Collection" name="Collection w/o Assocation" p1:id="a610cc6c-42b3-4015-a152-fbd0046fc411" />
-          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Collection_Association" name="Collection w/ Assocation" p1:id="b76c2802-fa08-4901-a0ed-43dc43dd499f" />
-          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Object" name="Object w/o Assocation" p1:id="c610cc6c-42b3-4015-a152-fbd0046fc411" />
-          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Object_Association" name="Object w/ Assocation" p1:id="d76c2802-fa08-4901-a0ed-43dc43dd499f" />
+          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Collection" name="Collection w/o Association" p1:id="a610cc6c-42b3-4015-a152-fbd0046fc411" />
+          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Collection_Association" name="Collection w/ Association" p1:id="b76c2802-fa08-4901-a0ed-43dc43dd499f" />
+          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Object" name="Object w/o Association" p1:id="c610cc6c-42b3-4015-a152-fbd0046fc411" />
+          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Object_Association" name="Object w/ Association" p1:id="d76c2802-fa08-4901-a0ed-43dc43dd499f" />
           <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Collection_Object" name="Object- and Collection w/o Association" p1:id="e610cc6c-42b3-4015-a152-fbd0046fc411" />
-          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Collection_Object_Association" name="Object- and Collection w/ Assocation" p1:id="f76c2802-fa08-4901-a0ed-43dc43dd499f" />
+          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Collection_Object_Association" name="Object- and Collection w/ Association" p1:id="f76c2802-fa08-4901-a0ed-43dc43dd499f" />
         </field>
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="targetContainer" title="Target Container" defaultWorkspace="Management" isSelectionInline="true" p1:id="2cd08ac1-de63-453e-b5e3-903c30bb8a16" />
       </tab>
@@ -219,7 +219,7 @@
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" p1:id="1b6d7b39-8aa9-4668-846d-695c946cf299" name="Metaclass" title="Metaclass" />
         </tab>
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="9ffde4e3-fa9c-463d-9e82-ec2c9c55b024" form-ref="dm:///_internal/forms/internal#51c7b715-cdb8-4c0b-b2f6-8fe194f32862" extentType="DatenMeister.Workspaces" formType="Collection" name="Assocation for CollectionForm of Workspace" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="9ffde4e3-fa9c-463d-9e82-ec2c9c55b024" form-ref="dm:///_internal/forms/internal#51c7b715-cdb8-4c0b-b2f6-8fe194f32862" extentType="DatenMeister.Workspaces" formType="Collection" name="Association for CollectionForm of Workspace" />
     </packagedElement>
   </item>
   <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="e0d85e06-1168-4840-b757-eef4e0a9baf3" name="DefaultTypes" xmlns:p2="http://www.omg.org/spec/XMI/20131001">

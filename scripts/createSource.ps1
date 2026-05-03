@@ -87,9 +87,9 @@ Move-Item Model/*.map Js/ -Force
 Set-Location ../..
 
 Move-Item src/DatenMeister.Core.Model/DatenMeister.ts src/Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/DatenMeister.class.ts -Force
-Move-Item src/DatenMeister.Core.Model/EMOF/mof.ts src/Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/mof.ts -Force
-Move-Item src/DatenMeister.Core.Model/EMOF/uml.ts src/Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/uml.ts -Force
-Move-Item src/DatenMeister.Core.Model/EMOF/primitivetypes.ts src/Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/primitivetypes.ts -Force
+Move-Item src/DatenMeister.Core.Model/EMOF/MOF.ts src/Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/MOF.ts -Force
+Move-Item src/DatenMeister.Core.Model/EMOF/UML.ts src/Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/UML.ts -Force
+Move-Item src/DatenMeister.Core.Model/EMOF/PrimitiveTypes.ts src/Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/PrimitiveTypes.ts -Force
 
 Set-Location scripts
 

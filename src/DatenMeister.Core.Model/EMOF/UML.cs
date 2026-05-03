@@ -10,6 +10,7 @@ public class _UML
 {
     public class _Activities
     {
+        // _UML._Activities._Activity
         [TypeUri(Uri = "dm:///_internal/model/uml#Activity",
             TypeKind = TypeKind.ClassTree)]
         public class _Activity
@@ -220,6 +221,7 @@ public class _UML
         public _Activity @Activity = new ();
         public MofObjectShadow @__Activity = new ("dm:///_internal/model/uml#Activity");
 
+        // _UML._Activities._ActivityEdge
         [TypeUri(Uri = "dm:///_internal/model/uml#ActivityEdge",
             TypeKind = TypeKind.ClassTree)]
         public class _ActivityEdge
@@ -295,6 +297,7 @@ public class _UML
         public _ActivityEdge @ActivityEdge = new ();
         public MofObjectShadow @__ActivityEdge = new ("dm:///_internal/model/uml#ActivityEdge");
 
+        // _UML._Activities._ActivityFinalNode
         [TypeUri(Uri = "dm:///_internal/model/uml#ActivityFinalNode",
             TypeKind = TypeKind.ClassTree)]
         public class _ActivityFinalNode
@@ -364,6 +367,7 @@ public class _UML
         public _ActivityFinalNode @ActivityFinalNode = new ();
         public MofObjectShadow @__ActivityFinalNode = new ("dm:///_internal/model/uml#ActivityFinalNode");
 
+        // _UML._Activities._ActivityGroup
         [TypeUri(Uri = "dm:///_internal/model/uml#ActivityGroup",
             TypeKind = TypeKind.ClassTree)]
         public class _ActivityGroup
@@ -415,6 +419,7 @@ public class _UML
         public _ActivityGroup @ActivityGroup = new ();
         public MofObjectShadow @__ActivityGroup = new ("dm:///_internal/model/uml#ActivityGroup");
 
+        // _UML._Activities._ActivityNode
         [TypeUri(Uri = "dm:///_internal/model/uml#ActivityNode",
             TypeKind = TypeKind.ClassTree)]
         public class _ActivityNode
@@ -484,6 +489,7 @@ public class _UML
         public _ActivityNode @ActivityNode = new ();
         public MofObjectShadow @__ActivityNode = new ("dm:///_internal/model/uml#ActivityNode");
 
+        // _UML._Activities._ActivityParameterNode
         [TypeUri(Uri = "dm:///_internal/model/uml#ActivityParameterNode",
             TypeKind = TypeKind.ClassTree)]
         public class _ActivityParameterNode
@@ -574,6 +580,7 @@ public class _UML
         public _ActivityParameterNode @ActivityParameterNode = new ();
         public MofObjectShadow @__ActivityParameterNode = new ("dm:///_internal/model/uml#ActivityParameterNode");
 
+        // _UML._Activities._ActivityPartition
         [TypeUri(Uri = "dm:///_internal/model/uml#ActivityPartition",
             TypeKind = TypeKind.ClassTree)]
         public class _ActivityPartition
@@ -646,6 +653,7 @@ public class _UML
         public _ActivityPartition @ActivityPartition = new ();
         public MofObjectShadow @__ActivityPartition = new ("dm:///_internal/model/uml#ActivityPartition");
 
+        // _UML._Activities._CentralBufferNode
         [TypeUri(Uri = "dm:///_internal/model/uml#CentralBufferNode",
             TypeKind = TypeKind.ClassTree)]
         public class _CentralBufferNode
@@ -733,6 +741,7 @@ public class _UML
         public _CentralBufferNode @CentralBufferNode = new ();
         public MofObjectShadow @__CentralBufferNode = new ("dm:///_internal/model/uml#CentralBufferNode");
 
+        // _UML._Activities._ControlFlow
         [TypeUri(Uri = "dm:///_internal/model/uml#ControlFlow",
             TypeKind = TypeKind.ClassTree)]
         public class _ControlFlow
@@ -808,6 +817,7 @@ public class _UML
         public _ControlFlow @ControlFlow = new ();
         public MofObjectShadow @__ControlFlow = new ("dm:///_internal/model/uml#ControlFlow");
 
+        // _UML._Activities._ControlNode
         [TypeUri(Uri = "dm:///_internal/model/uml#ControlNode",
             TypeKind = TypeKind.ClassTree)]
         public class _ControlNode
@@ -877,6 +887,7 @@ public class _UML
         public _ControlNode @ControlNode = new ();
         public MofObjectShadow @__ControlNode = new ("dm:///_internal/model/uml#ControlNode");
 
+        // _UML._Activities._DataStoreNode
         [TypeUri(Uri = "dm:///_internal/model/uml#DataStoreNode",
             TypeKind = TypeKind.ClassTree)]
         public class _DataStoreNode
@@ -964,6 +975,7 @@ public class _UML
         public _DataStoreNode @DataStoreNode = new ();
         public MofObjectShadow @__DataStoreNode = new ("dm:///_internal/model/uml#DataStoreNode");
 
+        // _UML._Activities._DecisionNode
         [TypeUri(Uri = "dm:///_internal/model/uml#DecisionNode",
             TypeKind = TypeKind.ClassTree)]
         public class _DecisionNode
@@ -1039,6 +1051,7 @@ public class _UML
         public _DecisionNode @DecisionNode = new ();
         public MofObjectShadow @__DecisionNode = new ("dm:///_internal/model/uml#DecisionNode");
 
+        // _UML._Activities._ExceptionHandler
         [TypeUri(Uri = "dm:///_internal/model/uml#ExceptionHandler",
             TypeKind = TypeKind.ClassTree)]
         public class _ExceptionHandler
@@ -1069,6 +1082,7 @@ public class _UML
         public _ExceptionHandler @ExceptionHandler = new ();
         public MofObjectShadow @__ExceptionHandler = new ("dm:///_internal/model/uml#ExceptionHandler");
 
+        // _UML._Activities._ExecutableNode
         [TypeUri(Uri = "dm:///_internal/model/uml#ExecutableNode",
             TypeKind = TypeKind.ClassTree)]
         public class _ExecutableNode
@@ -1141,6 +1155,7 @@ public class _UML
         public _ExecutableNode @ExecutableNode = new ();
         public MofObjectShadow @__ExecutableNode = new ("dm:///_internal/model/uml#ExecutableNode");
 
+        // _UML._Activities._FinalNode
         [TypeUri(Uri = "dm:///_internal/model/uml#FinalNode",
             TypeKind = TypeKind.ClassTree)]
         public class _FinalNode
@@ -1210,6 +1225,7 @@ public class _UML
         public _FinalNode @FinalNode = new ();
         public MofObjectShadow @__FinalNode = new ("dm:///_internal/model/uml#FinalNode");
 
+        // _UML._Activities._FlowFinalNode
         [TypeUri(Uri = "dm:///_internal/model/uml#FlowFinalNode",
             TypeKind = TypeKind.ClassTree)]
         public class _FlowFinalNode
@@ -1279,6 +1295,7 @@ public class _UML
         public _FlowFinalNode @FlowFinalNode = new ();
         public MofObjectShadow @__FlowFinalNode = new ("dm:///_internal/model/uml#FlowFinalNode");
 
+        // _UML._Activities._ForkNode
         [TypeUri(Uri = "dm:///_internal/model/uml#ForkNode",
             TypeKind = TypeKind.ClassTree)]
         public class _ForkNode
@@ -1348,6 +1365,7 @@ public class _UML
         public _ForkNode @ForkNode = new ();
         public MofObjectShadow @__ForkNode = new ("dm:///_internal/model/uml#ForkNode");
 
+        // _UML._Activities._InitialNode
         [TypeUri(Uri = "dm:///_internal/model/uml#InitialNode",
             TypeKind = TypeKind.ClassTree)]
         public class _InitialNode
@@ -1417,6 +1435,7 @@ public class _UML
         public _InitialNode @InitialNode = new ();
         public MofObjectShadow @__InitialNode = new ("dm:///_internal/model/uml#InitialNode");
 
+        // _UML._Activities._InterruptibleActivityRegion
         [TypeUri(Uri = "dm:///_internal/model/uml#InterruptibleActivityRegion",
             TypeKind = TypeKind.ClassTree)]
         public class _InterruptibleActivityRegion
@@ -1474,6 +1493,7 @@ public class _UML
         public _InterruptibleActivityRegion @InterruptibleActivityRegion = new ();
         public MofObjectShadow @__InterruptibleActivityRegion = new ("dm:///_internal/model/uml#InterruptibleActivityRegion");
 
+        // _UML._Activities._JoinNode
         [TypeUri(Uri = "dm:///_internal/model/uml#JoinNode",
             TypeKind = TypeKind.ClassTree)]
         public class _JoinNode
@@ -1549,6 +1569,7 @@ public class _UML
         public _JoinNode @JoinNode = new ();
         public MofObjectShadow @__JoinNode = new ("dm:///_internal/model/uml#JoinNode");
 
+        // _UML._Activities._MergeNode
         [TypeUri(Uri = "dm:///_internal/model/uml#MergeNode",
             TypeKind = TypeKind.ClassTree)]
         public class _MergeNode
@@ -1618,6 +1639,7 @@ public class _UML
         public _MergeNode @MergeNode = new ();
         public MofObjectShadow @__MergeNode = new ("dm:///_internal/model/uml#MergeNode");
 
+        // _UML._Activities._ObjectFlow
         [TypeUri(Uri = "dm:///_internal/model/uml#ObjectFlow",
             TypeKind = TypeKind.ClassTree)]
         public class _ObjectFlow
@@ -1705,6 +1727,7 @@ public class _UML
         public _ObjectFlow @ObjectFlow = new ();
         public MofObjectShadow @__ObjectFlow = new ("dm:///_internal/model/uml#ObjectFlow");
 
+        // _UML._Activities._ObjectNode
         [TypeUri(Uri = "dm:///_internal/model/uml#ObjectNode",
             TypeKind = TypeKind.ClassTree)]
         public class _ObjectNode
@@ -1792,6 +1815,7 @@ public class _UML
         public _ObjectNode @ObjectNode = new ();
         public MofObjectShadow @__ObjectNode = new ("dm:///_internal/model/uml#ObjectNode");
 
+        // _UML._Activities._Variable
         [TypeUri(Uri = "dm:///_internal/model/uml#Variable",
             TypeKind = TypeKind.ClassTree)]
         public class _Variable
@@ -1895,6 +1919,7 @@ public class _UML
 
     public class _Values
     {
+        // _UML._Values._Duration
         [TypeUri(Uri = "dm:///_internal/model/uml#Duration",
             TypeKind = TypeKind.ClassTree)]
         public class _Duration
@@ -1946,6 +1971,7 @@ public class _UML
         public _Duration @Duration = new ();
         public MofObjectShadow @__Duration = new ("dm:///_internal/model/uml#Duration");
 
+        // _UML._Values._DurationConstraint
         [TypeUri(Uri = "dm:///_internal/model/uml#DurationConstraint",
             TypeKind = TypeKind.ClassTree)]
         public class _DurationConstraint
@@ -2000,6 +2026,7 @@ public class _UML
         public _DurationConstraint @DurationConstraint = new ();
         public MofObjectShadow @__DurationConstraint = new ("dm:///_internal/model/uml#DurationConstraint");
 
+        // _UML._Values._DurationInterval
         [TypeUri(Uri = "dm:///_internal/model/uml#DurationInterval",
             TypeKind = TypeKind.ClassTree)]
         public class _DurationInterval
@@ -2051,6 +2078,7 @@ public class _UML
         public _DurationInterval @DurationInterval = new ();
         public MofObjectShadow @__DurationInterval = new ("dm:///_internal/model/uml#DurationInterval");
 
+        // _UML._Values._DurationObservation
         [TypeUri(Uri = "dm:///_internal/model/uml#DurationObservation",
             TypeKind = TypeKind.ClassTree)]
         public class _DurationObservation
@@ -2099,6 +2127,7 @@ public class _UML
         public _DurationObservation @DurationObservation = new ();
         public MofObjectShadow @__DurationObservation = new ("dm:///_internal/model/uml#DurationObservation");
 
+        // _UML._Values._Expression
         [TypeUri(Uri = "dm:///_internal/model/uml#Expression",
             TypeKind = TypeKind.ClassTree)]
         public class _Expression
@@ -2150,6 +2179,7 @@ public class _UML
         public _Expression @Expression = new ();
         public MofObjectShadow @__Expression = new ("dm:///_internal/model/uml#Expression");
 
+        // _UML._Values._Interval
         [TypeUri(Uri = "dm:///_internal/model/uml#Interval",
             TypeKind = TypeKind.ClassTree)]
         public class _Interval
@@ -2201,6 +2231,7 @@ public class _UML
         public _Interval @Interval = new ();
         public MofObjectShadow @__Interval = new ("dm:///_internal/model/uml#Interval");
 
+        // _UML._Values._IntervalConstraint
         [TypeUri(Uri = "dm:///_internal/model/uml#IntervalConstraint",
             TypeKind = TypeKind.ClassTree)]
         public class _IntervalConstraint
@@ -2252,6 +2283,7 @@ public class _UML
         public _IntervalConstraint @IntervalConstraint = new ();
         public MofObjectShadow @__IntervalConstraint = new ("dm:///_internal/model/uml#IntervalConstraint");
 
+        // _UML._Values._LiteralBoolean
         [TypeUri(Uri = "dm:///_internal/model/uml#LiteralBoolean",
             TypeKind = TypeKind.ClassTree)]
         public class _LiteralBoolean
@@ -2300,6 +2332,7 @@ public class _UML
         public _LiteralBoolean @LiteralBoolean = new ();
         public MofObjectShadow @__LiteralBoolean = new ("dm:///_internal/model/uml#LiteralBoolean");
 
+        // _UML._Values._LiteralInteger
         [TypeUri(Uri = "dm:///_internal/model/uml#LiteralInteger",
             TypeKind = TypeKind.ClassTree)]
         public class _LiteralInteger
@@ -2348,6 +2381,7 @@ public class _UML
         public _LiteralInteger @LiteralInteger = new ();
         public MofObjectShadow @__LiteralInteger = new ("dm:///_internal/model/uml#LiteralInteger");
 
+        // _UML._Values._LiteralNull
         [TypeUri(Uri = "dm:///_internal/model/uml#LiteralNull",
             TypeKind = TypeKind.ClassTree)]
         public class _LiteralNull
@@ -2393,6 +2427,7 @@ public class _UML
         public _LiteralNull @LiteralNull = new ();
         public MofObjectShadow @__LiteralNull = new ("dm:///_internal/model/uml#LiteralNull");
 
+        // _UML._Values._LiteralReal
         [TypeUri(Uri = "dm:///_internal/model/uml#LiteralReal",
             TypeKind = TypeKind.ClassTree)]
         public class _LiteralReal
@@ -2441,6 +2476,7 @@ public class _UML
         public _LiteralReal @LiteralReal = new ();
         public MofObjectShadow @__LiteralReal = new ("dm:///_internal/model/uml#LiteralReal");
 
+        // _UML._Values._LiteralSpecification
         [TypeUri(Uri = "dm:///_internal/model/uml#LiteralSpecification",
             TypeKind = TypeKind.ClassTree)]
         public class _LiteralSpecification
@@ -2486,6 +2522,7 @@ public class _UML
         public _LiteralSpecification @LiteralSpecification = new ();
         public MofObjectShadow @__LiteralSpecification = new ("dm:///_internal/model/uml#LiteralSpecification");
 
+        // _UML._Values._LiteralString
         [TypeUri(Uri = "dm:///_internal/model/uml#LiteralString",
             TypeKind = TypeKind.ClassTree)]
         public class _LiteralString
@@ -2534,6 +2571,7 @@ public class _UML
         public _LiteralString @LiteralString = new ();
         public MofObjectShadow @__LiteralString = new ("dm:///_internal/model/uml#LiteralString");
 
+        // _UML._Values._LiteralUnlimitedNatural
         [TypeUri(Uri = "dm:///_internal/model/uml#LiteralUnlimitedNatural",
             TypeKind = TypeKind.ClassTree)]
         public class _LiteralUnlimitedNatural
@@ -2582,6 +2620,7 @@ public class _UML
         public _LiteralUnlimitedNatural @LiteralUnlimitedNatural = new ();
         public MofObjectShadow @__LiteralUnlimitedNatural = new ("dm:///_internal/model/uml#LiteralUnlimitedNatural");
 
+        // _UML._Values._Observation
         [TypeUri(Uri = "dm:///_internal/model/uml#Observation",
             TypeKind = TypeKind.ClassTree)]
         public class _Observation
@@ -2624,6 +2663,7 @@ public class _UML
         public _Observation @Observation = new ();
         public MofObjectShadow @__Observation = new ("dm:///_internal/model/uml#Observation");
 
+        // _UML._Values._OpaqueExpression
         [TypeUri(Uri = "dm:///_internal/model/uml#OpaqueExpression",
             TypeKind = TypeKind.ClassTree)]
         public class _OpaqueExpression
@@ -2681,6 +2721,7 @@ public class _UML
         public _OpaqueExpression @OpaqueExpression = new ();
         public MofObjectShadow @__OpaqueExpression = new ("dm:///_internal/model/uml#OpaqueExpression");
 
+        // _UML._Values._StringExpression
         [TypeUri(Uri = "dm:///_internal/model/uml#StringExpression",
             TypeKind = TypeKind.ClassTree)]
         public class _StringExpression
@@ -2744,6 +2785,7 @@ public class _UML
         public _StringExpression @StringExpression = new ();
         public MofObjectShadow @__StringExpression = new ("dm:///_internal/model/uml#StringExpression");
 
+        // _UML._Values._TimeConstraint
         [TypeUri(Uri = "dm:///_internal/model/uml#TimeConstraint",
             TypeKind = TypeKind.ClassTree)]
         public class _TimeConstraint
@@ -2798,6 +2840,7 @@ public class _UML
         public _TimeConstraint @TimeConstraint = new ();
         public MofObjectShadow @__TimeConstraint = new ("dm:///_internal/model/uml#TimeConstraint");
 
+        // _UML._Values._TimeExpression
         [TypeUri(Uri = "dm:///_internal/model/uml#TimeExpression",
             TypeKind = TypeKind.ClassTree)]
         public class _TimeExpression
@@ -2849,6 +2892,7 @@ public class _UML
         public _TimeExpression @TimeExpression = new ();
         public MofObjectShadow @__TimeExpression = new ("dm:///_internal/model/uml#TimeExpression");
 
+        // _UML._Values._TimeInterval
         [TypeUri(Uri = "dm:///_internal/model/uml#TimeInterval",
             TypeKind = TypeKind.ClassTree)]
         public class _TimeInterval
@@ -2900,6 +2944,7 @@ public class _UML
         public _TimeInterval @TimeInterval = new ();
         public MofObjectShadow @__TimeInterval = new ("dm:///_internal/model/uml#TimeInterval");
 
+        // _UML._Values._TimeObservation
         [TypeUri(Uri = "dm:///_internal/model/uml#TimeObservation",
             TypeKind = TypeKind.ClassTree)]
         public class _TimeObservation
@@ -2948,6 +2993,7 @@ public class _UML
         public _TimeObservation @TimeObservation = new ();
         public MofObjectShadow @__TimeObservation = new ("dm:///_internal/model/uml#TimeObservation");
 
+        // _UML._Values._ValueSpecification
         [TypeUri(Uri = "dm:///_internal/model/uml#ValueSpecification",
             TypeKind = TypeKind.ClassTree)]
         public class _ValueSpecification
@@ -2999,6 +3045,7 @@ public class _UML
 
     public class _UseCases
     {
+        // _UML._UseCases._Actor
         [TypeUri(Uri = "dm:///_internal/model/uml#Actor",
             TypeKind = TypeKind.ClassTree)]
         public class _Actor
@@ -3128,6 +3175,7 @@ public class _UML
         public _Actor @Actor = new ();
         public MofObjectShadow @__Actor = new ("dm:///_internal/model/uml#Actor");
 
+        // _UML._UseCases._Extend
         [TypeUri(Uri = "dm:///_internal/model/uml#Extend",
             TypeKind = TypeKind.ClassTree)]
         public class _Extend
@@ -3185,6 +3233,7 @@ public class _UML
         public _Extend @Extend = new ();
         public MofObjectShadow @__Extend = new ("dm:///_internal/model/uml#Extend");
 
+        // _UML._UseCases._ExtensionPoint
         [TypeUri(Uri = "dm:///_internal/model/uml#ExtensionPoint",
             TypeKind = TypeKind.ClassTree)]
         public class _ExtensionPoint
@@ -3233,6 +3282,7 @@ public class _UML
         public _ExtensionPoint @ExtensionPoint = new ();
         public MofObjectShadow @__ExtensionPoint = new ("dm:///_internal/model/uml#ExtensionPoint");
 
+        // _UML._UseCases._Include
         [TypeUri(Uri = "dm:///_internal/model/uml#Include",
             TypeKind = TypeKind.ClassTree)]
         public class _Include
@@ -3284,6 +3334,7 @@ public class _UML
         public _Include @Include = new ();
         public MofObjectShadow @__Include = new ("dm:///_internal/model/uml#Include");
 
+        // _UML._UseCases._UseCase
         [TypeUri(Uri = "dm:///_internal/model/uml#UseCase",
             TypeKind = TypeKind.ClassTree)]
         public class _UseCase
@@ -3431,6 +3482,7 @@ public class _UML
 
     public class _StructuredClassifiers
     {
+        // _UML._StructuredClassifiers._Association
         [TypeUri(Uri = "dm:///_internal/model/uml#Association",
             TypeKind = TypeKind.ClassTree)]
         public class _Association
@@ -3569,6 +3621,7 @@ public class _UML
         public _Association @Association = new ();
         public MofObjectShadow @__Association = new ("dm:///_internal/model/uml#Association");
 
+        // _UML._StructuredClassifiers._AssociationClass
         [TypeUri(Uri = "dm:///_internal/model/uml#AssociationClass",
             TypeKind = TypeKind.ClassTree)]
         public class _AssociationClass
@@ -3749,6 +3802,7 @@ public class _UML
         public _AssociationClass @AssociationClass = new ();
         public MofObjectShadow @__AssociationClass = new ("dm:///_internal/model/uml#AssociationClass");
 
+        // _UML._StructuredClassifiers._Class
         [TypeUri(Uri = "dm:///_internal/model/uml#Class",
             TypeKind = TypeKind.ClassTree)]
         public class _Class
@@ -3911,6 +3965,7 @@ public class _UML
         public _Class @Class = new ();
         public MofObjectShadow @__Class = new ("dm:///_internal/model/uml#Class");
 
+        // _UML._StructuredClassifiers._Collaboration
         [TypeUri(Uri = "dm:///_internal/model/uml#Collaboration",
             TypeKind = TypeKind.ClassTree)]
         public class _Collaboration
@@ -4055,6 +4110,7 @@ public class _UML
         public _Collaboration @Collaboration = new ();
         public MofObjectShadow @__Collaboration = new ("dm:///_internal/model/uml#Collaboration");
 
+        // _UML._StructuredClassifiers._CollaborationUse
         [TypeUri(Uri = "dm:///_internal/model/uml#CollaborationUse",
             TypeKind = TypeKind.ClassTree)]
         public class _CollaborationUse
@@ -4097,6 +4153,7 @@ public class _UML
         public _CollaborationUse @CollaborationUse = new ();
         public MofObjectShadow @__CollaborationUse = new ("dm:///_internal/model/uml#CollaborationUse");
 
+        // _UML._StructuredClassifiers._Component
         [TypeUri(Uri = "dm:///_internal/model/uml#Component",
             TypeKind = TypeKind.ClassTree)]
         public class _Component
@@ -4274,6 +4331,7 @@ public class _UML
         public _Component @Component = new ();
         public MofObjectShadow @__Component = new ("dm:///_internal/model/uml#Component");
 
+        // _UML._StructuredClassifiers._ComponentRealization
         [TypeUri(Uri = "dm:///_internal/model/uml#ComponentRealization",
             TypeKind = TypeKind.ClassTree)]
         public class _ComponentRealization
@@ -4340,6 +4398,7 @@ public class _UML
         public _ComponentRealization @ComponentRealization = new ();
         public MofObjectShadow @__ComponentRealization = new ("dm:///_internal/model/uml#ComponentRealization");
 
+        // _UML._StructuredClassifiers._ConnectableElement
         [TypeUri(Uri = "dm:///_internal/model/uml#ConnectableElement",
             TypeKind = TypeKind.ClassTree)]
         public class _ConnectableElement
@@ -4388,6 +4447,7 @@ public class _UML
         public _ConnectableElement @ConnectableElement = new ();
         public MofObjectShadow @__ConnectableElement = new ("dm:///_internal/model/uml#ConnectableElement");
 
+        // _UML._StructuredClassifiers._ConnectableElementTemplateParameter
         [TypeUri(Uri = "dm:///_internal/model/uml#ConnectableElementTemplateParameter",
             TypeKind = TypeKind.ClassTree)]
         public class _ConnectableElementTemplateParameter
@@ -4421,6 +4481,7 @@ public class _UML
         public _ConnectableElementTemplateParameter @ConnectableElementTemplateParameter = new ();
         public MofObjectShadow @__ConnectableElementTemplateParameter = new ("dm:///_internal/model/uml#ConnectableElementTemplateParameter");
 
+        // _UML._StructuredClassifiers._Connector
         [TypeUri(Uri = "dm:///_internal/model/uml#Connector",
             TypeKind = TypeKind.ClassTree)]
         public class _Connector
@@ -4487,6 +4548,7 @@ public class _UML
         public _Connector @Connector = new ();
         public MofObjectShadow @__Connector = new ("dm:///_internal/model/uml#Connector");
 
+        // _UML._StructuredClassifiers._ConnectorEnd
         [TypeUri(Uri = "dm:///_internal/model/uml#ConnectorEnd",
             TypeKind = TypeKind.ClassTree)]
         public class _ConnectorEnd
@@ -4532,6 +4594,7 @@ public class _UML
         public _ConnectorEnd @ConnectorEnd = new ();
         public MofObjectShadow @__ConnectorEnd = new ("dm:///_internal/model/uml#ConnectorEnd");
 
+        // _UML._StructuredClassifiers._EncapsulatedClassifier
         [TypeUri(Uri = "dm:///_internal/model/uml#EncapsulatedClassifier",
             TypeKind = TypeKind.ClassTree)]
         public class _EncapsulatedClassifier
@@ -4667,6 +4730,7 @@ public class _UML
         public _EncapsulatedClassifier @EncapsulatedClassifier = new ();
         public MofObjectShadow @__EncapsulatedClassifier = new ("dm:///_internal/model/uml#EncapsulatedClassifier");
 
+        // _UML._StructuredClassifiers._Port
         [TypeUri(Uri = "dm:///_internal/model/uml#Port",
             TypeKind = TypeKind.ClassTree)]
         public class _Port
@@ -4826,6 +4890,7 @@ public class _UML
         public _Port @Port = new ();
         public MofObjectShadow @__Port = new ("dm:///_internal/model/uml#Port");
 
+        // _UML._StructuredClassifiers._StructuredClassifier
         [TypeUri(Uri = "dm:///_internal/model/uml#StructuredClassifier",
             TypeKind = TypeKind.ClassTree)]
         public class _StructuredClassifier
@@ -4983,6 +5048,7 @@ public class _UML
 
     public class _StateMachines
     {
+        // _UML._StateMachines._ConnectionPointReference
         [TypeUri(Uri = "dm:///_internal/model/uml#ConnectionPointReference",
             TypeKind = TypeKind.ClassTree)]
         public class _ConnectionPointReference
@@ -5037,6 +5103,7 @@ public class _UML
         public _ConnectionPointReference @ConnectionPointReference = new ();
         public MofObjectShadow @__ConnectionPointReference = new ("dm:///_internal/model/uml#ConnectionPointReference");
 
+        // _UML._StateMachines._FinalState
         [TypeUri(Uri = "dm:///_internal/model/uml#FinalState",
             TypeKind = TypeKind.ClassTree)]
         public class _FinalState
@@ -5151,6 +5218,7 @@ public class _UML
         public _FinalState @FinalState = new ();
         public MofObjectShadow @__FinalState = new ("dm:///_internal/model/uml#FinalState");
 
+        // _UML._StateMachines._ProtocolConformance
         [TypeUri(Uri = "dm:///_internal/model/uml#ProtocolConformance",
             TypeKind = TypeKind.ClassTree)]
         public class _ProtocolConformance
@@ -5184,6 +5252,7 @@ public class _UML
         public _ProtocolConformance @ProtocolConformance = new ();
         public MofObjectShadow @__ProtocolConformance = new ("dm:///_internal/model/uml#ProtocolConformance");
 
+        // _UML._StateMachines._ProtocolStateMachine
         [TypeUri(Uri = "dm:///_internal/model/uml#ProtocolStateMachine",
             TypeKind = TypeKind.ClassTree)]
         public class _ProtocolStateMachine
@@ -5385,6 +5454,7 @@ public class _UML
         public _ProtocolStateMachine @ProtocolStateMachine = new ();
         public MofObjectShadow @__ProtocolStateMachine = new ("dm:///_internal/model/uml#ProtocolStateMachine");
 
+        // _UML._StateMachines._ProtocolTransition
         [TypeUri(Uri = "dm:///_internal/model/uml#ProtocolTransition",
             TypeKind = TypeKind.ClassTree)]
         public class _ProtocolTransition
@@ -5481,6 +5551,7 @@ public class _UML
         public _ProtocolTransition @ProtocolTransition = new ();
         public MofObjectShadow @__ProtocolTransition = new ("dm:///_internal/model/uml#ProtocolTransition");
 
+        // _UML._StateMachines._Pseudostate
         [TypeUri(Uri = "dm:///_internal/model/uml#Pseudostate",
             TypeKind = TypeKind.ClassTree)]
         public class _Pseudostate
@@ -5535,6 +5606,7 @@ public class _UML
         public _Pseudostate @Pseudostate = new ();
         public MofObjectShadow @__Pseudostate = new ("dm:///_internal/model/uml#Pseudostate");
 
+        // _UML._StateMachines._Region
         [TypeUri(Uri = "dm:///_internal/model/uml#Region",
             TypeKind = TypeKind.ClassTree)]
         public class _Region
@@ -5613,6 +5685,7 @@ public class _UML
         public _Region @Region = new ();
         public MofObjectShadow @__Region = new ("dm:///_internal/model/uml#Region");
 
+        // _UML._StateMachines._State
         [TypeUri(Uri = "dm:///_internal/model/uml#State",
             TypeKind = TypeKind.ClassTree)]
         public class _State
@@ -5727,6 +5800,7 @@ public class _UML
         public _State @State = new ();
         public MofObjectShadow @__State = new ("dm:///_internal/model/uml#State");
 
+        // _UML._StateMachines._StateMachine
         [TypeUri(Uri = "dm:///_internal/model/uml#StateMachine",
             TypeKind = TypeKind.ClassTree)]
         public class _StateMachine
@@ -5925,6 +5999,7 @@ public class _UML
         public _StateMachine @StateMachine = new ();
         public MofObjectShadow @__StateMachine = new ("dm:///_internal/model/uml#StateMachine");
 
+        // _UML._StateMachines._Transition
         [TypeUri(Uri = "dm:///_internal/model/uml#Transition",
             TypeKind = TypeKind.ClassTree)]
         public class _Transition
@@ -6012,6 +6087,7 @@ public class _UML
         public _Transition @Transition = new ();
         public MofObjectShadow @__Transition = new ("dm:///_internal/model/uml#Transition");
 
+        // _UML._StateMachines._Vertex
         [TypeUri(Uri = "dm:///_internal/model/uml#Vertex",
             TypeKind = TypeKind.ClassTree)]
         public class _Vertex
@@ -6128,6 +6204,7 @@ public class _UML
 
     public class _SimpleClassifiers
     {
+        // _UML._SimpleClassifiers._BehavioredClassifier
         [TypeUri(Uri = "dm:///_internal/model/uml#BehavioredClassifier",
             TypeKind = TypeKind.ClassTree)]
         public class _BehavioredClassifier
@@ -6257,6 +6334,7 @@ public class _UML
         public _BehavioredClassifier @BehavioredClassifier = new ();
         public MofObjectShadow @__BehavioredClassifier = new ("dm:///_internal/model/uml#BehavioredClassifier");
 
+        // _UML._SimpleClassifiers._DataType
         [TypeUri(Uri = "dm:///_internal/model/uml#DataType",
             TypeKind = TypeKind.ClassTree)]
         public class _DataType
@@ -6383,6 +6461,7 @@ public class _UML
         public _DataType @DataType = new ();
         public MofObjectShadow @__DataType = new ("dm:///_internal/model/uml#DataType");
 
+        // _UML._SimpleClassifiers._Enumeration
         [TypeUri(Uri = "dm:///_internal/model/uml#Enumeration",
             TypeKind = TypeKind.ClassTree)]
         public class _Enumeration
@@ -6512,6 +6591,7 @@ public class _UML
         public _Enumeration @Enumeration = new ();
         public MofObjectShadow @__Enumeration = new ("dm:///_internal/model/uml#Enumeration");
 
+        // _UML._SimpleClassifiers._EnumerationLiteral
         [TypeUri(Uri = "dm:///_internal/model/uml#EnumerationLiteral",
             TypeKind = TypeKind.ClassTree)]
         public class _EnumerationLiteral
@@ -6572,6 +6652,7 @@ public class _UML
         public _EnumerationLiteral @EnumerationLiteral = new ();
         public MofObjectShadow @__EnumerationLiteral = new ("dm:///_internal/model/uml#EnumerationLiteral");
 
+        // _UML._SimpleClassifiers._Interface
         [TypeUri(Uri = "dm:///_internal/model/uml#Interface",
             TypeKind = TypeKind.ClassTree)]
         public class _Interface
@@ -6710,6 +6791,7 @@ public class _UML
         public _Interface @Interface = new ();
         public MofObjectShadow @__Interface = new ("dm:///_internal/model/uml#Interface");
 
+        // _UML._SimpleClassifiers._InterfaceRealization
         [TypeUri(Uri = "dm:///_internal/model/uml#InterfaceRealization",
             TypeKind = TypeKind.ClassTree)]
         public class _InterfaceRealization
@@ -6776,6 +6858,7 @@ public class _UML
         public _InterfaceRealization @InterfaceRealization = new ();
         public MofObjectShadow @__InterfaceRealization = new ("dm:///_internal/model/uml#InterfaceRealization");
 
+        // _UML._SimpleClassifiers._PrimitiveType
         [TypeUri(Uri = "dm:///_internal/model/uml#PrimitiveType",
             TypeKind = TypeKind.ClassTree)]
         public class _PrimitiveType
@@ -6902,6 +6985,7 @@ public class _UML
         public _PrimitiveType @PrimitiveType = new ();
         public MofObjectShadow @__PrimitiveType = new ("dm:///_internal/model/uml#PrimitiveType");
 
+        // _UML._SimpleClassifiers._Reception
         [TypeUri(Uri = "dm:///_internal/model/uml#Reception",
             TypeKind = TypeKind.ClassTree)]
         public class _Reception
@@ -6992,6 +7076,7 @@ public class _UML
         public _Reception @Reception = new ();
         public MofObjectShadow @__Reception = new ("dm:///_internal/model/uml#Reception");
 
+        // _UML._SimpleClassifiers._Signal
         [TypeUri(Uri = "dm:///_internal/model/uml#Signal",
             TypeKind = TypeKind.ClassTree)]
         public class _Signal
@@ -7121,6 +7206,7 @@ public class _UML
 
     public class _Packages
     {
+        // _UML._Packages._Extension
         [TypeUri(Uri = "dm:///_internal/model/uml#Extension",
             TypeKind = TypeKind.ClassTree)]
         public class _Extension
@@ -7265,6 +7351,7 @@ public class _UML
         public _Extension @Extension = new ();
         public MofObjectShadow @__Extension = new ("dm:///_internal/model/uml#Extension");
 
+        // _UML._Packages._ExtensionEnd
         [TypeUri(Uri = "dm:///_internal/model/uml#ExtensionEnd",
             TypeKind = TypeKind.ClassTree)]
         public class _ExtensionEnd
@@ -7403,6 +7490,7 @@ public class _UML
         public _ExtensionEnd @ExtensionEnd = new ();
         public MofObjectShadow @__ExtensionEnd = new ("dm:///_internal/model/uml#ExtensionEnd");
 
+        // _UML._Packages._Image
         [TypeUri(Uri = "dm:///_internal/model/uml#Image",
             TypeKind = TypeKind.ClassTree)]
         public class _Image
@@ -7430,6 +7518,7 @@ public class _UML
         public _Image @Image = new ();
         public MofObjectShadow @__Image = new ("dm:///_internal/model/uml#Image");
 
+        // _UML._Packages._Model
         [TypeUri(Uri = "dm:///_internal/model/uml#Model",
             TypeKind = TypeKind.ClassTree)]
         public class _Model
@@ -7523,6 +7612,7 @@ public class _UML
         public _Model @Model = new ();
         public MofObjectShadow @__Model = new ("dm:///_internal/model/uml#Model");
 
+        // _UML._Packages._Package
         [TypeUri(Uri = "dm:///_internal/model/uml#Package",
             TypeKind = TypeKind.ClassTree)]
         public class _Package
@@ -7613,6 +7703,7 @@ public class _UML
         public _Package @Package = new ();
         public MofObjectShadow @__Package = new ("dm:///_internal/model/uml#Package");
 
+        // _UML._Packages._PackageMerge
         [TypeUri(Uri = "dm:///_internal/model/uml#PackageMerge",
             TypeKind = TypeKind.ClassTree)]
         public class _PackageMerge
@@ -7646,6 +7737,7 @@ public class _UML
         public _PackageMerge @PackageMerge = new ();
         public MofObjectShadow @__PackageMerge = new ("dm:///_internal/model/uml#PackageMerge");
 
+        // _UML._Packages._Profile
         [TypeUri(Uri = "dm:///_internal/model/uml#Profile",
             TypeKind = TypeKind.ClassTree)]
         public class _Profile
@@ -7742,6 +7834,7 @@ public class _UML
         public _Profile @Profile = new ();
         public MofObjectShadow @__Profile = new ("dm:///_internal/model/uml#Profile");
 
+        // _UML._Packages._ProfileApplication
         [TypeUri(Uri = "dm:///_internal/model/uml#ProfileApplication",
             TypeKind = TypeKind.ClassTree)]
         public class _ProfileApplication
@@ -7778,6 +7871,7 @@ public class _UML
         public _ProfileApplication @ProfileApplication = new ();
         public MofObjectShadow @__ProfileApplication = new ("dm:///_internal/model/uml#ProfileApplication");
 
+        // _UML._Packages._Stereotype
         [TypeUri(Uri = "dm:///_internal/model/uml#Stereotype",
             TypeKind = TypeKind.ClassTree)]
         public class _Stereotype
@@ -7952,6 +8046,7 @@ public class _UML
 
     public class _Interactions
     {
+        // _UML._Interactions._ActionExecutionSpecification
         [TypeUri(Uri = "dm:///_internal/model/uml#ActionExecutionSpecification",
             TypeKind = TypeKind.ClassTree)]
         public class _ActionExecutionSpecification
@@ -8009,6 +8104,7 @@ public class _UML
         public _ActionExecutionSpecification @ActionExecutionSpecification = new ();
         public MofObjectShadow @__ActionExecutionSpecification = new ("dm:///_internal/model/uml#ActionExecutionSpecification");
 
+        // _UML._Interactions._BehaviorExecutionSpecification
         [TypeUri(Uri = "dm:///_internal/model/uml#BehaviorExecutionSpecification",
             TypeKind = TypeKind.ClassTree)]
         public class _BehaviorExecutionSpecification
@@ -8066,6 +8162,7 @@ public class _UML
         public _BehaviorExecutionSpecification @BehaviorExecutionSpecification = new ();
         public MofObjectShadow @__BehaviorExecutionSpecification = new ("dm:///_internal/model/uml#BehaviorExecutionSpecification");
 
+        // _UML._Interactions._CombinedFragment
         [TypeUri(Uri = "dm:///_internal/model/uml#CombinedFragment",
             TypeKind = TypeKind.ClassTree)]
         public class _CombinedFragment
@@ -8123,6 +8220,7 @@ public class _UML
         public _CombinedFragment @CombinedFragment = new ();
         public MofObjectShadow @__CombinedFragment = new ("dm:///_internal/model/uml#CombinedFragment");
 
+        // _UML._Interactions._ConsiderIgnoreFragment
         [TypeUri(Uri = "dm:///_internal/model/uml#ConsiderIgnoreFragment",
             TypeKind = TypeKind.ClassTree)]
         public class _ConsiderIgnoreFragment
@@ -8183,6 +8281,7 @@ public class _UML
         public _ConsiderIgnoreFragment @ConsiderIgnoreFragment = new ();
         public MofObjectShadow @__ConsiderIgnoreFragment = new ("dm:///_internal/model/uml#ConsiderIgnoreFragment");
 
+        // _UML._Interactions._Continuation
         [TypeUri(Uri = "dm:///_internal/model/uml#Continuation",
             TypeKind = TypeKind.ClassTree)]
         public class _Continuation
@@ -8234,6 +8333,7 @@ public class _UML
         public _Continuation @Continuation = new ();
         public MofObjectShadow @__Continuation = new ("dm:///_internal/model/uml#Continuation");
 
+        // _UML._Interactions._DestructionOccurrenceSpecification
         [TypeUri(Uri = "dm:///_internal/model/uml#DestructionOccurrenceSpecification",
             TypeKind = TypeKind.ClassTree)]
         public class _DestructionOccurrenceSpecification
@@ -8291,6 +8391,7 @@ public class _UML
         public _DestructionOccurrenceSpecification @DestructionOccurrenceSpecification = new ();
         public MofObjectShadow @__DestructionOccurrenceSpecification = new ("dm:///_internal/model/uml#DestructionOccurrenceSpecification");
 
+        // _UML._Interactions._ExecutionOccurrenceSpecification
         [TypeUri(Uri = "dm:///_internal/model/uml#ExecutionOccurrenceSpecification",
             TypeKind = TypeKind.ClassTree)]
         public class _ExecutionOccurrenceSpecification
@@ -8348,6 +8449,7 @@ public class _UML
         public _ExecutionOccurrenceSpecification @ExecutionOccurrenceSpecification = new ();
         public MofObjectShadow @__ExecutionOccurrenceSpecification = new ("dm:///_internal/model/uml#ExecutionOccurrenceSpecification");
 
+        // _UML._Interactions._ExecutionSpecification
         [TypeUri(Uri = "dm:///_internal/model/uml#ExecutionSpecification",
             TypeKind = TypeKind.ClassTree)]
         public class _ExecutionSpecification
@@ -8402,6 +8504,7 @@ public class _UML
         public _ExecutionSpecification @ExecutionSpecification = new ();
         public MofObjectShadow @__ExecutionSpecification = new ("dm:///_internal/model/uml#ExecutionSpecification");
 
+        // _UML._Interactions._Gate
         [TypeUri(Uri = "dm:///_internal/model/uml#Gate",
             TypeKind = TypeKind.ClassTree)]
         public class _Gate
@@ -8441,6 +8544,7 @@ public class _UML
         public _Gate @Gate = new ();
         public MofObjectShadow @__Gate = new ("dm:///_internal/model/uml#Gate");
 
+        // _UML._Interactions._GeneralOrdering
         [TypeUri(Uri = "dm:///_internal/model/uml#GeneralOrdering",
             TypeKind = TypeKind.ClassTree)]
         public class _GeneralOrdering
@@ -8483,6 +8587,7 @@ public class _UML
         public _GeneralOrdering @GeneralOrdering = new ();
         public MofObjectShadow @__GeneralOrdering = new ("dm:///_internal/model/uml#GeneralOrdering");
 
+        // _UML._Interactions._Interaction
         [TypeUri(Uri = "dm:///_internal/model/uml#Interaction",
             TypeKind = TypeKind.ClassTree)]
         public class _Interaction
@@ -8696,6 +8801,7 @@ public class _UML
         public _Interaction @Interaction = new ();
         public MofObjectShadow @__Interaction = new ("dm:///_internal/model/uml#Interaction");
 
+        // _UML._Interactions._InteractionConstraint
         [TypeUri(Uri = "dm:///_internal/model/uml#InteractionConstraint",
             TypeKind = TypeKind.ClassTree)]
         public class _InteractionConstraint
@@ -8753,6 +8859,7 @@ public class _UML
         public _InteractionConstraint @InteractionConstraint = new ();
         public MofObjectShadow @__InteractionConstraint = new ("dm:///_internal/model/uml#InteractionConstraint");
 
+        // _UML._Interactions._InteractionFragment
         [TypeUri(Uri = "dm:///_internal/model/uml#InteractionFragment",
             TypeKind = TypeKind.ClassTree)]
         public class _InteractionFragment
@@ -8801,6 +8908,7 @@ public class _UML
         public _InteractionFragment @InteractionFragment = new ();
         public MofObjectShadow @__InteractionFragment = new ("dm:///_internal/model/uml#InteractionFragment");
 
+        // _UML._Interactions._InteractionOperand
         [TypeUri(Uri = "dm:///_internal/model/uml#InteractionOperand",
             TypeKind = TypeKind.ClassTree)]
         public class _InteractionOperand
@@ -8873,6 +8981,7 @@ public class _UML
         public _InteractionOperand @InteractionOperand = new ();
         public MofObjectShadow @__InteractionOperand = new ("dm:///_internal/model/uml#InteractionOperand");
 
+        // _UML._Interactions._InteractionUse
         [TypeUri(Uri = "dm:///_internal/model/uml#InteractionUse",
             TypeKind = TypeKind.ClassTree)]
         public class _InteractionUse
@@ -8936,6 +9045,7 @@ public class _UML
         public _InteractionUse @InteractionUse = new ();
         public MofObjectShadow @__InteractionUse = new ("dm:///_internal/model/uml#InteractionUse");
 
+        // _UML._Interactions._Lifeline
         [TypeUri(Uri = "dm:///_internal/model/uml#Lifeline",
             TypeKind = TypeKind.ClassTree)]
         public class _Lifeline
@@ -8987,6 +9097,7 @@ public class _UML
         public _Lifeline @Lifeline = new ();
         public MofObjectShadow @__Lifeline = new ("dm:///_internal/model/uml#Lifeline");
 
+        // _UML._Interactions._Message
         [TypeUri(Uri = "dm:///_internal/model/uml#Message",
             TypeKind = TypeKind.ClassTree)]
         public class _Message
@@ -9047,6 +9158,7 @@ public class _UML
         public _Message @Message = new ();
         public MofObjectShadow @__Message = new ("dm:///_internal/model/uml#Message");
 
+        // _UML._Interactions._MessageEnd
         [TypeUri(Uri = "dm:///_internal/model/uml#MessageEnd",
             TypeKind = TypeKind.ClassTree)]
         public class _MessageEnd
@@ -9086,6 +9198,7 @@ public class _UML
         public _MessageEnd @MessageEnd = new ();
         public MofObjectShadow @__MessageEnd = new ("dm:///_internal/model/uml#MessageEnd");
 
+        // _UML._Interactions._MessageOccurrenceSpecification
         [TypeUri(Uri = "dm:///_internal/model/uml#MessageOccurrenceSpecification",
             TypeKind = TypeKind.ClassTree)]
         public class _MessageOccurrenceSpecification
@@ -9143,6 +9256,7 @@ public class _UML
         public _MessageOccurrenceSpecification @MessageOccurrenceSpecification = new ();
         public MofObjectShadow @__MessageOccurrenceSpecification = new ("dm:///_internal/model/uml#MessageOccurrenceSpecification");
 
+        // _UML._Interactions._OccurrenceSpecification
         [TypeUri(Uri = "dm:///_internal/model/uml#OccurrenceSpecification",
             TypeKind = TypeKind.ClassTree)]
         public class _OccurrenceSpecification
@@ -9197,6 +9311,7 @@ public class _UML
         public _OccurrenceSpecification @OccurrenceSpecification = new ();
         public MofObjectShadow @__OccurrenceSpecification = new ("dm:///_internal/model/uml#OccurrenceSpecification");
 
+        // _UML._Interactions._PartDecomposition
         [TypeUri(Uri = "dm:///_internal/model/uml#PartDecomposition",
             TypeKind = TypeKind.ClassTree)]
         public class _PartDecomposition
@@ -9260,6 +9375,7 @@ public class _UML
         public _PartDecomposition @PartDecomposition = new ();
         public MofObjectShadow @__PartDecomposition = new ("dm:///_internal/model/uml#PartDecomposition");
 
+        // _UML._Interactions._StateInvariant
         [TypeUri(Uri = "dm:///_internal/model/uml#StateInvariant",
             TypeKind = TypeKind.ClassTree)]
         public class _StateInvariant
@@ -9422,6 +9538,7 @@ public class _UML
 
     public class _InformationFlows
     {
+        // _UML._InformationFlows._InformationFlow
         [TypeUri(Uri = "dm:///_internal/model/uml#InformationFlow",
             TypeKind = TypeKind.ClassTree)]
         public class _InformationFlow
@@ -9494,6 +9611,7 @@ public class _UML
         public _InformationFlow @InformationFlow = new ();
         public MofObjectShadow @__InformationFlow = new ("dm:///_internal/model/uml#InformationFlow");
 
+        // _UML._InformationFlows._InformationItem
         [TypeUri(Uri = "dm:///_internal/model/uml#InformationItem",
             TypeKind = TypeKind.ClassTree)]
         public class _InformationItem
@@ -9623,6 +9741,7 @@ public class _UML
 
     public class _Deployments
     {
+        // _UML._Deployments._Artifact
         [TypeUri(Uri = "dm:///_internal/model/uml#Artifact",
             TypeKind = TypeKind.ClassTree)]
         public class _Artifact
@@ -9758,6 +9877,7 @@ public class _UML
         public _Artifact @Artifact = new ();
         public MofObjectShadow @__Artifact = new ("dm:///_internal/model/uml#Artifact");
 
+        // _UML._Deployments._CommunicationPath
         [TypeUri(Uri = "dm:///_internal/model/uml#CommunicationPath",
             TypeKind = TypeKind.ClassTree)]
         public class _CommunicationPath
@@ -9896,6 +10016,7 @@ public class _UML
         public _CommunicationPath @CommunicationPath = new ();
         public MofObjectShadow @__CommunicationPath = new ("dm:///_internal/model/uml#CommunicationPath");
 
+        // _UML._Deployments._DeployedArtifact
         [TypeUri(Uri = "dm:///_internal/model/uml#DeployedArtifact",
             TypeKind = TypeKind.ClassTree)]
         public class _DeployedArtifact
@@ -9932,6 +10053,7 @@ public class _UML
         public _DeployedArtifact @DeployedArtifact = new ();
         public MofObjectShadow @__DeployedArtifact = new ("dm:///_internal/model/uml#DeployedArtifact");
 
+        // _UML._Deployments._Deployment
         [TypeUri(Uri = "dm:///_internal/model/uml#Deployment",
             TypeKind = TypeKind.ClassTree)]
         public class _Deployment
@@ -9998,6 +10120,7 @@ public class _UML
         public _Deployment @Deployment = new ();
         public MofObjectShadow @__Deployment = new ("dm:///_internal/model/uml#Deployment");
 
+        // _UML._Deployments._DeploymentSpecification
         [TypeUri(Uri = "dm:///_internal/model/uml#DeploymentSpecification",
             TypeKind = TypeKind.ClassTree)]
         public class _DeploymentSpecification
@@ -10142,6 +10265,7 @@ public class _UML
         public _DeploymentSpecification @DeploymentSpecification = new ();
         public MofObjectShadow @__DeploymentSpecification = new ("dm:///_internal/model/uml#DeploymentSpecification");
 
+        // _UML._Deployments._DeploymentTarget
         [TypeUri(Uri = "dm:///_internal/model/uml#DeploymentTarget",
             TypeKind = TypeKind.ClassTree)]
         public class _DeploymentTarget
@@ -10184,6 +10308,7 @@ public class _UML
         public _DeploymentTarget @DeploymentTarget = new ();
         public MofObjectShadow @__DeploymentTarget = new ("dm:///_internal/model/uml#DeploymentTarget");
 
+        // _UML._Deployments._Device
         [TypeUri(Uri = "dm:///_internal/model/uml#Device",
             TypeKind = TypeKind.ClassTree)]
         public class _Device
@@ -10355,6 +10480,7 @@ public class _UML
         public _Device @Device = new ();
         public MofObjectShadow @__Device = new ("dm:///_internal/model/uml#Device");
 
+        // _UML._Deployments._ExecutionEnvironment
         [TypeUri(Uri = "dm:///_internal/model/uml#ExecutionEnvironment",
             TypeKind = TypeKind.ClassTree)]
         public class _ExecutionEnvironment
@@ -10526,6 +10652,7 @@ public class _UML
         public _ExecutionEnvironment @ExecutionEnvironment = new ();
         public MofObjectShadow @__ExecutionEnvironment = new ("dm:///_internal/model/uml#ExecutionEnvironment");
 
+        // _UML._Deployments._Manifestation
         [TypeUri(Uri = "dm:///_internal/model/uml#Manifestation",
             TypeKind = TypeKind.ClassTree)]
         public class _Manifestation
@@ -10589,6 +10716,7 @@ public class _UML
         public _Manifestation @Manifestation = new ();
         public MofObjectShadow @__Manifestation = new ("dm:///_internal/model/uml#Manifestation");
 
+        // _UML._Deployments._Node
         [TypeUri(Uri = "dm:///_internal/model/uml#Node",
             TypeKind = TypeKind.ClassTree)]
         public class _Node
@@ -10766,6 +10894,7 @@ public class _UML
 
     public class _CommonStructure
     {
+        // _UML._CommonStructure._Abstraction
         [TypeUri(Uri = "dm:///_internal/model/uml#Abstraction",
             TypeKind = TypeKind.ClassTree)]
         public class _Abstraction
@@ -10826,6 +10955,7 @@ public class _UML
         public _Abstraction @Abstraction = new ();
         public MofObjectShadow @__Abstraction = new ("dm:///_internal/model/uml#Abstraction");
 
+        // _UML._CommonStructure._Comment
         [TypeUri(Uri = "dm:///_internal/model/uml#Comment",
             TypeKind = TypeKind.ClassTree)]
         public class _Comment
@@ -10850,6 +10980,7 @@ public class _UML
         public _Comment @Comment = new ();
         public MofObjectShadow @__Comment = new ("dm:///_internal/model/uml#Comment");
 
+        // _UML._CommonStructure._Constraint
         [TypeUri(Uri = "dm:///_internal/model/uml#Constraint",
             TypeKind = TypeKind.ClassTree)]
         public class _Constraint
@@ -10901,6 +11032,7 @@ public class _UML
         public _Constraint @Constraint = new ();
         public MofObjectShadow @__Constraint = new ("dm:///_internal/model/uml#Constraint");
 
+        // _UML._CommonStructure._Dependency
         [TypeUri(Uri = "dm:///_internal/model/uml#Dependency",
             TypeKind = TypeKind.ClassTree)]
         public class _Dependency
@@ -10958,6 +11090,7 @@ public class _UML
         public _Dependency @Dependency = new ();
         public MofObjectShadow @__Dependency = new ("dm:///_internal/model/uml#Dependency");
 
+        // _UML._CommonStructure._DirectedRelationship
         [TypeUri(Uri = "dm:///_internal/model/uml#DirectedRelationship",
             TypeKind = TypeKind.ClassTree)]
         public class _DirectedRelationship
@@ -10985,6 +11118,7 @@ public class _UML
         public _DirectedRelationship @DirectedRelationship = new ();
         public MofObjectShadow @__DirectedRelationship = new ("dm:///_internal/model/uml#DirectedRelationship");
 
+        // _UML._CommonStructure._Element
         [TypeUri(Uri = "dm:///_internal/model/uml#Element",
             TypeKind = TypeKind.ClassTree)]
         public class _Element
@@ -11003,6 +11137,7 @@ public class _UML
         public _Element @Element = new ();
         public MofObjectShadow @__Element = new ("dm:///_internal/model/uml#Element");
 
+        // _UML._CommonStructure._ElementImport
         [TypeUri(Uri = "dm:///_internal/model/uml#ElementImport",
             TypeKind = TypeKind.ClassTree)]
         public class _ElementImport
@@ -11042,6 +11177,7 @@ public class _UML
         public _ElementImport @ElementImport = new ();
         public MofObjectShadow @__ElementImport = new ("dm:///_internal/model/uml#ElementImport");
 
+        // _UML._CommonStructure._MultiplicityElement
         [TypeUri(Uri = "dm:///_internal/model/uml#MultiplicityElement",
             TypeKind = TypeKind.ClassTree)]
         public class _MultiplicityElement
@@ -11078,6 +11214,7 @@ public class _UML
         public _MultiplicityElement @MultiplicityElement = new ();
         public MofObjectShadow @__MultiplicityElement = new ("dm:///_internal/model/uml#MultiplicityElement");
 
+        // _UML._CommonStructure._NamedElement
         [TypeUri(Uri = "dm:///_internal/model/uml#NamedElement",
             TypeKind = TypeKind.ClassTree)]
         public class _NamedElement
@@ -11114,6 +11251,7 @@ public class _UML
         public _NamedElement @NamedElement = new ();
         public MofObjectShadow @__NamedElement = new ("dm:///_internal/model/uml#NamedElement");
 
+        // _UML._CommonStructure._Namespace
         [TypeUri(Uri = "dm:///_internal/model/uml#Namespace",
             TypeKind = TypeKind.ClassTree)]
         public class _Namespace
@@ -11168,6 +11306,7 @@ public class _UML
         public _Namespace @Namespace = new ();
         public MofObjectShadow @__Namespace = new ("dm:///_internal/model/uml#Namespace");
 
+        // _UML._CommonStructure._PackageableElement
         [TypeUri(Uri = "dm:///_internal/model/uml#PackageableElement",
             TypeKind = TypeKind.ClassTree)]
         public class _PackageableElement
@@ -11210,6 +11349,7 @@ public class _UML
         public _PackageableElement @PackageableElement = new ();
         public MofObjectShadow @__PackageableElement = new ("dm:///_internal/model/uml#PackageableElement");
 
+        // _UML._CommonStructure._PackageImport
         [TypeUri(Uri = "dm:///_internal/model/uml#PackageImport",
             TypeKind = TypeKind.ClassTree)]
         public class _PackageImport
@@ -11246,6 +11386,7 @@ public class _UML
         public _PackageImport @PackageImport = new ();
         public MofObjectShadow @__PackageImport = new ("dm:///_internal/model/uml#PackageImport");
 
+        // _UML._CommonStructure._ParameterableElement
         [TypeUri(Uri = "dm:///_internal/model/uml#ParameterableElement",
             TypeKind = TypeKind.ClassTree)]
         public class _ParameterableElement
@@ -11270,6 +11411,7 @@ public class _UML
         public _ParameterableElement @ParameterableElement = new ();
         public MofObjectShadow @__ParameterableElement = new ("dm:///_internal/model/uml#ParameterableElement");
 
+        // _UML._CommonStructure._Realization
         [TypeUri(Uri = "dm:///_internal/model/uml#Realization",
             TypeKind = TypeKind.ClassTree)]
         public class _Realization
@@ -11330,6 +11472,7 @@ public class _UML
         public _Realization @Realization = new ();
         public MofObjectShadow @__Realization = new ("dm:///_internal/model/uml#Realization");
 
+        // _UML._CommonStructure._Relationship
         [TypeUri(Uri = "dm:///_internal/model/uml#Relationship",
             TypeKind = TypeKind.ClassTree)]
         public class _Relationship
@@ -11351,6 +11494,7 @@ public class _UML
         public _Relationship @Relationship = new ();
         public MofObjectShadow @__Relationship = new ("dm:///_internal/model/uml#Relationship");
 
+        // _UML._CommonStructure._TemplateableElement
         [TypeUri(Uri = "dm:///_internal/model/uml#TemplateableElement",
             TypeKind = TypeKind.ClassTree)]
         public class _TemplateableElement
@@ -11375,6 +11519,7 @@ public class _UML
         public _TemplateableElement @TemplateableElement = new ();
         public MofObjectShadow @__TemplateableElement = new ("dm:///_internal/model/uml#TemplateableElement");
 
+        // _UML._CommonStructure._TemplateBinding
         [TypeUri(Uri = "dm:///_internal/model/uml#TemplateBinding",
             TypeKind = TypeKind.ClassTree)]
         public class _TemplateBinding
@@ -11411,6 +11556,7 @@ public class _UML
         public _TemplateBinding @TemplateBinding = new ();
         public MofObjectShadow @__TemplateBinding = new ("dm:///_internal/model/uml#TemplateBinding");
 
+        // _UML._CommonStructure._TemplateParameter
         [TypeUri(Uri = "dm:///_internal/model/uml#TemplateParameter",
             TypeKind = TypeKind.ClassTree)]
         public class _TemplateParameter
@@ -11444,6 +11590,7 @@ public class _UML
         public _TemplateParameter @TemplateParameter = new ();
         public MofObjectShadow @__TemplateParameter = new ("dm:///_internal/model/uml#TemplateParameter");
 
+        // _UML._CommonStructure._TemplateParameterSubstitution
         [TypeUri(Uri = "dm:///_internal/model/uml#TemplateParameterSubstitution",
             TypeKind = TypeKind.ClassTree)]
         public class _TemplateParameterSubstitution
@@ -11474,6 +11621,7 @@ public class _UML
         public _TemplateParameterSubstitution @TemplateParameterSubstitution = new ();
         public MofObjectShadow @__TemplateParameterSubstitution = new ("dm:///_internal/model/uml#TemplateParameterSubstitution");
 
+        // _UML._CommonStructure._TemplateSignature
         [TypeUri(Uri = "dm:///_internal/model/uml#TemplateSignature",
             TypeKind = TypeKind.ClassTree)]
         public class _TemplateSignature
@@ -11501,6 +11649,7 @@ public class _UML
         public _TemplateSignature @TemplateSignature = new ();
         public MofObjectShadow @__TemplateSignature = new ("dm:///_internal/model/uml#TemplateSignature");
 
+        // _UML._CommonStructure._Type
         [TypeUri(Uri = "dm:///_internal/model/uml#Type",
             TypeKind = TypeKind.ClassTree)]
         public class _Type
@@ -11546,6 +11695,7 @@ public class _UML
         public _Type @Type = new ();
         public MofObjectShadow @__Type = new ("dm:///_internal/model/uml#Type");
 
+        // _UML._CommonStructure._TypedElement
         [TypeUri(Uri = "dm:///_internal/model/uml#TypedElement",
             TypeKind = TypeKind.ClassTree)]
         public class _TypedElement
@@ -11585,6 +11735,7 @@ public class _UML
         public _TypedElement @TypedElement = new ();
         public MofObjectShadow @__TypedElement = new ("dm:///_internal/model/uml#TypedElement");
 
+        // _UML._CommonStructure._Usage
         [TypeUri(Uri = "dm:///_internal/model/uml#Usage",
             TypeKind = TypeKind.ClassTree)]
         public class _Usage
@@ -11673,6 +11824,7 @@ public class _UML
 
     public class _CommonBehavior
     {
+        // _UML._CommonBehavior._AnyReceiveEvent
         [TypeUri(Uri = "dm:///_internal/model/uml#AnyReceiveEvent",
             TypeKind = TypeKind.ClassTree)]
         public class _AnyReceiveEvent
@@ -11715,6 +11867,7 @@ public class _UML
         public _AnyReceiveEvent @AnyReceiveEvent = new ();
         public MofObjectShadow @__AnyReceiveEvent = new ("dm:///_internal/model/uml#AnyReceiveEvent");
 
+        // _UML._CommonBehavior._Behavior
         [TypeUri(Uri = "dm:///_internal/model/uml#Behavior",
             TypeKind = TypeKind.ClassTree)]
         public class _Behavior
@@ -11901,6 +12054,7 @@ public class _UML
         public _Behavior @Behavior = new ();
         public MofObjectShadow @__Behavior = new ("dm:///_internal/model/uml#Behavior");
 
+        // _UML._CommonBehavior._CallEvent
         [TypeUri(Uri = "dm:///_internal/model/uml#CallEvent",
             TypeKind = TypeKind.ClassTree)]
         public class _CallEvent
@@ -11946,6 +12100,7 @@ public class _UML
         public _CallEvent @CallEvent = new ();
         public MofObjectShadow @__CallEvent = new ("dm:///_internal/model/uml#CallEvent");
 
+        // _UML._CommonBehavior._ChangeEvent
         [TypeUri(Uri = "dm:///_internal/model/uml#ChangeEvent",
             TypeKind = TypeKind.ClassTree)]
         public class _ChangeEvent
@@ -11991,6 +12146,7 @@ public class _UML
         public _ChangeEvent @ChangeEvent = new ();
         public MofObjectShadow @__ChangeEvent = new ("dm:///_internal/model/uml#ChangeEvent");
 
+        // _UML._CommonBehavior._Event
         [TypeUri(Uri = "dm:///_internal/model/uml#Event",
             TypeKind = TypeKind.ClassTree)]
         public class _Event
@@ -12033,6 +12189,7 @@ public class _UML
         public _Event @Event = new ();
         public MofObjectShadow @__Event = new ("dm:///_internal/model/uml#Event");
 
+        // _UML._CommonBehavior._FunctionBehavior
         [TypeUri(Uri = "dm:///_internal/model/uml#FunctionBehavior",
             TypeKind = TypeKind.ClassTree)]
         public class _FunctionBehavior
@@ -12225,6 +12382,7 @@ public class _UML
         public _FunctionBehavior @FunctionBehavior = new ();
         public MofObjectShadow @__FunctionBehavior = new ("dm:///_internal/model/uml#FunctionBehavior");
 
+        // _UML._CommonBehavior._MessageEvent
         [TypeUri(Uri = "dm:///_internal/model/uml#MessageEvent",
             TypeKind = TypeKind.ClassTree)]
         public class _MessageEvent
@@ -12267,6 +12425,7 @@ public class _UML
         public _MessageEvent @MessageEvent = new ();
         public MofObjectShadow @__MessageEvent = new ("dm:///_internal/model/uml#MessageEvent");
 
+        // _UML._CommonBehavior._OpaqueBehavior
         [TypeUri(Uri = "dm:///_internal/model/uml#OpaqueBehavior",
             TypeKind = TypeKind.ClassTree)]
         public class _OpaqueBehavior
@@ -12459,6 +12618,7 @@ public class _UML
         public _OpaqueBehavior @OpaqueBehavior = new ();
         public MofObjectShadow @__OpaqueBehavior = new ("dm:///_internal/model/uml#OpaqueBehavior");
 
+        // _UML._CommonBehavior._SignalEvent
         [TypeUri(Uri = "dm:///_internal/model/uml#SignalEvent",
             TypeKind = TypeKind.ClassTree)]
         public class _SignalEvent
@@ -12504,6 +12664,7 @@ public class _UML
         public _SignalEvent @SignalEvent = new ();
         public MofObjectShadow @__SignalEvent = new ("dm:///_internal/model/uml#SignalEvent");
 
+        // _UML._CommonBehavior._TimeEvent
         [TypeUri(Uri = "dm:///_internal/model/uml#TimeEvent",
             TypeKind = TypeKind.ClassTree)]
         public class _TimeEvent
@@ -12552,6 +12713,7 @@ public class _UML
         public _TimeEvent @TimeEvent = new ();
         public MofObjectShadow @__TimeEvent = new ("dm:///_internal/model/uml#TimeEvent");
 
+        // _UML._CommonBehavior._Trigger
         [TypeUri(Uri = "dm:///_internal/model/uml#Trigger",
             TypeKind = TypeKind.ClassTree)]
         public class _Trigger
@@ -12600,6 +12762,7 @@ public class _UML
 
     public class _Classification
     {
+        // _UML._Classification._Substitution
         [TypeUri(Uri = "dm:///_internal/model/uml#Substitution",
             TypeKind = TypeKind.ClassTree)]
         public class _Substitution
@@ -12666,6 +12829,7 @@ public class _UML
         public _Substitution @Substitution = new ();
         public MofObjectShadow @__Substitution = new ("dm:///_internal/model/uml#Substitution");
 
+        // _UML._Classification._BehavioralFeature
         [TypeUri(Uri = "dm:///_internal/model/uml#BehavioralFeature",
             TypeKind = TypeKind.ClassTree)]
         public class _BehavioralFeature
@@ -12753,6 +12917,7 @@ public class _UML
         public _BehavioralFeature @BehavioralFeature = new ();
         public MofObjectShadow @__BehavioralFeature = new ("dm:///_internal/model/uml#BehavioralFeature");
 
+        // _UML._Classification._Classifier
         [TypeUri(Uri = "dm:///_internal/model/uml#Classifier",
             TypeKind = TypeKind.ClassTree)]
         public class _Classifier
@@ -12873,6 +13038,7 @@ public class _UML
         public _Classifier @Classifier = new ();
         public MofObjectShadow @__Classifier = new ("dm:///_internal/model/uml#Classifier");
 
+        // _UML._Classification._ClassifierTemplateParameter
         [TypeUri(Uri = "dm:///_internal/model/uml#ClassifierTemplateParameter",
             TypeKind = TypeKind.ClassTree)]
         public class _ClassifierTemplateParameter
@@ -12912,6 +13078,7 @@ public class _UML
         public _ClassifierTemplateParameter @ClassifierTemplateParameter = new ();
         public MofObjectShadow @__ClassifierTemplateParameter = new ("dm:///_internal/model/uml#ClassifierTemplateParameter");
 
+        // _UML._Classification._Feature
         [TypeUri(Uri = "dm:///_internal/model/uml#Feature",
             TypeKind = TypeKind.ClassTree)]
         public class _Feature
@@ -12963,6 +13130,7 @@ public class _UML
         public _Feature @Feature = new ();
         public MofObjectShadow @__Feature = new ("dm:///_internal/model/uml#Feature");
 
+        // _UML._Classification._Generalization
         [TypeUri(Uri = "dm:///_internal/model/uml#Generalization",
             TypeKind = TypeKind.ClassTree)]
         public class _Generalization
@@ -13002,6 +13170,7 @@ public class _UML
         public _Generalization @Generalization = new ();
         public MofObjectShadow @__Generalization = new ("dm:///_internal/model/uml#Generalization");
 
+        // _UML._Classification._GeneralizationSet
         [TypeUri(Uri = "dm:///_internal/model/uml#GeneralizationSet",
             TypeKind = TypeKind.ClassTree)]
         public class _GeneralizationSet
@@ -13056,6 +13225,7 @@ public class _UML
         public _GeneralizationSet @GeneralizationSet = new ();
         public MofObjectShadow @__GeneralizationSet = new ("dm:///_internal/model/uml#GeneralizationSet");
 
+        // _UML._Classification._InstanceSpecification
         [TypeUri(Uri = "dm:///_internal/model/uml#InstanceSpecification",
             TypeKind = TypeKind.ClassTree)]
         public class _InstanceSpecification
@@ -13113,6 +13283,7 @@ public class _UML
         public _InstanceSpecification @InstanceSpecification = new ();
         public MofObjectShadow @__InstanceSpecification = new ("dm:///_internal/model/uml#InstanceSpecification");
 
+        // _UML._Classification._InstanceValue
         [TypeUri(Uri = "dm:///_internal/model/uml#InstanceValue",
             TypeKind = TypeKind.ClassTree)]
         public class _InstanceValue
@@ -13161,6 +13332,7 @@ public class _UML
         public _InstanceValue @InstanceValue = new ();
         public MofObjectShadow @__InstanceValue = new ("dm:///_internal/model/uml#InstanceValue");
 
+        // _UML._Classification._Operation
         [TypeUri(Uri = "dm:///_internal/model/uml#Operation",
             TypeKind = TypeKind.ClassTree)]
         public class _Operation
@@ -13299,6 +13471,7 @@ public class _UML
         public _Operation @Operation = new ();
         public MofObjectShadow @__Operation = new ("dm:///_internal/model/uml#Operation");
 
+        // _UML._Classification._OperationTemplateParameter
         [TypeUri(Uri = "dm:///_internal/model/uml#OperationTemplateParameter",
             TypeKind = TypeKind.ClassTree)]
         public class _OperationTemplateParameter
@@ -13332,6 +13505,7 @@ public class _UML
         public _OperationTemplateParameter @OperationTemplateParameter = new ();
         public MofObjectShadow @__OperationTemplateParameter = new ("dm:///_internal/model/uml#OperationTemplateParameter");
 
+        // _UML._Classification._Parameter
         [TypeUri(Uri = "dm:///_internal/model/uml#Parameter",
             TypeKind = TypeKind.ClassTree)]
         public class _Parameter
@@ -13422,6 +13596,7 @@ public class _UML
         public _Parameter @Parameter = new ();
         public MofObjectShadow @__Parameter = new ("dm:///_internal/model/uml#Parameter");
 
+        // _UML._Classification._ParameterSet
         [TypeUri(Uri = "dm:///_internal/model/uml#ParameterSet",
             TypeKind = TypeKind.ClassTree)]
         public class _ParameterSet
@@ -13464,6 +13639,7 @@ public class _UML
         public _ParameterSet @ParameterSet = new ();
         public MofObjectShadow @__ParameterSet = new ("dm:///_internal/model/uml#ParameterSet");
 
+        // _UML._Classification._Property
         [TypeUri(Uri = "dm:///_internal/model/uml#Property",
             TypeKind = TypeKind.ClassTree)]
         public class _Property
@@ -13602,6 +13778,7 @@ public class _UML
         public _Property @Property = new ();
         public MofObjectShadow @__Property = new ("dm:///_internal/model/uml#Property");
 
+        // _UML._Classification._RedefinableElement
         [TypeUri(Uri = "dm:///_internal/model/uml#RedefinableElement",
             TypeKind = TypeKind.ClassTree)]
         public class _RedefinableElement
@@ -13647,6 +13824,7 @@ public class _UML
         public _RedefinableElement @RedefinableElement = new ();
         public MofObjectShadow @__RedefinableElement = new ("dm:///_internal/model/uml#RedefinableElement");
 
+        // _UML._Classification._RedefinableTemplateSignature
         [TypeUri(Uri = "dm:///_internal/model/uml#RedefinableTemplateSignature",
             TypeKind = TypeKind.ClassTree)]
         public class _RedefinableTemplateSignature
@@ -13710,6 +13888,7 @@ public class _UML
         public _RedefinableTemplateSignature @RedefinableTemplateSignature = new ();
         public MofObjectShadow @__RedefinableTemplateSignature = new ("dm:///_internal/model/uml#RedefinableTemplateSignature");
 
+        // _UML._Classification._Slot
         [TypeUri(Uri = "dm:///_internal/model/uml#Slot",
             TypeKind = TypeKind.ClassTree)]
         public class _Slot
@@ -13737,6 +13916,7 @@ public class _UML
         public _Slot @Slot = new ();
         public MofObjectShadow @__Slot = new ("dm:///_internal/model/uml#Slot");
 
+        // _UML._Classification._StructuralFeature
         [TypeUri(Uri = "dm:///_internal/model/uml#StructuralFeature",
             TypeKind = TypeKind.ClassTree)]
         public class _StructuralFeature
@@ -13912,6 +14092,7 @@ public class _UML
 
     public class _Actions
     {
+        // _UML._Actions._ValueSpecificationAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ValueSpecificationAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ValueSpecificationAction
@@ -14008,6 +14189,7 @@ public class _UML
         public _ValueSpecificationAction @ValueSpecificationAction = new ();
         public MofObjectShadow @__ValueSpecificationAction = new ("dm:///_internal/model/uml#ValueSpecificationAction");
 
+        // _UML._Actions._VariableAction
         [TypeUri(Uri = "dm:///_internal/model/uml#VariableAction",
             TypeKind = TypeKind.ClassTree)]
         public class _VariableAction
@@ -14101,6 +14283,7 @@ public class _UML
         public _VariableAction @VariableAction = new ();
         public MofObjectShadow @__VariableAction = new ("dm:///_internal/model/uml#VariableAction");
 
+        // _UML._Actions._WriteLinkAction
         [TypeUri(Uri = "dm:///_internal/model/uml#WriteLinkAction",
             TypeKind = TypeKind.ClassTree)]
         public class _WriteLinkAction
@@ -14197,6 +14380,7 @@ public class _UML
         public _WriteLinkAction @WriteLinkAction = new ();
         public MofObjectShadow @__WriteLinkAction = new ("dm:///_internal/model/uml#WriteLinkAction");
 
+        // _UML._Actions._WriteStructuralFeatureAction
         [TypeUri(Uri = "dm:///_internal/model/uml#WriteStructuralFeatureAction",
             TypeKind = TypeKind.ClassTree)]
         public class _WriteStructuralFeatureAction
@@ -14299,6 +14483,7 @@ public class _UML
         public _WriteStructuralFeatureAction @WriteStructuralFeatureAction = new ();
         public MofObjectShadow @__WriteStructuralFeatureAction = new ("dm:///_internal/model/uml#WriteStructuralFeatureAction");
 
+        // _UML._Actions._WriteVariableAction
         [TypeUri(Uri = "dm:///_internal/model/uml#WriteVariableAction",
             TypeKind = TypeKind.ClassTree)]
         public class _WriteVariableAction
@@ -14417,6 +14602,7 @@ public class _UML
             @stream
         }
 
+        // _UML._Actions._AcceptCallAction
         [TypeUri(Uri = "dm:///_internal/model/uml#AcceptCallAction",
             TypeKind = TypeKind.ClassTree)]
         public class _AcceptCallAction
@@ -14519,6 +14705,7 @@ public class _UML
         public _AcceptCallAction @AcceptCallAction = new ();
         public MofObjectShadow @__AcceptCallAction = new ("dm:///_internal/model/uml#AcceptCallAction");
 
+        // _UML._Actions._AcceptEventAction
         [TypeUri(Uri = "dm:///_internal/model/uml#AcceptEventAction",
             TypeKind = TypeKind.ClassTree)]
         public class _AcceptEventAction
@@ -14618,6 +14805,7 @@ public class _UML
         public _AcceptEventAction @AcceptEventAction = new ();
         public MofObjectShadow @__AcceptEventAction = new ("dm:///_internal/model/uml#AcceptEventAction");
 
+        // _UML._Actions._Action
         [TypeUri(Uri = "dm:///_internal/model/uml#Action",
             TypeKind = TypeKind.ClassTree)]
         public class _Action
@@ -14708,6 +14896,7 @@ public class _UML
         public _Action @Action = new ();
         public MofObjectShadow @__Action = new ("dm:///_internal/model/uml#Action");
 
+        // _UML._Actions._ActionInputPin
         [TypeUri(Uri = "dm:///_internal/model/uml#ActionInputPin",
             TypeKind = TypeKind.ClassTree)]
         public class _ActionInputPin
@@ -14819,6 +15008,7 @@ public class _UML
         public _ActionInputPin @ActionInputPin = new ();
         public MofObjectShadow @__ActionInputPin = new ("dm:///_internal/model/uml#ActionInputPin");
 
+        // _UML._Actions._AddStructuralFeatureValueAction
         [TypeUri(Uri = "dm:///_internal/model/uml#AddStructuralFeatureValueAction",
             TypeKind = TypeKind.ClassTree)]
         public class _AddStructuralFeatureValueAction
@@ -14927,6 +15117,7 @@ public class _UML
         public _AddStructuralFeatureValueAction @AddStructuralFeatureValueAction = new ();
         public MofObjectShadow @__AddStructuralFeatureValueAction = new ("dm:///_internal/model/uml#AddStructuralFeatureValueAction");
 
+        // _UML._Actions._AddVariableValueAction
         [TypeUri(Uri = "dm:///_internal/model/uml#AddVariableValueAction",
             TypeKind = TypeKind.ClassTree)]
         public class _AddVariableValueAction
@@ -15029,6 +15220,7 @@ public class _UML
         public _AddVariableValueAction @AddVariableValueAction = new ();
         public MofObjectShadow @__AddVariableValueAction = new ("dm:///_internal/model/uml#AddVariableValueAction");
 
+        // _UML._Actions._BroadcastSignalAction
         [TypeUri(Uri = "dm:///_internal/model/uml#BroadcastSignalAction",
             TypeKind = TypeKind.ClassTree)]
         public class _BroadcastSignalAction
@@ -15128,6 +15320,7 @@ public class _UML
         public _BroadcastSignalAction @BroadcastSignalAction = new ();
         public MofObjectShadow @__BroadcastSignalAction = new ("dm:///_internal/model/uml#BroadcastSignalAction");
 
+        // _UML._Actions._CallAction
         [TypeUri(Uri = "dm:///_internal/model/uml#CallAction",
             TypeKind = TypeKind.ClassTree)]
         public class _CallAction
@@ -15230,6 +15423,7 @@ public class _UML
         public _CallAction @CallAction = new ();
         public MofObjectShadow @__CallAction = new ("dm:///_internal/model/uml#CallAction");
 
+        // _UML._Actions._CallBehaviorAction
         [TypeUri(Uri = "dm:///_internal/model/uml#CallBehaviorAction",
             TypeKind = TypeKind.ClassTree)]
         public class _CallBehaviorAction
@@ -15335,6 +15529,7 @@ public class _UML
         public _CallBehaviorAction @CallBehaviorAction = new ();
         public MofObjectShadow @__CallBehaviorAction = new ("dm:///_internal/model/uml#CallBehaviorAction");
 
+        // _UML._Actions._CallOperationAction
         [TypeUri(Uri = "dm:///_internal/model/uml#CallOperationAction",
             TypeKind = TypeKind.ClassTree)]
         public class _CallOperationAction
@@ -15443,6 +15638,7 @@ public class _UML
         public _CallOperationAction @CallOperationAction = new ();
         public MofObjectShadow @__CallOperationAction = new ("dm:///_internal/model/uml#CallOperationAction");
 
+        // _UML._Actions._Clause
         [TypeUri(Uri = "dm:///_internal/model/uml#Clause",
             TypeKind = TypeKind.ClassTree)]
         public class _Clause
@@ -15479,6 +15675,7 @@ public class _UML
         public _Clause @Clause = new ();
         public MofObjectShadow @__Clause = new ("dm:///_internal/model/uml#Clause");
 
+        // _UML._Actions._ClearAssociationAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ClearAssociationAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ClearAssociationAction
@@ -15575,6 +15772,7 @@ public class _UML
         public _ClearAssociationAction @ClearAssociationAction = new ();
         public MofObjectShadow @__ClearAssociationAction = new ("dm:///_internal/model/uml#ClearAssociationAction");
 
+        // _UML._Actions._ClearStructuralFeatureAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ClearStructuralFeatureAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ClearStructuralFeatureAction
@@ -15674,6 +15872,7 @@ public class _UML
         public _ClearStructuralFeatureAction @ClearStructuralFeatureAction = new ();
         public MofObjectShadow @__ClearStructuralFeatureAction = new ("dm:///_internal/model/uml#ClearStructuralFeatureAction");
 
+        // _UML._Actions._ClearVariableAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ClearVariableAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ClearVariableAction
@@ -15767,6 +15966,7 @@ public class _UML
         public _ClearVariableAction @ClearVariableAction = new ();
         public MofObjectShadow @__ClearVariableAction = new ("dm:///_internal/model/uml#ClearVariableAction");
 
+        // _UML._Actions._ConditionalNode
         [TypeUri(Uri = "dm:///_internal/model/uml#ConditionalNode",
             TypeKind = TypeKind.ClassTree)]
         public class _ConditionalNode
@@ -15920,6 +16120,7 @@ public class _UML
         public _ConditionalNode @ConditionalNode = new ();
         public MofObjectShadow @__ConditionalNode = new ("dm:///_internal/model/uml#ConditionalNode");
 
+        // _UML._Actions._CreateLinkAction
         [TypeUri(Uri = "dm:///_internal/model/uml#CreateLinkAction",
             TypeKind = TypeKind.ClassTree)]
         public class _CreateLinkAction
@@ -16016,6 +16217,7 @@ public class _UML
         public _CreateLinkAction @CreateLinkAction = new ();
         public MofObjectShadow @__CreateLinkAction = new ("dm:///_internal/model/uml#CreateLinkAction");
 
+        // _UML._Actions._CreateLinkObjectAction
         [TypeUri(Uri = "dm:///_internal/model/uml#CreateLinkObjectAction",
             TypeKind = TypeKind.ClassTree)]
         public class _CreateLinkObjectAction
@@ -16115,6 +16317,7 @@ public class _UML
         public _CreateLinkObjectAction @CreateLinkObjectAction = new ();
         public MofObjectShadow @__CreateLinkObjectAction = new ("dm:///_internal/model/uml#CreateLinkObjectAction");
 
+        // _UML._Actions._CreateObjectAction
         [TypeUri(Uri = "dm:///_internal/model/uml#CreateObjectAction",
             TypeKind = TypeKind.ClassTree)]
         public class _CreateObjectAction
@@ -16211,6 +16414,7 @@ public class _UML
         public _CreateObjectAction @CreateObjectAction = new ();
         public MofObjectShadow @__CreateObjectAction = new ("dm:///_internal/model/uml#CreateObjectAction");
 
+        // _UML._Actions._DestroyLinkAction
         [TypeUri(Uri = "dm:///_internal/model/uml#DestroyLinkAction",
             TypeKind = TypeKind.ClassTree)]
         public class _DestroyLinkAction
@@ -16307,6 +16511,7 @@ public class _UML
         public _DestroyLinkAction @DestroyLinkAction = new ();
         public MofObjectShadow @__DestroyLinkAction = new ("dm:///_internal/model/uml#DestroyLinkAction");
 
+        // _UML._Actions._DestroyObjectAction
         [TypeUri(Uri = "dm:///_internal/model/uml#DestroyObjectAction",
             TypeKind = TypeKind.ClassTree)]
         public class _DestroyObjectAction
@@ -16406,6 +16611,7 @@ public class _UML
         public _DestroyObjectAction @DestroyObjectAction = new ();
         public MofObjectShadow @__DestroyObjectAction = new ("dm:///_internal/model/uml#DestroyObjectAction");
 
+        // _UML._Actions._ExpansionNode
         [TypeUri(Uri = "dm:///_internal/model/uml#ExpansionNode",
             TypeKind = TypeKind.ClassTree)]
         public class _ExpansionNode
@@ -16499,6 +16705,7 @@ public class _UML
         public _ExpansionNode @ExpansionNode = new ();
         public MofObjectShadow @__ExpansionNode = new ("dm:///_internal/model/uml#ExpansionNode");
 
+        // _UML._Actions._ExpansionRegion
         [TypeUri(Uri = "dm:///_internal/model/uml#ExpansionRegion",
             TypeKind = TypeKind.ClassTree)]
         public class _ExpansionRegion
@@ -16649,6 +16856,7 @@ public class _UML
         public _ExpansionRegion @ExpansionRegion = new ();
         public MofObjectShadow @__ExpansionRegion = new ("dm:///_internal/model/uml#ExpansionRegion");
 
+        // _UML._Actions._InputPin
         [TypeUri(Uri = "dm:///_internal/model/uml#InputPin",
             TypeKind = TypeKind.ClassTree)]
         public class _InputPin
@@ -16757,6 +16965,7 @@ public class _UML
         public _InputPin @InputPin = new ();
         public MofObjectShadow @__InputPin = new ("dm:///_internal/model/uml#InputPin");
 
+        // _UML._Actions._InvocationAction
         [TypeUri(Uri = "dm:///_internal/model/uml#InvocationAction",
             TypeKind = TypeKind.ClassTree)]
         public class _InvocationAction
@@ -16853,6 +17062,7 @@ public class _UML
         public _InvocationAction @InvocationAction = new ();
         public MofObjectShadow @__InvocationAction = new ("dm:///_internal/model/uml#InvocationAction");
 
+        // _UML._Actions._LinkAction
         [TypeUri(Uri = "dm:///_internal/model/uml#LinkAction",
             TypeKind = TypeKind.ClassTree)]
         public class _LinkAction
@@ -16949,6 +17159,7 @@ public class _UML
         public _LinkAction @LinkAction = new ();
         public MofObjectShadow @__LinkAction = new ("dm:///_internal/model/uml#LinkAction");
 
+        // _UML._Actions._LinkEndCreationData
         [TypeUri(Uri = "dm:///_internal/model/uml#LinkEndCreationData",
             TypeKind = TypeKind.ClassTree)]
         public class _LinkEndCreationData
@@ -16982,6 +17193,7 @@ public class _UML
         public _LinkEndCreationData @LinkEndCreationData = new ();
         public MofObjectShadow @__LinkEndCreationData = new ("dm:///_internal/model/uml#LinkEndCreationData");
 
+        // _UML._Actions._LinkEndData
         [TypeUri(Uri = "dm:///_internal/model/uml#LinkEndData",
             TypeKind = TypeKind.ClassTree)]
         public class _LinkEndData
@@ -17009,6 +17221,7 @@ public class _UML
         public _LinkEndData @LinkEndData = new ();
         public MofObjectShadow @__LinkEndData = new ("dm:///_internal/model/uml#LinkEndData");
 
+        // _UML._Actions._LinkEndDestructionData
         [TypeUri(Uri = "dm:///_internal/model/uml#LinkEndDestructionData",
             TypeKind = TypeKind.ClassTree)]
         public class _LinkEndDestructionData
@@ -17042,6 +17255,7 @@ public class _UML
         public _LinkEndDestructionData @LinkEndDestructionData = new ();
         public MofObjectShadow @__LinkEndDestructionData = new ("dm:///_internal/model/uml#LinkEndDestructionData");
 
+        // _UML._Actions._LoopNode
         [TypeUri(Uri = "dm:///_internal/model/uml#LoopNode",
             TypeKind = TypeKind.ClassTree)]
         public class _LoopNode
@@ -17210,6 +17424,7 @@ public class _UML
         public _LoopNode @LoopNode = new ();
         public MofObjectShadow @__LoopNode = new ("dm:///_internal/model/uml#LoopNode");
 
+        // _UML._Actions._OpaqueAction
         [TypeUri(Uri = "dm:///_internal/model/uml#OpaqueAction",
             TypeKind = TypeKind.ClassTree)]
         public class _OpaqueAction
@@ -17312,6 +17527,7 @@ public class _UML
         public _OpaqueAction @OpaqueAction = new ();
         public MofObjectShadow @__OpaqueAction = new ("dm:///_internal/model/uml#OpaqueAction");
 
+        // _UML._Actions._OutputPin
         [TypeUri(Uri = "dm:///_internal/model/uml#OutputPin",
             TypeKind = TypeKind.ClassTree)]
         public class _OutputPin
@@ -17420,6 +17636,7 @@ public class _UML
         public _OutputPin @OutputPin = new ();
         public MofObjectShadow @__OutputPin = new ("dm:///_internal/model/uml#OutputPin");
 
+        // _UML._Actions._Pin
         [TypeUri(Uri = "dm:///_internal/model/uml#Pin",
             TypeKind = TypeKind.ClassTree)]
         public class _Pin
@@ -17528,6 +17745,7 @@ public class _UML
         public _Pin @Pin = new ();
         public MofObjectShadow @__Pin = new ("dm:///_internal/model/uml#Pin");
 
+        // _UML._Actions._QualifierValue
         [TypeUri(Uri = "dm:///_internal/model/uml#QualifierValue",
             TypeKind = TypeKind.ClassTree)]
         public class _QualifierValue
@@ -17552,6 +17770,7 @@ public class _UML
         public _QualifierValue @QualifierValue = new ();
         public MofObjectShadow @__QualifierValue = new ("dm:///_internal/model/uml#QualifierValue");
 
+        // _UML._Actions._RaiseExceptionAction
         [TypeUri(Uri = "dm:///_internal/model/uml#RaiseExceptionAction",
             TypeKind = TypeKind.ClassTree)]
         public class _RaiseExceptionAction
@@ -17645,6 +17864,7 @@ public class _UML
         public _RaiseExceptionAction @RaiseExceptionAction = new ();
         public MofObjectShadow @__RaiseExceptionAction = new ("dm:///_internal/model/uml#RaiseExceptionAction");
 
+        // _UML._Actions._ReadExtentAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ReadExtentAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ReadExtentAction
@@ -17741,6 +17961,7 @@ public class _UML
         public _ReadExtentAction @ReadExtentAction = new ();
         public MofObjectShadow @__ReadExtentAction = new ("dm:///_internal/model/uml#ReadExtentAction");
 
+        // _UML._Actions._ReadIsClassifiedObjectAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ReadIsClassifiedObjectAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ReadIsClassifiedObjectAction
@@ -17843,6 +18064,7 @@ public class _UML
         public _ReadIsClassifiedObjectAction @ReadIsClassifiedObjectAction = new ();
         public MofObjectShadow @__ReadIsClassifiedObjectAction = new ("dm:///_internal/model/uml#ReadIsClassifiedObjectAction");
 
+        // _UML._Actions._ReadLinkAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ReadLinkAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ReadLinkAction
@@ -17942,6 +18164,7 @@ public class _UML
         public _ReadLinkAction @ReadLinkAction = new ();
         public MofObjectShadow @__ReadLinkAction = new ("dm:///_internal/model/uml#ReadLinkAction");
 
+        // _UML._Actions._ReadLinkObjectEndAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ReadLinkObjectEndAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ReadLinkObjectEndAction
@@ -18041,6 +18264,7 @@ public class _UML
         public _ReadLinkObjectEndAction @ReadLinkObjectEndAction = new ();
         public MofObjectShadow @__ReadLinkObjectEndAction = new ("dm:///_internal/model/uml#ReadLinkObjectEndAction");
 
+        // _UML._Actions._ReadLinkObjectEndQualifierAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ReadLinkObjectEndQualifierAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ReadLinkObjectEndQualifierAction
@@ -18140,6 +18364,7 @@ public class _UML
         public _ReadLinkObjectEndQualifierAction @ReadLinkObjectEndQualifierAction = new ();
         public MofObjectShadow @__ReadLinkObjectEndQualifierAction = new ("dm:///_internal/model/uml#ReadLinkObjectEndQualifierAction");
 
+        // _UML._Actions._ReadSelfAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ReadSelfAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ReadSelfAction
@@ -18233,6 +18458,7 @@ public class _UML
         public _ReadSelfAction @ReadSelfAction = new ();
         public MofObjectShadow @__ReadSelfAction = new ("dm:///_internal/model/uml#ReadSelfAction");
 
+        // _UML._Actions._ReadStructuralFeatureAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ReadStructuralFeatureAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ReadStructuralFeatureAction
@@ -18332,6 +18558,7 @@ public class _UML
         public _ReadStructuralFeatureAction @ReadStructuralFeatureAction = new ();
         public MofObjectShadow @__ReadStructuralFeatureAction = new ("dm:///_internal/model/uml#ReadStructuralFeatureAction");
 
+        // _UML._Actions._ReadVariableAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ReadVariableAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ReadVariableAction
@@ -18428,6 +18655,7 @@ public class _UML
         public _ReadVariableAction @ReadVariableAction = new ();
         public MofObjectShadow @__ReadVariableAction = new ("dm:///_internal/model/uml#ReadVariableAction");
 
+        // _UML._Actions._ReclassifyObjectAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ReclassifyObjectAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ReclassifyObjectAction
@@ -18530,6 +18758,7 @@ public class _UML
         public _ReclassifyObjectAction @ReclassifyObjectAction = new ();
         public MofObjectShadow @__ReclassifyObjectAction = new ("dm:///_internal/model/uml#ReclassifyObjectAction");
 
+        // _UML._Actions._ReduceAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ReduceAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ReduceAction
@@ -18632,6 +18861,7 @@ public class _UML
         public _ReduceAction @ReduceAction = new ();
         public MofObjectShadow @__ReduceAction = new ("dm:///_internal/model/uml#ReduceAction");
 
+        // _UML._Actions._RemoveStructuralFeatureValueAction
         [TypeUri(Uri = "dm:///_internal/model/uml#RemoveStructuralFeatureValueAction",
             TypeKind = TypeKind.ClassTree)]
         public class _RemoveStructuralFeatureValueAction
@@ -18740,6 +18970,7 @@ public class _UML
         public _RemoveStructuralFeatureValueAction @RemoveStructuralFeatureValueAction = new ();
         public MofObjectShadow @__RemoveStructuralFeatureValueAction = new ("dm:///_internal/model/uml#RemoveStructuralFeatureValueAction");
 
+        // _UML._Actions._RemoveVariableValueAction
         [TypeUri(Uri = "dm:///_internal/model/uml#RemoveVariableValueAction",
             TypeKind = TypeKind.ClassTree)]
         public class _RemoveVariableValueAction
@@ -18842,6 +19073,7 @@ public class _UML
         public _RemoveVariableValueAction @RemoveVariableValueAction = new ();
         public MofObjectShadow @__RemoveVariableValueAction = new ("dm:///_internal/model/uml#RemoveVariableValueAction");
 
+        // _UML._Actions._ReplyAction
         [TypeUri(Uri = "dm:///_internal/model/uml#ReplyAction",
             TypeKind = TypeKind.ClassTree)]
         public class _ReplyAction
@@ -18941,6 +19173,7 @@ public class _UML
         public _ReplyAction @ReplyAction = new ();
         public MofObjectShadow @__ReplyAction = new ("dm:///_internal/model/uml#ReplyAction");
 
+        // _UML._Actions._SendObjectAction
         [TypeUri(Uri = "dm:///_internal/model/uml#SendObjectAction",
             TypeKind = TypeKind.ClassTree)]
         public class _SendObjectAction
@@ -19043,6 +19276,7 @@ public class _UML
         public _SendObjectAction @SendObjectAction = new ();
         public MofObjectShadow @__SendObjectAction = new ("dm:///_internal/model/uml#SendObjectAction");
 
+        // _UML._Actions._SendSignalAction
         [TypeUri(Uri = "dm:///_internal/model/uml#SendSignalAction",
             TypeKind = TypeKind.ClassTree)]
         public class _SendSignalAction
@@ -19145,6 +19379,7 @@ public class _UML
         public _SendSignalAction @SendSignalAction = new ();
         public MofObjectShadow @__SendSignalAction = new ("dm:///_internal/model/uml#SendSignalAction");
 
+        // _UML._Actions._SequenceNode
         [TypeUri(Uri = "dm:///_internal/model/uml#SequenceNode",
             TypeKind = TypeKind.ClassTree)]
         public class _SequenceNode
@@ -19289,6 +19524,7 @@ public class _UML
         public _SequenceNode @SequenceNode = new ();
         public MofObjectShadow @__SequenceNode = new ("dm:///_internal/model/uml#SequenceNode");
 
+        // _UML._Actions._StartClassifierBehaviorAction
         [TypeUri(Uri = "dm:///_internal/model/uml#StartClassifierBehaviorAction",
             TypeKind = TypeKind.ClassTree)]
         public class _StartClassifierBehaviorAction
@@ -19382,6 +19618,7 @@ public class _UML
         public _StartClassifierBehaviorAction @StartClassifierBehaviorAction = new ();
         public MofObjectShadow @__StartClassifierBehaviorAction = new ("dm:///_internal/model/uml#StartClassifierBehaviorAction");
 
+        // _UML._Actions._StartObjectBehaviorAction
         [TypeUri(Uri = "dm:///_internal/model/uml#StartObjectBehaviorAction",
             TypeKind = TypeKind.ClassTree)]
         public class _StartObjectBehaviorAction
@@ -19487,6 +19724,7 @@ public class _UML
         public _StartObjectBehaviorAction @StartObjectBehaviorAction = new ();
         public MofObjectShadow @__StartObjectBehaviorAction = new ("dm:///_internal/model/uml#StartObjectBehaviorAction");
 
+        // _UML._Actions._StructuralFeatureAction
         [TypeUri(Uri = "dm:///_internal/model/uml#StructuralFeatureAction",
             TypeKind = TypeKind.ClassTree)]
         public class _StructuralFeatureAction
@@ -19583,6 +19821,7 @@ public class _UML
         public _StructuralFeatureAction @StructuralFeatureAction = new ();
         public MofObjectShadow @__StructuralFeatureAction = new ("dm:///_internal/model/uml#StructuralFeatureAction");
 
+        // _UML._Actions._StructuredActivityNode
         [TypeUri(Uri = "dm:///_internal/model/uml#StructuredActivityNode",
             TypeKind = TypeKind.ClassTree)]
         public class _StructuredActivityNode
@@ -19724,6 +19963,7 @@ public class _UML
         public _StructuredActivityNode @StructuredActivityNode = new ();
         public MofObjectShadow @__StructuredActivityNode = new ("dm:///_internal/model/uml#StructuredActivityNode");
 
+        // _UML._Actions._TestIdentityAction
         [TypeUri(Uri = "dm:///_internal/model/uml#TestIdentityAction",
             TypeKind = TypeKind.ClassTree)]
         public class _TestIdentityAction
@@ -19823,6 +20063,7 @@ public class _UML
         public _TestIdentityAction @TestIdentityAction = new ();
         public MofObjectShadow @__TestIdentityAction = new ("dm:///_internal/model/uml#TestIdentityAction");
 
+        // _UML._Actions._UnmarshallAction
         [TypeUri(Uri = "dm:///_internal/model/uml#UnmarshallAction",
             TypeKind = TypeKind.ClassTree)]
         public class _UnmarshallAction
@@ -19922,6 +20163,7 @@ public class _UML
         public _UnmarshallAction @UnmarshallAction = new ();
         public MofObjectShadow @__UnmarshallAction = new ("dm:///_internal/model/uml#UnmarshallAction");
 
+        // _UML._Actions._ValuePin
         [TypeUri(Uri = "dm:///_internal/model/uml#ValuePin",
             TypeKind = TypeKind.ClassTree)]
         public class _ValuePin

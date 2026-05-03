@@ -8,6 +8,7 @@ namespace DatenMeister.Core.Models;
 
 public class _CommonTypes
 {
+    // _CommonTypes._DateTime
     [TypeUri(Uri = "dm:///_internal/types/internal#DateTime",
         TypeKind = TypeKind.ClassTree)]
     public class _DateTime
@@ -19,6 +20,7 @@ public class _CommonTypes
 
     public class _Default
     {
+        // _CommonTypes._Default._Package
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package",
             TypeKind = TypeKind.ClassTree)]
         public class _Package
@@ -43,6 +45,7 @@ public class _CommonTypes
         public _Package @Package = new ();
         public MofObjectShadow @__Package = new ("dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package");
 
+        // _CommonTypes._Default._XmiExportContainer
         [TypeUri(Uri = "dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1",
             TypeKind = TypeKind.ClassTree)]
         public class _XmiExportContainer
@@ -55,6 +58,7 @@ public class _CommonTypes
         public _XmiExportContainer @XmiExportContainer = new ();
         public MofObjectShadow @__XmiExportContainer = new ("dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1");
 
+        // _CommonTypes._Default._XmiImportContainer
         [TypeUri(Uri = "dm:///_internal/types/internal#73c8c24e-6040-4700-b11d-c60f2379523a",
             TypeKind = TypeKind.ClassTree)]
         public class _XmiImportContainer
@@ -79,6 +83,7 @@ public class _CommonTypes
 
     public class _ExtentManager
     {
+        // _CommonTypes._ExtentManager._ImportSettings
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportSettings",
             TypeKind = TypeKind.ClassTree)]
         public class _ImportSettings
@@ -97,6 +102,7 @@ public class _CommonTypes
         public _ImportSettings @ImportSettings = new ();
         public MofObjectShadow @__ImportSettings = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportSettings");
 
+        // _CommonTypes._ExtentManager._ImportException
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportException",
             TypeKind = TypeKind.ClassTree)]
         public class _ImportException
@@ -115,6 +121,7 @@ public class _CommonTypes
 
     public class _OSIntegration
     {
+        // _CommonTypes._OSIntegration._CommandLineApplication
         [TypeUri(Uri = "dm:///_internal/types/internal#CommonTypes.OSIntegration.CommandLineApplication",
             TypeKind = TypeKind.ClassTree)]
         public class _CommandLineApplication
@@ -130,6 +137,7 @@ public class _CommonTypes
         public _CommandLineApplication @CommandLineApplication = new ();
         public MofObjectShadow @__CommandLineApplication = new ("dm:///_internal/types/internal#CommonTypes.OSIntegration.CommandLineApplication");
 
+        // _CommonTypes._OSIntegration._EnvironmentalVariable
         [TypeUri(Uri = "dm:///_internal/types/internal#OSIntegration.EnvironmentalVariable",
             TypeKind = TypeKind.ClassTree)]
         public class _EnvironmentalVariable
@@ -155,6 +163,7 @@ public class _CommonTypes
 
 public class _Actions
 {
+    // _Actions._ActionSet
     [TypeUri(Uri = "dm:///_internal/types/internal#Actions.ActionSet",
         TypeKind = TypeKind.ClassTree)]
     public class _ActionSet
@@ -173,6 +182,7 @@ public class _Actions
     public _ActionSet @ActionSet = new ();
     public MofObjectShadow @__ActionSet = new ("dm:///_internal/types/internal#Actions.ActionSet");
 
+    // _Actions._LoggingWriterAction
     [TypeUri(Uri = "dm:///_internal/types/internal#Actions.LoggingWriterAction",
         TypeKind = TypeKind.ClassTree)]
     public class _LoggingWriterAction
@@ -191,6 +201,7 @@ public class _Actions
     public _LoggingWriterAction @LoggingWriterAction = new ();
     public MofObjectShadow @__LoggingWriterAction = new ("dm:///_internal/types/internal#Actions.LoggingWriterAction");
 
+    // _Actions._LoadExtentAction
     [TypeUri(Uri = "dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee",
         TypeKind = TypeKind.ClassTree)]
     public class _LoadExtentAction
@@ -212,6 +223,7 @@ public class _Actions
     public _LoadExtentAction @LoadExtentAction = new ();
     public MofObjectShadow @__LoadExtentAction = new ("dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee");
 
+    // _Actions._DropExtentAction
     [TypeUri(Uri = "dm:///_internal/types/internal#c870f6e8-2b70-415c-afaf-b78776b42a09",
         TypeKind = TypeKind.ClassTree)]
     public class _DropExtentAction
@@ -233,6 +245,7 @@ public class _Actions
     public _DropExtentAction @DropExtentAction = new ();
     public MofObjectShadow @__DropExtentAction = new ("dm:///_internal/types/internal#c870f6e8-2b70-415c-afaf-b78776b42a09");
 
+    // _Actions._CreateWorkspaceAction
     [TypeUri(Uri = "dm:///_internal/types/internal#1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe",
         TypeKind = TypeKind.ClassTree)]
     public class _CreateWorkspaceAction
@@ -254,6 +267,7 @@ public class _Actions
     public _CreateWorkspaceAction @CreateWorkspaceAction = new ();
     public MofObjectShadow @__CreateWorkspaceAction = new ("dm:///_internal/types/internal#1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe");
 
+    // _Actions._DropWorkspaceAction
     [TypeUri(Uri = "dm:///_internal/types/internal#db6cc8eb-011c-43e5-b966-cc0e3a1855e8",
         TypeKind = TypeKind.ClassTree)]
     public class _DropWorkspaceAction
@@ -272,6 +286,7 @@ public class _Actions
     public _DropWorkspaceAction @DropWorkspaceAction = new ();
     public MofObjectShadow @__DropWorkspaceAction = new ("dm:///_internal/types/internal#db6cc8eb-011c-43e5-b966-cc0e3a1855e8");
 
+    // _Actions._CopyElementsAction
     [TypeUri(Uri = "dm:///_internal/types/internal#8b576580-0f75-4159-ad16-afb7c2268aed",
         TypeKind = TypeKind.ClassTree)]
     public class _CopyElementsAction
@@ -305,6 +320,7 @@ public class _Actions
     public _CopyElementsAction @CopyElementsAction = new ();
     public MofObjectShadow @__CopyElementsAction = new ("dm:///_internal/types/internal#8b576580-0f75-4159-ad16-afb7c2268aed");
 
+    // _Actions._ExportToXmiAction
     [TypeUri(Uri = "dm:///_internal/types/internal#3c3595a4-026e-4c07-83ec-8a90607b8863",
         TypeKind = TypeKind.ClassTree)]
     public class _ExportToXmiAction
@@ -329,6 +345,7 @@ public class _Actions
     public _ExportToXmiAction @ExportToXmiAction = new ();
     public MofObjectShadow @__ExportToXmiAction = new ("dm:///_internal/types/internal#3c3595a4-026e-4c07-83ec-8a90607b8863");
 
+    // _Actions._ClearCollectionAction
     [TypeUri(Uri = "dm:///_internal/types/internal#b70b736b-c9b0-4986-8d92-240fcabc95ae",
         TypeKind = TypeKind.ClassTree)]
     public class _ClearCollectionAction
@@ -350,6 +367,7 @@ public class _Actions
     public _ClearCollectionAction @ClearCollectionAction = new ();
     public MofObjectShadow @__ClearCollectionAction = new ("dm:///_internal/types/internal#b70b736b-c9b0-4986-8d92-240fcabc95ae");
 
+    // _Actions._TransformItemsAction
     [TypeUri(Uri = "dm:///_internal/types/internal#Actions.ItemTransformationActionHandler",
         TypeKind = TypeKind.ClassTree)]
     public class _TransformItemsAction
@@ -380,6 +398,7 @@ public class _Actions
     public _TransformItemsAction @TransformItemsAction = new ();
     public MofObjectShadow @__TransformItemsAction = new ("dm:///_internal/types/internal#Actions.ItemTransformationActionHandler");
 
+    // _Actions._EchoAction
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Actions.EchoAction",
         TypeKind = TypeKind.ClassTree)]
     public class _EchoAction
@@ -398,6 +417,7 @@ public class _Actions
     public _EchoAction @EchoAction = new ();
     public MofObjectShadow @__EchoAction = new ("dm:///_internal/types/internal#DatenMeister.Actions.EchoAction");
 
+    // _Actions._DocumentOpenAction
     [TypeUri(Uri = "dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74",
         TypeKind = TypeKind.ClassTree)]
     public class _DocumentOpenAction
@@ -418,6 +438,7 @@ public class _Actions
 
     public class _Reports
     {
+        // _Actions._Reports._SimpleReportAction
         [TypeUri(Uri = "dm:///_internal/types/internal#Actions.SimpleReportAction",
             TypeKind = TypeKind.ClassTree)]
         public class _SimpleReportAction
@@ -445,6 +466,7 @@ public class _Actions
         public _SimpleReportAction @SimpleReportAction = new ();
         public MofObjectShadow @__SimpleReportAction = new ("dm:///_internal/types/internal#Actions.SimpleReportAction");
 
+        // _Actions._Reports._AdocReportAction
         [TypeUri(Uri = "dm:///_internal/types/internal#Actions.AdocReportAction",
             TypeKind = TypeKind.ClassTree)]
         public class _AdocReportAction
@@ -466,6 +488,7 @@ public class _Actions
         public _AdocReportAction @AdocReportAction = new ();
         public MofObjectShadow @__AdocReportAction = new ("dm:///_internal/types/internal#Actions.AdocReportAction");
 
+        // _Actions._Reports._HtmlReportAction
         [TypeUri(Uri = "dm:///_internal/types/internal#Actions.HtmlReportAction",
             TypeKind = TypeKind.ClassTree)]
         public class _HtmlReportAction
@@ -491,6 +514,7 @@ public class _Actions
 
     public _Reports Reports = new ();
 
+    // _Actions._Action
     [TypeUri(Uri = "dm:///_internal/types/internal#Actions.Action",
         TypeKind = TypeKind.ClassTree)]
     public class _Action
@@ -506,6 +530,7 @@ public class _Actions
     public _Action @Action = new ();
     public MofObjectShadow @__Action = new ("dm:///_internal/types/internal#Actions.Action");
 
+    // _Actions._MoveOrCopyAction
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.MoveOrCopyAction",
         TypeKind = TypeKind.ClassTree)]
     public class _MoveOrCopyAction
@@ -562,6 +587,7 @@ public class _Actions
         @Down
     }
 
+    // _Actions._MoveUpDownAction
     [TypeUri(Uri = "dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54",
         TypeKind = TypeKind.ClassTree)]
     public class _MoveUpDownAction
@@ -583,6 +609,7 @@ public class _Actions
     public _MoveUpDownAction @MoveUpDownAction = new ();
     public MofObjectShadow @__MoveUpDownAction = new ("dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54");
 
+    // _Actions._StoreExtentAction
     [TypeUri(Uri = "dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1",
         TypeKind = TypeKind.ClassTree)]
     public class _StoreExtentAction
@@ -604,6 +631,7 @@ public class _Actions
     public _StoreExtentAction @StoreExtentAction = new ();
     public MofObjectShadow @__StoreExtentAction = new ("dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1");
 
+    // _Actions._ImportXmiAction
     [TypeUri(Uri = "dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d",
         TypeKind = TypeKind.ClassTree)]
     public class _ImportXmiAction
@@ -628,6 +656,7 @@ public class _Actions
     public _ImportXmiAction @ImportXmiAction = new ();
     public MofObjectShadow @__ImportXmiAction = new ("dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d");
 
+    // _Actions._DeletePropertyFromCollectionAction
     [TypeUri(Uri = "dm:///_internal/types/internal#b631bb00-ab11-4a8a-a148-e28abc398503",
         TypeKind = TypeKind.ClassTree)]
     public class _DeletePropertyFromCollectionAction
@@ -646,6 +675,7 @@ public class _Actions
     public _DeletePropertyFromCollectionAction @DeletePropertyFromCollectionAction = new ();
     public MofObjectShadow @__DeletePropertyFromCollectionAction = new ("dm:///_internal/types/internal#b631bb00-ab11-4a8a-a148-e28abc398503");
 
+    // _Actions._TargetReferenceResult
     [TypeUri(Uri = "dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1",
         TypeKind = TypeKind.ClassTree)]
     public class _TargetReferenceResult
@@ -663,6 +693,7 @@ public class _Actions
 
     public class _ParameterTypes
     {
+        // _Actions._ParameterTypes._NavigationDefineActionParameter
         [TypeUri(Uri = "dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd",
             TypeKind = TypeKind.ClassTree)]
         public class _NavigationDefineActionParameter
@@ -681,6 +712,7 @@ public class _Actions
         public _NavigationDefineActionParameter @NavigationDefineActionParameter = new ();
         public MofObjectShadow @__NavigationDefineActionParameter = new ("dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd");
 
+        // _Actions._ParameterTypes._LoadExtentActionResult
         [TypeUri(Uri = "dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5",
             TypeKind = TypeKind.ClassTree)]
         public class _LoadExtentActionResult
@@ -700,6 +732,7 @@ public class _Actions
 
     public _ParameterTypes ParameterTypes = new ();
 
+    // _Actions._ActionResult
     [TypeUri(Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d",
         TypeKind = TypeKind.ClassTree)]
     public class _ActionResult
@@ -717,6 +750,7 @@ public class _Actions
 
     public class _ClientActions
     {
+        // _Actions._ClientActions._ClientAction
         [TypeUri(Uri = "dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998",
             TypeKind = TypeKind.ClassTree)]
         public class _ClientAction
@@ -735,6 +769,7 @@ public class _Actions
         public _ClientAction @ClientAction = new ();
         public MofObjectShadow @__ClientAction = new ("dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998");
 
+        // _Actions._ClientActions._AlertClientAction
         [TypeUri(Uri = "dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971",
             TypeKind = TypeKind.ClassTree)]
         public class _AlertClientAction
@@ -756,6 +791,7 @@ public class _Actions
         public _AlertClientAction @AlertClientAction = new ();
         public MofObjectShadow @__AlertClientAction = new ("dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971");
 
+        // _Actions._ClientActions._NavigateToExtentClientAction
         [TypeUri(Uri = "dm:///_internal/types/internal#3251783f-2683-4c24-bad5-828930028462",
             TypeKind = TypeKind.ClassTree)]
         public class _NavigateToExtentClientAction
@@ -771,6 +807,7 @@ public class _Actions
         public _NavigateToExtentClientAction @NavigateToExtentClientAction = new ();
         public MofObjectShadow @__NavigateToExtentClientAction = new ("dm:///_internal/types/internal#3251783f-2683-4c24-bad5-828930028462");
 
+        // _Actions._ClientActions._NavigateToItemClientAction
         [TypeUri(Uri = "dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4",
             TypeKind = TypeKind.ClassTree)]
         public class _NavigateToItemClientAction
@@ -795,6 +832,7 @@ public class _Actions
 
     public class _Forms
     {
+        // _Actions._Forms._CreateFormByMetaClass
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass",
             TypeKind = TypeKind.ClassTree)]
         public class _CreateFormByMetaClass
@@ -825,6 +863,7 @@ public class _Actions
 
     public class _OSIntegration
     {
+        // _Actions._OSIntegration._CommandExecutionAction
         [TypeUri(Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82",
             TypeKind = TypeKind.ClassTree)]
         public class _CommandExecutionAction
@@ -849,6 +888,7 @@ public class _Actions
         public _CommandExecutionAction @CommandExecutionAction = new ();
         public MofObjectShadow @__CommandExecutionAction = new ("dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82");
 
+        // _Actions._OSIntegration._PowershellExecutionAction
         [TypeUri(Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb",
             TypeKind = TypeKind.ClassTree)]
         public class _PowershellExecutionAction
@@ -870,6 +910,7 @@ public class _Actions
         public _PowershellExecutionAction @PowershellExecutionAction = new ();
         public MofObjectShadow @__PowershellExecutionAction = new ("dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb");
 
+        // _Actions._OSIntegration._ConsoleWriteAction
         [TypeUri(Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a",
             TypeKind = TypeKind.ClassTree)]
         public class _ConsoleWriteAction
@@ -892,6 +933,7 @@ public class _Actions
 
     public _OSIntegration OSIntegration = new ();
 
+    // _Actions._RefreshTypeIndexAction
     [TypeUri(Uri = "dm:///_internal/types/internal#9d43decb-aa2f-4461-b680-3ec595b518d1",
         TypeKind = TypeKind.ClassTree)]
     public class _RefreshTypeIndexAction
@@ -904,6 +946,7 @@ public class _Actions
     public _RefreshTypeIndexAction @RefreshTypeIndexAction = new ();
     public MofObjectShadow @__RefreshTypeIndexAction = new ("dm:///_internal/types/internal#9d43decb-aa2f-4461-b680-3ec595b518d1");
 
+    // _Actions._StoreElementAction
     [TypeUri(Uri = "dm:///_internal/types/internal#c7dcb24c-e53c-46f9-9e8a-3704095193a8",
         TypeKind = TypeKind.ClassTree)]
     public class _StoreElementAction
@@ -934,6 +977,7 @@ public class _Actions
 
 public class _DataViews
 {
+    // _DataViews._DataView
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DataView",
         TypeKind = TypeKind.ClassTree)]
     public class _DataView
@@ -955,6 +999,7 @@ public class _DataViews
     public _DataView @DataView = new ();
     public MofObjectShadow @__DataView = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.DataView");
 
+    // _DataViews._ViewNode
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode",
         TypeKind = TypeKind.ClassTree)]
     public class _ViewNode
@@ -1010,6 +1055,7 @@ public class _DataViews
         @RegexNoMatch
     }
 
+    // _DataViews._QueryStatement
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement",
         TypeKind = TypeKind.ClassTree)]
     public class _QueryStatement
@@ -1030,6 +1076,7 @@ public class _DataViews
 
     public class _Row
     {
+        // _DataViews._Row._RowFilterByFreeTextAnywhere
         [TypeUri(Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628",
             TypeKind = TypeKind.ClassTree)]
         public class _RowFilterByFreeTextAnywhere
@@ -1048,6 +1095,7 @@ public class _DataViews
         public _RowFilterByFreeTextAnywhere @RowFilterByFreeTextAnywhere = new ();
         public MofObjectShadow @__RowFilterByFreeTextAnywhere = new ("dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628");
 
+        // _DataViews._Row._RowFilterByPropertyValueNode
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode",
             TypeKind = TypeKind.ClassTree)]
         public class _RowFilterByPropertyValueNode
@@ -1072,6 +1120,7 @@ public class _DataViews
         public _RowFilterByPropertyValueNode @RowFilterByPropertyValueNode = new ();
         public MofObjectShadow @__RowFilterByPropertyValueNode = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode");
 
+        // _DataViews._Row._RowOrderByNode
         [TypeUri(Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9",
             TypeKind = TypeKind.ClassTree)]
         public class _RowOrderByNode
@@ -1093,6 +1142,7 @@ public class _DataViews
         public _RowOrderByNode @RowOrderByNode = new ();
         public MofObjectShadow @__RowOrderByNode = new ("dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9");
 
+        // _DataViews._Row._RowFilterOnPositionNode
         [TypeUri(Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f",
             TypeKind = TypeKind.ClassTree)]
         public class _RowFilterOnPositionNode
@@ -1114,6 +1164,7 @@ public class _DataViews
         public _RowFilterOnPositionNode @RowFilterOnPositionNode = new ();
         public MofObjectShadow @__RowFilterOnPositionNode = new ("dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f");
 
+        // _DataViews._Row._RowFlattenNode
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode",
             TypeKind = TypeKind.ClassTree)]
         public class _RowFlattenNode
@@ -1129,6 +1180,7 @@ public class _DataViews
         public _RowFlattenNode @RowFlattenNode = new ();
         public MofObjectShadow @__RowFlattenNode = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode");
 
+        // _DataViews._Row._RowFilterByMetaclassNode
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode",
             TypeKind = TypeKind.ClassTree)]
         public class _RowFilterByMetaclassNode
@@ -1156,6 +1208,7 @@ public class _DataViews
 
     public class _Column
     {
+        // _DataViews._Column._ColumnFilterIncludeOnlyNode
         [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
             TypeKind = TypeKind.ClassTree)]
         public class _ColumnFilterIncludeOnlyNode
@@ -1174,6 +1227,7 @@ public class _DataViews
         public _ColumnFilterIncludeOnlyNode @ColumnFilterIncludeOnlyNode = new ();
         public MofObjectShadow @__ColumnFilterIncludeOnlyNode = new ("dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d");
 
+        // _DataViews._Column._ColumnFilterExcludeNode
         [TypeUri(Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7",
             TypeKind = TypeKind.ClassTree)]
         public class _ColumnFilterExcludeNode
@@ -1198,6 +1252,7 @@ public class _DataViews
 
     public class _Source
     {
+        // _DataViews._Source._SelectByExtentNode
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode",
             TypeKind = TypeKind.ClassTree)]
         public class _SelectByExtentNode
@@ -1216,6 +1271,7 @@ public class _DataViews
         public _SelectByExtentNode @SelectByExtentNode = new ();
         public MofObjectShadow @__SelectByExtentNode = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode");
 
+        // _DataViews._Source._SelectByPathNode
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode",
             TypeKind = TypeKind.ClassTree)]
         public class _SelectByPathNode
@@ -1234,6 +1290,7 @@ public class _DataViews
         public _SelectByPathNode @SelectByPathNode = new ();
         public MofObjectShadow @__SelectByPathNode = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode");
 
+        // _DataViews._Source._DynamicSourceNode
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode",
             TypeKind = TypeKind.ClassTree)]
         public class _DynamicSourceNode
@@ -1249,6 +1306,7 @@ public class _DataViews
         public _DynamicSourceNode @DynamicSourceNode = new ();
         public MofObjectShadow @__DynamicSourceNode = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode");
 
+        // _DataViews._Source._SelectByWorkspaceNode
         [TypeUri(Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db",
             TypeKind = TypeKind.ClassTree)]
         public class _SelectByWorkspaceNode
@@ -1264,6 +1322,7 @@ public class _DataViews
         public _SelectByWorkspaceNode @SelectByWorkspaceNode = new ();
         public MofObjectShadow @__SelectByWorkspaceNode = new ("dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db");
 
+        // _DataViews._Source._SelectByFullNameNode
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
             TypeKind = TypeKind.ClassTree)]
         public class _SelectByFullNameNode
@@ -1282,6 +1341,7 @@ public class _DataViews
         public _SelectByFullNameNode @SelectByFullNameNode = new ();
         public MofObjectShadow @__SelectByFullNameNode = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode");
 
+        // _DataViews._Source._SelectFromAllWorkspacesNode
         [TypeUri(Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a",
             TypeKind = TypeKind.ClassTree)]
         public class _SelectFromAllWorkspacesNode
@@ -1300,6 +1360,7 @@ public class _DataViews
 
     public class _Node
     {
+        // _DataViews._Node._ReferenceViewNode
         [TypeUri(Uri = "dm:///_internal/types/internal#e80d4c64-a68e-44a7-893d-1a5100a80370",
             TypeKind = TypeKind.ClassTree)]
         public class _ReferenceViewNode
@@ -1322,6 +1383,7 @@ public class _DataViews
 
     public _Node Node = new ();
 
+    // _DataViews._ValueItem
     [TypeUri(Uri = "dm:///_internal/types/internal#4394a28a-0def-4030-b5d0-7a1b5b01c91b",
         TypeKind = TypeKind.ClassTree)]
     public class _ValueItem
@@ -1340,6 +1402,7 @@ public class _DataViews
 
 public class _Reports
 {
+    // _Reports._ReportDefinition
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition",
         TypeKind = TypeKind.ClassTree)]
     public class _ReportDefinition
@@ -1358,6 +1421,7 @@ public class _Reports
     public _ReportDefinition @ReportDefinition = new ();
     public MofObjectShadow @__ReportDefinition = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition");
 
+    // _Reports._ReportInstanceSource
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstanceSource",
         TypeKind = TypeKind.ClassTree)]
     public class _ReportInstanceSource
@@ -1376,6 +1440,7 @@ public class _Reports
     public _ReportInstanceSource @ReportInstanceSource = new ();
     public MofObjectShadow @__ReportInstanceSource = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstanceSource");
 
+    // _Reports._ReportInstance
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstance",
         TypeKind = TypeKind.ClassTree)]
     public class _ReportInstance
@@ -1394,6 +1459,7 @@ public class _Reports
     public _ReportInstance @ReportInstance = new ();
     public MofObjectShadow @__ReportInstance = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstance");
 
+    // _Reports._AdocReportInstance
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance",
         TypeKind = TypeKind.ClassTree)]
     public class _AdocReportInstance
@@ -1412,6 +1478,7 @@ public class _Reports
     public _AdocReportInstance @AdocReportInstance = new ();
     public MofObjectShadow @__AdocReportInstance = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance");
 
+    // _Reports._HtmlReportInstance
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance",
         TypeKind = TypeKind.ClassTree)]
     public class _HtmlReportInstance
@@ -1458,6 +1525,7 @@ public class _Reports
         @PerPackage
     }
 
+    // _Reports._SimpleReportConfiguration
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.SimpleReportConfiguration",
         TypeKind = TypeKind.ClassTree)]
     public class _SimpleReportConfiguration
@@ -1499,6 +1567,7 @@ public class _Reports
 
     public class _Elements
     {
+        // _Reports._Elements._ReportElement
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportElement",
             TypeKind = TypeKind.ClassTree)]
         public class _ReportElement
@@ -1511,6 +1580,7 @@ public class _Reports
         public _ReportElement @ReportElement = new ();
         public MofObjectShadow @__ReportElement = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportElement");
 
+        // _Reports._Elements._ReportHeadline
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline",
             TypeKind = TypeKind.ClassTree)]
         public class _ReportHeadline
@@ -1526,6 +1596,7 @@ public class _Reports
         public _ReportHeadline @ReportHeadline = new ();
         public MofObjectShadow @__ReportHeadline = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline");
 
+        // _Reports._Elements._ReportParagraph
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph",
             TypeKind = TypeKind.ClassTree)]
         public class _ReportParagraph
@@ -1553,6 +1624,7 @@ public class _Reports
         public _ReportParagraph @ReportParagraph = new ();
         public MofObjectShadow @__ReportParagraph = new ("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph");
 
+        // _Reports._Elements._ReportTable
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable",
             TypeKind = TypeKind.ClassTree)]
         public class _ReportTable
@@ -1596,6 +1668,7 @@ public class _Reports
             @AllTypes
         }
 
+        // _Reports._Elements._ReportLoop
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportLoop",
             TypeKind = TypeKind.ClassTree)]
         public class _ReportLoop
@@ -1624,6 +1697,7 @@ public class _Reports
 
 public class _ExtentLoaderConfigs
 {
+    // _ExtentLoaderConfigs._ExtentLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
     public class _ExtentLoaderConfig
@@ -1645,6 +1719,7 @@ public class _ExtentLoaderConfigs
     public _ExtentLoaderConfig @ExtentLoaderConfig = new ();
     public MofObjectShadow @__ExtentLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig");
 
+    // _ExtentLoaderConfigs._ExcelLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelLoaderConfig
@@ -1714,6 +1789,7 @@ public class _ExtentLoaderConfigs
     public _ExcelLoaderConfig @ExcelLoaderConfig = new ();
     public MofObjectShadow @__ExcelLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig");
 
+    // _ExtentLoaderConfigs._ExcelReferenceLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelReferenceLoaderConfig
@@ -1783,6 +1859,7 @@ public class _ExtentLoaderConfigs
     public _ExcelReferenceLoaderConfig @ExcelReferenceLoaderConfig = new ();
     public MofObjectShadow @__ExcelReferenceLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig");
 
+    // _ExtentLoaderConfigs._ExcelImportLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelImportLoaderConfig
@@ -1852,6 +1929,7 @@ public class _ExtentLoaderConfigs
     public _ExcelImportLoaderConfig @ExcelImportLoaderConfig = new ();
     public MofObjectShadow @__ExcelImportLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig");
 
+    // _ExtentLoaderConfigs._ExcelExtentLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelExtentLoaderConfig
@@ -1921,6 +1999,7 @@ public class _ExtentLoaderConfigs
     public _ExcelExtentLoaderConfig @ExcelExtentLoaderConfig = new ();
     public MofObjectShadow @__ExcelExtentLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig");
 
+    // _ExtentLoaderConfigs._InMemoryLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
     public class _InMemoryLoaderConfig
@@ -1945,6 +2024,7 @@ public class _ExtentLoaderConfigs
     public _InMemoryLoaderConfig @InMemoryLoaderConfig = new ();
     public MofObjectShadow @__InMemoryLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig");
 
+    // _ExtentLoaderConfigs._XmlReferenceLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmlReferenceLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
     public class _XmlReferenceLoaderConfig
@@ -1972,6 +2052,7 @@ public class _ExtentLoaderConfigs
     public _XmlReferenceLoaderConfig @XmlReferenceLoaderConfig = new ();
     public MofObjectShadow @__XmlReferenceLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmlReferenceLoaderConfig");
 
+    // _ExtentLoaderConfigs._ExtentFileLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
     public class _ExtentFileLoaderConfig
@@ -1996,6 +2077,7 @@ public class _ExtentLoaderConfigs
     public _ExtentFileLoaderConfig @ExtentFileLoaderConfig = new ();
     public MofObjectShadow @__ExtentFileLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig");
 
+    // _ExtentLoaderConfigs._XmiStorageLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
     public class _XmiStorageLoaderConfig
@@ -2020,6 +2102,7 @@ public class _ExtentLoaderConfigs
     public _XmiStorageLoaderConfig @XmiStorageLoaderConfig = new ();
     public MofObjectShadow @__XmiStorageLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
 
+    // _ExtentLoaderConfigs._CsvExtentLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
     public class _CsvExtentLoaderConfig
@@ -2047,6 +2130,7 @@ public class _ExtentLoaderConfigs
     public _CsvExtentLoaderConfig @CsvExtentLoaderConfig = new ();
     public MofObjectShadow @__CsvExtentLoaderConfig = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig");
 
+    // _ExtentLoaderConfigs._CsvSettings
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings",
         TypeKind = TypeKind.ClassTree)]
     public class _CsvSettings
@@ -2074,6 +2158,7 @@ public class _ExtentLoaderConfigs
     public _CsvSettings @CsvSettings = new ();
     public MofObjectShadow @__CsvSettings = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings");
 
+    // _ExtentLoaderConfigs._ExcelHierarchicalColumnDefinition
     [TypeUri(Uri = "dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition",
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelHierarchicalColumnDefinition
@@ -2092,6 +2177,7 @@ public class _ExtentLoaderConfigs
     public _ExcelHierarchicalColumnDefinition @ExcelHierarchicalColumnDefinition = new ();
     public MofObjectShadow @__ExcelHierarchicalColumnDefinition = new ("dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition");
 
+    // _ExtentLoaderConfigs._ExcelHierarchicalLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelHierarchicalLoaderConfig
@@ -2167,6 +2253,7 @@ public class _ExtentLoaderConfigs
     public _ExcelHierarchicalLoaderConfig @ExcelHierarchicalLoaderConfig = new ();
     public MofObjectShadow @__ExcelHierarchicalLoaderConfig = new ("dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalLoaderConfig");
 
+    // _ExtentLoaderConfigs._ExcelColumn
     [TypeUri(Uri = "dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a",
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelColumn
@@ -2182,6 +2269,7 @@ public class _ExtentLoaderConfigs
     public _ExcelColumn @ExcelColumn = new ();
     public MofObjectShadow @__ExcelColumn = new ("dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a");
 
+    // _ExtentLoaderConfigs._EnvironmentalVariableLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#10151dfc-f18b-4a58-9434-da1be1e030a3",
         TypeKind = TypeKind.ClassTree)]
     public class _EnvironmentalVariableLoaderConfig
@@ -2231,6 +2319,7 @@ public class _ExtentLoaderConfigs
 
 public class _Forms
 {
+    // _Forms._FieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _FieldData
@@ -2258,6 +2347,7 @@ public class _Forms
     public _FieldData @FieldData = new ();
     public MofObjectShadow @__FieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData");
 
+    // _Forms._SortingOrder
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder",
         TypeKind = TypeKind.ClassTree)]
     public class _SortingOrder
@@ -2273,6 +2363,7 @@ public class _Forms
     public _SortingOrder @SortingOrder = new ();
     public MofObjectShadow @__SortingOrder = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder");
 
+    // _Forms._AnyDataFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _AnyDataFieldData
@@ -2300,6 +2391,7 @@ public class _Forms
     public _AnyDataFieldData @AnyDataFieldData = new ();
     public MofObjectShadow @__AnyDataFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData");
 
+    // _Forms._CheckboxFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _CheckboxFieldData
@@ -2327,6 +2419,7 @@ public class _Forms
     public _CheckboxFieldData @CheckboxFieldData = new ();
     public MofObjectShadow @__CheckboxFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData");
 
+    // _Forms._ActionFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _ActionFieldData
@@ -2375,6 +2468,7 @@ public class _Forms
     public _ActionFieldData @ActionFieldData = new ();
     public MofObjectShadow @__ActionFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData");
 
+    // _Forms._DateTimeFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _DateTimeFieldData
@@ -2408,6 +2502,7 @@ public class _Forms
     public _DateTimeFieldData @DateTimeFieldData = new ();
     public MofObjectShadow @__DateTimeFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData");
 
+    // _Forms._FormAssociation
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation",
         TypeKind = TypeKind.ClassTree)]
     public class _FormAssociation
@@ -2450,6 +2545,7 @@ public class _Forms
     public _FormAssociation @FormAssociation = new ();
     public MofObjectShadow @__FormAssociation = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation");
 
+    // _Forms._DropDownFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _DropDownFieldData
@@ -2483,6 +2579,7 @@ public class _Forms
     public _DropDownFieldData @DropDownFieldData = new ();
     public MofObjectShadow @__DropDownFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData");
 
+    // _Forms._ValuePair
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair",
         TypeKind = TypeKind.ClassTree)]
     public class _ValuePair
@@ -2498,6 +2595,7 @@ public class _Forms
     public _ValuePair @ValuePair = new ();
     public MofObjectShadow @__ValuePair = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair");
 
+    // _Forms._MetaClassElementFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _MetaClassElementFieldData
@@ -2525,6 +2623,7 @@ public class _Forms
     public _MetaClassElementFieldData @MetaClassElementFieldData = new ();
     public MofObjectShadow @__MetaClassElementFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData");
 
+    // _Forms._ReferenceFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _ReferenceFieldData
@@ -2573,6 +2672,7 @@ public class _Forms
     public _ReferenceFieldData @ReferenceFieldData = new ();
     public MofObjectShadow @__ReferenceFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData");
 
+    // _Forms._SubElementFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _SubElementFieldData
@@ -2624,6 +2724,7 @@ public class _Forms
     public _SubElementFieldData @SubElementFieldData = new ();
     public MofObjectShadow @__SubElementFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData");
 
+    // _Forms._TextFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _TextFieldData
@@ -2663,6 +2764,7 @@ public class _Forms
     public _TextFieldData @TextFieldData = new ();
     public MofObjectShadow @__TextFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData");
 
+    // _Forms._EvalTextFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _EvalTextFieldData
@@ -2705,6 +2807,7 @@ public class _Forms
     public _EvalTextFieldData @EvalTextFieldData = new ();
     public MofObjectShadow @__EvalTextFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData");
 
+    // _Forms._SeparatorLineFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _SeparatorLineFieldData
@@ -2717,6 +2820,7 @@ public class _Forms
     public _SeparatorLineFieldData @SeparatorLineFieldData = new ();
     public MofObjectShadow @__SeparatorLineFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData");
 
+    // _Forms._FileSelectionFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _FileSelectionFieldData
@@ -2756,6 +2860,7 @@ public class _Forms
     public _FileSelectionFieldData @FileSelectionFieldData = new ();
     public MofObjectShadow @__FileSelectionFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData");
 
+    // _Forms._DefaultTypeForNewElement
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement",
         TypeKind = TypeKind.ClassTree)]
     public class _DefaultTypeForNewElement
@@ -2774,6 +2879,7 @@ public class _Forms
     public _DefaultTypeForNewElement @DefaultTypeForNewElement = new ();
     public MofObjectShadow @__DefaultTypeForNewElement = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement");
 
+    // _Forms._FullNameFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _FullNameFieldData
@@ -2801,6 +2907,7 @@ public class _Forms
     public _FullNameFieldData @FullNameFieldData = new ();
     public MofObjectShadow @__FullNameFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData");
 
+    // _Forms._CheckboxListTaggingFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _CheckboxListTaggingFieldData
@@ -2837,6 +2944,7 @@ public class _Forms
     public _CheckboxListTaggingFieldData @CheckboxListTaggingFieldData = new ();
     public MofObjectShadow @__CheckboxListTaggingFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData");
 
+    // _Forms._NumberFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData",
         TypeKind = TypeKind.ClassTree)]
     public class _NumberFieldData
@@ -2907,6 +3015,7 @@ public class _Forms
         @TableExtension
     }
 
+    // _Forms._Form
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form",
         TypeKind = TypeKind.ClassTree)]
     public class _Form
@@ -2940,6 +3049,7 @@ public class _Forms
     public _Form @Form = new ();
     public MofObjectShadow @__Form = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.Form");
 
+    // _Forms._RowForm
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm",
         TypeKind = TypeKind.ClassTree)]
     public class _RowForm
@@ -2988,6 +3098,7 @@ public class _Forms
     public _RowForm @RowForm = new ();
     public MofObjectShadow @__RowForm = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm");
 
+    // _Forms._TableForm
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm",
         TypeKind = TypeKind.ClassTree)]
     public class _TableForm
@@ -3069,6 +3180,7 @@ public class _Forms
     public _TableForm @TableForm = new ();
     public MofObjectShadow @__TableForm = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm");
 
+    // _Forms._CollectionForm
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm",
         TypeKind = TypeKind.ClassTree)]
     public class _CollectionForm
@@ -3111,6 +3223,7 @@ public class _Forms
     public _CollectionForm @CollectionForm = new ();
     public MofObjectShadow @__CollectionForm = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm");
 
+    // _Forms._ObjectForm
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm",
         TypeKind = TypeKind.ClassTree)]
     public class _ObjectForm
@@ -3150,6 +3263,7 @@ public class _Forms
     public _ObjectForm @ObjectForm = new ();
     public MofObjectShadow @__ObjectForm = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm");
 
+    // _Forms._ViewMode
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode",
         TypeKind = TypeKind.ClassTree)]
     public class _ViewMode
@@ -3168,6 +3282,7 @@ public class _Forms
     public _ViewMode @ViewMode = new ();
     public MofObjectShadow @__ViewMode = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode");
 
+    // _Forms._DropDownByCollection
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection",
         TypeKind = TypeKind.ClassTree)]
     public class _DropDownByCollection
@@ -3201,6 +3316,7 @@ public class _Forms
     public _DropDownByCollection @DropDownByCollection = new ();
     public MofObjectShadow @__DropDownByCollection = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection");
 
+    // _Forms._UriReferenceFieldData
     [TypeUri(Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00",
         TypeKind = TypeKind.ClassTree)]
     public class _UriReferenceFieldData
@@ -3216,6 +3332,7 @@ public class _Forms
     public _UriReferenceFieldData @UriReferenceFieldData = new ();
     public MofObjectShadow @__UriReferenceFieldData = new ("dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00");
 
+    // _Forms._NavigateToFieldsForTestAction
     [TypeUri(Uri = "dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0",
         TypeKind = TypeKind.ClassTree)]
     public class _NavigateToFieldsForTestAction
@@ -3231,6 +3348,7 @@ public class _Forms
     public _NavigateToFieldsForTestAction @NavigateToFieldsForTestAction = new ();
     public MofObjectShadow @__NavigateToFieldsForTestAction = new ("dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0");
 
+    // _Forms._DropDownByQueryData
     [TypeUri(Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2",
         TypeKind = TypeKind.ClassTree)]
     public class _DropDownByQueryData
@@ -3267,6 +3385,7 @@ public class _Forms
 
 public class _AttachedExtent
 {
+    // _AttachedExtent._AttachedExtentConfiguration
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration",
         TypeKind = TypeKind.ClassTree)]
     public class _AttachedExtentConfiguration
@@ -3325,6 +3444,7 @@ public class _Management
         @LoadedReadOnly
     }
 
+    // _Management._Extent
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent",
         TypeKind = TypeKind.ClassTree)]
     public class _Extent
@@ -3376,6 +3496,7 @@ public class _Management
     public _Extent @Extent = new ();
     public MofObjectShadow @__Extent = new ("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent");
 
+    // _Management._Workspace
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace",
         TypeKind = TypeKind.ClassTree)]
     public class _Workspace
@@ -3394,6 +3515,7 @@ public class _Management
     public _Workspace @Workspace = new ();
     public MofObjectShadow @__Workspace = new ("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace");
 
+    // _Management._CreateNewWorkspaceModel
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel",
         TypeKind = TypeKind.ClassTree)]
     public class _CreateNewWorkspaceModel
@@ -3409,6 +3531,7 @@ public class _Management
     public _CreateNewWorkspaceModel @CreateNewWorkspaceModel = new ();
     public MofObjectShadow @__CreateNewWorkspaceModel = new ("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel");
 
+    // _Management._ExtentTypeSetting
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentTypeSetting",
         TypeKind = TypeKind.ClassTree)]
     public class _ExtentTypeSetting
@@ -3424,6 +3547,7 @@ public class _Management
     public _ExtentTypeSetting @ExtentTypeSetting = new ();
     public MofObjectShadow @__ExtentTypeSetting = new ("dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentTypeSetting");
 
+    // _Management._ExtentProperties
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties",
         TypeKind = TypeKind.ClassTree)]
     public class _ExtentProperties
@@ -3475,6 +3599,7 @@ public class _Management
     public _ExtentProperties @ExtentProperties = new ();
     public MofObjectShadow @__ExtentProperties = new ("dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties");
 
+    // _Management._ExtentPropertyDefinition
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentPropertyDefinition",
         TypeKind = TypeKind.ClassTree)]
     public class _ExtentPropertyDefinition
@@ -3493,6 +3618,7 @@ public class _Management
     public _ExtentPropertyDefinition @ExtentPropertyDefinition = new ();
     public MofObjectShadow @__ExtentPropertyDefinition = new ("dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentPropertyDefinition");
 
+    // _Management._ExtentSettings
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentSettings",
         TypeKind = TypeKind.ClassTree)]
     public class _ExtentSettings
@@ -3542,6 +3668,7 @@ public class _FastViewFilters
         @LighterOrEqualThan
     }
 
+    // _FastViewFilters._PropertyComparisonFilter
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyComparisonFilter",
         TypeKind = TypeKind.ClassTree)]
     public class _PropertyComparisonFilter
@@ -3560,6 +3687,7 @@ public class _FastViewFilters
     public _PropertyComparisonFilter @PropertyComparisonFilter = new ();
     public MofObjectShadow @__PropertyComparisonFilter = new ("dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyComparisonFilter");
 
+    // _FastViewFilters._PropertyContainsFilter
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyContainsFilter",
         TypeKind = TypeKind.ClassTree)]
     public class _PropertyContainsFilter
@@ -3581,6 +3709,7 @@ public class _FastViewFilters
 
 public class _DynamicRuntimeProvider
 {
+    // _DynamicRuntimeProvider._DynamicRuntimeLoaderConfig
     [TypeUri(Uri = "dm:///_internal/types/internal#DynamicRuntimeProvider.DynamicRuntimeLoaderConfig",
         TypeKind = TypeKind.ClassTree)]
     public class _DynamicRuntimeLoaderConfig
@@ -3610,6 +3739,7 @@ public class _DynamicRuntimeProvider
 
     public class _Examples
     {
+        // _DynamicRuntimeProvider._Examples._NumberProviderSettings
         [TypeUri(Uri = "dm:///_internal/types/internal#f264ab67-ab6a-4462-8088-d3d6c9e2763a",
             TypeKind = TypeKind.ClassTree)]
         public class _NumberProviderSettings
@@ -3628,6 +3758,7 @@ public class _DynamicRuntimeProvider
         public _NumberProviderSettings @NumberProviderSettings = new ();
         public MofObjectShadow @__NumberProviderSettings = new ("dm:///_internal/types/internal#f264ab67-ab6a-4462-8088-d3d6c9e2763a");
 
+        // _DynamicRuntimeProvider._Examples._NumberRepresentation
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.DynamicRuntimeProviders.Examples.NumberRepresentation",
             TypeKind = TypeKind.ClassTree)]
         public class _NumberRepresentation
@@ -3659,6 +3790,7 @@ public class _DynamicRuntimeProvider
 
 public class _Verifier
 {
+    // _Verifier._VerifyEntry
     [TypeUri(Uri = "dm:///_internal/types/internal#d19d742f-9bba-4bef-b310-05ef96153768",
         TypeKind = TypeKind.ClassTree)]
     public class _VerifyEntry

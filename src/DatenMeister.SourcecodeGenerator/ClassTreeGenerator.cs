@@ -1,6 +1,8 @@
 ﻿using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator;
@@ -13,10 +15,16 @@ namespace DatenMeister.SourcecodeGenerator;
 public class ClassTreeGenerator : WalkPackageClass
 {
     /// <summary>
+    /// Stores the typeUriMappingLogic which updates the references during the build
+    /// </summary>
+    private TypeUriMappingLogic? _typeUriMappingLogic;
+    
+    /// <summary>
     ///     Initializes a new instance of the ClassTreeGenerator
     /// </summary>
-    public ClassTreeGenerator(ISourceParser? parser = null) : base(parser)
+    public ClassTreeGenerator(ISourceParser? parser = null, TypeUriMappingLogic? typeUriMappingLogic = null) : base(parser)
     {
+        _typeUriMappingLogic = typeUriMappingLogic;
         FactoryVersion = new Version(1, 3, 0, 0);
     }
 
@@ -88,6 +96,10 @@ public class ClassTreeGenerator : WalkPackageClass
         if (classInstance is not IElement asElement) return;
 
         var name = GetNameOfElement(classInstance);
+        var fullName = "_" + NamedElementMethods.GetFullName(classInstance, "._");
+        _typeUriMappingLogic.UpdateEntry(classInstance.GetUri(), fullName, TypeKind.ClassTree);
+        
+        Result.AppendLine($"{stack.Indentation}// {fullName}");
         Result.AppendLine($"{stack.Indentation}[TypeUri(Uri = \"{classInstance.GetUri()}\",");
         Result.AppendLine($"{stack.Indentation}    TypeKind = TypeKind.ClassTree)]");
         Result.AppendLine($"{stack.Indentation}public class _{name}");
@@ -139,6 +151,9 @@ public class ClassTreeGenerator : WalkPackageClass
     {
         var asElement = (IElement) enumInstance;
         var name = GetNameOfElement(enumInstance);
+        
+        var fullName = "_" + NamedElementMethods.GetFullName(enumInstance, "._");
+        _typeUriMappingLogic.UpdateEntry(enumInstance.GetUri(), fullName);
 
         Result.AppendLine($"{stack.Indentation}public class _{name}");
         Result.AppendLine($"{stack.Indentation}{{");

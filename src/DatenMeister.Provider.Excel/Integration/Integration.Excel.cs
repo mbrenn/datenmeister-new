@@ -20,7 +20,7 @@ public static class Integration
             _ExtentLoaderConfigs.TheOne.__ExcelExtentLoaderConfig);
         settings.set(_ExtentLoaderConfigs._ExcelExtentLoaderConfig.extentUri,
             url);
-        settings.set(_ExtentLoaderConfigs._ExcelExtentLoaderConfig.filePath,
+        settings.set(_ExtentLoaderConfigs._ExcelExtentLoaderConfig.xmiFilePath,
             filePath);
             
         return ExcelFileProviderLoader.LoadProvider(settings);

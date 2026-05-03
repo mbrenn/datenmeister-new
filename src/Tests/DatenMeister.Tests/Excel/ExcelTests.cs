@@ -163,7 +163,7 @@ public class ExcelTests
                 "dm:///excel2");
             excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath,
                 Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
-            excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.extentPath,
+            excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.xmiFilePath,
                 Path.Combine(currentDirectory!, "test.xmi"));
             excelImportLoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.hasHeader,
                 true);

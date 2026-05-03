@@ -23,7 +23,7 @@ public class ExcelFileProviderLoader : IProviderLoader
     public static ExcelProvider LoadProvider(IElement settings)
     {
         var filePath =
-            settings.getOrDefault<string>(_ExtentLoaderConfigs._ExcelExtentLoaderConfig.filePath);
+            settings.getOrDefault<string>(_ExtentLoaderConfigs._ExcelExtentLoaderConfig.xmiFilePath);
             
         if (!File.Exists(filePath))
         {

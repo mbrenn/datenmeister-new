@@ -140,8 +140,8 @@ public class WrapperTreeGenerator : WalkPackageClass
         else
         {
             // Check, if we know the type
-            var foundTypes = TypeUriMapping.Entries.Where(x => x.TypeUri == typeOfProperty?.GetUri()
-                                                               && x.TypeKind == TypeKind.WrappedClass).ToList();
+            var foundTypes = TypeUriMapping.Entries.Where(
+                x => x.TypeUri == typeOfProperty?.GetUri() && x.TypeKind == TypeKind.WrappedClass).ToList();
             if (foundTypes.Count > 1)
             {
                 throw new InvalidOperationException("We have an issue. We found more than one match! ");

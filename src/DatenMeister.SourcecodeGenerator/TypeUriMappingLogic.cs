@@ -66,4 +66,52 @@ public class TypeUriMappingLogic
             }
         }
     }
+
+    /// <summary>
+    /// Updates the entry, if existing. If the element is not existing, a new entry will be added
+    /// </summary>
+    /// <param name="typeUri">Type of the Uri</param>
+    /// <param name="fullName">Fullname</param>
+    /// <param name="typeKind">Type to be added</param>
+    public void UpdateEntry(string? typeUri, string fullName)
+    {
+        if (string.IsNullOrEmpty(typeUri))
+        {
+            return;
+        }
+        
+        var found =  Entries.FirstOrDefault(x => x.TypeUri == typeUri && x.TypeKind == TypeKind.ClassTree);
+        if (found != null)
+        {
+            found.ClassFullName = fullName;
+        }
+        else
+        {
+            var newEntry = new Entry
+            {
+                TypeUri = typeUri,
+                ClassFullName = fullName,
+                TypeKind = TypeKind.ClassTree
+            };
+            
+            Entries.Add(newEntry);
+        }
+        
+        var found2 =  Entries.FirstOrDefault(x => x.TypeUri == typeUri && x.TypeKind == TypeKind.WrappedClass);
+        if (found != null)
+        {
+            found.ClassFullName = fullName + "_Wrapper";
+        }
+        else
+        {
+            var newEntry = new Entry
+            {
+                TypeUri = typeUri,
+                ClassFullName = fullName,
+                TypeKind = TypeKind.ClassTree
+            };
+            
+            Entries.Add(newEntry);
+        }
+    }
 }

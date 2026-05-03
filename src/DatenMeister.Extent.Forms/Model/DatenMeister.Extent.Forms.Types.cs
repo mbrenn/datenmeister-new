@@ -8,6 +8,7 @@ namespace DatenMeister.Extent.Forms.Model;
 
 public class _Root
 {
+    // _MassImportDefinitionAction
     [TypeUri(Uri = "dm:///_internal/types/internal#b5e9f945-6c33-4b26-837b-38a5ad2f65fc",
         TypeKind = TypeKind.ClassTree)]
     public class _MassImportDefinitionAction

@@ -109,7 +109,7 @@ export class ObjectFormCreator implements IForm.IPageForm {
         if (this.element == null) this.element = await MofSync.createTemporaryDmObject();
         this.statusTextControl.setListStatus("Temporary Object", true);
 
-        const tabs = this.formElement.getAsArray(_DatenMeister._Forms._ObjectForm.tab);
+        const tabs = this.formElement.getAsArray(_DatenMeister._Forms._FormTypes._ObjectForm.tab);
         for (let n in tabs) {
             try {
                 if (!tabs.hasOwnProperty(n)) {

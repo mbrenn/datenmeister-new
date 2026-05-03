@@ -130,12 +130,12 @@ public class CopierTests
 
         // Prepare a compositing object with two fields
         var factory = new MofFactory(mofExtent!);
-        var rowForm = factory.create(_Forms.TheOne.__RowForm);
-        var fieldCheckbox = factory.create(_Forms.TheOne.__CheckboxFieldData);
-        fieldCheckbox.set(_Forms._CheckboxFieldData.name, "Checkbox");
-        var fieldText = factory.create(_Forms.TheOne.__TextFieldData);
-        fieldText.set(_Forms._TextFieldData.name, "Textbox");
-        rowForm.set(_Forms._RowForm.field, new List<object> {fieldCheckbox, fieldText});
+        var rowForm = factory.create(_Forms.TheOne.FormTypes.__RowForm);
+        var fieldCheckbox = factory.create(_Forms.TheOne.FieldTypes.__CheckboxFieldData);
+        fieldCheckbox.set(_Forms._FieldTypes._CheckboxFieldData.name, "Checkbox");
+        var fieldText = factory.create(_Forms.TheOne.FieldTypes.__TextFieldData);
+        fieldText.set(_Forms._FieldTypes._TextFieldData.name, "Textbox");
+        rowForm.set(_Forms._FormTypes._RowForm.field, new List<object> {fieldCheckbox, fieldText});
         mofExtent!.elements().add(rowForm);
         
         // Copy it
@@ -151,20 +151,20 @@ public class CopierTests
         
         // Check that the new object is existing and of metaclass rowform
         Assert.That(copiedElement, Is.Not.Null);
-        Assert.That(copiedElement.getMetaClass()?.equals(_Forms.TheOne.__RowForm), Is.True);
+        Assert.That(copiedElement.getMetaClass()?.equals(_Forms.TheOne.FormTypes.__RowForm), Is.True);
         
         // Check that there are two fields and identify each for checking of names by metaclass
-        var field = copiedElement.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
+        var field = copiedElement.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field);
         Assert.That(field, Is.Not.Null);
         Assert.That(field.OfType<IElement>().Count(), Is.EqualTo(2));
         
-        var fieldCheckbox2 = field.OfType<IElement>().FirstOrDefault(x => x.getMetaClass()?.Equals( _Forms.TheOne.__CheckboxFieldData) == true);
+        var fieldCheckbox2 = field.OfType<IElement>().FirstOrDefault(x => x.getMetaClass()?.Equals( _Forms.TheOne.FieldTypes.__CheckboxFieldData) == true);
         Assert.That(fieldCheckbox2, Is.Not.Null);
-        Assert.That(fieldCheckbox2!.getOrDefault<string>(_Forms._CheckboxFieldData.name), Is.EqualTo("Checkbox"));
+        Assert.That(fieldCheckbox2!.getOrDefault<string>(_Forms._FieldTypes._CheckboxFieldData.name), Is.EqualTo("Checkbox"));
         
-        var fieldText2 = field.OfType<IElement>().FirstOrDefault(x => x.getMetaClass()?.Equals(_Forms.TheOne.__TextFieldData) == true);
+        var fieldText2 = field.OfType<IElement>().FirstOrDefault(x => x.getMetaClass()?.Equals(_Forms.TheOne.FieldTypes.__TextFieldData) == true);
         Assert.That(fieldText2, Is.Not.Null);
-        Assert.That(fieldText2!.getOrDefault<string>(_Forms._TextFieldData.name), Is.EqualTo("Textbox"));
+        Assert.That(fieldText2!.getOrDefault<string>(_Forms._FieldTypes._TextFieldData.name), Is.EqualTo("Textbox"));
         
         // Confirm that the providerobjects behind each field are not the same
         Assert.That((fieldCheckbox2 as MofObject)?.ProviderObject, Is.Not.Null);

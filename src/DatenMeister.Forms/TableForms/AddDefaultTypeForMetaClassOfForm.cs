@@ -17,7 +17,7 @@ public class AddDefaultTypeForMetaClassOfForm : FormFactoryBase, ITableFormFacto
     {
         foreach (var form in result.Forms)
         {
-            var defaultType = form.getOrDefault<IElement>(_Forms._TableForm.metaClass);
+            var defaultType = form.getOrDefault<IElement>(_Forms._FormTypes._TableForm.metaClass);
             if (defaultType == null)
                 return;
 
@@ -39,7 +39,7 @@ public class AddDefaultTypeForMetaClassOfForm : FormFactoryBase, ITableFormFacto
         IElement defaultType)
     {
         var currentDefaultPackages =
-            form.get<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
+            form.get<IReflectiveCollection>(_Forms._FormTypes._TableForm.defaultTypesForNewElements);
         if (currentDefaultPackages.OfType<IElement>().Any(x =>
                 x.getOrDefault<IElement>(
                         _Forms._DefaultTypeForNewElement.metaClass)

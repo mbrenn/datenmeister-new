@@ -37,7 +37,7 @@ public abstract class FormCreationResult
         lock (form)
         {   
             var currentMessage =
-                form.getOrDefault<string>(_Forms._Form.creationProtocol)
+                form.getOrDefault<string>(_Forms._FormTypes._Form.creationProtocol)
                 ?? string.Empty;
 
             if (currentMessage != string.Empty)
@@ -45,7 +45,7 @@ public abstract class FormCreationResult
             else
                 currentMessage = message;
 
-            form.set(_Forms._Form.creationProtocol, currentMessage);
+            form.set(_Forms._FormTypes._Form.creationProtocol, currentMessage);
         }
     }
 }

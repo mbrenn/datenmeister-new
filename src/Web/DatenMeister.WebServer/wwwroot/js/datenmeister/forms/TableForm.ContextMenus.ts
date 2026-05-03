@@ -1,8 +1,8 @@
 ﻿import * as burnJsPopup from "../../burnJsPopup.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as Actions from "../client/Actions.js";
-import _FieldData = _DatenMeister._Forms._FieldData;
-import _TableForm = _DatenMeister._Forms._TableForm;
+import _FieldData = _DatenMeister._Forms._FieldTypes._FieldData;
+import _TableForm = _DatenMeister._Forms._FormTypes._TableForm;
 import * as Mof from "../Mof.js";
 import {truncateText} from "../../burnsystems/StringManipulation.js";
 import TableForm from "./TableForm.js";

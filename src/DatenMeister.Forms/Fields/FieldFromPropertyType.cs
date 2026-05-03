@@ -114,19 +114,19 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
             else if (propertyType.equals(CachedTypes.BooleanType))
             {
                 // If we have a boolean and the field is not for a list form
-                var checkbox = factory.create(_Forms.TheOne.__CheckboxFieldData);
-                checkbox.set(_Forms._CheckboxFieldData.name, propertyName);
-                checkbox.set(_Forms._CheckboxFieldData.title, propertyName);
-                checkbox.set(_Forms._CheckboxFieldData.isReadOnly, isReadOnly);
+                var checkbox = factory.create(_Forms.TheOne.FieldTypes.__CheckboxFieldData);
+                checkbox.set(_Forms._FieldTypes._CheckboxFieldData.name, propertyName);
+                checkbox.set(_Forms._FieldTypes._CheckboxFieldData.title, propertyName);
+                checkbox.set(_Forms._FieldTypes._CheckboxFieldData.isReadOnly, isReadOnly);
                 result.Form = checkbox;
             }
 
             else if (propertyType.equals(CachedTypes.DateTimeType))
             {
-                var dateTimeField = factory.create(_Forms.TheOne.__DateTimeFieldData);
-                dateTimeField.set(_Forms._CheckboxFieldData.name, propertyName);
-                dateTimeField.set(_Forms._CheckboxFieldData.title, propertyName);
-                dateTimeField.set(_Forms._CheckboxFieldData.isReadOnly, isReadOnly);
+                var dateTimeField = factory.create(_Forms.TheOne.FieldTypes.__DateTimeFieldData);
+                dateTimeField.set(_Forms._FieldTypes._CheckboxFieldData.name, propertyName);
+                dateTimeField.set(_Forms._FieldTypes._CheckboxFieldData.title, propertyName);
+                dateTimeField.set(_Forms._FieldTypes._CheckboxFieldData.isReadOnly, isReadOnly);
                 result.Form = dateTimeField;
             }
 
@@ -141,15 +141,15 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                 if (propertyIsCollection)
                 {
                     // It can contain multiple factory
-                    var elementsField = factory.create(_Forms.TheOne.__SubElementFieldData);
-                    elementsField.set(_Forms._SubElementFieldData.name, propertyName);
-                    elementsField.set(_Forms._SubElementFieldData.title, propertyName);
-                    elementsField.set(_Forms._SubElementFieldData.isReadOnly,
+                    var elementsField = factory.create(_Forms.TheOne.FieldTypes.__SubElementFieldData);
+                    elementsField.set(_Forms._FieldTypes._SubElementFieldData.name, propertyName);
+                    elementsField.set(_Forms._FieldTypes._SubElementFieldData.title, propertyName);
+                    elementsField.set(_Forms._FieldTypes._SubElementFieldData.isReadOnly,
                         parameter.IsInTable || context.IsReadOnly);
 
                     elementsField.set(
-                        _Forms._SubElementFieldData.includeSpecializationsForDefaultTypes, true);
-                    elementsField.set(_Forms._SubElementFieldData.isReadOnly, isReadOnly);
+                        _Forms._FieldTypes._SubElementFieldData.includeSpecializationsForDefaultTypes, true);
+                    elementsField.set(_Forms._FieldTypes._SubElementFieldData.isReadOnly, isReadOnly);
 
                     if (!parameter.IsInTable)
                     {
@@ -166,16 +166,16 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                                 }, clonedContext).Forms.FirstOrDefault();
 
                         if (enumerationListForm != null)
-                            elementsField.set(_Forms._SubElementFieldData.form, enumerationListForm);
+                            elementsField.set(_Forms._FieldTypes._SubElementFieldData.form, enumerationListForm);
                     }
 
                     result.Form = elementsField;
                 }
                 else if (parameter.IsInTable)
                 {
-                    var referenceField = factory.create(_Forms.TheOne.__ReferenceFieldData);
-                    referenceField.set(_Forms._TextFieldData.name, propertyName);
-                    referenceField.set(_Forms._TextFieldData.title, propertyName);
+                    var referenceField = factory.create(_Forms.TheOne.FieldTypes.__ReferenceFieldData);
+                    referenceField.set(_Forms._FieldTypes._TextFieldData.name, propertyName);
+                    referenceField.set(_Forms._FieldTypes._TextFieldData.title, propertyName);
                     result.Form = referenceField;
                 }
                 else if (false && !attributeModel.IsComposite)
@@ -183,7 +183,7 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                     // Gets the workspace of the object
                     var workspace = parameter.Extent?.GetWorkspace();
                     
-                    var dropDownByQueryData = factory.create(_Forms.TheOne.__DropDownByQueryData);
+                    var dropDownByQueryData = factory.create(_Forms.TheOne.FieldTypes.__DropDownByQueryData);
                     var queryStatement = factory.create(_DataViews.TheOne.__QueryStatement);
                     
                     IElement queryByExtent;
@@ -205,7 +205,7 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                     queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryFlatten);
                     queryStatement.set(_DataViews._QueryStatement.resultNode, queryByMetaClass);
                         
-                    dropDownByQueryData.set(_Forms._DropDownByQueryData.query, queryStatement);
+                    dropDownByQueryData.set(_Forms._FieldTypes._DropDownByQueryData.query, queryStatement);
                         
                     queryFlatten.set(_DataViews._Row._RowFlattenNode.input, queryByExtent);
                         
@@ -213,8 +213,8 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                     queryByMetaClass.set(_DataViews._Row._RowFilterByMetaclassNode.metaClass, propertyType);
                     queryByMetaClass.set(_DataViews._Row._RowFilterByMetaclassNode.includeInherits, false);
                         
-                    dropDownByQueryData.set(_Forms._SubElementFieldData.name, propertyName);
-                    dropDownByQueryData.set(_Forms._SubElementFieldData.title, propertyName);
+                    dropDownByQueryData.set(_Forms._FieldTypes._SubElementFieldData.name, propertyName);
+                    dropDownByQueryData.set(_Forms._FieldTypes._SubElementFieldData.title, propertyName);
 
                     result.Form = dropDownByQueryData;
                 }
@@ -223,13 +223,13 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                 else
                 {
                     // It can just contain one element (or is in list view)
-                    var reference = factory.create(_Forms.TheOne.__ReferenceFieldData);
-                    reference.set(_Forms._ReferenceFieldData.name, propertyName);
-                    reference.set(_Forms._ReferenceFieldData.title, propertyName);
-                    reference.set(_Forms._ReferenceFieldData.isReadOnly, isReadOnly);
-                    reference.set(_Forms._ReferenceFieldData.isEnumeration, propertyIsCollection);
+                    var reference = factory.create(_Forms.TheOne.FieldTypes.__ReferenceFieldData);
+                    reference.set(_Forms._FieldTypes._ReferenceFieldData.name, propertyName);
+                    reference.set(_Forms._FieldTypes._ReferenceFieldData.title, propertyName);
+                    reference.set(_Forms._FieldTypes._ReferenceFieldData.isReadOnly, isReadOnly);
+                    reference.set(_Forms._FieldTypes._ReferenceFieldData.isEnumeration, propertyIsCollection);
                     reference.set(
-                        _Forms._ReferenceFieldData.metaClassFilter,
+                        _Forms._FieldTypes._ReferenceFieldData.metaClassFilter,
                         new[] { propertyType });
 
                     result.Form = reference;
@@ -243,14 +243,14 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
         {
             // If we have something else than a primitive type and it is not for a list form
             var element = factory.create(propertyIsCollection
-                ? _Forms.TheOne.__SubElementFieldData
-                : _Forms.TheOne.__AnyDataFieldData);
+                ? _Forms.TheOne.FieldTypes.__SubElementFieldData
+                : _Forms.TheOne.FieldTypes.__AnyDataFieldData);
 
             // It can just contain one element
-            element.set(_Forms._SubElementFieldData.name, propertyName);
-            element.set(_Forms._SubElementFieldData.title, propertyName);
-            element.set(_Forms._SubElementFieldData.isReadOnly, isReadOnly);
-            element.set(_Forms._SubElementFieldData.isEnumeration, propertyIsCollection);
+            element.set(_Forms._FieldTypes._SubElementFieldData.name, propertyName);
+            element.set(_Forms._FieldTypes._SubElementFieldData.title, propertyName);
+            element.set(_Forms._FieldTypes._SubElementFieldData.isReadOnly, isReadOnly);
+            element.set(_Forms._FieldTypes._SubElementFieldData.isEnumeration, propertyIsCollection);
 
             result.Form = element;
         }
@@ -258,16 +258,16 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
         else if (result.Form == null)
         {
             // Per default, assume some kind of text
-            var column = factory.create(_Forms.TheOne.__TextFieldData);
-            column.set(_Forms._TextFieldData.name, propertyName);
-            column.set(_Forms._TextFieldData.title, propertyName);
-            column.set(_Forms._TextFieldData.isReadOnly, isReadOnly);
+            var column = factory.create(_Forms.TheOne.FieldTypes.__TextFieldData);
+            column.set(_Forms._FieldTypes._TextFieldData.name, propertyName);
+            column.set(_Forms._FieldTypes._TextFieldData.title, propertyName);
+            column.set(_Forms._FieldTypes._TextFieldData.isReadOnly, isReadOnly);
 
             // If propertyType is an integer, the field can be smaller
             if (propertyType.equals(CachedTypes.IntegerType)
                 || propertyType.equals(CachedTypes.UnlimitedNaturalType))
             {
-                column.set(_Forms._TextFieldData.width, 10);
+                column.set(_Forms._FieldTypes._TextFieldData.width, 10);
             }
 
             result.Form = column;
@@ -295,19 +295,19 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
         var factory = context.Global.Factory;
         var isReadOnly = context.IsReadOnly;
         // If we have an enumeration (C#: Enum) and the field is not for a list form
-        var comboBox = factory.create(_Forms.TheOne.__DropDownFieldData);
-        comboBox.set(_Forms._DropDownFieldData.name, propertyName);
-        comboBox.set(_Forms._DropDownFieldData.title, propertyName);
-        comboBox.set(_Forms._DropDownFieldData.isReadOnly, isReadOnly);
+        var comboBox = factory.create(_Forms.TheOne.FieldTypes.__DropDownFieldData);
+        comboBox.set(_Forms._FieldTypes._DropDownFieldData.name, propertyName);
+        comboBox.set(_Forms._FieldTypes._DropDownFieldData.title, propertyName);
+        comboBox.set(_Forms._FieldTypes._DropDownFieldData.isReadOnly, isReadOnly);
 
         var values = EnumerationMethods.GetEnumValues(propertyType);
         comboBox.set(
-            _Forms._DropDownFieldData.values,
+            _Forms._FieldTypes._DropDownFieldData.values,
             values.Select(x =>
             {
-                var data = factory.create(_Forms.TheOne.__ValuePair);
-                data.set(_Forms._ValuePair.name, x);
-                data.set(_Forms._ValuePair.value, x);
+                var data = factory.create(_Forms.TheOne.FieldTypes.__ValuePair);
+                data.set(_Forms._FieldTypes._ValuePair.name, x);
+                data.set(_Forms._FieldTypes._ValuePair.value, x);
                 return data;
             }).ToList());
         return comboBox;

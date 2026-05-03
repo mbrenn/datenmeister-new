@@ -91,13 +91,13 @@ public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T
         StartTable(reportCreator, cssClass);
 
         var cellHeaders = new List<TableCellHeader>();
-        var fields = form.get<IReflectiveCollection>(_Forms._TableForm.field);
+        var fields = form.get<IReflectiveCollection>(_Forms._FormTypes._TableForm.field);
         foreach (var field in fields.OfType<IElement>())
         {
             cellHeaders.Add(
                 new TableCellHeader
                 {
-                    ColumnName = field.getOrDefault<string>(_Forms._FieldData.title)
+                    ColumnName = field.getOrDefault<string>(_Forms._FieldTypes._FieldData.title)
                 });
         }
 
@@ -125,15 +125,15 @@ public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T
     /// <returns>The created Html Table Cell</returns>
     private TableCellContent CreateCellForField(IObject listElement, IElement field)
     {
-        var property = field.getOrDefault<string>(_Forms._FieldData.name);
+        var property = field.getOrDefault<string>(_Forms._FieldTypes._FieldData.name);
         var metaClass = field.getMetaClass();
         var isPropertySet = listElement.isSet(property);
-        if (metaClass?.equals(_Forms.TheOne.__DateTimeFieldData) == true)
+        if (metaClass?.equals(_Forms.TheOne.FieldTypes.__DateTimeFieldData) == true)
         {
             if (isPropertySet)
             {
-                var hasDate = field.getOrDefault<bool>(_Forms._DateTimeFieldData.hideDate) != true;
-                var hasTime = field.getOrDefault<bool>(_Forms._DateTimeFieldData.hideTime) != true;
+                var hasDate = field.getOrDefault<bool>(_Forms._FieldTypes._DateTimeFieldData.hideDate) != true;
+                var hasTime = field.getOrDefault<bool>(_Forms._FieldTypes._DateTimeFieldData.hideTime) != true;
                 var date = listElement.getOrDefault<DateTime>(property);
 
                 var result = string.Empty;
@@ -156,7 +156,7 @@ public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T
             return new TableCellContent {Content = "-"};
         }
 
-        if (metaClass?.equals(_Forms.TheOne.__CheckboxFieldData) == true)
+        if (metaClass?.equals(_Forms.TheOne.FieldTypes.__CheckboxFieldData) == true)
         {
             if (isPropertySet)
             {
@@ -167,10 +167,10 @@ public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T
             return new TableCellContent {Content = "-"};
         }
 
-        if (metaClass?.equals(_Forms.TheOne.__NumberFieldData) == true)
+        if (metaClass?.equals(_Forms.TheOne.FieldTypes.__NumberFieldData) == true)
         {
-            var format = field.getOrDefault<string>(_Forms._NumberFieldData.format) ?? "";
-            var isInteger = field.getOrDefault<bool>(_Forms._NumberFieldData.isInteger);
+            var format = field.getOrDefault<string>(_Forms._FieldTypes._NumberFieldData.format) ?? "";
+            var isInteger = field.getOrDefault<bool>(_Forms._FieldTypes._NumberFieldData.isInteger);
 
             if (isPropertySet)
             {
@@ -190,14 +190,14 @@ public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T
             return new TableCellContent { Content = "0"};
         }
 
-        if (metaClass?.equals(_Forms.TheOne.__EvalTextFieldData) == true)
+        if (metaClass?.equals(_Forms.TheOne.FieldTypes.__EvalTextFieldData) == true)
         {
             var cellInformation = InMemoryObject.CreateEmpty();
             var defaultText = listElement.getOrDefault<string>(property);
             cellInformation.set("text", defaultText);
 
             var evalProperties =
-                field.getOrDefault<string>(_Forms._EvalTextFieldData.evalCellProperties);
+                field.getOrDefault<string>(_Forms._FieldTypes._EvalTextFieldData.evalCellProperties);
             if (evalProperties != null)
             {
                 defaultText = TextTemplateEngine.Parse(
@@ -219,7 +219,7 @@ public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T
             };
         }
 
-        if (metaClass?.equals(_Forms.TheOne.__MetaClassElementFieldData) == true)
+        if (metaClass?.equals(_Forms.TheOne.FieldTypes.__MetaClassElementFieldData) == true)
         {
             var defaultText = NamedElementMethods.GetName((listElement as IElement)?.metaclass);
             var cssClassName = listElement.getOrDefault<string>("cssClass") ?? string.Empty;

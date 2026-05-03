@@ -35,24 +35,24 @@ public class ExpandDropDownOfValueReference : FormFactoryBase, IRowFormFactory, 
         foreach (var listOrDetailForm in result.Forms)
         {
             var factory = context.Global.Factory;
-            var fields = listOrDetailForm.get<IReflectiveCollection>(_Forms._TableForm.field);
+            var fields = listOrDetailForm.get<IReflectiveCollection>(_Forms._FormTypes._TableForm.field);
             foreach (var field in fields.OfType<IElement>())
             {
-                if (field.getMetaClass()?.@equals(_Forms.TheOne.__DropDownFieldData) != true) continue;
+                if (field.getMetaClass()?.@equals(_Forms.TheOne.FieldTypes.__DropDownFieldData) != true) continue;
 
                 var byEnumeration =
-                    field.getOrDefault<IElement>(_Forms._DropDownFieldData.valuesByEnumeration);
+                    field.getOrDefault<IElement>(_Forms._FieldTypes._DropDownFieldData.valuesByEnumeration);
                 var byValues =
-                    field.getOrDefault<IReflectiveCollection>(_Forms._DropDownFieldData.values);
+                    field.getOrDefault<IReflectiveCollection>(_Forms._FieldTypes._DropDownFieldData.values);
                 if (byValues == null && byEnumeration != null)
                 {
                     var enumeration = EnumerationMethods.GetEnumValues(byEnumeration);
                     foreach (var value in enumeration)
                     {
-                        var element = factory.create(_Forms.TheOne.__ValuePair);
-                        element.set(_Forms._ValuePair.name, value);
-                        element.set(_Forms._ValuePair.value, value);
-                        field.AddCollectionItem(_Forms._DropDownFieldData.values, element);
+                        var element = factory.create(_Forms.TheOne.FieldTypes.__ValuePair);
+                        element.set(_Forms._FieldTypes._ValuePair.name, value);
+                        element.set(_Forms._FieldTypes._ValuePair.value, value);
+                        field.AddCollectionItem(_Forms._FieldTypes._DropDownFieldData.values, element);
                     }
 
                     result.IsManaged = true;

@@ -6,8 +6,8 @@ export class Field extends BaseField {
     _timeInput;
     async createDom(dmElement) {
         const fieldName = this.field.get('name')?.toString() ?? "";
-        const hideDate = this.field.get(_DatenMeister._Forms._DateTimeFieldData.hideDate, Mof.ObjectType.Boolean) ?? false;
-        const hideTime = this.field.get(_DatenMeister._Forms._DateTimeFieldData.hideTime, Mof.ObjectType.Boolean) ?? false;
+        const hideDate = this.field.get(_DatenMeister._Forms._FieldTypes._DateTimeFieldData.hideDate, Mof.ObjectType.Boolean) ?? false;
+        const hideTime = this.field.get(_DatenMeister._Forms._FieldTypes._DateTimeFieldData.hideTime, Mof.ObjectType.Boolean) ?? false;
         const value = dmElement.get(fieldName, Mof.ObjectType.String) ?? "";
         let dateObj = null;
         if (value) {

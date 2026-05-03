@@ -123,7 +123,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             let fieldElement = null; // The instance if IFormField allowing to create the dom
             let htmlElement; // The dom that had been created...
             const isFieldReadOnly = 
-                field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean)
+                field.get(_DatenMeister._Forms._FieldTypes._FieldData.isReadOnly, Mof.ObjectType.Boolean)
                 || configuration.isReadOnly;
 
             // Creates the field to be shown 
@@ -156,10 +156,10 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             // Creates the key column content
             if (!singleColumn) {
                 let name =
-                    (field.get(_DatenMeister._Forms._FieldData.title) as any as string);
+                    (field.get(_DatenMeister._Forms._FieldTypes._FieldData.title) as any as string);
 
                 if (name === undefined || name === null || name === "") {
-                    name = (field.get(_DatenMeister._Forms._FieldData.name) as any as string);
+                    name = (field.get(_DatenMeister._Forms._FieldTypes._FieldData.name) as any as string);
                 }
 
                 if (isFieldReadOnly) {
@@ -199,7 +199,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                         $(".value", trInner).append(x);
                         innerFieldInForm.checkbox.prop("disabled", isFieldReadOnly);
 
-                        const propertyName = innerFieldInForm.field.get(_DatenMeister._Forms._FieldData._name_, Mof.ObjectType.String);                        
+                        const propertyName = innerFieldInForm.field.get(_DatenMeister._Forms._FieldTypes._FieldData._name_, Mof.ObjectType.String);                        
                         const showValue = innerFieldInForm.fieldElement.showValue === undefined
                             || innerFieldInForm.fieldElement.showValue();
 
@@ -418,11 +418,11 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 let managed = false;
 
                 // Just take the fields which are not readonly
-                if (fieldInForm.field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
+                if (fieldInForm.field.get(_DatenMeister._Forms._FieldTypes._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
 
                     // Unsets the field in case the checkbox is not set
                     if(fieldInForm.getCheckboxState() === false) {
-                        this.element.unset(fieldInForm.field.get(_DatenMeister._Forms._FieldData._name_, Mof.ObjectType.String));
+                        this.element.unset(fieldInForm.field.get(_DatenMeister._Forms._FieldTypes._FieldData._name_, Mof.ObjectType.String));
                         managed = true;
                     }                 
                     

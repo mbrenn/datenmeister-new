@@ -63,7 +63,7 @@ export function includeTests() {
         });
         it('Test Default Database', () => {
             ModuleFormLoader.loadDefaultForms();
-            assert.isTrue(FormFactory.getCollectionFormFactory(_DatenMeister._Forms.__TableForm_Uri)
+            assert.isTrue(FormFactory.getCollectionFormFactory(_DatenMeister._Forms._FormTypes.__TableForm_Uri)
                 !== undefined);
         });
         it('Test GetDefaultViewMode', async () => {

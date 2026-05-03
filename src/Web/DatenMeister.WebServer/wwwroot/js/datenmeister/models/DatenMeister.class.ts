@@ -998,17 +998,6 @@ export namespace _ExtentLoaderConfigs
 
 export namespace _Forms
 {
-        export class _FieldData
-        {
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __FieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData";
         export class _SortingOrder
         {
             static _name_ = "name";
@@ -1016,195 +1005,6 @@ export namespace _Forms
         }
 
         export const __SortingOrder_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder";
-        export class _AnyDataFieldData
-        {
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __AnyDataFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData";
-        export class _CheckboxFieldData
-        {
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __CheckboxFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData";
-        export class _ActionFieldData
-        {
-            static actionName = "actionName";
-            static parameter = "parameter";
-            static buttonText = "buttonText";
-            static bindingKey = "bindingKey";
-            static bindingKeyModifierCtrl = "bindingKeyModifierCtrl";
-            static bindingKeyModifierShift = "bindingKeyModifierShift";
-            static bindingKeyModifierAlt = "bindingKeyModifierAlt";
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __ActionFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData";
-        export class _DateTimeFieldData
-        {
-            static hideDate = "hideDate";
-            static hideTime = "hideTime";
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __DateTimeFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData";
-        export class _FormAssociation
-        {
-            static _name_ = "name";
-            static formType = "formType";
-            static metaClass = "metaClass";
-            static extentType = "extentType";
-            static viewModeId = "viewModeId";
-            static parentMetaClass = "parentMetaClass";
-            static parentProperty = "parentProperty";
-            static form = "form";
-            static debugActive = "debugActive";
-            static workspaceId = "workspaceId";
-            static extentUri = "extentUri";
-        }
-
-        export const __FormAssociation_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation";
-        export class _DropDownFieldData
-        {
-            static values = "values";
-            static valuesByEnumeration = "valuesByEnumeration";
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __DropDownFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData";
-        export class _ValuePair
-        {
-            static value = "value";
-            static _name_ = "name";
-        }
-
-        export const __ValuePair_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair";
-        export class _MetaClassElementFieldData
-        {
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __MetaClassElementFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData";
-        export class _ReferenceFieldData
-        {
-            static isSelectionInline = "isSelectionInline";
-            static defaultWorkspace = "defaultWorkspace";
-            static defaultItemUri = "defaultItemUri";
-            static showAllChildren = "showAllChildren";
-            static showWorkspaceSelection = "showWorkspaceSelection";
-            static showExtentSelection = "showExtentSelection";
-            static metaClassFilter = "metaClassFilter";
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __ReferenceFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData";
-        export class _SubElementFieldData
-        {
-            static metaClass = "metaClass";
-            static form = "form";
-            static allowOnlyExistingElements = "allowOnlyExistingElements";
-            static defaultTypesForNewElements = "defaultTypesForNewElements";
-            static includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
-            static defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
-            static defaultExtentOfNewElements = "defaultExtentOfNewElements";
-            static actionName = "actionName";
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __SubElementFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData";
-        export class _TextFieldData
-        {
-            static lineHeight = "lineHeight";
-            static width = "width";
-            static shortenTextLength = "shortenTextLength";
-            static supportClipboardCopy = "supportClipboardCopy";
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __TextFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData";
-        export class _EvalTextFieldData
-        {
-            static evalCellProperties = "evalCellProperties";
-            static lineHeight = "lineHeight";
-            static width = "width";
-            static shortenTextLength = "shortenTextLength";
-            static supportClipboardCopy = "supportClipboardCopy";
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __EvalTextFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData";
-        export class _SeparatorLineFieldData
-        {
-            static Height = "Height";
-        }
-
-        export const __SeparatorLineFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData";
-        export class _FileSelectionFieldData
-        {
-            static defaultExtension = "defaultExtension";
-            static isSaving = "isSaving";
-            static initialPathToDirectory = "initialPathToDirectory";
-            static filter = "filter";
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __FileSelectionFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData";
         export class _DefaultTypeForNewElement
         {
             static _name_ = "name";
@@ -1213,159 +1013,6 @@ export namespace _Forms
         }
 
         export const __DefaultTypeForNewElement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement";
-        export class _FullNameFieldData
-        {
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __FullNameFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData";
-        export class _CheckboxListTaggingFieldData
-        {
-            static values = "values";
-            static separator = "separator";
-            static containsFreeText = "containsFreeText";
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __CheckboxListTaggingFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData";
-        export class _NumberFieldData
-        {
-            static format = "format";
-            static isInteger = "isInteger";
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __NumberFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData";
-        export module _FormType
-        {
-            export const Object = "Object";
-            export const Collection = "Collection";
-            export const Row = "Row";
-            export const Table = "Table";
-            export const ObjectExtension = "ObjectExtension";
-            export const CollectionExtension = "CollectionExtension";
-            export const RowExtension = "RowExtension";
-            export const TableExtension = "TableExtension";
-        }
-
-        export enum ___FormType
-        {
-            Object,
-            Collection,
-            Row,
-            Table,
-            ObjectExtension,
-            CollectionExtension,
-            RowExtension,
-            TableExtension
-        }
-
-        export class _Form
-        {
-            static _name_ = "name";
-            static title = "title";
-            static isReadOnly = "isReadOnly";
-            static isAutoGenerated = "isAutoGenerated";
-            static hideMetaInformation = "hideMetaInformation";
-            static originalUri = "originalUri";
-            static originalWorkspace = "originalWorkspace";
-            static creationProtocol = "creationProtocol";
-        }
-
-        export const __Form_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form";
-        export class _RowForm
-        {
-            static buttonApplyText = "buttonApplyText";
-            static allowNewProperties = "allowNewProperties";
-            static defaultWidth = "defaultWidth";
-            static defaultHeight = "defaultHeight";
-            static field = "field";
-            static _name_ = "name";
-            static title = "title";
-            static isReadOnly = "isReadOnly";
-            static isAutoGenerated = "isAutoGenerated";
-            static hideMetaInformation = "hideMetaInformation";
-            static originalUri = "originalUri";
-            static originalWorkspace = "originalWorkspace";
-            static creationProtocol = "creationProtocol";
-        }
-
-        export const __RowForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm";
-        export class _TableForm
-        {
-            static property = "property";
-            static metaClass = "metaClass";
-            static includeDescendents = "includeDescendents";
-            static noItemsWithMetaClass = "noItemsWithMetaClass";
-            static inhibitNewItems = "inhibitNewItems";
-            static inhibitDeleteItems = "inhibitDeleteItems";
-            static inhibitEditItems = "inhibitEditItems";
-            static defaultTypesForNewElements = "defaultTypesForNewElements";
-            static fastViewFilters = "fastViewFilters";
-            static field = "field";
-            static sortingOrder = "sortingOrder";
-            static viewNode = "viewNode";
-            static autoGenerateFields = "autoGenerateFields";
-            static duplicatePerType = "duplicatePerType";
-            static dataUrl = "dataUrl";
-            static inhibitNewUnclassifiedItems = "inhibitNewUnclassifiedItems";
-            static _name_ = "name";
-            static title = "title";
-            static isReadOnly = "isReadOnly";
-            static isAutoGenerated = "isAutoGenerated";
-            static hideMetaInformation = "hideMetaInformation";
-            static originalUri = "originalUri";
-            static originalWorkspace = "originalWorkspace";
-            static creationProtocol = "creationProtocol";
-        }
-
-        export const __TableForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm";
-        export class _CollectionForm
-        {
-            static tab = "tab";
-            static autoTabs = "autoTabs";
-            static field = "field";
-            static _name_ = "name";
-            static title = "title";
-            static isReadOnly = "isReadOnly";
-            static isAutoGenerated = "isAutoGenerated";
-            static hideMetaInformation = "hideMetaInformation";
-            static originalUri = "originalUri";
-            static originalWorkspace = "originalWorkspace";
-            static creationProtocol = "creationProtocol";
-        }
-
-        export const __CollectionForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm";
-        export class _ObjectForm
-        {
-            static tab = "tab";
-            static autoTabs = "autoTabs";
-            static _name_ = "name";
-            static title = "title";
-            static isReadOnly = "isReadOnly";
-            static isAutoGenerated = "isAutoGenerated";
-            static hideMetaInformation = "hideMetaInformation";
-            static originalUri = "originalUri";
-            static originalWorkspace = "originalWorkspace";
-            static creationProtocol = "creationProtocol";
-        }
-
-        export const __ObjectForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm";
         export class _ViewMode
         {
             static _name_ = "name";
@@ -1374,26 +1021,6 @@ export namespace _Forms
         }
 
         export const __ViewMode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode";
-        export class _DropDownByCollection
-        {
-            static defaultWorkspace = "defaultWorkspace";
-            static collection = "collection";
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
-        }
-
-        export const __DropDownByCollection_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection";
-        export class _UriReferenceFieldData
-        {
-            static defaultWorkspace = "defaultWorkspace";
-            static defaultExtent = "defaultExtent";
-        }
-
-        export const __UriReferenceFieldData_Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00";
         export class _NavigateToFieldsForTestAction
         {
             static _name_ = "name";
@@ -1401,18 +1028,399 @@ export namespace _Forms
         }
 
         export const __NavigateToFieldsForTestAction_Uri = "dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0";
-        export class _DropDownByQueryData
+        export namespace _FormTypes
         {
-            static query = "query";
-            static isAttached = "isAttached";
-            static _name_ = "name";
-            static title = "title";
-            static isEnumeration = "isEnumeration";
-            static defaultValue = "defaultValue";
-            static isReadOnly = "isReadOnly";
+                export module _FormType
+                {
+                    export const Object = "Object";
+                    export const Collection = "Collection";
+                    export const Row = "Row";
+                    export const Table = "Table";
+                    export const ObjectExtension = "ObjectExtension";
+                    export const CollectionExtension = "CollectionExtension";
+                    export const RowExtension = "RowExtension";
+                    export const TableExtension = "TableExtension";
+                }
+
+                export enum ___FormType
+                {
+                    Object,
+                    Collection,
+                    Row,
+                    Table,
+                    ObjectExtension,
+                    CollectionExtension,
+                    RowExtension,
+                    TableExtension
+                }
+
+                export class _Form
+                {
+                    static _name_ = "name";
+                    static title = "title";
+                    static isReadOnly = "isReadOnly";
+                    static isAutoGenerated = "isAutoGenerated";
+                    static hideMetaInformation = "hideMetaInformation";
+                    static originalUri = "originalUri";
+                    static originalWorkspace = "originalWorkspace";
+                    static creationProtocol = "creationProtocol";
+                }
+
+                export const __Form_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form";
+                export class _RowForm
+                {
+                    static buttonApplyText = "buttonApplyText";
+                    static allowNewProperties = "allowNewProperties";
+                    static defaultWidth = "defaultWidth";
+                    static defaultHeight = "defaultHeight";
+                    static field = "field";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isReadOnly = "isReadOnly";
+                    static isAutoGenerated = "isAutoGenerated";
+                    static hideMetaInformation = "hideMetaInformation";
+                    static originalUri = "originalUri";
+                    static originalWorkspace = "originalWorkspace";
+                    static creationProtocol = "creationProtocol";
+                }
+
+                export const __RowForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm";
+                export class _TableForm
+                {
+                    static property = "property";
+                    static metaClass = "metaClass";
+                    static includeDescendents = "includeDescendents";
+                    static noItemsWithMetaClass = "noItemsWithMetaClass";
+                    static inhibitNewItems = "inhibitNewItems";
+                    static inhibitDeleteItems = "inhibitDeleteItems";
+                    static inhibitEditItems = "inhibitEditItems";
+                    static defaultTypesForNewElements = "defaultTypesForNewElements";
+                    static fastViewFilters = "fastViewFilters";
+                    static field = "field";
+                    static sortingOrder = "sortingOrder";
+                    static viewNode = "viewNode";
+                    static autoGenerateFields = "autoGenerateFields";
+                    static duplicatePerType = "duplicatePerType";
+                    static dataUrl = "dataUrl";
+                    static inhibitNewUnclassifiedItems = "inhibitNewUnclassifiedItems";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isReadOnly = "isReadOnly";
+                    static isAutoGenerated = "isAutoGenerated";
+                    static hideMetaInformation = "hideMetaInformation";
+                    static originalUri = "originalUri";
+                    static originalWorkspace = "originalWorkspace";
+                    static creationProtocol = "creationProtocol";
+                }
+
+                export const __TableForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm";
+                export class _CollectionForm
+                {
+                    static tab = "tab";
+                    static autoTabs = "autoTabs";
+                    static field = "field";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isReadOnly = "isReadOnly";
+                    static isAutoGenerated = "isAutoGenerated";
+                    static hideMetaInformation = "hideMetaInformation";
+                    static originalUri = "originalUri";
+                    static originalWorkspace = "originalWorkspace";
+                    static creationProtocol = "creationProtocol";
+                }
+
+                export const __CollectionForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm";
+                export class _ObjectForm
+                {
+                    static tab = "tab";
+                    static autoTabs = "autoTabs";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isReadOnly = "isReadOnly";
+                    static isAutoGenerated = "isAutoGenerated";
+                    static hideMetaInformation = "hideMetaInformation";
+                    static originalUri = "originalUri";
+                    static originalWorkspace = "originalWorkspace";
+                    static creationProtocol = "creationProtocol";
+                }
+
+                export const __ObjectForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm";
+                export class _FormAssociation
+                {
+                    static _name_ = "name";
+                    static formType = "formType";
+                    static metaClass = "metaClass";
+                    static extentType = "extentType";
+                    static viewModeId = "viewModeId";
+                    static parentMetaClass = "parentMetaClass";
+                    static parentProperty = "parentProperty";
+                    static form = "form";
+                    static debugActive = "debugActive";
+                    static workspaceId = "workspaceId";
+                    static extentUri = "extentUri";
+                }
+
+                export const __FormAssociation_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation";
         }
 
-        export const __DropDownByQueryData_Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2";
+        export namespace _FieldTypes
+        {
+                export class _FieldData
+                {
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __FieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData";
+                export class _DropDownByQueryData
+                {
+                    static query = "query";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __DropDownByQueryData_Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2";
+                export class _DropDownByCollection
+                {
+                    static defaultWorkspace = "defaultWorkspace";
+                    static collection = "collection";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __DropDownByCollection_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection";
+                export class _UriReferenceFieldData
+                {
+                    static defaultWorkspace = "defaultWorkspace";
+                    static defaultExtent = "defaultExtent";
+                }
+
+                export const __UriReferenceFieldData_Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00";
+                export class _FullNameFieldData
+                {
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __FullNameFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData";
+                export class _CheckboxListTaggingFieldData
+                {
+                    static values = "values";
+                    static separator = "separator";
+                    static containsFreeText = "containsFreeText";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __CheckboxListTaggingFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData";
+                export class _NumberFieldData
+                {
+                    static format = "format";
+                    static isInteger = "isInteger";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __NumberFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData";
+                export class _DropDownFieldData
+                {
+                    static values = "values";
+                    static valuesByEnumeration = "valuesByEnumeration";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __DropDownFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData";
+                export class _ValuePair
+                {
+                    static value = "value";
+                    static _name_ = "name";
+                }
+
+                export const __ValuePair_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair";
+                export class _MetaClassElementFieldData
+                {
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __MetaClassElementFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData";
+                export class _ReferenceFieldData
+                {
+                    static isSelectionInline = "isSelectionInline";
+                    static defaultWorkspace = "defaultWorkspace";
+                    static defaultItemUri = "defaultItemUri";
+                    static showAllChildren = "showAllChildren";
+                    static showWorkspaceSelection = "showWorkspaceSelection";
+                    static showExtentSelection = "showExtentSelection";
+                    static metaClassFilter = "metaClassFilter";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __ReferenceFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData";
+                export class _SubElementFieldData
+                {
+                    static metaClass = "metaClass";
+                    static form = "form";
+                    static allowOnlyExistingElements = "allowOnlyExistingElements";
+                    static defaultTypesForNewElements = "defaultTypesForNewElements";
+                    static includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
+                    static defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
+                    static defaultExtentOfNewElements = "defaultExtentOfNewElements";
+                    static actionName = "actionName";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __SubElementFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData";
+                export class _TextFieldData
+                {
+                    static lineHeight = "lineHeight";
+                    static width = "width";
+                    static shortenTextLength = "shortenTextLength";
+                    static supportClipboardCopy = "supportClipboardCopy";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __TextFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData";
+                export class _EvalTextFieldData
+                {
+                    static evalCellProperties = "evalCellProperties";
+                    static lineHeight = "lineHeight";
+                    static width = "width";
+                    static shortenTextLength = "shortenTextLength";
+                    static supportClipboardCopy = "supportClipboardCopy";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __EvalTextFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData";
+                export class _SeparatorLineFieldData
+                {
+                    static Height = "Height";
+                }
+
+                export const __SeparatorLineFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData";
+                export class _FileSelectionFieldData
+                {
+                    static defaultExtension = "defaultExtension";
+                    static isSaving = "isSaving";
+                    static initialPathToDirectory = "initialPathToDirectory";
+                    static filter = "filter";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __FileSelectionFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData";
+                export class _AnyDataFieldData
+                {
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __AnyDataFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData";
+                export class _CheckboxFieldData
+                {
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __CheckboxFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData";
+                export class _ActionFieldData
+                {
+                    static actionName = "actionName";
+                    static parameter = "parameter";
+                    static buttonText = "buttonText";
+                    static bindingKey = "bindingKey";
+                    static bindingKeyModifierCtrl = "bindingKeyModifierCtrl";
+                    static bindingKeyModifierShift = "bindingKeyModifierShift";
+                    static bindingKeyModifierAlt = "bindingKeyModifierAlt";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __ActionFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData";
+                export class _DateTimeFieldData
+                {
+                    static hideDate = "hideDate";
+                    static hideTime = "hideTime";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __DateTimeFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData";
+        }
+
 }
 
 export namespace _AttachedExtent

@@ -15,7 +15,7 @@ public class EmptyCollectionFormFactory : FormFactoryBase, ICollectionFormFactor
     {
         if (result.Form == null)
         {
-            result.Form = context.Global.FactoryForForms.create(_Forms.TheOne.__CollectionForm);
+            result.Form = context.Global.FactoryForForms.create(_Forms.TheOne.FormTypes.__CollectionForm);
             result.IsManaged = true;
             result.AddToFormCreationProtocol(
                 "[EmptyCollectionFormFactory] Empty object Collection-Form created");

@@ -15,7 +15,7 @@ public class RemoveDuplicateDefaultTypes : FormFactoryBase, ITableFormFactory
         foreach (var form in result.Forms)
         {
             var defaultNewTypesForElements =
-                form.getOrDefault<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
+                form.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._TableForm.defaultTypesForNewElements);
             if (defaultNewTypesForElements == null)
             {
                 // Nothing to do, when no default types are set

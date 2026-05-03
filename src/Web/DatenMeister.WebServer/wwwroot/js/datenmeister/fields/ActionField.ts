@@ -16,11 +16,11 @@ export class Field extends BaseField implements IFormField {
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
 
         const tthis = this;
-        const title = this.field.get(_DatenMeister._Forms._ActionFieldData.title, Mof.ObjectType.String);
-        const action = this.field.get(_DatenMeister._Forms._ActionFieldData.actionName, Mof.ObjectType.String);
+        const title = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.title, Mof.ObjectType.String);
+        const action = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.actionName, Mof.ObjectType.String);
 
-        const parameter = this.field.get(_DatenMeister._Forms._ActionFieldData.parameter, Mof.ObjectType.Single);
-        const buttonText = this.field.get(_DatenMeister._Forms._ActionFieldData.buttonText, Mof.ObjectType.String);
+        const parameter = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.parameter, Mof.ObjectType.Single);
+        const buttonText = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.buttonText, Mof.ObjectType.String);
 
 
         const module = FormActions.getModule(action);
@@ -30,11 +30,11 @@ export class Field extends BaseField implements IFormField {
         this.button = $("<button class='btn btn-secondary' type='button'></button>");
         this.button.text(buttonText ?? title ?? action);
 
-        const bindingKey = this.field.get(_DatenMeister._Forms._ActionFieldData.bindingKey, Mof.ObjectType.String);
+        const bindingKey = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.bindingKey, Mof.ObjectType.String);
         if (bindingKey) {
-            const bindingKeyModifierCtrl = this.field.get(_DatenMeister._Forms._ActionFieldData.bindingKeyModifierCtrl, Mof.ObjectType.Boolean) === true;
-            const bindingKeyModifierShift = this.field.get(_DatenMeister._Forms._ActionFieldData.bindingKeyModifierShift, Mof.ObjectType.Boolean) === true;
-            const bindingKeyModifierAlt = this.field.get(_DatenMeister._Forms._ActionFieldData.bindingKeyModifierAlt, Mof.ObjectType.Boolean) === true;
+            const bindingKeyModifierCtrl = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.bindingKeyModifierCtrl, Mof.ObjectType.Boolean) === true;
+            const bindingKeyModifierShift = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.bindingKeyModifierShift, Mof.ObjectType.Boolean) === true;
+            const bindingKeyModifierAlt = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.bindingKeyModifierAlt, Mof.ObjectType.Boolean) === true;
             addKeyBindingEvent(this.button, bindingKey, bindingKeyModifierCtrl, bindingKeyModifierShift, bindingKeyModifierAlt);
         }
 

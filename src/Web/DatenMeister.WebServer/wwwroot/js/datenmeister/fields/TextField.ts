@@ -1,7 +1,7 @@
 import * as Mof from "../Mof.js";
 import {BaseField, IFormField} from "./Interfaces.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-import _TextFieldData = _DatenMeister._Forms._TextFieldData;
+import _TextFieldData = _DatenMeister._Forms._FieldTypes._TextFieldData;
 import {truncateText} from "../../burnsystems/StringManipulation.js";
 import { injectNameByUri } from "../DomHelper.js";
 import TableForm from "../forms/TableForm.js";
@@ -31,7 +31,7 @@ export class Field extends BaseField implements IFormField
             });
         }
         else {
-            const shortenTextLength = this.field.get(_DatenMeister._Forms._TextFieldData.shortenTextLength, Mof.ObjectType.Number);
+            const shortenTextLength = this.field.get(_DatenMeister._Forms._FieldTypes._TextFieldData.shortenTextLength, Mof.ObjectType.Number);
             if (shortenTextLength !== undefined && shortenTextLength > 0) {
                 value = truncateText(value, {useWordBoundary: true, maxLength: shortenTextLength});
             }
@@ -58,7 +58,7 @@ export class Field extends BaseField implements IFormField
         if (this.isReadOnly) {
             const divContainer = $("<div class='dm-textfield-container'></div>");
             
-            if (this.field.get(_DatenMeister._Forms._TextFieldData.supportClipboardCopy, Mof.ObjectType.Boolean)) {
+            if (this.field.get(_DatenMeister._Forms._FieldTypes._TextFieldData.supportClipboardCopy, Mof.ObjectType.Boolean)) {
                 const button = $("<button class='btn btn-secondary'>Copy to Clipboard</button>");
                 button.on('click', () =>
                 {

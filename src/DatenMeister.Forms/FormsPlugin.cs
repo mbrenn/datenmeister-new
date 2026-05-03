@@ -103,12 +103,12 @@ public class FormsPlugin : IDatenMeisterPlugin
                 extent.GetConfiguration()
                     .AddDefaultTypes(
                     [
-                        _Forms.TheOne.__Form,
-                        _Forms.TheOne.__CollectionForm,
-                        _Forms.TheOne.__ObjectForm,
-                        _Forms.TheOne.__TableForm,
-                        _Forms.TheOne.__RowForm,
-                        _Forms.TheOne.__FormAssociation
+                        _Forms.TheOne.FormTypes.__Form,
+                        _Forms.TheOne.FormTypes.__CollectionForm,
+                        _Forms.TheOne.FormTypes.__ObjectForm,
+                        _Forms.TheOne.FormTypes.__TableForm,
+                        _Forms.TheOne.FormTypes.__RowForm,
+                        _Forms.TheOne.FormTypes.__FormAssociation
                     ]);
 
                 // Tests the existence of the test form and other forms

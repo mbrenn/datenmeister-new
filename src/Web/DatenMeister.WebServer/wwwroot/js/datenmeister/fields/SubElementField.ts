@@ -119,7 +119,7 @@ export class Control {
             let fieldsData = new Array<Mof.DmObject>();
             if (fields === undefined) {
                 const nameField = new Mof.DmObject();
-                nameField.setMetaClassByUri(_DatenMeister._Forms.__TextFieldData_Uri, 'Types');
+                nameField.setMetaClassByUri(_DatenMeister._Forms._FieldTypes.__TextFieldData_Uri, 'Types');
                 nameField.set("name", "name");
                 nameField.set("title", "Name");
                 nameField.set("isReadOnly", true);
@@ -420,9 +420,9 @@ export class Field extends Control implements IFormField {
      * @param dmElement The element for which this field is rendered.
      */
     async createDom(dmElement: Mof.DmObject) {
-        this.propertyName = this.field.get(_DatenMeister._Forms._SubElementFieldData._name_, Mof.ObjectType.String);
-        this.itemActionName = this.field.get(_DatenMeister._Forms._SubElementFieldData.actionName, Mof.ObjectType.String);
-        this.additionalTypes = this.field.get(_DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements, Mof.ObjectType.Array);
+        this.propertyName = this.field.get(_DatenMeister._Forms._FieldTypes._SubElementFieldData._name_, Mof.ObjectType.String);
+        this.itemActionName = this.field.get(_DatenMeister._Forms._FieldTypes._SubElementFieldData.actionName, Mof.ObjectType.String);
+        this.additionalTypes = this.field.get(_DatenMeister._Forms._FieldTypes._SubElementFieldData.defaultTypesForNewElements, Mof.ObjectType.Array);
 
         if (this.configuration.isNewItem) {
             return $("<em>Element needs to be saved first</em>");

@@ -33,12 +33,12 @@ public class RemovePropertyFromCollectionFormTabs : FormFactoryBase, ICollection
     {
         if (result.Form == null) return;
         // Go through the tabs and unset the property
-        foreach (var tab in result.Form.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab)
+        foreach (var tab in result.Form.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._CollectionForm.tab)
                      .OfType<IElement>())
         {
-            if (tab.isSet(_Forms._TableForm.property))
+            if (tab.isSet(_Forms._FormTypes._TableForm.property))
             {
-                tab.unset(_Forms._TableForm.property);
+                tab.unset(_Forms._FormTypes._TableForm.property);
             }
                 
             result.IsManaged = true;

@@ -2231,33 +2231,6 @@ public class _ExtentLoaderConfigs
 
 public class _Forms
 {
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _FieldData
-    {
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _FieldData @FieldData = new ();
-    public MofObjectShadow @__FieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData");
-
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder",
         TypeKind = TypeKind.ClassTree)]
     public class _SortingOrder
@@ -2272,489 +2245,6 @@ public class _Forms
 
     public _SortingOrder @SortingOrder = new ();
     public MofObjectShadow @__SortingOrder = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _AnyDataFieldData
-    {
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _AnyDataFieldData @AnyDataFieldData = new ();
-    public MofObjectShadow @__AnyDataFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _CheckboxFieldData
-    {
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _CheckboxFieldData @CheckboxFieldData = new ();
-    public MofObjectShadow @__CheckboxFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _ActionFieldData
-    {
-        public static readonly string @actionName = "actionName";
-        public IElement? @_actionName = null;
-
-        public static readonly string @parameter = "parameter";
-        public IElement? @_parameter = null;
-
-        public static readonly string @buttonText = "buttonText";
-        public IElement? @_buttonText = null;
-
-        public static readonly string @bindingKey = "bindingKey";
-        public IElement? @_bindingKey = null;
-
-        public static readonly string @bindingKeyModifierCtrl = "bindingKeyModifierCtrl";
-        public IElement? @_bindingKeyModifierCtrl = null;
-
-        public static readonly string @bindingKeyModifierShift = "bindingKeyModifierShift";
-        public IElement? @_bindingKeyModifierShift = null;
-
-        public static readonly string @bindingKeyModifierAlt = "bindingKeyModifierAlt";
-        public IElement? @_bindingKeyModifierAlt = null;
-
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _ActionFieldData @ActionFieldData = new ();
-    public MofObjectShadow @__ActionFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _DateTimeFieldData
-    {
-        public static readonly string @hideDate = "hideDate";
-        public IElement? @_hideDate = null;
-
-        public static readonly string @hideTime = "hideTime";
-        public IElement? @_hideTime = null;
-
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _DateTimeFieldData @DateTimeFieldData = new ();
-    public MofObjectShadow @__DateTimeFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation",
-        TypeKind = TypeKind.ClassTree)]
-    public class _FormAssociation
-    {
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @formType = "formType";
-        public IElement? @_formType = null;
-
-        public static readonly string @metaClass = "metaClass";
-        public IElement? @_metaClass = null;
-
-        public static readonly string @extentType = "extentType";
-        public IElement? @_extentType = null;
-
-        public static readonly string @viewModeId = "viewModeId";
-        public IElement? @_viewModeId = null;
-
-        public static readonly string @parentMetaClass = "parentMetaClass";
-        public IElement? @_parentMetaClass = null;
-
-        public static readonly string @parentProperty = "parentProperty";
-        public IElement? @_parentProperty = null;
-
-        public static readonly string @form = "form";
-        public IElement? @_form = null;
-
-        public static readonly string @debugActive = "debugActive";
-        public IElement? @_debugActive = null;
-
-        public static readonly string @workspaceId = "workspaceId";
-        public IElement? @_workspaceId = null;
-
-        public static readonly string @extentUri = "extentUri";
-        public IElement? @_extentUri = null;
-
-    }
-
-    public _FormAssociation @FormAssociation = new ();
-    public MofObjectShadow @__FormAssociation = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _DropDownFieldData
-    {
-        public static readonly string @values = "values";
-        public IElement? @_values = null;
-
-        public static readonly string @valuesByEnumeration = "valuesByEnumeration";
-        public IElement? @_valuesByEnumeration = null;
-
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _DropDownFieldData @DropDownFieldData = new ();
-    public MofObjectShadow @__DropDownFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair",
-        TypeKind = TypeKind.ClassTree)]
-    public class _ValuePair
-    {
-        public static readonly string @value = "value";
-        public IElement? @_value = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-    }
-
-    public _ValuePair @ValuePair = new ();
-    public MofObjectShadow @__ValuePair = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _MetaClassElementFieldData
-    {
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _MetaClassElementFieldData @MetaClassElementFieldData = new ();
-    public MofObjectShadow @__MetaClassElementFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _ReferenceFieldData
-    {
-        public static readonly string @isSelectionInline = "isSelectionInline";
-        public IElement? @_isSelectionInline = null;
-
-        public static readonly string @defaultWorkspace = "defaultWorkspace";
-        public IElement? @_defaultWorkspace = null;
-
-        public static readonly string @defaultItemUri = "defaultItemUri";
-        public IElement? @_defaultItemUri = null;
-
-        public static readonly string @showAllChildren = "showAllChildren";
-        public IElement? @_showAllChildren = null;
-
-        public static readonly string @showWorkspaceSelection = "showWorkspaceSelection";
-        public IElement? @_showWorkspaceSelection = null;
-
-        public static readonly string @showExtentSelection = "showExtentSelection";
-        public IElement? @_showExtentSelection = null;
-
-        public static readonly string @metaClassFilter = "metaClassFilter";
-        public IElement? @_metaClassFilter = null;
-
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _ReferenceFieldData @ReferenceFieldData = new ();
-    public MofObjectShadow @__ReferenceFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _SubElementFieldData
-    {
-        public static readonly string @metaClass = "metaClass";
-        public IElement? @_metaClass = null;
-
-        public static readonly string @form = "form";
-        public IElement? @_form = null;
-
-        public static readonly string @allowOnlyExistingElements = "allowOnlyExistingElements";
-        public IElement? @_allowOnlyExistingElements = null;
-
-        public static readonly string @defaultTypesForNewElements = "defaultTypesForNewElements";
-        public IElement? @_defaultTypesForNewElements = null;
-
-        public static readonly string @includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
-        public IElement? @_includeSpecializationsForDefaultTypes = null;
-
-        public static readonly string @defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
-        public IElement? @_defaultWorkspaceOfNewElements = null;
-
-        public static readonly string @defaultExtentOfNewElements = "defaultExtentOfNewElements";
-        public IElement? @_defaultExtentOfNewElements = null;
-
-        public static readonly string @actionName = "actionName";
-        public IElement? @_actionName = null;
-
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _SubElementFieldData @SubElementFieldData = new ();
-    public MofObjectShadow @__SubElementFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _TextFieldData
-    {
-        public static readonly string @lineHeight = "lineHeight";
-        public IElement? @_lineHeight = null;
-
-        public static readonly string @width = "width";
-        public IElement? @_width = null;
-
-        public static readonly string @shortenTextLength = "shortenTextLength";
-        public IElement? @_shortenTextLength = null;
-
-        public static readonly string @supportClipboardCopy = "supportClipboardCopy";
-        public IElement? @_supportClipboardCopy = null;
-
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _TextFieldData @TextFieldData = new ();
-    public MofObjectShadow @__TextFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _EvalTextFieldData
-    {
-        public static readonly string @evalCellProperties = "evalCellProperties";
-        public IElement? @_evalCellProperties = null;
-
-        public static readonly string @lineHeight = "lineHeight";
-        public IElement? @_lineHeight = null;
-
-        public static readonly string @width = "width";
-        public IElement? @_width = null;
-
-        public static readonly string @shortenTextLength = "shortenTextLength";
-        public IElement? @_shortenTextLength = null;
-
-        public static readonly string @supportClipboardCopy = "supportClipboardCopy";
-        public IElement? @_supportClipboardCopy = null;
-
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _EvalTextFieldData @EvalTextFieldData = new ();
-    public MofObjectShadow @__EvalTextFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _SeparatorLineFieldData
-    {
-        public static readonly string @Height = "Height";
-        public IElement? @_Height = null;
-
-    }
-
-    public _SeparatorLineFieldData @SeparatorLineFieldData = new ();
-    public MofObjectShadow @__SeparatorLineFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _FileSelectionFieldData
-    {
-        public static readonly string @defaultExtension = "defaultExtension";
-        public IElement? @_defaultExtension = null;
-
-        public static readonly string @isSaving = "isSaving";
-        public IElement? @_isSaving = null;
-
-        public static readonly string @initialPathToDirectory = "initialPathToDirectory";
-        public IElement? @_initialPathToDirectory = null;
-
-        public static readonly string @filter = "filter";
-        public IElement? @_filter = null;
-
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _FileSelectionFieldData @FileSelectionFieldData = new ();
-    public MofObjectShadow @__FileSelectionFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData");
 
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement",
         TypeKind = TypeKind.ClassTree)]
@@ -2774,382 +2264,6 @@ public class _Forms
     public _DefaultTypeForNewElement @DefaultTypeForNewElement = new ();
     public MofObjectShadow @__DefaultTypeForNewElement = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement");
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _FullNameFieldData
-    {
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _FullNameFieldData @FullNameFieldData = new ();
-    public MofObjectShadow @__FullNameFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _CheckboxListTaggingFieldData
-    {
-        public static readonly string @values = "values";
-        public IElement? @_values = null;
-
-        public static readonly string @separator = "separator";
-        public IElement? @_separator = null;
-
-        public static readonly string @containsFreeText = "containsFreeText";
-        public IElement? @_containsFreeText = null;
-
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _CheckboxListTaggingFieldData @CheckboxListTaggingFieldData = new ();
-    public MofObjectShadow @__CheckboxListTaggingFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData",
-        TypeKind = TypeKind.ClassTree)]
-    public class _NumberFieldData
-    {
-        public static readonly string @format = "format";
-        public IElement? @_format = null;
-
-        public static readonly string @isInteger = "isInteger";
-        public IElement? @_isInteger = null;
-
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _NumberFieldData @NumberFieldData = new ();
-    public MofObjectShadow @__NumberFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData");
-
-    public class _FormType
-    {
-        public static string @Object = "Object";
-        public IElement @__Object = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-Object");
-        public static string @Collection = "Collection";
-        public IElement @__Collection = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-Collection");
-        public static string @Row = "Row";
-        public IElement @__Row = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-RowForm");
-        public static string @Table = "Table";
-        public IElement @__Table = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TableForm");
-        public static string @ObjectExtension = "ObjectExtension";
-        public IElement @__ObjectExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-ObjectExtension");
-        public static string @CollectionExtension = "CollectionExtension";
-        public IElement @__CollectionExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-CollectionExtension");
-        public static string @RowExtension = "RowExtension";
-        public IElement @__RowExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-RowExtension");
-        public static string @TableExtension = "TableExtension";
-        public IElement @__TableExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TableExtension");
-
-    }
-
-    public _FormType @FormType = new _FormType();
-    public IElement @__FormType = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType");
-
-
-    public enum ___FormType
-    {
-        @Object,
-        @Collection,
-        @Row,
-        @Table,
-        @ObjectExtension,
-        @CollectionExtension,
-        @RowExtension,
-        @TableExtension
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form",
-        TypeKind = TypeKind.ClassTree)]
-    public class _Form
-    {
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-        public static readonly string @isAutoGenerated = "isAutoGenerated";
-        public IElement? @_isAutoGenerated = null;
-
-        public static readonly string @hideMetaInformation = "hideMetaInformation";
-        public IElement? @_hideMetaInformation = null;
-
-        public static readonly string @originalUri = "originalUri";
-        public IElement? @_originalUri = null;
-
-        public static readonly string @originalWorkspace = "originalWorkspace";
-        public IElement? @_originalWorkspace = null;
-
-        public static readonly string @creationProtocol = "creationProtocol";
-        public IElement? @_creationProtocol = null;
-
-    }
-
-    public _Form @Form = new ();
-    public MofObjectShadow @__Form = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.Form");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm",
-        TypeKind = TypeKind.ClassTree)]
-    public class _RowForm
-    {
-        public static readonly string @buttonApplyText = "buttonApplyText";
-        public IElement? @_buttonApplyText = null;
-
-        public static readonly string @allowNewProperties = "allowNewProperties";
-        public IElement? @_allowNewProperties = null;
-
-        public static readonly string @defaultWidth = "defaultWidth";
-        public IElement? @_defaultWidth = null;
-
-        public static readonly string @defaultHeight = "defaultHeight";
-        public IElement? @_defaultHeight = null;
-
-        public static readonly string @field = "field";
-        public IElement? @_field = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-        public static readonly string @isAutoGenerated = "isAutoGenerated";
-        public IElement? @_isAutoGenerated = null;
-
-        public static readonly string @hideMetaInformation = "hideMetaInformation";
-        public IElement? @_hideMetaInformation = null;
-
-        public static readonly string @originalUri = "originalUri";
-        public IElement? @_originalUri = null;
-
-        public static readonly string @originalWorkspace = "originalWorkspace";
-        public IElement? @_originalWorkspace = null;
-
-        public static readonly string @creationProtocol = "creationProtocol";
-        public IElement? @_creationProtocol = null;
-
-    }
-
-    public _RowForm @RowForm = new ();
-    public MofObjectShadow @__RowForm = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm",
-        TypeKind = TypeKind.ClassTree)]
-    public class _TableForm
-    {
-        public static readonly string @property = "property";
-        public IElement? @_property = null;
-
-        public static readonly string @metaClass = "metaClass";
-        public IElement? @_metaClass = null;
-
-        public static readonly string @includeDescendents = "includeDescendents";
-        public IElement? @_includeDescendents = null;
-
-        public static readonly string @noItemsWithMetaClass = "noItemsWithMetaClass";
-        public IElement? @_noItemsWithMetaClass = null;
-
-        public static readonly string @inhibitNewItems = "inhibitNewItems";
-        public IElement? @_inhibitNewItems = null;
-
-        public static readonly string @inhibitDeleteItems = "inhibitDeleteItems";
-        public IElement? @_inhibitDeleteItems = null;
-
-        public static readonly string @inhibitEditItems = "inhibitEditItems";
-        public IElement? @_inhibitEditItems = null;
-
-        public static readonly string @defaultTypesForNewElements = "defaultTypesForNewElements";
-        public IElement? @_defaultTypesForNewElements = null;
-
-        public static readonly string @fastViewFilters = "fastViewFilters";
-        public IElement? @_fastViewFilters = null;
-
-        public static readonly string @field = "field";
-        public IElement? @_field = null;
-
-        public static readonly string @sortingOrder = "sortingOrder";
-        public IElement? @_sortingOrder = null;
-
-        public static readonly string @viewNode = "viewNode";
-        public IElement? @_viewNode = null;
-
-        public static readonly string @autoGenerateFields = "autoGenerateFields";
-        public IElement? @_autoGenerateFields = null;
-
-        public static readonly string @duplicatePerType = "duplicatePerType";
-        public IElement? @_duplicatePerType = null;
-
-        public static readonly string @dataUrl = "dataUrl";
-        public IElement? @_dataUrl = null;
-
-        public static readonly string @inhibitNewUnclassifiedItems = "inhibitNewUnclassifiedItems";
-        public IElement? @_inhibitNewUnclassifiedItems = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-        public static readonly string @isAutoGenerated = "isAutoGenerated";
-        public IElement? @_isAutoGenerated = null;
-
-        public static readonly string @hideMetaInformation = "hideMetaInformation";
-        public IElement? @_hideMetaInformation = null;
-
-        public static readonly string @originalUri = "originalUri";
-        public IElement? @_originalUri = null;
-
-        public static readonly string @originalWorkspace = "originalWorkspace";
-        public IElement? @_originalWorkspace = null;
-
-        public static readonly string @creationProtocol = "creationProtocol";
-        public IElement? @_creationProtocol = null;
-
-    }
-
-    public _TableForm @TableForm = new ();
-    public MofObjectShadow @__TableForm = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm",
-        TypeKind = TypeKind.ClassTree)]
-    public class _CollectionForm
-    {
-        public static readonly string @tab = "tab";
-        public IElement? @_tab = null;
-
-        public static readonly string @autoTabs = "autoTabs";
-        public IElement? @_autoTabs = null;
-
-        public static readonly string @field = "field";
-        public IElement? @_field = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-        public static readonly string @isAutoGenerated = "isAutoGenerated";
-        public IElement? @_isAutoGenerated = null;
-
-        public static readonly string @hideMetaInformation = "hideMetaInformation";
-        public IElement? @_hideMetaInformation = null;
-
-        public static readonly string @originalUri = "originalUri";
-        public IElement? @_originalUri = null;
-
-        public static readonly string @originalWorkspace = "originalWorkspace";
-        public IElement? @_originalWorkspace = null;
-
-        public static readonly string @creationProtocol = "creationProtocol";
-        public IElement? @_creationProtocol = null;
-
-    }
-
-    public _CollectionForm @CollectionForm = new ();
-    public MofObjectShadow @__CollectionForm = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm",
-        TypeKind = TypeKind.ClassTree)]
-    public class _ObjectForm
-    {
-        public static readonly string @tab = "tab";
-        public IElement @_tab = new MofObjectShadow("dm:///_internal/types/internal#c19bbfec-6afb-4%23c19cbfec-6afb-4017-94c2-d2992853a25c017-94c2-d2992853a25c");
-
-        public static readonly string @autoTabs = "autoTabs";
-        public IElement? @_autoTabs = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-        public static readonly string @isAutoGenerated = "isAutoGenerated";
-        public IElement? @_isAutoGenerated = null;
-
-        public static readonly string @hideMetaInformation = "hideMetaInformation";
-        public IElement? @_hideMetaInformation = null;
-
-        public static readonly string @originalUri = "originalUri";
-        public IElement? @_originalUri = null;
-
-        public static readonly string @originalWorkspace = "originalWorkspace";
-        public IElement? @_originalWorkspace = null;
-
-        public static readonly string @creationProtocol = "creationProtocol";
-        public IElement? @_creationProtocol = null;
-
-    }
-
-    public _ObjectForm @ObjectForm = new ();
-    public MofObjectShadow @__ObjectForm = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm");
-
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode",
         TypeKind = TypeKind.ClassTree)]
     public class _ViewMode
@@ -3168,54 +2282,6 @@ public class _Forms
     public _ViewMode @ViewMode = new ();
     public MofObjectShadow @__ViewMode = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode");
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection",
-        TypeKind = TypeKind.ClassTree)]
-    public class _DropDownByCollection
-    {
-        public static readonly string @defaultWorkspace = "defaultWorkspace";
-        public IElement? @_defaultWorkspace = null;
-
-        public static readonly string @collection = "collection";
-        public IElement? @_collection = null;
-
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
-
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
-
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
-
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
-
-    }
-
-    public _DropDownByCollection @DropDownByCollection = new ();
-    public MofObjectShadow @__DropDownByCollection = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00",
-        TypeKind = TypeKind.ClassTree)]
-    public class _UriReferenceFieldData
-    {
-        public static readonly string @defaultWorkspace = "defaultWorkspace";
-        public IElement? @_defaultWorkspace = null;
-
-        public static readonly string @defaultExtent = "defaultExtent";
-        public IElement? @_defaultExtent = null;
-
-    }
-
-    public _UriReferenceFieldData @UriReferenceFieldData = new ();
-    public MofObjectShadow @__UriReferenceFieldData = new ("dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00");
-
     [TypeUri(Uri = "dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0",
         TypeKind = TypeKind.ClassTree)]
     public class _NavigateToFieldsForTestAction
@@ -3231,35 +2297,981 @@ public class _Forms
     public _NavigateToFieldsForTestAction @NavigateToFieldsForTestAction = new ();
     public MofObjectShadow @__NavigateToFieldsForTestAction = new ("dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0");
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2",
-        TypeKind = TypeKind.ClassTree)]
-    public class _DropDownByQueryData
+    public class _FormTypes
     {
-        public static readonly string @query = "query";
-        public IElement? @_query = null;
+        public class _FormType
+        {
+            public static string @Object = "Object";
+            public IElement @__Object = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-Object");
+            public static string @Collection = "Collection";
+            public IElement @__Collection = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-Collection");
+            public static string @Row = "Row";
+            public IElement @__Row = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-RowForm");
+            public static string @Table = "Table";
+            public IElement @__Table = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TableForm");
+            public static string @ObjectExtension = "ObjectExtension";
+            public IElement @__ObjectExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-ObjectExtension");
+            public static string @CollectionExtension = "CollectionExtension";
+            public IElement @__CollectionExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-CollectionExtension");
+            public static string @RowExtension = "RowExtension";
+            public IElement @__RowExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-RowExtension");
+            public static string @TableExtension = "TableExtension";
+            public IElement @__TableExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TableExtension");
 
-        public static readonly string @isAttached = "isAttached";
-        public IElement? @_isAttached = null;
+        }
 
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
+        public _FormType @FormType = new _FormType();
+        public IElement @__FormType = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType");
 
-        public static readonly string @title = "title";
-        public IElement? @_title = null;
 
-        public static readonly string @isEnumeration = "isEnumeration";
-        public IElement? @_isEnumeration = null;
+        public enum ___FormType
+        {
+            @Object,
+            @Collection,
+            @Row,
+            @Table,
+            @ObjectExtension,
+            @CollectionExtension,
+            @RowExtension,
+            @TableExtension
+        }
 
-        public static readonly string @defaultValue = "defaultValue";
-        public IElement? @_defaultValue = null;
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form",
+            TypeKind = TypeKind.ClassTree)]
+        public class _Form
+        {
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
 
-        public static readonly string @isReadOnly = "isReadOnly";
-        public IElement? @_isReadOnly = null;
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+            public static readonly string @isAutoGenerated = "isAutoGenerated";
+            public IElement? @_isAutoGenerated = null;
+
+            public static readonly string @hideMetaInformation = "hideMetaInformation";
+            public IElement? @_hideMetaInformation = null;
+
+            public static readonly string @originalUri = "originalUri";
+            public IElement? @_originalUri = null;
+
+            public static readonly string @originalWorkspace = "originalWorkspace";
+            public IElement? @_originalWorkspace = null;
+
+            public static readonly string @creationProtocol = "creationProtocol";
+            public IElement? @_creationProtocol = null;
+
+        }
+
+        public _Form @Form = new ();
+        public MofObjectShadow @__Form = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.Form");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm",
+            TypeKind = TypeKind.ClassTree)]
+        public class _RowForm
+        {
+            public static readonly string @buttonApplyText = "buttonApplyText";
+            public IElement? @_buttonApplyText = null;
+
+            public static readonly string @allowNewProperties = "allowNewProperties";
+            public IElement? @_allowNewProperties = null;
+
+            public static readonly string @defaultWidth = "defaultWidth";
+            public IElement? @_defaultWidth = null;
+
+            public static readonly string @defaultHeight = "defaultHeight";
+            public IElement? @_defaultHeight = null;
+
+            public static readonly string @field = "field";
+            public IElement? @_field = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+            public static readonly string @isAutoGenerated = "isAutoGenerated";
+            public IElement? @_isAutoGenerated = null;
+
+            public static readonly string @hideMetaInformation = "hideMetaInformation";
+            public IElement? @_hideMetaInformation = null;
+
+            public static readonly string @originalUri = "originalUri";
+            public IElement? @_originalUri = null;
+
+            public static readonly string @originalWorkspace = "originalWorkspace";
+            public IElement? @_originalWorkspace = null;
+
+            public static readonly string @creationProtocol = "creationProtocol";
+            public IElement? @_creationProtocol = null;
+
+        }
+
+        public _RowForm @RowForm = new ();
+        public MofObjectShadow @__RowForm = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm",
+            TypeKind = TypeKind.ClassTree)]
+        public class _TableForm
+        {
+            public static readonly string @property = "property";
+            public IElement? @_property = null;
+
+            public static readonly string @metaClass = "metaClass";
+            public IElement? @_metaClass = null;
+
+            public static readonly string @includeDescendents = "includeDescendents";
+            public IElement? @_includeDescendents = null;
+
+            public static readonly string @noItemsWithMetaClass = "noItemsWithMetaClass";
+            public IElement? @_noItemsWithMetaClass = null;
+
+            public static readonly string @inhibitNewItems = "inhibitNewItems";
+            public IElement? @_inhibitNewItems = null;
+
+            public static readonly string @inhibitDeleteItems = "inhibitDeleteItems";
+            public IElement? @_inhibitDeleteItems = null;
+
+            public static readonly string @inhibitEditItems = "inhibitEditItems";
+            public IElement? @_inhibitEditItems = null;
+
+            public static readonly string @defaultTypesForNewElements = "defaultTypesForNewElements";
+            public IElement? @_defaultTypesForNewElements = null;
+
+            public static readonly string @fastViewFilters = "fastViewFilters";
+            public IElement? @_fastViewFilters = null;
+
+            public static readonly string @field = "field";
+            public IElement? @_field = null;
+
+            public static readonly string @sortingOrder = "sortingOrder";
+            public IElement? @_sortingOrder = null;
+
+            public static readonly string @viewNode = "viewNode";
+            public IElement? @_viewNode = null;
+
+            public static readonly string @autoGenerateFields = "autoGenerateFields";
+            public IElement? @_autoGenerateFields = null;
+
+            public static readonly string @duplicatePerType = "duplicatePerType";
+            public IElement? @_duplicatePerType = null;
+
+            public static readonly string @dataUrl = "dataUrl";
+            public IElement? @_dataUrl = null;
+
+            public static readonly string @inhibitNewUnclassifiedItems = "inhibitNewUnclassifiedItems";
+            public IElement? @_inhibitNewUnclassifiedItems = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+            public static readonly string @isAutoGenerated = "isAutoGenerated";
+            public IElement? @_isAutoGenerated = null;
+
+            public static readonly string @hideMetaInformation = "hideMetaInformation";
+            public IElement? @_hideMetaInformation = null;
+
+            public static readonly string @originalUri = "originalUri";
+            public IElement? @_originalUri = null;
+
+            public static readonly string @originalWorkspace = "originalWorkspace";
+            public IElement? @_originalWorkspace = null;
+
+            public static readonly string @creationProtocol = "creationProtocol";
+            public IElement? @_creationProtocol = null;
+
+        }
+
+        public _TableForm @TableForm = new ();
+        public MofObjectShadow @__TableForm = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm",
+            TypeKind = TypeKind.ClassTree)]
+        public class _CollectionForm
+        {
+            public static readonly string @tab = "tab";
+            public IElement? @_tab = null;
+
+            public static readonly string @autoTabs = "autoTabs";
+            public IElement? @_autoTabs = null;
+
+            public static readonly string @field = "field";
+            public IElement? @_field = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+            public static readonly string @isAutoGenerated = "isAutoGenerated";
+            public IElement? @_isAutoGenerated = null;
+
+            public static readonly string @hideMetaInformation = "hideMetaInformation";
+            public IElement? @_hideMetaInformation = null;
+
+            public static readonly string @originalUri = "originalUri";
+            public IElement? @_originalUri = null;
+
+            public static readonly string @originalWorkspace = "originalWorkspace";
+            public IElement? @_originalWorkspace = null;
+
+            public static readonly string @creationProtocol = "creationProtocol";
+            public IElement? @_creationProtocol = null;
+
+        }
+
+        public _CollectionForm @CollectionForm = new ();
+        public MofObjectShadow @__CollectionForm = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm",
+            TypeKind = TypeKind.ClassTree)]
+        public class _ObjectForm
+        {
+            public static readonly string @tab = "tab";
+            public IElement @_tab = new MofObjectShadow("dm:///_internal/types/internal#c19bbfec-6afb-4%23c19cbfec-6afb-4017-94c2-d2992853a25c017-94c2-d2992853a25c");
+
+            public static readonly string @autoTabs = "autoTabs";
+            public IElement? @_autoTabs = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+            public static readonly string @isAutoGenerated = "isAutoGenerated";
+            public IElement? @_isAutoGenerated = null;
+
+            public static readonly string @hideMetaInformation = "hideMetaInformation";
+            public IElement? @_hideMetaInformation = null;
+
+            public static readonly string @originalUri = "originalUri";
+            public IElement? @_originalUri = null;
+
+            public static readonly string @originalWorkspace = "originalWorkspace";
+            public IElement? @_originalWorkspace = null;
+
+            public static readonly string @creationProtocol = "creationProtocol";
+            public IElement? @_creationProtocol = null;
+
+        }
+
+        public _ObjectForm @ObjectForm = new ();
+        public MofObjectShadow @__ObjectForm = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation",
+            TypeKind = TypeKind.ClassTree)]
+        public class _FormAssociation
+        {
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @formType = "formType";
+            public IElement? @_formType = null;
+
+            public static readonly string @metaClass = "metaClass";
+            public IElement? @_metaClass = null;
+
+            public static readonly string @extentType = "extentType";
+            public IElement? @_extentType = null;
+
+            public static readonly string @viewModeId = "viewModeId";
+            public IElement? @_viewModeId = null;
+
+            public static readonly string @parentMetaClass = "parentMetaClass";
+            public IElement? @_parentMetaClass = null;
+
+            public static readonly string @parentProperty = "parentProperty";
+            public IElement? @_parentProperty = null;
+
+            public static readonly string @form = "form";
+            public IElement? @_form = null;
+
+            public static readonly string @debugActive = "debugActive";
+            public IElement? @_debugActive = null;
+
+            public static readonly string @workspaceId = "workspaceId";
+            public IElement? @_workspaceId = null;
+
+            public static readonly string @extentUri = "extentUri";
+            public IElement? @_extentUri = null;
+
+        }
+
+        public _FormAssociation @FormAssociation = new ();
+        public MofObjectShadow @__FormAssociation = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation");
 
     }
 
-    public _DropDownByQueryData @DropDownByQueryData = new ();
-    public MofObjectShadow @__DropDownByQueryData = new ("dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2");
+    public _FormTypes FormTypes = new ();
+
+    public class _FieldTypes
+    {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _FieldData
+        {
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _FieldData @FieldData = new ();
+        public MofObjectShadow @__FieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2",
+            TypeKind = TypeKind.ClassTree)]
+        public class _DropDownByQueryData
+        {
+            public static readonly string @query = "query";
+            public IElement? @_query = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _DropDownByQueryData @DropDownByQueryData = new ();
+        public MofObjectShadow @__DropDownByQueryData = new ("dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection",
+            TypeKind = TypeKind.ClassTree)]
+        public class _DropDownByCollection
+        {
+            public static readonly string @defaultWorkspace = "defaultWorkspace";
+            public IElement? @_defaultWorkspace = null;
+
+            public static readonly string @collection = "collection";
+            public IElement? @_collection = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _DropDownByCollection @DropDownByCollection = new ();
+        public MofObjectShadow @__DropDownByCollection = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00",
+            TypeKind = TypeKind.ClassTree)]
+        public class _UriReferenceFieldData
+        {
+            public static readonly string @defaultWorkspace = "defaultWorkspace";
+            public IElement? @_defaultWorkspace = null;
+
+            public static readonly string @defaultExtent = "defaultExtent";
+            public IElement? @_defaultExtent = null;
+
+        }
+
+        public _UriReferenceFieldData @UriReferenceFieldData = new ();
+        public MofObjectShadow @__UriReferenceFieldData = new ("dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _FullNameFieldData
+        {
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _FullNameFieldData @FullNameFieldData = new ();
+        public MofObjectShadow @__FullNameFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _CheckboxListTaggingFieldData
+        {
+            public static readonly string @values = "values";
+            public IElement? @_values = null;
+
+            public static readonly string @separator = "separator";
+            public IElement? @_separator = null;
+
+            public static readonly string @containsFreeText = "containsFreeText";
+            public IElement? @_containsFreeText = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _CheckboxListTaggingFieldData @CheckboxListTaggingFieldData = new ();
+        public MofObjectShadow @__CheckboxListTaggingFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _NumberFieldData
+        {
+            public static readonly string @format = "format";
+            public IElement? @_format = null;
+
+            public static readonly string @isInteger = "isInteger";
+            public IElement? @_isInteger = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _NumberFieldData @NumberFieldData = new ();
+        public MofObjectShadow @__NumberFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _DropDownFieldData
+        {
+            public static readonly string @values = "values";
+            public IElement? @_values = null;
+
+            public static readonly string @valuesByEnumeration = "valuesByEnumeration";
+            public IElement? @_valuesByEnumeration = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _DropDownFieldData @DropDownFieldData = new ();
+        public MofObjectShadow @__DropDownFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair",
+            TypeKind = TypeKind.ClassTree)]
+        public class _ValuePair
+        {
+            public static readonly string @value = "value";
+            public IElement? @_value = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _ValuePair @ValuePair = new ();
+        public MofObjectShadow @__ValuePair = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _MetaClassElementFieldData
+        {
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _MetaClassElementFieldData @MetaClassElementFieldData = new ();
+        public MofObjectShadow @__MetaClassElementFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _ReferenceFieldData
+        {
+            public static readonly string @isSelectionInline = "isSelectionInline";
+            public IElement? @_isSelectionInline = null;
+
+            public static readonly string @defaultWorkspace = "defaultWorkspace";
+            public IElement? @_defaultWorkspace = null;
+
+            public static readonly string @defaultItemUri = "defaultItemUri";
+            public IElement? @_defaultItemUri = null;
+
+            public static readonly string @showAllChildren = "showAllChildren";
+            public IElement? @_showAllChildren = null;
+
+            public static readonly string @showWorkspaceSelection = "showWorkspaceSelection";
+            public IElement? @_showWorkspaceSelection = null;
+
+            public static readonly string @showExtentSelection = "showExtentSelection";
+            public IElement? @_showExtentSelection = null;
+
+            public static readonly string @metaClassFilter = "metaClassFilter";
+            public IElement? @_metaClassFilter = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _ReferenceFieldData @ReferenceFieldData = new ();
+        public MofObjectShadow @__ReferenceFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _SubElementFieldData
+        {
+            public static readonly string @metaClass = "metaClass";
+            public IElement? @_metaClass = null;
+
+            public static readonly string @form = "form";
+            public IElement? @_form = null;
+
+            public static readonly string @allowOnlyExistingElements = "allowOnlyExistingElements";
+            public IElement? @_allowOnlyExistingElements = null;
+
+            public static readonly string @defaultTypesForNewElements = "defaultTypesForNewElements";
+            public IElement? @_defaultTypesForNewElements = null;
+
+            public static readonly string @includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
+            public IElement? @_includeSpecializationsForDefaultTypes = null;
+
+            public static readonly string @defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
+            public IElement? @_defaultWorkspaceOfNewElements = null;
+
+            public static readonly string @defaultExtentOfNewElements = "defaultExtentOfNewElements";
+            public IElement? @_defaultExtentOfNewElements = null;
+
+            public static readonly string @actionName = "actionName";
+            public IElement? @_actionName = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _SubElementFieldData @SubElementFieldData = new ();
+        public MofObjectShadow @__SubElementFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _TextFieldData
+        {
+            public static readonly string @lineHeight = "lineHeight";
+            public IElement? @_lineHeight = null;
+
+            public static readonly string @width = "width";
+            public IElement? @_width = null;
+
+            public static readonly string @shortenTextLength = "shortenTextLength";
+            public IElement? @_shortenTextLength = null;
+
+            public static readonly string @supportClipboardCopy = "supportClipboardCopy";
+            public IElement? @_supportClipboardCopy = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _TextFieldData @TextFieldData = new ();
+        public MofObjectShadow @__TextFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _EvalTextFieldData
+        {
+            public static readonly string @evalCellProperties = "evalCellProperties";
+            public IElement? @_evalCellProperties = null;
+
+            public static readonly string @lineHeight = "lineHeight";
+            public IElement? @_lineHeight = null;
+
+            public static readonly string @width = "width";
+            public IElement? @_width = null;
+
+            public static readonly string @shortenTextLength = "shortenTextLength";
+            public IElement? @_shortenTextLength = null;
+
+            public static readonly string @supportClipboardCopy = "supportClipboardCopy";
+            public IElement? @_supportClipboardCopy = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _EvalTextFieldData @EvalTextFieldData = new ();
+        public MofObjectShadow @__EvalTextFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _SeparatorLineFieldData
+        {
+            public static readonly string @Height = "Height";
+            public IElement? @_Height = null;
+
+        }
+
+        public _SeparatorLineFieldData @SeparatorLineFieldData = new ();
+        public MofObjectShadow @__SeparatorLineFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _FileSelectionFieldData
+        {
+            public static readonly string @defaultExtension = "defaultExtension";
+            public IElement? @_defaultExtension = null;
+
+            public static readonly string @isSaving = "isSaving";
+            public IElement? @_isSaving = null;
+
+            public static readonly string @initialPathToDirectory = "initialPathToDirectory";
+            public IElement? @_initialPathToDirectory = null;
+
+            public static readonly string @filter = "filter";
+            public IElement? @_filter = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _FileSelectionFieldData @FileSelectionFieldData = new ();
+        public MofObjectShadow @__FileSelectionFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _AnyDataFieldData
+        {
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _AnyDataFieldData @AnyDataFieldData = new ();
+        public MofObjectShadow @__AnyDataFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _CheckboxFieldData
+        {
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _CheckboxFieldData @CheckboxFieldData = new ();
+        public MofObjectShadow @__CheckboxFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _ActionFieldData
+        {
+            public static readonly string @actionName = "actionName";
+            public IElement? @_actionName = null;
+
+            public static readonly string @parameter = "parameter";
+            public IElement? @_parameter = null;
+
+            public static readonly string @buttonText = "buttonText";
+            public IElement? @_buttonText = null;
+
+            public static readonly string @bindingKey = "bindingKey";
+            public IElement? @_bindingKey = null;
+
+            public static readonly string @bindingKeyModifierCtrl = "bindingKeyModifierCtrl";
+            public IElement? @_bindingKeyModifierCtrl = null;
+
+            public static readonly string @bindingKeyModifierShift = "bindingKeyModifierShift";
+            public IElement? @_bindingKeyModifierShift = null;
+
+            public static readonly string @bindingKeyModifierAlt = "bindingKeyModifierAlt";
+            public IElement? @_bindingKeyModifierAlt = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _ActionFieldData @ActionFieldData = new ();
+        public MofObjectShadow @__ActionFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData",
+            TypeKind = TypeKind.ClassTree)]
+        public class _DateTimeFieldData
+        {
+            public static readonly string @hideDate = "hideDate";
+            public IElement? @_hideDate = null;
+
+            public static readonly string @hideTime = "hideTime";
+            public IElement? @_hideTime = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _DateTimeFieldData @DateTimeFieldData = new ();
+        public MofObjectShadow @__DateTimeFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData");
+
+    }
+
+    public _FieldTypes FieldTypes = new ();
 
     public static readonly _Forms TheOne = new ();
 

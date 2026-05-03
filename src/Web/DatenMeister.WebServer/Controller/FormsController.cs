@@ -31,7 +31,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         // Performs a friendly conversion from the actual form type to the requested form type
         if (formType != null)
         {
-            if(Enum.TryParse<_Forms.___FormType>(formType, true, out var result))
+            if(Enum.TryParse<_Forms._FormTypes.___FormType>(formType, true, out var result))
             {
                 form = FormMethods.ConvertFormToObjectOrCollectionForm(
                     form,

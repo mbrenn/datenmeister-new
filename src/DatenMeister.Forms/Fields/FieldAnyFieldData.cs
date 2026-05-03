@@ -26,14 +26,14 @@ public class FieldAnyFieldData : FormFactoryBase, IFieldFactory
 
         // If we have something else than a primitive type and it is not for a list form
         var element = context.Global.Factory.create(propertyIsCollection
-            ? _Forms.TheOne.__SubElementFieldData
-            : _Forms.TheOne.__AnyDataFieldData);
+            ? _Forms.TheOne.FieldTypes.__SubElementFieldData
+            : _Forms.TheOne.FieldTypes.__AnyDataFieldData);
 
         // It can just contain one element
-        element.set(_Forms._SubElementFieldData.name, propertyName);
-        element.set(_Forms._SubElementFieldData.title, propertyName);
-        element.set(_Forms._SubElementFieldData.isReadOnly, context.IsReadOnly);
-        element.set(_Forms._SubElementFieldData.isEnumeration, propertyIsCollection);
+        element.set(_Forms._FieldTypes._SubElementFieldData.name, propertyName);
+        element.set(_Forms._FieldTypes._SubElementFieldData.title, propertyName);
+        element.set(_Forms._FieldTypes._SubElementFieldData.isReadOnly, context.IsReadOnly);
+        element.set(_Forms._FieldTypes._SubElementFieldData.isEnumeration, propertyIsCollection);
 
         result.Form = element;
 

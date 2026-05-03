@@ -14,7 +14,7 @@ import { _Forms } from "../models/DatenMeister.class.js";
 import * as ActionField from "../fields/ActionField.js";
 import { StatusFieldControl } from "../controls/StatusFieldControl.js";
 import { ElementBreadcrumb } from "../controls/ElementBreadcrumb.js";
-var _TableForm = _DatenMeister._Forms._TableForm;
+var _TableForm = _DatenMeister._Forms._FormTypes._TableForm;
 export class CollectionFormHtmlElements {
     /*
     Here, the items themselves will be added.
@@ -211,12 +211,12 @@ export class CollectionFormCreator {
         }
         // Create the action fields for the collection field
         this.statusTextControl.setListStatus("Actionfields", false);
-        const fields = this.formElement.get(_DatenMeister._Forms._CollectionForm.field, Mof.ObjectType.Array);
+        const fields = this.formElement.get(_DatenMeister._Forms._FormTypes._CollectionForm.field, Mof.ObjectType.Array);
         if (fields !== undefined) {
             const actionFields = $("<div></div>");
             for (const n in fields) {
                 const field = fields[n];
-                if (field.metaClass.uri === _DatenMeister._Forms.__ActionFieldData_Uri) {
+                if (field.metaClass.uri === _DatenMeister._Forms._FieldTypes.__ActionFieldData_Uri) {
                     const actionField = new ActionField.Field();
                     actionField.field = field;
                     actionFields.append(await actionField.createDom(Mof.DmObject.createFromReference(this.workspace, this.extentUri)));
@@ -231,7 +231,7 @@ export class CollectionFormCreator {
         this.statusTextControl.setListStatus("Create Tabs", false);
         // Create the table
         tableContainer.empty();
-        const tabs = this.formElement.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array);
+        const tabs = this.formElement.get(_DatenMeister._Forms._FormTypes._CollectionForm.tab, Mof.ObjectType.Array);
         for (let n in tabs) {
             if (!tabs.hasOwnProperty(n)) {
                 continue;
@@ -247,7 +247,7 @@ export class CollectionFormCreator {
                 }
                 const callbackLoadItems = async (query) => {
                     const queryResult = await ClientElements.queryObject(query, {
-                        dynamicSourceViewNodeWorkspace: tthis.formElement.get(_Forms._Form.originalWorkspace, ObjectType.Single),
+                        dynamicSourceViewNodeWorkspace: tthis.formElement.get(_Forms._FormTypes._Form.originalWorkspace, ObjectType.Single),
                         dynamicSourceViewNode: parameter.viewNode ?? "",
                         dynamicSourceWorkspaceId: tthis.workspace,
                         dynamicSourceItemUri: tthis.extentUri

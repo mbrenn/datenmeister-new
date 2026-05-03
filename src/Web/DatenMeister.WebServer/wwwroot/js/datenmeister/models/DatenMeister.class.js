@@ -880,197 +880,12 @@ export var _ExtentLoaderConfigs;
 })(_ExtentLoaderConfigs || (_ExtentLoaderConfigs = {}));
 export var _Forms;
 (function (_Forms) {
-    class _FieldData {
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._FieldData = _FieldData;
-    _Forms.__FieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData";
     class _SortingOrder {
         static _name_ = "name";
         static isDescending = "isDescending";
     }
     _Forms._SortingOrder = _SortingOrder;
     _Forms.__SortingOrder_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder";
-    class _AnyDataFieldData {
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._AnyDataFieldData = _AnyDataFieldData;
-    _Forms.__AnyDataFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData";
-    class _CheckboxFieldData {
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._CheckboxFieldData = _CheckboxFieldData;
-    _Forms.__CheckboxFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData";
-    class _ActionFieldData {
-        static actionName = "actionName";
-        static parameter = "parameter";
-        static buttonText = "buttonText";
-        static bindingKey = "bindingKey";
-        static bindingKeyModifierCtrl = "bindingKeyModifierCtrl";
-        static bindingKeyModifierShift = "bindingKeyModifierShift";
-        static bindingKeyModifierAlt = "bindingKeyModifierAlt";
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._ActionFieldData = _ActionFieldData;
-    _Forms.__ActionFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData";
-    class _DateTimeFieldData {
-        static hideDate = "hideDate";
-        static hideTime = "hideTime";
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._DateTimeFieldData = _DateTimeFieldData;
-    _Forms.__DateTimeFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData";
-    class _FormAssociation {
-        static _name_ = "name";
-        static formType = "formType";
-        static metaClass = "metaClass";
-        static extentType = "extentType";
-        static viewModeId = "viewModeId";
-        static parentMetaClass = "parentMetaClass";
-        static parentProperty = "parentProperty";
-        static form = "form";
-        static debugActive = "debugActive";
-        static workspaceId = "workspaceId";
-        static extentUri = "extentUri";
-    }
-    _Forms._FormAssociation = _FormAssociation;
-    _Forms.__FormAssociation_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation";
-    class _DropDownFieldData {
-        static values = "values";
-        static valuesByEnumeration = "valuesByEnumeration";
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._DropDownFieldData = _DropDownFieldData;
-    _Forms.__DropDownFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData";
-    class _ValuePair {
-        static value = "value";
-        static _name_ = "name";
-    }
-    _Forms._ValuePair = _ValuePair;
-    _Forms.__ValuePair_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair";
-    class _MetaClassElementFieldData {
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._MetaClassElementFieldData = _MetaClassElementFieldData;
-    _Forms.__MetaClassElementFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData";
-    class _ReferenceFieldData {
-        static isSelectionInline = "isSelectionInline";
-        static defaultWorkspace = "defaultWorkspace";
-        static defaultItemUri = "defaultItemUri";
-        static showAllChildren = "showAllChildren";
-        static showWorkspaceSelection = "showWorkspaceSelection";
-        static showExtentSelection = "showExtentSelection";
-        static metaClassFilter = "metaClassFilter";
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._ReferenceFieldData = _ReferenceFieldData;
-    _Forms.__ReferenceFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData";
-    class _SubElementFieldData {
-        static metaClass = "metaClass";
-        static form = "form";
-        static allowOnlyExistingElements = "allowOnlyExistingElements";
-        static defaultTypesForNewElements = "defaultTypesForNewElements";
-        static includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
-        static defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
-        static defaultExtentOfNewElements = "defaultExtentOfNewElements";
-        static actionName = "actionName";
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._SubElementFieldData = _SubElementFieldData;
-    _Forms.__SubElementFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData";
-    class _TextFieldData {
-        static lineHeight = "lineHeight";
-        static width = "width";
-        static shortenTextLength = "shortenTextLength";
-        static supportClipboardCopy = "supportClipboardCopy";
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._TextFieldData = _TextFieldData;
-    _Forms.__TextFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData";
-    class _EvalTextFieldData {
-        static evalCellProperties = "evalCellProperties";
-        static lineHeight = "lineHeight";
-        static width = "width";
-        static shortenTextLength = "shortenTextLength";
-        static supportClipboardCopy = "supportClipboardCopy";
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._EvalTextFieldData = _EvalTextFieldData;
-    _Forms.__EvalTextFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData";
-    class _SeparatorLineFieldData {
-        static Height = "Height";
-    }
-    _Forms._SeparatorLineFieldData = _SeparatorLineFieldData;
-    _Forms.__SeparatorLineFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData";
-    class _FileSelectionFieldData {
-        static defaultExtension = "defaultExtension";
-        static isSaving = "isSaving";
-        static initialPathToDirectory = "initialPathToDirectory";
-        static filter = "filter";
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._FileSelectionFieldData = _FileSelectionFieldData;
-    _Forms.__FileSelectionFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData";
     class _DefaultTypeForNewElement {
         static _name_ = "name";
         static metaClass = "metaClass";
@@ -1078,149 +893,6 @@ export var _Forms;
     }
     _Forms._DefaultTypeForNewElement = _DefaultTypeForNewElement;
     _Forms.__DefaultTypeForNewElement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement";
-    class _FullNameFieldData {
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._FullNameFieldData = _FullNameFieldData;
-    _Forms.__FullNameFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData";
-    class _CheckboxListTaggingFieldData {
-        static values = "values";
-        static separator = "separator";
-        static containsFreeText = "containsFreeText";
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._CheckboxListTaggingFieldData = _CheckboxListTaggingFieldData;
-    _Forms.__CheckboxListTaggingFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData";
-    class _NumberFieldData {
-        static format = "format";
-        static isInteger = "isInteger";
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._NumberFieldData = _NumberFieldData;
-    _Forms.__NumberFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData";
-    let _FormType;
-    (function (_FormType) {
-        _FormType.Object = "Object";
-        _FormType.Collection = "Collection";
-        _FormType.Row = "Row";
-        _FormType.Table = "Table";
-        _FormType.ObjectExtension = "ObjectExtension";
-        _FormType.CollectionExtension = "CollectionExtension";
-        _FormType.RowExtension = "RowExtension";
-        _FormType.TableExtension = "TableExtension";
-    })(_FormType = _Forms._FormType || (_Forms._FormType = {}));
-    let ___FormType;
-    (function (___FormType) {
-        ___FormType[___FormType["Object"] = 0] = "Object";
-        ___FormType[___FormType["Collection"] = 1] = "Collection";
-        ___FormType[___FormType["Row"] = 2] = "Row";
-        ___FormType[___FormType["Table"] = 3] = "Table";
-        ___FormType[___FormType["ObjectExtension"] = 4] = "ObjectExtension";
-        ___FormType[___FormType["CollectionExtension"] = 5] = "CollectionExtension";
-        ___FormType[___FormType["RowExtension"] = 6] = "RowExtension";
-        ___FormType[___FormType["TableExtension"] = 7] = "TableExtension";
-    })(___FormType = _Forms.___FormType || (_Forms.___FormType = {}));
-    class _Form {
-        static _name_ = "name";
-        static title = "title";
-        static isReadOnly = "isReadOnly";
-        static isAutoGenerated = "isAutoGenerated";
-        static hideMetaInformation = "hideMetaInformation";
-        static originalUri = "originalUri";
-        static originalWorkspace = "originalWorkspace";
-        static creationProtocol = "creationProtocol";
-    }
-    _Forms._Form = _Form;
-    _Forms.__Form_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form";
-    class _RowForm {
-        static buttonApplyText = "buttonApplyText";
-        static allowNewProperties = "allowNewProperties";
-        static defaultWidth = "defaultWidth";
-        static defaultHeight = "defaultHeight";
-        static field = "field";
-        static _name_ = "name";
-        static title = "title";
-        static isReadOnly = "isReadOnly";
-        static isAutoGenerated = "isAutoGenerated";
-        static hideMetaInformation = "hideMetaInformation";
-        static originalUri = "originalUri";
-        static originalWorkspace = "originalWorkspace";
-        static creationProtocol = "creationProtocol";
-    }
-    _Forms._RowForm = _RowForm;
-    _Forms.__RowForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm";
-    class _TableForm {
-        static property = "property";
-        static metaClass = "metaClass";
-        static includeDescendents = "includeDescendents";
-        static noItemsWithMetaClass = "noItemsWithMetaClass";
-        static inhibitNewItems = "inhibitNewItems";
-        static inhibitDeleteItems = "inhibitDeleteItems";
-        static inhibitEditItems = "inhibitEditItems";
-        static defaultTypesForNewElements = "defaultTypesForNewElements";
-        static fastViewFilters = "fastViewFilters";
-        static field = "field";
-        static sortingOrder = "sortingOrder";
-        static viewNode = "viewNode";
-        static autoGenerateFields = "autoGenerateFields";
-        static duplicatePerType = "duplicatePerType";
-        static dataUrl = "dataUrl";
-        static inhibitNewUnclassifiedItems = "inhibitNewUnclassifiedItems";
-        static _name_ = "name";
-        static title = "title";
-        static isReadOnly = "isReadOnly";
-        static isAutoGenerated = "isAutoGenerated";
-        static hideMetaInformation = "hideMetaInformation";
-        static originalUri = "originalUri";
-        static originalWorkspace = "originalWorkspace";
-        static creationProtocol = "creationProtocol";
-    }
-    _Forms._TableForm = _TableForm;
-    _Forms.__TableForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm";
-    class _CollectionForm {
-        static tab = "tab";
-        static autoTabs = "autoTabs";
-        static field = "field";
-        static _name_ = "name";
-        static title = "title";
-        static isReadOnly = "isReadOnly";
-        static isAutoGenerated = "isAutoGenerated";
-        static hideMetaInformation = "hideMetaInformation";
-        static originalUri = "originalUri";
-        static originalWorkspace = "originalWorkspace";
-        static creationProtocol = "creationProtocol";
-    }
-    _Forms._CollectionForm = _CollectionForm;
-    _Forms.__CollectionForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm";
-    class _ObjectForm {
-        static tab = "tab";
-        static autoTabs = "autoTabs";
-        static _name_ = "name";
-        static title = "title";
-        static isReadOnly = "isReadOnly";
-        static isAutoGenerated = "isAutoGenerated";
-        static hideMetaInformation = "hideMetaInformation";
-        static originalUri = "originalUri";
-        static originalWorkspace = "originalWorkspace";
-        static creationProtocol = "creationProtocol";
-    }
-    _Forms._ObjectForm = _ObjectForm;
-    _Forms.__ObjectForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm";
     class _ViewMode {
         static _name_ = "name";
         static id = "id";
@@ -1228,41 +900,375 @@ export var _Forms;
     }
     _Forms._ViewMode = _ViewMode;
     _Forms.__ViewMode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode";
-    class _DropDownByCollection {
-        static defaultWorkspace = "defaultWorkspace";
-        static collection = "collection";
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._DropDownByCollection = _DropDownByCollection;
-    _Forms.__DropDownByCollection_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection";
-    class _UriReferenceFieldData {
-        static defaultWorkspace = "defaultWorkspace";
-        static defaultExtent = "defaultExtent";
-    }
-    _Forms._UriReferenceFieldData = _UriReferenceFieldData;
-    _Forms.__UriReferenceFieldData_Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00";
     class _NavigateToFieldsForTestAction {
         static _name_ = "name";
         static isDisabled = "isDisabled";
     }
     _Forms._NavigateToFieldsForTestAction = _NavigateToFieldsForTestAction;
     _Forms.__NavigateToFieldsForTestAction_Uri = "dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0";
-    class _DropDownByQueryData {
-        static query = "query";
-        static isAttached = "isAttached";
-        static _name_ = "name";
-        static title = "title";
-        static isEnumeration = "isEnumeration";
-        static defaultValue = "defaultValue";
-        static isReadOnly = "isReadOnly";
-    }
-    _Forms._DropDownByQueryData = _DropDownByQueryData;
-    _Forms.__DropDownByQueryData_Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2";
+    let _FormTypes;
+    (function (_FormTypes) {
+        let _FormType;
+        (function (_FormType) {
+            _FormType.Object = "Object";
+            _FormType.Collection = "Collection";
+            _FormType.Row = "Row";
+            _FormType.Table = "Table";
+            _FormType.ObjectExtension = "ObjectExtension";
+            _FormType.CollectionExtension = "CollectionExtension";
+            _FormType.RowExtension = "RowExtension";
+            _FormType.TableExtension = "TableExtension";
+        })(_FormType = _FormTypes._FormType || (_FormTypes._FormType = {}));
+        let ___FormType;
+        (function (___FormType) {
+            ___FormType[___FormType["Object"] = 0] = "Object";
+            ___FormType[___FormType["Collection"] = 1] = "Collection";
+            ___FormType[___FormType["Row"] = 2] = "Row";
+            ___FormType[___FormType["Table"] = 3] = "Table";
+            ___FormType[___FormType["ObjectExtension"] = 4] = "ObjectExtension";
+            ___FormType[___FormType["CollectionExtension"] = 5] = "CollectionExtension";
+            ___FormType[___FormType["RowExtension"] = 6] = "RowExtension";
+            ___FormType[___FormType["TableExtension"] = 7] = "TableExtension";
+        })(___FormType = _FormTypes.___FormType || (_FormTypes.___FormType = {}));
+        class _Form {
+            static _name_ = "name";
+            static title = "title";
+            static isReadOnly = "isReadOnly";
+            static isAutoGenerated = "isAutoGenerated";
+            static hideMetaInformation = "hideMetaInformation";
+            static originalUri = "originalUri";
+            static originalWorkspace = "originalWorkspace";
+            static creationProtocol = "creationProtocol";
+        }
+        _FormTypes._Form = _Form;
+        _FormTypes.__Form_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form";
+        class _RowForm {
+            static buttonApplyText = "buttonApplyText";
+            static allowNewProperties = "allowNewProperties";
+            static defaultWidth = "defaultWidth";
+            static defaultHeight = "defaultHeight";
+            static field = "field";
+            static _name_ = "name";
+            static title = "title";
+            static isReadOnly = "isReadOnly";
+            static isAutoGenerated = "isAutoGenerated";
+            static hideMetaInformation = "hideMetaInformation";
+            static originalUri = "originalUri";
+            static originalWorkspace = "originalWorkspace";
+            static creationProtocol = "creationProtocol";
+        }
+        _FormTypes._RowForm = _RowForm;
+        _FormTypes.__RowForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm";
+        class _TableForm {
+            static property = "property";
+            static metaClass = "metaClass";
+            static includeDescendents = "includeDescendents";
+            static noItemsWithMetaClass = "noItemsWithMetaClass";
+            static inhibitNewItems = "inhibitNewItems";
+            static inhibitDeleteItems = "inhibitDeleteItems";
+            static inhibitEditItems = "inhibitEditItems";
+            static defaultTypesForNewElements = "defaultTypesForNewElements";
+            static fastViewFilters = "fastViewFilters";
+            static field = "field";
+            static sortingOrder = "sortingOrder";
+            static viewNode = "viewNode";
+            static autoGenerateFields = "autoGenerateFields";
+            static duplicatePerType = "duplicatePerType";
+            static dataUrl = "dataUrl";
+            static inhibitNewUnclassifiedItems = "inhibitNewUnclassifiedItems";
+            static _name_ = "name";
+            static title = "title";
+            static isReadOnly = "isReadOnly";
+            static isAutoGenerated = "isAutoGenerated";
+            static hideMetaInformation = "hideMetaInformation";
+            static originalUri = "originalUri";
+            static originalWorkspace = "originalWorkspace";
+            static creationProtocol = "creationProtocol";
+        }
+        _FormTypes._TableForm = _TableForm;
+        _FormTypes.__TableForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm";
+        class _CollectionForm {
+            static tab = "tab";
+            static autoTabs = "autoTabs";
+            static field = "field";
+            static _name_ = "name";
+            static title = "title";
+            static isReadOnly = "isReadOnly";
+            static isAutoGenerated = "isAutoGenerated";
+            static hideMetaInformation = "hideMetaInformation";
+            static originalUri = "originalUri";
+            static originalWorkspace = "originalWorkspace";
+            static creationProtocol = "creationProtocol";
+        }
+        _FormTypes._CollectionForm = _CollectionForm;
+        _FormTypes.__CollectionForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm";
+        class _ObjectForm {
+            static tab = "tab";
+            static autoTabs = "autoTabs";
+            static _name_ = "name";
+            static title = "title";
+            static isReadOnly = "isReadOnly";
+            static isAutoGenerated = "isAutoGenerated";
+            static hideMetaInformation = "hideMetaInformation";
+            static originalUri = "originalUri";
+            static originalWorkspace = "originalWorkspace";
+            static creationProtocol = "creationProtocol";
+        }
+        _FormTypes._ObjectForm = _ObjectForm;
+        _FormTypes.__ObjectForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm";
+        class _FormAssociation {
+            static _name_ = "name";
+            static formType = "formType";
+            static metaClass = "metaClass";
+            static extentType = "extentType";
+            static viewModeId = "viewModeId";
+            static parentMetaClass = "parentMetaClass";
+            static parentProperty = "parentProperty";
+            static form = "form";
+            static debugActive = "debugActive";
+            static workspaceId = "workspaceId";
+            static extentUri = "extentUri";
+        }
+        _FormTypes._FormAssociation = _FormAssociation;
+        _FormTypes.__FormAssociation_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation";
+    })(_FormTypes = _Forms._FormTypes || (_Forms._FormTypes = {}));
+    let _FieldTypes;
+    (function (_FieldTypes) {
+        class _FieldData {
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._FieldData = _FieldData;
+        _FieldTypes.__FieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData";
+        class _DropDownByQueryData {
+            static query = "query";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._DropDownByQueryData = _DropDownByQueryData;
+        _FieldTypes.__DropDownByQueryData_Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2";
+        class _DropDownByCollection {
+            static defaultWorkspace = "defaultWorkspace";
+            static collection = "collection";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._DropDownByCollection = _DropDownByCollection;
+        _FieldTypes.__DropDownByCollection_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection";
+        class _UriReferenceFieldData {
+            static defaultWorkspace = "defaultWorkspace";
+            static defaultExtent = "defaultExtent";
+        }
+        _FieldTypes._UriReferenceFieldData = _UriReferenceFieldData;
+        _FieldTypes.__UriReferenceFieldData_Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00";
+        class _FullNameFieldData {
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._FullNameFieldData = _FullNameFieldData;
+        _FieldTypes.__FullNameFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData";
+        class _CheckboxListTaggingFieldData {
+            static values = "values";
+            static separator = "separator";
+            static containsFreeText = "containsFreeText";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._CheckboxListTaggingFieldData = _CheckboxListTaggingFieldData;
+        _FieldTypes.__CheckboxListTaggingFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData";
+        class _NumberFieldData {
+            static format = "format";
+            static isInteger = "isInteger";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._NumberFieldData = _NumberFieldData;
+        _FieldTypes.__NumberFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData";
+        class _DropDownFieldData {
+            static values = "values";
+            static valuesByEnumeration = "valuesByEnumeration";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._DropDownFieldData = _DropDownFieldData;
+        _FieldTypes.__DropDownFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData";
+        class _ValuePair {
+            static value = "value";
+            static _name_ = "name";
+        }
+        _FieldTypes._ValuePair = _ValuePair;
+        _FieldTypes.__ValuePair_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair";
+        class _MetaClassElementFieldData {
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._MetaClassElementFieldData = _MetaClassElementFieldData;
+        _FieldTypes.__MetaClassElementFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData";
+        class _ReferenceFieldData {
+            static isSelectionInline = "isSelectionInline";
+            static defaultWorkspace = "defaultWorkspace";
+            static defaultItemUri = "defaultItemUri";
+            static showAllChildren = "showAllChildren";
+            static showWorkspaceSelection = "showWorkspaceSelection";
+            static showExtentSelection = "showExtentSelection";
+            static metaClassFilter = "metaClassFilter";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._ReferenceFieldData = _ReferenceFieldData;
+        _FieldTypes.__ReferenceFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData";
+        class _SubElementFieldData {
+            static metaClass = "metaClass";
+            static form = "form";
+            static allowOnlyExistingElements = "allowOnlyExistingElements";
+            static defaultTypesForNewElements = "defaultTypesForNewElements";
+            static includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
+            static defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
+            static defaultExtentOfNewElements = "defaultExtentOfNewElements";
+            static actionName = "actionName";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._SubElementFieldData = _SubElementFieldData;
+        _FieldTypes.__SubElementFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData";
+        class _TextFieldData {
+            static lineHeight = "lineHeight";
+            static width = "width";
+            static shortenTextLength = "shortenTextLength";
+            static supportClipboardCopy = "supportClipboardCopy";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._TextFieldData = _TextFieldData;
+        _FieldTypes.__TextFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData";
+        class _EvalTextFieldData {
+            static evalCellProperties = "evalCellProperties";
+            static lineHeight = "lineHeight";
+            static width = "width";
+            static shortenTextLength = "shortenTextLength";
+            static supportClipboardCopy = "supportClipboardCopy";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._EvalTextFieldData = _EvalTextFieldData;
+        _FieldTypes.__EvalTextFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData";
+        class _SeparatorLineFieldData {
+            static Height = "Height";
+        }
+        _FieldTypes._SeparatorLineFieldData = _SeparatorLineFieldData;
+        _FieldTypes.__SeparatorLineFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData";
+        class _FileSelectionFieldData {
+            static defaultExtension = "defaultExtension";
+            static isSaving = "isSaving";
+            static initialPathToDirectory = "initialPathToDirectory";
+            static filter = "filter";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._FileSelectionFieldData = _FileSelectionFieldData;
+        _FieldTypes.__FileSelectionFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData";
+        class _AnyDataFieldData {
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._AnyDataFieldData = _AnyDataFieldData;
+        _FieldTypes.__AnyDataFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData";
+        class _CheckboxFieldData {
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._CheckboxFieldData = _CheckboxFieldData;
+        _FieldTypes.__CheckboxFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData";
+        class _ActionFieldData {
+            static actionName = "actionName";
+            static parameter = "parameter";
+            static buttonText = "buttonText";
+            static bindingKey = "bindingKey";
+            static bindingKeyModifierCtrl = "bindingKeyModifierCtrl";
+            static bindingKeyModifierShift = "bindingKeyModifierShift";
+            static bindingKeyModifierAlt = "bindingKeyModifierAlt";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._ActionFieldData = _ActionFieldData;
+        _FieldTypes.__ActionFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData";
+        class _DateTimeFieldData {
+            static hideDate = "hideDate";
+            static hideTime = "hideTime";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
+        }
+        _FieldTypes._DateTimeFieldData = _DateTimeFieldData;
+        _FieldTypes.__DateTimeFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData";
+    })(_FieldTypes = _Forms._FieldTypes || (_Forms._FieldTypes = {}));
 })(_Forms || (_Forms = {}));
 export var _AttachedExtent;
 (function (_AttachedExtent) {

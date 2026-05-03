@@ -88,7 +88,7 @@ export function includeTests() {
         it('Test Default Database', () => {
             ModuleFormLoader.loadDefaultForms();
             assert.isTrue(
-                FormFactory.getCollectionFormFactory(_DatenMeister._Forms.__TableForm_Uri)
+                FormFactory.getCollectionFormFactory(_DatenMeister._Forms._FormTypes.__TableForm_Uri)
                 !== undefined);
         });
         

@@ -14,9 +14,9 @@ import * as MofSync from "../MofSync.js";
 import * as Navigator from "../Navigator.js";
 import * as Settings from "../Settings.js";
 import _StoreExtentAction = _DatenMeister._Actions._StoreExtentAction;
-import _ObjectForm = _DatenMeister._Forms._ObjectForm;
-import _RowForm = _DatenMeister._Forms._RowForm;
-import _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
+import _ObjectForm = _DatenMeister._Forms._FormTypes._ObjectForm;
+import _RowForm = _DatenMeister._Forms._FormTypes._RowForm;
+import _ActionFieldData = _DatenMeister._Forms._FieldTypes._ActionFieldData;
 import TableForm from "../forms/TableForm.js";
 
 export function loadModules() {
@@ -131,7 +131,7 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
         parameter.set('name', 'CreateItemAndAnotherOne');
 
         // Adds the additional button 
-        const actionButton = new Mof.DmObject(_DatenMeister._Forms.__ActionFieldData_Uri);
+        const actionButton = new Mof.DmObject(_DatenMeister._Forms._FieldTypes.__ActionFieldData_Uri);
         actionButton.set(_ActionFieldData.title, "Create and go back");
         actionButton.set(_ActionFieldData.parameter, parameter);
         actionButton.set(_ActionFieldData.actionName, this.actionName);

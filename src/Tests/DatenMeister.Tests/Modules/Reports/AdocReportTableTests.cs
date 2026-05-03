@@ -52,14 +52,14 @@ public class AdocReportTableTests
         /* Create the report paragraph and its corresponding view node */
         var reportTable = factory.create(_Reports.TheOne.Elements.__ReportTable);
 
-        var form = factory.create(_Forms.TheOne.__TableForm);
-        var field1 = factory.create(_Forms.TheOne.__EvalTextFieldData)
+        var form = factory.create(_Forms.TheOne.FormTypes.__TableForm);
+        var field1 = factory.create(_Forms.TheOne.FieldTypes.__EvalTextFieldData)
             .SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_Forms._EvalTextFieldData.name] = "name",
-                    [_Forms._EvalTextFieldData.title] = "Name",
-                    [_Forms._EvalTextFieldData.evalCellProperties] =
+                    [_Forms._FieldTypes._EvalTextFieldData.name] = "name",
+                    [_Forms._FieldTypes._EvalTextFieldData.title] = "Name",
+                    [_Forms._FieldTypes._EvalTextFieldData.evalCellProperties] =
                         "{{if(i.age>18)\r\n" +
                         " c.text = c.text + \" (over18)\"\r\n" +
                         "else\r\n" +
@@ -67,14 +67,14 @@ public class AdocReportTableTests
                         "end}}"
                 });
 
-        var field2 = factory.create(_Forms.TheOne.__TextFieldData)
+        var field2 = factory.create(_Forms.TheOne.FieldTypes.__TextFieldData)
             .SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_Forms._TextFieldData.name] = "age",
-                    [_Forms._TextFieldData.title] = "age"
+                    [_Forms._FieldTypes._TextFieldData.name] = "age",
+                    [_Forms._FieldTypes._TextFieldData.title] = "age"
                 });
-        form.set(_Forms._TableForm.field, new[] {field1, field2});
+        form.set(_Forms._FormTypes._TableForm.field, new[] {field1, field2});
 
         reportTable.SetProperties(
             new Dictionary<string, object>

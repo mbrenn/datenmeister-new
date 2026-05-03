@@ -65,11 +65,11 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
             if (isAction)
             {
                 // Fitting, create the field
-                var fields = form.get<IReflectiveSequence>(_Forms._RowForm.field);
-                var actionField = context.Global.Factory.create(_Forms.TheOne.__ActionFieldData);
-                actionField.set(_Forms._ActionFieldData.actionName, "Action.Execute");
-                actionField.set(_Forms._ActionFieldData.title, "Execute Action");
-                actionField.set(_Forms._ActionFieldData.name, "Execute");
+                var fields = form.get<IReflectiveSequence>(_Forms._FormTypes._RowForm.field);
+                var actionField = context.Global.Factory.create(_Forms.TheOne.FieldTypes.__ActionFieldData);
+                actionField.set(_Forms._FieldTypes._ActionFieldData.actionName, "Action.Execute");
+                actionField.set(_Forms._FieldTypes._ActionFieldData.title, "Execute Action");
+                actionField.set(_Forms._FieldTypes._ActionFieldData.name, "Execute");
                 fields.add(actionField);
 
                 result.IsManaged = true;

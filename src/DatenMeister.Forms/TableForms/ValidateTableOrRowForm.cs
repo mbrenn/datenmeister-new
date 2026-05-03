@@ -34,9 +34,9 @@ public class ValidateTableOrRowForm : FormFactoryBase, ITableFormFactory
         foreach (var form in result.Forms)
         {
             // Check that the namings are the same, this is just a static check to avoid compile errors
-            Debug.Assert(_Forms._RowForm.field == _Forms._TableForm.field);
+            Debug.Assert(_Forms._FormTypes._RowForm.field == _Forms._FormTypes._TableForm.field);
 
-            var fields = form.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
+            var fields = form.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field);
             if (fields != null)
             {
                 if (!ValidateFields(fields))
@@ -62,8 +62,8 @@ public class ValidateTableOrRowForm : FormFactoryBase, ITableFormFactory
         var set = new HashSet<string>();
         foreach (var field in fields.OfType<IObject>())
         {
-            var preName = field.getOrDefault<string>(_Forms._FieldData.name);
-            var isAttached = field.getOrDefault<bool>(_Forms._FieldData.isAttached);
+            var preName = field.getOrDefault<string>(_Forms._FieldTypes._FieldData.name);
+            var isAttached = field.getOrDefault<bool>(_Forms._FieldTypes._FieldData.isAttached);
             var name = isAttached ? randomGuid + preName : preName;
 
             if (set.Contains(name) && !string.IsNullOrEmpty(name))

@@ -79,7 +79,7 @@ export function includeTests() {
                 FormType.Collection);
             assert.isTrue(formAsCollection.metaClass.name === "CollectionForm", 'Not a collection Form');
 
-            const tabs = formAsCollection.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array);
+            const tabs = formAsCollection.get(_DatenMeister._Forms._FormTypes._CollectionForm.tab, Mof.ObjectType.Array);
             assert.isTrue(tabs.length === 1, '# of tabs of CollectionForm is not 1');
             assert.isTrue((tabs[0] as Mof.DmObject).metaClass.name === "RowForm", 'Tab of CollectionForm is not a RowForm');
 
@@ -89,7 +89,7 @@ export function includeTests() {
                 FormType.Object);
             assert.isTrue(formAsObject.metaClass.name === "ObjectForm", 'Not an Object Form');
 
-            const tabsObject = formAsObject.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array);
+            const tabsObject = formAsObject.get(_DatenMeister._Forms._FormTypes._CollectionForm.tab, Mof.ObjectType.Array);
             assert.isTrue(tabsObject.length === 1, '# of tabs of ObjectForm is not 1');
             assert.isTrue((tabsObject[0] as Mof.DmObject).metaClass.name === "RowForm", 'Tab of ObjectForm is not a RowForm');
         });

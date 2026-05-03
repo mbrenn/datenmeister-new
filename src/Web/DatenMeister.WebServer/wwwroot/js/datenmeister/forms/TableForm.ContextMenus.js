@@ -1,7 +1,7 @@
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as Actions from "../client/Actions.js";
-var _FieldData = _DatenMeister._Forms._FieldData;
-var _TableForm = _DatenMeister._Forms._TableForm;
+var _FieldData = _DatenMeister._Forms._FieldTypes._FieldData;
+var _TableForm = _DatenMeister._Forms._FormTypes._TableForm;
 import * as Mof from "../Mof.js";
 import { truncateText } from "../../burnsystems/StringManipulation.js";
 import * as SelectItemControl from "../controls/SelectItemControl.js";

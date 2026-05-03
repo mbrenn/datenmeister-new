@@ -9,7 +9,7 @@ public class EmptyObjectFormFactory : FormFactoryBase, IObjectFormFactory
     {
         if (result.Form == null)
         {
-            result.Form = context.Global.FactoryForForms.create(_Forms.TheOne.__ObjectForm);
+            result.Form = context.Global.FactoryForForms.create(_Forms.TheOne.FormTypes.__ObjectForm);
             result.IsManaged = true;
             result.AddToFormCreationProtocol(
                 "[EmptyTableFormFactory] Empty object Table-Form created");

@@ -255,7 +255,7 @@ public class TestRowFilters
             extent.elements().add(selectWorkspace);
         
             // Now create the query
-            var dropDownByQueryData = viewFactory.create(_Forms.TheOne.__DropDownByQueryData);
+            var dropDownByQueryData = viewFactory.create(_Forms.TheOne.FieldTypes.__DropDownByQueryData);
             var queryStatement = viewFactory.create(_DataViews.TheOne.__QueryStatement);
             viewExtent.elements().add(queryStatement);
 

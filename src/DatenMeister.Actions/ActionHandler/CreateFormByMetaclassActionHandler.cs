@@ -86,7 +86,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
                     var association = FormMethods.AddFormAssociationForMetaclass(
                         form,
                         metaClass,
-                        _Forms.___FormType.Object);
+                        _Forms._FormTypes.___FormType.Object);
                     targetReflection.add(association);
                 }
             }
@@ -107,7 +107,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
                     var association = FormMethods.AddFormAssociationForMetaclass(
                         form,
                         metaClass,
-                        _Forms.___FormType.Collection);
+                        _Forms._FormTypes.___FormType.Collection);
                     targetReflection.add(association);
                 }
             }

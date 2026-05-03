@@ -30,9 +30,9 @@ public class AddEmptyRowFormInCaseItDoesNotExist : FormFactoryBase, IObjectFormF
         
         var first = FormMethods.GetRowForms(result.Form).FirstOrDefault();
         if(first == null){
-            var rowForm =context.Global.Factory.create(_Forms.TheOne.__RowForm);
-            rowForm.set(_Forms._RowForm.name, "Empty");
-            result.Form.AddCollectionItem(_Forms._ObjectForm.tab, rowForm);
+            var rowForm =context.Global.Factory.create(_Forms.TheOne.FormTypes.__RowForm);
+            rowForm.set(_Forms._FormTypes._RowForm.name, "Empty");
+            result.Form.AddCollectionItem(_Forms._FormTypes._ObjectForm.tab, rowForm);
             
             result.AddToFormCreationProtocol("Empty Row Form added because it does not exist");
             result.IsManaged = true;

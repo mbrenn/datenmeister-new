@@ -9,7 +9,7 @@ export class Field extends DropDownBaseField.DropDownBaseField {
         this.fieldType = DropDownBaseField.FieldType.References;
     }
     async loadFields() {
-        let query = this.field.get(_DatenMeister._Forms._DropDownByQueryData.query, Mof.ObjectType.Single);
+        let query = this.field.get(_DatenMeister._Forms._FieldTypes._DropDownByQueryData.query, Mof.ObjectType.Single);
         query = await MofResolver.forceResolve(query);
         // Checks, if the query is set, otherwise return an error message
         if (query === undefined || query === null) {

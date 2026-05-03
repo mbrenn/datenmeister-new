@@ -9,7 +9,7 @@ import * as burnJsPopup from "../../burnJsPopup.js"
 import * as ClientItem from "../client/Items.js"
 import * as ContextMenu from "./TableForm.ContextMenus.js"
 import {TableState} from "./TableState.js"
-import _FieldData = _DatenMeister._Forms._FieldData;
+import _FieldData = _DatenMeister._Forms._FieldTypes._FieldData;
 import {debugElementToDom} from "../DomHelper.js";
 
 interface MenuItemData
@@ -166,7 +166,7 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
             this.tableParameter.allowFilteringOnProperty = false;
 
             // Loads the properties as a whole
-            const property = this.formElement.get(_DatenMeister._Forms._TableForm.property, Mof.ObjectType.String);
+            const property = this.formElement.get(_DatenMeister._Forms._FormTypes._TableForm.property, Mof.ObjectType.String);
 
             const result = await ClientItem.getProperty(tthis.workspace, tthis.itemUrl, property);
             if (Array.isArray(result)) {
@@ -312,7 +312,7 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
         const property = this.formElement.get('property');
         const tthis = this;
 
-        if (this.formElement.get(_DatenMeister._Forms._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean) !== true) {
+        if (this.formElement.get(_DatenMeister._Forms._FormTypes._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean) !== true) {
             // Creates default unclassified button
             createUnclassifiedButton();
         }
@@ -691,8 +691,8 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
         let result = [];
 
         if (field.metaClass !== undefined && field.metaClass !== null && 
-            field.metaClass.uri !== _DatenMeister._Forms.__ActionFieldData_Uri
-            && field.metaClass.uri !== _DatenMeister._Forms.__MetaClassElementFieldData_Uri) {
+            field.metaClass.uri !== _DatenMeister._Forms._FieldTypes.__ActionFieldData_Uri
+            && field.metaClass.uri !== _DatenMeister._Forms._FieldTypes.__MetaClassElementFieldData_Uri) {
 
             result.push(ContextMenu.createFunctionToRemoveAllProperties(field));
             

@@ -41,7 +41,7 @@ public static class FieldCreationHelper
             return false;
         }
 
-        var isTableForm = rowOrObjectForm.metaclass?.equals(_Forms.TheOne.__TableForm) == true;
+        var isTableForm = rowOrObjectForm.metaclass?.equals(_Forms.TheOne.FormTypes.__TableForm) == true;
         var wasInMetaClass = false;
         
         var typeIndexLogic = new TypeIndexLogic (workspaceLogic);
@@ -65,9 +65,9 @@ public static class FieldCreationHelper
             }
 
             var isAlreadyIn = rowOrObjectForm
-                .get<IReflectiveCollection>(_Forms._RowForm.field)
+                .get<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
                 .OfType<IObject>()
-                .Any(x => x.getOrDefault<string>(_Forms._FieldData.name) == propertyName);
+                .Any(x => x.getOrDefault<string>(_Forms._FieldTypes._FieldData.name) == propertyName);
 
             if (isAlreadyIn)
                 continue;
@@ -85,7 +85,7 @@ public static class FieldCreationHelper
                 context.Clone());
             if (column.Form != null)
             {
-                rowOrObjectForm.get<IReflectiveCollection>(_Forms._RowForm.field).add(column.Form);
+                rowOrObjectForm.get<IReflectiveCollection>(_Forms._FormTypes._RowForm.field).add(column.Form);
 
                 FormCreationResult.AddToFormCreationProtocol(
                     rowOrObjectForm,
@@ -144,9 +144,9 @@ public static class FieldCreationHelper
 
             // Checks, whether the field is already existing
             var column = form
-                .get<IReflectiveCollection>(_Forms._RowForm.field)
+                .get<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
                 .OfType<IObject>()
-                .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldData.name) == propertyName);
+                .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldTypes._FieldData.name) == propertyName);
 
             var propertyValue = itemAsObject.getOrDefault<object>(propertyName);
 
@@ -165,7 +165,7 @@ public static class FieldCreationHelper
 
                 if (resultingField.Form != null)
                 {
-                    form.get<IReflectiveCollection>(_Forms._RowForm.field).add(resultingField.Form);
+                    form.get<IReflectiveCollection>(_Forms._FormTypes._RowForm.field).add(resultingField.Form);
                     cache.CoveredPropertyNames.Add(propertyName);
                     
                     FormCreationResult.AddToFormCreationProtocol(

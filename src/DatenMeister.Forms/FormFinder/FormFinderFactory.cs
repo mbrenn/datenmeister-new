@@ -71,7 +71,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
                 new FindFormQuery
                 {
                     ViewModeId = context.ViewModeId,
-                    FormType = _Forms.___FormType.Collection,
+                    FormType = _Forms._FormTypes.___FormType.Collection,
                     WorkspaceId = parameter.Extent?.GetWorkspace()?.id ?? string.Empty,
                     ExtentTypes = parameter.ExtentTypes ?? [],
                     ExtentUri = parameter.Extent?.contextURI() ?? string.Empty
@@ -92,7 +92,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
                 new FindFormQuery
                 {
                     ViewModeId = context.ViewModeId,
-                    FormType = _Forms.___FormType.CollectionExtension,
+                    FormType = _Forms._FormTypes.___FormType.CollectionExtension,
                     WorkspaceId = parameter.Extent?.GetWorkspace()?.id ?? string.Empty,
                     ExtentTypes = parameter.ExtentTypes ?? [],
                     ExtentUri = parameter.Extent?.contextURI() ?? string.Empty
@@ -102,10 +102,10 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
             foreach (var extensionForm in foundForms)
             {
                 foreach (var tab in
-                         extensionForm.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab)
+                         extensionForm.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._CollectionForm.tab)
                              .OfType<IElement>())
                 {
-                    result.Form.AddCollectionItem(_Forms._ObjectForm.tab, tab);
+                    result.Form.AddCollectionItem(_Forms._FormTypes._ObjectForm.tab, tab);
                 }
             }
         }
@@ -123,7 +123,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
                 {
                     ViewModeId = context.ViewModeId,
                     MetaClass = parameter.MetaClass,
-                    FormType = _Forms.___FormType.Object,
+                    FormType = _Forms._FormTypes.___FormType.Object,
                     WorkspaceId = parameter.Extent?.GetWorkspace()?.id ?? string.Empty,
                     ExtentTypes = parameter.ExtentTypes ?? [],
                     ExtentUri = parameter.Extent?.contextURI() ?? string.Empty
@@ -144,7 +144,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
                 new FindFormQuery
                 {
                     ViewModeId = context.ViewModeId,
-                    FormType = _Forms.___FormType.CollectionExtension,
+                    FormType = _Forms._FormTypes.___FormType.CollectionExtension,
                     WorkspaceId = parameter.Extent?.GetWorkspace()?.id ?? string.Empty,
                     ExtentTypes = parameter.ExtentTypes ?? [],
                     ExtentUri = parameter.Extent?.contextURI() ?? string.Empty
@@ -154,10 +154,10 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
             foreach (var extensionForm in foundForms)
             {
                 foreach (var tab in
-                         extensionForm.getOrDefault<IReflectiveCollection>(_Forms._ObjectForm.tab)
+                         extensionForm.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._ObjectForm.tab)
                              .OfType<IElement>())
                 {
-                    result.Form.AddCollectionItem(_Forms._ObjectForm.tab, tab);
+                    result.Form.AddCollectionItem(_Forms._FormTypes._ObjectForm.tab, tab);
                 }
             }
         }
@@ -175,7 +175,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
                 {
                     ViewModeId = context.ViewModeId,
                     MetaClass = parameter.MetaClass,
-                    FormType = _Forms.___FormType.Row,
+                    FormType = _Forms._FormTypes.___FormType.Row,
                     WorkspaceId = parameter.Extent?.GetWorkspace()?.id ?? string.Empty,
                     ExtentTypes = parameter.ExtentTypes ?? [],
                     ExtentUri = parameter.Extent?.contextURI() ?? string.Empty
@@ -198,7 +198,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
                 new FindFormQuery
                 {
                     ViewModeId = context.ViewModeId,
-                    FormType = _Forms.___FormType.RowExtension,
+                    FormType = _Forms._FormTypes.___FormType.RowExtension,
                     WorkspaceId = parameter.Extent?.GetWorkspace()?.id ?? string.Empty,
                     ExtentTypes = parameter.ExtentTypes ?? [],
                     ExtentUri = parameter.Extent?.contextURI() ?? string.Empty
@@ -208,10 +208,10 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
             foreach (var extensionForm in foundForms)
             {
                 foreach (var field in
-                         extensionForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
+                         extensionForm.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
                              .OfType<IElement>())
                 {
-                    form.AddCollectionItem(_Forms._ObjectForm.tab, field);
+                    form.AddCollectionItem(_Forms._FormTypes._ObjectForm.tab, field);
                 }
             }
         }
@@ -229,7 +229,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
                 {
                     ViewModeId = context.ViewModeId,
                     MetaClass = parameter.MetaClass,
-                    FormType = _Forms.___FormType.Table,
+                    FormType = _Forms._FormTypes.___FormType.Table,
                     WorkspaceId = parameter.Extent?.GetWorkspace()?.id ?? string.Empty,
                     ExtentTypes = parameter.ExtentTypes ?? [],
                     ExtentUri = parameter.Extent?.contextURI() ?? string.Empty
@@ -252,7 +252,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
                 new FindFormQuery
                 {
                     ViewModeId = context.ViewModeId,
-                    FormType = _Forms.___FormType.TableExtension,
+                    FormType = _Forms._FormTypes.___FormType.TableExtension,
                     WorkspaceId = parameter.Extent?.GetWorkspace()?.id ?? string.Empty,
                     ExtentTypes = parameter.ExtentTypes ?? [],
                     ExtentUri = parameter.Extent?.contextURI() ?? string.Empty
@@ -262,10 +262,10 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
             foreach (var extensionForm in foundForms)
             {
                 foreach (var field in
-                         extensionForm.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field)
+                         extensionForm.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._TableForm.field)
                              .OfType<IElement>())
                 {
-                    form.AddCollectionItem(_Forms._ObjectForm.tab, field);
+                    form.AddCollectionItem(_Forms._FormTypes._ObjectForm.tab, field);
                 }
             }
         }

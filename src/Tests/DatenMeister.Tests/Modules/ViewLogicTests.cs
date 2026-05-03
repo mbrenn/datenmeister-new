@@ -37,7 +37,7 @@ public class ViewLogicTests
         var viewExtent = viewLogic.GetUserFormExtent();
         var factory = new MofFactory(viewExtent);
             
-        var listForm = _Forms.TheOne.__TableForm;
+        var listForm = _Forms.TheOne.FormTypes.__TableForm;
             
         var n = 0;
         foreach (var _ in viewLogic.GetAllForms())

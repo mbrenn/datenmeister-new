@@ -24,8 +24,8 @@ public class AddMetaClassField : FormFactoryBase, IRowFormFactory
         
         // Then manually
         var hasAnyMetaClass = result.Forms.Any(x =>
-            x.get<IReflectiveCollection>(_Forms._RowForm.field).OfType<IElement>()
-                .Any(x => x.getMetaClass()?.equals(_Forms.TheOne.__MetaClassElementFieldData) == true));
+            x.get<IReflectiveCollection>(_Forms._FormTypes._RowForm.field).OfType<IElement>()
+                .Any(x => x.getMetaClass()?.equals(_Forms.TheOne.FieldTypes.__MetaClassElementFieldData) == true));
         if (hasAnyMetaClass)
             return;
         
@@ -33,9 +33,9 @@ public class AddMetaClassField : FormFactoryBase, IRowFormFactory
         var cache = context.LocalScopeStorage.Get<FormCreatorCache>();
         cache.MetaClassAlreadyAdded = true;
 
-        var fieldData = context.Global.Factory.create(_Forms.TheOne.__MetaClassElementFieldData);
+        var fieldData = context.Global.Factory.create(_Forms.TheOne.FieldTypes.__MetaClassElementFieldData);
         result.Forms.First().AddCollectionItem(
-            _Forms._RowForm.field, fieldData);
+            _Forms._FormTypes._RowForm.field, fieldData);
         
         result.IsManaged = true;
     }    

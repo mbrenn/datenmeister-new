@@ -13,7 +13,7 @@ public class EmptyTableFormFactory : FormFactoryBase, ITableFormFactory
     {
         if (!result.Forms.Any())
         {
-            result.Forms.Add(context.Global.FactoryForForms.create(_Forms.TheOne.__TableForm));
+            result.Forms.Add(context.Global.FactoryForForms.create(_Forms.TheOne.FormTypes.__TableForm));
             result.IsManaged = true;
             result.AddToFormCreationProtocol(
                 "[EmptyTableFormFactory] Empty object Table-Form created");

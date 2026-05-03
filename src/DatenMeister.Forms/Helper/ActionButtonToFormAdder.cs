@@ -90,15 +90,15 @@ public static class ActionButtonToFormAdder
             if (form == null)
                 throw new InvalidOperationException("Form is null");
 
-            var fields = form.get<IReflectiveSequence>(_Forms._RowForm.field);
-            var actionField = context.Global.Factory.create(_Forms.TheOne.__ActionFieldData);
-            actionField.set(_Forms._ActionFieldData.actionName, parameter.ActionName);
-            actionField.set(_Forms._ActionFieldData.title, parameter.Title);
-            actionField.set(_Forms._ActionFieldData.name, parameter.ActionName);
+            var fields = form.get<IReflectiveSequence>(_Forms._FormTypes._RowForm.field);
+            var actionField = context.Global.Factory.create(_Forms.TheOne.FieldTypes.__ActionFieldData);
+            actionField.set(_Forms._FieldTypes._ActionFieldData.actionName, parameter.ActionName);
+            actionField.set(_Forms._FieldTypes._ActionFieldData.title, parameter.Title);
+            actionField.set(_Forms._FieldTypes._ActionFieldData.name, parameter.ActionName);
 
             if (!string.IsNullOrEmpty(parameter.ButtonText))
             {
-                actionField.set(_Forms._ActionFieldData.buttonText, parameter.ButtonText);
+                actionField.set(_Forms._FieldTypes._ActionFieldData.buttonText, parameter.ButtonText);
             }
 
             if (parameter.Parameter.Count > 0)
@@ -109,7 +109,7 @@ public static class ActionButtonToFormAdder
                     parameter1.set(key, value);
                 }
 
-                actionField.set(_Forms._ActionFieldData.parameter, parameter1);
+                actionField.set(_Forms._FieldTypes._ActionFieldData.parameter, parameter1);
             }
 
             if (parameter.ActionButtonPosition == -1)

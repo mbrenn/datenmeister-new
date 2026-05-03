@@ -118,10 +118,10 @@ public class SimpleReportForCollection(FormCreationContext formContext, ItemForm
         if (AddFullNameColumn)
         {
             // Create the metaclass as a field
-            var fullNamefield = MofFactory.CreateElement(foundForm, _Forms.TheOne.__FullNameFieldData);
-            fullNamefield.set(_Forms._MetaClassElementFieldData.name, "Path");
-            fullNamefield.set(_Forms._MetaClassElementFieldData.title, "Path");
-            foundForm.get<IReflectiveSequence>(_Forms._TableForm.field).add(0, fullNamefield);
+            var fullNamefield = MofFactory.CreateElement(foundForm, _Forms.TheOne.FieldTypes.__FullNameFieldData);
+            fullNamefield.set(_Forms._FieldTypes._FullNameFieldData.name, "Path");
+            fullNamefield.set(_Forms._FieldTypes._FullNameFieldData.title, "Path");
+            foundForm.get<IReflectiveSequence>(_Forms._FormTypes._TableForm.field).add(0, fullNamefield);
         }
     }
 

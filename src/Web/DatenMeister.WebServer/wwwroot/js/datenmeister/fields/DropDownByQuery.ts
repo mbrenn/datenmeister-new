@@ -14,7 +14,7 @@ export class Field extends DropDownBaseField.DropDownBaseField implements IFormF
 
     async loadFields(): Promise<DropDownBaseField.DropDownOptionField[]> {
         let query = this.field.get(
-            _DatenMeister._Forms._DropDownByQueryData.query, Mof.ObjectType.Single);
+            _DatenMeister._Forms._FieldTypes._DropDownByQueryData.query, Mof.ObjectType.Single);
         
         query = await MofResolver.forceResolve(query);       
 

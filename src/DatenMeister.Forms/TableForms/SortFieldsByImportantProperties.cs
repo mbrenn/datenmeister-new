@@ -16,7 +16,7 @@ public class SortFieldsByImportantProperties : FormFactoryBase, ITableFormFactor
         
         foreach (var form in result.Forms)
         {
-            var fields = form?.getOrDefault<IReflectiveSequence>(_Forms._TableForm.field);
+            var fields = form?.getOrDefault<IReflectiveSequence>(_Forms._FormTypes._TableForm.field);
             if (fields == null)
                 return;
 
@@ -39,7 +39,7 @@ public class SortFieldsByImportantProperties : FormFactoryBase, ITableFormFactor
             }
 
             // Performs a resetting of all properties
-            // form.set(_DatenMeister._Forms._TableForm.field, fieldsAsList);
+            // form.set(_DatenMeister._Forms._FormTypes._TableForm.field, fieldsAsList);
         }
     }
 }

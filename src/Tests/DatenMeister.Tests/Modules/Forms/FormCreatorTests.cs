@@ -42,15 +42,15 @@ public class FormCreatorTests
                 }, context).Forms.FirstOrDefault();
         Assert.That(createdForm, Is.Not.Null);
         var fields =
-            createdForm!.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field)
+            createdForm!.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._TableForm.field)
                 ?.OfType<IElement>()
                 .ToList();
         Assert.That(fields, Is.Not.Null);
-        Assert.That(createdForm!.metaclass?.equals(_Forms.TheOne.__TableForm), Is.True);
+        Assert.That(createdForm!.metaclass?.equals(_Forms.TheOne.FormTypes.__TableForm), Is.True);
         Assert.That(fields!.Any(x =>
-            x.getOrDefault<string>(_Forms._FieldData.name) == nameof(ZipCode.name)));
+            x.getOrDefault<string>(_Forms._FieldTypes._FieldData.name) == nameof(ZipCode.name)));
         Assert.That(fields!.Any(x =>
-            x.getOrDefault<string>(_Forms._FieldData.name) == nameof(ZipCode.zip)));
+            x.getOrDefault<string>(_Forms._FieldTypes._FieldData.name) == nameof(ZipCode.zip)));
     }
 
     [Test]
@@ -90,19 +90,19 @@ public class FormCreatorTests
 
         // Checks, that the dataurl of the first table is just referencing to the extent itself
         var firstTable = tableForms.First();
-        Assert.That(firstTable.getOrDefault<bool>(_Forms._TableForm.noItemsWithMetaClass), Is.True);
+        Assert.That(firstTable.getOrDefault<bool>(_Forms._FormTypes._TableForm.noItemsWithMetaClass), Is.True);
         Assert.That(
-            firstTable.getOrDefault<string>(_Forms._TableForm.dataUrl),
+            firstTable.getOrDefault<string>(_Forms._FormTypes._TableForm.dataUrl),
             Is.EqualTo("dm:///test"));
             
         // Checks, that the dataurl of the second table is referencing to the specific metaclass
         var secondTable = tableForms.ElementAt(1);
-        Assert.That(secondTable.getOrDefault<bool>(_Forms._TableForm.noItemsWithMetaClass), Is.False);
+        Assert.That(secondTable.getOrDefault<bool>(_Forms._FormTypes._TableForm.noItemsWithMetaClass), Is.False);
         Assert.That(
-            secondTable.getOrDefault<IElement>(_Forms._TableForm.metaClass), 
+            secondTable.getOrDefault<IElement>(_Forms._FormTypes._TableForm.metaClass), 
             Is.EqualTo(zipModel.ZipCode));
         Assert.That(
-            secondTable.getOrDefault<string>(_Forms._TableForm.dataUrl),
+            secondTable.getOrDefault<string>(_Forms._FormTypes._TableForm.dataUrl),
             Is.EqualTo("dm:///test?metaclass=" + HttpUtility.UrlEncode(zipModel.ZipCode!.GetUri())));
     }
 
@@ -129,18 +129,18 @@ public class FormCreatorTests
         var detailForm = FormMethods.GetRowForms(createdForm!).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
 
-        var fields = detailForm!.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
+        var fields = detailForm!.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field);
         Assert.That(fields, Is.Not.Null);
 
         var any = false;
         foreach (var field in fields.OfType<IElement>())
         {
-            if (field.metaclass?.equals(_Forms.TheOne.__TextFieldData) != true)
+            if (field.metaclass?.equals(_Forms.TheOne.FieldTypes.__TextFieldData) != true)
                 continue;
 
             // Testing only on TextFields
             any = true;
-            Assert.That(field.getOrDefault<bool>(_Forms._FieldData.isReadOnly), Is.False);
+            Assert.That(field.getOrDefault<bool>(_Forms._FieldTypes._FieldData.isReadOnly), Is.False);
         }
 
         Assert.That(any, Is.True);
@@ -170,18 +170,18 @@ public class FormCreatorTests
         var detailForm = FormMethods.GetRowForms(createdForm!).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
 
-        var fields = detailForm!.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
+        var fields = detailForm!.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field);
         Assert.That(fields, Is.Not.Null);
 
         var any = false;
         foreach (var field in fields.OfType<IElement>())
         {
-            if (field.metaclass?.equals(_Forms.TheOne.__TextFieldData) != true)
+            if (field.metaclass?.equals(_Forms.TheOne.FieldTypes.__TextFieldData) != true)
                 continue;
                 
             // Testing only on TextFields
             any = true;
-            Assert.That(field.getOrDefault<bool>(_Forms._FieldData.isReadOnly), Is.False);
+            Assert.That(field.getOrDefault<bool>(_Forms._FieldTypes._FieldData.isReadOnly), Is.False);
         }
 
         Assert.That(any, Is.True);
@@ -253,7 +253,7 @@ public class FormCreatorTests
 
         // Now get all table forms within properties of packagedElements
         var tableFormsForPackagedElements = tableForms
-            .Where(x => x.getOrDefault<string>(_Forms._TableForm.property) == "packagedElement")
+            .Where(x => x.getOrDefault<string>(_Forms._FormTypes._TableForm.property) == "packagedElement")
             .ToList();
 
         // Here, we should now have two table forms, one for the class and one for the connector
@@ -262,14 +262,14 @@ public class FormCreatorTests
         // Checks that the metaclass is correctly set
         Assert.That(
             tableFormsForPackagedElements.Any(x =>
-                x.getOrDefault<IElement>(_Forms._TableForm.metaClass)
+                x.getOrDefault<IElement>(_Forms._FormTypes._TableForm.metaClass)
                     ?.equals(_UML.TheOne.StructuredClassifiers.__Connector) == true),
             Is.True);
         Assert.That(
             tableFormsForPackagedElements.Any(x =>
             {
                 var result =
-                    x.getOrDefault<IElement>(_Forms._TableForm.metaClass)
+                    x.getOrDefault<IElement>(_Forms._FormTypes._TableForm.metaClass)
                         ?.equals(_UML.TheOne.StructuredClassifiers.__Class) == true;
                 return result;
             }), Is.True);
@@ -299,12 +299,12 @@ public class FormCreatorTests
 
         var listForm = FormMethods.GetTableForms(createdForm!).FirstOrDefault(
             x =>
-                x.getOrDefault<IElement>(_Forms._TableForm.metaClass)
+                x.getOrDefault<IElement>(_Forms._FormTypes._TableForm.metaClass)
                     ?.Equals(_UML.TheOne.Packages.__Package) == true);
         Assert.That(listForm, Is.Not.Null);
 
         var defaultTypesForNewElements =
-            listForm!.getOrDefault<IReflectiveSequence>(_Forms._TableForm.defaultTypesForNewElements);
+            listForm!.getOrDefault<IReflectiveSequence>(_Forms._FormTypes._TableForm.defaultTypesForNewElements);
         Assert.That(
             defaultTypesForNewElements.OfType<IElement>().Any(
                 x => x.getOrDefault<IElement>(_Forms._DefaultTypeForNewElement.metaClass)

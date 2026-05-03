@@ -9,7 +9,7 @@ namespace DatenMeister.Forms.FormModifications;
 [Obsolete]
 public record FormCreationContext
 {
-    public _Forms.___FormType? FormType { get; set; }
+    public _Forms._FormTypes.___FormType? FormType { get; set; }
 
     /// <summary>
     /// Gets or sets the element being used to create the form.

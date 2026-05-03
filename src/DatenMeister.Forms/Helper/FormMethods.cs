@@ -158,11 +158,11 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
                             new[]
                                 { _UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement })
                         .WhenMetaClassIsOneOf(
-                            _Forms.TheOne.__Form,
-                            _Forms.TheOne.__ObjectForm,
-                            _Forms.TheOne.__CollectionForm,
-                            _Forms.TheOne.__RowForm,
-                            _Forms.TheOne.__TableForm)),
+                            _Forms.TheOne.FormTypes.__Form,
+                            _Forms.TheOne.FormTypes.__ObjectForm,
+                            _Forms.TheOne.FormTypes.__CollectionForm,
+                            _Forms.TheOne.FormTypes.__RowForm,
+                            _Forms.TheOne.FormTypes.__TableForm)),
                 true);
     }
 
@@ -177,17 +177,17 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     public static IElement AddFormAssociationForMetaclass(
         IElement form,
         IElement metaClass,
-        _Forms.___FormType formType)
+        _Forms._FormTypes.___FormType formType)
     {
         var factory = new MofFactory(form);
 
-        var formAssociation = factory.create(_Forms.TheOne.__FormAssociation);
+        var formAssociation = factory.create(_Forms.TheOne.FormTypes.__FormAssociation);
         var name = NamedElementMethods.GetName(form);
 
-        formAssociation.set(_Forms._FormAssociation.formType, formType);
-        formAssociation.set(_Forms._FormAssociation.form, form);
-        formAssociation.set(_Forms._FormAssociation.metaClass, metaClass);
-        formAssociation.set(_Forms._FormAssociation.name, $"Association for {name}");
+        formAssociation.set(_Forms._FormTypes._FormAssociation.formType, formType);
+        formAssociation.set(_Forms._FormTypes._FormAssociation.form, form);
+        formAssociation.set(_Forms._FormTypes._FormAssociation.metaClass, metaClass);
+        formAssociation.set(_Forms._FormTypes._FormAssociation.name, $"Association for {name}");
 
         return formAssociation;
     }
@@ -235,7 +235,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
                         .GetAllDescendantsIncludingThemselves(
                         [_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement
                         ])
-                        .WhenMetaClassIsOneOf(_Forms.TheOne.__FormAssociation)),
+                        .WhenMetaClassIsOneOf(_Forms.TheOne.FormTypes.__FormAssociation)),
             true);
     }
 
@@ -253,8 +253,8 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
         foreach (var foundElement in viewExtent
                      .elements()
                      .GetAllDescendantsIncludingThemselves()
-                     .WhenMetaClassIs(_Forms.TheOne.__FormAssociation)
-                     .WhenPropertyHasValue(_Forms._FormAssociation.extentType, selectedExtentType)
+                     .WhenMetaClassIs(_Forms.TheOne.FormTypes.__FormAssociation)
+                     .WhenPropertyHasValue(_Forms._FormTypes._FormAssociation.extentType, selectedExtentType)
                      .OfType<IElement>())
         {
             RemoveElement(viewExtent, foundElement);
@@ -278,10 +278,10 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
         foreach (var foundElement in viewExtent
                      .elements()
                      .GetAllDescendantsIncludingThemselves()
-                     .WhenMetaClassIs(_Forms.TheOne.__FormAssociation)
-                     .WhenPropertyHasValue(_Forms._FormAssociation.metaClass, metaClass)
-                     .WhenPropertyHasValue(_Forms._FormAssociation.formType,
-                         _Forms.___FormType.Row)
+                     .WhenMetaClassIs(_Forms.TheOne.FormTypes.__FormAssociation)
+                     .WhenPropertyHasValue(_Forms._FormTypes._FormAssociation.metaClass, metaClass)
+                     .WhenPropertyHasValue(_Forms._FormTypes._FormAssociation.formType,
+                         _Forms._FormTypes.___FormType.Row)
                      .OfType<IElement>())
         {
             RemoveElement(viewExtent, foundElement);
@@ -321,9 +321,9 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     {
         var formAndFields = _Forms.TheOne;
         return form
-            .get<IReflectiveCollection>(_Forms._RowForm.field)
+            .get<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
             .OfType<IElement>()
-            .Any(x => x.getMetaClass()?.equals(formAndFields.__MetaClassElementFieldData) ?? false);
+            .Any(x => x.getMetaClass()?.equals(formAndFields.FieldTypes.__MetaClassElementFieldData) ?? false);
     }
 
     /// <summary>
@@ -335,7 +335,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     {
         return fields
             .OfType<IElement>()
-            .Any(x => x.getMetaClass()?.equals(_Forms.TheOne.__MetaClassElementFieldData) ?? false);
+            .Any(x => x.getMetaClass()?.equals(_Forms.TheOne.FieldTypes.__MetaClassElementFieldData) ?? false);
     }
 
     /// <summary>
@@ -347,14 +347,14 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// <returns>The found element or null, if not found</returns>
     public static IElement? GetField(IElement form, string fieldName, IElement? metaClass = null)
     {
-        if (_Forms._RowForm.field != _Forms._TableForm.field)
+        if (_Forms._FormTypes._RowForm.field != _Forms._FormTypes._TableForm.field)
             throw new InvalidOperationException(
                 "Something ugly happened here: _FormAndFields._DetailForm.tab != _FormAndFields._ListForm.tab." +
                 "Please check static type definition");
 
-        var fields = form.get<IReflectiveCollection>(_Forms._RowForm.field);
+        var fields = form.get<IReflectiveCollection>(_Forms._FormTypes._RowForm.field);
         return fields
-            .WhenPropertyHasValue(_Forms._FieldData.name, fieldName)
+            .WhenPropertyHasValue(_Forms._FieldTypes._FieldData.name, fieldName)
             .OfType<IElement>()
             .FirstOrDefault(x => metaClass == null || x.metaclass?.equals(metaClass) == true);
     }
@@ -366,14 +366,14 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// <returns>Enumeration of the detail forms</returns>
     public static IEnumerable<IElement> GetRowForms(IElement form)
     {
-        if (form.getMetaClass()?.@equals(_Forms.TheOne.__RowForm) == true)
+        if (form.getMetaClass()?.@equals(_Forms.TheOne.FormTypes.__RowForm) == true)
         {
             yield return form;
         }
 
-        foreach (var tab in form.get<IReflectiveCollection>(_Forms._CollectionForm.tab))
+        foreach (var tab in form.get<IReflectiveCollection>(_Forms._FormTypes._CollectionForm.tab))
             if (tab is IElement asElement
-                && asElement.getMetaClass()?.@equals(_Forms.TheOne.__RowForm) == true)
+                && asElement.getMetaClass()?.@equals(_Forms.TheOne.FormTypes.__RowForm) == true)
                 yield return asElement;
     }
 
@@ -385,14 +385,14 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// <returns>Enumeration of the detail forms</returns>
     public static IEnumerable<IElement> GetTableForms(IElement form)
     {
-        if (form.getMetaClass()?.@equals(_Forms.TheOne.__TableForm) == true)
+        if (form.getMetaClass()?.@equals(_Forms.TheOne.FormTypes.__TableForm) == true)
         {
             yield return form;
         }
 
-        foreach (var tab in form.get<IReflectiveCollection>(_Forms._CollectionForm.tab))
+        foreach (var tab in form.get<IReflectiveCollection>(_Forms._FormTypes._CollectionForm.tab))
             if (tab is IElement asElement
-                && asElement.getMetaClass()?.@equals(_Forms.TheOne.__TableForm) == true)
+                && asElement.getMetaClass()?.@equals(_Forms.TheOne.FormTypes.__TableForm) == true)
                 yield return asElement;
     }
 
@@ -405,18 +405,18 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// <returns>The found element or null, if not found</returns>
     public static IElement? GetFieldForProperty(IElement form, string propertyName)
     {
-        if (form.getMetaClass()?.@equals(_Forms.TheOne.__ObjectForm) == true
-            || form.getMetaClass()?.@equals(_Forms.TheOne.__CollectionForm) == true)
+        if (form.getMetaClass()?.@equals(_Forms.TheOne.FormTypes.__ObjectForm) == true
+            || form.getMetaClass()?.@equals(_Forms.TheOne.FormTypes.__CollectionForm) == true)
         {
             throw new InvalidOperationException(
                 "The form is of instance Object or Collection Form. It must be Table or RowForm");
         }
 
         foreach (var field
-                 in form.get<IReflectiveCollection>(_Forms._RowForm.field))
+                 in form.get<IReflectiveCollection>(_Forms._FormTypes._RowForm.field))
         {
             if (field is IElement asFieldElement
-                && asFieldElement.getOrDefault<string>(_Forms._FieldData.name) == propertyName)
+                && asFieldElement.getOrDefault<string>(_Forms._FieldTypes._FieldData.name) == propertyName)
             {
                 return asFieldElement;
             }
@@ -433,17 +433,17 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// <returns>The found element</returns>
     public static IElement? GetTableFormForPropertyName(IElement form, string propertyName)
     {
-        if (_Forms._CollectionForm.tab != _Forms._ObjectForm.tab)
+        if (_Forms._FormTypes._CollectionForm.tab != _Forms._FormTypes._ObjectForm.tab)
             throw new InvalidOperationException(
                 "Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
 
-        var tabs = form.get<IReflectiveCollection>(_Forms._CollectionForm.tab);
+        var tabs = form.get<IReflectiveCollection>(_Forms._FormTypes._CollectionForm.tab);
 
         foreach (var tab in tabs.OfType<IElement>())
             if (ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(),
-                    _Forms.TheOne.__TableForm))
+                    _Forms.TheOne.FormTypes.__TableForm))
             {
-                var property = tab.getOrDefault<string>(_Forms._TableForm.property);
+                var property = tab.getOrDefault<string>(_Forms._FormTypes._TableForm.property);
                 if (property == propertyName) return tab;
             }
 
@@ -471,9 +471,9 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     public static IElement CreateObjectFormFromTabs(IFactory? factory, params IElement[] tabsAsForms)
     {
         factory ??= new MofFactory(tabsAsForms.First());
-        var result = factory.create(_Forms.TheOne.__ObjectForm);
-        result.set(_Forms._RowForm.isAutoGenerated, true);
-        result.set(_Forms._CollectionForm.tab, tabsAsForms);
+        var result = factory.create(_Forms.TheOne.FormTypes.__ObjectForm);
+        result.set(_Forms._FormTypes._RowForm.isAutoGenerated, true);
+        result.set(_Forms._FormTypes._CollectionForm.tab, tabsAsForms);
         return result;
     }
 
@@ -488,21 +488,21 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// <param name="form">Form to be evaluated</param>
     /// <param name="formType">Type of the form which is requested</param>
     /// <returns>The converted form</returns>
-    public static IElement ConvertFormToObjectOrCollectionForm(IElement form, _Forms.___FormType formType)
+    public static IElement ConvertFormToObjectOrCollectionForm(IElement form, _Forms._FormTypes.___FormType formType)
     {
         var metaClass = form.metaclass;
-        if (formType == _Forms.___FormType.Collection
-            && (metaClass?.equals(_Forms.TheOne.__RowForm) == true ||
-                metaClass?.equals(_Forms.TheOne.__TableForm) == true))
+        if (formType == _Forms._FormTypes.___FormType.Collection
+            && (metaClass?.equals(_Forms.TheOne.FormTypes.__RowForm) == true ||
+                metaClass?.equals(_Forms.TheOne.FormTypes.__TableForm) == true))
         {
             var converted = CollectionFormHelper.CreateCollectionFormFromTabs(form);
-            converted.set(_Forms._Form.originalUri, form.GetUri());
+            converted.set(_Forms._FormTypes._Form.originalUri, form.GetUri());
             
             var workspace = form.GetExtentOf()?.GetWorkspace();
             if(workspace != null)
             {
                 converted.set(
-                    _Forms._Form.originalWorkspace,
+                    _Forms._FormTypes._Form.originalWorkspace,
                     workspace.id);
             }
 
@@ -513,17 +513,17 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
             return converted;
         }
 
-        if (formType == _Forms.___FormType.Object
-            && (metaClass?.equals(_Forms.TheOne.__RowForm) == true ||
-                metaClass?.equals(_Forms.TheOne.__TableForm) == true))
+        if (formType == _Forms._FormTypes.___FormType.Object
+            && (metaClass?.equals(_Forms.TheOne.FormTypes.__RowForm) == true ||
+                metaClass?.equals(_Forms.TheOne.FormTypes.__TableForm) == true))
         {
             var converted = FormMethods.GetObjectFormForSubforms(form);
-            converted.set(_Forms._Form.originalUri, form.GetUri());
+            converted.set(_Forms._FormTypes._Form.originalUri, form.GetUri());
             var objectWorkspace = form.GetExtentOf()?.GetWorkspace();
             if (objectWorkspace != null)
             {
                 converted.set(
-                    _Forms._Form.originalWorkspace,
+                    _Forms._FormTypes._Form.originalWorkspace,
                     objectWorkspace.id);
             }
 
@@ -558,21 +558,21 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
 
         // Sets the original ori and workspace, so the client can reference to the original uri
         var originalUrl =
-            form.isSet(_Forms._Form.originalUri)
-                ? form.get<string>(_Forms._Form.originalUri)
+            form.isSet(_Forms._FormTypes._Form.originalUri)
+                ? form.get<string>(_Forms._FormTypes._Form.originalUri)
                 : form.GetUri();
         if (originalUrl != null)
         {
-            form.set(_Forms._Form.originalUri, originalUrl);
+            form.set(_Forms._FormTypes._Form.originalUri, originalUrl);
         }
 
         var originalWorkspace =
-            form.isSet(_Forms._Form.originalWorkspace)
-                ? form.get<string>(_Forms._Form.originalWorkspace)
+            form.isSet(_Forms._FormTypes._Form.originalWorkspace)
+                ? form.get<string>(_Forms._FormTypes._Form.originalWorkspace)
                 : form.GetExtentOf()?.GetWorkspace()?.id;
         if (originalWorkspace != null)
         {
-            form.set(_Forms._Form.originalWorkspace, originalWorkspace);
+            form.set(_Forms._FormTypes._Form.originalWorkspace, originalWorkspace);
         }
         
         // Performs the cloning
@@ -589,7 +589,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
 
         // If form also contains a metaclass, then the metaclass needs to be added
         var tableFormMetaClass =
-            tableForm.getOrDefault<IElement>(_Forms._TableForm.metaClass);
+            tableForm.getOrDefault<IElement>(_Forms._FormTypes._TableForm.metaClass);
         var metaClassUri = tableFormMetaClass != null
             ? tableFormMetaClass.GetUri()
             : null;
@@ -609,20 +609,20 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// <param name="collectionOrObjectForm">extentForm to be evaluated</param>
     public static IElement GetOrCreateRowFormIntoForm(IElement collectionOrObjectForm)
     {
-        var tabs = collectionOrObjectForm.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab);
+        var tabs = collectionOrObjectForm.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._CollectionForm.tab);
 
         foreach (var tab in tabs.OfType<IElement>())
         {
             if (ClassifierMethods.IsSpecializedClassifierOf(
                     tab.getMetaClass(),
-                    _Forms.TheOne.__RowForm))
+                    _Forms.TheOne.FormTypes.__RowForm))
             {
                 return tab;
             }
         }
 
         // Create new one
-        var newTab = new MofFactory(collectionOrObjectForm).create(_Forms.TheOne.__RowForm);
+        var newTab = new MofFactory(collectionOrObjectForm).create(_Forms.TheOne.FormTypes.__RowForm);
         tabs.add(newTab);
         return newTab;
     }

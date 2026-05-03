@@ -27,8 +27,8 @@ public static class CollectionFormHelper
     public static IElement CreateCollectionFormFromTabs(IFactory? factory, params IElement[] tabsAsForms)
     {
         factory ??= new MofFactory(tabsAsForms.First());
-        var result = factory.create(_Forms.TheOne.__CollectionForm);
-        result.set(_Forms._CollectionForm.tab, tabsAsForms);
+        var result = factory.create(_Forms.TheOne.FormTypes.__CollectionForm);
+        result.set(_Forms._FormTypes._CollectionForm.tab, tabsAsForms);
         return result;
     }
 }

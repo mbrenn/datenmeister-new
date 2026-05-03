@@ -44,7 +44,7 @@ public static class FormCreation
         if (result.IsMainContentCreated)
         {
             var tabs = result.Form
-                ?.getOrDefault<IReflectiveCollection>(_Forms._ObjectForm.tab).OfType<IElement>()
+                ?.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._ObjectForm.tab).OfType<IElement>()
                 ?? throw new InvalidOperationException("Form is null");
             foreach (var tab in tabs)
             {
@@ -57,7 +57,7 @@ public static class FormCreation
                     IsMainContentCreated = true
                 };
                 
-                if (tab.getMetaClass()?.equals(_Forms.TheOne.__RowForm) == true)
+                if (tab.getMetaClass()?.equals(_Forms.TheOne.FormTypes.__RowForm) == true)
                 {
                     var innerParameter = new RowFormFactoryParameter
                     {
@@ -69,13 +69,13 @@ public static class FormCreation
                     CreateRowForm(innerParameter, innerContext, innerResult);
                 }
                 else 
-                if (tab.getMetaClass()?.equals(_Forms.TheOne.__TableForm) == true)
+                if (tab.getMetaClass()?.equals(_Forms.TheOne.FormTypes.__TableForm) == true)
                 {
                     var innerParameter = new TableFormFactoryParameter
                     {
                         Extent = parameter.Extent,
                         ExtentTypes = parameter.ExtentTypes,
-                        MetaClass = tab.getOrDefault<IElement>(_Forms._TableForm.metaClass),
+                        MetaClass = tab.getOrDefault<IElement>(_Forms._FormTypes._TableForm.metaClass),
                         ParentMetaClass = parameter.MetaClass
                     };
 
@@ -116,7 +116,7 @@ public static class FormCreation
         if (result.IsMainContentCreated)
         {
             var tabs = result.Form
-                ?.getOrDefault<IReflectiveCollection>(_Forms._ObjectForm.tab).OfType<IElement>()
+                ?.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._ObjectForm.tab).OfType<IElement>()
                 ?? throw new InvalidOperationException("Form is null");
             
             foreach (var tab in tabs)
@@ -130,7 +130,7 @@ public static class FormCreation
                     IsMainContentCreated = true
                 };
                 
-                if (tab.getMetaClass()?.equals(_Forms.TheOne.__RowForm) == true)
+                if (tab.getMetaClass()?.equals(_Forms.TheOne.FormTypes.__RowForm) == true)
                 {
                     var innerParameter = new RowFormFactoryParameter
                     {
@@ -143,13 +143,13 @@ public static class FormCreation
                     CreateRowForm(innerParameter, innerContext, innerResult);
                 }
                 else 
-                if (tab.getMetaClass()?.equals(_Forms.TheOne.__TableForm) == true)
+                if (tab.getMetaClass()?.equals(_Forms.TheOne.FormTypes.__TableForm) == true)
                 {
                     var innerParameter = new TableFormFactoryParameter
                     {
                         Extent = parameter.Extent,
                         ExtentTypes = parameter.ExtentTypes,
-                        MetaClass = tab.getOrDefault<IElement>(_Forms._TableForm.metaClass)
+                        MetaClass = tab.getOrDefault<IElement>(_Forms._FormTypes._TableForm.metaClass)
                     };
 
                     CreateTableForm(innerParameter, innerContext, innerResult);

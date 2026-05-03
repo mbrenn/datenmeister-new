@@ -97,7 +97,7 @@ export class RowForm {
             const fieldMetaClassUri = field.metaClass?.uri ?? "Undefined metaclass";
             let fieldElement = null; // The instance if IFormField allowing to create the dom
             let htmlElement; // The dom that had been created...
-            const isFieldReadOnly = field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean)
+            const isFieldReadOnly = field.get(_DatenMeister._Forms._FieldTypes._FieldData.isReadOnly, Mof.ObjectType.Boolean)
                 || configuration.isReadOnly;
             // Creates the field to be shown 
             fieldElement = createField(fieldMetaClassUri, {
@@ -122,9 +122,9 @@ export class RowForm {
             const checkbox = $(".checkbox_isset", tr);
             // Creates the key column content
             if (!singleColumn) {
-                let name = field.get(_DatenMeister._Forms._FieldData.title);
+                let name = field.get(_DatenMeister._Forms._FieldTypes._FieldData.title);
                 if (name === undefined || name === null || name === "") {
-                    name = field.get(_DatenMeister._Forms._FieldData.name);
+                    name = field.get(_DatenMeister._Forms._FieldTypes._FieldData.name);
                 }
                 if (isFieldReadOnly) {
                     // name += " [R]";
@@ -157,7 +157,7 @@ export class RowForm {
                         // And finally adds it            
                         $(".value", trInner).append(x);
                         innerFieldInForm.checkbox.prop("disabled", isFieldReadOnly);
-                        const propertyName = innerFieldInForm.field.get(_DatenMeister._Forms._FieldData._name_, Mof.ObjectType.String);
+                        const propertyName = innerFieldInForm.field.get(_DatenMeister._Forms._FieldTypes._FieldData._name_, Mof.ObjectType.String);
                         const showValue = innerFieldInForm.fieldElement.showValue === undefined
                             || innerFieldInForm.fieldElement.showValue();
                         if (propertyName === undefined || propertyName === null || propertyName === "" || !showValue) {
@@ -329,10 +329,10 @@ export class RowForm {
                 const fieldInForm = this.fieldElements[m];
                 let managed = false;
                 // Just take the fields which are not readonly
-                if (fieldInForm.field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
+                if (fieldInForm.field.get(_DatenMeister._Forms._FieldTypes._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
                     // Unsets the field in case the checkbox is not set
                     if (fieldInForm.getCheckboxState() === false) {
-                        this.element.unset(fieldInForm.field.get(_DatenMeister._Forms._FieldData._name_, Mof.ObjectType.String));
+                        this.element.unset(fieldInForm.field.get(_DatenMeister._Forms._FieldTypes._FieldData._name_, Mof.ObjectType.String));
                         managed = true;
                     }
                     if (!managed) {

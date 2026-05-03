@@ -7,15 +7,15 @@ import TableForm from "./TableForm.js";
 export function loadDefaultForms()
 {
     FormFactory.registerObjectForm(
-        _DatenMeister._Forms.__RowForm_Uri,
+        _DatenMeister._Forms._FormTypes.__RowForm_Uri,
         () => new RowForm());
     
     FormFactory.registerObjectForm(
-        _DatenMeister._Forms.__TableForm_Uri,
+        _DatenMeister._Forms._FormTypes.__TableForm_Uri,
         () => new TableForm());
     
     FormFactory.registerCollectionForm(
-        _DatenMeister._Forms.__TableForm_Uri,
+        _DatenMeister._Forms._FormTypes.__TableForm_Uri,
         () => {
             const result = new TableForm();
             result.tableParameter.allowSortingOfColumn = true;

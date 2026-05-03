@@ -69,7 +69,7 @@ public class PackageFormModificationPlugin : FormFactoryBase, IObjectFormFactory
             if (tabPackagedElement != null)
             {
                 var defaultTypes =
-                    tabPackagedElement.get<IReflectiveCollection>(_Forms._TableForm
+                    tabPackagedElement.get<IReflectiveCollection>(_Forms._FormTypes._TableForm
                         .defaultTypesForNewElements);
 
                 // Checks the preferred types

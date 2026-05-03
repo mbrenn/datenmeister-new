@@ -34,7 +34,7 @@ public class ActionFormTests
             }.GetWrappedElement()
             )).Extent ?? throw new InvalidOperationException("Extent was null");
         
-        var form = InMemoryObject.CreateEmpty(_Forms.TheOne.__Form);
+        var form = InMemoryObject.CreateEmpty(_Forms.TheOne.FormTypes.__Form);
         inMemoryExtent.elements().add(form);
         var actionDirect = InMemoryObject.CreateEmpty(_Actions.TheOne.__Action);
         inMemoryExtent.elements().add(actionDirect);

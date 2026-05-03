@@ -80,20 +80,20 @@ public static class ControlFactory
         }
 
         var isEnumeration =
-            field.getOrDefault<bool>(_Forms._FieldData.isEnumeration);
+            field.getOrDefault<bool>(_Forms._FieldTypes._FieldData.isEnumeration);
 
         // Checks, if the value is an action field
-        if (field.GetMetaClassWithoutTracing()?.equals(_Forms.TheOne.__ActionFieldData) == true)
+        if (field.GetMetaClassWithoutTracing()?.equals(_Forms.TheOne.FieldTypes.__ActionFieldData) == true)
         {
             var id = HtmlElement.GetRandomId();
             var button = new HtmlButtonElement(
-                field.getOrDefault<string>(_Forms._ActionFieldData.title))
+                field.getOrDefault<string>(_Forms._FieldTypes._ActionFieldData.title))
             {
                 Id = id,
                 CssClass = "btn btn-secondary"
             };
 
-            var actionType = field.getOrDefault<string>(_Forms._ActionFieldData.actionName);
+            var actionType = field.getOrDefault<string>(_Forms._FieldTypes._ActionFieldData.actionName);
             var itemAsElement = item as IElement;
             if (actionType == ExtentFormPlugin.NavigationExtentNavigateTo && itemAsElement is not null)
             {
@@ -258,19 +258,19 @@ public static class ControlFactory
     public static object? GetValueOfElement(IObject element, IElement field)
     {
         var fieldMetaClass = field.getMetaClass();
-        if (fieldMetaClass?.equals(_Forms.TheOne.__MetaClassElementFieldData) == true)
+        if (fieldMetaClass?.equals(_Forms.TheOne.FieldTypes.__MetaClassElementFieldData) == true)
         {
             return (element as MofElement)?.getMetaClass(false);
         }
 
-        var name = field.getOrDefault<string>(_Forms._FieldData.name);
-        if (fieldMetaClass?.equals(_Forms.TheOne.__EvalTextFieldData) == true)
+        var name = field.getOrDefault<string>(_Forms._FieldTypes._FieldData.name);
+        if (fieldMetaClass?.equals(_Forms.TheOne.FieldTypes.__EvalTextFieldData) == true)
         {
             var cellInformation = InMemoryObject.CreateEmpty();
             var defaultText = !string.IsNullOrEmpty(name) ? element.getOrDefault<string>(name) : string.Empty;
             cellInformation.set("text", defaultText);
 
-            var evalProperties = field.getOrDefault<string>(_Forms._EvalTextFieldData.evalCellProperties);
+            var evalProperties = field.getOrDefault<string>(_Forms._FieldTypes._EvalTextFieldData.evalCellProperties);
             if (!string.IsNullOrEmpty(evalProperties))
             {
                 defaultText = TextTemplateEngine.Parse(

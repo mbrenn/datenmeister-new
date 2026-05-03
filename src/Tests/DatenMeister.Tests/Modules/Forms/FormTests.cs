@@ -29,15 +29,15 @@ public class FormTests
             
         formContext.AddToFormCreationProtocol("test");
         Assert.That(
-            element.getOrDefault<string>(_Forms._Form.creationProtocol)?.Contains("test") == true,
+            element.getOrDefault<string>(_Forms._FormTypes._Form.creationProtocol)?.Contains("test") == true,
             Is.True);
             
         formContext.AddToFormCreationProtocol("hallo");
         Assert.That(
-            element.getOrDefault<string>(_Forms._Form.creationProtocol)?.Contains("test") == true,
+            element.getOrDefault<string>(_Forms._FormTypes._Form.creationProtocol)?.Contains("test") == true,
             Is.True);
         Assert.That(
-            element.getOrDefault<string>(_Forms._Form.creationProtocol)?.Contains("hallo") == true,
+            element.getOrDefault<string>(_Forms._FormTypes._Form.creationProtocol)?.Contains("hallo") == true,
             Is.True);
     }
     
@@ -52,15 +52,15 @@ public class FormTests
             
         formContext.AddToFormCreationProtocol("test");
         Assert.That(
-            element.getOrDefault<string>(_Forms._Form.creationProtocol)?.Contains("test") == true,
+            element.getOrDefault<string>(_Forms._FormTypes._Form.creationProtocol)?.Contains("test") == true,
             Is.True);
             
         formContext.AddToFormCreationProtocol("hallo");
         Assert.That(
-            element.getOrDefault<string>(_Forms._Form.creationProtocol)?.Contains("test") == true,
+            element.getOrDefault<string>(_Forms._FormTypes._Form.creationProtocol)?.Contains("test") == true,
             Is.True);
         Assert.That(
-            element.getOrDefault<string>(_Forms._Form.creationProtocol)?.Contains("hallo") == true,
+            element.getOrDefault<string>(_Forms._FormTypes._Form.creationProtocol)?.Contains("hallo") == true,
             Is.True);
     }
         
@@ -83,20 +83,20 @@ public class FormTests
         var validateTableOrRowForm = new ValidateTableOrRowForm();
         var validateObjectOrCollectionForm = new ValidateObjectOrCollectionForm();
 
-        var form = factory.create(_Forms.TheOne.__RowForm);
+        var form = factory.create(_Forms.TheOne.FormTypes.__RowForm);
 
-        var field1 = factory.create(_Forms.TheOne.__FieldData);
+        var field1 = factory.create(_Forms.TheOne.FieldTypes.__FieldData);
         field1.set("name", "A");
-        var field2 = factory.create(_Forms.TheOne.__FieldData);
+        var field2 = factory.create(_Forms.TheOne.FieldTypes.__FieldData);
         field2.set("name", "B");
-        var field3 = factory.create(_Forms.TheOne.__FieldData);
+        var field3 = factory.create(_Forms.TheOne.FieldTypes.__FieldData);
         field3.set("name", "C");
-        var field4 = factory.create(_Forms.TheOne.__FieldData);
+        var field4 = factory.create(_Forms.TheOne.FieldTypes.__FieldData);
         field4.set("name", "D");
-        var field5 = factory.create(_Forms.TheOne.__FieldData);
+        var field5 = factory.create(_Forms.TheOne.FieldTypes.__FieldData);
         field5.set("name", "A");
 
-        form.set(_Forms._RowForm.field, new[] {field1, field2, field3, field4});
+        form.set(_Forms._FormTypes._RowForm.field, new[] {field1, field2, field3, field4});
 
         var result = new FormCreationResultMultipleForms
         {
@@ -109,7 +109,7 @@ public class FormTests
         Assert.That(context.LocalScopeStorage.Get<ValidationResult>().IsInvalid, Is.False);
         context.LocalScopeStorage.Remove<ValidationResult>();
 
-        form.set(_Forms._RowForm.field, new[] {field1, field2, field3, field4, field5});
+        form.set(_Forms._FormTypes._RowForm.field, new[] {field1, field2, field3, field4, field5});
         
         validateTableOrRowForm.CreateTableForm(new TableFormFactoryParameter(), context, result);
         Assert.That(context.LocalScopeStorage.Get<ValidationResult>().IsInvalid, Is.True);
@@ -121,14 +121,14 @@ public class FormTests
             IsMainContentCreated = true
         };
         
-        var newForm = factory.create(_Forms.TheOne.__CollectionForm);
-        newForm.set(_Forms._CollectionForm.tab, new[] {form});
+        var newForm = factory.create(_Forms.TheOne.FormTypes.__CollectionForm);
+        newForm.set(_Forms._FormTypes._CollectionForm.tab, new[] {form});
         resultSingle.Form = newForm;
         validateObjectOrCollectionForm.CreateCollectionForm(new CollectionFormFactoryParameter(), context, resultSingle);
         Assert.That(context.LocalScopeStorage.Get<ValidationResult>().IsInvalid, Is.True);
         context.LocalScopeStorage.Remove<ValidationResult>();
 
-        form.set(_Forms._RowForm.field, new[] {field1, field2, field3, field4});
+        form.set(_Forms._FormTypes._RowForm.field, new[] {field1, field2, field3, field4});
         
         validateObjectOrCollectionForm.CreateCollectionForm(new CollectionFormFactoryParameter(), context, resultSingle);
         Assert.That(context.LocalScopeStorage.Get<ValidationResult>().IsInvalid, Is.False);
@@ -148,17 +148,17 @@ public class FormTests
         var extent = XmiExtensions.CreateXmiExtent("dm:///test", scope.ScopeStorage);
         var factory = new MofFactory(extent);
 
-        var form = factory.create(_Forms.TheOne.__RowForm);
-        var field1 = factory.create(_Forms.TheOne.__DropDownFieldData);
+        var form = factory.create(_Forms.TheOne.FormTypes.__RowForm);
+        var field1 = factory.create(_Forms.TheOne.FieldTypes.__DropDownFieldData);
 
         Assert.That(comparisonType, Is.Not.Null);
 
-        field1.set(_Forms._DropDownFieldData.valuesByEnumeration,
+        field1.set(_Forms._FieldTypes._DropDownFieldData.valuesByEnumeration,
             comparisonType);
-        form.set(_Forms._RowForm.field, new[] {field1});
+        form.set(_Forms._FormTypes._RowForm.field, new[] {field1});
 
         var valuesBefore =
-            field1.getOrDefault<IReflectiveCollection>(_Forms._DropDownFieldData.values);
+            field1.getOrDefault<IReflectiveCollection>(_Forms._FieldTypes._DropDownFieldData.values);
         Assert.That(valuesBefore, Is.Null);
         
         var context = new FormCreationContext
@@ -179,12 +179,12 @@ public class FormTests
         var expand = new ExpandDropDownOfValueReference();
         expand.CreateRowForm(new RowFormFactoryParameter(), context, result);
 
-        var values = field1.getOrDefault<IReflectiveCollection>(_Forms._DropDownFieldData.values);
+        var values = field1.getOrDefault<IReflectiveCollection>(_Forms._FieldTypes._DropDownFieldData.values);
         Assert.That(values, Is.Not.Null);
 
         Assert.That(values.OfType<IElement>().Any(
             x =>
-                x.getOrDefault<string>(_Forms._ValuePair.name) ==
+                x.getOrDefault<string>(_Forms._FieldTypes._ValuePair.name) ==
                 _FastViewFilters._ComparisonType.GreaterThan));
     }
 
@@ -194,7 +194,7 @@ public class FormTests
         var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
         var factory = new MofFactory(extent);
 
-        var form = factory.create(_Forms.TheOne.__TableForm);
+        var form = factory.create(_Forms.TheOne.FormTypes.__TableForm);
         var defaultNewType1 = factory.create(_Forms.TheOne.__DefaultTypeForNewElement);
         defaultNewType1.set(_Forms._DefaultTypeForNewElement.metaClass, _Actions.TheOne.__Action);
         var defaultNewType2 = factory.create(_Forms.TheOne.__DefaultTypeForNewElement);
@@ -206,10 +206,10 @@ public class FormTests
         var defaultNewType5 = factory.create(_Forms.TheOne.__DefaultTypeForNewElement);
         defaultNewType5.set(_Forms._DefaultTypeForNewElement.metaClass, _Actions.TheOne.__ClearCollectionAction);
             
-        form.set(_Forms._TableForm.defaultTypesForNewElements, 
+        form.set(_Forms._FormTypes._TableForm.defaultTypesForNewElements, 
             new[]{defaultNewType1, defaultNewType2, defaultNewType3, defaultNewType4, defaultNewType5});
 
-        var fields = form.getOrDefault<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
+        var fields = form.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._TableForm.defaultTypesForNewElements);
         Assert.That(fields.Count(), Is.EqualTo(5));
 
         var context = new FormCreationContext
@@ -234,7 +234,7 @@ public class FormTests
             context,
             result);
         
-        var fields2 = form.getOrDefault<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements).OfType<IObject>()
+        var fields2 = form.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._TableForm.defaultTypesForNewElements).OfType<IObject>()
             .Select(x=>x.getOrDefault<IObject>(_Forms._DefaultTypeForNewElement.metaClass))
             .ToList();
         Assert.That(fields2.Count, Is.EqualTo(3));

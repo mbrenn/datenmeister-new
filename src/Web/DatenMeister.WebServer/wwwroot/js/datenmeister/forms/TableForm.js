@@ -7,7 +7,7 @@ import * as burnJsPopup from "../../burnJsPopup.js";
 import * as ClientItem from "../client/Items.js";
 import * as ContextMenu from "./TableForm.ContextMenus.js";
 import { TableState } from "./TableState.js";
-var _FieldData = _DatenMeister._Forms._FieldData;
+var _FieldData = _DatenMeister._Forms._FieldTypes._FieldData;
 import { debugElementToDom } from "../DomHelper.js";
 export class TableFormParameter {
     shortenFullText = true;
@@ -125,7 +125,7 @@ class TableForm {
             this.tableParameter.allowSortingOfColumn = false;
             this.tableParameter.allowFilteringOnProperty = false;
             // Loads the properties as a whole
-            const property = this.formElement.get(_DatenMeister._Forms._TableForm.property, Mof.ObjectType.String);
+            const property = this.formElement.get(_DatenMeister._Forms._FormTypes._TableForm.property, Mof.ObjectType.String);
             const result = await ClientItem.getProperty(tthis.workspace, tthis.itemUrl, property);
             if (Array.isArray(result)) {
                 return result;
@@ -235,7 +235,7 @@ class TableForm {
     createButtonsForNewInstance() {
         const property = this.formElement.get('property');
         const tthis = this;
-        if (this.formElement.get(_DatenMeister._Forms._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean) !== true) {
+        if (this.formElement.get(_DatenMeister._Forms._FormTypes._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean) !== true) {
             // Creates default unclassified button
             createUnclassifiedButton();
         }
@@ -531,8 +531,8 @@ class TableForm {
     async createPropertyMenuItems(field) {
         let result = [];
         if (field.metaClass !== undefined && field.metaClass !== null &&
-            field.metaClass.uri !== _DatenMeister._Forms.__ActionFieldData_Uri
-            && field.metaClass.uri !== _DatenMeister._Forms.__MetaClassElementFieldData_Uri) {
+            field.metaClass.uri !== _DatenMeister._Forms._FieldTypes.__ActionFieldData_Uri
+            && field.metaClass.uri !== _DatenMeister._Forms._FieldTypes.__MetaClassElementFieldData_Uri) {
             result.push(ContextMenu.createFunctionToRemoveAllProperties(field));
             if (this.tableParameter.allowFilteringOnProperty) {
                 result.push(ContextMenu.createFunctionToFilterInProperty(this, field));

@@ -11,7 +11,7 @@ public class EmptyRowFormFactory : FormFactoryBase, IRowFormFactory
     {
         if (!result.Forms.Any())
         {
-            result.Forms.Add(context.Global.FactoryForForms.create(_Forms.TheOne.__RowForm));
+            result.Forms.Add(context.Global.FactoryForForms.create(_Forms.TheOne.FormTypes.__RowForm));
             result.IsManaged = true;
             result.AddToFormCreationProtocol(
                 "[EmptyRowFormFactory] Empty object Row-Form created");

@@ -31,9 +31,9 @@ public class ValidateObjectOrCollectionForm : FormFactoryBase, IObjectFormFactor
 
         var form = result.Form ?? throw new InvalidOperationException("Form is null");
 
-        Debug.Assert(_Forms._CollectionForm.tab == _Forms._ObjectForm.tab);
+        Debug.Assert(_Forms._FormTypes._CollectionForm.tab == _Forms._FormTypes._ObjectForm.tab);
 
-        var tabs = form.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab);
+        var tabs = form.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._CollectionForm.tab);
         if (tabs != null)
         {       
             var clonedContext = context.Clone();
@@ -76,8 +76,8 @@ public class ValidateObjectOrCollectionForm : FormFactoryBase, IObjectFormFactor
         var set = new HashSet<string>();
         foreach (var field in fields.OfType<IObject>())
         {
-            var preName = field.getOrDefault<string>(_Forms._FieldData.name);
-            var isAttached = field.getOrDefault<bool>(_Forms._FieldData.isAttached);
+            var preName = field.getOrDefault<string>(_Forms._FieldTypes._FieldData.name);
+            var isAttached = field.getOrDefault<bool>(_Forms._FieldTypes._FieldData.isAttached);
             var name = isAttached ? randomGuid + preName : preName;
 
             if (set.Contains(name) && !string.IsNullOrEmpty(name))

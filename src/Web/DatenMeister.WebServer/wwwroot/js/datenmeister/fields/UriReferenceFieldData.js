@@ -1,7 +1,7 @@
 import * as Mof from "../Mof.js";
 import { BaseField } from "./Interfaces.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-var _UriReferenceFieldData = _DatenMeister._Forms._UriReferenceFieldData;
+var _UriReferenceFieldData = _DatenMeister._Forms._FieldTypes._UriReferenceFieldData;
 import * as SIC from "../controls/SelectItemControl.js";
 export class Field extends BaseField {
     _textBox;

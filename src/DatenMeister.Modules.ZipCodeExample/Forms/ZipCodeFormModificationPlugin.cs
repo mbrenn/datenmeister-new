@@ -24,11 +24,11 @@ public class ZipCodeFormModificationPlugin : FormFactoryBase, IRowFormFactory
         if (metaClass != null && metaClass.equals(_Management.TheOne.__Workspace) && form != null)
         {
             // Ok, I got it
-            var fields = form.get<IReflectiveSequence>(_Forms._RowForm.field);
-            var actionField = context.Global.Factory.create(_Forms.TheOne.__ActionFieldData);
-            actionField.set(_Forms._ActionFieldData.actionName, "ZipExample.CreateExample");
-            actionField.set(_Forms._ActionFieldData.title, "Create Zip Model");
-            actionField.set(_Forms._ActionFieldData.name, "CreateZipModel");
+            var fields = form.get<IReflectiveSequence>(_Forms._FormTypes._RowForm.field);
+            var actionField = context.Global.Factory.create(_Forms.TheOne.FieldTypes.__ActionFieldData);
+            actionField.set(_Forms._FieldTypes._ActionFieldData.actionName, "ZipExample.CreateExample");
+            actionField.set(_Forms._FieldTypes._ActionFieldData.title, "Create Zip Model");
+            actionField.set(_Forms._FieldTypes._ActionFieldData.name, "CreateZipModel");
             fields.add(actionField);
             result.IsManaged = true;
         }

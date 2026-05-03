@@ -47,27 +47,27 @@ public class TestAutoColumnCreator
                 Collection = extent.elements(),
             }, context).Form;
         Assert.That(result, Is.Not.Null);
-        var tab = result!.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab)
+        var tab = result!.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._CollectionForm.tab)
             .Select(x => x as IElement).FirstOrDefault();
         Assert.That(tab, Is.Not.Null);
         Assert.That(tab!
-            .getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
+            .getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
             .OfType<IElement>()
             .Count(x => x.getMetaClass()!.ToString()!.Contains("TextFieldData")), Is.EqualTo(2));
         var firstColumn = tab
-            .getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
+            .getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
             .OfType<IElement>()
-            .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldData.name) == "zip");
+            .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldTypes._FieldData.name) == "zip");
         var secondColumn =
             tab
-                .getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
+                .getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
                 .OfType<IElement>()
-                .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldData.name) == "location");
+                .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldTypes._FieldData.name) == "location");
 
         Assert.That(firstColumn, Is.Not.Null);
         Assert.That(secondColumn, Is.Not.Null);
 
-        Assert.That(firstColumn!.getOrDefault<bool>(_Forms._FieldData.isEnumeration), Is.False);
+        Assert.That(firstColumn!.getOrDefault<bool>(_Forms._FieldTypes._FieldData.isEnumeration), Is.False);
     }
 
     [Test]
@@ -111,19 +111,19 @@ public class TestAutoColumnCreator
         Assert.That(result, Is.Not.Null);
 
         var tab = result!
-            .getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab)
+            .getOrDefault<IReflectiveCollection>(_Forms._FormTypes._CollectionForm.tab)
             .Select(x => x as IElement).FirstOrDefault();
         
         Assert.That(tab, Is.Not.Null);
 
         Assert.That(tab!
-                .getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
+                .getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
                 .OfType<IElement>()
                 .Count(x => x.getMetaClass()?.ToString()?.Contains("TextFieldData") == true),
             Is.EqualTo(2));
 
         Assert.That(tab
-                .getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
+                .getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
                 .OfType<IElement>()
                 .Count(x => x.getMetaClass()?.ToString()?.Contains("SubElementFieldData") == true
                             || x.getMetaClass()?.ToString()?.Contains("ReferenceFieldData") == true),
@@ -131,24 +131,24 @@ public class TestAutoColumnCreator
 
 
         var firstColumn = tab
-            .getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
+            .getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
             .OfType<IElement>()
-            .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldData.name) == "zip");
+            .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldTypes._FieldData.name) == "zip");
         var secondColumn =
             tab
-                .getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
+                .getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
                 .OfType<IElement>()
-                .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldData.name) == "location");
+                .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldTypes._FieldData.name) == "location");
         var thirdColumn = tab
-            .getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
+            .getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
             .OfType<IElement>()
-            .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldData.name) == "other");
+            .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldTypes._FieldData.name) == "other");
 
         Assert.That(firstColumn, Is.Not.Null);
         Assert.That(secondColumn, Is.Not.Null);
         Assert.That(thirdColumn, Is.Not.Null);
 
-        Assert.That(firstColumn!.getOrDefault<bool>(_Forms._FieldData.isEnumeration), Is.False);
-        Assert.That(secondColumn!.getOrDefault<bool>(_Forms._FieldData.isEnumeration), Is.False);
+        Assert.That(firstColumn!.getOrDefault<bool>(_Forms._FieldTypes._FieldData.isEnumeration), Is.False);
+        Assert.That(secondColumn!.getOrDefault<bool>(_Forms._FieldTypes._FieldData.isEnumeration), Is.False);
     }
 }

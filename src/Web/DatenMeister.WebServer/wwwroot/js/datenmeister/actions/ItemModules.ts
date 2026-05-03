@@ -119,7 +119,7 @@ class ItemMoveDownItemAction extends FormActions.ItemFormActionModuleBase {
         await moveItemInCollectionDown(
             form.workspace,
             form.itemUrl,
-            form.formElement.get(_DatenMeister._Forms._TableForm.property),
+            form.formElement.get(_DatenMeister._Forms._FormTypes._TableForm.property),
             element.uri);
         document.location.reload();
     }
@@ -136,7 +136,7 @@ class ItemMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
         await moveItemInCollectionUp(
             form.workspace,
             form.itemUrl,
-            form.formElement.get(_DatenMeister._Forms._TableForm.property),
+            form.formElement.get(_DatenMeister._Forms._FormTypes._TableForm.property),
             element.uri);
         document.location.reload();
     }

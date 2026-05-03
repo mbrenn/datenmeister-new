@@ -30,12 +30,12 @@ public class ExtentTypeFormModification
                 throw new InvalidOperationException("Form is null");
             }
 
-            var fields = result.Form.get<IReflectiveCollection>(_Forms._CollectionForm.field);
+            var fields = result.Form.get<IReflectiveCollection>(_Forms._FormTypes._CollectionForm.field);
             var factory = new MofFactory(result.Form);
-            var field = factory.create(_Forms.TheOne.__ActionFieldData);
-            field.set(_Forms._ActionFieldData.name, "Go to Extent");
-            field.set(_Forms._ActionFieldData.title, "Go to Extent");
-            field.set(_Forms._ActionFieldData.actionName, "DatenMeister.Navigation.ToExtent");
+            var field = factory.create(_Forms.TheOne.FieldTypes.__ActionFieldData);
+            field.set(_Forms._FieldTypes._ActionFieldData.name, "Go to Extent");
+            field.set(_Forms._FieldTypes._ActionFieldData.title, "Go to Extent");
+            field.set(_Forms._FieldTypes._ActionFieldData.actionName, "DatenMeister.Navigation.ToExtent");
 
             fields.add(field);
             result.IsManaged = true;
@@ -64,12 +64,12 @@ public class ExtentTypeFormModification
                     FormMethods.GetField(
                         form,
                         _Management._Extent.extentType,
-                        _Forms.TheOne.__CheckboxListTaggingFieldData);
+                        _Forms.TheOne.FieldTypes.__CheckboxListTaggingFieldData);
 
                 if (field != null)
                 {
                     var values =
-                        field.get<IReflectiveCollection>(_Forms._CheckboxListTaggingFieldData.values);
+                        field.get<IReflectiveCollection>(_Forms._FieldTypes._CheckboxListTaggingFieldData.values);
                     var valuesAsList = values
                         .OfType<IElement>()
                         .ToList();
@@ -79,15 +79,15 @@ public class ExtentTypeFormModification
                     foreach (var extentType in extentTypes)
                     {
                         if (valuesAsList.Any(x =>
-                                x.getOrDefault<string>(_Forms._ValuePair.value) == extentType))
+                                x.getOrDefault<string>(_Forms._FieldTypes._ValuePair.value) == extentType))
                         {
                             // Already added, otherwise add the value pair
                             continue;
                         }
 
-                        var valuePair = factory.create(_Forms.TheOne.__ValuePair);
-                        valuePair.set(_Forms._ValuePair.name, extentType);
-                        valuePair.set(_Forms._ValuePair.value, extentType);
+                        var valuePair = factory.create(_Forms.TheOne.FieldTypes.__ValuePair);
+                        valuePair.set(_Forms._FieldTypes._ValuePair.name, extentType);
+                        valuePair.set(_Forms._FieldTypes._ValuePair.value, extentType);
                         values.add(valuePair);
                     }
 
@@ -138,7 +138,7 @@ public class ExtentTypeFormModification
             // First, figure out which list forms we are having...
             foreach (var listForm in tableForms)
             {
-                var metaClass = listForm.getOrDefault<IElement>(_Forms._TableForm.metaClass);
+                var metaClass = listForm.getOrDefault<IElement>(_Forms._FormTypes._TableForm.metaClass);
                 foundListMetaClasses.Add(metaClass);
             }
 
@@ -146,7 +146,7 @@ public class ExtentTypeFormModification
             foreach (var listForm in tableForms)
             {
                 // Selects only the listform which do not have a classifier
-                if (listForm.getOrDefault<IElement?>(_Forms._TableForm.metaClass) != null)
+                if (listForm.getOrDefault<IElement?>(_Forms._FormTypes._TableForm.metaClass) != null)
                 {
                     continue;
                 }
@@ -231,11 +231,11 @@ public class ExtentTypeFormModification
                 var foundFieldForPackagedElement = FormMethods.GetFieldForProperty(rowForm,
                     _CommonTypes._Default._Package.packagedElement);
                 if (
-                    foundFieldForPackagedElement?.metaclass?.equals(_Forms.TheOne.__SubElementFieldData) ==
+                    foundFieldForPackagedElement?.metaclass?.equals(_Forms.TheOne.FieldTypes.__SubElementFieldData) ==
                     true)
                 {
                     var defaultTypesForNewElements = foundFieldForPackagedElement.get<IReflectiveCollection>(
-                        _Forms._SubElementFieldData.defaultTypesForNewElements);
+                        _Forms._FieldTypes._SubElementFieldData.defaultTypesForNewElements);
                     // We found it, so add the stuff
 
                     foreach (var foundExtentType in foundExtentTypes)

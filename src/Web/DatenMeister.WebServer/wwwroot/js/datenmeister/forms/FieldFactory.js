@@ -23,16 +23,16 @@ export function registerField(metaClassFieldData, factoryMethod) {
 }
 export function canBeSorted(field) {
     const metaClassUri = field.metaClass?.uri;
-    if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri ||
-        metaClassUri === _DatenMeister._Forms.__DateTimeFieldData_Uri) {
+    if (metaClassUri === _DatenMeister._Forms._FieldTypes.__TextFieldData_Uri ||
+        metaClassUri === _DatenMeister._Forms._FieldTypes.__DateTimeFieldData_Uri) {
         return true;
     }
     return false;
 }
 export function canBeTextFiltered(field) {
     const metaClassUri = field.metaClass?.uri;
-    if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri ||
-        metaClassUri === _DatenMeister._Forms.__DateTimeFieldData_Uri) {
+    if (metaClassUri === _DatenMeister._Forms._FieldTypes.__TextFieldData_Uri ||
+        metaClassUri === _DatenMeister._Forms._FieldTypes.__DateTimeFieldData_Uri) {
         return true;
     }
     return false;
@@ -40,46 +40,46 @@ export function canBeTextFiltered(field) {
 export function createField(fieldMetaClassUri, parameter) {
     let result;
     switch (fieldMetaClassUri) {
-        case _DatenMeister._Forms.__TextFieldData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__TextFieldData_Uri:
             result = new TextField.Field();
             break;
-        case _DatenMeister._Forms.__MetaClassElementFieldData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__MetaClassElementFieldData_Uri:
             result = new MetaClassElementField.Field();
             break;
-        case _DatenMeister._Forms.__ReferenceFieldData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__ReferenceFieldData_Uri:
             result = new ReferenceField.Field();
             break;
-        case _DatenMeister._Forms.__DropDownByCollection_Uri:
+        case _DatenMeister._Forms._FieldTypes.__DropDownByCollection_Uri:
             result = new DropDownByCollection.Field();
             break;
-        case _DatenMeister._Forms.__DropDownByQueryData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__DropDownByQueryData_Uri:
             result = new DropDownByQuery.Field();
             break;
-        case _DatenMeister._Forms.__CheckboxFieldData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__CheckboxFieldData_Uri:
             result = new CheckboxField.Field();
             break;
-        case _DatenMeister._Forms.__DateTimeFieldData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__DateTimeFieldData_Uri:
             result = new DateTimeField.Field();
             break;
-        case _DatenMeister._Forms.__CheckboxListTaggingFieldData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__CheckboxListTaggingFieldData_Uri:
             result = new CheckboxListTaggingField.Field();
             break;
-        case _DatenMeister._Forms.__DropDownFieldData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__DropDownFieldData_Uri:
             result = new DropDownField.Field();
             break;
-        case _DatenMeister._Forms.__ActionFieldData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__ActionFieldData_Uri:
             result = new ActionField.Field();
             break;
-        case _DatenMeister._Forms.__SubElementFieldData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__SubElementFieldData_Uri:
             result = new SubElementField.Field();
             break;
-        case _DatenMeister._Forms.__AnyDataFieldData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__AnyDataFieldData_Uri:
             result = new AnyDataField.Field();
             break;
-        case _DatenMeister._Forms.__SeparatorLineFieldData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__SeparatorLineFieldData_Uri:
             result = new SeparatorLineField.Field();
             break;
-        case _DatenMeister._Forms.__UriReferenceFieldData_Uri:
+        case _DatenMeister._Forms._FieldTypes.__UriReferenceFieldData_Uri:
             result = new UriReferenceFieldData.Field();
             break;
         default:

@@ -53,13 +53,13 @@ export function includeTests() {
             // Test that retrieval as collection form is working
             const formAsCollection = await ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent', FormType.Collection);
             assert.isTrue(formAsCollection.metaClass.name === "CollectionForm", 'Not a collection Form');
-            const tabs = formAsCollection.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array);
+            const tabs = formAsCollection.get(_DatenMeister._Forms._FormTypes._CollectionForm.tab, Mof.ObjectType.Array);
             assert.isTrue(tabs.length === 1, '# of tabs of CollectionForm is not 1');
             assert.isTrue(tabs[0].metaClass.name === "RowForm", 'Tab of CollectionForm is not a RowForm');
             // Test that retrieval as Object Form is working
             const formAsObject = await ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent', FormType.Object);
             assert.isTrue(formAsObject.metaClass.name === "ObjectForm", 'Not an Object Form');
-            const tabsObject = formAsObject.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array);
+            const tabsObject = formAsObject.get(_DatenMeister._Forms._FormTypes._CollectionForm.tab, Mof.ObjectType.Array);
             assert.isTrue(tabsObject.length === 1, '# of tabs of ObjectForm is not 1');
             assert.isTrue(tabsObject[0].metaClass.name === "RowForm", 'Tab of ObjectForm is not a RowForm');
         });

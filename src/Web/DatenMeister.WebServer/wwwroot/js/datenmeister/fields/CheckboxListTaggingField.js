@@ -17,14 +17,14 @@ export class Field extends BaseField {
     }
     async createDom(dmElement) {
         // Ensure local availability of field information
-        this.name = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData._name_, Mof.ObjectType.String);
-        this.separator = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.separator, Mof.ObjectType.String);
+        this.name = this.field.get(_DatenMeister._Forms._FieldTypes._CheckboxListTaggingFieldData._name_, Mof.ObjectType.String);
+        this.separator = this.field.get(_DatenMeister._Forms._FieldTypes._CheckboxListTaggingFieldData.separator, Mof.ObjectType.String);
         if (this.separator === "" || this.separator === undefined) {
             this.separator = ",";
         }
-        const containsFreeText = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.containsFreeText, Mof.ObjectType.Boolean);
-        const valuePairs = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.values, Mof.ObjectType.Array);
-        this.isFieldReadOnly = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.isReadOnly, Mof.ObjectType.Boolean);
+        const containsFreeText = this.field.get(_DatenMeister._Forms._FieldTypes._CheckboxListTaggingFieldData.containsFreeText, Mof.ObjectType.Boolean);
+        const valuePairs = this.field.get(_DatenMeister._Forms._FieldTypes._CheckboxListTaggingFieldData.values, Mof.ObjectType.Array);
+        this.isFieldReadOnly = this.field.get(_DatenMeister._Forms._FieldTypes._CheckboxListTaggingFieldData.isReadOnly, Mof.ObjectType.Boolean);
         // Gets the value and splits it
         const currentValue = dmElement.get(this.name, Mof.ObjectType.String) ?? "";
         const currentList = currentValue.split(this.separator);
@@ -35,8 +35,8 @@ export class Field extends BaseField {
             if (!Object.prototype.hasOwnProperty.call(valuePairs, n))
                 continue;
             const valuePair = valuePairs[n];
-            const valueName = valuePair.get(_DatenMeister._Forms._ValuePair._name_, Mof.ObjectType.String);
-            const valueContent = valuePair.get(_DatenMeister._Forms._ValuePair.value, Mof.ObjectType.String);
+            const valueName = valuePair.get(_DatenMeister._Forms._FieldTypes._ValuePair._name_, Mof.ObjectType.String);
+            const valueContent = valuePair.get(_DatenMeister._Forms._FieldTypes._ValuePair.value, Mof.ObjectType.String);
             // Creates the checkbox
             const checkbox = $("<input type='checkbox' />");
             checkbox.attr('name', valueName);

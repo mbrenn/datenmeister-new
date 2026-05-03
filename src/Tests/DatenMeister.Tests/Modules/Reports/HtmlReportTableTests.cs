@@ -45,21 +45,21 @@ public class HtmlReportTableTests
         /* Create the report paragraph and its corresponding view node */
         var reportTable = factory.create(_Reports.TheOne.Elements.__ReportTable);
 
-        var form = factory.create(_Forms.TheOne.__TableForm);
-        var field = factory.create(_Forms.TheOne.__EvalTextFieldData)
+        var form = factory.create(_Forms.TheOne.FormTypes.__TableForm);
+        var field = factory.create(_Forms.TheOne.FieldTypes.__EvalTextFieldData)
             .SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_Forms._EvalTextFieldData.name] = "name",
-                    [_Forms._EvalTextFieldData.title] = "Name",
-                    [_Forms._EvalTextFieldData.evalCellProperties] =
+                    [_Forms._FieldTypes._EvalTextFieldData.name] = "name",
+                    [_Forms._FieldTypes._EvalTextFieldData.title] = "Name",
+                    [_Forms._FieldTypes._EvalTextFieldData.evalCellProperties] =
                         "{{if(i.age>18)\r\n" +
                         " c.cssClass=\"over18\"\r\n" +
                         "else\r\n" +
                         " c.cssClass=\"under18\"\r\n" +
                         "end}}"
                 });
-        form.set(_Forms._TableForm.field, new[] {field});
+        form.set(_Forms._FormTypes._TableForm.field, new[] {field});
 
         reportTable.SetProperties(
             new Dictionary<string, object>

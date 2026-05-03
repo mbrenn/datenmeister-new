@@ -10,8 +10,8 @@ export class Field extends DropDownBaseField.DropDownBaseField {
         if (Array.isArray(values)) {
             return values.map(x => {
                 return {
-                    title: x.get(_DatenMeister._Forms._ValuePair._name_).toString(),
-                    value: x.get(_DatenMeister._Forms._ValuePair.value).toString()
+                    title: x.get(_DatenMeister._Forms._FieldTypes._ValuePair._name_).toString(),
+                    value: x.get(_DatenMeister._Forms._FieldTypes._ValuePair.value).toString()
                 };
             });
         }

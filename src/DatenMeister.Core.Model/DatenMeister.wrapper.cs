@@ -4070,13 +4070,13 @@ public class Reports
                 }
             }
 
-            // DatenMeister.Core.Models.Forms.TableForm_Wrapper
-            public DatenMeister.Core.Models.Forms.TableForm_Wrapper? @form
+            // DatenMeister.Core.Models.Forms.FormTypes.TableForm_Wrapper
+            public DatenMeister.Core.Models.Forms.FormTypes.TableForm_Wrapper? @form
             {
                 get
                 {
                     var foundElement = _wrappedElement.getOrDefault<IElement?>("form");
-                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.TableForm_Wrapper(foundElement);
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FormTypes.TableForm_Wrapper(foundElement);
                 }
                 set 
                 {
@@ -5847,79 +5847,6 @@ public class ExtentLoaderConfigs
 
 public class Forms
 {
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class FieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public FieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public FieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData");
-
-        public static FieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder",
         TypeKind = TypeKind.WrappedClass)]
     public class SortingOrder_Wrapper : IElementWrapper
@@ -5956,1389 +5883,6 @@ public class Forms
                 _wrappedElement.getOrDefault<bool>("isDescending");
             set => 
                 _wrappedElement.set("isDescending", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class AnyDataFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public AnyDataFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public AnyDataFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData");
-
-        public static AnyDataFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class CheckboxFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public CheckboxFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public CheckboxFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData");
-
-        public static CheckboxFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class ActionFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public ActionFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public ActionFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData");
-
-        public static ActionFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @actionName
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("actionName");
-            set => 
-                _wrappedElement.set("actionName", value);
-        }
-
-        // Not found
-        public object? @parameter
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("parameter");
-            set => 
-                _wrappedElement.set("parameter", value);
-        }
-
-        public string? @buttonText
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("buttonText");
-            set => 
-                _wrappedElement.set("buttonText", value);
-        }
-
-        public string? @bindingKey
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("bindingKey");
-            set => 
-                _wrappedElement.set("bindingKey", value);
-        }
-
-        public bool @bindingKeyModifierCtrl
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("bindingKeyModifierCtrl");
-            set => 
-                _wrappedElement.set("bindingKeyModifierCtrl", value);
-        }
-
-        public bool @bindingKeyModifierShift
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("bindingKeyModifierShift");
-            set => 
-                _wrappedElement.set("bindingKeyModifierShift", value);
-        }
-
-        public bool @bindingKeyModifierAlt
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("bindingKeyModifierAlt");
-            set => 
-                _wrappedElement.set("bindingKeyModifierAlt", value);
-        }
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class DateTimeFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public DateTimeFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public DateTimeFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData");
-
-        public static DateTimeFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public bool @hideDate
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("hideDate");
-            set => 
-                _wrappedElement.set("hideDate", value);
-        }
-
-        public bool @hideTime
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("hideTime");
-            set => 
-                _wrappedElement.set("hideTime", value);
-        }
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation",
-        TypeKind = TypeKind.WrappedClass)]
-    public class FormAssociation_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public FormAssociation_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public FormAssociation_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation");
-
-        public static FormAssociation_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        // Not found
-        public object? @formType
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("formType");
-            set => 
-                _wrappedElement.set("formType", value);
-        }
-
-        // DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper
-        public DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper? @metaClass
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("metaClass");
-                return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("metaClass", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("metaClass", value);
-                }
-            }
-        }
-
-        public string? @extentType
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("extentType");
-            set => 
-                _wrappedElement.set("extentType", value);
-        }
-
-        public string? @viewModeId
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("viewModeId");
-            set => 
-                _wrappedElement.set("viewModeId", value);
-        }
-
-        // DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper
-        public DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper? @parentMetaClass
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("parentMetaClass");
-                return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("parentMetaClass", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("parentMetaClass", value);
-                }
-            }
-        }
-
-        public string? @parentProperty
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("parentProperty");
-            set => 
-                _wrappedElement.set("parentProperty", value);
-        }
-
-        // DatenMeister.Core.Models.Forms.Form_Wrapper
-        public DatenMeister.Core.Models.Forms.Form_Wrapper? @form
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("form");
-                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.Form_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("form", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("form", value);
-                }
-            }
-        }
-
-        public bool @debugActive
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("debugActive");
-            set => 
-                _wrappedElement.set("debugActive", value);
-        }
-
-        public string? @workspaceId
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("workspaceId");
-            set => 
-                _wrappedElement.set("workspaceId", value);
-        }
-
-        public string? @extentUri
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("extentUri");
-            set => 
-                _wrappedElement.set("extentUri", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class DropDownFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public DropDownFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public DropDownFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData");
-
-        public static DropDownFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // DatenMeister.Core.Models.Forms.ValuePair_Wrapper
-        public DatenMeister.Core.Models.Forms.ValuePair_Wrapper? @values
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("values");
-                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.ValuePair_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("values", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("values", value);
-                }
-            }
-        }
-
-        // Not found
-        public object? @valuesByEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("valuesByEnumeration");
-            set => 
-                _wrappedElement.set("valuesByEnumeration", value);
-        }
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair",
-        TypeKind = TypeKind.WrappedClass)]
-    public class ValuePair_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public ValuePair_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public ValuePair_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair");
-
-        public static ValuePair_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // Not found
-        public object? @value
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("value");
-            set => 
-                _wrappedElement.set("value", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class MetaClassElementFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public MetaClassElementFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public MetaClassElementFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData");
-
-        public static MetaClassElementFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class ReferenceFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public ReferenceFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public ReferenceFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData");
-
-        public static ReferenceFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public bool @isSelectionInline
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isSelectionInline");
-            set => 
-                _wrappedElement.set("isSelectionInline", value);
-        }
-
-        public string? @defaultWorkspace
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("defaultWorkspace");
-            set => 
-                _wrappedElement.set("defaultWorkspace", value);
-        }
-
-        public string? @defaultItemUri
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("defaultItemUri");
-            set => 
-                _wrappedElement.set("defaultItemUri", value);
-        }
-
-        public bool @showAllChildren
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("showAllChildren");
-            set => 
-                _wrappedElement.set("showAllChildren", value);
-        }
-
-        public bool @showWorkspaceSelection
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("showWorkspaceSelection");
-            set => 
-                _wrappedElement.set("showWorkspaceSelection", value);
-        }
-
-        public bool @showExtentSelection
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("showExtentSelection");
-            set => 
-                _wrappedElement.set("showExtentSelection", value);
-        }
-
-        // Not found
-        public object? @metaClassFilter
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("metaClassFilter");
-            set => 
-                _wrappedElement.set("metaClassFilter", value);
-        }
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class SubElementFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public SubElementFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public SubElementFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData");
-
-        public static SubElementFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // Not found
-        public object? @metaClass
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("metaClass");
-            set => 
-                _wrappedElement.set("metaClass", value);
-        }
-
-        // DatenMeister.Core.Models.Forms.Form_Wrapper
-        public DatenMeister.Core.Models.Forms.Form_Wrapper? @form
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("form");
-                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.Form_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("form", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("form", value);
-                }
-            }
-        }
-
-        public bool @allowOnlyExistingElements
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("allowOnlyExistingElements");
-            set => 
-                _wrappedElement.set("allowOnlyExistingElements", value);
-        }
-
-        // DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper
-        public DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper? @defaultTypesForNewElements
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("defaultTypesForNewElements");
-                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("defaultTypesForNewElements", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("defaultTypesForNewElements", value);
-                }
-            }
-        }
-
-        public bool @includeSpecializationsForDefaultTypes
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("includeSpecializationsForDefaultTypes");
-            set => 
-                _wrappedElement.set("includeSpecializationsForDefaultTypes", value);
-        }
-
-        public string? @defaultWorkspaceOfNewElements
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("defaultWorkspaceOfNewElements");
-            set => 
-                _wrappedElement.set("defaultWorkspaceOfNewElements", value);
-        }
-
-        public string? @defaultExtentOfNewElements
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("defaultExtentOfNewElements");
-            set => 
-                _wrappedElement.set("defaultExtentOfNewElements", value);
-        }
-
-        public string? @actionName
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("actionName");
-            set => 
-                _wrappedElement.set("actionName", value);
-        }
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class TextFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public TextFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public TextFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData");
-
-        public static TextFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public int @lineHeight
-        {
-            get =>
-                _wrappedElement.getOrDefault<int>("lineHeight");
-            set => 
-                _wrappedElement.set("lineHeight", value);
-        }
-
-        public int @width
-        {
-            get =>
-                _wrappedElement.getOrDefault<int>("width");
-            set => 
-                _wrappedElement.set("width", value);
-        }
-
-        public int @shortenTextLength
-        {
-            get =>
-                _wrappedElement.getOrDefault<int>("shortenTextLength");
-            set => 
-                _wrappedElement.set("shortenTextLength", value);
-        }
-
-        public bool @supportClipboardCopy
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("supportClipboardCopy");
-            set => 
-                _wrappedElement.set("supportClipboardCopy", value);
-        }
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class EvalTextFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public EvalTextFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public EvalTextFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData");
-
-        public static EvalTextFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @evalCellProperties
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("evalCellProperties");
-            set => 
-                _wrappedElement.set("evalCellProperties", value);
-        }
-
-        public int @lineHeight
-        {
-            get =>
-                _wrappedElement.getOrDefault<int>("lineHeight");
-            set => 
-                _wrappedElement.set("lineHeight", value);
-        }
-
-        public int @width
-        {
-            get =>
-                _wrappedElement.getOrDefault<int>("width");
-            set => 
-                _wrappedElement.set("width", value);
-        }
-
-        public int @shortenTextLength
-        {
-            get =>
-                _wrappedElement.getOrDefault<int>("shortenTextLength");
-            set => 
-                _wrappedElement.set("shortenTextLength", value);
-        }
-
-        public bool @supportClipboardCopy
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("supportClipboardCopy");
-            set => 
-                _wrappedElement.set("supportClipboardCopy", value);
-        }
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class SeparatorLineFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public SeparatorLineFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public SeparatorLineFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData");
-
-        public static SeparatorLineFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public int @Height
-        {
-            get =>
-                _wrappedElement.getOrDefault<int>("Height");
-            set => 
-                _wrappedElement.set("Height", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class FileSelectionFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public FileSelectionFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public FileSelectionFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData");
-
-        public static FileSelectionFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @defaultExtension
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("defaultExtension");
-            set => 
-                _wrappedElement.set("defaultExtension", value);
-        }
-
-        public bool @isSaving
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isSaving");
-            set => 
-                _wrappedElement.set("isSaving", value);
-        }
-
-        public string? @initialPathToDirectory
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("initialPathToDirectory");
-            set => 
-                _wrappedElement.set("initialPathToDirectory", value);
-        }
-
-        public string? @filter
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("filter");
-            set => 
-                _wrappedElement.set("filter", value);
-        }
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
         }
 
     }
@@ -7392,1020 +5936,6 @@ public class Forms
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class FullNameFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public FullNameFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public FullNameFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData");
-
-        public static FullNameFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class CheckboxListTaggingFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public CheckboxListTaggingFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public CheckboxListTaggingFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData");
-
-        public static CheckboxListTaggingFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // DatenMeister.Core.Models.Forms.ValuePair_Wrapper
-        public DatenMeister.Core.Models.Forms.ValuePair_Wrapper? @values
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("values");
-                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.ValuePair_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("values", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("values", value);
-                }
-            }
-        }
-
-        public string? @separator
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("separator");
-            set => 
-                _wrappedElement.set("separator", value);
-        }
-
-        public bool @containsFreeText
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("containsFreeText");
-            set => 
-                _wrappedElement.set("containsFreeText", value);
-        }
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData",
-        TypeKind = TypeKind.WrappedClass)]
-    public class NumberFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public NumberFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public NumberFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData");
-
-        public static NumberFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @format
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("format");
-            set => 
-                _wrappedElement.set("format", value);
-        }
-
-        public bool @isInteger
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isInteger");
-            set => 
-                _wrappedElement.set("isInteger", value);
-        }
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form",
-        TypeKind = TypeKind.WrappedClass)]
-    public class Form_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public Form_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public Form_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.Form");
-
-        public static Form_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-        public bool @isAutoGenerated
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAutoGenerated");
-            set => 
-                _wrappedElement.set("isAutoGenerated", value);
-        }
-
-        public bool @hideMetaInformation
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("hideMetaInformation");
-            set => 
-                _wrappedElement.set("hideMetaInformation", value);
-        }
-
-        public string? @originalUri
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("originalUri");
-            set => 
-                _wrappedElement.set("originalUri", value);
-        }
-
-        public string? @originalWorkspace
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("originalWorkspace");
-            set => 
-                _wrappedElement.set("originalWorkspace", value);
-        }
-
-        public string? @creationProtocol
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("creationProtocol");
-            set => 
-                _wrappedElement.set("creationProtocol", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm",
-        TypeKind = TypeKind.WrappedClass)]
-    public class RowForm_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public RowForm_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public RowForm_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm");
-
-        public static RowForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @buttonApplyText
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("buttonApplyText");
-            set => 
-                _wrappedElement.set("buttonApplyText", value);
-        }
-
-        public bool @allowNewProperties
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("allowNewProperties");
-            set => 
-                _wrappedElement.set("allowNewProperties", value);
-        }
-
-        public int @defaultWidth
-        {
-            get =>
-                _wrappedElement.getOrDefault<int>("defaultWidth");
-            set => 
-                _wrappedElement.set("defaultWidth", value);
-        }
-
-        public int @defaultHeight
-        {
-            get =>
-                _wrappedElement.getOrDefault<int>("defaultHeight");
-            set => 
-                _wrappedElement.set("defaultHeight", value);
-        }
-
-        // DatenMeister.Core.Models.Forms.FieldData_Wrapper
-        public DatenMeister.Core.Models.Forms.FieldData_Wrapper? @field
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("field");
-                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FieldData_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("field", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("field", value);
-                }
-            }
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-        public bool @isAutoGenerated
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAutoGenerated");
-            set => 
-                _wrappedElement.set("isAutoGenerated", value);
-        }
-
-        public bool @hideMetaInformation
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("hideMetaInformation");
-            set => 
-                _wrappedElement.set("hideMetaInformation", value);
-        }
-
-        public string? @originalUri
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("originalUri");
-            set => 
-                _wrappedElement.set("originalUri", value);
-        }
-
-        public string? @originalWorkspace
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("originalWorkspace");
-            set => 
-                _wrappedElement.set("originalWorkspace", value);
-        }
-
-        public string? @creationProtocol
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("creationProtocol");
-            set => 
-                _wrappedElement.set("creationProtocol", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm",
-        TypeKind = TypeKind.WrappedClass)]
-    public class TableForm_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public TableForm_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public TableForm_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm");
-
-        public static TableForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @property
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("property");
-            set => 
-                _wrappedElement.set("property", value);
-        }
-
-        // Not found
-        public object? @metaClass
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("metaClass");
-            set => 
-                _wrappedElement.set("metaClass", value);
-        }
-
-        public bool @includeDescendents
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("includeDescendents");
-            set => 
-                _wrappedElement.set("includeDescendents", value);
-        }
-
-        public bool @noItemsWithMetaClass
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("noItemsWithMetaClass");
-            set => 
-                _wrappedElement.set("noItemsWithMetaClass", value);
-        }
-
-        public bool @inhibitNewItems
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("inhibitNewItems");
-            set => 
-                _wrappedElement.set("inhibitNewItems", value);
-        }
-
-        public bool @inhibitDeleteItems
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("inhibitDeleteItems");
-            set => 
-                _wrappedElement.set("inhibitDeleteItems", value);
-        }
-
-        public bool @inhibitEditItems
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("inhibitEditItems");
-            set => 
-                _wrappedElement.set("inhibitEditItems", value);
-        }
-
-        // DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper
-        public DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper? @defaultTypesForNewElements
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("defaultTypesForNewElements");
-                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("defaultTypesForNewElements", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("defaultTypesForNewElements", value);
-                }
-            }
-        }
-
-        // Not found
-        public object? @fastViewFilters
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("fastViewFilters");
-            set => 
-                _wrappedElement.set("fastViewFilters", value);
-        }
-
-        // DatenMeister.Core.Models.Forms.FieldData_Wrapper
-        public DatenMeister.Core.Models.Forms.FieldData_Wrapper? @field
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("field");
-                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FieldData_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("field", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("field", value);
-                }
-            }
-        }
-
-        // DatenMeister.Core.Models.Forms.SortingOrder_Wrapper
-        public DatenMeister.Core.Models.Forms.SortingOrder_Wrapper? @sortingOrder
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("sortingOrder");
-                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.SortingOrder_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("sortingOrder", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("sortingOrder", value);
-                }
-            }
-        }
-
-        // Not found
-        public object? @viewNode
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("viewNode");
-            set => 
-                _wrappedElement.set("viewNode", value);
-        }
-
-        public bool @autoGenerateFields
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("autoGenerateFields");
-            set => 
-                _wrappedElement.set("autoGenerateFields", value);
-        }
-
-        public bool @duplicatePerType
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("duplicatePerType");
-            set => 
-                _wrappedElement.set("duplicatePerType", value);
-        }
-
-        public string? @dataUrl
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("dataUrl");
-            set => 
-                _wrappedElement.set("dataUrl", value);
-        }
-
-        public bool @inhibitNewUnclassifiedItems
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("inhibitNewUnclassifiedItems");
-            set => 
-                _wrappedElement.set("inhibitNewUnclassifiedItems", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-        public bool @isAutoGenerated
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAutoGenerated");
-            set => 
-                _wrappedElement.set("isAutoGenerated", value);
-        }
-
-        public bool @hideMetaInformation
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("hideMetaInformation");
-            set => 
-                _wrappedElement.set("hideMetaInformation", value);
-        }
-
-        public string? @originalUri
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("originalUri");
-            set => 
-                _wrappedElement.set("originalUri", value);
-        }
-
-        public string? @originalWorkspace
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("originalWorkspace");
-            set => 
-                _wrappedElement.set("originalWorkspace", value);
-        }
-
-        public string? @creationProtocol
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("creationProtocol");
-            set => 
-                _wrappedElement.set("creationProtocol", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm",
-        TypeKind = TypeKind.WrappedClass)]
-    public class CollectionForm_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public CollectionForm_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public CollectionForm_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm");
-
-        public static CollectionForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // DatenMeister.Core.Models.Forms.Form_Wrapper
-        public DatenMeister.Core.Models.Forms.Form_Wrapper? @tab
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("tab");
-                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.Form_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("tab", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("tab", value);
-                }
-            }
-        }
-
-        public bool @autoTabs
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("autoTabs");
-            set => 
-                _wrappedElement.set("autoTabs", value);
-        }
-
-        // DatenMeister.Core.Models.Forms.FieldData_Wrapper
-        public DatenMeister.Core.Models.Forms.FieldData_Wrapper? @field
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("field");
-                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FieldData_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("field", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("field", value);
-                }
-            }
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-        public bool @isAutoGenerated
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAutoGenerated");
-            set => 
-                _wrappedElement.set("isAutoGenerated", value);
-        }
-
-        public bool @hideMetaInformation
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("hideMetaInformation");
-            set => 
-                _wrappedElement.set("hideMetaInformation", value);
-        }
-
-        public string? @originalUri
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("originalUri");
-            set => 
-                _wrappedElement.set("originalUri", value);
-        }
-
-        public string? @originalWorkspace
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("originalWorkspace");
-            set => 
-                _wrappedElement.set("originalWorkspace", value);
-        }
-
-        public string? @creationProtocol
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("creationProtocol");
-            set => 
-                _wrappedElement.set("creationProtocol", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm",
-        TypeKind = TypeKind.WrappedClass)]
-    public class ObjectForm_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public ObjectForm_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public ObjectForm_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm");
-
-        public static ObjectForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // DatenMeister.Core.Models.Forms.Form_Wrapper
-        public DatenMeister.Core.Models.Forms.Form_Wrapper? @tab
-        {
-            get
-            {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("tab");
-                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.Form_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    _wrappedElement.set("tab", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    _wrappedElement.set("tab", value);
-                }
-            }
-        }
-
-        public bool @autoTabs
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("autoTabs");
-            set => 
-                _wrappedElement.set("autoTabs", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-        public bool @isAutoGenerated
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAutoGenerated");
-            set => 
-                _wrappedElement.set("isAutoGenerated", value);
-        }
-
-        public bool @hideMetaInformation
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("hideMetaInformation");
-            set => 
-                _wrappedElement.set("hideMetaInformation", value);
-        }
-
-        public string? @originalUri
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("originalUri");
-            set => 
-                _wrappedElement.set("originalUri", value);
-        }
-
-        public string? @originalWorkspace
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("originalWorkspace");
-            set => 
-                _wrappedElement.set("originalWorkspace", value);
-        }
-
-        public string? @creationProtocol
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("creationProtocol");
-            set => 
-                _wrappedElement.set("creationProtocol", value);
-        }
-
-    }
-
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode",
         TypeKind = TypeKind.WrappedClass)]
     public class ViewMode_Wrapper : IElementWrapper
@@ -8454,135 +5984,6 @@ public class Forms
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection",
-        TypeKind = TypeKind.WrappedClass)]
-    public class DropDownByCollection_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public DropDownByCollection_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public DropDownByCollection_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection");
-
-        public static DropDownByCollection_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @defaultWorkspace
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("defaultWorkspace");
-            set => 
-                _wrappedElement.set("defaultWorkspace", value);
-        }
-
-        public string? @collection
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("collection");
-            set => 
-                _wrappedElement.set("collection", value);
-        }
-
-        public bool @isAttached
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public string? @title
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
-        }
-
-        public bool @isEnumeration
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
-        }
-
-        // Not found
-        public object? @defaultValue
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
-        }
-
-        public bool @isReadOnly
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00",
-        TypeKind = TypeKind.WrappedClass)]
-    public class UriReferenceFieldData_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public UriReferenceFieldData_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public UriReferenceFieldData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00");
-
-        public static UriReferenceFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @defaultWorkspace
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("defaultWorkspace");
-            set => 
-                _wrappedElement.set("defaultWorkspace", value);
-        }
-
-        public string? @defaultExtent
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("defaultExtent");
-            set => 
-                _wrappedElement.set("defaultExtent", value);
-        }
-
-    }
-
     [TypeUri(Uri = "dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0",
         TypeKind = TypeKind.WrappedClass)]
     public class NavigateToFieldsForTestAction_Wrapper : IElementWrapper
@@ -8623,96 +6024,2703 @@ public class Forms
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2",
-        TypeKind = TypeKind.WrappedClass)]
-    public class DropDownByQueryData_Wrapper : IElementWrapper
+    public class FormTypes
     {
-        private readonly IElement _wrappedElement;
-
-        public DropDownByQueryData_Wrapper(IElement innerDmElement)
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form",
+            TypeKind = TypeKind.WrappedClass)]
+        public class Form_Wrapper : IElementWrapper
         {
-            _wrappedElement = innerDmElement;
-        }
+            private readonly IElement _wrappedElement;
 
-        public DropDownByQueryData_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2");
-
-        public static DropDownByQueryData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper
-        public DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper? @query
-        {
-            get
+            public Form_Wrapper(IElement innerDmElement)
             {
-                var foundElement = _wrappedElement.getOrDefault<IElement?>("query");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper(foundElement);
+                _wrappedElement = innerDmElement;
             }
-            set 
+
+            public Form_Wrapper(IFactory factory)
             {
-                if(value is IElementWrapper wrappedElement)
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.Form");
+
+            public static Form_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+            public bool @isAutoGenerated
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAutoGenerated");
+                set => 
+                    _wrappedElement.set("isAutoGenerated", value);
+            }
+
+            public bool @hideMetaInformation
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("hideMetaInformation");
+                set => 
+                    _wrappedElement.set("hideMetaInformation", value);
+            }
+
+            public string? @originalUri
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("originalUri");
+                set => 
+                    _wrappedElement.set("originalUri", value);
+            }
+
+            public string? @originalWorkspace
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("originalWorkspace");
+                set => 
+                    _wrappedElement.set("originalWorkspace", value);
+            }
+
+            public string? @creationProtocol
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("creationProtocol");
+                set => 
+                    _wrappedElement.set("creationProtocol", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowForm_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public RowForm_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public RowForm_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm");
+
+            public static RowForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @buttonApplyText
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("buttonApplyText");
+                set => 
+                    _wrappedElement.set("buttonApplyText", value);
+            }
+
+            public bool @allowNewProperties
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("allowNewProperties");
+                set => 
+                    _wrappedElement.set("allowNewProperties", value);
+            }
+
+            public int @defaultWidth
+            {
+                get =>
+                    _wrappedElement.getOrDefault<int>("defaultWidth");
+                set => 
+                    _wrappedElement.set("defaultWidth", value);
+            }
+
+            public int @defaultHeight
+            {
+                get =>
+                    _wrappedElement.getOrDefault<int>("defaultHeight");
+                set => 
+                    _wrappedElement.set("defaultHeight", value);
+            }
+
+            // DatenMeister.Core.Models.Forms.FieldTypes.FieldData_Wrapper
+            public DatenMeister.Core.Models.Forms.FieldTypes.FieldData_Wrapper? @field
+            {
+                get
                 {
-                    _wrappedElement.set("query", wrappedElement.GetWrappedElement());
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("field");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FieldTypes.FieldData_Wrapper(foundElement);
                 }
-                else
+                set 
                 {
-                    _wrappedElement.set("query", value);
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("field", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("field", value);
+                    }
                 }
             }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+            public bool @isAutoGenerated
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAutoGenerated");
+                set => 
+                    _wrappedElement.set("isAutoGenerated", value);
+            }
+
+            public bool @hideMetaInformation
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("hideMetaInformation");
+                set => 
+                    _wrappedElement.set("hideMetaInformation", value);
+            }
+
+            public string? @originalUri
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("originalUri");
+                set => 
+                    _wrappedElement.set("originalUri", value);
+            }
+
+            public string? @originalWorkspace
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("originalWorkspace");
+                set => 
+                    _wrappedElement.set("originalWorkspace", value);
+            }
+
+            public string? @creationProtocol
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("creationProtocol");
+                set => 
+                    _wrappedElement.set("creationProtocol", value);
+            }
+
         }
 
-        public bool @isAttached
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm",
+            TypeKind = TypeKind.WrappedClass)]
+        public class TableForm_Wrapper : IElementWrapper
         {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isAttached");
-            set => 
-                _wrappedElement.set("isAttached", value);
+            private readonly IElement _wrappedElement;
+
+            public TableForm_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public TableForm_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm");
+
+            public static TableForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @property
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("property");
+                set => 
+                    _wrappedElement.set("property", value);
+            }
+
+            // Not found
+            public object? @metaClass
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("metaClass");
+                set => 
+                    _wrappedElement.set("metaClass", value);
+            }
+
+            public bool @includeDescendents
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("includeDescendents");
+                set => 
+                    _wrappedElement.set("includeDescendents", value);
+            }
+
+            public bool @noItemsWithMetaClass
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("noItemsWithMetaClass");
+                set => 
+                    _wrappedElement.set("noItemsWithMetaClass", value);
+            }
+
+            public bool @inhibitNewItems
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("inhibitNewItems");
+                set => 
+                    _wrappedElement.set("inhibitNewItems", value);
+            }
+
+            public bool @inhibitDeleteItems
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("inhibitDeleteItems");
+                set => 
+                    _wrappedElement.set("inhibitDeleteItems", value);
+            }
+
+            public bool @inhibitEditItems
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("inhibitEditItems");
+                set => 
+                    _wrappedElement.set("inhibitEditItems", value);
+            }
+
+            // DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper
+            public DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper? @defaultTypesForNewElements
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("defaultTypesForNewElements");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("defaultTypesForNewElements", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("defaultTypesForNewElements", value);
+                    }
+                }
+            }
+
+            // Not found
+            public object? @fastViewFilters
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("fastViewFilters");
+                set => 
+                    _wrappedElement.set("fastViewFilters", value);
+            }
+
+            // DatenMeister.Core.Models.Forms.FieldTypes.FieldData_Wrapper
+            public DatenMeister.Core.Models.Forms.FieldTypes.FieldData_Wrapper? @field
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("field");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FieldTypes.FieldData_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("field", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("field", value);
+                    }
+                }
+            }
+
+            // DatenMeister.Core.Models.Forms.SortingOrder_Wrapper
+            public DatenMeister.Core.Models.Forms.SortingOrder_Wrapper? @sortingOrder
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("sortingOrder");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.SortingOrder_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("sortingOrder", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("sortingOrder", value);
+                    }
+                }
+            }
+
+            // Not found
+            public object? @viewNode
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("viewNode");
+                set => 
+                    _wrappedElement.set("viewNode", value);
+            }
+
+            public bool @autoGenerateFields
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("autoGenerateFields");
+                set => 
+                    _wrappedElement.set("autoGenerateFields", value);
+            }
+
+            public bool @duplicatePerType
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("duplicatePerType");
+                set => 
+                    _wrappedElement.set("duplicatePerType", value);
+            }
+
+            public string? @dataUrl
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("dataUrl");
+                set => 
+                    _wrappedElement.set("dataUrl", value);
+            }
+
+            public bool @inhibitNewUnclassifiedItems
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("inhibitNewUnclassifiedItems");
+                set => 
+                    _wrappedElement.set("inhibitNewUnclassifiedItems", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+            public bool @isAutoGenerated
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAutoGenerated");
+                set => 
+                    _wrappedElement.set("isAutoGenerated", value);
+            }
+
+            public bool @hideMetaInformation
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("hideMetaInformation");
+                set => 
+                    _wrappedElement.set("hideMetaInformation", value);
+            }
+
+            public string? @originalUri
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("originalUri");
+                set => 
+                    _wrappedElement.set("originalUri", value);
+            }
+
+            public string? @originalWorkspace
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("originalWorkspace");
+                set => 
+                    _wrappedElement.set("originalWorkspace", value);
+            }
+
+            public string? @creationProtocol
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("creationProtocol");
+                set => 
+                    _wrappedElement.set("creationProtocol", value);
+            }
+
         }
 
-        public string? @name
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CollectionForm_Wrapper : IElementWrapper
         {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
+            private readonly IElement _wrappedElement;
+
+            public CollectionForm_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public CollectionForm_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm");
+
+            public static CollectionForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper
+            public DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper? @tab
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("tab");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("tab", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("tab", value);
+                    }
+                }
+            }
+
+            public bool @autoTabs
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("autoTabs");
+                set => 
+                    _wrappedElement.set("autoTabs", value);
+            }
+
+            // DatenMeister.Core.Models.Forms.FieldTypes.FieldData_Wrapper
+            public DatenMeister.Core.Models.Forms.FieldTypes.FieldData_Wrapper? @field
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("field");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FieldTypes.FieldData_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("field", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("field", value);
+                    }
+                }
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+            public bool @isAutoGenerated
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAutoGenerated");
+                set => 
+                    _wrappedElement.set("isAutoGenerated", value);
+            }
+
+            public bool @hideMetaInformation
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("hideMetaInformation");
+                set => 
+                    _wrappedElement.set("hideMetaInformation", value);
+            }
+
+            public string? @originalUri
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("originalUri");
+                set => 
+                    _wrappedElement.set("originalUri", value);
+            }
+
+            public string? @originalWorkspace
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("originalWorkspace");
+                set => 
+                    _wrappedElement.set("originalWorkspace", value);
+            }
+
+            public string? @creationProtocol
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("creationProtocol");
+                set => 
+                    _wrappedElement.set("creationProtocol", value);
+            }
+
         }
 
-        public string? @title
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ObjectForm_Wrapper : IElementWrapper
         {
-            get =>
-                _wrappedElement.getOrDefault<string?>("title");
-            set => 
-                _wrappedElement.set("title", value);
+            private readonly IElement _wrappedElement;
+
+            public ObjectForm_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public ObjectForm_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm");
+
+            public static ObjectForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper
+            public DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper? @tab
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("tab");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("tab", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("tab", value);
+                    }
+                }
+            }
+
+            public bool @autoTabs
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("autoTabs");
+                set => 
+                    _wrappedElement.set("autoTabs", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+            public bool @isAutoGenerated
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAutoGenerated");
+                set => 
+                    _wrappedElement.set("isAutoGenerated", value);
+            }
+
+            public bool @hideMetaInformation
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("hideMetaInformation");
+                set => 
+                    _wrappedElement.set("hideMetaInformation", value);
+            }
+
+            public string? @originalUri
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("originalUri");
+                set => 
+                    _wrappedElement.set("originalUri", value);
+            }
+
+            public string? @originalWorkspace
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("originalWorkspace");
+                set => 
+                    _wrappedElement.set("originalWorkspace", value);
+            }
+
+            public string? @creationProtocol
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("creationProtocol");
+                set => 
+                    _wrappedElement.set("creationProtocol", value);
+            }
+
         }
 
-        public bool @isEnumeration
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation",
+            TypeKind = TypeKind.WrappedClass)]
+        public class FormAssociation_Wrapper : IElementWrapper
         {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isEnumeration");
-            set => 
-                _wrappedElement.set("isEnumeration", value);
+            private readonly IElement _wrappedElement;
+
+            public FormAssociation_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public FormAssociation_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation");
+
+            public static FormAssociation_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            // Not found
+            public object? @formType
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("formType");
+                set => 
+                    _wrappedElement.set("formType", value);
+            }
+
+            // DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper
+            public DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper? @metaClass
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("metaClass");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("metaClass", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("metaClass", value);
+                    }
+                }
+            }
+
+            public string? @extentType
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("extentType");
+                set => 
+                    _wrappedElement.set("extentType", value);
+            }
+
+            public string? @viewModeId
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("viewModeId");
+                set => 
+                    _wrappedElement.set("viewModeId", value);
+            }
+
+            // DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper
+            public DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper? @parentMetaClass
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("parentMetaClass");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("parentMetaClass", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("parentMetaClass", value);
+                    }
+                }
+            }
+
+            public string? @parentProperty
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("parentProperty");
+                set => 
+                    _wrappedElement.set("parentProperty", value);
+            }
+
+            // DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper
+            public DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper? @form
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("form");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("form", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("form", value);
+                    }
+                }
+            }
+
+            public bool @debugActive
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("debugActive");
+                set => 
+                    _wrappedElement.set("debugActive", value);
+            }
+
+            public string? @workspaceId
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("workspaceId");
+                set => 
+                    _wrappedElement.set("workspaceId", value);
+            }
+
+            public string? @extentUri
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("extentUri");
+                set => 
+                    _wrappedElement.set("extentUri", value);
+            }
+
         }
 
-        // Not found
-        public object? @defaultValue
+    }
+
+    public class FieldTypes
+    {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class FieldData_Wrapper : IElementWrapper
         {
-            get =>
-                _wrappedElement.getOrDefault<object?>("defaultValue");
-            set => 
-                _wrappedElement.set("defaultValue", value);
+            private readonly IElement _wrappedElement;
+
+            public FieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public FieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData");
+
+            public static FieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
         }
 
-        public bool @isReadOnly
+        [TypeUri(Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2",
+            TypeKind = TypeKind.WrappedClass)]
+        public class DropDownByQueryData_Wrapper : IElementWrapper
         {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isReadOnly");
-            set => 
-                _wrappedElement.set("isReadOnly", value);
+            private readonly IElement _wrappedElement;
+
+            public DropDownByQueryData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public DropDownByQueryData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2");
+
+            public static DropDownByQueryData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper
+            public DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper? @query
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("query");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("query", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("query", value);
+                    }
+                }
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection",
+            TypeKind = TypeKind.WrappedClass)]
+        public class DropDownByCollection_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public DropDownByCollection_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public DropDownByCollection_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection");
+
+            public static DropDownByCollection_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @defaultWorkspace
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("defaultWorkspace");
+                set => 
+                    _wrappedElement.set("defaultWorkspace", value);
+            }
+
+            public string? @collection
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("collection");
+                set => 
+                    _wrappedElement.set("collection", value);
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00",
+            TypeKind = TypeKind.WrappedClass)]
+        public class UriReferenceFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public UriReferenceFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public UriReferenceFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00");
+
+            public static UriReferenceFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @defaultWorkspace
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("defaultWorkspace");
+                set => 
+                    _wrappedElement.set("defaultWorkspace", value);
+            }
+
+            public string? @defaultExtent
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("defaultExtent");
+                set => 
+                    _wrappedElement.set("defaultExtent", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class FullNameFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public FullNameFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public FullNameFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData");
+
+            public static FullNameFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CheckboxListTaggingFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public CheckboxListTaggingFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public CheckboxListTaggingFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData");
+
+            public static CheckboxListTaggingFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // DatenMeister.Core.Models.Forms.FieldTypes.ValuePair_Wrapper
+            public DatenMeister.Core.Models.Forms.FieldTypes.ValuePair_Wrapper? @values
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("values");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FieldTypes.ValuePair_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("values", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("values", value);
+                    }
+                }
+            }
+
+            public string? @separator
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("separator");
+                set => 
+                    _wrappedElement.set("separator", value);
+            }
+
+            public bool @containsFreeText
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("containsFreeText");
+                set => 
+                    _wrappedElement.set("containsFreeText", value);
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class NumberFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public NumberFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public NumberFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData");
+
+            public static NumberFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @format
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("format");
+                set => 
+                    _wrappedElement.set("format", value);
+            }
+
+            public bool @isInteger
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isInteger");
+                set => 
+                    _wrappedElement.set("isInteger", value);
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class DropDownFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public DropDownFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public DropDownFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData");
+
+            public static DropDownFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // DatenMeister.Core.Models.Forms.FieldTypes.ValuePair_Wrapper
+            public DatenMeister.Core.Models.Forms.FieldTypes.ValuePair_Wrapper? @values
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("values");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FieldTypes.ValuePair_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("values", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("values", value);
+                    }
+                }
+            }
+
+            // Not found
+            public object? @valuesByEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("valuesByEnumeration");
+                set => 
+                    _wrappedElement.set("valuesByEnumeration", value);
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ValuePair_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public ValuePair_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public ValuePair_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair");
+
+            public static ValuePair_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // Not found
+            public object? @value
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("value");
+                set => 
+                    _wrappedElement.set("value", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class MetaClassElementFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public MetaClassElementFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public MetaClassElementFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData");
+
+            public static MetaClassElementFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ReferenceFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public ReferenceFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public ReferenceFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData");
+
+            public static ReferenceFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public bool @isSelectionInline
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isSelectionInline");
+                set => 
+                    _wrappedElement.set("isSelectionInline", value);
+            }
+
+            public string? @defaultWorkspace
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("defaultWorkspace");
+                set => 
+                    _wrappedElement.set("defaultWorkspace", value);
+            }
+
+            public string? @defaultItemUri
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("defaultItemUri");
+                set => 
+                    _wrappedElement.set("defaultItemUri", value);
+            }
+
+            public bool @showAllChildren
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("showAllChildren");
+                set => 
+                    _wrappedElement.set("showAllChildren", value);
+            }
+
+            public bool @showWorkspaceSelection
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("showWorkspaceSelection");
+                set => 
+                    _wrappedElement.set("showWorkspaceSelection", value);
+            }
+
+            public bool @showExtentSelection
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("showExtentSelection");
+                set => 
+                    _wrappedElement.set("showExtentSelection", value);
+            }
+
+            // Not found
+            public object? @metaClassFilter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("metaClassFilter");
+                set => 
+                    _wrappedElement.set("metaClassFilter", value);
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SubElementFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public SubElementFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public SubElementFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData");
+
+            public static SubElementFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // Not found
+            public object? @metaClass
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("metaClass");
+                set => 
+                    _wrappedElement.set("metaClass", value);
+            }
+
+            // DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper
+            public DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper? @form
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("form");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("form", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("form", value);
+                    }
+                }
+            }
+
+            public bool @allowOnlyExistingElements
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("allowOnlyExistingElements");
+                set => 
+                    _wrappedElement.set("allowOnlyExistingElements", value);
+            }
+
+            // DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper
+            public DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper? @defaultTypesForNewElements
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("defaultTypesForNewElements");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("defaultTypesForNewElements", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("defaultTypesForNewElements", value);
+                    }
+                }
+            }
+
+            public bool @includeSpecializationsForDefaultTypes
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("includeSpecializationsForDefaultTypes");
+                set => 
+                    _wrappedElement.set("includeSpecializationsForDefaultTypes", value);
+            }
+
+            public string? @defaultWorkspaceOfNewElements
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("defaultWorkspaceOfNewElements");
+                set => 
+                    _wrappedElement.set("defaultWorkspaceOfNewElements", value);
+            }
+
+            public string? @defaultExtentOfNewElements
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("defaultExtentOfNewElements");
+                set => 
+                    _wrappedElement.set("defaultExtentOfNewElements", value);
+            }
+
+            public string? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionName");
+                set => 
+                    _wrappedElement.set("actionName", value);
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class TextFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public TextFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public TextFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData");
+
+            public static TextFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public int @lineHeight
+            {
+                get =>
+                    _wrappedElement.getOrDefault<int>("lineHeight");
+                set => 
+                    _wrappedElement.set("lineHeight", value);
+            }
+
+            public int @width
+            {
+                get =>
+                    _wrappedElement.getOrDefault<int>("width");
+                set => 
+                    _wrappedElement.set("width", value);
+            }
+
+            public int @shortenTextLength
+            {
+                get =>
+                    _wrappedElement.getOrDefault<int>("shortenTextLength");
+                set => 
+                    _wrappedElement.set("shortenTextLength", value);
+            }
+
+            public bool @supportClipboardCopy
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("supportClipboardCopy");
+                set => 
+                    _wrappedElement.set("supportClipboardCopy", value);
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class EvalTextFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public EvalTextFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public EvalTextFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData");
+
+            public static EvalTextFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @evalCellProperties
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("evalCellProperties");
+                set => 
+                    _wrappedElement.set("evalCellProperties", value);
+            }
+
+            public int @lineHeight
+            {
+                get =>
+                    _wrappedElement.getOrDefault<int>("lineHeight");
+                set => 
+                    _wrappedElement.set("lineHeight", value);
+            }
+
+            public int @width
+            {
+                get =>
+                    _wrappedElement.getOrDefault<int>("width");
+                set => 
+                    _wrappedElement.set("width", value);
+            }
+
+            public int @shortenTextLength
+            {
+                get =>
+                    _wrappedElement.getOrDefault<int>("shortenTextLength");
+                set => 
+                    _wrappedElement.set("shortenTextLength", value);
+            }
+
+            public bool @supportClipboardCopy
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("supportClipboardCopy");
+                set => 
+                    _wrappedElement.set("supportClipboardCopy", value);
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SeparatorLineFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public SeparatorLineFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public SeparatorLineFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData");
+
+            public static SeparatorLineFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public int @Height
+            {
+                get =>
+                    _wrappedElement.getOrDefault<int>("Height");
+                set => 
+                    _wrappedElement.set("Height", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class FileSelectionFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public FileSelectionFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public FileSelectionFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData");
+
+            public static FileSelectionFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @defaultExtension
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("defaultExtension");
+                set => 
+                    _wrappedElement.set("defaultExtension", value);
+            }
+
+            public bool @isSaving
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isSaving");
+                set => 
+                    _wrappedElement.set("isSaving", value);
+            }
+
+            public string? @initialPathToDirectory
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("initialPathToDirectory");
+                set => 
+                    _wrappedElement.set("initialPathToDirectory", value);
+            }
+
+            public string? @filter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("filter");
+                set => 
+                    _wrappedElement.set("filter", value);
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class AnyDataFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public AnyDataFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public AnyDataFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData");
+
+            public static AnyDataFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CheckboxFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public CheckboxFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public CheckboxFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData");
+
+            public static CheckboxFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ActionFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public ActionFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public ActionFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData");
+
+            public static ActionFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionName");
+                set => 
+                    _wrappedElement.set("actionName", value);
+            }
+
+            // Not found
+            public object? @parameter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("parameter");
+                set => 
+                    _wrappedElement.set("parameter", value);
+            }
+
+            public string? @buttonText
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("buttonText");
+                set => 
+                    _wrappedElement.set("buttonText", value);
+            }
+
+            public string? @bindingKey
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("bindingKey");
+                set => 
+                    _wrappedElement.set("bindingKey", value);
+            }
+
+            public bool @bindingKeyModifierCtrl
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("bindingKeyModifierCtrl");
+                set => 
+                    _wrappedElement.set("bindingKeyModifierCtrl", value);
+            }
+
+            public bool @bindingKeyModifierShift
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("bindingKeyModifierShift");
+                set => 
+                    _wrappedElement.set("bindingKeyModifierShift", value);
+            }
+
+            public bool @bindingKeyModifierAlt
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("bindingKeyModifierAlt");
+                set => 
+                    _wrappedElement.set("bindingKeyModifierAlt", value);
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData",
+            TypeKind = TypeKind.WrappedClass)]
+        public class DateTimeFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public DateTimeFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public DateTimeFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData");
+
+            public static DateTimeFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public bool @hideDate
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("hideDate");
+                set => 
+                    _wrappedElement.set("hideDate", value);
+            }
+
+            public bool @hideTime
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("hideTime");
+                set => 
+                    _wrappedElement.set("hideTime", value);
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
         }
 
     }

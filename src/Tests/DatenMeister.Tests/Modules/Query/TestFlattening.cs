@@ -50,7 +50,7 @@ public class TestFlattening
             extent.elements().add(selectWorkspace);
 
             // Now create the query
-            var dropDownByQueryData = factory.create(_Forms.TheOne.__DropDownByQueryData);
+            var dropDownByQueryData = factory.create(_Forms.TheOne.FieldTypes.__DropDownByQueryData);
             var queryStatement = factory.create(_DataViews.TheOne.__QueryStatement);
             viewExtent.elements().add(queryStatement);
 
@@ -66,7 +66,7 @@ public class TestFlattening
             queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryFlatten);
             queryStatement.set(_DataViews._QueryStatement.resultNode, queryByMetaClass);
 
-            dropDownByQueryData.set(_Forms._DropDownByQueryData.query, queryStatement);
+            dropDownByQueryData.set(_Forms._FieldTypes._DropDownByQueryData.query, queryStatement);
 
             queryFlatten.set(_DataViews._Row._RowFlattenNode.input, queryByExtent);
             return (scope, queryFlatten);

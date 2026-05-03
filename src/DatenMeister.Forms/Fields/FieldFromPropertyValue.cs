@@ -26,27 +26,27 @@ public class FieldFromPropertyValue : FormFactoryBase, IFieldFactory
 
         if (DotNetHelper.IsEnumeration(propertyType))
         {
-            column = factory.create(_Forms.TheOne.__SubElementFieldData);
+            column = factory.create(_Forms.TheOne.FieldTypes.__SubElementFieldData);
         }
         else if (propertyValue is IObject)
         {
-            column = factory.create(_Forms.TheOne.__ReferenceFieldData);
-            column.set(_Forms._ReferenceFieldData.isSelectionInline, false);
+            column = factory.create(_Forms.TheOne.FieldTypes.__ReferenceFieldData);
+            column.set(_Forms._FieldTypes._ReferenceFieldData.isSelectionInline, false);
         }
         else
         {
-            column = factory.create(_Forms.TheOne.__TextFieldData);
+            column = factory.create(_Forms.TheOne.FieldTypes.__TextFieldData);
         }
 
-        column.set(_Forms._FieldData.name, propertyName);
-        column.set(_Forms._FieldData.title, propertyName);
-        column.set(_Forms._FieldData.isReadOnly, context.IsReadOnly);
+        column.set(_Forms._FieldTypes._FieldData.name, propertyName);
+        column.set(_Forms._FieldTypes._FieldData.title, propertyName);
+        column.set(_Forms._FieldTypes._FieldData.isReadOnly, context.IsReadOnly);
         
 
         // Makes the field to an enumeration, if explicitly requested or the type behind is an enumeration
         column.set(
-            _Forms._FieldData.isEnumeration,
-            column.getOrDefault<bool>(_Forms._FieldData.isEnumeration) |
+            _Forms._FieldTypes._FieldData.isEnumeration,
+            column.getOrDefault<bool>(_Forms._FieldTypes._FieldData.isEnumeration) |
             DotNetHelper.IsEnumeration(propertyValue?.GetType()));
 
         result.Form = column;

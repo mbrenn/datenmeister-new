@@ -135,7 +135,8 @@ internal class Program
         // Generates tree for StundenPlan
         var classGenerator = new ClassTreeGenerator
         {
-            Namespace = codeNamespace
+            Namespace = codeNamespace,
+            UriMappingLogic = typesFromAssembly
         };
 
         classGenerator.Walk(typeExtent);

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using BurnSystems.Logging;
 using DatenMeister.Core.Interfaces;
 
 namespace DatenMeister.SourcecodeGenerator;
@@ -10,6 +11,11 @@ namespace DatenMeister.SourcecodeGenerator;
 /// </summary>
 public class TypeUriMappingLogic
 {
+    /// <summary>
+    /// Defines the classlogger 
+    /// </summary>
+    public static ILogger Logger { get; } = new ClassLogger(typeof(TypeUriMappingLogic));
+    
     public class Entry
     {
         public string TypeUri { get; set; } = string.Empty;
@@ -72,18 +78,22 @@ public class TypeUriMappingLogic
     /// </summary>
     /// <param name="typeUri">Type of the Uri</param>
     /// <param name="fullName">Fullname</param>
-    /// <param name="typeKind">Type to be added</param>
-    public void UpdateEntry(string? typeUri, string fullName)
+    public void UpdateEntry(string? typeUri, string fullName, TypeKind typeKind)
     {
         if (string.IsNullOrEmpty(typeUri))
         {
             return;
         }
         
-        var found =  Entries.FirstOrDefault(x => x.TypeUri == typeUri && x.TypeKind == TypeKind.ClassTree);
+        var found =  Entries.FirstOrDefault(x => x.TypeUri == typeUri && x.TypeKind == typeKind);
         if (found != null)
         {
+            var before = found.ClassFullName;
             found.ClassFullName = fullName;
+            if (before != found.ClassFullName)
+            {
+                Logger.Trace($"{typeKind} conversion: {before} -->  {found.ClassFullName}");
+            }
         }
         else
         {
@@ -95,23 +105,7 @@ public class TypeUriMappingLogic
             };
             
             Entries.Add(newEntry);
-        }
-        
-        var found2 =  Entries.FirstOrDefault(x => x.TypeUri == typeUri && x.TypeKind == TypeKind.WrappedClass);
-        if (found != null)
-        {
-            found.ClassFullName = fullName + "_Wrapper";
-        }
-        else
-        {
-            var newEntry = new Entry
-            {
-                TypeUri = typeUri,
-                ClassFullName = fullName,
-                TypeKind = TypeKind.ClassTree
-            };
-            
-            Entries.Add(newEntry);
+            Logger.Trace($"{typeKind} addition  : {newEntry.ClassFullName}");
         }
     }
 }

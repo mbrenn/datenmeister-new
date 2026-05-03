@@ -1,5 +1,4 @@
 ﻿using DatenMeister.Core.Helper;
-using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Uml.Helper;
@@ -17,14 +16,13 @@ public class ClassTreeGenerator : WalkPackageClass
     /// <summary>
     /// Stores the typeUriMappingLogic which updates the references during the build
     /// </summary>
-    private TypeUriMappingLogic? _typeUriMappingLogic;
-    
+    public TypeUriMappingLogic? UriMappingLogic { get; init; }
+
     /// <summary>
     ///     Initializes a new instance of the ClassTreeGenerator
     /// </summary>
-    public ClassTreeGenerator(ISourceParser? parser = null, TypeUriMappingLogic? typeUriMappingLogic = null) : base(parser)
+    public ClassTreeGenerator(ISourceParser? parser = null) : base(parser)
     {
-        _typeUriMappingLogic = typeUriMappingLogic;
         FactoryVersion = new Version(1, 3, 0, 0);
     }
 
@@ -87,6 +85,28 @@ public class ClassTreeGenerator : WalkPackageClass
     }
 
     /// <summary>
+    /// Tries to get the class name as defined in the class model.
+    /// This is a bit ugly re-engineering of the way how this method is working, but it will be working 
+    /// </summary>
+    /// <param name="classInstance">Instance of the class.</param>
+    /// <returns></returns>
+    public string GetFullClassName(IObject classInstance)
+    {
+        return  Namespace + "._" + NamedElementMethods.GetFullName(classInstance, "._");
+    }
+    
+    /// <summary>
+    /// Tries to get the class name as defined in the class model.
+    /// This is a bit ugly re-engineering of the way how this method is working, but it will be working 
+    /// </summary>
+    /// <param name="classInstance">Instance of the class.</param>
+    /// <returns></returns>
+    public string GetWrapperFullClassName(IObject classInstance)
+    {
+        return Namespace + "." + NamedElementMethods.GetFullName(classInstance, ".") + "_Wrapper";
+    }
+
+    /// <summary>
     ///     Parses the packages
     /// </summary>
     /// <param name="classInstance">The class that shall be retrieved</param>
@@ -96,10 +116,12 @@ public class ClassTreeGenerator : WalkPackageClass
         if (classInstance is not IElement asElement) return;
 
         var name = GetNameOfElement(classInstance);
-        var fullName = "_" + NamedElementMethods.GetFullName(classInstance, "._");
-        _typeUriMappingLogic.UpdateEntry(classInstance.GetUri(), fullName, TypeKind.ClassTree);
+        var fullName = GetFullClassName(classInstance);
+        var wrapperName = GetWrapperFullClassName(classInstance);
+        //UriMappingLogic?.UpdateEntry(classInstance.GetUri(), fullName);
         
         Result.AppendLine($"{stack.Indentation}// {fullName}");
+        Result.AppendLine($"{stack.Indentation}// {wrapperName}");
         Result.AppendLine($"{stack.Indentation}[TypeUri(Uri = \"{classInstance.GetUri()}\",");
         Result.AppendLine($"{stack.Indentation}    TypeKind = TypeKind.ClassTree)]");
         Result.AppendLine($"{stack.Indentation}public class _{name}");
@@ -151,10 +173,10 @@ public class ClassTreeGenerator : WalkPackageClass
     {
         var asElement = (IElement) enumInstance;
         var name = GetNameOfElement(enumInstance);
+        var fullName = GetFullClassName(enumInstance);
+        var wrapperName = GetWrapperFullClassName(enumInstance);
+        //UriMappingLogic?.UpdateEntry(classInstance.GetUri(), fullName);
         
-        var fullName = "_" + NamedElementMethods.GetFullName(enumInstance, "._");
-        _typeUriMappingLogic.UpdateEntry(enumInstance.GetUri(), fullName);
-
         Result.AppendLine($"{stack.Indentation}public class _{name}");
         Result.AppendLine($"{stack.Indentation}{{");
 

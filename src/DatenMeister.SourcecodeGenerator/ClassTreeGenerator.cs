@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Uml.Helper;
@@ -116,12 +117,8 @@ public class ClassTreeGenerator : WalkPackageClass
         if (classInstance is not IElement asElement) return;
 
         var name = GetNameOfElement(classInstance);
-        var fullName = GetFullClassName(classInstance);
-        var wrapperName = GetWrapperFullClassName(classInstance);
-        //UriMappingLogic?.UpdateEntry(classInstance.GetUri(), fullName);
+        UpdateEntry(classInstance);
         
-        Result.AppendLine($"{stack.Indentation}// {fullName}");
-        Result.AppendLine($"{stack.Indentation}// {wrapperName}");
         Result.AppendLine($"{stack.Indentation}[TypeUri(Uri = \"{classInstance.GetUri()}\",");
         Result.AppendLine($"{stack.Indentation}    TypeKind = TypeKind.ClassTree)]");
         Result.AppendLine($"{stack.Indentation}public class _{name}");
@@ -173,10 +170,8 @@ public class ClassTreeGenerator : WalkPackageClass
     {
         var asElement = (IElement) enumInstance;
         var name = GetNameOfElement(enumInstance);
-        var fullName = GetFullClassName(enumInstance);
-        var wrapperName = GetWrapperFullClassName(enumInstance);
-        //UriMappingLogic?.UpdateEntry(classInstance.GetUri(), fullName);
-        
+        UpdateEntry(enumInstance);
+
         Result.AppendLine($"{stack.Indentation}public class _{name}");
         Result.AppendLine($"{stack.Indentation}{{");
 
@@ -213,6 +208,14 @@ public class ClassTreeGenerator : WalkPackageClass
         Result.AppendLine();
         Result.AppendLine($"{stack.Indentation}}}");
         Result.AppendLine();
+    }
+
+    private void UpdateEntry(IObject enumInstance)
+    {
+        var fullName = GetFullClassName(enumInstance);
+        var wrapperName = GetWrapperFullClassName(enumInstance);
+        UriMappingLogic?.UpdateEntry(enumInstance.GetUri(), fullName, TypeKind.ClassTree);
+        UriMappingLogic?.UpdateEntry(enumInstance.GetUri(), wrapperName, TypeKind.WrappedClass);
     }
 
     protected override void WalkEnumLiteral(IObject enumLiteralObject, CallStack stack)

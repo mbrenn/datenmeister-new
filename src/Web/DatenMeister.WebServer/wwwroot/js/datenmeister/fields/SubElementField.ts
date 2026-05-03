@@ -333,6 +333,7 @@ export class Control {
                         additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, Mof.ObjectType.Object)) as Mof.DmObject;
                     metaClassUri = metaClass.uri;
                     metaClassWorkspace = metaClass.workspace;
+                    name ??= metaClass.get(_UML._CommonStructure._NamedElement._name_, Mof.ObjectType.String);
                 } else {
                     // The other one is to directly reference
                     name = additionalType.get(

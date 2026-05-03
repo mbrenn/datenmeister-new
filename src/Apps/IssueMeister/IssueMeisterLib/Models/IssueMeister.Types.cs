@@ -8,7 +8,6 @@ namespace IssueMeisterLib.Models;
 
 public class _IssueMeister
 {
-    // _IssueMeister._Issue
     [TypeUri(Uri = "dm:///intern.types.issues.datenmeister/#IssueMeister.Issue",
         TypeKind = TypeKind.ClassTree)]
     public class _Issue
@@ -55,7 +54,6 @@ public class _IssueMeister
         @Closed
     }
 
-    // _IssueMeister._Iteration
     [TypeUri(Uri = "dm:///intern.types.issues.datenmeister/#IssueMeister.Iteration",
         TypeKind = TypeKind.ClassTree)]
     public class _Iteration

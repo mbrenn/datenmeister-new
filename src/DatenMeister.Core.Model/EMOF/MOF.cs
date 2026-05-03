@@ -10,7 +10,6 @@ public class _MOF
 {
     public class _Identifiers
     {
-        // _MOF._Identifiers._URIExtent
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Identifiers-URIExtent",
             TypeKind = TypeKind.ClassTree)]
         public class _URIExtent
@@ -20,7 +19,6 @@ public class _MOF
         public _URIExtent @URIExtent = new ();
         public MofObjectShadow @__URIExtent = new ("dm:///_internal/model/mof#_MOF-Identifiers-URIExtent");
 
-        // _MOF._Identifiers._Extent
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Identifiers-Extent",
             TypeKind = TypeKind.ClassTree)]
         public class _Extent
@@ -42,7 +40,6 @@ public class _MOF
 
     public class _CMOFExtension
     {
-        // _MOF._CMOFExtension._Tag
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFExtension-Tag",
             TypeKind = TypeKind.ClassTree)]
         public class _Tag
@@ -70,7 +67,6 @@ public class _MOF
 
     public class _Extension
     {
-        // _MOF._Extension._Tag
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Extension-Tag",
             TypeKind = TypeKind.ClassTree)]
         public class _Tag
@@ -95,7 +91,6 @@ public class _MOF
 
     public class _Common
     {
-        // _MOF._Common._ReflectiveSequence
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence",
             TypeKind = TypeKind.ClassTree)]
         public class _ReflectiveSequence
@@ -105,7 +100,6 @@ public class _MOF
         public _ReflectiveSequence @ReflectiveSequence = new ();
         public MofObjectShadow @__ReflectiveSequence = new ("dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence");
 
-        // _MOF._Common._ReflectiveCollection
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection",
             TypeKind = TypeKind.ClassTree)]
         public class _ReflectiveCollection
@@ -127,7 +121,6 @@ public class _MOF
 
     public class _CMOFReflection
     {
-        // _MOF._CMOFReflection._Factory
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Factory",
             TypeKind = TypeKind.ClassTree)]
         public class _Factory
@@ -137,7 +130,6 @@ public class _MOF
         public _Factory @Factory = new ();
         public MofObjectShadow @__Factory = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Factory");
 
-        // _MOF._CMOFReflection._Element
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Element",
             TypeKind = TypeKind.ClassTree)]
         public class _Element
@@ -147,7 +139,6 @@ public class _MOF
         public _Element @Element = new ();
         public MofObjectShadow @__Element = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Element");
 
-        // _MOF._CMOFReflection._Argument
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Argument",
             TypeKind = TypeKind.ClassTree)]
         public class _Argument
@@ -163,7 +154,6 @@ public class _MOF
         public _Argument @Argument = new ();
         public MofObjectShadow @__Argument = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument");
 
-        // _MOF._CMOFReflection._Extent
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Extent",
             TypeKind = TypeKind.ClassTree)]
         public class _Extent
@@ -173,7 +163,6 @@ public class _MOF
         public _Extent @Extent = new ();
         public MofObjectShadow @__Extent = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Extent");
 
-        // _MOF._CMOFReflection._Link
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Link",
             TypeKind = TypeKind.ClassTree)]
         public class _Link
@@ -192,7 +181,6 @@ public class _MOF
         public _Link @Link = new ();
         public MofObjectShadow @__Link = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Link");
 
-        // _MOF._CMOFReflection._Exception
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Exception",
             TypeKind = TypeKind.ClassTree)]
         public class _Exception
@@ -217,7 +205,6 @@ public class _MOF
 
     public class _Reflection
     {
-        // _MOF._Reflection._Factory
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Factory",
             TypeKind = TypeKind.ClassTree)]
         public class _Factory
@@ -230,7 +217,6 @@ public class _MOF
         public _Factory @Factory = new ();
         public MofObjectShadow @__Factory = new ("dm:///_internal/model/mof#_MOF-Reflection-Factory");
 
-        // _MOF._Reflection._Type
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Type",
             TypeKind = TypeKind.ClassTree)]
         public class _Type
@@ -240,7 +226,6 @@ public class _MOF
         public _Type @Type = new ();
         public MofObjectShadow @__Type = new ("dm:///_internal/model/mof#_MOF-Reflection-Type");
 
-        // _MOF._Reflection._Object
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Object",
             TypeKind = TypeKind.ClassTree)]
         public class _Object
@@ -250,7 +235,6 @@ public class _MOF
         public _Object @Object = new ();
         public MofObjectShadow @__Object = new ("dm:///_internal/model/mof#_MOF-Reflection-Object");
 
-        // _MOF._Reflection._Element
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Element",
             TypeKind = TypeKind.ClassTree)]
         public class _Element

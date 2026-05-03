@@ -8,7 +8,6 @@ namespace DatenMeister.Reports.Forms.Model;
 
 public class _Root
 {
-    // _ReportForm
     [TypeUri(Uri = "dm:///_internal/types/internal#89dea433-d199-4889-95eb-7ef30c0b5695",
         TypeKind = TypeKind.ClassTree)]
     public class _ReportForm
@@ -42,7 +41,6 @@ public class _Root
     public _ReportForm @ReportForm = new ();
     public MofObjectShadow @__ReportForm = new ("dm:///_internal/types/internal#89dea433-d199-4889-95eb-7ef30c0b5695");
 
-    // _RequestReportAction
     [TypeUri(Uri = "dm:///_internal/types/internal#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c",
         TypeKind = TypeKind.ClassTree)]
     public class _RequestReportAction
@@ -64,7 +62,6 @@ public class _Root
     public _RequestReportAction @RequestReportAction = new ();
     public MofObjectShadow @__RequestReportAction = new ("dm:///_internal/types/internal#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c");
 
-    // _RequestReportResult
     [TypeUri(Uri = "dm:///_internal/types/internal#75aaa247-9e5d-4f8c-ad11-8ba43d996684",
         TypeKind = TypeKind.ClassTree)]
     public class _RequestReportResult

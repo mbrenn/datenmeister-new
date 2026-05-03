@@ -8,7 +8,6 @@ namespace DatenMeister.Zip.Model;
 
 public class _Root
 {
-    // _ZipFileExtractAction
     [TypeUri(Uri = "dm:///_internal/types/internal#bb766314-6b49-48a6-b80b-08d61c549ff6",
         TypeKind = TypeKind.ClassTree)]
     public class _ZipFileExtractAction
@@ -30,7 +29,6 @@ public class _Root
     public _ZipFileExtractAction @ZipFileExtractAction = new ();
     public MofObjectShadow @__ZipFileExtractAction = new ("dm:///_internal/types/internal#bb766314-6b49-48a6-b80b-08d61c549ff6");
 
-    // _ZipFileExtractActionResult
     [TypeUri(Uri = "dm:///_internal/types/internal#a03dae8c-4f44-4d08-9cf8-e98627d05e2f",
         TypeKind = TypeKind.ClassTree)]
     public class _ZipFileExtractActionResult

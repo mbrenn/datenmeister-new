@@ -8,7 +8,6 @@ namespace DatenMeister.Domains.Model;
 
 public class _Root
 {
-    // _DomainCreateFoundationAction
     [TypeUri(Uri = "dm:///intern.types.domains.datenmeister/#9b040443-4675-42b6-8707-0e42450a2102",
         TypeKind = TypeKind.ClassTree)]
     public class _DomainCreateFoundationAction

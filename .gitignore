@@ -193,3 +193,5 @@ Cake.Npm.5.0.0
 /.ai
 /src/Web/DatenMeister.WebServer/test-results.xml
 
+*.min.css
+*.min.css.map

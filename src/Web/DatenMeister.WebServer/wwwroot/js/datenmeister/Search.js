@@ -1,0 +1,20 @@
+import { findBySearchString } from "./client/Elements.js";
+import { navigateToExtentItems, navigateToItemByUrl } from "./Navigator.js";
+export function executeSearchByText(searchText) {
+    findBySearchString(searchText).then(result => {
+        switch (result.resultType) {
+            case 'reference':
+                navigateToItemByUrl(result.reference.workspace, result.reference.uri);
+                break;
+            case 'referenceExtent':
+                navigateToExtentItems(result.reference.workspace, result.reference.extentUri);
+                break;
+            case 'none':
+                alert('Unfortunately, nothing was found.');
+                break;
+            default:
+                alert('Unknown result type: ' + result.resultType);
+        }
+    });
+}
+//# sourceMappingURL=Search.js.map

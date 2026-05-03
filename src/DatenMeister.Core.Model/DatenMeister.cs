@@ -1691,6 +1691,9 @@ public class _ExtentLoaderConfigs
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
 
+        public static readonly string @importType = "importType";
+        public IElement? @_importType = null;
+
         public static readonly string @name = "name";
         public IElement? @_name = null;
 
@@ -1753,6 +1756,9 @@ public class _ExtentLoaderConfigs
 
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
+
+        public static readonly string @importType = "importType";
+        public IElement? @_importType = null;
 
         public static readonly string @name = "name";
         public IElement? @_name = null;
@@ -1819,6 +1825,9 @@ public class _ExtentLoaderConfigs
 
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
+
+        public static readonly string @importType = "importType";
+        public IElement? @_importType = null;
 
         public static readonly string @name = "name";
         public IElement? @_name = null;
@@ -2087,6 +2096,9 @@ public class _ExtentLoaderConfigs
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
 
+        public static readonly string @importType = "importType";
+        public IElement? @_importType = null;
+
         public static readonly string @name = "name";
         public IElement? @_name = null;
 
@@ -2139,6 +2151,28 @@ public class _ExtentLoaderConfigs
 
     public _EnvironmentalVariableLoaderConfig @EnvironmentalVariableLoaderConfig = new ();
     public MofObjectShadow @__EnvironmentalVariableLoaderConfig = new ("dm:///_internal/types/internal#10151dfc-f18b-4a58-9434-da1be1e030a3");
+
+    public class _ExtentLoaderImportType
+    {
+        public static string @NoSync = "NoSync";
+        public IElement? @__NoSync = null;
+        public static string @ReadOnlySync = "ReadOnlySync";
+        public IElement? @__ReadOnlySync = null;
+        public static string @BidirectionalSync = "BidirectionalSync";
+        public IElement? @__BidirectionalSync = null;
+
+    }
+
+    public _ExtentLoaderImportType @ExtentLoaderImportType = new _ExtentLoaderImportType();
+    public IElement @__ExtentLoaderImportType = new MofObjectShadow("dm:///_internal/types/internal#9e879c8d-b7a0-4ef8-aaad-a0cbbf0245a9");
+
+
+    public enum ___ExtentLoaderImportType
+    {
+        @NoSync,
+        @ReadOnlySync,
+        @BidirectionalSync
+    }
 
     public static readonly _ExtentLoaderConfigs TheOne = new ();
 

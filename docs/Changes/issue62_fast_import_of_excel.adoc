@@ -15,8 +15,9 @@ The user shall be able to import an Excel file by just selecting the Excel File 
 == Design
 
 * The three different Extent Loader Configs are to be harmonized
-** [ ] An import type enumeration will be added 'ExcelLoaderImportType'
-** [ ] An attribute called 'importType' will be added by that enumeration
+** [x] An import type enumeration will be added 'ExcelLoaderImportType'
+*** Names are: Onetime, ReadOnlySync, BidirectionalSync
+** [x] An attribute called 'importType' will be added by that enumeration
 ** [ ] The three existing ExtentLoaderConfigs are to be replaced by one 'ExcelLoaderConfig'.
 ** [ ] The Provider are to be merged and execution is dependent on the import type
 * [ ] We need to add a button at the Workspace Detail View

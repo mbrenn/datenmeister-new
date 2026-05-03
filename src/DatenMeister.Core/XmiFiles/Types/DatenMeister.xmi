@@ -490,6 +490,7 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="idColumnName" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="3f3be2dc-3f46-414d-bfe4-9c3403c32d36" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="88f22e39-88fe-484f-b969-f98286500ce8" name="skipEmptyRowsCount" type-ref="dm:///_internal/model/primitivetypes#Integer" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5c545cfe-04b8-430f-a648-6c65c788ede1" name="columns" type-ref="dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a" upper="*" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="bd1e0532-6f4f-44d6-b253-bdf5d81cffe5" name="importType" type-ref="dm:///_internal/types/internal#9e879c8d-b7a0-4ef8-aaad-a0cbbf0245a9" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelReferenceLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig" p1:id="c76ee46f-0e09-43bf-9628-c6d3ad4952af" />
@@ -552,7 +553,11 @@
         <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
       </generalization>
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Enumeration" p1:id="9e879c8d-b7a0-4ef8-aaad-a0cbbf0245a9" name="ExtentLoaderImportType" />
+    <packagedElement p1:type="dm:///_internal/model/uml#Enumeration" p1:id="9e879c8d-b7a0-4ef8-aaad-a0cbbf0245a9" name="ExtentLoaderImportType">
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="362478fd-ad2c-4c2d-8d87-83ea95c648ce" name="NoSync" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="cffc81f5-deee-41e9-873d-ec3e2bc5692c" name="ReadOnlySync" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="e36befcb-0c3c-4e38-85f8-0d97edfd71d4" name="BidirectionalSync" />
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_DatenMeister_Forms" name="Forms" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.FieldData" name="FieldData">

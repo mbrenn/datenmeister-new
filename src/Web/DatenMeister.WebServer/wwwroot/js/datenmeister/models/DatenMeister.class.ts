@@ -782,6 +782,7 @@ export namespace _ExtentLoaderConfigs
             static idColumnName = "idColumnName";
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
+            static importType = "importType";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";
@@ -805,6 +806,7 @@ export namespace _ExtentLoaderConfigs
             static idColumnName = "idColumnName";
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
+            static importType = "importType";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";
@@ -829,6 +831,7 @@ export namespace _ExtentLoaderConfigs
             static idColumnName = "idColumnName";
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
+            static importType = "importType";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";
@@ -936,6 +939,7 @@ export namespace _ExtentLoaderConfigs
             static idColumnName = "idColumnName";
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
+            static importType = "importType";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";
@@ -959,6 +963,20 @@ export namespace _ExtentLoaderConfigs
         }
 
         export const __EnvironmentalVariableLoaderConfig_Uri = "dm:///_internal/types/internal#10151dfc-f18b-4a58-9434-da1be1e030a3";
+        export module _ExtentLoaderImportType
+        {
+            export const NoSync = "NoSync";
+            export const ReadOnlySync = "ReadOnlySync";
+            export const BidirectionalSync = "BidirectionalSync";
+        }
+
+        export enum ___ExtentLoaderImportType
+        {
+            NoSync,
+            ReadOnlySync,
+            BidirectionalSync
+        }
+
 }
 
 export namespace _Forms

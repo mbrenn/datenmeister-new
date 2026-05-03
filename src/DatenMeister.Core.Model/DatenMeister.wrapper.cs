@@ -4392,6 +4392,15 @@ public class ExtentLoaderConfigs
             }
         }
 
+        // Not found
+        public object? @importType
+        {
+            get =>
+                _wrappedElement.getOrDefault<object?>("importType");
+            set => 
+                _wrappedElement.set("importType", value);
+        }
+
         public string? @name
         {
             get =>
@@ -4571,6 +4580,15 @@ public class ExtentLoaderConfigs
                     _wrappedElement.set("columns", value);
                 }
             }
+        }
+
+        // Not found
+        public object? @importType
+        {
+            get =>
+                _wrappedElement.getOrDefault<object?>("importType");
+            set => 
+                _wrappedElement.set("importType", value);
         }
 
         public string? @name
@@ -4760,6 +4778,15 @@ public class ExtentLoaderConfigs
                     _wrappedElement.set("columns", value);
                 }
             }
+        }
+
+        // Not found
+        public object? @importType
+        {
+            get =>
+                _wrappedElement.getOrDefault<object?>("importType");
+            set => 
+                _wrappedElement.set("importType", value);
         }
 
         public string? @name
@@ -5525,6 +5552,15 @@ public class ExtentLoaderConfigs
                     _wrappedElement.set("columns", value);
                 }
             }
+        }
+
+        // Not found
+        public object? @importType
+        {
+            get =>
+                _wrappedElement.getOrDefault<object?>("importType");
+            set => 
+                _wrappedElement.set("importType", value);
         }
 
         public string? @name

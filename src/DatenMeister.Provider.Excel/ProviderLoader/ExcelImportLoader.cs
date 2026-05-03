@@ -29,7 +29,7 @@ public class ExcelImportLoader : IProviderLoader
         var extentPath =
             configuration.getOrDefault<string>(
                 _ExtentLoaderConfigs._ExcelImportLoaderConfig
-                    .extentPath) ?? throw new InvalidOperationException("extentPath == null");
+                    .xmiFilePath) ?? throw new InvalidOperationException("extentPath == null");
             
         // Creates the XMI being used as a target
         var factory = new MofFactory(configuration);

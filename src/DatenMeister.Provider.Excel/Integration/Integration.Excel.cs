@@ -16,7 +16,6 @@ public static class Integration
 
     public static ExcelProvider LoadExcel(this IDatenMeisterScope container, string url, string filePath)
     {
-            
         var settings = InMemoryObject.CreateEmpty(
             _ExtentLoaderConfigs.TheOne.__ExcelExtentLoaderConfig);
         settings.set(_ExtentLoaderConfigs._ExcelExtentLoaderConfig.extentUri,

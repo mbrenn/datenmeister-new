@@ -4401,6 +4401,14 @@ public class ExtentLoaderConfigs
                 _wrappedElement.set("importType", value);
         }
 
+        public string? @xmiFilePath
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("xmiFilePath");
+            set => 
+                _wrappedElement.set("xmiFilePath", value);
+        }
+
         public string? @name
         {
             get =>
@@ -4591,6 +4599,14 @@ public class ExtentLoaderConfigs
                 _wrappedElement.set("importType", value);
         }
 
+        public string? @xmiFilePath
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("xmiFilePath");
+            set => 
+                _wrappedElement.set("xmiFilePath", value);
+        }
+
         public string? @name
         {
             get =>
@@ -4646,14 +4662,6 @@ public class ExtentLoaderConfigs
         private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig");
 
         public static ExcelImportLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @extentPath
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("extentPath");
-            set => 
-                _wrappedElement.set("extentPath", value);
-        }
 
         public bool @fixRowCount
         {
@@ -4789,6 +4797,14 @@ public class ExtentLoaderConfigs
                 _wrappedElement.set("importType", value);
         }
 
+        public string? @xmiFilePath
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("xmiFilePath");
+            set => 
+                _wrappedElement.set("xmiFilePath", value);
+        }
+
         public string? @name
         {
             get =>
@@ -4845,6 +4861,22 @@ public class ExtentLoaderConfigs
 
         public static ExcelExtentLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
+        public bool @fixRowCount
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("fixRowCount");
+            set => 
+                _wrappedElement.set("fixRowCount", value);
+        }
+
+        public bool @fixColumnCount
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("fixColumnCount");
+            set => 
+                _wrappedElement.set("fixColumnCount", value);
+        }
+
         public string? @filePath
         {
             get =>
@@ -4853,12 +4885,122 @@ public class ExtentLoaderConfigs
                 _wrappedElement.set("filePath", value);
         }
 
+        public string? @sheetName
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("sheetName");
+            set => 
+                _wrappedElement.set("sheetName", value);
+        }
+
+        public int @offsetRow
+        {
+            get =>
+                _wrappedElement.getOrDefault<int>("offsetRow");
+            set => 
+                _wrappedElement.set("offsetRow", value);
+        }
+
+        public int @offsetColumn
+        {
+            get =>
+                _wrappedElement.getOrDefault<int>("offsetColumn");
+            set => 
+                _wrappedElement.set("offsetColumn", value);
+        }
+
+        public int @countRows
+        {
+            get =>
+                _wrappedElement.getOrDefault<int>("countRows");
+            set => 
+                _wrappedElement.set("countRows", value);
+        }
+
+        public int @countColumns
+        {
+            get =>
+                _wrappedElement.getOrDefault<int>("countColumns");
+            set => 
+                _wrappedElement.set("countColumns", value);
+        }
+
+        public bool @hasHeader
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("hasHeader");
+            set => 
+                _wrappedElement.set("hasHeader", value);
+        }
+
+        public bool @tryMergedHeaderCells
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("tryMergedHeaderCells");
+            set => 
+                _wrappedElement.set("tryMergedHeaderCells", value);
+        }
+
+        public bool @onlySetColumns
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("onlySetColumns");
+            set => 
+                _wrappedElement.set("onlySetColumns", value);
+        }
+
         public string? @idColumnName
         {
             get =>
                 _wrappedElement.getOrDefault<string?>("idColumnName");
             set => 
                 _wrappedElement.set("idColumnName", value);
+        }
+
+        public int @skipEmptyRowsCount
+        {
+            get =>
+                _wrappedElement.getOrDefault<int>("skipEmptyRowsCount");
+            set => 
+                _wrappedElement.set("skipEmptyRowsCount", value);
+        }
+
+        // DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelColumn_Wrapper
+        public DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelColumn_Wrapper? @columns
+        {
+            get
+            {
+                var foundElement = _wrappedElement.getOrDefault<IElement?>("columns");
+                return foundElement == null ? null : new DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelColumn_Wrapper(foundElement);
+            }
+            set 
+            {
+                if(value is IElementWrapper wrappedElement)
+                {
+                    _wrappedElement.set("columns", wrappedElement.GetWrappedElement());
+                }
+                else
+                {
+                    _wrappedElement.set("columns", value);
+                }
+            }
+        }
+
+        // Not found
+        public object? @importType
+        {
+            get =>
+                _wrappedElement.getOrDefault<object?>("importType");
+            set => 
+                _wrappedElement.set("importType", value);
+        }
+
+        public string? @xmiFilePath
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("xmiFilePath");
+            set => 
+                _wrappedElement.set("xmiFilePath", value);
         }
 
         public string? @name
@@ -5561,6 +5703,14 @@ public class ExtentLoaderConfigs
                 _wrappedElement.getOrDefault<object?>("importType");
             set => 
                 _wrappedElement.set("importType", value);
+        }
+
+        public string? @xmiFilePath
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("xmiFilePath");
+            set => 
+                _wrappedElement.set("xmiFilePath", value);
         }
 
         public string? @name

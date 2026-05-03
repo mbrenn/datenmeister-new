@@ -783,6 +783,7 @@ export namespace _ExtentLoaderConfigs
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
             static importType = "importType";
+            static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";
@@ -807,6 +808,7 @@ export namespace _ExtentLoaderConfigs
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
             static importType = "importType";
+            static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";
@@ -816,7 +818,6 @@ export namespace _ExtentLoaderConfigs
         export const __ExcelReferenceLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig";
         export class _ExcelImportLoaderConfig
         {
-            static extentPath = "extentPath";
             static fixRowCount = "fixRowCount";
             static fixColumnCount = "fixColumnCount";
             static filePath = "filePath";
@@ -832,6 +833,7 @@ export namespace _ExtentLoaderConfigs
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
             static importType = "importType";
+            static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";
@@ -841,8 +843,22 @@ export namespace _ExtentLoaderConfigs
         export const __ExcelImportLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig";
         export class _ExcelExtentLoaderConfig
         {
+            static fixRowCount = "fixRowCount";
+            static fixColumnCount = "fixColumnCount";
             static filePath = "filePath";
+            static sheetName = "sheetName";
+            static offsetRow = "offsetRow";
+            static offsetColumn = "offsetColumn";
+            static countRows = "countRows";
+            static countColumns = "countColumns";
+            static hasHeader = "hasHeader";
+            static tryMergedHeaderCells = "tryMergedHeaderCells";
+            static onlySetColumns = "onlySetColumns";
             static idColumnName = "idColumnName";
+            static skipEmptyRowsCount = "skipEmptyRowsCount";
+            static columns = "columns";
+            static importType = "importType";
+            static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";
@@ -940,6 +956,7 @@ export namespace _ExtentLoaderConfigs
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
             static importType = "importType";
+            static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";

@@ -1694,6 +1694,9 @@ public class _ExtentLoaderConfigs
         public static readonly string @importType = "importType";
         public IElement? @_importType = null;
 
+        public static readonly string @xmiFilePath = "xmiFilePath";
+        public IElement? @_xmiFilePath = null;
+
         public static readonly string @name = "name";
         public IElement? @_name = null;
 
@@ -1760,6 +1763,9 @@ public class _ExtentLoaderConfigs
         public static readonly string @importType = "importType";
         public IElement? @_importType = null;
 
+        public static readonly string @xmiFilePath = "xmiFilePath";
+        public IElement? @_xmiFilePath = null;
+
         public static readonly string @name = "name";
         public IElement? @_name = null;
 
@@ -1781,9 +1787,6 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelImportLoaderConfig
     {
-        public static readonly string @extentPath = "extentPath";
-        public IElement? @_extentPath = null;
-
         public static readonly string @fixRowCount = "fixRowCount";
         public IElement? @_fixRowCount = null;
 
@@ -1829,6 +1832,9 @@ public class _ExtentLoaderConfigs
         public static readonly string @importType = "importType";
         public IElement? @_importType = null;
 
+        public static readonly string @xmiFilePath = "xmiFilePath";
+        public IElement? @_xmiFilePath = null;
+
         public static readonly string @name = "name";
         public IElement? @_name = null;
 
@@ -1850,11 +1856,53 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelExtentLoaderConfig
     {
+        public static readonly string @fixRowCount = "fixRowCount";
+        public IElement? @_fixRowCount = null;
+
+        public static readonly string @fixColumnCount = "fixColumnCount";
+        public IElement? @_fixColumnCount = null;
+
         public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
 
+        public static readonly string @sheetName = "sheetName";
+        public IElement? @_sheetName = null;
+
+        public static readonly string @offsetRow = "offsetRow";
+        public IElement? @_offsetRow = null;
+
+        public static readonly string @offsetColumn = "offsetColumn";
+        public IElement? @_offsetColumn = null;
+
+        public static readonly string @countRows = "countRows";
+        public IElement? @_countRows = null;
+
+        public static readonly string @countColumns = "countColumns";
+        public IElement? @_countColumns = null;
+
+        public static readonly string @hasHeader = "hasHeader";
+        public IElement? @_hasHeader = null;
+
+        public static readonly string @tryMergedHeaderCells = "tryMergedHeaderCells";
+        public IElement? @_tryMergedHeaderCells = null;
+
+        public static readonly string @onlySetColumns = "onlySetColumns";
+        public IElement? @_onlySetColumns = null;
+
         public static readonly string @idColumnName = "idColumnName";
         public IElement? @_idColumnName = null;
+
+        public static readonly string @skipEmptyRowsCount = "skipEmptyRowsCount";
+        public IElement? @_skipEmptyRowsCount = null;
+
+        public static readonly string @columns = "columns";
+        public IElement? @_columns = null;
+
+        public static readonly string @importType = "importType";
+        public IElement? @_importType = null;
+
+        public static readonly string @xmiFilePath = "xmiFilePath";
+        public IElement? @_xmiFilePath = null;
 
         public static readonly string @name = "name";
         public IElement? @_name = null;
@@ -2098,6 +2146,9 @@ public class _ExtentLoaderConfigs
 
         public static readonly string @importType = "importType";
         public IElement? @_importType = null;
+
+        public static readonly string @xmiFilePath = "xmiFilePath";
+        public IElement? @_xmiFilePath = null;
 
         public static readonly string @name = "name";
         public IElement? @_name = null;

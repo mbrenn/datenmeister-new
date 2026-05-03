@@ -14,16 +14,26 @@ The user shall be able to import an Excel file by just selecting the Excel File 
 
 == Design
 
-* The three different Extent Loader Configs are to be harmonized
-** [x] An import type enumeration will be added 'ExcelLoaderImportType'
-*** Names are: Onetime, ReadOnlySync, BidirectionalSync
-** [x] An attribute called 'importType' will be added by that enumeration
-** [ ] The three existing ExtentLoaderConfigs are to be replaced by one 'ExcelLoaderConfig'.
-** [ ] The Provider are to be merged and execution is dependent on the import type
-* [ ] We need to add a button at the Workspace Detail View
+* We keep the three instances as they contain additional information about the persistance capability and others
+** [ ] Remove the Import Type... It's a pity, but nobody is using it
+** [ ] The three existing ExtentLoaderConfigs are to be renamed to be more specific:
+*** ExcelConvertToXmiLoader
+*** ExcelReadLoader
+*** ExcelFullSyncLoader
+* [ ] We need to add three buttons for each type at the Workspace Detail View
+** [ ] To achieve that, we need to be capable to add multiple action buttons in one row
+** [ ] This means that we need to extent the Action Buttons datastructure (see below)
+** [ ] This means that we need to extent the View logic (see below)
 * [ ] We need to add an action which just shows the new ExtentLoader which can be filled out by the user
+
+=== Design Multiaction-Buttons
+
+* [ ] We will add a new datatype that allows to add multiple field in one row
+** MergedFieldsInCellData
+*** Attribute: fields
+* [ ] We create a ActionHandler in TypeScript which renders the multiple fields into one cell
 
 == Verification
 
-* [ ] Create a unit test which gives evidence that all ExtentLoaderConfig import types are working property
+* [ ] Create update unit test which gives evidence that all ExtentLoaderConfig import types are working property
 * [ ] Perform a manual check on the website that the import is working

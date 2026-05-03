@@ -10,7 +10,7 @@ using NPOI.XSSF.UserModel;
 
 namespace DatenMeister.Provider.Excel.ProviderLoader;
 
-public class ExcelFileProviderLoader : IProviderLoader
+public class ExcelFullSyncLoader : IProviderLoader
 {
     public IWorkspaceLogic? WorkspaceLogic { get; set; }
         

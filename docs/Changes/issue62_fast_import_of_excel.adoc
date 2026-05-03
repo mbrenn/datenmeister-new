@@ -18,7 +18,7 @@ The user shall be able to import an Excel file by just selecting the Excel File 
 ** [ ] Remove the Import Type... It's a pity, but nobody is using it
 ** [ ] The three existing ExtentLoaderConfigs are to be renamed to be more specific:
 *** ExcelConvertToXmiLoader
-*** ExcelReadLoader
+*** ExcelReadOnlyLoader
 *** ExcelFullSyncLoader
 * [ ] We need to add three buttons for each type at the Workspace Detail View
 ** [ ] To achieve that, we need to be capable to add multiple action buttons in one row

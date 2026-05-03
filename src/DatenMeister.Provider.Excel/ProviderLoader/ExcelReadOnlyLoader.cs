@@ -16,7 +16,7 @@ namespace DatenMeister.Provider.Excel.ProviderLoader;
 /// Implements the loader which creates an InMemoryExtent out of an excel file
 /// If DatenMeister will be rebooted, the excel file will be loaded again
 /// </summary>
-public class ExcelReferenceLoader : IProviderLoader
+public class ExcelReadOnlyLoader : IProviderLoader
 {
     public IWorkspaceLogic? WorkspaceLogic { get; set; }
 
@@ -59,7 +59,7 @@ public class ExcelReferenceLoader : IProviderLoader
     /// <summary>
     /// Imports the excel into the extent
     /// </summary>
-    /// <param name="extent"></param>
+    /// <param name="extent">Extent in which the data will be imported</param>
     /// <param name="loaderConfig">Element of ExcelLoaderConfig</param>
     public static void ImportExcelIntoExtent(IExtent extent, IElement loaderConfig)
     {

@@ -17,13 +17,13 @@ public class ExcelPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                 var mapper = scopeStorage.Get<ProviderToProviderLoaderMapper>();
                 mapper.AddMapping(
                     _ExtentLoaderConfigs.TheOne.__ExcelExtentLoaderConfig,
-                    _ => new ExcelFileProviderLoader());
+                    _ => new ExcelFullSyncLoader());
                 mapper.AddMapping(
                     _ExtentLoaderConfigs.TheOne.__ExcelReferenceLoaderConfig,
-                    _ => new ExcelReferenceLoader());
+                    _ => new ExcelReadOnlyLoader());
                 mapper.AddMapping(
                     _ExtentLoaderConfigs.TheOne.__ExcelImportLoaderConfig,
-                    _ => new ExcelImportLoader());
+                    _ => new ExcelConvertToXmiOnceLoader());
                 mapper.AddMapping(
                     _ExtentLoaderConfigs.TheOne.__ExcelHierarchicalLoaderConfig,
                     _ => new ExcelHierarchicalLoader());

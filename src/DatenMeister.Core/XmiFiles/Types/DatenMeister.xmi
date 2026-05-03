@@ -492,14 +492,14 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5c545cfe-04b8-430f-a648-6c65c788ede1" name="columns" type-ref="dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a" upper="*" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8ad18174-54b2-4b9d-a67d-70b7c0f8910f" name="xmiFilePath" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelReferenceLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig" name="ExcelReadOnlyLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig" p1:id="c76ee46f-0e09-43bf-9628-c6d3ad4952af" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelImportLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig" name="ExcelConvertToXmiOnceConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig" p1:id="f0d759eb-3c85-4f7b-8248-ccc4c76695f9" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="036bdb2d-aad4-4d5f-bb97-89ccb8cdd03c" name="xmiFilePath" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig" name="ExcelFullSyncLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig" p1:id="f2d262b1-b8f0-48f3-9814-857d5f1dfcd6" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="InMemoryLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig">

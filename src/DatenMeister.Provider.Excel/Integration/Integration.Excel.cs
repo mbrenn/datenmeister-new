@@ -11,7 +11,7 @@ public static class Integration
 {
     public static ExcelProvider LoadExcel(this IDatenMeisterScope container, string url, IElement settings)
     {
-        return ExcelFileProviderLoader.LoadProvider(settings);
+        return ExcelFullSyncLoader.LoadProvider(settings);
     }
 
     public static ExcelProvider LoadExcel(this IDatenMeisterScope container, string url, string filePath)
@@ -23,6 +23,6 @@ public static class Integration
         settings.set(_ExtentLoaderConfigs._ExcelExtentLoaderConfig.xmiFilePath,
             filePath);
             
-        return ExcelFileProviderLoader.LoadProvider(settings);
+        return ExcelFullSyncLoader.LoadProvider(settings);
     }
 }

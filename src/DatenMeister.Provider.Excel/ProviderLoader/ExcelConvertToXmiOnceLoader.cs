@@ -11,7 +11,7 @@ using DatenMeister.Extent.Manager.ExtentStorage;
 
 namespace DatenMeister.Provider.Excel.ProviderLoader;
 
-public class ExcelImportLoader : IProviderLoader
+public class ExcelConvertToXmiOnceLoader : IProviderLoader
 {
     public IWorkspaceLogic? WorkspaceLogic { get; set; }
         
@@ -26,17 +26,17 @@ public class ExcelImportLoader : IProviderLoader
             WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"),
             ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
 
-        var extentPath =
+        var xmiExtentPath =
             configuration.getOrDefault<string>(
-                _ExtentLoaderConfigs._ExcelImportLoaderConfig
-                    .xmiFilePath) ?? throw new InvalidOperationException("extentPath == null");
+                _ExtentLoaderConfigs._ExcelImportLoaderConfig.xmiFilePath) 
+            ?? throw new InvalidOperationException("extentPath == null");
             
         // Creates the XMI being used as a target
         var factory = new MofFactory(configuration);
         var xmiConfiguration = factory.create(_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
         xmiConfiguration.set(
             _ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
-            extentPath);
+            xmiExtentPath);
         xmiConfiguration.set(
             _ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
             configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri));
@@ -54,7 +54,7 @@ public class ExcelImportLoader : IProviderLoader
         extent.elements().RemoveAll();
 
         // Loads the excelinformation into the extent
-        ExcelReferenceLoader.ImportExcelIntoExtent(extent, configuration);
+        ExcelReadOnlyLoader.ImportExcelIntoExtent(extent, configuration);
 
         // Returns the values
         return new LoadedProviderInfo(extent.Provider, xmiConfiguration)

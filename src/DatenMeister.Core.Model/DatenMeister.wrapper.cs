@@ -4392,15 +4392,6 @@ public class ExtentLoaderConfigs
             }
         }
 
-        // Not found
-        public object? @importType
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("importType");
-            set => 
-                _wrappedElement.set("importType", value);
-        }
-
         public string? @xmiFilePath
         {
             get =>
@@ -4590,15 +4581,6 @@ public class ExtentLoaderConfigs
             }
         }
 
-        // Not found
-        public object? @importType
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("importType");
-            set => 
-                _wrappedElement.set("importType", value);
-        }
-
         public string? @xmiFilePath
         {
             get =>
@@ -4662,6 +4644,14 @@ public class ExtentLoaderConfigs
         private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig");
 
         public static ExcelImportLoaderConfig_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+        public string? @xmiFilePath
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("xmiFilePath");
+            set => 
+                _wrappedElement.set("xmiFilePath", value);
+        }
 
         public bool @fixRowCount
         {
@@ -4786,23 +4776,6 @@ public class ExtentLoaderConfigs
                     _wrappedElement.set("columns", value);
                 }
             }
-        }
-
-        // Not found
-        public object? @importType
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("importType");
-            set => 
-                _wrappedElement.set("importType", value);
-        }
-
-        public string? @xmiFilePath
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("xmiFilePath");
-            set => 
-                _wrappedElement.set("xmiFilePath", value);
         }
 
         public string? @name
@@ -4984,15 +4957,6 @@ public class ExtentLoaderConfigs
                     _wrappedElement.set("columns", value);
                 }
             }
-        }
-
-        // Not found
-        public object? @importType
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("importType");
-            set => 
-                _wrappedElement.set("importType", value);
         }
 
         public string? @xmiFilePath
@@ -5694,15 +5658,6 @@ public class ExtentLoaderConfigs
                     _wrappedElement.set("columns", value);
                 }
             }
-        }
-
-        // Not found
-        public object? @importType
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("importType");
-            set => 
-                _wrappedElement.set("importType", value);
         }
 
         public string? @xmiFilePath
@@ -8719,6 +8674,39 @@ public class Forms
                     _wrappedElement.getOrDefault<bool>("isReadOnly");
                 set => 
                     _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#b11ab14e-b620-486e-b795-fb559479674b",
+            TypeKind = TypeKind.WrappedClass)]
+        public class MergedFieldsInCellData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public MergedFieldsInCellData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public MergedFieldsInCellData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#b11ab14e-b620-486e-b795-fb559479674b");
+
+            public static MergedFieldsInCellData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // Not found
+            public object? @fields
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("fields");
+                set => 
+                    _wrappedElement.set("fields", value);
             }
 
         }

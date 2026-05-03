@@ -4,7 +4,7 @@ import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ClientWorkspace from "../client/Workspace.js";
 import * as ClientItems from "../client/Items.js";
-import { _UML } from "../models/uml.js";
+import { _UML } from "../models/UML.js";
 import '../../node_modules/chai/register-assert.js';
 export function includeTests() {
     describe('Client', function () {

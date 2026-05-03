@@ -11,7 +11,7 @@ import * as TypeSelectionControl from "../controls/TypeSelectionControl.js";
 import { moveItemInCollectionDown, moveItemInCollectionUp } from "../client/Actions.Items.js";
 import * as FormActions from "../FormActions.js";
 import * as Navigator from '../Navigator.js';
-import { _UML } from "../models/uml.js";
+import { _UML } from "../models/UML.js";
 export class Control {
     configuration;
     isReadOnly;

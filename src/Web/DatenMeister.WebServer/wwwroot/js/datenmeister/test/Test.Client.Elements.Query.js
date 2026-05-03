@@ -1,6 +1,6 @@
 import * as Mof from "../Mof.js";
 import * as ClientElements from "../client/Elements.js";
-import { _UML } from "../models/uml.js";
+import { _UML } from "../models/UML.js";
 import * as Query from "../modules/QueryEngine.js";
 import '../../node_modules/chai/register-assert.js';
 import '../../node_modules/chai/register-expect.js';

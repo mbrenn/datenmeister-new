@@ -1691,9 +1691,6 @@ public class _ExtentLoaderConfigs
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
 
-        public static readonly string @importType = "importType";
-        public IElement? @_importType = null;
-
         public static readonly string @xmiFilePath = "xmiFilePath";
         public IElement? @_xmiFilePath = null;
 
@@ -1760,9 +1757,6 @@ public class _ExtentLoaderConfigs
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
 
-        public static readonly string @importType = "importType";
-        public IElement? @_importType = null;
-
         public static readonly string @xmiFilePath = "xmiFilePath";
         public IElement? @_xmiFilePath = null;
 
@@ -1787,6 +1781,9 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelImportLoaderConfig
     {
+        public static readonly string @xmiFilePath = "xmiFilePath";
+        public IElement? @_xmiFilePath = null;
+
         public static readonly string @fixRowCount = "fixRowCount";
         public IElement? @_fixRowCount = null;
 
@@ -1828,12 +1825,6 @@ public class _ExtentLoaderConfigs
 
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
-
-        public static readonly string @importType = "importType";
-        public IElement? @_importType = null;
-
-        public static readonly string @xmiFilePath = "xmiFilePath";
-        public IElement? @_xmiFilePath = null;
 
         public static readonly string @name = "name";
         public IElement? @_name = null;
@@ -1897,9 +1888,6 @@ public class _ExtentLoaderConfigs
 
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
-
-        public static readonly string @importType = "importType";
-        public IElement? @_importType = null;
 
         public static readonly string @xmiFilePath = "xmiFilePath";
         public IElement? @_xmiFilePath = null;
@@ -2143,9 +2131,6 @@ public class _ExtentLoaderConfigs
 
         public static readonly string @columns = "columns";
         public IElement? @_columns = null;
-
-        public static readonly string @importType = "importType";
-        public IElement? @_importType = null;
 
         public static readonly string @xmiFilePath = "xmiFilePath";
         public IElement? @_xmiFilePath = null;
@@ -3268,6 +3253,18 @@ public class _Forms
 
         public _DateTimeFieldData @DateTimeFieldData = new ();
         public MofObjectShadow @__DateTimeFieldData = new ("dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#b11ab14e-b620-486e-b795-fb559479674b",
+            TypeKind = TypeKind.ClassTree)]
+        public class _MergedFieldsInCellData
+        {
+            public static readonly string @fields = "fields";
+            public IElement? @_fields = null;
+
+        }
+
+        public _MergedFieldsInCellData @MergedFieldsInCellData = new ();
+        public MofObjectShadow @__MergedFieldsInCellData = new ("dm:///_internal/types/internal#b11ab14e-b620-486e-b795-fb559479674b");
 
     }
 

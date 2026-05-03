@@ -1,6 +1,6 @@
 ﻿
 import * as Mof from './Mof.js';
-import {_UML} from "./models/uml.js";
+import {_UML} from "./models/UML.js";
 
 /**
  * Module providing utilities for handling named elements.

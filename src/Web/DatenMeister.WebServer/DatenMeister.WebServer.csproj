@@ -29,6 +29,9 @@
     <TypeScriptCompile Include="wwwroot\js\datenmeister\page\Actions.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Actions.Item.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Sync.ts" />
+    <TypeScriptCompile Remove="wwwroot\js\datenmeister\models\mof.ts" />
+    <TypeScriptCompile Remove="wwwroot\js\datenmeister\models\primitivetypes.ts" />
+    <TypeScriptCompile Remove="wwwroot\js\datenmeister\models\uml.ts" />
   </ItemGroup>
 
   <ItemGroup>

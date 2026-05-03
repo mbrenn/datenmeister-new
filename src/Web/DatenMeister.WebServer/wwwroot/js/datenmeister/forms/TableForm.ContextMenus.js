@@ -7,7 +7,7 @@ import { truncateText } from "../../burnsystems/StringManipulation.js";
 import * as SelectItemControl from "../controls/SelectItemControl.js";
 import * as Settings from "../Settings.js";
 import * as Navigator from "../Navigator.js";
-import { _UML } from "../models/uml.js";
+import { _UML } from "../models/UML.js";
 import * as ClientItems from "../client/Items.js";
 var _NamedElement = _UML._CommonStructure._NamedElement;
 /**

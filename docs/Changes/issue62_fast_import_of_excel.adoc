@@ -28,10 +28,10 @@ The user shall be able to import an Excel file by just selecting the Excel File 
 
 === Design Multiaction-Buttons
 
-* [ ] We will add a new datatype that allows to add multiple field in one row
+* [x] We will add a new datatype that allows to add multiple field in one row
 ** MergedFieldsInCellData
 *** Attribute: fields
-* [ ] We create a ActionHandler in TypeScript which renders the multiple fields into one cell
+* [ ] We create an ActionHandler in TypeScript which renders the multiple fields into one cell
 
 == Verification
 

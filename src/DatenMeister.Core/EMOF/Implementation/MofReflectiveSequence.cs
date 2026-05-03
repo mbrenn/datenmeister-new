@@ -47,7 +47,12 @@ public class MofReflectiveSequence(MofObject mofObject, string property, Attribu
     /// <returns>Enumeration of collection</returns>
     internal IEnumerable<object> Enumerate(bool noReferences = false)
     {
-        var result = GetPropertyAsEnumerable();
+        List<object>? result;
+        lock (MofObject.ProviderObject)
+        {
+            result = GetPropertyAsEnumerable().ToList();
+        } 
+        
         foreach (var item in result)
         {
             var convertedObject =

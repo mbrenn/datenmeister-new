@@ -782,7 +782,6 @@ export namespace _ExtentLoaderConfigs
             static idColumnName = "idColumnName";
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
-            static importType = "importType";
             static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
@@ -807,7 +806,6 @@ export namespace _ExtentLoaderConfigs
             static idColumnName = "idColumnName";
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
-            static importType = "importType";
             static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
@@ -818,6 +816,7 @@ export namespace _ExtentLoaderConfigs
         export const __ExcelReferenceLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig";
         export class _ExcelImportLoaderConfig
         {
+            static xmiFilePath = "xmiFilePath";
             static fixRowCount = "fixRowCount";
             static fixColumnCount = "fixColumnCount";
             static filePath = "filePath";
@@ -832,8 +831,6 @@ export namespace _ExtentLoaderConfigs
             static idColumnName = "idColumnName";
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
-            static importType = "importType";
-            static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
             static workspaceId = "workspaceId";
@@ -857,7 +854,6 @@ export namespace _ExtentLoaderConfigs
             static idColumnName = "idColumnName";
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
-            static importType = "importType";
             static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
@@ -955,7 +951,6 @@ export namespace _ExtentLoaderConfigs
             static idColumnName = "idColumnName";
             static skipEmptyRowsCount = "skipEmptyRowsCount";
             static columns = "columns";
-            static importType = "importType";
             static xmiFilePath = "xmiFilePath";
             static _name_ = "name";
             static extentUri = "extentUri";
@@ -1419,6 +1414,12 @@ export namespace _Forms
                 }
 
                 export const __DateTimeFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData";
+                export class _MergedFieldsInCellData
+                {
+                    static fields = "fields";
+                }
+
+                export const __MergedFieldsInCellData_Uri = "dm:///_internal/types/internal#b11ab14e-b620-486e-b795-fb559479674b";
         }
 
 }

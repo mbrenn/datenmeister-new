@@ -55,7 +55,7 @@ public partial class ExtentStorageData
         /// Stores a shadow configuration for non persistent extents which can be used to check
         /// whether an extent is added to extent manager non-persistently. 
         /// </summary>
-        public static IElement ShadowConfigurationForNonPersistent =
+        public static readonly IElement shadowConfigurationForNonPersistent =
             new MofObjectShadow("dm:///internal/shadow_configuration_for_non_persistent");
     }
 }

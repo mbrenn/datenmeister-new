@@ -2,6 +2,7 @@
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
@@ -404,7 +405,7 @@ public class ExtentManager
             ?? throw new InvalidOperationException($"Workspace {workspaceName} not found");
         
         var extentInformation = new ExtentStorageData.LoadedExtentInformation(
-            ExtentStorageData.LoadedExtentInformation.ShadowConfigurationForNonPersistent)
+            ExtentStorageData.LoadedExtentInformation.shadowConfigurationForNonPersistent)
         {
             Extent = extent,
             IsExtentPersistent = false,
@@ -536,7 +537,7 @@ public class ExtentManager
             Logger.Info("ExtentManager is read-only. We do not store");
             return;
         }
-
+        
         VerifyDatabaseContent();
         CheckForOpenedManager();
 
@@ -550,6 +551,12 @@ public class ExtentManager
         if (information == null || information.Configuration == null)
         {
             throw new InvalidOperationException($"The extent '{extent}' was not loaded by this instance");
+        }
+
+        if (information.Configuration == ExtentStorageData.LoadedExtentInformation.shadowConfigurationForNonPersistent)
+        {
+            Logger.Info($"Skipping non-persistant extent {(extent as IUriExtent)?.contextURI() ?? "Unknown"} in {extent.GetWorkspace()?.id ?? "Unknown Workspace"}");
+            return;
         }
 
         Logger.Info($"Writing extent: {information.Configuration}");
@@ -1042,7 +1049,7 @@ public class ExtentManager
         {
             var list = new List<VerifyDatabaseEntry>();
             foreach (var entry in _extentStorageData.LoadedExtents
-                         .Where (x => x.Configuration != ExtentStorageData.LoadedExtentInformation.ShadowConfigurationForNonPersistent))
+                         .Where (x => x.Configuration != ExtentStorageData.LoadedExtentInformation.shadowConfigurationForNonPersistent))
             {
                 var found = list.FirstOrDefault(
                     x => x.Workspace ==

@@ -83,7 +83,7 @@ public class ProviderToProviderLoaderMapper
     public IProviderLoader CreateFor(ExtentManager extentManager, IElement configuration)
     {
         // Checks, if we are a fully non-persistant extent
-        if (configuration == ExtentStorageData.LoadedExtentInformation.ShadowConfigurationForNonPersistent)
+        if (configuration == ExtentStorageData.LoadedExtentInformation.shadowConfigurationForNonPersistent)
         {
             return new NonPersistentProviderLoader();
         }

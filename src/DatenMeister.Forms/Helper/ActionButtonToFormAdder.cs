@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Forms.FormFactory;
 
@@ -11,6 +12,11 @@ namespace DatenMeister.Forms.Helper;
 /// </summary>
 public static class ActionButtonToFormAdder
 {
+    /// <summary>
+    /// Adds an action button to a rowform
+    /// </summary>
+    /// <param name="formsState">Defines the forms state in which the action button shall be added</param>
+    /// <param name="adder">Parameter which contains the information about the action button</param>
     public static void AddRowActionButton(FormsState formsState, ActionButtonAdderParameterForRow adder)
     {
         formsState.FormModificationPlugins.Add(
@@ -26,6 +32,11 @@ public static class ActionButtonToFormAdder
             });
     }
 
+    /// <summary>
+    /// Adds an action button to a tableform
+    /// </summary>
+    /// <param name="formsState">Defines the forms state in which the action button shall be added</param>
+    /// <param name="adder">Parameter which contains the information about the action button</param>
     public static void AddTableActionButton(FormsState formsState, ActionButtonAdderParameterForTable adder)
     {
         formsState.FormModificationPlugins.Add(
@@ -41,77 +52,38 @@ public static class ActionButtonToFormAdder
             });
     }
 
+    /// <summary>
+    /// This is just a small helper class which adds the fields where necessary
+    /// </summary>
+    /// <param name="parameter">Parameter in which the buttons will be added</param>
     private class RowAndTableFormModification(ActionButtonAdderParameter parameter) : 
         FormFactoryBase, IRowFormFactory, ITableFormFactory
     {
+        /// <summary>
+        /// In case the action but is fitting to the constraints, we create the action button and add it
+        /// to the field.  
+        /// </summary>
+        /// <param name="factoryParameter">Parameter which contain the information when the button shall
+        /// be added</param>
+        /// <param name="context">Context in which the button will be added</param>
+        /// <param name="result">Here-in, the new fields will be added</param>
         private void ManageActionButton(
             FormFactoryParameterBase factoryParameter,
             FormCreationContext context,
             FormCreationResultMultipleForms result)
         {
-            if (parameter is ActionButtonAdderParameterForRow forRow
-                && factoryParameter is RowFormFactoryParameter rowParameter)
+            var actionField = CreateValidityInCaseItIsValid(parameter, factoryParameter, context);
+            if (actionField == null)
             {
-                forRow.OnCall?.Invoke(rowParameter);
-                var element = rowParameter.Element;
-
-                if (element != null && parameter.PredicateForElement != null &&
-                    parameter.PredicateForElement(element) == false)
-                {
-                    // Not predicated
-                    return;
-                }
-
-                if (!forRow.PredicateForParameter(rowParameter))
-                {
-                    // Skip it
-                    return;
-                }
-            }
-            else if (parameter is ActionButtonAdderParameterForTable forTable
-                     && factoryParameter is TableFormFactoryParameter tableParameter)
-            {
-                forTable.OnCall?.Invoke(tableParameter);
-                
-                if (!forTable.PredicateForParameter(tableParameter))
-                {
-                    // Skip it
-                    return;
-                }
-            }
-            else
-            {
-                throw new InvalidOperationException("Unknown parameter combination: "
-                                                    + parameter.GetType()
-                                                    + " " + factoryParameter.GetType());
+                return;
             }
 
+            // Adds the field to the form
             var form = result.Forms.FirstOrDefault();
             if (form == null)
                 throw new InvalidOperationException("Form is null");
 
             var fields = form.get<IReflectiveSequence>(_Forms._FormTypes._RowForm.field);
-            var actionField = context.Global.Factory.create(_Forms.TheOne.FieldTypes.__ActionFieldData);
-            actionField.set(_Forms._FieldTypes._ActionFieldData.actionName, parameter.ActionName);
-            actionField.set(_Forms._FieldTypes._ActionFieldData.title, parameter.Title);
-            actionField.set(_Forms._FieldTypes._ActionFieldData.name, parameter.ActionName);
-
-            if (!string.IsNullOrEmpty(parameter.ButtonText))
-            {
-                actionField.set(_Forms._FieldTypes._ActionFieldData.buttonText, parameter.ButtonText);
-            }
-
-            if (parameter.Parameter.Count > 0)
-            {
-                var parameter1 = context.Global.Factory.create(null);
-                foreach (var (key, value) in parameter.Parameter)
-                {
-                    parameter1.set(key, value);
-                }
-
-                actionField.set(_Forms._FieldTypes._ActionFieldData.parameter, parameter1);
-            }
-
             if (parameter.ActionButtonPosition == -1)
             {
                 fields.add(actionField);
@@ -133,6 +105,86 @@ public static class ActionButtonToFormAdder
                 $"[ActionButtonToFormAdder]: Added Button{parameter.Title}");
 
             result.IsManaged = true;
+        }
+
+        private static IElement? CreateValidityInCaseItIsValid(ActionButtonAdderParameter parameter,
+            FormFactoryParameterBase factoryParameter, FormCreationContext context)
+        {
+            if (!ChecksValidity(parameter, factoryParameter))
+            {
+                // The parameter is not valid, so we would like to skip it
+                return null;
+            }
+
+            return Create(parameter, context);
+        }
+
+        private static IElement Create(ActionButtonAdderParameter parameter, FormCreationContext context)
+        {
+            var actionField = context.Global.Factory.create(_Forms.TheOne.FieldTypes.__ActionFieldData);
+            actionField.set(_Forms._FieldTypes._ActionFieldData.actionName, parameter.ActionName);
+            actionField.set(_Forms._FieldTypes._ActionFieldData.title, parameter.Title);
+            actionField.set(_Forms._FieldTypes._ActionFieldData.name, parameter.ActionName);
+
+            if (!string.IsNullOrEmpty(parameter.ButtonText))
+            {
+                actionField.set(_Forms._FieldTypes._ActionFieldData.buttonText, parameter.ButtonText);
+            }
+
+            if (parameter.Parameter.Count > 0)
+            {
+                var parameter1 = context.Global.Factory.create(null);
+                foreach (var (key, value) in parameter.Parameter)
+                {
+                    parameter1.set(key, value);
+                }
+
+                actionField.set(_Forms._FieldTypes._ActionFieldData.parameter, parameter1);
+            }
+
+            return actionField;
+        }
+
+        private static bool ChecksValidity(ActionButtonAdderParameter parameter, FormFactoryParameterBase factoryParameter)
+        {
+            if (parameter is ActionButtonAdderParameterForRow forRow
+                && factoryParameter is RowFormFactoryParameter rowParameter)
+            {
+                forRow.OnCall?.Invoke(rowParameter);
+                var element = rowParameter.Element;
+
+                if (element != null && parameter.PredicateForElement != null &&
+                    parameter.PredicateForElement(element) == false)
+                {
+                    // Not predicated
+                    return false;
+                }
+
+                if (!forRow.PredicateForParameter(rowParameter))
+                {
+                    // Skip it
+                    return false;
+                }
+            }
+            else if (parameter is ActionButtonAdderParameterForTable forTable
+                     && factoryParameter is TableFormFactoryParameter tableParameter)
+            {
+                forTable.OnCall?.Invoke(tableParameter);
+                
+                if (!forTable.PredicateForParameter(tableParameter))
+                {
+                    // Skip it
+                    return false;
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException("Unknown parameter combination: "
+                                                    + parameter.GetType()
+                                                    + " " + factoryParameter.GetType());
+            }
+
+            return true;
         }
 
         /// <summary>

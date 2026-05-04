@@ -3249,6 +3249,24 @@ public class _Forms
             public static readonly string @fields = "fields";
             public IElement? @_fields = null;
 
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
         }
 
         public _MergedFieldsInCellData @MergedFieldsInCellData = new ();

@@ -15,8 +15,8 @@ The user shall be able to import an Excel file by just selecting the Excel File 
 == Design
 
 * We keep the three instances as they contain additional information about the persistance capability and others
-** [ ] Remove the Import Type... It's a pity, but nobody is using it
-** [ ] The three existing ExtentLoaderConfigs are to be renamed to be more specific:
+** [x] Remove the Import Type... It's a pity, but nobody is using it
+** [x] The three existing ExtentLoaderConfigs are to be renamed to be more specific:
 *** ExcelConvertToXmiLoader
 *** ExcelReadOnlyLoader
 *** ExcelFullSyncLoader

@@ -1413,6 +1413,12 @@ export namespace _Forms
                 export class _MergedFieldsInCellData
                 {
                     static fields = "fields";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
                 }
 
                 export const __MergedFieldsInCellData_Uri = "dm:///_internal/types/internal#b11ab14e-b620-486e-b795-fb559479674b";

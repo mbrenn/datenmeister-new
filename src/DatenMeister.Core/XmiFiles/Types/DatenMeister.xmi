@@ -763,6 +763,7 @@
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="b11ab14e-b620-486e-b795-fb559479674b" name="MergedFieldsInCellData">
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ed175545-3a50-49ab-a146-923af908138f" name="fields" type-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.Forms.FieldData" isComposite="true" upper="*" />
+        <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="74ffd9e5-44e2-43a3-a4e9-366eb6575f84" general-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData" />
       </packagedElement>
     </packagedElement>
   </item>

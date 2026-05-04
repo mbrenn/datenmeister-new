@@ -6,6 +6,7 @@ import * as DateTimeField from "../fields/DateTimeField.js";
 import * as DropDownField from "../fields/DropDownField.js";
 import * as MetaClassElementField from "../fields/MetaClassElementField.js";
 import * as ActionField from "../fields/ActionField.js";
+import * as MergedFieldsInCell from "../fields/MergedFieldsInCell.js";
 import * as AnyDataField from "../fields/AnyDataField.js";
 import * as SubElementField from "../fields/SubElementField.js";
 import * as SeparatorLineField from "../fields/SeparatorLineField.js";
@@ -69,6 +70,9 @@ export function createField(fieldMetaClassUri, parameter) {
             break;
         case _DatenMeister._Forms._FieldTypes.__ActionFieldData_Uri:
             result = new ActionField.Field();
+            break;
+        case _DatenMeister._Forms._FieldTypes.__MergedFieldsInCellData_Uri:
+            result = new MergedFieldsInCell.Field();
             break;
         case _DatenMeister._Forms._FieldTypes.__SubElementFieldData_Uri:
             result = new SubElementField.Field();

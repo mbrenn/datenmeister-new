@@ -1261,6 +1261,12 @@ export var _Forms;
         _FieldTypes.__DateTimeFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData";
         class _MergedFieldsInCellData {
             static fields = "fields";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
         _FieldTypes._MergedFieldsInCellData = _MergedFieldsInCellData;
         _FieldTypes.__MergedFieldsInCellData_Uri = "dm:///_internal/types/internal#b11ab14e-b620-486e-b795-fb559479674b";

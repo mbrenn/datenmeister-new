@@ -8677,6 +8677,55 @@ public class Forms
                     _wrappedElement.set("fields", value);
             }
 
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
         }
 
     }

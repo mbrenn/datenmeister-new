@@ -62,7 +62,9 @@ public class ActionButtonAdderParameterForRow : ActionButtonAdderParameter
     /// <summary>
     /// Gets or sets the delegate that will be called, when the 
     /// the filter is evaluated and a match has been figured out.
-    /// This allows setting a breakpoint for the debugger during issue finding
+    /// This allows setting a breakpoint for the debugger during issue finding.
+    /// This also allows to set the parameter of the action depending of the item which is
+    /// in context of creating that button.
     /// </summary>
     public Action<RowFormFactoryParameter>? OnCallSuccess { get; set; }
 }

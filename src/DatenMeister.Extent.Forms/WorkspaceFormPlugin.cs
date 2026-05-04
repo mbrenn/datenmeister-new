@@ -29,8 +29,8 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
         switch (position)
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
-                    
-                var formsPlugin = scopeStorage.Get<FormsState>();
+
+                var formsState = scopeStorage.Get<FormsState>();
 
                 var actionParameter =
                     new ActionButtonAdderParameterForRow(WorkspaceCreateExtentNavigate, "Create or Load Extent")
@@ -39,42 +39,69 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
                         Priority = FormFactoryPriorities.AdditionalFunctionsPrimary
                     };
 
-                actionParameter.OnCallSuccess = parameter =>
-                {
-                    // Sets the parameter that the right workspace is used
-                    var workspaceId =
-                        parameter.Element?.getOrDefault<string>(_Management._Workspace.id);
-                    if (!string.IsNullOrEmpty(workspaceId))
-                    {
-                        actionParameter.Parameter["workspaceId"] = workspaceId;
-                    }
-                };
-                
-                ActionButtonToFormAdder.AddRowActionButton(formsPlugin, actionParameter);
-                
+                SetCallBack(actionParameter);
+
+                ActionButtonToFormAdder.AddRowActionButton(formsState, actionParameter);
+
                 var otherActionParameter =
                     new ActionButtonAdderParameterForRow(WorkspaceCreateXmiExtentNavigate, "Create Xmi-Extent")
                     {
                         PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
                     };
+                SetCallBack(otherActionParameter);
 
-                otherActionParameter.OnCallSuccess = parameter =>
-                {
-                    // Sets the parameter that the right workspace is used
-                    var workspaceId =
-                        parameter.Element?.getOrDefault<string>(_Management._Workspace.id);
-                    if (!string.IsNullOrEmpty(workspaceId))
-                    {
-                        otherActionParameter.Parameter["workspaceId"] = workspaceId;
-                    }
-                };
-                    
                 ActionButtonToFormAdder.AddRowActionButton(
-                    formsPlugin, otherActionParameter);
+                    formsState, otherActionParameter);
+
+                var excel1 =
+                    new ActionButtonAdderParameterForRow(WorkspaceCreateXmiExtentNavigate,
+                        "Create Read-Only Excel-Extent")
+                    {
+                        PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
+                    };
+                SetCallBack(excel1);
+                var excel2 =
+                    new ActionButtonAdderParameterForRow(WorkspaceCreateXmiExtentNavigate,
+                        "Create synchronized Excel-Extent")
+                    {
+                        PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
+                    };
+                SetCallBack(excel2);
+                var excel3 =
+                    new ActionButtonAdderParameterForRow(WorkspaceCreateXmiExtentNavigate,
+                        "Create one-time Import Excel-Extent")
+                    {
+                        PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
+                    };
+                SetCallBack(excel3);
+
+                ActionButtonToFormAdder.AddRowActionButtons(
+                    formsState,
+                    new ActionButtonToFormAdder.MultiActionButtonsConfig()
+                    {
+                        Name = "Import Excel",
+                        Title = "Import Excel"
+                    },
+                    [excel1, excel2, excel3]);
+
 
                 break;
         }
 
         return Task.CompletedTask;
+
+        void SetCallBack(ActionButtonAdderParameterForRow actionParameter)
+        {
+            actionParameter.OnCallSuccess = parameter =>
+            {
+                // Sets the parameter that the right workspace is used
+                var workspaceId =
+                    parameter.Element?.getOrDefault<string>(_Management._Workspace.id);
+                if (!string.IsNullOrEmpty(workspaceId))
+                {
+                    actionParameter.Parameter["workspaceId"] = workspaceId;
+                }
+            };
+        }
     }
 }

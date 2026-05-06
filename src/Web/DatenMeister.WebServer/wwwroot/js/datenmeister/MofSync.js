@@ -7,12 +7,8 @@ import * as ClientElements from "./client/Elements.js";
  */
 export async function createTemporaryDmObject(metaClass) {
     const createdTemporaryObject = await ClientElements.createTemporaryElement(metaClass);
-    const result = Mof.DmObjectWithSync.createFromReference(createdTemporaryObject.workspace, createdTemporaryObject.uri);
-    result.id = createdTemporaryObject.id;
-    if (createdTemporaryObject.metaClassUri !== undefined && createdTemporaryObject.metaClassUri !== "") {
-        result.setMetaClassByUri(createdTemporaryObject.metaClassUri, createdTemporaryObject.metaClassWorkspace);
-    }
-    return result;
+    // A bit ugly, we could and should combine both calls, but it is working
+    return await ClientItem.getObjectByUri(createdTemporaryObject.workspace, createdTemporaryObject.uri);
 }
 /**
  * Performs a sync of the element to the server.

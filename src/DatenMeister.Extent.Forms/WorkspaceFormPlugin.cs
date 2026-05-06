@@ -1,5 +1,8 @@
-﻿using DatenMeister.Core.Interfaces;
+﻿using System.Web;
+using DatenMeister.Actions.ClientActions;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
@@ -13,6 +16,7 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
     /// Defines the name of the action to create a new extent in the workspace
     /// </summary>
     public const string WorkspaceCreateXmiExtent = "Workspace.Extent.Xmi.Create";
+    
     /// <summary>
     /// Defines the name of the action to create a new extent in the workspace
     /// </summary>
@@ -53,27 +57,27 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
                 ActionButtonToFormAdder.AddRowActionButton(
                     formsState, otherActionParameter);
 
-                var excel1 =
-                    new ActionButtonAdderParameterForRow(WorkspaceCreateXmiExtentNavigate,
-                        "Create Read-Only Excel-Extent")
+                var excelOneTime =
+                    new ActionButtonAdderParameterForRow(NavigationClientActions.ToUrlActionName,
+                        "One-Time")
                     {
                         PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
                     };
-                SetCallBack(excel1);
-                var excel2 =
-                    new ActionButtonAdderParameterForRow(WorkspaceCreateXmiExtentNavigate,
-                        "Create synchronized Excel-Extent")
+                SetCallBackToUrl(excelOneTime, _ExtentLoaderConfigs.TheOne.__ExcelConvertToXmiOnceConfig.Uri);
+                var excelReadOnly =
+                    new ActionButtonAdderParameterForRow(NavigationClientActions.ToUrlActionName,
+                        "Read-Only")
                     {
                         PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
                     };
-                SetCallBack(excel2);
-                var excel3 =
-                    new ActionButtonAdderParameterForRow(WorkspaceCreateXmiExtentNavigate,
-                        "Create one-time Import Excel-Extent")
+                SetCallBackToUrl(excelReadOnly, _ExtentLoaderConfigs.TheOne.__ExcelReadOnlyLoaderConfig.Uri);
+                var excelSynchronized =
+                    new ActionButtonAdderParameterForRow(NavigationClientActions.ToUrlActionName,
+                        "Synchronized")
                     {
                         PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
                     };
-                SetCallBack(excel3);
+                SetCallBackToUrl(excelSynchronized, _ExtentLoaderConfigs.TheOne.__ExcelFullSyncLoaderConfig.Uri);
 
                 ActionButtonToFormAdder.AddRowActionButtons(
                     formsState,
@@ -82,8 +86,7 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
                         Name = "Import Excel",
                         Title = "Import Excel"
                     },
-                    [excel1, excel2, excel3]);
-
+                    [excelReadOnly, excelSynchronized, excelOneTime]);
 
                 break;
         }
@@ -100,6 +103,23 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
                 if (!string.IsNullOrEmpty(workspaceId))
                 {
                     actionParameter.Parameter["workspaceId"] = workspaceId;
+                }
+            };
+        }
+        
+        void SetCallBackToUrl(ActionButtonAdderParameterForRow actionParameter, string metaClassUri)
+        {
+            actionParameter.OnCallSuccess = parameter =>
+            {
+                // Sets the parameter that the right workspace is used
+                var workspaceId =
+                    parameter.Element?.getOrDefault<string>(_Management._Workspace.id);
+                if (!string.IsNullOrEmpty(workspaceId))
+                {
+                    actionParameter.Parameter[_Actions._ClientActions._NavigateToUrlClientAction.url] = 
+                        "ItemAction/Workspace.Extent.LoadOrCreate.Step2?metaClass=" +
+                        HttpUtility.UrlEncode(metaClassUri) +
+                        "&workspaceId=" + HttpUtility.UrlEncode(workspaceId);
                 }
             };
         }

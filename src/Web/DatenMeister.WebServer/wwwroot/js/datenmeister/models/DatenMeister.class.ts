@@ -360,6 +360,12 @@ export namespace _Actions
                 }
 
                 export const __NavigateToItemClientAction_Uri = "dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4";
+                export class _NavigateToUrlClientAction
+                {
+                    static url = "url";
+                }
+
+                export const __NavigateToUrlClientAction_Uri = "dm:///_internal/types/internal#f1b5a13d-14fa-4ae8-8850-0feddf7ba0e5";
         }
 
         export namespace _Forms

@@ -237,6 +237,9 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="61332eab-3939-4ecd-ac84-f5370931e566" name="itemUrl" type-ref="dm:///_internal/model/primitivetypes#String"></ownedAttribute>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="3c3dcee3-b48d-4ff1-b7aa-a8e2e759aa4d" name="formUri" type-ref="dm:///_internal/model/primitivetypes#String"></ownedAttribute>
       </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="f1b5a13d-14fa-4ae8-8850-0feddf7ba0e5" name="NavigateToUrlClientAction">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1a46ef51-2f2d-46eb-8f51-9aef698aaa22" name="url" type-ref="dm:///_internal/model/primitivetypes#String" />
+      </packagedElement>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="97ddd1b8-bd3d-4c43-82ed-5c55abda0929" name="Forms">
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DatenMeister.Models.Actions.CreateFormByMetaclass" name="CreateFormByMetaClass">

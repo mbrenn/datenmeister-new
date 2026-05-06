@@ -2031,6 +2031,38 @@ public class Actions
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#f1b5a13d-14fa-4ae8-8850-0feddf7ba0e5",
+            TypeKind = TypeKind.WrappedClass)]
+        public class NavigateToUrlClientAction_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public NavigateToUrlClientAction_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public NavigateToUrlClientAction_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#f1b5a13d-14fa-4ae8-8850-0feddf7ba0e5");
+
+            public static NavigateToUrlClientAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @url
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("url");
+                set => 
+                    _wrappedElement.set("url", value);
+            }
+
+        }
+
     }
 
     public class Forms

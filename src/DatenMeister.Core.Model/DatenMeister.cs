@@ -789,6 +789,18 @@ public class _Actions
         public _NavigateToItemClientAction @NavigateToItemClientAction = new ();
         public MofObjectShadow @__NavigateToItemClientAction = new ("dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#f1b5a13d-14fa-4ae8-8850-0feddf7ba0e5",
+            TypeKind = TypeKind.ClassTree)]
+        public class _NavigateToUrlClientAction
+        {
+            public static readonly string @url = "url";
+            public IElement? @_url = null;
+
+        }
+
+        public _NavigateToUrlClientAction @NavigateToUrlClientAction = new ();
+        public MofObjectShadow @__NavigateToUrlClientAction = new ("dm:///_internal/types/internal#f1b5a13d-14fa-4ae8-8850-0feddf7ba0e5");
+
     }
 
     public _ClientActions ClientActions = new ();

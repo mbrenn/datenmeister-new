@@ -70,7 +70,7 @@ class WorkspaceExtentLoadOrCreateAction extends FormActions.ItemFormActionModule
         } else {
             document.location.href = Settings.baseUrl +
                 "ItemAction/Workspace.Extent.LoadOrCreate.Step2" +
-                "?metaclass=" + encodeURIComponent(extentType.uri) +
+                "?metaClass=" + encodeURIComponent(extentType.uri) +
                 (workspaceIdParameter !== undefined
                     ? ("&workspaceId=" + encodeURIComponent(workspaceIdParameter))
                     : "");
@@ -88,7 +88,7 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
     async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
         let p = new URLSearchParams(window.location.search);
         const workspaceId= p.get("workspaceId");
-        const metaClassUri = p.get("metaclass");
+        const metaClassUri = p.get("metaClass");
 
         const result =
             await MofSync.createTemporaryDmObject(metaClassUri);
@@ -141,8 +141,7 @@ class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBas
         const extentCreationParameter = new Mof.DmObject();
         extentCreationParameter.set('configuration', element);
         extentCreationParameter.setMetaClassByUri(
-            _DatenMeister._Actions.__LoadExtentAction_Uri,'Types'
-        );
+            _DatenMeister._Actions.__LoadExtentAction_Uri,'Types');
 
         const result = await ActionClient.executeActionDirectly(
             "Execute",

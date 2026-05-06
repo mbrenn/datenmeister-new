@@ -20,18 +20,18 @@ The user shall be able to import an Excel file by just selecting the Excel File 
 *** ExcelConvertToXmiLoader
 *** ExcelReadOnlyLoader
 *** ExcelFullSyncLoader
-* [ ] We need to add three buttons for each type at the Workspace Detail View
-** [ ] To achieve that, we need to be capable to add multiple action buttons in one row
-** [ ] This means that we need to extent the Action Buttons datastructure (see below)
-** [ ] This means that we need to extent the View logic (see below)
-* [ ] We need to add an action which just shows the new ExtentLoader which can be filled out by the user
+* [x] We need to add three buttons for each type at the Workspace Detail View
+** [x] To achieve that, we need to be capable to add multiple action buttons in one row
+** [x] This means that we need to extent the Action Buttons datastructure (see below)
+** [x] This means that we need to extent the View logic (see below)
+* [x] We need to add an action which just shows the new ExtentLoader which can be filled out by the user
 
 === Design Multiaction-Buttons
 
 * [x] We will add a new datatype that allows to add multiple field in one row
 ** MergedFieldsInCellData
 *** Attribute: fields
-* [ ] We create an ActionHandler in TypeScript which renders the multiple fields into one cell
+* [x] We create an ActionHandler in TypeScript which renders the multiple fields into one cell
 
 == Verification
 

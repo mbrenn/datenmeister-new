@@ -4,6 +4,8 @@ import { IFormNavigation, IPageForm } from "../forms/Interfaces.js";
 import { SubmitMethod } from "../forms/Forms.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as Navigation from "../Navigator.js";
+import {_Actions} from "../models/DatenMeister.class.js";
+import * as Settings from "../Settings.js";
 
 export function loadModules() {
 
@@ -11,6 +13,22 @@ export function loadModules() {
     FormActions.addModule(new CreateNewItem());
     FormActions.addModule(new CreateAction());
     FormActions.addModule(new NavigateToExtent());
+    FormActions.addModule(new NavigateToUrl());
+}
+
+/**
+ * Moves the browser to the specific url
+ */
+class NavigateToUrl extends FormActions.ItemFormActionModuleBase
+{
+    constructor() {
+        super("DatenMeister.Navigation.ToUrl");
+        this.skipSaving = true;
+    }
+
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        document.location.href = Settings.baseUrl + parameter.get(_Actions._ClientActions._NavigateToUrlClientAction.url); 
+    }
 }
 
 class ChangeForm extends FormActions.ItemFormActionModuleBase {

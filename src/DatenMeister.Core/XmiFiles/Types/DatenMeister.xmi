@@ -278,19 +278,6 @@
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b94eb150-78dd-4d2b-aea6-12b9bf579acc" type-ref="dm:///_internal/model/primitivetypes#String" name="url" />
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4445ee8d-eb54-4318-8f5b-117fd2cd5a4d" name="element" isComposite="true" />/&gt;
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="265754ea-f3cd-48b8-a4c6-daf6c0c2941e" general-ref="dm:///_internal/types/internal#Actions.Action" /></packagedElement>
-    <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="4b93f824-87a4-4471-aa80-63e5d5d1accb" name="Data">
-      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="fb1fcea9-c1d5-489d-9bd1-f64c6b71a171" name="FreezeViewResultAction">
-        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6cea8a17-c1d7-4a2b-af82-d3964b2043f4" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" name="viewNode" />
-      </packagedElement>
-      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="1286c17c-3286-4e8c-93fc-1a4c3e6df48a" name="FreezeViewResultInMemory">
-        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="e029922e-13ee-4cf6-90a7-bb73046115cc" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" />
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="0328e747-a42f-4bfe-b5e7-1ddd71da3366" general-ref="dm:///_internal/types/internal#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171" />
-      </packagedElement>
-      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="45cd9f30-fdfa-4f1b-a87c-24c088c075be" name="FreezeViewResultInExtent">
-        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="990158e7-5875-471a-83fe-758e70fbc2d0" name="extentLoaderConfig" type-ref="dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" isComposite="true" />
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="86dd10d7-9b42-4678-bc0b-5d5e9613ec5e" general-ref="dm:///_internal/types/internal#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171" />
-      </packagedElement>
-    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DataView" name="DataView">
@@ -316,14 +303,14 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.QueryStatement" name="QueryStatement">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="dec9a363-4e79-48bf-9168-83784aaeb31d" name="nodes" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" lower="0" upper="*" isComposite="true" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="64a250be-b99f-49ec-b152-dd2e6bb8cc4f" name="resultNode" lower="0" upper="1" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="64a250be-b99f-49ec-b152-dd2e6bb8cc4f" name="resultNode" lower="0" upper="1" type-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.DataViews.ViewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4f5204b1-9bac-4ac7-a5ec-34b9b6befb36" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="1f2d1a2a-b04b-4990-8534-f8ba9f8b3765" name="Row">
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="5f66ff9a-0a68-4c87-856b-5921c7cae628" name="RowFilterByFreeTextAnywhere">
         <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="2722721d-dbb9-4f24-ad16-9ba07c106a12" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="2f5a7112-010e-4e94-974c-21108986abcb" name="freeText" type-ref="dm:///_internal/model/primitivetypes#String" />
-        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4d4eea81-5f77-4936-89d4-b4a1befe0d4c" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4d4eea81-5f77-4936-89d4-b4a1befe0d4c" name="input" type-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.DataViews.ViewNode" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FilterByPropertyValueNode" name="RowFilterByPropertyValueNode">
         <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="b08ec0ba-93c0-45ec-a75f-e2b76db2be85" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
@@ -778,7 +765,7 @@
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7b5ca1cd-99bd-4c9e-9333-4f1a5d44c0bd" name="hideTime" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="b11ab14e-b620-486e-b795-fb559479674b" name="MergedFieldsInCellData">
-        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ed175545-3a50-49ab-a146-923af908138f" name="fields" type-ref="#DatenMeister.Models.Forms.FieldData" isComposite="true" upper="*" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ed175545-3a50-49ab-a146-923af908138f" name="fields" type-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.Forms.FieldData" isComposite="true" upper="*" />
         <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="74ffd9e5-44e2-43a3-a4e9-366eb6575f84" general-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData" />
       </packagedElement>
     </packagedElement>

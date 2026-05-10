@@ -76,14 +76,14 @@ pipeline {
         {
             steps
             {
-                dotnetTest logger: 'trx;LogFileName=test.trx', project: 'src/Tests/DatenMeister.Tests/DatenMeister.Tests.csproj', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.core.typeindexstorage.trx', project: 'src/Tests/DatenMeister.Core.TypeIndexStorage.Tests/DatenMeister.Core.TypeIndexStorage.Tests.csproj', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.web.trx', project: 'src/Tests/DatenMeister.Tests.Web/DatenMeister.Tests.Web.csproj', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.provider.json.trx', project: 'src/Tests/DatenMeister.Provider.Json.Test/DatenMeister.Provider.Json.Test.csproj', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.domains.trx', project: 'src/Tests/DatenMeister.Domains.Tests/DatenMeister.Domains.Tests.csproj', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.issuemeister.trx', project: 'src/Tests/IssueMeisterLib.Tests/IssueMeisterLib.Tests.csproj', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.timecacheddictionary.trx', project: 'src/BurnSystems.TimeCachedDictionary.Tests/BurnSystems.TimeCachedDictionary.Tests.csproj', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.dataview.actions.trx', project: 'src/DatenMeister.DataView.Actions.Tests/DatenMeister.DataView.Actions.Tests.csproj', continueOnError: true
+                dotnetTest logger: 'trx;LogFileName=test.trx', project: 'src/Tests/DatenMeister.Tests/DatenMeister.Tests.csproj', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.core.typeindexstorage.trx', project: 'src/Tests/DatenMeister.Core.TypeIndexStorage.Tests/DatenMeister.Core.TypeIndexStorage.Tests.csproj', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.web.trx', project: 'src/Tests/DatenMeister.Tests.Web/DatenMeister.Tests.Web.csproj', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.provider.json.trx', project: 'src/Tests/DatenMeister.Provider.Json.Test/DatenMeister.Provider.Json.Test.csproj', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.domains.trx', project: 'src/Tests/DatenMeister.Domains.Tests/DatenMeister.Domains.Tests.csproj', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.issuemeister.trx', project: 'src/Tests/IssueMeisterLib.Tests/IssueMeisterLib.Tests.csproj', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.timecacheddictionary.trx', project: 'src/BurnSystems.TimeCachedDictionary.Tests/BurnSystems.TimeCachedDictionary.Tests.csproj', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.dataview.actions.trx', project: 'src/DatenMeister.DataView.Actions.Tests/DatenMeister.DataView.Actions.Tests.csproj', continueOnError: true, noBuild: true
 
                 mstest()
             }
@@ -93,14 +93,14 @@ pipeline {
         {
             steps
             {
-                dotnetTest logger: 'trx;LogFileName=test.trx', project: 'src/Tests/DatenMeister.Tests/DatenMeister.Tests.csproj', configuration: 'Release', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.core.typeindexstorage.trx', project: 'src/Tests/DatenMeister.Core.TypeIndexStorage.Tests/DatenMeister.Core.TypeIndexStorage.Tests.csproj', configuration: 'Release', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.web.trx', project: 'src/Tests/DatenMeister.Tests.Web/DatenMeister.Tests.Web.csproj', configuration: 'Release', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.provider.json.trx', project: 'src/Tests/DatenMeister.Provider.Json.Test/DatenMeister.Provider.Json.Test.csproj', configuration: 'Release', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.domains.trx', project: 'src/Tests/DatenMeister.Domains.Tests/DatenMeister.Domains.Tests.csproj', configuration: 'Release', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.issuemeister.trx', project: 'src/Tests/IssueMeisterLib.Tests/IssueMeisterLib.Tests.csproj', configuration: 'Release', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.timecacheddictionary.trx', project: 'src/BurnSystems.TimeCachedDictionary.Tests/BurnSystems.TimeCachedDictionary.Tests.csproj', configuration: 'Release', continueOnError: true
-                dotnetTest logger: 'trx;LogFileName=test.dataview.actions.trx', project: 'src/DatenMeister.DataView.Actions.Tests/DatenMeister.DataView.Actions.Tests.csproj', configuration: 'Release', continueOnError: true
+                dotnetTest logger: 'trx;LogFileName=test.trx', project: 'src/Tests/DatenMeister.Tests/DatenMeister.Tests.csproj', configuration: 'Release', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.core.typeindexstorage.trx', project: 'src/Tests/DatenMeister.Core.TypeIndexStorage.Tests/DatenMeister.Core.TypeIndexStorage.Tests.csproj', configuration: 'Release', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.web.trx', project: 'src/Tests/DatenMeister.Tests.Web/DatenMeister.Tests.Web.csproj', configuration: 'Release', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.provider.json.trx', project: 'src/Tests/DatenMeister.Provider.Json.Test/DatenMeister.Provider.Json.Test.csproj', configuration: 'Release', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.domains.trx', project: 'src/Tests/DatenMeister.Domains.Tests/DatenMeister.Domains.Tests.csproj', configuration: 'Release', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.issuemeister.trx', project: 'src/Tests/IssueMeisterLib.Tests/IssueMeisterLib.Tests.csproj', configuration: 'Release', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.timecacheddictionary.trx', project: 'src/BurnSystems.TimeCachedDictionary.Tests/BurnSystems.TimeCachedDictionary.Tests.csproj', configuration: 'Release', continueOnError: true, noBuild: true
+                dotnetTest logger: 'trx;LogFileName=test.dataview.actions.trx', project: 'src/DatenMeister.DataView.Actions.Tests/DatenMeister.DataView.Actions.Tests.csproj', configuration: 'Release', continueOnError: true, noBuild: true
 
                 mstest()
             }            

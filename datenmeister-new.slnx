@@ -39,6 +39,10 @@
     </Project>
   </Folder>
   <Folder Name="/Library - .Net Standard/">
+    <Project Path="DatenMeister.DataView.Actions.Tests/DatenMeister.DataView.Actions.Tests.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
     <Project Path="src/DatenMeister.Actions/DatenMeister.Actions.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>

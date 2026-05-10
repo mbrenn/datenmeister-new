@@ -23,13 +23,32 @@ public class FreezeViewResultInMemoryHandler: IActionHandler
         var scopeStorage = actionLogic.ScopeStorage;
         
         var extentUri = action.getOrDefault<string>(_Actions._Data._FreezeViewResultInMemory.extentUri);
-        var viewNode = action.getOrDefault<IElement>(_Actions._Data._FreezeViewResultInMemory.viewNode);
 
         if (string.IsNullOrEmpty(extentUri))
         {
             throw new InvalidOperationException("extentUri is null or empty");
         }
 
+        var extentLoaderConfig = new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
+        {
+            extentUri = extentUri
+        }.GetWrappedElement();
+
+        return await TransferElementsFromViewNodeToExtent(workspaceLogic, scopeStorage, extentLoaderConfig, action);
+    }
+
+    /// <summary>
+    /// Transfers the elements from the view node to the extent
+    /// </summary>
+    /// <param name="workspaceLogic">Workspace logic to be used for accessing the workspace</param>
+    /// <param name="scopeStorage">Scope storage to be used for accessing the scope</param>
+    /// <param name="extentLoaderConfig">Extent loader configuration to be used for loading the extent</param>
+    /// <param name="action">Action element containing the viewnode</param>
+    /// <returns>null</returns>
+    public static async Task<IElement?> TransferElementsFromViewNodeToExtent(IWorkspaceLogic workspaceLogic,
+        IScopeStorage scopeStorage, IElement extentLoaderConfig, IElement action)
+    {
+        var viewNode = action.getOrDefault<IElement>(_Actions._Data._FreezeViewResultInMemory.viewNode);
         if (viewNode == null)
         {
             throw new InvalidOperationException("viewNode is null");
@@ -41,11 +60,7 @@ public class FreezeViewResultInMemoryHandler: IActionHandler
      
         // Creates the extent
         var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
-        var extentResult = await extentManager.LoadExtent(
-            new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
-            {
-                extentUri = extentUri
-            }.GetWrappedElement());
+        var extentResult = await extentManager.LoadExtent(extentLoaderConfig);
         var extent = extentResult.Extent;
         if (extent == null ||
             extentResult.LoadingState is not (ExtentLoadingState.Loaded or ExtentLoadingState.LoadedReadOnly))

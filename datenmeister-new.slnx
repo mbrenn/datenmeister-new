@@ -49,6 +49,10 @@
     <Project Path="src/DatenMeister.BootStrap/DatenMeister.BootStrap.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>
+    <Project Path="src/DatenMeister.DataView.Actions/DatenMeister.DataView.Actions.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
     <Project Path="src/DatenMeister.DataView/DatenMeister.DataView.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
       <BuildType Solution="WPF|*" Project="Debug" />

@@ -12,4 +12,8 @@
         <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Actions\" />
+    </ItemGroup>
+
 </Project>

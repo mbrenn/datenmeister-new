@@ -54,7 +54,7 @@ public class TestFreezingOfViewNodes
 
         var tempExtent = classes.GetExtentOf();
         Assert.That(tempExtent, Is.Not.Null);
-        var tempFactory = new MofFactory(tempExtent);  
+        var tempFactory = new MofFactory(tempExtent!);  
         
         // Loading
         var temporaryFilePath = DatenMeisterTests.GetPathForTemporaryStorage("test.xmi");

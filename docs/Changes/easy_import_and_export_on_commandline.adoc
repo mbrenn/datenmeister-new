@@ -1,0 +1,118 @@
+= Feature - Easy Import and Export
+
+== Use Case
+
+* The enduser, which is not able to open a webserver, wants to perform a data transformation from an internal excel file to a report. 
+* The user wants to define an action via the DatenMeister.WebServer and export it to a second computer on which the transformation runs.
+** The transformation is expected to run fully automatic upon start of the Action Excecutor.
+
+== Requirements
+
+The usecase is split into two sub-usecases: 
+
+* The user administers and defines the action once 
+* The user executes that action each time it wants to have an updated report
+
+=== Requirements to Define the Action
+
+* The creation of an action shall be easy. This is checked by a manual review of the following scenario: 
+** The user wants to import an excel
+** Upon that import, a transformation shall be done
+*** Reduce number of columns to be considered
+*** Reduce number of rows to be considered (e.g. no closed projects)
+** The result shall be exported as an Html File. 
+** The result shall be stored as a new Excel File
+** The result shall be stored as an Xmi File.
+* The action performing all the activities above shall be exportable to the execution.
+
+=== Requirements to Execute the Action
+
+* The execution of the action shall be self-hosting, that means there shall be one executable which can be run without having access to Internet, the .Net SDK (Compilers, etc) or the Source Code
+** The execution shall be possible on Linux and Windows
+** The execution may be possible without installed .Net Framework. 
+* The execution shall be without additional user interaction. 
+* The user shall be able to define the paths in which the data is residing (relative paths).
+
+== Design
+
+=== Design to define action
+
+==== What are actions to be done by the user? 
+
+* The user has to create a new extent
+* The user has to define a new ActionSet
+* The user has to define the import of excel
+** This is possible via the 'read-only' Loading of an Excel Extent.
+*** Action: LoadExtentAction
+*** Parameter: ExcelReadOnlyLoaderConfig
+* The user has to define the query
+.. Load the Extent Data: 
+.. First step: Remove Columns
+.. Second step: Remove Rows
+* The user has to define the freezing of query result to a new extent.  
+* The user has to define the exports
+
+==== What do we need to implement
+
+* [ ] FreezeQueryAction
+
+==== How can we transform the data? 
+
+Currently, we have transformations to remove the columns and rows:
+
+* ColumnFilterIncludeOnly
+* RowFilterOnPropertyIsSet
+
+We have the following options:
+
+. We can work directly on the extent itself
+** The current query logic is not able to do that and there is no reasonable approach to introduce this. 
+This would mean, that we would need to create a shadow extent which then overwrites the original extent. 
+This approach has the disadvantage that it looks like we are working on the extent but in reality, we are just creating
+a view which is then overwritten. It gives a wrong impression. 
+. We create a view and then freeze it into a new extent:
+** This option lets the user to create a specific query which filters and transforms the data as required
+** We need to additionally implement an action which 'Freezes' the data into a new extent. 
+** This would decouple the resulting extent from the original data and allows a reuse of the data for other usecases
+** It also avoids a misinterpretation by the user of a wrong 'in-place' transformation. 
+
+Decision is to go with *Option 2*.
+
+==== Freezing of data
+
+We create a new action handler. 
+
+To simplify the configuration, the default options is just to import it into an InMemoryObject extent with a certain Url.
+
+This means, we have the following ActionHandler:
+
+* FreezeQueryResult: This is the base class
+** Parameters: 
+*** query: Reference to the query which shall be frozen. Non-Composite
+
+* FreezeQueryResultInMemory: This inherits from FreezeQueryResult
+** Parameters: 
+*** extentUri: Uri of extent in which the data shall be frozen
+
+* FreezeQueryResultInExtent: This inherits from FreezeQueryResult
+** Parameters
+*** extentLoaderConfig: Configuration of the freezing. Composite
+
+=== Design to Exection
+
+* [ ] There will be one new Executable, called DatenMeister.Action.Executer.exe
+** This executable has two parameters:
+*** The first one defines the file location of the .xmi file to be imported
+*** The second one defines the uri of the node which shall be selected. That node is the action which will be executed
+* In case the user wants to execute multiple actions (as in the use-case above), the can define an actionset containing these.
+* In case the user wants to import additional xmi-files, it must be done via an internal action. 
+* The new executable performs the following actions: 
+** [ ] Initialize DatenMeister
+*** The databasepath is a temporary path in the %LocalAppData%\DatenMeister\{UUID}. 
+*** To allow multiple executions in parallel, a UUID is to be created. 
+** [ ] Load the Xmi in an extent called 'dm:///action' as read-only
+** [ ] Find the action
+** [ ] Run the action
+** [ ] Unload the loaded extent
+** [ ] Close the DatenMeister
+** [ ] Deletes the directory which was created above

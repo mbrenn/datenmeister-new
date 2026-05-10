@@ -36,7 +36,8 @@ public static class ActionButtonToFormAdder
     /// Adds an action button to a rowform
     /// </summary>
     /// <param name="formsState">Defines the forms state in which the action button shall be added</param>
-    /// <param name="adder">Parameter which contains the information about the action button</param>
+    /// <param name="multiActionButtonsConfig">Configuration of the action button set</param>
+    /// <param name="adders">Parameters which contains the information about the action button</param>
     public static void AddRowActionButtons(
         FormsState formsState,
         MultiActionButtonsConfig multiActionButtonsConfig, 
@@ -77,9 +78,9 @@ public static class ActionButtonToFormAdder
 
     public class MultiActionButtonsConfig
     {
-        public string Name { get; set; }
+        public required string Name { get; set; }
         
-        public string Title { get; set; }
+        public required string Title { get; set; }
         
         public int Priority { get; set; }
     }

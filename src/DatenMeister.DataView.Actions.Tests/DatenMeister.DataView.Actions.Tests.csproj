@@ -11,5 +11,11 @@
     <PackageReference Include="NUnit3TestAdapter" Version="6.2.0" />
     <PackageReference Include="NUnitLite" Version="4.5.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DatenMeister.DataView.Actions\DatenMeister.DataView.Actions.csproj" />
+    <ProjectReference Include="..\Tests\DatenMeister.Tests\DatenMeister.Tests.csproj" />
+  </ItemGroup>
+
   
 </Project>

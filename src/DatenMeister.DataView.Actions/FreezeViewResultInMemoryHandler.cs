@@ -1,10 +1,13 @@
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Extent.Manager.ExtentStorage;
 
 namespace DatenMeister.DataView.Actions;
@@ -14,7 +17,7 @@ public class FreezeViewResultInMemoryHandler: IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _Actions.TheOne.Data.__FreezeViewResultInExtent) == true;
+            _Actions.TheOne.Data.__FreezeViewResultInMemory) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
@@ -60,19 +63,23 @@ public class FreezeViewResultInMemoryHandler: IActionHandler
      
         // Creates the extent
         var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
-        var extentResult = await extentManager.LoadExtent(extentLoaderConfig);
+        var extentResult = await extentManager.LoadExtent(extentLoaderConfig, ExtentCreationFlags.CreateOnly);
         var extent = extentResult.Extent;
         if (extent == null ||
             extentResult.LoadingState is not (ExtentLoadingState.Loaded or ExtentLoadingState.LoadedReadOnly))
         {
             throw new InvalidOperationException("Could not load the extent: " + extentResult.FailLoadingMessage);
         }
+
+        var factory = new MofFactory(extent);
         
         // Now add the events to the extent
         foreach (var element in elements.OfType<IElement>())
         {
-            extent.elements().add(element);
+            extent.elements().add(ObjectCopier.Copy(
+                factory, element, CopyOptions.None));
         }
+        
         return null;
     }
 }

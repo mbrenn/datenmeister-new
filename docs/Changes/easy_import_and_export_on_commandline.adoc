@@ -86,15 +86,15 @@ To simplify the configuration, the default options is just to import it into an 
 
 This means, we have the following ActionHandler:
 
-* FreezeQueryResult: This is the base class
+* FreezeViewResult: This is the base class
 ** Parameters: 
-*** query: Reference to the query which shall be frozen. Non-Composite
+*** viewNode: Reference to the viewNode which shall be frozen. Non-Composite
 
-* FreezeQueryResultInMemory: This inherits from FreezeQueryResult
+* FreezeViewResultInMemory: This inherits from FreezeQueryResult
 ** Parameters: 
 *** extentUri: Uri of extent in which the data shall be frozen
 
-* FreezeQueryResultInExtent: This inherits from FreezeQueryResult
+* FreezeViewResultInExtent: This inherits from FreezeQueryResult
 ** Parameters
 *** extentLoaderConfig: Configuration of the freezing. Composite
 

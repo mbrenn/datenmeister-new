@@ -2404,6 +2404,174 @@ public class Actions
 
     }
 
+    public class Data
+    {
+        [TypeUri(Uri = "dm:///_internal/types/internal#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171",
+            TypeKind = TypeKind.WrappedClass)]
+        public class FreezeViewResultAction_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public FreezeViewResultAction_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public FreezeViewResultAction_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171");
+
+            public static FreezeViewResultAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @viewNode
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("viewNode");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("viewNode", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("viewNode", value);
+                    }
+                }
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#1286c17c-3286-4e8c-93fc-1a4c3e6df48a",
+            TypeKind = TypeKind.WrappedClass)]
+        public class FreezeViewResultInMemory_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public FreezeViewResultInMemory_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public FreezeViewResultInMemory_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#1286c17c-3286-4e8c-93fc-1a4c3e6df48a");
+
+            public static FreezeViewResultInMemory_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @extentUri
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("extentUri");
+                set => 
+                    _wrappedElement.set("extentUri", value);
+            }
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @viewNode
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("viewNode");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("viewNode", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("viewNode", value);
+                    }
+                }
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#45cd9f30-fdfa-4f1b-a87c-24c088c075be",
+            TypeKind = TypeKind.WrappedClass)]
+        public class FreezeViewResultInExtent_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public FreezeViewResultInExtent_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public FreezeViewResultInExtent_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#45cd9f30-fdfa-4f1b-a87c-24c088c075be");
+
+            public static FreezeViewResultInExtent_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // DatenMeister.Core.Models.ExtentLoaderConfigs.ExtentLoaderConfig_Wrapper
+            public DatenMeister.Core.Models.ExtentLoaderConfigs.ExtentLoaderConfig_Wrapper? @extentLoaderConfig
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("extentLoaderConfig");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.ExtentLoaderConfigs.ExtentLoaderConfig_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("extentLoaderConfig", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("extentLoaderConfig", value);
+                    }
+                }
+            }
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @viewNode
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("viewNode");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("viewNode", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("viewNode", value);
+                    }
+                }
+            }
+
+        }
+
+    }
+
 }
 
 public class DataViews
@@ -2552,13 +2720,25 @@ public class DataViews
             }
         }
 
-        // Not found
-        public object? @resultNode
+        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @resultNode
         {
-            get =>
-                _wrappedElement.getOrDefault<object?>("resultNode");
-            set => 
-                _wrappedElement.set("resultNode", value);
+            get
+            {
+                var foundElement = _wrappedElement.getOrDefault<IElement?>("resultNode");
+                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+            }
+            set 
+            {
+                if(value is IElementWrapper wrappedElement)
+                {
+                    _wrappedElement.set("resultNode", wrappedElement.GetWrappedElement());
+                }
+                else
+                {
+                    _wrappedElement.set("resultNode", value);
+                }
+            }
         }
 
         public string? @name
@@ -2603,13 +2783,25 @@ public class DataViews
                     _wrappedElement.set("freeText", value);
             }
 
-            // Not found
-            public object? @input
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
             {
-                get =>
-                    _wrappedElement.getOrDefault<object?>("input");
-                set => 
-                    _wrappedElement.set("input", value);
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("input", value);
+                    }
+                }
             }
 
             public string? @name
@@ -8700,13 +8892,25 @@ public class Forms
 
             public static MergedFieldsInCellData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
-            // Not found
-            public object? @fields
+            // DatenMeister.Core.Models.Forms.FieldTypes.FieldData_Wrapper
+            public DatenMeister.Core.Models.Forms.FieldTypes.FieldData_Wrapper? @fields
             {
-                get =>
-                    _wrappedElement.getOrDefault<object?>("fields");
-                set => 
-                    _wrappedElement.set("fields", value);
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("fields");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FieldTypes.FieldData_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("fields", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("fields", value);
+                    }
+                }
             }
 
             public bool @isAttached

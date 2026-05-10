@@ -372,6 +372,26 @@ export var _Actions;
     }
     _Actions._StoreElementAction = _StoreElementAction;
     _Actions.__StoreElementAction_Uri = "dm:///_internal/types/internal#c7dcb24c-e53c-46f9-9e8a-3704095193a8";
+    let _Data;
+    (function (_Data) {
+        class _FreezeViewResultAction {
+            static viewNode = "viewNode";
+        }
+        _Data._FreezeViewResultAction = _FreezeViewResultAction;
+        _Data.__FreezeViewResultAction_Uri = "dm:///_internal/types/internal#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171";
+        class _FreezeViewResultInMemory {
+            static extentUri = "extentUri";
+            static viewNode = "viewNode";
+        }
+        _Data._FreezeViewResultInMemory = _FreezeViewResultInMemory;
+        _Data.__FreezeViewResultInMemory_Uri = "dm:///_internal/types/internal#1286c17c-3286-4e8c-93fc-1a4c3e6df48a";
+        class _FreezeViewResultInExtent {
+            static extentLoaderConfig = "extentLoaderConfig";
+            static viewNode = "viewNode";
+        }
+        _Data._FreezeViewResultInExtent = _FreezeViewResultInExtent;
+        _Data.__FreezeViewResultInExtent_Uri = "dm:///_internal/types/internal#45cd9f30-fdfa-4f1b-a87c-24c088c075be";
+    })(_Data = _Actions._Data || (_Actions._Data = {}));
 })(_Actions || (_Actions = {}));
 export var _DataViews;
 (function (_DataViews) {

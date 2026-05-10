@@ -940,6 +940,54 @@ public class _Actions
     public _StoreElementAction @StoreElementAction = new ();
     public MofObjectShadow @__StoreElementAction = new ("dm:///_internal/types/internal#c7dcb24c-e53c-46f9-9e8a-3704095193a8");
 
+    public class _Data
+    {
+        [TypeUri(Uri = "dm:///_internal/types/internal#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171",
+            TypeKind = TypeKind.ClassTree)]
+        public class _FreezeViewResultAction
+        {
+            public static readonly string @viewNode = "viewNode";
+            public IElement? @_viewNode = null;
+
+        }
+
+        public _FreezeViewResultAction @FreezeViewResultAction = new ();
+        public MofObjectShadow @__FreezeViewResultAction = new ("dm:///_internal/types/internal#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#1286c17c-3286-4e8c-93fc-1a4c3e6df48a",
+            TypeKind = TypeKind.ClassTree)]
+        public class _FreezeViewResultInMemory
+        {
+            public static readonly string @extentUri = "extentUri";
+            public IElement? @_extentUri = null;
+
+            public static readonly string @viewNode = "viewNode";
+            public IElement? @_viewNode = null;
+
+        }
+
+        public _FreezeViewResultInMemory @FreezeViewResultInMemory = new ();
+        public MofObjectShadow @__FreezeViewResultInMemory = new ("dm:///_internal/types/internal#1286c17c-3286-4e8c-93fc-1a4c3e6df48a");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#45cd9f30-fdfa-4f1b-a87c-24c088c075be",
+            TypeKind = TypeKind.ClassTree)]
+        public class _FreezeViewResultInExtent
+        {
+            public static readonly string @extentLoaderConfig = "extentLoaderConfig";
+            public IElement? @_extentLoaderConfig = null;
+
+            public static readonly string @viewNode = "viewNode";
+            public IElement? @_viewNode = null;
+
+        }
+
+        public _FreezeViewResultInExtent @FreezeViewResultInExtent = new ();
+        public MofObjectShadow @__FreezeViewResultInExtent = new ("dm:///_internal/types/internal#45cd9f30-fdfa-4f1b-a87c-24c088c075be");
+
+    }
+
+    public _Data Data = new ();
+
     public static readonly _Actions TheOne = new ();
 
 }

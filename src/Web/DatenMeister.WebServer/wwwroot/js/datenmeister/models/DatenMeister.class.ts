@@ -429,6 +429,30 @@ export namespace _Actions
         }
 
         export const __StoreElementAction_Uri = "dm:///_internal/types/internal#c7dcb24c-e53c-46f9-9e8a-3704095193a8";
+        export namespace _Data
+        {
+                export class _FreezeViewResultAction
+                {
+                    static viewNode = "viewNode";
+                }
+
+                export const __FreezeViewResultAction_Uri = "dm:///_internal/types/internal#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171";
+                export class _FreezeViewResultInMemory
+                {
+                    static extentUri = "extentUri";
+                    static viewNode = "viewNode";
+                }
+
+                export const __FreezeViewResultInMemory_Uri = "dm:///_internal/types/internal#1286c17c-3286-4e8c-93fc-1a4c3e6df48a";
+                export class _FreezeViewResultInExtent
+                {
+                    static extentLoaderConfig = "extentLoaderConfig";
+                    static viewNode = "viewNode";
+                }
+
+                export const __FreezeViewResultInExtent_Uri = "dm:///_internal/types/internal#45cd9f30-fdfa-4f1b-a87c-24c088c075be";
+        }
+
 }
 
 export namespace _DataViews

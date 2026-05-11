@@ -54,7 +54,7 @@ The usecase is split into two sub-usecases:
 
 ==== What do we need to implement
 
-* [ ] FreezeQueryAction
+* [x] FreezeQueryAction
 
 ==== How can we transform the data? 
 
@@ -100,7 +100,7 @@ This means, we have the following ActionHandler:
 
 === Design to Exection
 
-* [ ] There will be one new Executable, called DatenMeister.Action.Executer.exe
+* [ ] There will be one new Executable, called DatenMeister.Action.Executor.exe
 ** This executable has two parameters:
 *** The first one defines the file location of the .xmi file to be imported
 *** The second one defines the uri of the node which shall be selected. That node is the action which will be executed

@@ -231,6 +231,10 @@
     </Project>
   </Folder>
   <Folder Name="/Tools/">
+    <Project Path="src/DatenMeister.Action.Executor/DatenMeister.Action.Executor.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
     <Project Path="src/DatenMeister.SourceGeneration.Console/DatenMeister.SourceGeneration.Console.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>

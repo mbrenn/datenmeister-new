@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="BurnSystems.CommandLine" Version="1.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DatenMeister.Actions\DatenMeister.Actions.csproj" />
+      <ProjectReference Include="..\DatenMeister.AttachedExtent\DatenMeister.AttachedExtent.csproj" />
+      <ProjectReference Include="..\DatenMeister.BootStrap\DatenMeister.BootStrap.csproj" />
+      <ProjectReference Include="..\DatenMeister.Core.Extensions\DatenMeister.Core.Extensions.csproj" />
+      <ProjectReference Include="..\DatenMeister.Core.Interfaces\DatenMeister.Core.Interfaces.csproj" />
+      <ProjectReference Include="..\DatenMeister.Core.Model\DatenMeister.Core.Model.csproj" />
+      <ProjectReference Include="..\DatenMeister.Core.TypeIndexStorage\DatenMeister.Core.TypeIndexStorage.csproj" />
+      <ProjectReference Include="..\DatenMeister.Core.Workspaces\DatenMeister.Core.Workspaces.csproj" />
+      <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
+      <ProjectReference Include="..\DatenMeister.DataView.Actions\DatenMeister.DataView.Actions.csproj" />
+      <ProjectReference Include="..\DatenMeister.DataView\DatenMeister.DataView.csproj" />
+      <ProjectReference Include="..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
+      <ProjectReference Include="..\DatenMeister.Domains\DatenMeister.Domains.csproj" />
+      <ProjectReference Include="..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
+      <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
+      <ProjectReference Include="..\DatenMeister.Extent.Verifier\DatenMeister.Extent.Verifier.csproj" />
+      <ProjectReference Include="..\DatenMeister.FastViewFilter\DatenMeister.FastViewFilter.csproj" />
+      <ProjectReference Include="..\DatenMeister.Forms.Actions\DatenMeister.Forms.Actions.csproj" />
+      <ProjectReference Include="..\DatenMeister.Forms\DatenMeister.Forms.csproj" />
+      <ProjectReference Include="..\DatenMeister.HtmlEngine\DatenMeister.HtmlEngine.csproj" />
+      <ProjectReference Include="..\DatenMeister.Html\DatenMeister.Html.csproj" />
+      <ProjectReference Include="..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
+      <ProjectReference Include="..\DatenMeister.Locking\DatenMeister.Locking.csproj" />
+      <ProjectReference Include="..\DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj" />
+      <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+      <ProjectReference Include="..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj" />
+      <ProjectReference Include="..\DatenMeister.Provider.DynamicRuntime\DatenMeister.Provider.DynamicRuntime.csproj" />
+      <ProjectReference Include="..\DatenMeister.Provider.Environmental\DatenMeister.Provider.Environmental.csproj" />
+      <ProjectReference Include="..\DatenMeister.Provider.Excel\DatenMeister.Provider.Excel.csproj" />
+      <ProjectReference Include="..\DatenMeister.Provider.ExtentManagement\DatenMeister.Provider.ExtentManagement.csproj" />
+      <ProjectReference Include="..\DatenMeister.Provider.Json\DatenMeister.Provider.Json.csproj" />
+      <ProjectReference Include="..\DatenMeister.Provider.NumberProvider\DatenMeister.Provider.NumberProvider.csproj" />
+      <ProjectReference Include="..\DatenMeister.Reports.Forms\DatenMeister.Reports.Forms.csproj" />
+      <ProjectReference Include="..\DatenMeister.Reports\DatenMeister.Reports.csproj" />
+      <ProjectReference Include="..\DatenMeister.TemporaryExtent\DatenMeister.TemporaryExtent.csproj" />
+      <ProjectReference Include="..\DatenMeister.TextTemplates\DatenMeister.TextTemplates.csproj" />
+      <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
+      <ProjectReference Include="..\DatenMeister.Uml\DatenMeister.Uml.csproj" />
+      <ProjectReference Include="..\DatenMeister.Validators\DatenMeister.Validators.csproj" />
+      <ProjectReference Include="..\DatenMeister.Zip\DatenMeister.Zip.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -4,21 +4,22 @@ using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Action.Executor;
 using DatenMeister.Actions;
+using DatenMeister.Core;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 
-var databasePath = string.Empty;
-
 // Activate Logging
 #if DEBUG
 TheLog.FilterThreshold = LogLevel.Trace;
 TheLog.AddProvider(new DebugProvider(), LogLevel.Trace);
 TheLog.AddProvider(new ConsoleProvider(), LogLevel.Trace);
+TheLog.AddProvider(new FileProvider(
+    Path.Combine(IntegrationSettings.DefaultDatabasePath, "executor.log"), true));
 #else
-TheLog.AddProvider(new ConsoleProvider(), LogLevel.Trace);
+TheLog.AddProvider(new ConsoleProvider(), LogLevel.Info);
 #endif
 
 var arguments = Parser.ParseIntoOrShowUsage<Arguments>(args);
@@ -30,7 +31,7 @@ if (arguments == null)
 
 // Loads the DatenMeister
 var defaultSettings = GiveMe.GetDefaultIntegrationSettings();
-databasePath = defaultSettings.DatabasePath = Path.Combine(defaultSettings.DatabasePath, Guid.NewGuid().ToString());
+var databasePath = defaultSettings.DatabasePath = Path.Combine(defaultSettings.DatabasePath, Guid.NewGuid().ToString());
 defaultSettings.IsLockingActivated = true;
 defaultSettings.AllowNoFailOfLoading = true;
 defaultSettings.IsReadOnly = true;
@@ -70,7 +71,7 @@ try
 
     TheLog.Info($"Action element found: {actionElement}. Now try to execute it");
 
-    using (var stopWatchLogger = new StopWatchLogger(new ClassLogger(typeof(Program)), "Action Execution"))
+    using (new StopWatchLogger(new ClassLogger(typeof(Program)), "Action Execution"))
     {
         var actionLogic = GiveMe.Scope.Resolve<ActionLogic>();
         await actionLogic.ExecuteAction(actionElement);

@@ -8964,6 +8964,100 @@ public class Forms
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#3769ef41-6cb7-4cc5-99e9-4de89198e644",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CompositeFieldData_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public CompositeFieldData_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public CompositeFieldData_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#3769ef41-6cb7-4cc5-99e9-4de89198e644");
+
+            public static CompositeFieldData_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper
+            public DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper? @metaclass
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("metaclass");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("metaclass", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("metaclass", value);
+                    }
+                }
+            }
+
+            public bool @isAttached
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAttached");
+                set => 
+                    _wrappedElement.set("isAttached", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public string? @title
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("title");
+                set => 
+                    _wrappedElement.set("title", value);
+            }
+
+            public bool @isEnumeration
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isEnumeration");
+                set => 
+                    _wrappedElement.set("isEnumeration", value);
+            }
+
+            // Not found
+            public object? @defaultValue
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("defaultValue");
+                set => 
+                    _wrappedElement.set("defaultValue", value);
+            }
+
+            public bool @isReadOnly
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isReadOnly");
+                set => 
+                    _wrappedElement.set("isReadOnly", value);
+            }
+
+        }
+
     }
 
 }

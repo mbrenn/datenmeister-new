@@ -1,7 +1,5 @@
 ﻿import {BaseField, IFormField} from "./Interfaces.js";
 import * as Mof from "../Mof.js";
-import {IFormConfiguration} from "../forms/IFormConfiguration.js";
-import {IFormNavigation} from "../forms/Interfaces.js";
 import {injectNameByUri} from "../DomHelper.js";
 import * as ClientItem from "../client/Items.js";
 import * as SIC from "../controls/SelectItemControl.js";
@@ -198,7 +196,7 @@ export class Field extends Control implements IFormField {
         }
 
         // Sets the properties being required by the parent class
-        this.propertyName = this.fieldName
+        this.propertyName = this.fieldName;
         this.itemUrl = dmElement.uri;
 
         if (this.isReadOnly === true) {

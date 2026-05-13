@@ -50,7 +50,7 @@ public class ExtentConfigurationLoader(
         var loaded = new List<IElement>();
         if (!File.Exists(path))
         {
-            Logger.Info($"File for Extent not found: {path}");
+            Logger.Info($"File for Extent not found: {path}. New extent configuration file will be created");
 
             if (IsAttached && BreakOnFailedWorkspaceLoading)
             {

@@ -1452,6 +1452,18 @@ export namespace _Forms
                 }
 
                 export const __MergedFieldsInCellData_Uri = "dm:///_internal/types/internal#b11ab14e-b620-486e-b795-fb559479674b";
+                export class _CompositeFieldData
+                {
+                    static metaclass = "metaclass";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __CompositeFieldData_Uri = "dm:///_internal/types/internal#3769ef41-6cb7-4cc5-99e9-4de89198e644";
         }
 
 }

@@ -14,6 +14,13 @@ namespace DatenMeister.Forms.Fields;
 
 public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactoryBase, IFieldFactory
 {
+    /// <summary>
+    /// Defines if the a non-composite property shall be shown as a drop-down referencing all available
+    /// instances..
+    /// As an alternative, the property is shown as a 'free-flowing' textfield. 
+    /// </summary>
+    private const bool ConfigurationShowDropDownForNonComposites = false;
+    
     #region CachedTypes
 
     private class CachedTypesDefinition
@@ -178,7 +185,7 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                     referenceField.set(_Forms._FieldTypes._TextFieldData.title, propertyName);
                     result.Form = referenceField;
                 }
-                else if (false && !attributeModel.IsComposite)
+                else if (ConfigurationShowDropDownForNonComposites && !attributeModel.IsComposite)
                 {
                     // Gets the workspace of the object
                     var workspace = parameter.Extent?.GetWorkspace();
@@ -220,7 +227,7 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                 }
                 // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable CS0162 // Unreachable code detected
-                else
+                else if (!attributeModel.IsComposite)
                 {
                     // It can just contain one element (or is in list view)
                     var reference = factory.create(_Forms.TheOne.FieldTypes.__ReferenceFieldData);
@@ -233,7 +240,21 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
                         new[] { propertyType });
 
                     result.Form = reference;
-                }   
+                }
+                else
+                {
+                    // It can just contain one element (or is in list view)
+                    var composite = factory.create(_Forms.TheOne.FieldTypes.__CompositeFieldData);
+                    composite.set(_Forms._FieldTypes._CompositeFieldData.name, propertyName);
+                    composite.set(_Forms._FieldTypes._CompositeFieldData.title, propertyName);
+                    composite.set(_Forms._FieldTypes._CompositeFieldData.isReadOnly, isReadOnly);
+                    composite.set(_Forms._FieldTypes._CompositeFieldData.isEnumeration, propertyIsCollection);
+                    composite.set(
+                        _Forms._FieldTypes._ReferenceFieldData.metaClassFilter,
+                        new[] { propertyType });
+
+                    result.Form = composite;
+                }
 #pragma warning restore CS0162 // Unreachable code detected
                 // ReSharper restore HeuristicUnreachableCode
             }

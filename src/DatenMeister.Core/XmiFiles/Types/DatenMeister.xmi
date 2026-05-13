@@ -43,7 +43,7 @@
   </item>
   <item p2:type="dm:///_internal/model/uml#Package" p2:id="DatenMeister.Types.Actions" name="Actions" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.ActionSet" name="ActionSet">
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d688f145-d02e-4052-be12-0d06cec9853b" name="action" type-ref="dm:///_internal/types/internal#Actions.Action" upper="*" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d688f145-d02e-4052-be12-0d06cec9853b" name="action" type-ref="dm:///_internal/types/internal#Actions.Action" upper="*" isComposite="true" />
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="9951a2cd-b072-4cba-9c19-4b9118368e8e" general-ref="dm:///_internal/types/internal#Actions.Action">
         <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
       </generalization>
@@ -144,14 +144,14 @@
         <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="cee66e75-0554-44e3-9965-3adb082951ca" general-ref="dm:///_internal/types/internal#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
-        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="65032f6d-6df5-4896-ab11-0ae19f9ec2cc" name="reportInstance" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="65032f6d-6df5-4896-ab11-0ae19f9ec2cc" name="reportInstance" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance" isComposite="true" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.HtmlReportAction" name="HtmlReportAction">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="acdd6f04-6d1a-4f5b-9ea8-5f1be0d1b4a3" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
         <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="d74a7d31-afd2-4587-a193-c0ea73ba2c19" general-ref="dm:///_internal/types/internal#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
-        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6d207082-2e93-4223-8ed9-efaf06a37ac3" name="reportInstance" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6d207082-2e93-4223-8ed9-efaf06a37ac3" name="reportInstance" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance" isComposite="true" />
       </packagedElement>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.Action" name="Action">
@@ -780,6 +780,10 @@
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="b11ab14e-b620-486e-b795-fb559479674b" name="MergedFieldsInCellData">
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ed175545-3a50-49ab-a146-923af908138f" name="fields" type-ref="#DatenMeister.Models.Forms.FieldData" isComposite="true" upper="*" />
         <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="74ffd9e5-44e2-43a3-a4e9-366eb6575f84" general-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData" />
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="3769ef41-6cb7-4cc5-99e9-4de89198e644" name="CompositeFieldData">
+        <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="bdd71b43-9bfc-4038-b38e-2f1e7603223c" general-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="6b513a6d-a3a5-4aa4-bbf2-fc811839e891" name="metaclass" type-ref="dm:///_internal/model/uml#Class" />
       </packagedElement>
     </packagedElement>
   </item>

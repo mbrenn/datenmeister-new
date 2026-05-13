@@ -3332,6 +3332,36 @@ public class _Forms
         public _MergedFieldsInCellData @MergedFieldsInCellData = new ();
         public MofObjectShadow @__MergedFieldsInCellData = new ("dm:///_internal/types/internal#b11ab14e-b620-486e-b795-fb559479674b");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#3769ef41-6cb7-4cc5-99e9-4de89198e644",
+            TypeKind = TypeKind.ClassTree)]
+        public class _CompositeFieldData
+        {
+            public static readonly string @metaclass = "metaclass";
+            public IElement? @_metaclass = null;
+
+            public static readonly string @isAttached = "isAttached";
+            public IElement? @_isAttached = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @title = "title";
+            public IElement? @_title = null;
+
+            public static readonly string @isEnumeration = "isEnumeration";
+            public IElement? @_isEnumeration = null;
+
+            public static readonly string @defaultValue = "defaultValue";
+            public IElement? @_defaultValue = null;
+
+            public static readonly string @isReadOnly = "isReadOnly";
+            public IElement? @_isReadOnly = null;
+
+        }
+
+        public _CompositeFieldData @CompositeFieldData = new ();
+        public MofObjectShadow @__CompositeFieldData = new ("dm:///_internal/types/internal#3769ef41-6cb7-4cc5-99e9-4de89198e644");
+
     }
 
     public _FieldTypes FieldTypes = new ();

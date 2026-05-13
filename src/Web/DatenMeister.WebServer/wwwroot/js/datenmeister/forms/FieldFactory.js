@@ -2,6 +2,7 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as TextField from "../fields/TextField.js";
 import * as CheckboxField from "../fields/CheckboxField.js";
 import * as CheckboxListTaggingField from "../fields/CheckboxListTaggingField.js";
+import * as CompositeField from "../fields/CompositeField.js";
 import * as DateTimeField from "../fields/DateTimeField.js";
 import * as DropDownField from "../fields/DropDownField.js";
 import * as MetaClassElementField from "../fields/MetaClassElementField.js";
@@ -58,6 +59,9 @@ export function createField(fieldMetaClassUri, parameter) {
             break;
         case _DatenMeister._Forms._FieldTypes.__CheckboxFieldData_Uri:
             result = new CheckboxField.Field();
+            break;
+        case _DatenMeister._Forms._FieldTypes.__CompositeFieldData_Uri:
+            result = new CompositeField.Field();
             break;
         case _DatenMeister._Forms._FieldTypes.__DateTimeFieldData_Uri:
             result = new DateTimeField.Field();

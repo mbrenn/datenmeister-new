@@ -5,6 +5,7 @@ import {injectNameByUri} from "../DomHelper.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as ClientItems from "../client/Items.js";
 import * as Settings from "../Settings.js";
+import * as Navigator from "../Navigator.js";
 
 export class Field extends BaseField implements IFormField {
 
@@ -14,7 +15,7 @@ export class Field extends BaseField implements IFormField {
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
         this.element = dmElement;
         this.resultingDom = $(
-            '<div class="dm-field-composite">Composite:' +
+            '<div class="dm-field-composite">' +
             '  <div class="dm-field-composite-value"></div>' +
             '  <div class="dm-field-composite-button-container">' +
             '    <div class="dm-field-composite-buttons"></div>' +
@@ -70,17 +71,20 @@ export class Field extends BaseField implements IFormField {
                     selectItem.setWorkspaceById(Settings.WorkspaceTypes);
                     selectItem.itemSelected.addListener(
                         selectedItem => {
-                            ClientItems.setPropertyReference(
+
+                            if (selectedItem === undefined ||
+                                selectedItem.uri === undefined) {
+                                alert("Nothing is selected.");
+                                return;
+                            }
+
+                            document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
                                 tthis.form.workspace,
                                 tthis.itemUrl,
-                                {
-                                    property: propertyName,
-                                    referenceUri: selectedItem.uri,
-                                    workspaceId: selectedItem.workspace
-                                }
-                            ).then(() => {
-                                this.reloadValuesFromServer();
-                            });
+                                selectedItem.uri,
+                                selectedItem.workspace,
+                                propertyName,
+                                false);
                         });
 
                     selectItem.init(containerDiv, settings);

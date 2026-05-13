@@ -126,7 +126,7 @@ export function getLinkForNavigateToAction(parameter, actionName, formUri) {
 export function navigateToAction(actionName, formUri, parameter) {
     document.location.href = getLinkForNavigateToAction(parameter, actionName, formUri);
 }
-export function getLinkForNavigateToCreateItemInProperty(workspace, itemUrl, metaclass, metaclassWorkspace, propertyName) {
+export function getLinkForNavigateToCreateItemInProperty(workspace, itemUrl, metaclass, metaclassWorkspace, propertyName, isList) {
     return Settings.baseUrl +
         "ItemAction/Extent.CreateNewItem" +
         "?workspace=" + encodeURIComponent(workspace) +
@@ -137,7 +137,10 @@ export function getLinkForNavigateToCreateItemInProperty(workspace, itemUrl, met
         (metaclassWorkspace !== undefined
             ? "&metaclassworkspace=" + encodeURIComponent(metaclassWorkspace)
             : "") +
-        "&property=" + encodeURIComponent(propertyName);
+        "&property=" + encodeURIComponent(propertyName) +
+        (isList !== undefined
+            ? isList ? "&islist=true" : "&islist=false"
+            : "");
 }
 export function navigateToCreateItemInProperty(workspace, itemUrl, metaclass, metaclassWorkspace, propertyName) {
     document.location.href =

@@ -192,7 +192,8 @@ export function getLinkForNavigateToCreateItemInProperty(workspace: string,
                                                          itemUrl: string,
                                                          metaclass: string,
                                                          metaclassWorkspace: string, 
-                                                         propertyName: string) {
+                                                         propertyName: string,
+                                                         isList?: boolean) {
     return Settings.baseUrl +
         "ItemAction/Extent.CreateNewItem" +
         "?workspace=" + encodeURIComponent(workspace) +
@@ -203,7 +204,10 @@ export function getLinkForNavigateToCreateItemInProperty(workspace: string,
         (metaclassWorkspace !== undefined
             ? "&metaclassworkspace=" + encodeURIComponent(metaclassWorkspace)
             : "") +
-        "&property=" + encodeURIComponent(propertyName);
+        "&property=" + encodeURIComponent(propertyName) +
+        (isList !== undefined 
+            ? isList ? "&islist=true" : "&islist=false" 
+            : "");
 }
 
 

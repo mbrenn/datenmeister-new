@@ -78,6 +78,8 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
     private metaClass: string;
     private property: string;
     private metaclassWorkspace: string;
+    private isList: boolean = true;
+    
     
     
     constructor() {
@@ -93,7 +95,12 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
         this.metaClass = p.get('metaclass');
         this.property = p.get('property');
         this.metaclassWorkspace = p.get('metaclassworkspace');
-
+        const isListParameter = p.get('islist');
+        if(isListParameter !== null && isListParameter !== undefined)
+        {
+            this.isList = isListParameter === 'true';
+        }
+        
         this.isForExtent = 
             this.property === null || this.property === undefined || this.property === "";
 
@@ -194,7 +201,7 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
             {
                 metaClass: (this.metaClass === undefined || this.metaClass === null) ? "" : this.metaClass,
                 property: this.property,
-                asList: true,
+                asList: this.isList,
                 properties: element
             }
         );

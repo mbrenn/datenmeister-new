@@ -1,10 +1,12 @@
 ﻿import {BaseField, IFormField} from "./Interfaces.js";
 import * as Mof from "../Mof.js";
+import * as DomHelper from "../DomHelper.js";
 import {injectNameByUri} from "../DomHelper.js";
 import * as ClientItem from "../client/Items.js";
 import * as SIC from "../controls/SelectItemControl.js";
-import * as DomHelper from "../DomHelper.js";
+import * as ApiModels from "../ApiModels.js";
 import {ItemWithNameAndId} from "../ApiModels.js";
+import * as Settings from "../Settings.js";
 
 export class Control extends BaseField {
     propertyName: string;
@@ -59,8 +61,31 @@ export class Control extends BaseField {
                 const containerChangeCell = $("<div></div>");
                 
                 if(!(this.inhibitInline !== true && isSelectionInline)) {
+                    const createCell = $("<btn class='btn btn-secondary'>Create</btn>");
                     const changeCell = $("<btn class='btn btn-secondary'>Change</btn>");
                     const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
+
+                    createCell.on('click', async () => {
+                        // Now it is getting a bit difficult. We have to perform several actions here 
+                        // 1) First, let the user decide on which package, the new item shall be created
+                        // 2) Let the user decide which type shall be created
+                        // 3) In case, the user has done this, we need to create the item
+                        // 4) We need to set the reference of the newly created item
+                        // 5) We have to navigate to the newly created item
+                        
+                        // 1) Let the user decide   
+                        const packageItem = await this.selectPackage(containerChangeCell);
+                        alert(packageItem.uri);
+                        
+
+                        return false;
+                    });
+
+                    changeCell.on('click', async () => {
+                        await this.createSelectFields(containerChangeCell, value);
+
+                        return false;
+                    });
 
                     unsetCell.on('click', () => {
                         ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(
@@ -70,12 +95,7 @@ export class Control extends BaseField {
                         );
                     });
 
-                    changeCell.on('click', async () => {
-                        await this.createSelectFields(containerChangeCell, value);
-
-                        return false;
-                    });
-
+                    this._list.append(createCell);
                     this._list.append(changeCell);
                     this._list.append(unsetCell);
                 }
@@ -89,6 +109,45 @@ export class Control extends BaseField {
         }       
 
         return this._list;
+    }
+
+    /**
+     * Allows the selection of a package by initializing a selection control within the specified container.
+     * Resolves with the selected item's link details or rejects if no valid selection is made.
+     *
+     * @param {JQuery} changeContainerCell - The container element where the selection control will be initialized.
+     * @return {Promise<ApiModels.ItemLink>} A promise that resolves with the selected item link containing its workspace and URI, or rejects if no item is selected.
+     */
+    private selectPackage(changeContainerCell: JQuery) : Promise<ApiModels.ItemLink> {
+        return new Promise<ApiModels.ItemLink>(async (resolve, reject) => {
+
+            changeContainerCell.empty();
+            const selectItem = new SIC.SelectItemControl();
+            const settings = new SIC.Settings();
+            settings.showWorkspaceInBreadcrumb = true;
+            settings.showExtentInBreadcrumb = true;
+            await selectItem.setWorkspaceById(Settings.WorkspaceData);
+            selectItem.itemSelected.addListener(
+                selectedItem => {
+
+                    if (selectedItem === undefined ||
+                        selectedItem.uri === undefined) {
+                        alert("Nothing is selected.");
+                        reject("Nothing is selected");
+                        return;
+                    }
+
+                    resolve({
+                        workspace: selectedItem.workspace,
+                        uri: selectedItem.uri
+                    })
+
+                    // Ok, the user has decided
+                    // 2) Create the new item in the package
+                });
+
+            selectItem.init(changeContainerCell, settings);
+        });
     }
 
     /** Creates the GUI elements in which the user is capable to select the items to be reference

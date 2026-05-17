@@ -178,7 +178,8 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
         this.htmlElements = htmlElements;
         this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer,
             {
-                hideOnComplete: true
+                hideOnComplete: true,
+                hideAlways: true
             });
     }
 

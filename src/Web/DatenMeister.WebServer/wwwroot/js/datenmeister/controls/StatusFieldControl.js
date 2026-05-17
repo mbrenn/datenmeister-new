@@ -48,6 +48,10 @@ export class StatusFieldControl {
         }
     }
     setHideFlag() {
+        if (this.configuration.hideAlways) {
+            StatusFieldControl.hostElement.hide();
+            return;
+        }
         if (this.statusText !== undefined && this.statusText !== ""
             ||
                 StatusFieldControl.listStatusCollection.length > 0

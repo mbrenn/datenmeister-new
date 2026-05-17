@@ -85,7 +85,8 @@ export class CollectionFormCreator {
     constructor(htmlElements) {
         this.htmlElements = htmlElements;
         this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer, {
-            hideOnComplete: true
+            hideOnComplete: true,
+            hideAlways: true
         });
         this.pageNavigation = this;
     }

@@ -4,7 +4,8 @@
 }
 
 export interface IStatusFieldControlConfiguration {
-    hideOnComplete?: boolean;    
+    hideOnComplete?: boolean;
+    hideAlways?: boolean;
 }
 
 /**
@@ -59,6 +60,11 @@ export class StatusFieldControl {
     }
     
     private setHideFlag() {
+        if(this.configuration.hideAlways) {
+            StatusFieldControl.hostElement.hide();
+            return;
+        }
+        
         if (
             this.statusText !== undefined && this.statusText !== ""
             ||

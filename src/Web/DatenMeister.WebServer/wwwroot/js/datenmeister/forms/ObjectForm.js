@@ -143,7 +143,8 @@ export class ObjectFormCreatorForItem {
     constructor(htmlElements) {
         this.htmlElements = htmlElements;
         this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer, {
-            hideOnComplete: true
+            hideOnComplete: true,
+            hideAlways: true
         });
     }
     async switchToMode(formMode) {

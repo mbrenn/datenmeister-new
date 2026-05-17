@@ -679,7 +679,7 @@ public static class ObjectHelper
         string propertyOfChild,
         object requestValue)
     {
-        var valueOfProperty = value.getOrDefault<IReflectiveCollection>(property);
+        var valueOfProperty = value.getOrDefault<IReflectiveCollection?>(property);
         if (valueOfProperty == null)
         {
             // Nothing has been found, so return null

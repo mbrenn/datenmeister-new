@@ -234,7 +234,14 @@ public static class FormCreation
         {
             result.IsManaged = false;
 
-            action(manager);
+            try
+            {
+                action(manager);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error($"Exception occured during manager execution of {manager.GetType().Name}: {exc}");
+            }
 
             if (result.IsManaged)
             {

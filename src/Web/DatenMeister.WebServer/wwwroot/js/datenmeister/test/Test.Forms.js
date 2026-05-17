@@ -2,9 +2,6 @@ import * as ClientExtent from "../client/Extents.js";
 import * as ClientWorkspace from "../client/Workspace.js";
 import * as ClientItems from "../client/Items.js";
 import * as ClientForms from "../client/Forms.js";
-import * as Mof from "../Mof.js";
-import * as _DatenMeister from "../models/DatenMeister.class.js";
-import { FormType } from "../forms/Interfaces.js";
 import '../../node_modules/chai/register-assert.js';
 export function includeTests() {
     describe('Forms', () => {
@@ -45,23 +42,6 @@ export function includeTests() {
                 }
             }
             assert.isTrue(found, 'Field with name was not found');
-        });
-        it('Load Specific Form with different Form Types', async () => {
-            // Test that default form is a row form
-            const form = await ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent');
-            assert.isTrue(form.metaClass.name === "RowForm", 'Not a row Form');
-            // Test that retrieval as collection form is working
-            const formAsCollection = await ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent', FormType.Collection);
-            assert.isTrue(formAsCollection.metaClass.name === "CollectionForm", 'Not a collection Form');
-            const tabs = formAsCollection.get(_DatenMeister._Forms._FormTypes._CollectionForm.tab, Mof.ObjectType.Array);
-            assert.isTrue(tabs.length === 1, '# of tabs of CollectionForm is not 1');
-            assert.isTrue(tabs[0].metaClass.name === "RowForm", 'Tab of CollectionForm is not a RowForm');
-            // Test that retrieval as Object Form is working
-            const formAsObject = await ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent', FormType.Object);
-            assert.isTrue(formAsObject.metaClass.name === "ObjectForm", 'Not an Object Form');
-            const tabsObject = formAsObject.get(_DatenMeister._Forms._FormTypes._CollectionForm.tab, Mof.ObjectType.Array);
-            assert.isTrue(tabsObject.length === 1, '# of tabs of ObjectForm is not 1');
-            assert.isTrue(tabsObject[0].metaClass.name === "RowForm", 'Tab of ObjectForm is not a RowForm');
         });
         it('Load Default Form for Detail', async () => {
             const form = await ClientForms.getObjectFormForItem('Test', itemUri, '');

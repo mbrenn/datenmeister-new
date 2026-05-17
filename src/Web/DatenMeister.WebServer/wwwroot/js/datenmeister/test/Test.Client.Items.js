@@ -5,7 +5,7 @@ import * as ClientItems from "../client/Items.js";
 import * as Mof from "../Mof.js";
 import { EntentType } from "../ApiModels.js";
 import * as DatenMeister from "../models/DatenMeister.class.js";
-import { _CommonTypes } from "../models/DatenMeister.class.js";
+import { _Actions, _CommonTypes } from "../models/DatenMeister.class.js";
 import '../../node_modules/chai/register-assert.js';
 export function includeTests() {
     describe('Client', function () {
@@ -225,6 +225,30 @@ export function includeTests() {
                 reference = await ClientItems.getProperty("Test", result.itemId, "reference");
                 assert.isTrue(reference !== undefined, "Item is still undefined");
                 assert.isTrue(reference.get("name") === "item2", "Name is not correctly set");
+            });
+            it('Add Items to Packages and Extent', async () => {
+                // First, create a new item in the extent
+                const result = await ClientItems.addToContainer("Test", "dm:///unittest", {
+                    metaClass: _CommonTypes._Default.__Package_Uri
+                });
+                assert.isTrue(result.success === true, "Adding item to container should be successful");
+                assert.isTrue(result.itemId !== undefined, "Item ID should be defined");
+                const packageItem = await ClientItems.getObjectByUri(result.workspace, result.itemUri);
+                assert.isTrue(packageItem !== undefined, "Package item should be defined");
+                assert.isTrue(packageItem.metaClass.uri === _CommonTypes._Default.__Package_Uri, "Package item should have correct meta class");
+                // Now add another child item... This should be then in the property of packaged item
+                const result2 = await ClientItems.addToContainer("Test", packageItem.uri, {
+                    metaClass: _Actions.__ClearCollectionAction_Uri
+                });
+                assert.isTrue(result2.success === true, "Adding child item to package should be successful");
+                assert.isTrue(result2.itemId !== undefined, "Child item ID should be defined");
+                const actionItem = await ClientItems.getObjectByUri(result.workspace, result2.itemUri);
+                assert.isTrue(actionItem !== undefined, "Action item should be defined");
+                assert.isTrue(actionItem.metaClass.uri === _Actions.__ClearCollectionAction_Uri, "Action item should have correct meta class");
+                // Now check if the action item is in the package item
+                const packageChildren = await ClientItems.getProperty(packageItem.workspace, packageItem.uri, _CommonTypes._Default._Package.packagedElement);
+                assert.isTrue(Array.isArray(packageChildren));
+                assert.isTrue(packageChildren.some((child) => child.uri === actionItem.uri), "Action item should be in package children");
             });
             it('Import Xmi', async () => {
                 const result = await ClientItems.createItemInExtent("Test", "dm:///unittest", {});

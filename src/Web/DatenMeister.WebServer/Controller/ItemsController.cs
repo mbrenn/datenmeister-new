@@ -17,6 +17,7 @@ using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Web.Json;
@@ -116,6 +117,114 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         public string Workspace { get; set; } = string.Empty;
     }
 
+    /// <summary>
+    /// Adds one item to the container. The referenced container can be an extent or an element.
+    /// In case, the item is an extent, it will just be added as another root element.
+    /// In case, the item is an element, it will be added as a child element to the standard container property
+    /// of the metaclass. Usually, this is the 'packagedElement' property. 
+    /// </summary>
+    /// <param name="workspaceId"></param>
+    /// <param name="itemUri"></param>
+    /// <param name="createItemAsParams"></param>
+    /// <returns></returns>
+    [HttpPost("api/items/add_to_container")]
+    public ActionResult<AddToContainerResult> AddToContainer(
+        [FromQuery(Name = "w")] string workspaceId,
+        [FromQuery(Name = "u")] string itemUri,
+        [FromBody] AddToContainerParams createItemAsParams)
+    {
+        workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+        itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
+
+        var item = workspaceLogic.FindObjectOrCollection(workspaceId, itemUri) as IObject;
+        MofFactory factory;
+        IUriResolver uriResolver;
+        switch (item)
+        {
+            case IUriExtent extent:
+                factory = new MofFactory(extent);
+                uriResolver = extent.GetUriResolver() ?? throw new InvalidOperationException("No UriResolver");
+                break;
+            case IElement element:
+                factory = new MofFactory(element);
+                uriResolver = element.GetUriResolver() ?? throw new InvalidOperationException("No UriResolver");
+                break;
+            default:
+                throw new InvalidOperationException($"Unsupported item type: {item?.GetType().FullName ?? "Unknown"}");
+        }
+
+        var metaClass =
+            string.IsNullOrEmpty(createItemAsParams.MetaClass)
+                ? null
+                : uriResolver.Resolve(createItemAsParams.MetaClass, ResolveType.IncludeMetaWorkspaces) as IElement;
+
+        var child = factory.create(metaClass);
+        
+        var values = createItemAsParams.Properties?.v;
+        if (values != null)
+        {
+            var jsonConverter = new DirectJsonDeconverter(workspaceLogic, scopeStorage);
+            foreach (var (key, valueObject) in values)
+            {
+                var valueAsArray = (jsonConverter.ConvertJsonValue(valueObject) as IEnumerable<object?>)?.ToArray();
+                if (valueAsArray == null)
+                {
+                    throw new InvalidOperationException("Value is not an array");
+                }
+
+                var isSet = DotNetHelper.AsBoolean(valueAsArray[0]);
+                var value = valueAsArray[1];
+                if (isSet)
+                {
+                    var propertyValue = jsonConverter.ConvertJsonValue(value);
+
+                    if (propertyValue != null) child.set(key, propertyValue);
+                }
+            }
+        }
+        
+        // We have all the information together, so we can add it
+        DefaultClassifierHints.AddToExtentOrElement(item, child);
+
+        return new AddToContainerResult()
+        {
+            Success = true,
+            ItemId = (child as IHasId)?.Id ?? string.Empty,
+            Workspace = workspaceId,
+            ItemUri = child.GetUri() ?? string.Empty
+        };
+    }
+
+    /// <summary>
+    /// Parameters to create an item within an extent
+    /// </summary>
+    public class AddToContainerParams
+    {
+        /// <summary>
+        /// Gets or sets the metaclass
+        /// </summary>
+        public string MetaClass { get; set; } = string.Empty;
+
+        public MofObjectAsJson? Properties { get; set; }
+    }
+
+    public class AddToContainerResult
+    {
+        public bool Success { get; set; }
+        
+        public string ItemId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the item url
+        /// </summary>
+        public string ItemUri { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the workspace
+        /// </summary>
+        public string Workspace { get; set; } = string.Empty;
+    }
+
     [HttpPost("api/items/create_child")]
     public ActionResult<object> CreateItemAsChild(
         [FromQuery(Name = "w")] string workspaceId,
@@ -126,6 +235,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
         var item = _internal.GetItemByUriParameter(workspaceId, itemUri);
+        if (item == null)
+        {
+            throw new InvalidOperationException($"Item with URI '{itemUri}' not found in workspace '{workspaceId}'");
+        }
 
         var factory = new MofFactory(item);
 

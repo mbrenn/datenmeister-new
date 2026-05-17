@@ -13,6 +13,18 @@ export async function createItemInExtent(workspaceId, extentUri, param) {
         + encodeURIComponent(workspaceId) + "&e="
         + encodeURIComponent(extentUri), evaluatedParameter);
 }
+export async function addToContainer(workspaceId, itemUri, param) {
+    const evaluatedParameter = {
+        metaClass: param.metaClass,
+        properties: undefined
+    };
+    if (param.properties !== undefined && param.properties !== null) {
+        evaluatedParameter.properties = Mof.createJsonFromObject(param.properties);
+    }
+    return await ApiConnection.post(Settings.baseUrl + "api/items/add_to_container?w="
+        + encodeURIComponent(workspaceId) + "&u="
+        + encodeURIComponent(itemUri), evaluatedParameter);
+}
 export async function createItemAsChild(workspaceId, itemUri, param) {
     const evaluatedParameter = {
         metaClass: param.metaClass,
@@ -67,12 +79,11 @@ export async function getObjectByUri(workspace, url) {
 }
 export async function getItemWithNameAndId(workspace, url) {
     try {
-        const resultFromServer = await ApiConnection.get(Settings.baseUrl +
+        return await ApiConnection.get(Settings.baseUrl +
             "api/items/get_itemwithnameandid?w=" +
             encodeURIComponent(workspace) +
             "&u=" +
             encodeURIComponent(url));
-        return resultFromServer;
     }
     catch (e) {
         return undefined;

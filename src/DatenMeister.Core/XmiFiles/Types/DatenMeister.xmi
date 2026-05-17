@@ -55,7 +55,7 @@
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="5506180f-2158-423f-a290-ef929e4f956c" lower="0" upper="1" name="message" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="241b550d-835a-41ea-a32a-bea5d388c6ee" name="LoadExtentAction">
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="da06a7c7-86a6-44a6-9075-9e7a5f9d58ab" name="configuration" type-ref="dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.Configuration.ExtentLoaderConfig" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="da06a7c7-86a6-44a6-9075-9e7a5f9d58ab" name="configuration" type-ref="dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="abe39d1e-e793-4f46-9410-3eed2615ee08" general-ref="dm:///_internal/types/internal#Actions.Action">
         <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
       </generalization>
@@ -427,8 +427,8 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.Html.HtmlReportInstance" name="HtmlReportInstance">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="b026c0a6-2cb8-4a5f-88cc-144481aeddaa" general-ref="#DatenMeister.Models.Reports.ReportInstance" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="401c648f-b0cb-4a2c-8ba4-ad9705d15a87" name="cssFile" lower="1" upper="1" type-ref="dm:///_internal/model/primitivetypes#String"></ownedAttribute>
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="211c648f-b0cb-4a2c-8ba4-ad9705d15a87" name="cssStyleSheet" lower="1" upper="1" type-ref="dm:///_internal/model/primitivetypes#String"></ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="401c648f-b0cb-4a2c-8ba4-ad9705d15a87" name="cssFile" lower="1" upper="1" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="211c648f-b0cb-4a2c-8ba4-ad9705d15a87" name="cssStyleSheet" lower="1" upper="1" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Enumeration" p1:id="DatenMeister.Models.Reports.Simple.DescendentMode" name="DescendentMode">
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Reports.Simple.DescendentMode-None" name="None" />

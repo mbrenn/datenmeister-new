@@ -1,3 +1,4 @@
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
@@ -65,6 +66,11 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
     /// </summary>
     private readonly TypeIndexLogic _typeIndexLogic = new(workspaceLogic);
     
+    /// <summary>
+    /// Stores the logger itself
+    /// </summary>
+    private static readonly ILogger Logger = new ClassLogger(typeof(FieldFromPropertyType));
+        
     public void CreateField(
         FieldFactoryParameter parameter,
         FormCreationContext context,
@@ -95,8 +101,11 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
         
         var coreUriResolver = new CoreUriResolver(workspaceLogic);
         if (coreUriResolver.Resolve(propertyTypeUrl, ResolveType.IncludeTypeWorkspace) is not IElement propertyType)
+        {
+            Logger.Warn("Url for property type could not be resolved: " + propertyTypeUrl);
             return;
-        
+        }
+
         // Checks, if the property is an enumeration.
         var propertyIsCollection = attributeModel.IsMultiple == true;
         var isReadOnly = context.IsReadOnly;

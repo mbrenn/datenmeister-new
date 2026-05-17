@@ -4,6 +4,10 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as FieldFactory from "../forms/FieldFactory.js";
 export class Field extends BaseField {
     childFields = [];
+    /**
+     * Inhibits the presentation of the checkbox indicating whether the element is set.
+     */
+    showValue() { return false; }
     async createDom(dmElement) {
         const fields = this.field.get(_DatenMeister._Forms._FieldTypes._MergedFieldsInCellData.fields, Mof.ObjectType.Array) ?? [];
         const container = $("<div class='dm-merged-fields-in-cell d-flex flex-wrap gap-2 align-items-center'></div>");

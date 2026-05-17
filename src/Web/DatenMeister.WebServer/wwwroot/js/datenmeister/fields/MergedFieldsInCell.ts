@@ -6,6 +6,11 @@ import * as FieldFactory from "../forms/FieldFactory.js";
 export class Field extends BaseField implements IFormField {
     private childFields: IFormField[] = [];
 
+    /**
+     * Inhibits the presentation of the checkbox indicating whether the element is set.  
+     */
+    showValue(){ return false; }
+
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
         const fields = this.field.get(
             _DatenMeister._Forms._FieldTypes._MergedFieldsInCellData.fields,

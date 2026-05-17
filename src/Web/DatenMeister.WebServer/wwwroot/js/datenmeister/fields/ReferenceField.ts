@@ -7,6 +7,7 @@ import * as SIC from "../controls/SelectItemControl.js";
 import * as ApiModels from "../ApiModels.js";
 import {ItemWithNameAndId} from "../ApiModels.js";
 import * as Settings from "../Settings.js";
+import * as Uml from "../models/UML.js"
 
 export class Control extends BaseField {
     propertyName: string;
@@ -71,13 +72,39 @@ export class Control extends BaseField {
                         // 2) Let the user decide which type shall be created
                         // 3) In case, the user has done this, we need to create the item
                         // 4) We need to set the reference of the newly created item
-                        // 5) We have to navigate to the newly created item
+                        // 5) Reload the control, so the user can decide whether to continue editing the current item
+                        //    or switch to the reference to edit the new item. 
                         
-                        // 1) Let the user decide   
+                        // 1) Let the user decide on which package the new item shall be created
                         const packageItem = await this.selectPackage(containerChangeCell);
-                        alert(packageItem.uri);
                         
-
+                        // 2) Define the type of the new item
+                        const typeItem = await this.selectType(containerChangeCell);
+                        
+                        // 3) Let's create the child
+                        const result = await ClientItem.addToContainer(packageItem.workspace, packageItem.uri,
+                            {
+                                metaClass: typeItem.uri
+                            });
+                        
+                        // 4) Let's set the reference
+                        if (tthis.referenceSetCall !== undefined) {
+                            await this.referenceSetCall(
+                                {
+                                    workspace: result.workspace,
+                                    uri: result.itemUri
+                                }
+                            );
+                        }
+                        await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, 
+                            {
+                                property: tthis.propertyName, 
+                                referenceUri: result.itemUri, 
+                                workspaceId: result.workspace
+                            });
+                        
+                        await tthis.reloadValuesFromServer();                        
+                        
                         return false;
                     });
 
@@ -100,7 +127,6 @@ export class Control extends BaseField {
                     this._list.append(unsetCell);
                 }
                 else {
-
                     await this.createSelectFields(containerChangeCell, value);
                 }
                 
@@ -112,21 +138,49 @@ export class Control extends BaseField {
     }
 
     /**
-     * Allows the selection of a package by initializing a selection control within the specified container.
+     * Allows the selection of a package.
      * Resolves with the selected item's link details or rejects if no valid selection is made.
      *
      * @param {JQuery} changeContainerCell - The container element where the selection control will be initialized.
      * @return {Promise<ApiModels.ItemLink>} A promise that resolves with the selected item link containing its workspace and URI, or rejects if no item is selected.
      */
     private selectPackage(changeContainerCell: JQuery) : Promise<ApiModels.ItemLink> {
+
+        return this.selectItem(changeContainerCell, { workspaceId: Settings.WorkspaceData, title: "Select Package in which the item shall be created:" });
+    }
+
+    /**
+     * Allows the selection of a type
+     * Resolves with the selected item's link details or rejects if no valid selection is made.
+     *
+     * @param {JQuery} changeContainerCell - The container element where the selection control will be initialized.
+     * @return {Promise<ApiModels.ItemLink>} A promise that resolves with the selected item link containing its workspace and URI, or rejects if no item is selected.
+     */
+    private selectType(changeContainerCell: JQuery) : Promise<ApiModels.ItemLink> {
+
+        return this.selectItem(changeContainerCell, { workspaceId: Settings.WorkspaceTypes, title: "Select type of new item:" });
+    }
+
+    /**
+     * Selects an item using a custom selection control and returns the selected item's information.
+     *
+     * @param changeContainerCell A JQuery object representing the HTML element where the selection control will be initialized.
+     * @param parameter The parameters to create the selection control.
+     * @return A Promise resolving to an object containing the selected item's workspace and URI, or rejecting if no item is selected.
+     */
+    private selectItem(changeContainerCell: JQuery<HTMLElement>, parameter: ISelectItemParameter) {
         return new Promise<ApiModels.ItemLink>(async (resolve, reject) => {
+            
+            const workspaceId = parameter.workspaceId;
+            const title = parameter.title;
 
             changeContainerCell.empty();
             const selectItem = new SIC.SelectItemControl();
             const settings = new SIC.Settings();
             settings.showWorkspaceInBreadcrumb = true;
             settings.showExtentInBreadcrumb = true;
-            await selectItem.setWorkspaceById(Settings.WorkspaceData);
+            if(title !== undefined) settings.headline = title;
+            await selectItem.setWorkspaceById(workspaceId);
             selectItem.itemSelected.addListener(
                 selectedItem => {
 
@@ -140,10 +194,7 @@ export class Control extends BaseField {
                     resolve({
                         workspace: selectedItem.workspace,
                         uri: selectedItem.uri
-                    })
-
-                    // Ok, the user has decided
-                    // 2) Create the new item in the package
+                    });
                 });
 
             selectItem.init(changeContainerCell, settings);
@@ -163,7 +214,7 @@ export class Control extends BaseField {
         const settings = new SIC.Settings();
         settings.showWorkspaceInBreadcrumb = true;
         settings.showExtentInBreadcrumb = true;      
-        settings.hideButtonRow = isSelectionInline;
+        settings.hideButtonRow = isSelectionInline;        
         
         // Depending on whether we are having a inline item, we react upon an explicit click via 'set' button
         // or directly while the user is navigating
@@ -302,4 +353,18 @@ export class Field extends Control implements IFormField {
 
         await this.createDomByValue(value);
     }
+}
+
+/**
+ * Defines the parameters to select items
+ */
+interface ISelectItemParameter{
+    /**
+     * Preselected workspace
+     */
+    workspaceId?: string,
+    /**
+     * Title of the form
+     */
+    title?: string
 }

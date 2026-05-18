@@ -3,6 +3,10 @@ import * as ItemsClient from "../client/Items.js";
 import {EntentType, ItemWithNameAndId} from "../ApiModels.js";
 import {UserEvent} from "../../burnsystems/Events.js";
 import {convertItemWithNameAndIdToDom} from "../DomHelper.js";
+import * as Mof from "../Mof.js";
+import * as ClientItem from "../client/Items.js";
+import * as ApiModels from "../ApiModels.js";
+import * as GlobalSettings from "../Settings.js";
 
 export class Settings {
     showBreadcrumb = true;
@@ -592,4 +596,84 @@ export class SelectItemControl {
 
         this.htmlBreadcrumbList.append(breadcrumbItem);
     }
+}
+
+
+
+/**
+ * Allows the selection of a package.
+ * Resolves with the selected item's link details or rejects if no valid selection is made.
+ *
+ * @param {JQuery} changeContainerCell - The container element where the selection control will be initialized.
+ * @return {Promise<ApiModels.ItemLink>} A promise that resolves with the selected item link containing its workspace and URI, or rejects if no item is selected.
+ */
+export function selectPackage(changeContainerCell: JQuery) : Promise<ApiModels.ItemLink> {
+
+    return this.selectItem(changeContainerCell, { workspaceId: GlobalSettings.WorkspaceData, title: "Select Package in which the item shall be created:" });
+}
+
+/**
+ * Allows the selection of a type
+ * Resolves with the selected item's link details or rejects if no valid selection is made.
+ *
+ * @param {JQuery} changeContainerCell - The container element where the selection control will be initialized.
+ * @return {Promise<ApiModels.ItemLink>} A promise that resolves with the selected item link containing its workspace and URI, or rejects if no item is selected.
+ */
+export function selectType(changeContainerCell: JQuery) : Promise<ApiModels.ItemLink> {
+
+    return this.selectItem(changeContainerCell, { workspaceId: GlobalSettings.WorkspaceTypes, title: "Select type of new item:" });
+}
+
+/**
+ * Selects an item using a custom selection control and returns the selected item's information.
+ *
+ * @param changeContainerCell A JQuery object representing the HTML element where the selection control will be initialized.
+ * @param parameter The parameters to create the selection control.
+ * @return A Promise resolving to an object containing the selected item's workspace and URI, or rejecting if no item is selected.
+ */
+export function selectItem(changeContainerCell: JQuery<HTMLElement>, parameter: ISelectItemParameter) {
+    return new Promise<ApiModels.ItemLink>(async (resolve, reject) => {
+
+        const workspaceId = parameter.workspaceId;
+        const title = parameter.title;
+
+        changeContainerCell.empty();
+        const selectItem = new SelectItemControl();
+        const settings = new Settings();
+        settings.showWorkspaceInBreadcrumb = true;
+        settings.showExtentInBreadcrumb = true;
+        if(title !== undefined) settings.headline = title;
+        await selectItem.setWorkspaceById(workspaceId);
+        selectItem.itemSelected.addListener(
+            selectedItem => {
+
+                if (selectedItem === undefined ||
+                    selectedItem.uri === undefined) {
+                    alert("Nothing is selected.");
+                    reject("Nothing is selected");
+                    return;
+                }
+
+                resolve({
+                    workspace: selectedItem.workspace,
+                    uri: selectedItem.uri
+                });
+            });
+
+        selectItem.init(changeContainerCell, settings);
+    });
+}
+
+/**
+ * Defines the parameters to select items
+ */
+interface ISelectItemParameter{
+    /**
+     * Preselected workspace
+     */
+    workspaceId?: string,
+    /**
+     * Title of the form
+     */
+    title?: string
 }

@@ -4,7 +4,6 @@ import * as DomHelper from "../DomHelper.js";
 import { injectNameByUri } from "../DomHelper.js";
 import * as ClientItem from "../client/Items.js";
 import * as SIC from "../controls/SelectItemControl.js";
-import * as Settings from "../Settings.js";
 export class Control extends BaseField {
     propertyName;
     /** Defines whether the field flag to create the selection fields directly
@@ -62,9 +61,9 @@ export class Control extends BaseField {
                         // 5) Reload the control, so the user can decide whether to continue editing the current item
                         //    or switch to the reference to edit the new item. 
                         // 1) Let the user decide on which package the new item shall be created
-                        const packageItem = await this.selectPackage(containerChangeCell);
+                        const packageItem = await SIC.selectPackage(containerChangeCell);
                         // 2) Define the type of the new item
-                        const typeItem = await this.selectType(containerChangeCell);
+                        const typeItem = await SIC.selectType(containerChangeCell);
                         // 3) Let's create the child
                         const result = await ClientItem.addToContainer(packageItem.workspace, packageItem.uri, {
                             metaClass: typeItem.uri
@@ -104,60 +103,6 @@ export class Control extends BaseField {
             }
         }
         return this._list;
-    }
-    /**
-     * Allows the selection of a package.
-     * Resolves with the selected item's link details or rejects if no valid selection is made.
-     *
-     * @param {JQuery} changeContainerCell - The container element where the selection control will be initialized.
-     * @return {Promise<ApiModels.ItemLink>} A promise that resolves with the selected item link containing its workspace and URI, or rejects if no item is selected.
-     */
-    selectPackage(changeContainerCell) {
-        return this.selectItem(changeContainerCell, { workspaceId: Settings.WorkspaceData, title: "Select Package in which the item shall be created:" });
-    }
-    /**
-     * Allows the selection of a type
-     * Resolves with the selected item's link details or rejects if no valid selection is made.
-     *
-     * @param {JQuery} changeContainerCell - The container element where the selection control will be initialized.
-     * @return {Promise<ApiModels.ItemLink>} A promise that resolves with the selected item link containing its workspace and URI, or rejects if no item is selected.
-     */
-    selectType(changeContainerCell) {
-        return this.selectItem(changeContainerCell, { workspaceId: Settings.WorkspaceTypes, title: "Select type of new item:" });
-    }
-    /**
-     * Selects an item using a custom selection control and returns the selected item's information.
-     *
-     * @param changeContainerCell A JQuery object representing the HTML element where the selection control will be initialized.
-     * @param parameter The parameters to create the selection control.
-     * @return A Promise resolving to an object containing the selected item's workspace and URI, or rejecting if no item is selected.
-     */
-    selectItem(changeContainerCell, parameter) {
-        return new Promise(async (resolve, reject) => {
-            const workspaceId = parameter.workspaceId;
-            const title = parameter.title;
-            changeContainerCell.empty();
-            const selectItem = new SIC.SelectItemControl();
-            const settings = new SIC.Settings();
-            settings.showWorkspaceInBreadcrumb = true;
-            settings.showExtentInBreadcrumb = true;
-            if (title !== undefined)
-                settings.headline = title;
-            await selectItem.setWorkspaceById(workspaceId);
-            selectItem.itemSelected.addListener(selectedItem => {
-                if (selectedItem === undefined ||
-                    selectedItem.uri === undefined) {
-                    alert("Nothing is selected.");
-                    reject("Nothing is selected");
-                    return;
-                }
-                resolve({
-                    workspace: selectedItem.workspace,
-                    uri: selectedItem.uri
-                });
-            });
-            selectItem.init(changeContainerCell, settings);
-        });
     }
     /** Creates the GUI elements in which the user is capable to select the items to be reference
      * @param containerChangeCell The cell which will contain the GUI elements. This cell will be emptied

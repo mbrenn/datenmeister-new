@@ -831,6 +831,48 @@ public class _Actions
         public _CreateFormByMetaClass @CreateFormByMetaClass = new ();
         public MofObjectShadow @__CreateFormByMetaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#d9838e98-fd94-4dc1-883a-4362a2d732d3",
+            TypeKind = TypeKind.ClassTree)]
+        public class _GetAttributeOfItem
+        {
+            public static readonly string @itemUri = "itemUri";
+            public IElement? @_itemUri = null;
+
+            public static readonly string @workspace = "workspace";
+            public IElement? @_workspace = null;
+
+            public static readonly string @propertyName = "propertyName";
+            public IElement? @_propertyName = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
+        }
+
+        public _GetAttributeOfItem @GetAttributeOfItem = new ();
+        public MofObjectShadow @__GetAttributeOfItem = new ("dm:///_internal/types/internal#d9838e98-fd94-4dc1-883a-4362a2d732d3");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#e144d177-70e2-4418-991a-8262523c62b7",
+            TypeKind = TypeKind.ClassTree)]
+        public class _GetAttributeOfItemResult
+        {
+            public static readonly string @isComposite = "isComposite";
+            public IElement? @_isComposite = null;
+
+            public static readonly string @metaClassUri = "metaClassUri";
+            public IElement? @_metaClassUri = null;
+
+            public static readonly string @isMultiple = "isMultiple";
+            public IElement? @_isMultiple = null;
+
+        }
+
+        public _GetAttributeOfItemResult @GetAttributeOfItemResult = new ();
+        public MofObjectShadow @__GetAttributeOfItemResult = new ("dm:///_internal/types/internal#e144d177-70e2-4418-991a-8262523c62b7");
+
     }
 
     public _Forms Forms = new ();

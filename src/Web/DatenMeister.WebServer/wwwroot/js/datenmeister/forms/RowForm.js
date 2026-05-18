@@ -5,6 +5,7 @@ import * as TextField from "../fields/TextField.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import { SubmitMethod } from "./Forms.js";
 import * as ClientItem from "../client/Items.js";
+import * as ClientAction from "../client/Actions.js";
 class FieldInForm {
     fieldElement;
     field;
@@ -131,7 +132,24 @@ export class RowForm {
                 }
                 $(".dm-rowform-keycell", tr).text(name);
                 $(".dm-rowform-infocell", tr).on('click', async () => {
-                    alert('INFO');
+                    const action = new Mof.DmObject(_DatenMeister._Actions._Forms.__GetAttributeOfItem_Uri);
+                    action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.propertyName, name);
+                    action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.itemUri, tthis.itemUrl);
+                    action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.workspace, tthis.workspace);
+                    const result = await ClientAction.executeActionDirectly("Execute", {
+                        parameter: action
+                    });
+                    if (result.success) {
+                        if (result.result === null) {
+                            alert('No metadata could be retrived for that property');
+                        }
+                        else {
+                            const resultText = "isComposite: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.isComposite, Mof.ObjectType.Boolean) ? "true" : "false")
+                                + "\r\nisMultiple: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.isMultiple, Mof.ObjectType.Boolean) ? "true" : "false")
+                                + "\r\nmetaClass: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.metaClassUri, Mof.ObjectType.String));
+                            alert(resultText);
+                        }
+                    }
                 });
             }
             // Creates the value column content

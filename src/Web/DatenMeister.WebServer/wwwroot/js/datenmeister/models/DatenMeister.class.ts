@@ -380,6 +380,24 @@ export namespace _Actions
                 }
 
                 export const __CreateFormByMetaClass_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass";
+                export class _GetAttributeOfItem
+                {
+                    static itemUri = "itemUri";
+                    static workspace = "workspace";
+                    static propertyName = "propertyName";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
+                }
+
+                export const __GetAttributeOfItem_Uri = "dm:///_internal/types/internal#d9838e98-fd94-4dc1-883a-4362a2d732d3";
+                export class _GetAttributeOfItemResult
+                {
+                    static isComposite = "isComposite";
+                    static metaClassUri = "metaClassUri";
+                    static isMultiple = "isMultiple";
+                }
+
+                export const __GetAttributeOfItemResult_Uri = "dm:///_internal/types/internal#e144d177-70e2-4418-991a-8262523c62b7";
         }
 
         export namespace _OSIntegration

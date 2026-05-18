@@ -23,9 +23,11 @@ div.dm-collectionform-buttons
 }
 
 .dm-rowform-keycell {
+    flex: 1 1 auto;
 }
 
 .dm-rowform-infocell {
+    margin-left: auto;
 }
 
 .dm-textfield-clipboard-container

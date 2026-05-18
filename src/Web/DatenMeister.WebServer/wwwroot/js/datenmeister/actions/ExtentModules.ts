@@ -80,8 +80,6 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
     private metaclassWorkspace: string;
     private isList: boolean = true;
     
-    
-    
     constructor() {
         super("Extent.CreateNewItem");
         this.actionVerb = "Create";        

@@ -248,6 +248,17 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1df4e655-2222-4fa2-bec6-adc7383adb2b" name="creationMode" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7e4e02f7-1111-48d6-8d91-4d48b0a435a1" name="targetContainer" />
       </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="d9838e98-fd94-4dc1-883a-4362a2d732d3" name="GetAttributeOfItem">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="ffe6783e-3d86-46f1-b896-cd17b2c08e41" name="itemUri" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="e81ce864-b736-481b-8240-77b2c47ce471" name="workspace" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="cd0ef75e-b104-473c-9dac-05028a6aaf42" name="propertyName" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="4635097a-01b5-4f3e-9ac7-6d6397077309" general-ref="dm:///_internal/types/internal#Actions.Action" />
+      </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="e144d177-70e2-4418-991a-8262523c62b7" name="GetAttributeOfItemResult">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="2ac68fdd-313b-4aae-a1e9-f9cc03c4309e" name="isComposite" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="77381c49-17b0-4819-acbb-227348971293" name="metaClassUri" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="17b440b3-f4f0-46b2-bcb6-662e7064aa79" name="isMultiple" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      </packagedElement>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="46691df7-5235-4517-b942-be984c908768" name="OSIntegration">
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="6f2ea2cd-6218-483c-90a3-4db255e84e82" name="CommandExecutionAction">

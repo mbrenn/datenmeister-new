@@ -46,7 +46,6 @@ public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage sco
                     throw new InvalidOperationException("Wrong metaclass. Expected XmiStorageLoaderConfig");
                 }
 
-                var workspaceLogic = GiveMe.Scope.WorkspaceLogic;
                 var extentManager = new ExtentManager(workspaceLogic, GiveMe.Scope.ScopeStorage);
                 var result = await extentManager.LoadExtent(
                     mofParameter,

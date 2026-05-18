@@ -330,6 +330,22 @@ export var _Actions;
         }
         _Forms._CreateFormByMetaClass = _CreateFormByMetaClass;
         _Forms.__CreateFormByMetaClass_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass";
+        class _GetAttributeOfItem {
+            static itemUri = "itemUri";
+            static workspace = "workspace";
+            static propertyName = "propertyName";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
+        }
+        _Forms._GetAttributeOfItem = _GetAttributeOfItem;
+        _Forms.__GetAttributeOfItem_Uri = "dm:///_internal/types/internal#d9838e98-fd94-4dc1-883a-4362a2d732d3";
+        class _GetAttributeOfItemResult {
+            static isComposite = "isComposite";
+            static metaClassUri = "metaClassUri";
+            static isMultiple = "isMultiple";
+        }
+        _Forms._GetAttributeOfItemResult = _GetAttributeOfItemResult;
+        _Forms.__GetAttributeOfItemResult_Uri = "dm:///_internal/types/internal#e144d177-70e2-4418-991a-8262523c62b7";
     })(_Forms = _Actions._Forms || (_Actions._Forms = {}));
     let _OSIntegration;
     (function (_OSIntegration) {

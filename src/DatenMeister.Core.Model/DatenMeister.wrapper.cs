@@ -510,13 +510,25 @@ public class Actions
 
         public static LoadExtentAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
-        // Not found
-        public object? @configuration
+        // DatenMeister.Core.Models.ExtentLoaderConfigs.ExtentLoaderConfig_Wrapper
+        public DatenMeister.Core.Models.ExtentLoaderConfigs.ExtentLoaderConfig_Wrapper? @configuration
         {
-            get =>
-                _wrappedElement.getOrDefault<object?>("configuration");
-            set => 
-                _wrappedElement.set("configuration", value);
+            get
+            {
+                var foundElement = _wrappedElement.getOrDefault<IElement?>("configuration");
+                return foundElement == null ? null : new DatenMeister.Core.Models.ExtentLoaderConfigs.ExtentLoaderConfig_Wrapper(foundElement);
+            }
+            set 
+            {
+                if(value is IElementWrapper wrappedElement)
+                {
+                    _wrappedElement.set("configuration", wrappedElement.GetWrappedElement());
+                }
+                else
+                {
+                    _wrappedElement.set("configuration", value);
+                }
+            }
         }
 
         public bool @dropExisting
@@ -2129,6 +2141,118 @@ public class Actions
                     _wrappedElement.getOrDefault<bool>("isDisabled");
                 set => 
                     _wrappedElement.set("isDisabled", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#d9838e98-fd94-4dc1-883a-4362a2d732d3",
+            TypeKind = TypeKind.WrappedClass)]
+        public class GetAttributeOfItem_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public GetAttributeOfItem_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public GetAttributeOfItem_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#d9838e98-fd94-4dc1-883a-4362a2d732d3");
+
+            public static GetAttributeOfItem_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @itemUri
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("itemUri");
+                set => 
+                    _wrappedElement.set("itemUri", value);
+            }
+
+            public string? @workspace
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("workspace");
+                set => 
+                    _wrappedElement.set("workspace", value);
+            }
+
+            public string? @propertyName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("propertyName");
+                set => 
+                    _wrappedElement.set("propertyName", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#e144d177-70e2-4418-991a-8262523c62b7",
+            TypeKind = TypeKind.WrappedClass)]
+        public class GetAttributeOfItemResult_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public GetAttributeOfItemResult_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public GetAttributeOfItemResult_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#e144d177-70e2-4418-991a-8262523c62b7");
+
+            public static GetAttributeOfItemResult_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public bool @isComposite
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isComposite");
+                set => 
+                    _wrappedElement.set("isComposite", value);
+            }
+
+            public string? @metaClassUri
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("metaClassUri");
+                set => 
+                    _wrappedElement.set("metaClassUri", value);
+            }
+
+            public bool @isMultiple
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isMultiple");
+                set => 
+                    _wrappedElement.set("isMultiple", value);
             }
 
         }

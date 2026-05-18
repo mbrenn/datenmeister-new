@@ -38,6 +38,21 @@ class FieldInForm {
         }
     }
 }
+function showRowFormInfoPopup(infoCell, text) {
+    const existingPopup = $(".dm-rowform-info-popup", infoCell);
+    const existingTimeout = existingPopup.data("dm-rowform-info-popup-timeout");
+    if (existingTimeout !== undefined) {
+        window.clearTimeout(existingTimeout);
+    }
+    existingPopup.remove();
+    const popup = $("<div class='dm-rowform-info-popup' role='status'></div>");
+    popup.text(text);
+    infoCell.append(popup);
+    const timeout = window.setTimeout(() => {
+        popup.fadeOut(200, () => popup.remove());
+    }, 3000);
+    popup.data("dm-rowform-info-popup-timeout", timeout);
+}
 export class RowForm {
     pageNavigation;
     workspace;
@@ -131,7 +146,8 @@ export class RowForm {
                     // name += " [R]";
                 }
                 $(".dm-rowform-keycell", tr).text(name);
-                $(".dm-rowform-infocell", tr).on('click', async () => {
+                $(".dm-rowform-infocell", tr).on('click', async (event) => {
+                    const infoCell = $(event.currentTarget);
                     const action = new Mof.DmObject(_DatenMeister._Actions._Forms.__GetAttributeOfItem_Uri);
                     action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.propertyName, name);
                     action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.itemUri, tthis.itemUrl);
@@ -141,13 +157,13 @@ export class RowForm {
                     });
                     if (result.success) {
                         if (result.result === null) {
-                            alert('No metadata could be retrived for that property');
+                            showRowFormInfoPopup(infoCell, 'No metadata could be retrieved for that property');
                         }
                         else {
                             const resultText = "isComposite: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.isComposite, Mof.ObjectType.Boolean) ? "true" : "false")
                                 + "\r\nisMultiple: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.isMultiple, Mof.ObjectType.Boolean) ? "true" : "false")
                                 + "\r\nmetaClass: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.metaClassUri, Mof.ObjectType.String));
-                            alert(resultText);
+                            showRowFormInfoPopup(infoCell, resultText);
                         }
                     }
                 });

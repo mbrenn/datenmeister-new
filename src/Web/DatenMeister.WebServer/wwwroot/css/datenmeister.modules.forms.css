@@ -16,6 +16,18 @@ div.dm-collectionform-buttons
 .dm-rowform textarea.dm-textfield {
     resize: both;
 }
+
+.dm-rowform-key {
+    display: flex;
+    flex-flow: row;
+}
+
+.dm-rowform-keycell {
+}
+
+.dm-rowform-infocell {
+}
+
 .dm-textfield-clipboard-container
 {
     padding: 5px;

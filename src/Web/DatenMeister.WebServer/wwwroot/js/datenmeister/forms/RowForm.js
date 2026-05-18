@@ -114,7 +114,7 @@ export class RowForm {
             }
             else {
                 tr = $("<tr>" +
-                    "<td class='key'></td>" +
+                    "<td class='dm-rowform-key'><div class='dm-rowform-keycell'></div><div class='dm-rowform-infocell'>ℹ️</div></td>" +
                     "<td class='value'></td>" +
                     "<td class='isset'><input type='checkbox' class='checkbox_isset' /></td>" +
                     "</tr>");
@@ -129,7 +129,10 @@ export class RowForm {
                 if (isFieldReadOnly) {
                     // name += " [R]";
                 }
-                $(".key", tr).text(name);
+                $(".dm-rowform-keycell", tr).text(name);
+                $(".dm-rowform-infocell", tr).on('click', async () => {
+                    alert('INFO');
+                });
             }
             // Creates the value column content
             if (fieldElement === null) {

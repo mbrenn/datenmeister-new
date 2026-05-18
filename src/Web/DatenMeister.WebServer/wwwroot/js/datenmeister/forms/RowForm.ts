@@ -145,7 +145,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 tr = $("<tr><td class='value' colspan='3'></td></tr>");
             } else {
                 tr = $("<tr>" +
-                    "<td class='key'></td>" +
+                    "<td class='dm-rowform-key'><div class='dm-rowform-keycell'></div><div class='dm-rowform-infocell'>ℹ️</div></td>" +
                     "<td class='value'></td>" +
                     "<td class='isset'><input type='checkbox' class='checkbox_isset' /></td>" +
                     "</tr>");
@@ -166,7 +166,11 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                     // name += " [R]";
                 }
 
-                $(".key", tr).text(name);
+                $(".dm-rowform-keycell", tr).text(name);
+
+                $(".dm-rowform-infocell", tr).on('click', async() =>{
+                    alert('INFO');
+                });
             }
 
             // Creates the value column content

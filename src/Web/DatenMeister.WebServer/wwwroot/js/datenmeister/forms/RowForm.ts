@@ -146,6 +146,14 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 field.get(_DatenMeister._Forms._FieldTypes._FieldData.isReadOnly, Mof.ObjectType.Boolean)
                 || configuration.isReadOnly;
 
+            let name =
+                (field.get(_DatenMeister._Forms._FieldTypes._FieldData.title) as any as string);
+            if (name === undefined || name === null || name === "") {
+                name = (field.get(_DatenMeister._Forms._FieldTypes._FieldData._name_) as any as string);
+            }
+
+            const propertyName = field.get(_DatenMeister._Forms._FieldTypes._FieldData._name_, Mof.ObjectType.String);
+
             // Creates the field to be shown 
             fieldElement = createField(
                 fieldMetaClassUri,
@@ -156,7 +164,9 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                     isReadOnly: isFieldReadOnly,
                     form: this
                 });
-
+            
+            const showValue = propertyName !== undefined && propertyName !== null && propertyName !=="" &&
+                fieldElement.showValue !== undefined && fieldElement.showValue();
             const singleColumn =
                 fieldElement?.showNameField === undefined ? false : fieldElement.showNameField();
 
@@ -165,7 +175,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 tr = $("<tr><td class='value' colspan='3'></td></tr>");
             } else {
                 tr = $("<tr>" +
-                    "<td class='dm-rowform-key'><div class='dm-rowform-keycell'></div><div class='dm-rowform-infocell'>ℹ️</div></td>" +
+                    "<td><div class='dm-rowform-key'><div class='dm-rowform-keycell'></div><div class='dm-rowform-infocell'>ℹ️</div></div></td>" +
                     "<td class='value'></td>" +
                     "<td class='isset'><input type='checkbox' class='checkbox_isset' /></td>" +
                     "</tr>");
@@ -175,45 +185,19 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
 
             // Creates the key column content
             if (!singleColumn) {
-                let name =
-                    (field.get(_DatenMeister._Forms._FieldTypes._FieldData.title) as any as string);
-
-                if (name === undefined || name === null || name === "") {
-                    name = (field.get(_DatenMeister._Forms._FieldTypes._FieldData.name) as any as string);
-                }
 
                 if (isFieldReadOnly) {
                     // name += " [R]";
                 }
 
                 $(".dm-rowform-keycell", tr).text(name);
-
-                $(".dm-rowform-infocell", tr).on('click', async event => {
-                    const infoCell = $(event.currentTarget);
-                    const action = new Mof.DmObject(_DatenMeister._Actions._Forms.__GetAttributeOfItem_Uri);
-                    action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.propertyName, name);
-                    action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.itemUri, tthis.itemUrl);
-                    action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.workspace, tthis.workspace);
-                    const result = await ClientAction.executeActionDirectly(
-                        "Execute",
-                        {
-                            parameter: action
-                        }
-                    );
-
-                    if (result.success) {
-                        if (result.result === null) {
-                            showRowFormInfoPopup(infoCell, 'No metadata could be retrieved for that property');
-                        } else {
-                            const resultText =
-                                "isComposite: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.isComposite, Mof.ObjectType.Boolean) ? "true" : "false")
-                                + "\r\nisMultiple: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.isMultiple, Mof.ObjectType.Boolean) ? "true" : "false")
-                                + "\r\nmetaClass: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.metaClassUri, Mof.ObjectType.String));
-
-                            showRowFormInfoPopup(infoCell, resultText);
-                        }
-                    }
-                });
+                
+                if(showValue === true) {
+                    this.addEventToInfoPoint(tr, name);
+                }
+                else{
+                    $(".dm-rowform-infocell", tr).hide();
+                }
             }
 
             // Creates the value column content
@@ -239,16 +223,12 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 
                 this.fieldElements.push(fieldInForm);
 
-                // We have to create a function which is then executed within the closure. 
+                // We have to create a function which is then executed within the closure.                 
                 ((trInner, htmlElementInner, innerFieldInForm) => {
                     htmlElementInner.then(x => {
                         // And finally adds it            
                         $(".value", trInner).append(x);
-                        innerFieldInForm.checkbox.prop("disabled", isFieldReadOnly);
-
-                        const propertyName = innerFieldInForm.field.get(_DatenMeister._Forms._FieldTypes._FieldData._name_, Mof.ObjectType.String);                        
-                        const showValue = innerFieldInForm.fieldElement.showValue === undefined
-                            || innerFieldInForm.fieldElement.showValue();
+                        innerFieldInForm.checkbox.prop("disabled", isFieldReadOnly);   
 
                         if(propertyName === undefined || propertyName === null || propertyName === "" || !showValue) {
                             innerFieldInForm.checkbox.hide();
@@ -453,6 +433,36 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
         }
 
         parent.append(tableInfo);
+    }
+
+    private addEventToInfoPoint(tr, name: string) {
+        const tthis = this;
+        $(".dm-rowform-infocell", tr).on('click', async event => {
+            const infoCell = $(event.currentTarget);
+            const action = new Mof.DmObject(_DatenMeister._Actions._Forms.__GetAttributeOfItem_Uri);
+            action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.propertyName, name);
+            action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.itemUri, tthis.itemUrl);
+            action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.workspace, tthis.workspace);
+            const result = await ClientAction.executeActionDirectly(
+                "Execute",
+                {
+                    parameter: action
+                }
+            );
+
+            if (result.success) {
+                if (result.result === null) {
+                    showRowFormInfoPopup(infoCell, 'No metadata could be retrieved for that property');
+                } else {
+                    const resultText =
+                        "isComposite: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.isComposite, Mof.ObjectType.Boolean) ? "true" : "false")
+                        + "\r\nisMultiple: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.isMultiple, Mof.ObjectType.Boolean) ? "true" : "false")
+                        + "\r\nmetaClass: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.metaClassUri, Mof.ObjectType.String));
+
+                    showRowFormInfoPopup(infoCell, resultText);
+                }
+            }
+        });
     }
 
     async storeFormValuesIntoDom() : Promise<Mof.DmObjectWithSync> {

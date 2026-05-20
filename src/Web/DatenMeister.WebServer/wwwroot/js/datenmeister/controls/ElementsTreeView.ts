@@ -28,6 +28,10 @@ export class ElementsTreeView {
                 data.result = Elements.getAllChildItems(config.workspace, data.node.key).then(items => this.mapItems(items));
             },
             activate: (event, data) => {
+                if (data.node.statusNodeType !== undefined) {
+                    return;
+                }
+                
                 const itemUrl = data.node.key;
                 if (itemUrl) {
                     this.itemActivated.invoke(itemUrl);

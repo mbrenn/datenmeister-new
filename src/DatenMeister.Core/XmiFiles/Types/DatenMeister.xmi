@@ -42,11 +42,19 @@
     </packagedElement>
   </item>
   <item p2:type="dm:///_internal/model/uml#Package" p2:id="DatenMeister.Types.Actions" name="Actions" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.Action" name="Action">
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="df67302d-ae6c-4842-b1f2-ab2129b0fb7e" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="127bd072-3a79-41e1-b343-dbef1dcdf2cf" name="isDisabled" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+    </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.ActionSet" name="ActionSet">
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d688f145-d02e-4052-be12-0d06cec9853b" name="action" type-ref="dm:///_internal/types/internal#Actions.Action" upper="*" isComposite="true" />
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="9951a2cd-b072-4cba-9c19-4b9118368e8e" general-ref="dm:///_internal/types/internal#Actions.Action">
         <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
       </generalization>
+    </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="899324b1-85dc-40a1-ba95-dec50509040d" name="ActionResult">
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4b37dc68-3efa-4b43-88ee-3d4caa18ceb9" name="isSuccess" type-ref="dm:///_internal/model/primitivetypes#_package_PrimitiveTypes" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dea3245e-f59d-48a3-a75d-a38f8a0bec95" isComposite="true" name="clientActions" lower="0" upper="*" />
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.LoggingWriterAction" name="LoggingWriterAction">
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="3e7091d0-19db-450c-8aec-11e0abd9a651" general-ref="dm:///_internal/types/internal#Actions.Action">
@@ -154,10 +162,6 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6d207082-2e93-4223-8ed9-efaf06a37ac3" name="reportInstance" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance" isComposite="true" />
       </packagedElement>
     </packagedElement>
-    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.Action" name="Action">
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="df67302d-ae6c-4842-b1f2-ab2129b0fb7e" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="127bd072-3a79-41e1-b343-dbef1dcdf2cf" name="isDisabled" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
-    </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DatenMeister.Models.Actions.MoveOrCopyAction" name="MoveOrCopyAction">
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d47afd87-c6f3-4921-9596-8d7f992e3674" type-ref="dm:///_internal/model/primitivetypes#String" name="copyMode" />
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b51637dd-3e68-4e86-9e39-5f5f0b63ad1b" name="target" lower="1" upper="1" />
@@ -213,10 +217,6 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d0756147-ce53-442f-9866-340479bed627" type-ref="dm:///_internal/model/primitivetypes#String" name="workspaceId" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="0c1fb5f0-29cb-4245-b2c0-b19d6b6f3cff" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
-    </packagedElement>
-    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="899324b1-85dc-40a1-ba95-dec50509040d" name="ActionResult">
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4b37dc68-3efa-4b43-88ee-3d4caa18ceb9" name="isSuccess" type-ref="dm:///_internal/model/primitivetypes#_package_PrimitiveTypes" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dea3245e-f59d-48a3-a75d-a38f8a0bec95" isComposite="true" name="clientActions" lower="0" upper="*" />
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="fd8a596f-725c-4768-bfcf-319e63422168" name="ClientActions">
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="e07ca80e-2540-4f91-8214-60dbd464e998" name="ClientAction">

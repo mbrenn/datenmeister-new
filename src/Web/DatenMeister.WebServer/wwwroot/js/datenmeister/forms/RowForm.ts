@@ -27,13 +27,19 @@ class FieldInForm {
                 "The checkbox is not set because the value itself is unset");
         }
     }
-    
+
+    /**
+     * Retrieves the current state of the checkbox.
+     *
+     * @return {boolean|undefined} Returns true if the checkbox is checked, false if it is unchecked,
+     * or undefined if the checkbox is not existing.
+     */
     getCheckboxState() {
         if (this.checkbox !== null) {
             return this.checkbox.prop("checked") !== false;
         }
         
-        return false;
+        return undefined;
     }    
 
     addChangeCallbackToFieldElement(callback: () => void) {
@@ -167,6 +173,8 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             
             const showValue = propertyName !== undefined && propertyName !== null && propertyName !=="" &&
                 fieldElement.showValue !== undefined && fieldElement.showValue();
+            const showPropertyInfo = propertyName !== undefined && propertyName !== null && propertyName !=="";
+            
             const singleColumn =
                 fieldElement?.showNameField === undefined ? false : fieldElement.showNameField();
 
@@ -192,7 +200,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
 
                 $(".dm-rowform-keycell", tr).text(name);
                 
-                if(showValue === true) {
+                if(showPropertyInfo === true) {
                     this.addEventToInfoPoint(tr, name);
                 }
                 else{

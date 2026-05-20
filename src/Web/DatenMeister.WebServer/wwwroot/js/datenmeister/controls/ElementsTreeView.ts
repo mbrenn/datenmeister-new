@@ -15,7 +15,10 @@ export class ElementsTreeView {
      * This event is called when an item is activated in the tree
      */
     itemActivated: UserEvent<string> = new UserEvent<string>();
-    
+
+    /**
+     * Configuration for the Treeview
+     */
     configuration: ElementsTreeViewConfig;
 
     init(elementSelector: string, config: ElementsTreeViewConfig)
@@ -42,7 +45,6 @@ export class ElementsTreeView {
 
     /**
      * Adds the event to navigate to the item when it is activated
-     * @param workspace The workspace to navigate in
      */
     addEventToNavigateToItem() {
         this.itemActivated.addListener(itemUrl => {

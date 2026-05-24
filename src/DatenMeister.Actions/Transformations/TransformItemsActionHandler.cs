@@ -11,9 +11,9 @@ namespace DatenMeister.Actions.Transformations;
 /// <summary>
 /// Defines the transformation class for the item transformation
 /// </summary>
-public class ItemTransformationActionHandler : IActionHandler
+public class TransformItemsActionHandler : IActionHandler
 {
-    private static readonly ILogger Logger = new ClassLogger(typeof(ItemTransformationActionHandler));
+    private static readonly ILogger Logger = new ClassLogger(typeof(TransformItemsActionHandler));
         
     public bool IsResponsible(IElement node)
     {

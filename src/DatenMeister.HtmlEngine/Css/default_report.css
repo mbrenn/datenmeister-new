@@ -25,3 +25,9 @@ table td
     padding: 5px 10px 5px 10px;
     vertical-align: top;
 }
+
+.dm-report-cell-nullvalue
+{
+    color: #999;
+    font-style: italic;
+}

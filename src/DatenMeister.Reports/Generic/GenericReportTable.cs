@@ -259,6 +259,6 @@ public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T
             }
         }
 
-        return new TableCellContent {Content = "Null"};
+        return new TableCellContent {Content = "Null", CssClass = "dm-report-cell-nullvalue"};
     }
 }

@@ -421,7 +421,7 @@
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportDefinition" name="ReportDefinition">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ed96b77c-79f3-4762-a583-3326a094e512" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b5e5b4fb-a5c8-4c2d-9a9a-8314e15536c5" name="title" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="45926fb0-671a-4620-af63-e8816cd5afee" name="elements" type-ref="#DatenMeister.Models.Reports.ReportElement" upper="*" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="45926fb0-671a-4620-af63-e8816cd5afee" name="elements" type-ref="#DatenMeister.Models.Reports.ReportElement" upper="*" isComposite="true" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportInstanceSource" name="ReportInstanceSource">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="eb054fbc-1f1a-4e0d-bf61-225bfb9b0c9f" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />

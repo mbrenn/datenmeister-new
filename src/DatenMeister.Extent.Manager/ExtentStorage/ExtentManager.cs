@@ -122,6 +122,11 @@ public class ExtentManager
             }
 
             await LoadExtentWithoutAddingInternal(configuration, extentCreationFlags, extentInformation);
+            if (extentInformation.LoadingState is not (ExtentLoadingState.Loaded or ExtentLoadingState.LoadedReadOnly))
+            {
+                throw new InvalidOperationException(
+                    $"Extent loading failed for extentUri: {extentUri} - {extentInformation.FailLoadingMessage}");
+            }
             
             configuration = extentInformation.Configuration;
             var uriExtent = extentInformation.Extent;
@@ -155,19 +160,6 @@ public class ExtentManager
             return extentInformation;
         }
     }
-
-    /// <summary>
-    /// Imports an extent without adding it into the database.
-    /// This is used to perform a temporary loading
-    /// </summary>
-    /// <param name="configuration">Configuration to be loaded</param>
-    /// <param name="extentInformation">Defines the extent information which contains the data during the loading
-    /// event until it is finished or an exception has occurred.</param>
-    /// <returns>Resulting uri extent</returns>
-    public async Task LoadExtentWithoutAdding(
-        IElement configuration,
-        ExtentStorageData.LoadedExtentInformation extentInformation) =>
-        await LoadExtentWithoutAddingInternal(configuration, ExtentCreationFlags.LoadOnly, extentInformation);
 
     /// <summary>
     /// Gets the provider loader for a given uri

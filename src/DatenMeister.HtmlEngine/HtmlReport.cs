@@ -109,12 +109,11 @@ public class HtmlReport : IDisposable, IHtmlReport
         _streamWriter.WriteLine("<html>");
         _streamWriter.WriteLine("  <head>");
         _streamWriter.WriteLine("    <title>" + HttpUtility.HtmlEncode(pageTitle) + "</title>");
-        _streamWriter.WriteLine("  </head>");
         foreach (var styleSheet in CssStyleSheets)
         {
-            _streamWriter.WriteLine("  <style>");
+            _streamWriter.WriteLine("    <style>");
             _streamWriter.WriteLine(styleSheet);
-            _streamWriter.WriteLine("  </style>");
+            _streamWriter.WriteLine("    </style>");
         }
 
         // Include CSS files
@@ -123,6 +122,7 @@ public class HtmlReport : IDisposable, IHtmlReport
             _streamWriter.WriteLine($"    <link rel=\"stylesheet\" href=\"{cssFile}\" />");
         }
 
+        _streamWriter.WriteLine("  </head>");
         _streamWriter.WriteLine("  <body>");
     }
 

@@ -155,6 +155,21 @@ public class _CommonTypes
 
 public class _Actions
 {
+    [TypeUri(Uri = "dm:///_internal/types/internal#Actions.Action",
+        TypeKind = TypeKind.ClassTree)]
+    public class _Action
+    {
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
+    }
+
+    public _Action @Action = new ();
+    public MofObjectShadow @__Action = new ("dm:///_internal/types/internal#Actions.Action");
+
     [TypeUri(Uri = "dm:///_internal/types/internal#Actions.ActionSet",
         TypeKind = TypeKind.ClassTree)]
     public class _ActionSet
@@ -172,6 +187,21 @@ public class _Actions
 
     public _ActionSet @ActionSet = new ();
     public MofObjectShadow @__ActionSet = new ("dm:///_internal/types/internal#Actions.ActionSet");
+
+    [TypeUri(Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d",
+        TypeKind = TypeKind.ClassTree)]
+    public class _ActionResult
+    {
+        public static readonly string @isSuccess = "isSuccess";
+        public IElement? @_isSuccess = null;
+
+        public static readonly string @clientActions = "clientActions";
+        public IElement? @_clientActions = null;
+
+    }
+
+    public _ActionResult @ActionResult = new ();
+    public MofObjectShadow @__ActionResult = new ("dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d");
 
     [TypeUri(Uri = "dm:///_internal/types/internal#Actions.LoggingWriterAction",
         TypeKind = TypeKind.ClassTree)]
@@ -491,21 +521,6 @@ public class _Actions
 
     public _Reports Reports = new ();
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#Actions.Action",
-        TypeKind = TypeKind.ClassTree)]
-    public class _Action
-    {
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @isDisabled = "isDisabled";
-        public IElement? @_isDisabled = null;
-
-    }
-
-    public _Action @Action = new ();
-    public MofObjectShadow @__Action = new ("dm:///_internal/types/internal#Actions.Action");
-
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.MoveOrCopyAction",
         TypeKind = TypeKind.ClassTree)]
     public class _MoveOrCopyAction
@@ -699,21 +714,6 @@ public class _Actions
     }
 
     public _ParameterTypes ParameterTypes = new ();
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d",
-        TypeKind = TypeKind.ClassTree)]
-    public class _ActionResult
-    {
-        public static readonly string @isSuccess = "isSuccess";
-        public IElement? @_isSuccess = null;
-
-        public static readonly string @clientActions = "clientActions";
-        public IElement? @_clientActions = null;
-
-    }
-
-    public _ActionResult @ActionResult = new ();
-    public MofObjectShadow @__ActionResult = new ("dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d");
 
     public class _ClientActions
     {
@@ -991,6 +991,12 @@ public class _Actions
             public static readonly string @viewNode = "viewNode";
             public IElement? @_viewNode = null;
 
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
         }
 
         public _FreezeViewResultAction @FreezeViewResultAction = new ();
@@ -1006,6 +1012,12 @@ public class _Actions
             public static readonly string @viewNode = "viewNode";
             public IElement? @_viewNode = null;
 
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
         }
 
         public _FreezeViewResultInMemory @FreezeViewResultInMemory = new ();
@@ -1020,6 +1032,12 @@ public class _Actions
 
             public static readonly string @viewNode = "viewNode";
             public IElement? @_viewNode = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
 
         }
 

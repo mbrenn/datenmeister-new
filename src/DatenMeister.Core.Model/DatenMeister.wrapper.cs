@@ -379,6 +379,46 @@ public class CommonTypes
 
 public class Actions
 {
+    [TypeUri(Uri = "dm:///_internal/types/internal#Actions.Action",
+        TypeKind = TypeKind.WrappedClass)]
+    public class Action_Wrapper : IElementWrapper
+    {
+        private readonly IElement _wrappedElement;
+
+        public Action_Wrapper(IElement innerDmElement)
+        {
+            _wrappedElement = innerDmElement;
+        }
+
+        public Action_Wrapper(IFactory factory)
+        {
+            _wrappedElement = factory.create(_metaClass);
+        }
+
+        public IElement GetWrappedElement() => _wrappedElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#Actions.Action");
+
+        public static Action_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
+    }
+
     [TypeUri(Uri = "dm:///_internal/types/internal#Actions.ActionSet",
         TypeKind = TypeKind.WrappedClass)]
     public class ActionSet_Wrapper : IElementWrapper
@@ -436,6 +476,48 @@ public class Actions
                 _wrappedElement.getOrDefault<bool>("isDisabled");
             set => 
                 _wrappedElement.set("isDisabled", value);
+        }
+
+    }
+
+    [TypeUri(Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d",
+        TypeKind = TypeKind.WrappedClass)]
+    public class ActionResult_Wrapper : IElementWrapper
+    {
+        private readonly IElement _wrappedElement;
+
+        public ActionResult_Wrapper(IElement innerDmElement)
+        {
+            _wrappedElement = innerDmElement;
+        }
+
+        public ActionResult_Wrapper(IFactory factory)
+        {
+            _wrappedElement = factory.create(_metaClass);
+        }
+
+        public IElement GetWrappedElement() => _wrappedElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d");
+
+        public static ActionResult_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+        // Not found
+        public object? @isSuccess
+        {
+            get =>
+                _wrappedElement.getOrDefault<object?>("isSuccess");
+            set => 
+                _wrappedElement.set("isSuccess", value);
+        }
+
+        // Not found
+        public object? @clientActions
+        {
+            get =>
+                _wrappedElement.getOrDefault<object?>("clientActions");
+            set => 
+                _wrappedElement.set("clientActions", value);
         }
 
     }
@@ -1341,46 +1423,6 @@ public class Actions
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#Actions.Action",
-        TypeKind = TypeKind.WrappedClass)]
-    public class Action_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public Action_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public Action_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#Actions.Action");
-
-        public static Action_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        public string? @name
-        {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
-        }
-
-        public bool @isDisabled
-        {
-            get =>
-                _wrappedElement.getOrDefault<bool>("isDisabled");
-            set => 
-                _wrappedElement.set("isDisabled", value);
-        }
-
-    }
-
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.MoveOrCopyAction",
         TypeKind = TypeKind.WrappedClass)]
     public class MoveOrCopyAction_Wrapper : IElementWrapper
@@ -1799,48 +1841,6 @@ public class Actions
                     _wrappedElement.set("extentUri", value);
             }
 
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d",
-        TypeKind = TypeKind.WrappedClass)]
-    public class ActionResult_Wrapper : IElementWrapper
-    {
-        private readonly IElement _wrappedElement;
-
-        public ActionResult_Wrapper(IElement innerDmElement)
-        {
-            _wrappedElement = innerDmElement;
-        }
-
-        public ActionResult_Wrapper(IFactory factory)
-        {
-            _wrappedElement = factory.create(_metaClass);
-        }
-
-        public IElement GetWrappedElement() => _wrappedElement;
-
-        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d");
-
-        public static ActionResult_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-        // Not found
-        public object? @isSuccess
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("isSuccess");
-            set => 
-                _wrappedElement.set("isSuccess", value);
-        }
-
-        // Not found
-        public object? @clientActions
-        {
-            get =>
-                _wrappedElement.getOrDefault<object?>("clientActions");
-            set => 
-                _wrappedElement.set("clientActions", value);
         }
 
     }
@@ -2573,6 +2573,22 @@ public class Actions
                 }
             }
 
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///_internal/types/internal#1286c17c-3286-4e8c-93fc-1a4c3e6df48a",
@@ -2624,6 +2640,22 @@ public class Actions
                         _wrappedElement.set("viewNode", value);
                     }
                 }
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
             }
 
         }
@@ -2690,6 +2722,22 @@ public class Actions
                         _wrappedElement.set("viewNode", value);
                     }
                 }
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
             }
 
         }

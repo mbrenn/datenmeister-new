@@ -74,6 +74,13 @@ export namespace _CommonTypes
 
 export namespace _Actions
 {
+        export class _Action
+        {
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
+        }
+
+        export const __Action_Uri = "dm:///_internal/types/internal#Actions.Action";
         export class _ActionSet
         {
             static action = "action";
@@ -82,6 +89,13 @@ export namespace _Actions
         }
 
         export const __ActionSet_Uri = "dm:///_internal/types/internal#Actions.ActionSet";
+        export class _ActionResult
+        {
+            static isSuccess = "isSuccess";
+            static clientActions = "clientActions";
+        }
+
+        export const __ActionResult_Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d";
         export class _LoggingWriterAction
         {
             static message = "message";
@@ -218,13 +232,6 @@ export namespace _Actions
                 export const __HtmlReportAction_Uri = "dm:///_internal/types/internal#Actions.HtmlReportAction";
         }
 
-        export class _Action
-        {
-            static _name_ = "name";
-            static isDisabled = "isDisabled";
-        }
-
-        export const __Action_Uri = "dm:///_internal/types/internal#Actions.Action";
         export class _MoveOrCopyAction
         {
             static copyMode = "copyMode";
@@ -319,13 +326,6 @@ export namespace _Actions
                 export const __LoadExtentActionResult_Uri = "dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5";
         }
 
-        export class _ActionResult
-        {
-            static isSuccess = "isSuccess";
-            static clientActions = "clientActions";
-        }
-
-        export const __ActionResult_Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d";
         export namespace _ClientActions
         {
                 export class _ClientAction
@@ -452,6 +452,8 @@ export namespace _Actions
                 export class _FreezeViewResultAction
                 {
                     static viewNode = "viewNode";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __FreezeViewResultAction_Uri = "dm:///_internal/types/internal#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171";
@@ -459,6 +461,8 @@ export namespace _Actions
                 {
                     static extentUri = "extentUri";
                     static viewNode = "viewNode";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __FreezeViewResultInMemory_Uri = "dm:///_internal/types/internal#1286c17c-3286-4e8c-93fc-1a4c3e6df48a";
@@ -466,6 +470,8 @@ export namespace _Actions
                 {
                     static extentLoaderConfig = "extentLoaderConfig";
                     static viewNode = "viewNode";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __FreezeViewResultInExtent_Uri = "dm:///_internal/types/internal#45cd9f30-fdfa-4f1b-a87c-24c088c075be";

@@ -292,6 +292,7 @@
     <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="4b93f824-87a4-4471-aa80-63e5d5d1accb" name="Data">
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="fb1fcea9-c1d5-489d-9bd1-f64c6b71a171" name="FreezeViewResultAction">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6cea8a17-c1d7-4a2b-af82-d3964b2043f4" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" name="viewNode" />
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="4c8e75e8-e0c4-4590-b143-df7f10829163" general-ref="dm:///_internal/types/internal#Actions.Action" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="1286c17c-3286-4e8c-93fc-1a4c3e6df48a" name="FreezeViewResultInMemory">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="e029922e-13ee-4cf6-90a7-bb73046115cc" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" />

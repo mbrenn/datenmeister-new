@@ -62,6 +62,12 @@ export var _CommonTypes;
 })(_CommonTypes || (_CommonTypes = {}));
 export var _Actions;
 (function (_Actions) {
+    class _Action {
+        static _name_ = "name";
+        static isDisabled = "isDisabled";
+    }
+    _Actions._Action = _Action;
+    _Actions.__Action_Uri = "dm:///_internal/types/internal#Actions.Action";
     class _ActionSet {
         static action = "action";
         static _name_ = "name";
@@ -69,6 +75,12 @@ export var _Actions;
     }
     _Actions._ActionSet = _ActionSet;
     _Actions.__ActionSet_Uri = "dm:///_internal/types/internal#Actions.ActionSet";
+    class _ActionResult {
+        static isSuccess = "isSuccess";
+        static clientActions = "clientActions";
+    }
+    _Actions._ActionResult = _ActionResult;
+    _Actions.__ActionResult_Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d";
     class _LoggingWriterAction {
         static message = "message";
         static _name_ = "name";
@@ -190,12 +202,6 @@ export var _Actions;
         _Reports._HtmlReportAction = _HtmlReportAction;
         _Reports.__HtmlReportAction_Uri = "dm:///_internal/types/internal#Actions.HtmlReportAction";
     })(_Reports = _Actions._Reports || (_Actions._Reports = {}));
-    class _Action {
-        static _name_ = "name";
-        static isDisabled = "isDisabled";
-    }
-    _Actions._Action = _Action;
-    _Actions.__Action_Uri = "dm:///_internal/types/internal#Actions.Action";
     class _MoveOrCopyAction {
         static copyMode = "copyMode";
         static target = "target";
@@ -277,12 +283,6 @@ export var _Actions;
         _ParameterTypes._LoadExtentActionResult = _LoadExtentActionResult;
         _ParameterTypes.__LoadExtentActionResult_Uri = "dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5";
     })(_ParameterTypes = _Actions._ParameterTypes || (_Actions._ParameterTypes = {}));
-    class _ActionResult {
-        static isSuccess = "isSuccess";
-        static clientActions = "clientActions";
-    }
-    _Actions._ActionResult = _ActionResult;
-    _Actions.__ActionResult_Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d";
     let _ClientActions;
     (function (_ClientActions) {
         class _ClientAction {
@@ -392,18 +392,24 @@ export var _Actions;
     (function (_Data) {
         class _FreezeViewResultAction {
             static viewNode = "viewNode";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
         _Data._FreezeViewResultAction = _FreezeViewResultAction;
         _Data.__FreezeViewResultAction_Uri = "dm:///_internal/types/internal#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171";
         class _FreezeViewResultInMemory {
             static extentUri = "extentUri";
             static viewNode = "viewNode";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
         _Data._FreezeViewResultInMemory = _FreezeViewResultInMemory;
         _Data.__FreezeViewResultInMemory_Uri = "dm:///_internal/types/internal#1286c17c-3286-4e8c-93fc-1a4c3e6df48a";
         class _FreezeViewResultInExtent {
             static extentLoaderConfig = "extentLoaderConfig";
             static viewNode = "viewNode";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
         _Data._FreezeViewResultInExtent = _FreezeViewResultInExtent;
         _Data.__FreezeViewResultInExtent_Uri = "dm:///_internal/types/internal#45cd9f30-fdfa-4f1b-a87c-24c088c075be";

@@ -116,7 +116,7 @@ export class Control {
 
             let fields = this.getFieldDefinitions();
 
-            let fieldsData = new Array<Mof.DmObject>();
+            let fieldsData = fields ?? new Array<Mof.DmObject>();
             if (fields === undefined) {
                 const nameField = new Mof.DmObject();
                 nameField.setMetaClassByUri(_DatenMeister._Forms._FieldTypes.__TextFieldData_Uri, 'Types');

@@ -96,7 +96,7 @@ export class Control {
             const table = $("<table><tbody></tbody></table>");
             this._list.append(table);
             let fields = this.getFieldDefinitions();
-            let fieldsData = new Array();
+            let fieldsData = fields ?? new Array();
             if (fields === undefined) {
                 const nameField = new Mof.DmObject();
                 nameField.setMetaClassByUri(_DatenMeister._Forms._FieldTypes.__TextFieldData_Uri, 'Types');

@@ -49,7 +49,7 @@ public class ActionLogicState
         logicState.AddActionHandler(new ExportToXmiActionHandler());
         logicState.AddActionHandler(new HtmlReportActionHandler());
         logicState.AddActionHandler(new ImportXmiActionHandler());
-        logicState.AddActionHandler(new ItemTransformationActionHandler());
+        logicState.AddActionHandler(new TransformItemsActionHandler());
         logicState.AddActionHandler(new LoadExtentActionHandler());
         logicState.AddActionHandler(new LoggingWriterActionHandler());
         logicState.AddActionHandler(new MoveOrCopyActionHandler());

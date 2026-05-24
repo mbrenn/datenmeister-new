@@ -164,7 +164,7 @@ public class ReportLogic(
     /// <returns>Found viewnode</returns>
     public static IElement GetViewNode(IElement reportNodeOrigin, string viewNodePropertyName)
     {
-        var viewNode = reportNodeOrigin.getOrDefault<IElement>(viewNodePropertyName);
+        var viewNode = reportNodeOrigin.getOrDefault<IElement?>(viewNodePropertyName);
         viewNode ??= InMemoryObject.CreateEmpty(
                 _DataViews.TheOne.Source.__DynamicSourceNode)
             .SetProperty(_DataViews._Source._DynamicSourceNode.nodeName, "item");

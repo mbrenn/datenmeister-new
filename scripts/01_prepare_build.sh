@@ -12,6 +12,7 @@ cd ../../scripts
 cd ../src/DatenMeister.Reports.Forms
 dotnet new tool-manifest --force
 dotnet tool install Cake.Tool --version 6.1.0
+dotnet tool install BS_Remove_File_Attribute_From_JUnit
 cd ../../scripts
 
 

@@ -4,6 +4,23 @@ dotnet clean ../datenmeister-new.slnx -c Debug
 dotnet build ../datenmeister-new.slnx -c Release
 dotnet build ../datenmeister-new.slnx -c Debug
 
+# Install .Net Cake
+cd ../src/DatenMeister.Reports.Forms
+npm install
+tsc
+dotnet new tool-manifest --force
+dotnet tool install Cake.Tool --version 6.1.0
+cd ../../scripts
+
+
+cd ../src/DatenMeister.Reports.Forms
+npm install
+tsc
+dotnet new tool-manifest --force
+dotnet tool install Cake.Tool --version 6.1.0
+cd ../../scripts
+
+
 # Copy the Action.Executor to the example directory
 echo Copy Action.Executor to example directory
 

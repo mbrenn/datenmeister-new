@@ -9,10 +9,10 @@ tsc
 cd ../../scripts
 
 
-cd ../src/DatenMeister.Reports.Forms
+cd ../src/Web/DatenMeister.WebServer
 npm install
 tsc
-cd ../../scripts
+cd ../../../scripts
 
 # Compile 
 dotnet build ../datenmeister-new.slnx -c Release

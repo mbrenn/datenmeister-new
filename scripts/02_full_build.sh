@@ -1,4 +1,6 @@
 # Build all the stuff
+dotnet clean ../datenmeister-new.slnx -c Release
+dotnet clean ../datenmeister-new.slnx -c Debug
 dotnet build ../datenmeister-new.slnx -c Release
 dotnet build ../datenmeister-new.slnx -c Debug
 

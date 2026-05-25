@@ -10,6 +10,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
+using NPOI.POIFS.FileSystem;
 
 // Activate Logging
 #if DEBUG
@@ -87,6 +88,9 @@ finally
 
     using (new StopWatchLogger(new ClassLogger(typeof(Program)), "Cleaning up"))
     {
-        Directory.Delete(databasePath, true);
+        if (Directory.Exists(databasePath))
+        {
+            Directory.Delete(databasePath, true);
+        }
     }
 }

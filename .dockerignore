@@ -1,0 +1,39 @@
+# Build outputs
+**/bin
+**/obj
+
+# npm / TypeScript
+**/node_modules
+
+# IDE / editor caches
+.vs
+.idea
+**/*.user
+**/*.suo
+*.DotSettings.user
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Test artifacts
+**/TestResults
+
+# Logs
+**/*.log
+
+# Docker / CI files (not needed inside the image)
+.dockerignore
+Dockerfile
+compose.yaml
+Jenkinsfile
+deploy.sh
+
+# Docs
+README.md
+docs
+
+# OS junk
+**/.DS_Store
+**/Thumbs.db

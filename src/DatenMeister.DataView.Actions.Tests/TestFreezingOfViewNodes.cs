@@ -62,7 +62,7 @@ public class TestFreezingOfViewNodes
         newExtentLoaderConfig.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///all_umlclasses");
         newExtentLoaderConfig.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, temporaryFilePath);
         newExtentLoaderConfig.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.dropExisting, true);
-        tempExtent.elements().add(newExtentLoaderConfig);
+        tempExtent!.elements().add(newExtentLoaderConfig);
         
         // Now we got everything and we can create the action...
         var actionLogic = dm.Resolve<ActionLogic>();

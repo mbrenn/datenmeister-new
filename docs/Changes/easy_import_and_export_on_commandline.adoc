@@ -100,19 +100,25 @@ This means, we have the following ActionHandler:
 
 === Design to Exection
 
-* [ ] There will be one new Executable, called DatenMeister.Action.Executor.exe
+* [x] There will be one new Executable, called DatenMeister.Action.Executor.exe
 ** This executable has two parameters:
 *** The first one defines the file location of the .xmi file to be imported
 *** The second one defines the uri of the node which shall be selected. That node is the action which will be executed
 * In case the user wants to execute multiple actions (as in the use-case above), the can define an actionset containing these.
 * In case the user wants to import additional xmi-files, it must be done via an internal action. 
 * The new executable performs the following actions: 
-** [ ] Initialize DatenMeister
+** [x] Initialize DatenMeister
 *** The databasepath is a temporary path in the %LocalAppData%\DatenMeister\{UUID}. 
 *** To allow multiple executions in parallel, a UUID is to be created. 
-** [ ] Load the Xmi in an extent called 'dm:///action' as read-only
-** [ ] Find the action
-** [ ] Run the action
-** [ ] Unload the loaded extent
-** [ ] Close the DatenMeister
-** [ ] Deletes the directory which was created above
+** [x] Load the Xmi in an extent called 'dm:///action' as read-only
+** [x] Find the action
+** [x] Run the action
+** [x] Unload the loaded extent
+** [x] Close the DatenMeister
+** [x] Deletes the directory which was created above
+
+=== Try out for the creation of reporting
+
+* [x] The actions were created
+* [x] Try it out during debugging
+* [ ] Create an example folder in which the configuration and datafile is stored

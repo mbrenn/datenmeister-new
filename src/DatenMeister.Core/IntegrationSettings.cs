@@ -52,6 +52,13 @@ public class IntegrationSettings
     /// Gets or sets the value that the DatenMeister is started in 'read-only' mode
     /// </summary>
     public bool IsReadOnly { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the value indicating if the path shall be normalized to the current directory
+    /// in which the executable is being run.
+    /// In case, the value is set to false, the path will be normalized to the Database directory
+    /// </summary>
+    public bool NormalizeToCurrentDirectory { get; set; }
 
     /// <summary>
     ///     Gets or sets the additional settings.
@@ -84,7 +91,14 @@ public class IntegrationSettings
 
         if (!Path.IsPathRooted(directoryPath))
         {
-            directoryPath = Path.Combine(DatabasePath, directoryPath);
+            if (NormalizeToCurrentDirectory)
+            {
+                directoryPath = Path.Combine(Directory.GetCurrentDirectory(), directoryPath);
+            }
+            else
+            {
+                directoryPath = Path.Combine(DatabasePath, directoryPath);
+            }
         }
 
         return directoryPath;

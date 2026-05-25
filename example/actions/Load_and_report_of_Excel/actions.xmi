@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xmi>
+  <meta p2:id="02fbbc01-41ef-4581-8540-cbeca7daa017" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///actions" />
+  <item p2:type="dm:///_internal/types/internal#Actions.ActionSet" p2:id="Load_and_report" name="Load and Report Excel" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <action p2:type="dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee" p2:id="3bd87987-a80f-4775-8e3f-e92775b9a6f7" name="Load Excel" configuration-ref="dm:///actions#7cbf2c86-b41d-45ec-8d36-768a993833be" />
+    <action p2:type="dm:///_internal/types/internal#1286c17c-3286-4e8c-93fc-1a4c3e6df48a" p2:id="843516d8-4fb1-4fab-9c8e-655491090d46" name="Filter on 5xxxx" viewNode-ref="dm:///actions#e14ddfab-c3a5-4f99-b6e8-2c4814720a24" extentUri="dm:///plz/filtered" />
+    <action p2:type="dm:///_internal/types/internal#Actions.HtmlReportAction" p2:id="3ecd4bd5-ae24-4865-8ea5-385fa8a86b91" filePath="report.html" name="Simple Html Report for Reports">
+      <reportInstance p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance" p2:id="f11b60f7-584a-4c9b-b158-4f41a382e2b6" name="Report Instance for Zip" reportDefinition-ref="dm:///actions#cdbf46c3-baa5-4d47-b511-40e3c4191b2b" />
+    </action>
+  </item>
+  <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="b60a2b29-70bd-4e03-be80-ff2a15917cbd" name="Data for ZIP Report" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode" p2:id="abfc5f73-b11a-43aa-a1ef-b6799d2c0a28" extentUri="dm:///plz" workspaceId="Data" name="dm:///plz" xmlns:p2="http://www.omg.org/spec/XMI/20131001" />
+    <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition" p2:id="cdbf46c3-baa5-4d47-b511-40e3c4191b2b" name="Zip Report for HTML" title="Zip Reporting" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+      <elements p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline" p2:id="8bcaa9fe-f070-4869-9fa5-72c58c45e5d9" title="Alle Postleitzahlen" name="Headline" />
+      <elements p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable" p2:id="b1a0b089-1e86-4cf3-8eed-dd5975eda8c6" name="Create Table" viewNode-ref="dm:///actions#d872e9bd-eded-4978-9b50-0b1368ba1f69" />
+    </packagedElement>
+    <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig" p2:id="7cbf2c86-b41d-45ec-8d36-768a993833be" name="Zip.xlsx Loader Config" hasHeader="true" extentUri="dm:///plz" dropExisting="true" workspaceId="Data" xmlns:p2="http://www.omg.org/spec/XMI/20131001" filePath="plz.xlsx" />
+    <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode" p2:id="e14ddfab-c3a5-4f99-b6e8-2c4814720a24" input-ref="dm:///actions#abfc5f73-b11a-43aa-a1ef-b6799d2c0a28" property="PLZ" value="5...." comparisonMode="RegexMatch" name="Filter 'PLZ' on '5....'" />
+    <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode" p2:id="d872e9bd-eded-4978-9b50-0b1368ba1f69" extentUri="dm:///plz/filtered" workspaceId="Data" name="Select 'filtered' PLZ" />
+  </item>
+</xmi>

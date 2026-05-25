@@ -28,6 +28,7 @@ if (arguments == null)
     return;
 }
 
+// Convert the file argument into an absolute path of current directory
 
 // Loads the DatenMeister
 var defaultSettings = GiveMe.GetDefaultIntegrationSettings();
@@ -35,6 +36,7 @@ var databasePath = defaultSettings.DatabasePath = Path.Combine(defaultSettings.D
 defaultSettings.IsLockingActivated = true;
 defaultSettings.AllowNoFailOfLoading = true;
 defaultSettings.IsReadOnly = true;
+defaultSettings.NormalizeToCurrentDirectory = true;
 ExtentConfigurationLoader.BreakOnFailedWorkspaceLoading = false;
 
 try

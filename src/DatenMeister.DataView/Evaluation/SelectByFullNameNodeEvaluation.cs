@@ -28,7 +28,7 @@ public class SelectByFullNameNodeEvaluation : IDataViewNodeEvaluation
     /// <inheritdoc />
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._Source._SelectByFullNameNode.input);
+        var inputNode = viewNode.getOrDefault<IElement?>(_DataViews._Source._SelectByFullNameNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");
@@ -37,20 +37,16 @@ public class SelectByFullNameNodeEvaluation : IDataViewNodeEvaluation
 
         var input = evaluation.GetElementsForViewNode(inputNode);
 
-        var pathNode = viewNode.getOrDefault<string>(_DataViews._Source._SelectByFullNameNode.path);
+        var pathNode = viewNode.getOrDefault<string?>(_DataViews._Source._SelectByFullNameNode.path);
         if (pathNode == null)
         {
             Logger.Warn("Path is not set");
             throw new InvalidOperationException("Path is not set");
         }
 
-        var targetElement = NamedElementMethods.GetByFullName(input, pathNode);
-        if (targetElement == null)
-        {
-            // Path is not found
-            throw new InvalidOperationException($"Path is not found: {pathNode}");
-        }
+        var targetElement = NamedElementMethods.GetByFullName(input, pathNode)
+                            ?? throw new InvalidOperationException($"Path is not found: {pathNode}");
 
-        return new TemporaryReflectiveSequence(NamedElementMethods.GetAllPropertyValues(targetElement));
+        return new TemporaryReflectiveSequence([targetElement]);
     }
 }

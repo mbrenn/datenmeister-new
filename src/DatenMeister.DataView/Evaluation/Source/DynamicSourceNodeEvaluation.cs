@@ -4,7 +4,7 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.DataView.Evaluation;
+namespace DatenMeister.DataView.Evaluation.Source;
 
 /// <summary>
 /// Implements the evaluation for the dynamic source node

@@ -3,7 +3,7 @@ using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 
-namespace DatenMeister.DataView.Evaluation;
+namespace DatenMeister.DataView.Evaluation.Row;
 
 /// <summary>
 /// Implements the evaluation for the row filter by free text anywhere node

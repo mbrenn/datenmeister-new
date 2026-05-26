@@ -5,7 +5,7 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.DataView.Evaluation;
+namespace DatenMeister.DataView.Evaluation.Column;
 
 /// <summary>
 /// Implements the evaluation for the column filter exclude node

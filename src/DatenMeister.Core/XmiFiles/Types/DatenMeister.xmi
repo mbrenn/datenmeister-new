@@ -398,11 +398,6 @@
         <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="6bc52237-b185-481f-a40f-0d2baee04212" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1eb718dc-9e10-4023-b3c7-9cb524b0d46d" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.SelectByFullNameNode" name="SelectByFullNameNode">
-        <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="316f207a-81a5-446c-8518-94c5ded9b8c7" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
-        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="fcf82b7e-3c93-4b19-88b3-76d48812268b" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
-        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0d85a5b6-d71f-4711-bab9-25a9fce5e444" name="path" type-ref="dm:///_internal/model/primitivetypes#String" />
-      </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="a890d5ec-2686-4f18-9f9f-7037c7fe226a" name="SelectFromAllWorkspacesNode">
         <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="96ed79cd-7898-4334-b0d8-5c0b4d18966d" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
       </packagedElement>
@@ -416,6 +411,18 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="4394a28a-0def-4030-b5d0-7a1b5b01c91b" name="ValueItem">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="d8591564-d33a-4249-95ac-ff70a99180f9" type-ref="dm:///_internal/model/primitivetypes#String" name="value" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="8357f335-5ad2-4433-b649-60ff3bbba93a" name="Transformation">
+      <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.SelectByFullNameNode" name="SelectByFullNameNode">
+        <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="316f207a-81a5-446c-8518-94c5ded9b8c7" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="fcf82b7e-3c93-4b19-88b3-76d48812268b" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0d85a5b6-d71f-4711-bab9-25a9fce5e444" name="path" type-ref="dm:///_internal/model/primitivetypes#String" />
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="2a5ac57c-e5d2-498b-b575-7b07354e2645" name="SelectByProperty">
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ecf82b7e-3c93-4b19-88b3-76d48832268b" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="10682eef-923c-4f18-b981-db27f24fc7cc" name="propertyName" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="4e2893e0-75d9-4f47-b1b6-bb6af4bfdbb6" general-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.DataViews.ViewNode" />
+      </packagedElement>
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Reports" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001">

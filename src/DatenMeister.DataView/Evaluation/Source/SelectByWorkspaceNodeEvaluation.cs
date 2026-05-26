@@ -4,7 +4,7 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 
-namespace DatenMeister.DataView.Evaluation;
+namespace DatenMeister.DataView.Evaluation.Source;
 
 /// <summary>
 /// Implements the evaluation for the select by workspace node

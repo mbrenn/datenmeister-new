@@ -3631,67 +3631,6 @@ public class DataViews
 
         }
 
-        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
-            TypeKind = TypeKind.WrappedClass)]
-        public class SelectByFullNameNode_Wrapper : IElementWrapper
-        {
-            private readonly IElement _wrappedElement;
-
-            public SelectByFullNameNode_Wrapper(IElement innerDmElement)
-            {
-                _wrappedElement = innerDmElement;
-            }
-
-            public SelectByFullNameNode_Wrapper(IFactory factory)
-            {
-                _wrappedElement = factory.create(_metaClass);
-            }
-
-            public IElement GetWrappedElement() => _wrappedElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode");
-
-            public static SelectByFullNameNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
-            {
-                get
-                {
-                    var foundElement = _wrappedElement.getOrDefault<IElement?>("input");
-                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
-                }
-                set 
-                {
-                    if(value is IElementWrapper wrappedElement)
-                    {
-                        _wrappedElement.set("input", wrappedElement.GetWrappedElement());
-                    }
-                    else
-                    {
-                        _wrappedElement.set("input", value);
-                    }
-                }
-            }
-
-            public string? @path
-            {
-                get =>
-                    _wrappedElement.getOrDefault<string?>("path");
-                set => 
-                    _wrappedElement.set("path", value);
-            }
-
-            public string? @name
-            {
-                get =>
-                    _wrappedElement.getOrDefault<string?>("name");
-                set => 
-                    _wrappedElement.set("name", value);
-            }
-
-        }
-
         [TypeUri(Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a",
             TypeKind = TypeKind.WrappedClass)]
         public class SelectFromAllWorkspacesNode_Wrapper : IElementWrapper
@@ -3806,6 +3745,124 @@ public class DataViews
                 _wrappedElement.getOrDefault<string?>("value");
             set => 
                 _wrappedElement.set("value", value);
+        }
+
+    }
+
+    public class Transformation
+    {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SelectByFullNameNode_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public SelectByFullNameNode_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public SelectByFullNameNode_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode");
+
+            public static SelectByFullNameNode_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @path
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("path");
+                set => 
+                    _wrappedElement.set("path", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#2a5ac57c-e5d2-498b-b575-7b07354e2645",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SelectByProperty_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public SelectByProperty_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public SelectByProperty_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#2a5ac57c-e5d2-498b-b575-7b07354e2645");
+
+            public static SelectByProperty_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @propertyName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("propertyName");
+                set => 
+                    _wrappedElement.set("propertyName", value);
+            }
+
         }
 
     }

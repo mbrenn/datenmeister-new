@@ -4,8 +4,9 @@ using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.DataView.Evaluation.Source;
 
-namespace DatenMeister.DataView.Evaluation;
+namespace DatenMeister.DataView.Evaluation.Transformation;
 
 /// <summary>
 /// Implements the evaluation for the select by full name node
@@ -22,13 +23,13 @@ public class SelectByFullNameNodeEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DataViews.TheOne.Source.__SelectByFullNameNode);
+               metaClass.equals(_DataViews.TheOne.Transformation.__SelectByFullNameNode);
     }
 
     /// <inheritdoc />
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement?>(_DataViews._Source._SelectByFullNameNode.input);
+        var inputNode = viewNode.getOrDefault<IElement?>(_DataViews._Transformation._SelectByFullNameNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");
@@ -37,7 +38,7 @@ public class SelectByFullNameNodeEvaluation : IDataViewNodeEvaluation
 
         var input = evaluation.GetElementsForViewNode(inputNode);
 
-        var pathNode = viewNode.getOrDefault<string?>(_DataViews._Source._SelectByFullNameNode.path);
+        var pathNode = viewNode.getOrDefault<string?>(_DataViews._Transformation._SelectByFullNameNode.path);
         if (pathNode == null)
         {
             Logger.Warn("Path is not set");

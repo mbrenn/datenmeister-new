@@ -502,12 +502,6 @@ public static class ObjectHelper
         this IObject value,
         string property)
     {
-        if (!value.isSet(property))
-        {
-            // If value is not set, an empty list is returned
-            return [];
-        }
-
         var result = value.get(property);
         if (result is IEnumerable<object> resultAsEnumerable)
         {

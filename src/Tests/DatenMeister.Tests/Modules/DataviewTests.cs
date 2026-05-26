@@ -168,10 +168,83 @@ public class DataviewTests
     }
 
     [Test]
+    public async Task TestSelectByPropertyEvaluation()
+    {
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+
+        await CreateTestDataExtentWithPackagedChildren(dm);
+
+        // We have the data, now create the query
+        var tempFactory = InMemoryObject.TemporaryFactory;
+        
+        var selectByExtentNode =
+            tempFactory.create(_DataViews.TheOne.Source.__SelectByExtentNode);
+        selectByExtentNode.set(_DataViews._Source._SelectByExtentNode.workspaceId, WorkspaceNames.WorkspaceData);
+        selectByExtentNode.set(_DataViews._Source._SelectByExtentNode.extentUri, "dm:///testdata");
+        
+        // Check for all children
+        var selectByFullNameNode =
+            tempFactory.create(_DataViews.TheOne.Transformation.__SelectByProperty);
+        selectByFullNameNode.set(_DataViews._Transformation._SelectByProperty.input, selectByExtentNode);
+        selectByFullNameNode.set(_DataViews._Transformation._SelectByProperty.propertyName, _CommonTypes._Default._Package.packagedElement);
+        
+        var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
+        var result =
+            dataViewEvaluator
+                .GetElementsForViewNode(selectByFullNameNode)
+                .OfType<IElement>()
+                .ToList();
+        
+        Assert.That(result.Count, Is.EqualTo(2));
+        Assert.That(result.Any(x => x.getOrDefault<string>(_CommonTypes._Default._Package.name) == "Child1"));
+        Assert.That(result.Any(x => x.getOrDefault<string>(_CommonTypes._Default._Package.name) == "Child 2"));
+    }
+
+    [Test]
     public async Task TestSelectByFullNameNodeEvaluation()
     {
         await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
+        await CreateTestDataExtentWithPackagedChildren(dm);
+
+        // We have the data, now create the query
+        var tempFactory = InMemoryObject.TemporaryFactory;
+
+        var selectByExtentNode =
+            tempFactory.create(_DataViews.TheOne.Source.__SelectByExtentNode);
+        selectByExtentNode.set(_DataViews._Source._SelectByExtentNode.workspaceId, WorkspaceNames.WorkspaceData);
+        selectByExtentNode.set(_DataViews._Source._SelectByExtentNode.extentUri, "dm:///testdata");
+        
+        // Check for Child1
+        var selectByFullNameNode =
+            tempFactory.create(_DataViews.TheOne.Transformation.__SelectByFullNameNode);
+        selectByFullNameNode.set(_DataViews._Transformation._SelectByFullNameNode.input, selectByExtentNode);
+        selectByFullNameNode.set(_DataViews._Transformation._SelectByFullNameNode.path, "Package::Child1");
+        
+        var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
+        var result =
+            dataViewEvaluator
+                .GetElementsForViewNode(selectByFullNameNode)
+                .OfType<IElement>()
+                .ToList();
+        Assert.That(result.Count, Is.EqualTo(1));
+        Assert.That(result.First().getOrDefault<string>(_CommonTypes._Default._Package.name),
+            Is.EqualTo("Child1"));
+        
+        // Now Check for Child 2
+        selectByFullNameNode.set(_DataViews._Transformation._SelectByFullNameNode.path, "Package::Child 2");
+        result =
+            dataViewEvaluator
+                .GetElementsForViewNode(selectByFullNameNode)
+                .OfType<IElement>()
+                .ToList();
+        Assert.That(result.Count, Is.EqualTo(1));
+        Assert.That(result.First().getOrDefault<string>(_CommonTypes._Default._Package.name),
+            Is.EqualTo("Child 2"));
+    }
+
+    private static async Task CreateTestDataExtentWithPackagedChildren(IDatenMeisterScope dm)
+    {
         // Ok, now add the data
         var extent = (await XmiExtensions
             .CreateAndAddXmiExtent(dm.Resolve<ExtentManager>(), "dm:///testdata", "testdata.xmi")).Extent!;
@@ -189,41 +262,6 @@ public class DataviewTests
         child2.set(_CommonTypes._Default._Package.name, "Child 2");
 
         package.set(_CommonTypes._Default._Package.packagedElement, new []{child1, child2});
-        
-        // We have the data, now create the query
-        var tempFactory = InMemoryObject.TemporaryFactory;
-
-        var selectByExtentNode =
-            tempFactory.create(_DataViews.TheOne.Source.__SelectByExtentNode);
-        selectByExtentNode.set(_DataViews._Source._SelectByExtentNode.workspaceId, WorkspaceNames.WorkspaceData);
-        selectByExtentNode.set(_DataViews._Source._SelectByExtentNode.extentUri, "dm:///testdata");
-        
-        // Check for Child1
-        var selectByFullNameNode =
-            tempFactory.create(_DataViews.TheOne.Source.__SelectByFullNameNode);
-        selectByFullNameNode.set(_DataViews._Source._SelectByFullNameNode.input, selectByExtentNode);
-        selectByFullNameNode.set(_DataViews._Source._SelectByFullNameNode.path, "Package::Child1");
-        
-        var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
-        var result =
-            dataViewEvaluator
-                .GetElementsForViewNode(selectByFullNameNode)
-                .OfType<IElement>()
-                .ToList();
-        Assert.That(result.Count, Is.EqualTo(1));
-        Assert.That(result.First().getOrDefault<string>(_CommonTypes._Default._Package.name),
-            Is.EqualTo("Child1"));
-        
-        // Now Check for Child 2
-        selectByFullNameNode.set(_DataViews._Source._SelectByFullNameNode.path, "Package::Child 2");
-        result =
-            dataViewEvaluator
-                .GetElementsForViewNode(selectByFullNameNode)
-                .OfType<IElement>()
-                .ToList();
-        Assert.That(result.Count, Is.EqualTo(1));
-        Assert.That(result.First().getOrDefault<string>(_CommonTypes._Default._Package.name),
-            Is.EqualTo("Child 2"));
     }
 
     private async Task<IUriExtent> CreateDataForTest(IDatenMeisterScope dm)

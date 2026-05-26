@@ -557,13 +557,6 @@ export var _DataViews;
         }
         _Source._SelectByWorkspaceNode = _SelectByWorkspaceNode;
         _Source.__SelectByWorkspaceNode_Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db";
-        class _SelectByFullNameNode {
-            static input = "input";
-            static path = "path";
-            static _name_ = "name";
-        }
-        _Source._SelectByFullNameNode = _SelectByFullNameNode;
-        _Source.__SelectByFullNameNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode";
         class _SelectFromAllWorkspacesNode {
             static _name_ = "name";
         }
@@ -585,6 +578,22 @@ export var _DataViews;
     }
     _DataViews._ValueItem = _ValueItem;
     _DataViews.__ValueItem_Uri = "dm:///_internal/types/internal#4394a28a-0def-4030-b5d0-7a1b5b01c91b";
+    let _Transformation;
+    (function (_Transformation) {
+        class _SelectByFullNameNode {
+            static input = "input";
+            static path = "path";
+            static _name_ = "name";
+        }
+        _Transformation._SelectByFullNameNode = _SelectByFullNameNode;
+        _Transformation.__SelectByFullNameNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode";
+        class _SelectByProperty {
+            static input = "input";
+            static propertyName = "propertyName";
+        }
+        _Transformation._SelectByProperty = _SelectByProperty;
+        _Transformation.__SelectByProperty_Uri = "dm:///_internal/types/internal#2a5ac57c-e5d2-498b-b575-7b07354e2645";
+    })(_Transformation = _DataViews._Transformation || (_DataViews._Transformation = {}));
 })(_DataViews || (_DataViews = {}));
 export var _Reports;
 (function (_Reports) {

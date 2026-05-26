@@ -640,14 +640,6 @@ export namespace _DataViews
                 }
 
                 export const __SelectByWorkspaceNode_Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db";
-                export class _SelectByFullNameNode
-                {
-                    static input = "input";
-                    static path = "path";
-                    static _name_ = "name";
-                }
-
-                export const __SelectByFullNameNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode";
                 export class _SelectFromAllWorkspacesNode
                 {
                     static _name_ = "name";
@@ -674,6 +666,25 @@ export namespace _DataViews
         }
 
         export const __ValueItem_Uri = "dm:///_internal/types/internal#4394a28a-0def-4030-b5d0-7a1b5b01c91b";
+        export namespace _Transformation
+        {
+                export class _SelectByFullNameNode
+                {
+                    static input = "input";
+                    static path = "path";
+                    static _name_ = "name";
+                }
+
+                export const __SelectByFullNameNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode";
+                export class _SelectByProperty
+                {
+                    static input = "input";
+                    static propertyName = "propertyName";
+                }
+
+                export const __SelectByProperty_Uri = "dm:///_internal/types/internal#2a5ac57c-e5d2-498b-b575-7b07354e2645";
+        }
+
 }
 
 export namespace _Reports

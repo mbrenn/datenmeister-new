@@ -4,6 +4,10 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DataView.Evaluation;
+using DatenMeister.DataView.Evaluation.Column;
+using DatenMeister.DataView.Evaluation.Row;
+using DatenMeister.DataView.Evaluation.Source;
+using DatenMeister.DataView.Evaluation.Transformation;
 using DatenMeister.Plugins;
 
 namespace DatenMeister.DataView;
@@ -101,6 +105,7 @@ public class DataViewPlugin(
         result.Add(new RowOrderByNodeEvaluation());
         result.Add(new RowFilterByFreeTextAnywhereNodeEvaluation());
         result.Add(new NodeReferenceNodeEvaluation());
+        result.Add(new SelectByPropertyEvaluation());
 
         return result;
     }

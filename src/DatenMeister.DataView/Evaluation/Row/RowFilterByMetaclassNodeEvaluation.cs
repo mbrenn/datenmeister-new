@@ -6,7 +6,7 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.DataView.Evaluation;
+namespace DatenMeister.DataView.Evaluation.Row;
 
 /// <summary>
 /// Implements the evaluation for the row filter by metaclass node

@@ -1384,24 +1384,6 @@ public class _DataViews
         public _SelectByWorkspaceNode @SelectByWorkspaceNode = new ();
         public MofObjectShadow @__SelectByWorkspaceNode = new ("dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db");
 
-        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
-            TypeKind = TypeKind.ClassTree)]
-        public class _SelectByFullNameNode
-        {
-            public static readonly string @input = "input";
-            public IElement? @_input = null;
-
-            public static readonly string @path = "path";
-            public IElement? @_path = null;
-
-            public static readonly string @name = "name";
-            public IElement? @_name = null;
-
-        }
-
-        public _SelectByFullNameNode @SelectByFullNameNode = new ();
-        public MofObjectShadow @__SelectByFullNameNode = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode");
-
         [TypeUri(Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a",
             TypeKind = TypeKind.ClassTree)]
         public class _SelectFromAllWorkspacesNode
@@ -1453,6 +1435,45 @@ public class _DataViews
 
     public _ValueItem @ValueItem = new ();
     public MofObjectShadow @__ValueItem = new ("dm:///_internal/types/internal#4394a28a-0def-4030-b5d0-7a1b5b01c91b");
+
+    public class _Transformation
+    {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
+            TypeKind = TypeKind.ClassTree)]
+        public class _SelectByFullNameNode
+        {
+            public static readonly string @input = "input";
+            public IElement? @_input = null;
+
+            public static readonly string @path = "path";
+            public IElement? @_path = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _SelectByFullNameNode @SelectByFullNameNode = new ();
+        public MofObjectShadow @__SelectByFullNameNode = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#2a5ac57c-e5d2-498b-b575-7b07354e2645",
+            TypeKind = TypeKind.ClassTree)]
+        public class _SelectByProperty
+        {
+            public static readonly string @input = "input";
+            public IElement? @_input = null;
+
+            public static readonly string @propertyName = "propertyName";
+            public IElement? @_propertyName = null;
+
+        }
+
+        public _SelectByProperty @SelectByProperty = new ();
+        public MofObjectShadow @__SelectByProperty = new ("dm:///_internal/types/internal#2a5ac57c-e5d2-498b-b575-7b07354e2645");
+
+    }
+
+    public _Transformation Transformation = new ();
 
     public static readonly _DataViews TheOne = new ();
 

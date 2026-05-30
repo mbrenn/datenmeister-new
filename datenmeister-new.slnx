@@ -6,12 +6,6 @@
     <BuildType Name="WPF" />
   </Configurations>
   <Folder Name="/Applications/">
-    <Project Path="src/Apps/StundenMeister/StundenMeister.csproj">
-      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
-      <Build Solution="Debug|*" Project="false" />
-      <Build Solution="Release|*" Project="false" />
-      <Build Solution="ViewLogicAdditionalInfo|*" Project="false" />
-    </Project>
     <Project Path="src/DatenMeisterWPF/DatenMeisterWPF.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
       <Build Solution="Debug|*" Project="false" />
@@ -218,12 +212,6 @@
     <File Path="src/.editorconfig" />
   </Folder>
   <Folder Name="/Tests/">
-    <Project Path="src/Apps/StundenMeister.Tests/StundenMeister.Tests.csproj">
-      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
-      <Build Solution="Debug|*" Project="false" />
-      <Build Solution="Release|*" Project="false" />
-      <Build Solution="ViewLogicAdditionalInfo|*" Project="false" />
-    </Project>
     <Project Path="src/Tests/DatenMeister.Benchmark/DatenMeister.Benchmark.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>

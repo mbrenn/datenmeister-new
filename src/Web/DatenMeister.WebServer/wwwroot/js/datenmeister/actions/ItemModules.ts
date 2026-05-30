@@ -47,7 +47,7 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
     async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
 
         let p = new URLSearchParams(window.location.search);
-        
+
         const result = await MofSync.createTemporaryDmObject(_DatenMeister._Actions.__MoveOrCopyAction_Uri);
 
         // TODO: Set Result
@@ -56,12 +56,14 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
 
         const source = Mof.DmObject.createFromReference(sourceWorkspace, sourceItemUri);
         result.set(_DatenMeister._Actions._MoveOrCopyAction.source, source);
-        
+
         const container = await ItemClient.getContainer(sourceWorkspace, sourceItemUri);
         if (container.length > 0) {
             const target = Mof.DmObject.createFromReference(container[0].workspace, container[0].uri);
             result.set(_DatenMeister._Actions._MoveOrCopyAction.target, target);
         }
+
+        result.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Move);
 
         return Promise.resolve(result);
     }

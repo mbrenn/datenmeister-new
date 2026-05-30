@@ -50,6 +50,7 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
             const target = Mof.DmObject.createFromReference(container[0].workspace, container[0].uri);
             result.set(_DatenMeister._Actions._MoveOrCopyAction.target, target);
         }
+        result.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Move);
         return Promise.resolve(result);
     }
     async loadForm() {

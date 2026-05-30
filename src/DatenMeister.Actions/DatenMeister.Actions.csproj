@@ -21,6 +21,7 @@
 
     <ItemGroup>
       <Folder Include="ActionHandler\Data\" />
+      <Folder Include="Transformations\" />
     </ItemGroup>
 
 </Project>

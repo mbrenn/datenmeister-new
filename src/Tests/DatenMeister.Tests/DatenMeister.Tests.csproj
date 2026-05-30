@@ -34,6 +34,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DatenMeister.Actions.Transformations\DatenMeister.Actions.Transformations.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Actions\DatenMeister.Actions.csproj" />
     <ProjectReference Include="..\..\DatenMeister.AttachedExtent\DatenMeister.AttachedExtent.csproj" />
     <ProjectReference Include="..\..\DatenMeister.BootStrap\DatenMeister.BootStrap.csproj" />

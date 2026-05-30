@@ -44,6 +44,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Actions.Transformations\DatenMeister.Actions.Transformations.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Actions\DatenMeister.Actions.csproj" />
     <ProjectReference Include="..\..\DatenMeister.DataView.Actions\DatenMeister.DataView.Actions.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Domains\DatenMeister.Domains.csproj" />

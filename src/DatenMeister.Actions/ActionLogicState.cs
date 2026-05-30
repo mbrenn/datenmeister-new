@@ -1,6 +1,5 @@
 ﻿using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Actions.ActionHandler.Reports;
-using DatenMeister.Actions.Transformations;
 
 namespace DatenMeister.Actions;
 
@@ -49,7 +48,6 @@ public class ActionLogicState
         logicState.AddActionHandler(new ExportToXmiActionHandler());
         logicState.AddActionHandler(new HtmlReportActionHandler());
         logicState.AddActionHandler(new ImportXmiActionHandler());
-        logicState.AddActionHandler(new TransformItemsActionHandler());
         logicState.AddActionHandler(new LoadExtentActionHandler());
         logicState.AddActionHandler(new LoggingWriterActionHandler());
         logicState.AddActionHandler(new MoveOrCopyActionHandler());

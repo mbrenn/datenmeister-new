@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
+using DatenMeister.Actions.Transformations;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.Hooks;
@@ -12,6 +13,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.Plugins;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.Xmi.Provider.XMI.ExtentStorage;
 using DatenMeister.Provider.Xmi.Provider.Xml;
@@ -50,6 +52,10 @@ public class ActionSetTests
             
         scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
         scopeStorage.Add(WorkspaceLogic.InitDefault());
+        
+        // Add the item transformationlogic
+        var itemPlugin = new TransformationPlugin(scopeStorage);
+        itemPlugin.Start(PluginLoadingPosition.AfterInitialization);
 
         var workspaceLogic = new WorkspaceLogic(scopeStorage);
 

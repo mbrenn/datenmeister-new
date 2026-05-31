@@ -1,17 +1,2 @@
-import { BaseField } from "./Interfaces.js";
-export class Field extends BaseField {
-    // Defines the name of the field name which is not known
-    unknownFieldUri;
-    constructor(unknownFieldUri) {
-        super();
-        this.unknownFieldUri = unknownFieldUri;
-    }
-    async createDom(dmElement) {
-        const result = $("<em></em>");
-        result.text(this.unknownFieldUri ?? "unknown");
-        return result;
-    }
-    async evaluateDom(dmElement) {
-    }
-}
+import{BaseField as t}from"./Interfaces.js";class s extends t{unknownFieldUri;constructor(e){super(),this.unknownFieldUri=e}async createDom(e){const n=$("<em></em>");return n.text(this.unknownFieldUri??"unknown"),n}async evaluateDom(e){}}export{s as Field};
 //# sourceMappingURL=UnknownField.js.map

@@ -1,28 +1,2 @@
-import { BaseField } from "./Interfaces.js";
-import * as Mof from "../Mof.js";
-export class Field extends BaseField {
-    _checkbox;
-    async createDom(dmElement) {
-        this._checkbox = $("<input type='checkbox'/>");
-        const fieldName = this.field.get('name').toString();
-        if (dmElement.get(fieldName, Mof.ObjectType.Boolean)) {
-            this._checkbox.prop('checked', true);
-        }
-        if (this.isReadOnly) {
-            this._checkbox.prop('disabled', 'disabled');
-        }
-        this._checkbox.on('change', () => {
-            if (this.callbackUpdateField !== undefined) {
-                this.callbackUpdateField();
-            }
-        });
-        return this._checkbox;
-    }
-    async evaluateDom(dmElement) {
-        if (this._checkbox !== undefined && this._checkbox !== null) {
-            const fieldName = this.field.get('name').toString();
-            dmElement.set(fieldName, this._checkbox.prop('checked'));
-        }
-    }
-}
+import{BaseField as t}from"./Interfaces.js";import*as c from"../Mof.js";class d extends t{_checkbox;async createDom(e){this._checkbox=$("<input type='checkbox'/>");const i=this.field.get("name").toString();return e.get(i,c.ObjectType.Boolean)&&this._checkbox.prop("checked",!0),this.isReadOnly&&this._checkbox.prop("disabled","disabled"),this._checkbox.on("change",()=>{this.callbackUpdateField!==void 0&&this.callbackUpdateField()}),this._checkbox}async evaluateDom(e){if(this._checkbox!==void 0&&this._checkbox!==null){const i=this.field.get("name").toString();e.set(i,this._checkbox.prop("checked"))}}}export{d as Field};
 //# sourceMappingURL=CheckboxField.js.map

@@ -1,23 +1,2 @@
-import * as DropDownBaseField from "./DropDownBaseField.js";
-import * as _DatenMeister from "../models/DatenMeister.class.js";
-export class Field extends DropDownBaseField.DropDownBaseField {
-    constructor() {
-        super();
-        this.fieldType = DropDownBaseField.FieldType.Strings;
-    }
-    async loadFields() {
-        const values = this.field.get('values');
-        if (Array.isArray(values)) {
-            return values.map(x => {
-                return {
-                    title: x.get(_DatenMeister._Forms._FieldTypes._ValuePair._name_).toString(),
-                    value: x.get(_DatenMeister._Forms._FieldTypes._ValuePair.value).toString()
-                };
-            });
-        }
-        else {
-            return [];
-        }
-    }
-}
+import*as i from"./DropDownBaseField.js";import*as o from"../models/DatenMeister.class.js";class m extends i.DropDownBaseField{constructor(){super(),this.fieldType=i.FieldType.Strings}async loadFields(){const e=this.field.get("values");return Array.isArray(e)?e.map(r=>({title:r.get(o._Forms._FieldTypes._ValuePair._name_).toString(),value:r.get(o._Forms._FieldTypes._ValuePair.value).toString()})):[]}}export{m as Field};
 //# sourceMappingURL=DropDownField.js.map

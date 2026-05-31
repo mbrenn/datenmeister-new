@@ -1,26 +1,2 @@
-import * as ClientWorkspace from "../client/Workspace.js";
-import '../../node_modules/chai/register-assert.js';
-export function includeTests() {
-    describe('Client', function () {
-        describe('Workspace', function () {
-            it('Create and Delete Workspace', function (done) {
-                ClientWorkspace.deleteWorkspace("Test").then(result => {
-                    return ClientWorkspace.createWorkspace("Test", "Annotation");
-                })
-                    .then(result => {
-                    assert.isTrue(result.success);
-                    return ClientWorkspace.createWorkspace("Test", "Annotation");
-                })
-                    .then(result => {
-                    assert.isFalse(result.success);
-                    return ClientWorkspace.deleteWorkspace("Test");
-                })
-                    .then(result => {
-                    assert.isTrue(result.success);
-                    done();
-                }).catch(e => done(e));
-            });
-        });
-    });
-}
+import*as t from"../client/Workspace.js";import"../../node_modules/chai/register-assert.js";function c(){describe("Client",function(){describe("Workspace",function(){it("Create and Delete Workspace",function(s){t.deleteWorkspace("Test").then(e=>t.createWorkspace("Test","Annotation")).then(e=>(assert.isTrue(e.success),t.createWorkspace("Test","Annotation"))).then(e=>(assert.isFalse(e.success),t.deleteWorkspace("Test"))).then(e=>{assert.isTrue(e.success),s()}).catch(e=>s(e))})})})}export{c as includeTests};
 //# sourceMappingURL=Test.Client.Workspace.js.map

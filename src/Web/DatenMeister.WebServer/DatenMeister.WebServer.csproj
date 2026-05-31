@@ -17,30 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Remove="node_modules\**" />
-    <TypeScriptCompile Include="wwwroot\js\**.ts" />
-    <TypeScriptCompile Include="wwwroot\js\burnsystems\StringManipulation.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Actions.Items.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Types.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\controls\ElementBreadcrumb.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\controls\TypeSelectionControl.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\MofArray.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\MofSync.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\page\Actions.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Actions.Item.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Sync.ts" />
-    <TypeScriptCompile Remove="wwwroot\js\datenmeister\models\mof.ts" />
-    <TypeScriptCompile Remove="wwwroot\js\datenmeister\models\primitivetypes.ts" />
-    <TypeScriptCompile Remove="wwwroot\js\datenmeister\models\uml.ts" />
-    <TypeScriptCompile Remove="wwwroot\js\burnJsPopup.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BurnSystems" Version="1.2.0" />
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.9.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -83,6 +60,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets\js\" />
     <Folder Include="wwwroot\css\jquery.fancytree\css\" />
     <Folder Include="wwwroot\css\jquery.fancytree\skin-win8\" />
   </ItemGroup>

@@ -1,20 +1,2 @@
-import { findBySearchString } from "./client/Elements.js";
-import { navigateToExtentItems, navigateToItemByUrl } from "./Navigator.js";
-export function executeSearchByText(searchText) {
-    findBySearchString(searchText).then(result => {
-        switch (result.resultType) {
-            case 'reference':
-                navigateToItemByUrl(result.reference.workspace, result.reference.uri);
-                break;
-            case 'referenceExtent':
-                navigateToExtentItems(result.reference.workspace, result.reference.extentUri);
-                break;
-            case 'none':
-                alert('Unfortunately, nothing was found.');
-                break;
-            default:
-                alert('Unknown result type: ' + result.resultType);
-        }
-    });
-}
+import{findBySearchString as n}from"./client/Elements.js";import{navigateToExtentItems as t,navigateToItemByUrl as a}from"./Navigator.js";function f(r){n(r).then(e=>{switch(e.resultType){case"reference":a(e.reference.workspace,e.reference.uri);break;case"referenceExtent":t(e.reference.workspace,e.reference.extentUri);break;case"none":alert("Unfortunately, nothing was found.");break;default:alert("Unknown result type: "+e.resultType)}})}export{f as executeSearchByText};
 //# sourceMappingURL=Search.js.map

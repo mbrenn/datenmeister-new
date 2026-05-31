@@ -1,27 +1,2 @@
-import * as Mof from "../Mof.js";
-import * as ElementClient from "../client/Elements.js";
-import * as _DatenMeister from "../models/DatenMeister.class.js";
-import * as DropDownBaseField from "./DropDownBaseField.js";
-import * as QueryBuilder from "../modules/QueryEngine.js";
-export class Field extends DropDownBaseField.DropDownBaseField {
-    constructor() {
-        super();
-        this.fieldType = DropDownBaseField.FieldType.References;
-    }
-    async loadFields() {
-        const workspace = this.field.get(_DatenMeister._Forms._FieldTypes._DropDownByCollection.defaultWorkspace, Mof.ObjectType.String) ?? "Data";
-        const path = this.field.get(_DatenMeister._Forms._FieldTypes._DropDownByCollection.collection, Mof.ObjectType.String);
-        // Builds the query
-        const queryBuilder = new QueryBuilder.QueryBuilder();
-        QueryBuilder.getElementsByPath(queryBuilder, workspace, path);
-        const serverResult = await ElementClient.queryObject(queryBuilder.queryStatement);
-        return serverResult.result.map(x => {
-            return {
-                title: x.get("name", Mof.ObjectType.String) ?? x.id,
-                workspace: x.workspace,
-                itemUrl: x.uri
-            };
-        });
-    }
-}
+import*as r from"../Mof.js";import*as p from"../client/Elements.js";import*as o from"../models/DatenMeister.class.js";import*as i from"./DropDownBaseField.js";import*as s from"../modules/QueryEngine.js";class y extends i.DropDownBaseField{constructor(){super(),this.fieldType=i.FieldType.References}async loadFields(){const l=this.field.get(o._Forms._FieldTypes._DropDownByCollection.defaultWorkspace,r.ObjectType.String)??"Data",n=this.field.get(o._Forms._FieldTypes._DropDownByCollection.collection,r.ObjectType.String),t=new s.QueryBuilder;return s.getElementsByPath(t,l,n),(await p.queryObject(t.queryStatement)).result.map(e=>({title:e.get("name",r.ObjectType.String)??e.id,workspace:e.workspace,itemUrl:e.uri}))}}export{y as Field};
 //# sourceMappingURL=DropDownByCollection.js.map

@@ -1,7 +1,2 @@
-export var EntentType;
-(function (EntentType) {
-    EntentType["Item"] = "Item";
-    EntentType["Extent"] = "Extent";
-    EntentType["Workspace"] = "Workspace";
-})(EntentType || (EntentType = {}));
+var t=(e=>(e.Item="Item",e.Extent="Extent",e.Workspace="Workspace",e))(t||{});export{t as EntentType};
 //# sourceMappingURL=ApiModels.js.map

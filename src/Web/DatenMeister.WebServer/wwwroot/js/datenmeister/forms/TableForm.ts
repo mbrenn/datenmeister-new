@@ -5,7 +5,7 @@ import * as FieldFactory from "./FieldFactory.js";
 import {IFormConfiguration} from "./IFormConfiguration.js";
 import * as Navigator from '../Navigator.js'
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-import * as burnJsPopup from "../../burnJsPopup.js"
+import * as burnJsPopup from "../../burnsystems/burnJsPopup.js"
 import * as ClientItem from "../client/Items.js"
 import * as ContextMenu from "./TableForm.ContextMenus.js"
 import {TableState} from "./TableState.js"

@@ -20,12 +20,12 @@ export async function pageTestTreeView()
 }
 
 export async function pageTestFormFields() {
-    var action = new Mof.DmObject(_DatenMeister._Forms.__NavigateToFieldsForTestAction_Uri);
+    const action = new Mof.DmObject(_DatenMeister._Forms.__NavigateToFieldsForTestAction_Uri);
     await FormActions.executeActionOnServer(action);
 }
 
 export async function pageDebugQueryElements() {
-    var control = new PathQueryDebugControl.Control();
+    const control = new PathQueryDebugControl.Control();
     control.init($("#debug_query_elements"));
 }
 

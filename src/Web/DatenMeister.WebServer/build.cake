@@ -45,8 +45,8 @@ Task("Compress CSS")
     {
         Information("Compressing CSS Files");
         
-        var cssFiles = System.IO.Directory.GetFiles("wwwroot/css/", "*.css").Where(x=>x.StartsWith("wwwroot/css/datenmeister.")).ToList();
-        cssFiles.Add("wwwroot/css/burnJsPopup.css");
+        var cssFiles = System.IO.Directory.GetFiles("Assets/css/", "*.css").Where(x=>x.StartsWith("Assets/css/datenmeister.")).ToList();
+        cssFiles.Add("Assets/css/burnJsPopup.css");
         
         foreach(var file in cssFiles)
         {

@@ -3,8 +3,6 @@ import * as ItemsClient from "../client/Items.js";
 import {EntentType, ItemWithNameAndId} from "../ApiModels.js";
 import {UserEvent} from "../../burnsystems/Events.js";
 import {convertItemWithNameAndIdToDom} from "../DomHelper.js";
-import * as Mof from "../Mof.js";
-import * as ClientItem from "../client/Items.js";
 import * as ApiModels from "../ApiModels.js";
 import * as GlobalSettings from "../Settings.js";
 
@@ -16,7 +14,7 @@ import * as GlobalSettings from "../Settings.js";
  * flags and pass it to {@link SelectItemControl.init} or
  * {@link SelectItemControl.initAsync}.
  */
-export class Settings {
+export class ContainerSettings {
     /**
      * When `true`, the breadcrumb row is rendered above the items list and is
      * kept in sync with the currently navigated item. When `false`, no
@@ -145,7 +143,7 @@ export interface ISelectItemControl {
 
     /**
      * Reveals the control after a previous {@link hideControl} call (or after
-     * having been created with {@link Settings.hideAtStartup} set).
+     * having been created with {@link ContainerSettings.hideAtStartup} set).
      * No-op if the control has not been initialized yet.
      */
     showControl() : void;
@@ -200,8 +198,8 @@ export class SelectItemControl implements ISelectItemControl {
     /** `<ul class='breadcrumb'>` rendering the path to the selected item. */
     private htmlBreadcrumbList: JQuery<HTMLElement>;
 
-    /** Effective settings; defaults from {@link Settings} when none were passed. */
-    private settings: Settings;
+    /** Effective settings; defaults from {@link ContainerSettings} when none were passed. */
+    private settings: ContainerSettings;
 
     /** Last list of workspaces fetched from the server, used by {@link getSelectedWorkspace}. */
     private loadedWorkspaces: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
@@ -265,10 +263,10 @@ export class SelectItemControl implements ISelectItemControl {
      * Use {@link initAsync} if you need to await the initial data load.
      *
      * @param parent The container element that should host the control.
-     * @param settings Optional behavior overrides; see {@link Settings}.
+     * @param settings Optional behavior overrides; see {@link ContainerSettings}.
      * @returns The root `<table>` of the rendered control.
      */
-    init(parent: JQuery<HTMLElement>, settings?: Settings): JQuery {
+    init(parent: JQuery<HTMLElement>, settings?: ContainerSettings): JQuery {
 
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
@@ -285,10 +283,10 @@ export class SelectItemControl implements ISelectItemControl {
      * pre-selected extent/item) has been loaded and the GUI reflects it.
      *
      * @param parent The container element that should host the control.
-     * @param settings Optional behavior overrides; see {@link Settings}.
+     * @param settings Optional behavior overrides; see {@link ContainerSettings}.
      * @returns A promise resolving to the root `<table>` of the rendered control.
      */
-    async initAsync(parent: JQuery<HTMLElement>, settings?: Settings): Promise<JQuery> {
+    async initAsync(parent: JQuery<HTMLElement>, settings?: ContainerSettings): Promise<JQuery> {
 
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
@@ -306,8 +304,8 @@ export class SelectItemControl implements ISelectItemControl {
      * @param container JQuery-Container Element hosting the content
      * @private
      */
-    private initDom(settings: Settings, container: JQuery<HTMLElement>) {
-        this.settings = settings ?? new Settings();
+    private initDom(settings: ContainerSettings, container: JQuery<HTMLElement>) {
+        this.settings = settings ?? new ContainerSettings();
 
         const tthis = this;
 
@@ -753,18 +751,18 @@ export class SelectItemControl implements ISelectItemControl {
      * Rebuilds the breadcrumb to reflect the current selection.
      *
      * The breadcrumb is composed in three sections, each gated by a
-     * {@link Settings} flag:
-     *  1. When {@link Settings.showWorkspaceInBreadcrumb} is set, a
+     * {@link ContainerSettings} flag:
+     *  1. When {@link ContainerSettings.showWorkspaceInBreadcrumb} is set, a
      *     "Workspaces" entry plus the current workspace are prepended.
      *     Clicking them resets the selection back to that level.
-     *  2. When {@link Settings.showExtentInBreadcrumb} is set, the active
+     *  2. When {@link ContainerSettings.showExtentInBreadcrumb} is set, the active
      *     extent is appended. Clicking it resets the selection to the extent.
      *  3. Finally the container chain of the selected item (queried via
      *     `ItemsClient.getContainer`) is appended in root-to-leaf order. Only
      *     entries of `EntentType.Item` are added — extent/workspace entries
      *     are already represented by the sections above.
      *
-     * If {@link Settings.showBreadcrumb} is `false`, the breadcrumb list is
+     * If {@link ContainerSettings.showBreadcrumb} is `false`, the breadcrumb list is
      * cleared and nothing else is rendered.
      */
     async refreshBreadcrumb() {
@@ -914,7 +912,7 @@ export function selectItem(changeContainerCell: JQuery<HTMLElement>, parameter: 
 
         changeContainerCell.empty();
         const selectItem = new SelectItemControl();
-        const settings = new Settings();
+        const settings = new ContainerSettings();
         settings.showWorkspaceInBreadcrumb = true;
         settings.showExtentInBreadcrumb = true;
         if(title !== undefined) settings.headline = title;

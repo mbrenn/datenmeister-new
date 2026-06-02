@@ -73,7 +73,7 @@ export class Field extends BaseField implements IFormField {
                     const containerDiv = $(".dm-compositefield-attachitem-box", this.resultingDom);
                     containerDiv.empty();
                     const selectItem = new SIC.SelectItemControl();
-                    const settings = new SIC.Settings();
+                    const settings = new SIC.ContainerSettings();
                     settings.showWorkspaceInBreadcrumb = true;
                     settings.showExtentInBreadcrumb = true;
                     await selectItem.setWorkspaceById(Settings.WorkspaceTypes);

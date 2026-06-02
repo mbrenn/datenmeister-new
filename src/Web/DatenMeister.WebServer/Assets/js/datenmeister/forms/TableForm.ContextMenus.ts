@@ -162,7 +162,7 @@ export function createFunctionToLoadCurrentView(tableForm: TableForm) {
                 const selectItemControl = new SelectItemControl.SelectItemControl();
                 await selectItemControl.setExtentByUri(Settings.WorkspaceManagement, Settings.UriExtentUserForm);
 
-                const selectItemControlSettings = new SelectItemControl.Settings();
+                const selectItemControlSettings = new SelectItemControl.ContainerSettings();
                 selectItemControlSettings.showCancelButton = false;
                 selectItemControlSettings.headline = "Select View";
 
@@ -219,7 +219,7 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                 const selectItemControl = new SelectItemControl.SelectItemControl();
                 await selectItemControl.setExtentByUri(Settings.WorkspaceManagement, Settings.UriExtentUserForm);
 
-                const selectItemControlSettings = new SelectItemControl.Settings();
+                const selectItemControlSettings = new SelectItemControl.ContainerSettings();
                 selectItemControlSettings.hideButtonRow = true;
                 selectItemControlSettings.showCancelButton = false;
                 selectItemControlSettings.headline = "Select Package";

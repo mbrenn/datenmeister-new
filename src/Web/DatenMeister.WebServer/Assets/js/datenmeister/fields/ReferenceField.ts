@@ -147,7 +147,7 @@ export class Control extends BaseField {
         const isSelectionInline = this.field?.get('isSelectionInline', Mof.ObjectType.Boolean);
         
         const selectItem = new SIC.SelectItemControl();
-        const settings = new SIC.Settings();
+        const settings = new SIC.ContainerSettings();
         settings.showWorkspaceInBreadcrumb = true;
         settings.showExtentInBreadcrumb = true;      
         settings.hideButtonRow = isSelectionInline;        

@@ -213,7 +213,7 @@ export class Field extends BaseField implements IFormField {
                     // The user wants to select a new one
                     containerChangeCell.empty();
                     const selectItem = new SIC.SelectItemControl();
-                    const settings = new SIC.Settings();
+                    const settings = new SIC.ContainerSettings();
                     settings.showWorkspaceInBreadcrumb = true;
                     settings.showExtentInBreadcrumb = true;
                     settings.hideAtStartup = true;

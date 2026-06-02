@@ -49,7 +49,7 @@ export async function pageOpenSelectItemControlFullBreadcrumb()
         alert (
             "Uri:" + x.uri+ ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
     
-    const settings = new SIC.Settings();
+    const settings = new SIC.ContainerSettings();
     settings.showExtentInBreadcrumb = true;
     settings.showWorkspaceInBreadcrumb = true;
     

@@ -80,7 +80,7 @@ export class TypeSelectionControl {
             await this.selectionField.setExtentByUri("Types", "dm:///_internal/types/internal");
         }
 
-        const settings = new SIC.Settings();
+        const settings = new SIC.ContainerSettings();
         settings.setButtonText = "Use Type";
         settings.headline = "Select Type:";
         await this.selectionField.initAsync(controlSelect, settings);

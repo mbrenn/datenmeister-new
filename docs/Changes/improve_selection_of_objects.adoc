@@ -11,14 +11,16 @@ We need to extent that item that it becomes much faster and userfriendly.
 * The user shall be able to browse the item as before
 * The user shall be able to select the last created and/or last selected items. (List out of 10).
 * The user shall be able to search within a workspace by typing the name of that item. 
-* The user can arbitrarily change between each of these modes. 
+* The user can arbitrarily change between each of these modes. The default mode shall be the freetext mode
+* The integrator shall be able to configure which of the tabbed views shall be shown. 
 
 == Design decisions
 
 * The existing control will be modified to make it available at all currently used slots.
-** The existing interface of pre-selecting an item, a workspace or extent shall not be modified
+** The existing interface of pre-selecting an item, a workspace or extent shall not be modified. Setting a workspace or extent shall set each child control's workspace and extent even though it is not shown. 
 ** The existing interface of events upon selection shall not be modified. This means that all existing users of the control shall stay compatible.
-* The control shall provide a tabular selection of the different selection modes. When the user clicks upon one of these, the page corresponding page shall show up.
+** Only the active control shall set the active element. 
+* The control shall provide a tabbed (flex tab) selection of the different selection modes. When the user clicks upon one of these, the page corresponding page shall show up.
 
 The TypeScript classes will be broken up into four TypeScript classes, each representing its with self-hosting capability, so an integrator could also reuse the single components. The communication between the integrating control and its selection mechanism shall be according the similar interface. 
 
@@ -29,17 +31,23 @@ The names of these controls are:
 * Last History instance: SelectItemByLastItemControl (will be withheld until a user session concept will be realized)
 * Find by Freetext: SelectItemByFreeTextControl
 
-=== Mode: Browsing instance
+=== Modes
+
+==== Mode: Browsing instance
 
 * Nothing to be specified here, we can keep the existing concept. The interfaces from the container element to that instance need to be propagated
 
-=== Mode: Last History Instance
+==== Mode: Last History Instance
 
 * Will be withheld due to insufficient infrastructure for user sessions
 
-=== Mode: Find by Freetext
+==== Mode: Find by Freetext
 
 * The user has to select the Workspace itself. This is a standard Dropdown. By selecting the workspace, the search space can be reduced and higher performance can be achieved.
 * The user can select the interface in which the extent is being searched. In case nothing is selected, within all extents of the given workspace will be selected
 * The user can type-in a free text. Upon all elements of the selected extent(s), the name field will be evaluated. In case an element is found via the compositing properties, it will be shown as a list. The user can now click on that element to select it.
 * The search is performed via the query logic. No other logic will be implemented on server side since the existing infrastructure is able to support the current need. 
+* While the user is typing the freetext, the query shall be sent out after 500 ms via client-side buffering. It is to be ensured that older requests will not overwrite the results of the new requests
+* The first 100 items are to be shown in a scrollable window. This scrollable window has a size showing about 10 items. 
+* In case the user clicks on one of the items, it is to be regarded as selected according the configuration of 
+

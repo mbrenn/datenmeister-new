@@ -121,4 +121,4 @@ This means, we have the following ActionHandler:
 
 * [x] The actions were created
 * [x] Try it out during debugging
-* [ ] Create an example folder in which the configuration and datafile is stored
+* [x] Create an example folder in which the configuration and datafile is stored

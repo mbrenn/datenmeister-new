@@ -84,31 +84,15 @@ Task("Compress JS")
     {
         Information("Compiling and minifying TypeScript files");
 
-        var tsFiles = GetFiles("Assets/js/**/*.ts")
-            .Where(f => !f.ToString().Contains("node_modules") && !f.ToString().EndsWith(".d.ts"))
-            .Select(f => f.ToString())
-            .ToList();
-
-        var mainArgs = new ProcessArgumentBuilder();
-        foreach (var f in tsFiles)
-            mainArgs.AppendQuoted(f);
-
-        mainArgs.Append("--minify")
-            .Append("--sourcemap")
-            .Append("--outbase=Assets/js")
-            .Append("--outdir=wwwroot/js")
-            .Append("--platform=browser")
-            .Append("--format=esm");
-
         var mainProcess = new System.Diagnostics.Process
         {
             StartInfo =
             {
                 FileName = "npx",
                 UseShellExecute = true,
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                // WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
                 CreateNoWindow = true,
-                Arguments = "esbuild " + mainArgs.Render()
+                Arguments = "esbuild \"Assets/js/**/*.ts\" --minify --sourcemap --outbase=Assets/js --outdir=wwwroot/js --platform=browser --format=esm"
             }
         };
         mainProcess.Start();

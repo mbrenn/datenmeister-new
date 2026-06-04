@@ -1,25 +1,2 @@
-// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.3.0.0
-export var _PrimitiveTypes;
-(function (_PrimitiveTypes) {
-    class _Boolean {
-    }
-    _PrimitiveTypes._Boolean = _Boolean;
-    _PrimitiveTypes.__Boolean_Uri = "dm:///_internal/model/primitivetypes#Boolean";
-    class _Integer {
-    }
-    _PrimitiveTypes._Integer = _Integer;
-    _PrimitiveTypes.__Integer_Uri = "dm:///_internal/model/primitivetypes#Integer";
-    class _Real {
-    }
-    _PrimitiveTypes._Real = _Real;
-    _PrimitiveTypes.__Real_Uri = "dm:///_internal/model/primitivetypes#Real";
-    class _String {
-    }
-    _PrimitiveTypes._String = _String;
-    _PrimitiveTypes.__String_Uri = "dm:///_internal/model/primitivetypes#String";
-    class _UnlimitedNatural {
-    }
-    _PrimitiveTypes._UnlimitedNatural = _UnlimitedNatural;
-    _PrimitiveTypes.__UnlimitedNatural_Uri = "dm:///_internal/model/primitivetypes#UnlimitedNatural";
-})(_PrimitiveTypes || (_PrimitiveTypes = {}));
+var r;(e=>{class n{}e._Boolean=n,e.__Boolean_Uri="dm:///_internal/model/primitivetypes#Boolean";class o{}e._Integer=o,e.__Integer_Uri="dm:///_internal/model/primitivetypes#Integer";class _{}e._Real=_,e.__Real_Uri="dm:///_internal/model/primitivetypes#Real";class p{}e._String=p,e.__String_Uri="dm:///_internal/model/primitivetypes#String";class m{}e._UnlimitedNatural=m,e.__UnlimitedNatural_Uri="dm:///_internal/model/primitivetypes#UnlimitedNatural"})(r||={});export{r as _PrimitiveTypes};
 //# sourceMappingURL=PrimitiveTypes.js.map

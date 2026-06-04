@@ -1,19 +1,2 @@
-/// <reference types="chai" />
-import * as VML from "../forms/ViewModeLogic.js";
-import '../../node_modules/chai/register-assert.js';
-export function includeTests() {
-    describe('ViewModeLogic', () => {
-        it('Clear, get, set, get, clear, get', () => {
-            VML.clearCurrentViewMode();
-            let viewMode = VML.getCurrentViewMode();
-            assert.isTrue(viewMode === "ViewMode.Default", "viewMode needs to be 'Default'");
-            VML.setCurrentViewMode('Test');
-            viewMode = VML.getCurrentViewMode();
-            assert.isTrue(viewMode === "Test", "viewMode needs to be 'Test'");
-            VML.clearCurrentViewMode();
-            viewMode = VML.getCurrentViewMode();
-            assert.isTrue(viewMode === "ViewMode.Default", "viewMode needs to be 'Default'");
-        });
-    });
-}
+import*as e from"../forms/ViewModeLogic.js";import"../../node_modules/chai/register-assert.js";function i(){describe("ViewModeLogic",()=>{it("Clear, get, set, get, clear, get",()=>{e.clearCurrentViewMode();let t=e.getCurrentViewMode();assert.isTrue(t==="ViewMode.Default","viewMode needs to be 'Default'"),e.setCurrentViewMode("Test"),t=e.getCurrentViewMode(),assert.isTrue(t==="Test","viewMode needs to be 'Test'"),e.clearCurrentViewMode(),t=e.getCurrentViewMode(),assert.isTrue(t==="ViewMode.Default","viewMode needs to be 'Default'")})})}export{i as includeTests};
 //# sourceMappingURL=Test.Forms.ViewModeLogic.js.map

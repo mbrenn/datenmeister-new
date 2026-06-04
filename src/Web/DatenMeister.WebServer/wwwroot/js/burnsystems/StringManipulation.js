@@ -1,27 +1,5 @@
-export function truncateText(value, parameter) {
-    let added = false;
-    if (parameter?.maxLength !== undefined) {
-        if (parameter.maxLength > 0 && value.length > parameter.maxLength) {
-            value = value.substring(0, parameter.maxLength);
-            added = true;
-            if (parameter?.useWordBoundary === true) {
-                value = value.slice(0, value.lastIndexOf(" "));
-            }
-        }
-    }
-    if (parameter.maxLines !== undefined && parameter.maxLines > 0) {
-        let lines = value.split('\n');
-        if (lines.length > parameter.maxLines) {
-            value = lines.splice(0, parameter.maxLines).join('\n').trim();
-            value += "\n";
-            added = true;
-        }
-    }
-    if (added) {
-        const ellipses = parameter?.truncateEllipsis === undefined ?
-            " …" : parameter.truncateEllipsis;
-        value += ellipses;
-    }
-    return value;
-}
+function e(n,i){let t=!1;if(i?.maxLength!==void 0&&i.maxLength>0&&n.length>i.maxLength&&(n=n.substring(0,i.maxLength),t=!0,i?.useWordBoundary===!0&&(n=n.slice(0,n.lastIndexOf(" ")))),i.maxLines!==void 0&&i.maxLines>0){let s=n.split(`
+`);s.length>i.maxLines&&(n=s.splice(0,i.maxLines).join(`
+`).trim(),n+=`
+`,t=!0)}if(t){const s=i?.truncateEllipsis===void 0?" \u2026":i.truncateEllipsis;n+=s}return n}export{e as truncateText};
 //# sourceMappingURL=StringManipulation.js.map

@@ -1,24 +1,2 @@
-import * as Settings from "../Settings.js";
-import * as ApiConnection from "../ApiConnection.js";
-export async function getAllTypes() {
-    return await ApiConnection.get(Settings.baseUrl + "api/types/all");
-}
-/**
- * Gets the type of the property by referring to one metaClass and the propertyName
- * @param workspace Workspace in which the element was queried.
- * @param metaClass Uri of the metaClass to be queried
- * @param propertyName Name of the metaclass' property to which the type of the property is queried
- */
-export async function getPropertyType(workspace, metaClass, propertyName) {
-    try {
-        return await ApiConnection.get(Settings.baseUrl + "api/types/propertytype/"
-            + encodeURIComponent(workspace) + "/"
-            + encodeURIComponent(metaClass) + "/"
-            + encodeURIComponent(propertyName));
-    }
-    catch (error) {
-        console.log(error);
-        return undefined;
-    }
-}
+import*as e from"../Settings.js";import*as t from"../ApiConnection.js";async function m(){return await t.get(e.baseUrl+"api/types/all")}async function c(n,r,o){try{return await t.get(e.baseUrl+"api/types/propertytype/"+encodeURIComponent(n)+"/"+encodeURIComponent(r)+"/"+encodeURIComponent(o))}catch(i){console.log(i);return}}export{m as getAllTypes,c as getPropertyType};
 //# sourceMappingURL=Types.js.map

@@ -1,10 +1,2 @@
-import * as Form from "../forms/ActionForm.js";
-import * as FormActions from "../FormActions.js";
-import { loadDefaultModules } from "../actions/DefaultLoader.js";
-import { FormType } from "../forms/Interfaces.js";
-export async function init(actionName, metaClass, formUri) {
-    loadDefaultModules();
-    const module = await Form.createActionFormForEmptyObject($("#form_view"), metaClass, { isReadOnly: false, allowAddingNewProperties: true, formUri: formUri, formType: FormType.Object }, actionName);
-    window.document.title = "Action - '" + FormActions.getActionHeading(module) + "' - Der DatenMeister";
-}
+import*as i from"../forms/ActionForm.js";import*as n from"../FormActions.js";import{loadDefaultModules as m}from"../actions/DefaultLoader.js";import{FormType as a}from"../forms/Interfaces.js";async function f(o,e,t){m();const r=await i.createActionFormForEmptyObject($("#form_view"),e,{isReadOnly:!1,allowAddingNewProperties:!0,formUri:t,formType:a.Object},o);window.document.title="Action - '"+n.getActionHeading(r)+"' - Der DatenMeister"}export{f as init};
 //# sourceMappingURL=ItemAction.js.map

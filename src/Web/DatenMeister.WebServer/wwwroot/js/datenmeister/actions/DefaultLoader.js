@@ -1,21 +1,2 @@
-import * as ZipCodeModules from "./ZipCodeModules.js";
-import * as ExtentModules from "./ExtentModules.js";
-import * as ItemModules from "./ItemModules.js";
-import * as WorkspaceModules from "./WorkspaceModules.js";
-import * as FormModules from "./FormModules.js";
-import * as ActionModules from "./ActionModules.js";
-import * as NavigationModules from "./NavigationModules.js";
-let loaded = false;
-export function loadDefaultModules() {
-    if (!loaded) {
-        ZipCodeModules.loadModules();
-        ExtentModules.loadModules();
-        ItemModules.loadModules();
-        WorkspaceModules.loadModules();
-        FormModules.loadModules();
-        ActionModules.loadModules();
-        NavigationModules.loadModules();
-    }
-    loaded = true;
-}
+import*as l from"./ZipCodeModules.js";import*as d from"./ExtentModules.js";import*as e from"./ItemModules.js";import*as s from"./WorkspaceModules.js";import*as a from"./FormModules.js";import*as r from"./ActionModules.js";import*as u from"./NavigationModules.js";let o=!1;function t(){o||(l.loadModules(),d.loadModules(),e.loadModules(),s.loadModules(),a.loadModules(),r.loadModules(),u.loadModules()),o=!0}export{t as loadDefaultModules};
 //# sourceMappingURL=DefaultLoader.js.map

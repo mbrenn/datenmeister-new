@@ -1,28 +1,2 @@
-import * as CollectionForm from "../forms/CollectionForm.js";
-import { loadDefaultModules } from "../actions/DefaultLoader.js";
-import { FormType } from "../forms/Interfaces.js";
-import { ElementsTreeView } from "../controls/ElementsTreeView.js";
-export async function init(workspace, extentUri) {
-    loadDefaultModules();
-    const treeView = new ElementsTreeView();
-    treeView.init("#elements-treeview", {
-        workspace: workspace,
-        extentUri: extentUri
-    });
-    treeView.addEventToNavigateToItem();
-    let listForm = new CollectionForm.CollectionFormCreator({
-        itemContainer: $("#dm-items"),
-        viewModeSelectorContainer: $("#dm-viewmode-selection-container"),
-        createNewItemWithMetaClassBtn: $("#dm-btn-create-item-with-metaclass"),
-        createNewItemWithMetaClassContainer: $("#dm-btn-create-item-metaclass"),
-        storeCurrentFormBtn: $("#dm-store-current-form-btn"),
-        formSelectorContainer: $("#form_selection_container")
-    });
-    $("#items_collection_uri").text(extentUri);
-    await listForm.createCollectionForRootElements(workspace, extentUri, { isReadOnly: true, formType: FormType.Collection });
-    // Sets the window title for the page
-    if (listForm.extentUri !== undefined) {
-        window.document.title = "Items Overview - '" + listForm.extentUri + "' - Der DatenMeister";
-    }
-}
+import*as i from"../forms/CollectionForm.js";import{loadDefaultModules as n}from"../actions/DefaultLoader.js";import{FormType as m}from"../forms/Interfaces.js";import{ElementsTreeView as a}from"../controls/ElementsTreeView.js";async function d(o,e){n();const r=new a;r.init("#elements-treeview",{workspace:o,extentUri:e}),r.addEventToNavigateToItem();let t=new i.CollectionFormCreator({itemContainer:$("#dm-items"),viewModeSelectorContainer:$("#dm-viewmode-selection-container"),createNewItemWithMetaClassBtn:$("#dm-btn-create-item-with-metaclass"),createNewItemWithMetaClassContainer:$("#dm-btn-create-item-metaclass"),storeCurrentFormBtn:$("#dm-store-current-form-btn"),formSelectorContainer:$("#form_selection_container")});$("#items_collection_uri").text(e),await t.createCollectionForRootElements(o,e,{isReadOnly:!0,formType:m.Collection}),t.extentUri!==void 0&&(window.document.title="Items Overview - '"+t.extentUri+"' - Der DatenMeister")}export{d as init};
 //# sourceMappingURL=ItemsOverview.js.map

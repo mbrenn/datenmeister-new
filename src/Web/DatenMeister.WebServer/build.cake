@@ -45,8 +45,8 @@ Task("Compress CSS")
     {
         Information("Compressing CSS Files");
         
-        var cssFiles = System.IO.Directory.GetFiles("wwwroot/css/", "*.css").Where(x=>x.StartsWith("wwwroot/css/datenmeister.")).ToList();
-        cssFiles.Add("wwwroot/css/burnJsPopup.css");
+        var cssFiles = System.IO.Directory.GetFiles("Assets/css/", "*.css").Where(x=>x.StartsWith("Assets/css/datenmeister.")).ToList();
+        cssFiles.Add("Assets/css/burnJsPopup.css");
         
         foreach(var file in cssFiles)
         {
@@ -79,9 +79,46 @@ Task("Compress CSS")
         process.WaitForExit();
     });
 
+Task("Compress JS")
+    .Does(() =>
+    {
+        Information("Compiling and minifying TypeScript files");
+
+        var tsFiles = GetFiles("Assets/js/**/*.ts")
+            .Where(f => !f.ToString().Contains("node_modules") && !f.ToString().EndsWith(".d.ts"))
+            .Select(f => f.ToString())
+            .ToList();
+
+        var mainArgs = new ProcessArgumentBuilder();
+        foreach (var f in tsFiles)
+            mainArgs.AppendQuoted(f);
+
+        mainArgs.Append("--minify")
+            .Append("--sourcemap")
+            .Append("--outbase=Assets/js")
+            .Append("--outdir=wwwroot/js")
+            .Append("--platform=browser")
+            .Append("--format=esm");
+
+        var mainProcess = new System.Diagnostics.Process
+        {
+            StartInfo =
+            {
+                FileName = "npx",
+                UseShellExecute = true,
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
+                Arguments = "esbuild " + mainArgs.Render()
+            }
+        };
+        mainProcess.Start();
+        mainProcess.WaitForExit();
+    });
+
 Task("Build")
     .IsDependentOn("Install Npm")
     .IsDependentOn("Compress CSS")
+    .IsDependentOn("Compress JS")
 	.IsDependentOn("Copy-NodeModules")
 	.Does(() =>
 {
@@ -96,20 +133,6 @@ Task("Build")
 	CopyFiles("node_modules/jquery.fancytree/dist/skin-win8/*.css", "wwwroot/css/jquery.fancytree/css", false);
 	CopyFiles("node_modules/jquery.fancytree/dist/skin-win8/*.gif", "wwwroot/css/jquery.fancytree/skin-win8", false);
 
-	Information("Building");
-    		
-    var process = new System.Diagnostics.Process
-    {
-        StartInfo =
-        {
-            FileName = "tsc",
-            UseShellExecute = true,            
-            WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-            CreateNoWindow = true    
-        }
-    };
-    process.Start();
-    process.WaitForExit();
 });
 
 RunTarget(target);

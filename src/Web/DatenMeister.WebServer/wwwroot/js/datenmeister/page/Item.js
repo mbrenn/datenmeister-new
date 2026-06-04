@@ -1,19 +1,2 @@
-import * as Form from "../forms/ObjectForm.js";
-import { loadDefaultModules } from "../actions/DefaultLoader.js";
-import * as UmlHelper from "./../UmlHelper.js";
-export async function init(workspace, itemUri) {
-    loadDefaultModules();
-    const objectForm = new Form.ObjectFormCreatorForItem({
-        itemContainer: $("#form_view"),
-        viewModeSelectorContainer: $("#dm-viewmode-selection-container"),
-        formSelectorContainer: $("#form_selection_container"),
-        storeCurrentFormBtn: $("#dm-store-current-form-btn"),
-        statusContainer: $(".dm-status-text-container")
-    });
-    const _ = await objectForm.createForm(workspace, itemUri);
-    const name = await UmlHelper.NamedElement.getName(objectForm.element);
-    if (name !== undefined) {
-        window.document.title = "Item - '" + name + "' - Der DatenMeister";
-    }
-}
+import*as n from"../forms/ObjectForm.js";import{loadDefaultModules as m}from"../actions/DefaultLoader.js";import*as i from"./../UmlHelper.js";async function c(o,r){m();const e=new n.ObjectFormCreatorForItem({itemContainer:$("#form_view"),viewModeSelectorContainer:$("#dm-viewmode-selection-container"),formSelectorContainer:$("#form_selection_container"),storeCurrentFormBtn:$("#dm-store-current-form-btn"),statusContainer:$(".dm-status-text-container")}),a=await e.createForm(o,r),t=await i.NamedElement.getName(e.element);t!==void 0&&(window.document.title="Item - '"+t+"' - Der DatenMeister")}export{c as init};
 //# sourceMappingURL=Item.js.map

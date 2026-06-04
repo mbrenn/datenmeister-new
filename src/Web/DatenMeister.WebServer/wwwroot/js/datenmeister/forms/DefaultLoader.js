@@ -1,14 +1,2 @@
-import * as FormFactory from "./FormFactory.js";
-import * as _DatenMeister from "../models/DatenMeister.class.js";
-import { RowForm } from "./RowForm.js";
-import TableForm from "./TableForm.js";
-export function loadDefaultForms() {
-    FormFactory.registerObjectForm(_DatenMeister._Forms._FormTypes.__RowForm_Uri, () => new RowForm());
-    FormFactory.registerObjectForm(_DatenMeister._Forms._FormTypes.__TableForm_Uri, () => new TableForm());
-    FormFactory.registerCollectionForm(_DatenMeister._Forms._FormTypes.__TableForm_Uri, () => {
-        const result = new TableForm();
-        result.tableParameter.allowSortingOfColumn = true;
-        return result;
-    });
-}
+import*as r from"./FormFactory.js";import*as o from"../models/DatenMeister.class.js";import{RowForm as t}from"./RowForm.js";import m from"./TableForm.js";function s(){r.registerObjectForm(o._Forms._FormTypes.__RowForm_Uri,()=>new t),r.registerObjectForm(o._Forms._FormTypes.__TableForm_Uri,()=>new m),r.registerCollectionForm(o._Forms._FormTypes.__TableForm_Uri,()=>{const e=new m;return e.tableParameter.allowSortingOfColumn=!0,e})}export{s as loadDefaultForms};
 //# sourceMappingURL=DefaultLoader.js.map

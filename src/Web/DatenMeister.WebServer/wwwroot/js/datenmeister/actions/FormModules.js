@@ -1,49 +1,6 @@
-import * as FormActions from "../FormActions.js";
-import * as Mof from "../Mof.js";
-import * as FormClient from "../client/Forms.js";
-import * as _DatenMeister from "../models/DatenMeister.class.js";
-import * as ActionClient from "../client/Actions.js";
-import * as Navigation from "../Navigator.js";
-export function loadModules() {
-    FormActions.addModule(new FormsCreateByMetaClassAction());
-    FormActions.addModule(new NavigateToItemClientAction());
-}
-class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase {
-    constructor() {
-        super("Forms.Create.ByMetaClass");
-        this.actionVerb = "Create by MetaClass";
-        this.skipSaving = true;
-        this.defaultMetaClassUri = _DatenMeister._Actions._Forms.__CreateFormByMetaClass_Uri;
-    }
-    async loadForm() {
-        return await FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
-    }
-    async execute(form, element, parameter, submitMethod) {
-        const result = await ActionClient.executeAction(element.workspace, element.uri);
-        if (result.success !== true) {
-            alert('Form was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
-        }
-        else {
-            alert('Form was created successfully');
-        }
-    }
-}
-class NavigateToItemClientAction extends FormActions.ItemFormActionModuleBase {
-    constructor() {
-        super("Forms.NavigateToItem", _DatenMeister._Actions._ClientActions.__NavigateToItemClientAction_Uri);
-        this.actionVerb = "Navigate to Item";
-        this.skipSaving = true;
-    }
-    async execute(form, element, parameter, submitMethod) {
-        const workspaceId = element.get(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.workspaceId, Mof.ObjectType.String);
-        const itemUri = element.get(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.itemUrl, Mof.ObjectType.String);
-        const formUri = element.get(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.formUri, Mof.ObjectType.String);
-        Navigation.navigateToItemByUrl(workspaceId, itemUri, {
-            formUri: formUri
-        });
-    }
-}
-export async function createFormUponView(viewParameter) {
-    await ActionClient.executeActionDirectly("CreateFormUponView", { parameter: viewParameter });
-}
+import*as r from"../FormActions.js";import*as a from"../Mof.js";import*as d from"../client/Forms.js";import*as o from"../models/DatenMeister.class.js";import*as s from"../client/Actions.js";import*as f from"../Navigator.js";function F(){r.addModule(new p),r.addModule(new C)}class p extends r.ItemFormActionModuleBase{constructor(){super("Forms.Create.ByMetaClass"),this.actionVerb="Create by MetaClass",this.skipSaving=!0,this.defaultMetaClassUri=o._Actions._Forms.__CreateFormByMetaClass_Uri}async loadForm(){return await d.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass")}async execute(n,t,c,m){const e=await s.executeAction(t.workspace,t.uri);e.success!==!0?alert(`Form was not created successfully:\r
+\r\r
+`+e.reason+`\r
+\r
+`+e.stackTrace):alert("Form was created successfully")}}class C extends r.ItemFormActionModuleBase{constructor(){super("Forms.NavigateToItem",o._Actions._ClientActions.__NavigateToItemClientAction_Uri),this.actionVerb="Navigate to Item",this.skipSaving=!0}async execute(n,t,c,m){const e=t.get(o._Actions._ClientActions._NavigateToItemClientAction.workspaceId,a.ObjectType.String),l=t.get(o._Actions._ClientActions._NavigateToItemClientAction.itemUrl,a.ObjectType.String),u=t.get(o._Actions._ClientActions._NavigateToItemClientAction.formUri,a.ObjectType.String);f.navigateToItemByUrl(e,l,{formUri:u})}}async function b(i){await s.executeActionDirectly("CreateFormUponView",{parameter:i})}export{b as createFormUponView,F as loadModules};
 //# sourceMappingURL=FormModules.js.map

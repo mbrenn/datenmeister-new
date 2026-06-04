@@ -54,6 +54,11 @@ export class SelectItemControl implements ISelectItemControl {
      */
     private settings: ContainerSettings;
 
+    /**
+     * Stores the 'byBrowseControl' instance for browsing functionality.
+     */
+    byBrowseControl: ByBrowseControl.SelectItemControlByBrowsingControl
+
     /*
      * Public events that callers can subscribe to.
      */
@@ -123,29 +128,35 @@ export class SelectItemControl implements ISelectItemControl {
         
         // Adds the by browsing
         const byBrowseDiv = $(".dm-selectitemcontrol-bybrowse", div);
-        const byBrowseControl = new ByBrowseControl.SelectItemControlByBrowsingControl();
-        byBrowseControl.init(byBrowseDiv, this.settings.browseSettings);
+        this.byBrowseControl = new ByBrowseControl.SelectItemControlByBrowsingControl();
+        this.byBrowseControl.init(byBrowseDiv, this.settings.browseSettings);
+        
+        const tthis = this;
+        this.byBrowseControl.itemSelected.addListener(
+            (x) => tthis.itemSelected.invoke(x));
+        this.byBrowseControl.itemClicked.addListener(
+            (x) => tthis.itemClicked.invoke(x));
 
         return div;
     }
     
-    setWorkspaceById(workspaceId: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async setWorkspaceById(workspaceId: string) {
+        await this.byBrowseControl.setWorkspaceById(workspaceId);
     }
-    setExtentByUri(workspaceId: string, extentUri: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async setExtentByUri(workspaceId: string, extentUri: string): Promise<void> {
+        await this.byBrowseControl.setExtentByUri(workspaceId, extentUri)    
     }
-    setItemByUri(workspaceId: string, itemUri: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async setItemByUri(workspaceId: string, itemUri: string): Promise<void> {
+        await this.byBrowseControl.setItemByUri(workspaceId, itemUri)    
     }
     getSelectedItem(): ItemWithNameAndId {
-        throw new Error("Method not implemented.");
+        return this.byBrowseControl.getSelectedItem();
     }
     showControl(): void {
-        throw new Error("Method not implemented.");
+        this.byBrowseControl.showControl();
     }
     hideControl(): void {
-        throw new Error("Method not implemented.");
+        this.byBrowseControl.hideControl();
     }
 }
 

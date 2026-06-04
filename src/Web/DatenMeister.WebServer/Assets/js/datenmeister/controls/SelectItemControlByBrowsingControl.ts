@@ -104,12 +104,11 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
     /** Currently selected item, or `undefined` if nothing is selected. */
     private selectedItem?: ItemWithNameAndId;
     
-    itemSelected: UserEvent<ItemWithNameAndId>;
-    itemClicked: UserEvent<ItemWithNameAndId>;
+    itemSelected: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
+    itemClicked: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
 
     /** Root `<table>` of the rendered control; `undefined` after {@link removeControl}. */
     private containerDiv: JQuery;
-
 
     /**
      * Workspace id queued for pre-selection. Consumed on the next workspace

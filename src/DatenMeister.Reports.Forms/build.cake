@@ -17,20 +17,8 @@ Task("Build")
         .Append("--outdir=Js")
         .Append("--platform=browser")
         .Append("--format=esm");
-
-    var process = new System.Diagnostics.Process
-    {
-        StartInfo =
-        {
-            FileName = "npx",
-            WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-            UseShellExecute = true,
-            CreateNoWindow = true,
-            Arguments = "esbuild " + args.Render()
-        }
-    };
-    process.Start();
-    process.WaitForExit();
+        
+    NpmExec("esbuild", new [] { args.Render() });
 });
 
 RunTarget(target);

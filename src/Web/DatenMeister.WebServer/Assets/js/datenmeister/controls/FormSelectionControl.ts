@@ -95,7 +95,7 @@ export class FormSelectionControl {
             .then(async () => {
 
                 const settings = new SIC.ContainerSettings();
-                settings.setButtonText = "Change Form";
+                settings.browseSettings.setButtonText = "Change Form";
                 settings.headline = "Select Form:";
                 await this.selectionField.initAsync(controlSelect, settings);
 

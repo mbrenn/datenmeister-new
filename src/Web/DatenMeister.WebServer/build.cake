@@ -1,4 +1,4 @@
-#addin nuget:?package=Cake.Npm&version=5.0.0
+#addin nuget:?package=Cake.Npm&version=5.1.0
 
 
 var configuration = Argument("configuration", "Debug");
@@ -47,12 +47,7 @@ Task("Compress CSS")
         
         var cssFiles = System.IO.Directory.GetFiles("Assets/css/", "*.css").Where(x=>x.StartsWith("Assets/css/datenmeister.")).ToList();
         cssFiles.Add("Assets/css/burnJsPopup.css");
-        
-        foreach(var file in cssFiles)
-        {
-            Console.WriteLine(file);
-        }
-     	
+             	
      	var outputFile = "wwwroot/css/datenmeister-web.min.css";
      	var args = new ProcessArgumentBuilder()
      		.Append("-o")
@@ -77,31 +72,60 @@ Task("Compress CSS")
         };
         process.Start();
         process.WaitForExit();
+        
+        if(process.ExitCode != 0)        
+        {
+            throw new Exception($"cleancss failed with exit code {process.ExitCode}");
+        }
+    });
+
+Task("Compile TS")
+    .Does(() => 
+    {    
+        Information("Compile TypeScript files");        
+        
+        NpmExec("tsc");
+        
+        /*
+
+        var mainProcess = new System.Diagnostics.Process
+        {
+            StartInfo =
+            {
+                FileName = "tsc",
+                UseShellExecute = false,
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true               
+            }
+        };
+        
+        mainProcess.Start();
+        var stdout = mainProcess.StandardOutput.ReadToEnd();
+        var stderr = mainProcess.StandardError.ReadToEnd();
+        mainProcess.WaitForExit();
+        if (!string.IsNullOrWhiteSpace(stdout)) Information(stdout);
+        if (!string.IsNullOrWhiteSpace(stderr)) Error(stderr);
+        
+        if(mainProcess.ExitCode != 0)        
+        {
+            throw new Exception($"tsc failed with exit code {mainProcess.ExitCode}");
+        }*/
     });
 
 Task("Compress JS")
     .Does(() =>
     {
         Information("Compiling and minifying TypeScript files");
-
-        var mainProcess = new System.Diagnostics.Process
-        {
-            StartInfo =
-            {
-                FileName = "npx",
-                UseShellExecute = true,
-                // WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                CreateNoWindow = true,
-                Arguments = "esbuild \"Assets/js/**/*.ts\" --minify --sourcemap --outbase=Assets/js --outdir=wwwroot/js --platform=browser --format=esm"
-            }
-        };
-        mainProcess.Start();
-        mainProcess.WaitForExit();
+        
+        NpmExec("esbuild", new [] {"\"Assets/js/**/*.js\" --minify --sourcemap --outbase=Assets/js --outdir=wwwroot/js --platform=browser --format=esm"});        
     });
 
 Task("Build")
     .IsDependentOn("Install Npm")
-    .IsDependentOn("Compress CSS")
+    .IsDependentOn("Compress CSS")    
+    .IsDependentOn("Compile TS")
     .IsDependentOn("Compress JS")
 	.IsDependentOn("Copy-NodeModules")
 	.Does(() =>
@@ -116,7 +140,6 @@ Task("Build")
 	CopyFiles("node_modules/jquery.fancytree/dist/*.min.js", "wwwroot/js", false);
 	CopyFiles("node_modules/jquery.fancytree/dist/skin-win8/*.css", "wwwroot/css/jquery.fancytree/css", false);
 	CopyFiles("node_modules/jquery.fancytree/dist/skin-win8/*.gif", "wwwroot/css/jquery.fancytree/skin-win8", false);
-
 });
 
 RunTarget(target);

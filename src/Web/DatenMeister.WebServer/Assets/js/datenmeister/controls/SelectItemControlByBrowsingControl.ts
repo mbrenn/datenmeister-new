@@ -54,12 +54,6 @@ export class ControlSettings {
     hideButtonRow = false;
 
     /**
-     * When `true`, the control is created in a hidden state (`display: none`)
-     * and must be made visible by calling {@link SelectItemControlByBrowsingControl.showControl}.
-     */
-    hideAtStartup = false;
-
-    /**
      * Label of the primary confirmation button. Defaults to `"Set"` and can be
      * overridden to fit the surrounding UI (e.g. `"Choose"`, `"Apply"`).
      */
@@ -237,32 +231,10 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
             this.selectionCancelled.invoke();
         });
 
-        if (settings?.hideAtStartup) {
-            div.hide();
-        }
-
         container.append(div);
         this.containerDiv = div;
         this.isDomInitializationDone = true;
         return div;
-    }
-
-    /**
-     * Shows the control (by revoking the hide status)
-     */
-    showControl() {
-        if (this.containerDiv !== undefined) {
-            this.containerDiv.show();
-        }
-    }
-
-    /**
-     * Hides the control (by revoking the hide status)
-     */
-    hideControl() {
-        if (this.containerDiv !== undefined) {
-            this.containerDiv.hide();
-        }
     }
 
     /**

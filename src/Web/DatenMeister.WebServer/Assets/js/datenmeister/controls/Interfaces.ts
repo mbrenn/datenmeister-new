@@ -70,16 +70,4 @@ export interface ISelectItemControl {
      */
     getSelectedItem(): ItemWithNameAndId;
 
-    /**
-     * Reveals the control after a previous {@link hideControl} call.
-     * No-op if the control has not been initialized yet.
-     */
-    showControl() : void;
-
-    /**
-     * Hides the control without removing it from the DOM. Its state and
-     * selection are preserved; call {@link showControl} to reveal it again.
-     */
-    hideControl() : void;
-
 }

@@ -12,6 +12,12 @@ export class ContainerSettings{
      * the default `"Select item:"` text from the template is used.
      */
     headline:string|undefined = undefined;
+
+    /**
+     * When `true`, the control is created in a hidden state (`display: none`)
+     * and must be made visible by calling {@link SelectItemControlByBrowsingControl.showControl}.
+     */
+    hideAtStartup = false;
     
     browseSettings: ByBrowseControl.ControlSettings;
     
@@ -139,6 +145,11 @@ export class SelectItemControl implements ISelectItemControl {
         this.byBrowseControl.selectionCancelled.addListener(
             () => tthis.removeControl());
 
+        // Checks whether we need to hide the control at startup
+        if (settings?.hideAtStartup) {
+            this.hideControl();
+        }
+
         return div;
     }
     
@@ -161,11 +172,15 @@ export class SelectItemControl implements ISelectItemControl {
     }
     
     showControl(): void {
-        this.byBrowseControl.showControl();
+        if (this.containerDiv !== undefined) {
+            this.containerDiv.show();
+        }
     }
     
     hideControl(): void {
-        this.byBrowseControl.hideControl();
+        if (this.containerDiv !== undefined) {
+            this.containerDiv.hide();
+        }
     }
 
     /**

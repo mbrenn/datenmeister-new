@@ -257,8 +257,8 @@ export class Control {
             containerDiv.empty();
             const selectItem = new SIC.SelectItemControl();
             const settings = new SIC.ContainerSettings();
-            settings.showWorkspaceInBreadcrumb = true;
-            settings.showExtentInBreadcrumb = true;
+            settings.browseSettings.showWorkspaceInBreadcrumb = true;
+            settings.browseSettings.showExtentInBreadcrumb = true;
             selectItem.itemSelected.addListener(
                 selectedItem => {
                     ClientItems.addReferenceToCollection(
@@ -267,7 +267,7 @@ export class Control {
                         {
                             property: tthis.propertyName,
                             referenceUri: selectedItem.uri,
-                            workspaceId: selectItem.getUserSelectedWorkspaceId()
+                            workspaceId: selectItem.getCurrentlySelectedWorkspace()
                         }
                     ).then(() => {
                         this.reloadValuesFromServer();

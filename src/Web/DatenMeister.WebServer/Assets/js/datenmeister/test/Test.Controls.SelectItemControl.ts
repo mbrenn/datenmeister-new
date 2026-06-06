@@ -130,7 +130,7 @@ export function includeTests() {
                             if (foundItem === undefined) throw 'Should not happen';
                             foundItem.click();
 
-                            await sic.loadItems();
+                            await sic.byBrowseControl.loadItems();
 
                             // The click should have happened synchronously.
                             assert.isTrue(itemCounter === 1, "Item Counter is not 1");

@@ -392,8 +392,8 @@ export function createMetaClassSelectionButtonForNewItem(buttonDiv: JQuery, cont
         containerDiv.empty();
         const selectItem = new SIC.SelectItemControl();
         const settings = new SIC.ContainerSettings();
-        settings.showWorkspaceInBreadcrumb = true;
-        settings.showExtentInBreadcrumb = true;
+        settings.browseSettings.showWorkspaceInBreadcrumb = true;
+        settings.browseSettings.showExtentInBreadcrumb = true;
         selectItem.itemSelected.addListener(
             selectedItem => {
 

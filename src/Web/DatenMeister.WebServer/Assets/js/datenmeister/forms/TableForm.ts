@@ -340,9 +340,9 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
                 typeSelection.empty();
                 const selectItem = new SIC.SelectItemControl();
                 const settings = new SIC.ContainerSettings();
-                settings.showWorkspaceInBreadcrumb = true;
-                settings.showExtentInBreadcrumb = true;
-                settings.setButtonText = 'Create new Item';
+                settings.browseSettings.showWorkspaceInBreadcrumb = true;
+                settings.browseSettings.showExtentInBreadcrumb = true;
+                settings.browseSettings.setButtonText = 'Create new Item';
                 selectItem.itemSelected.addListener(
                     selectedItem => {
                         if (tthis.itemUrl === undefined) {

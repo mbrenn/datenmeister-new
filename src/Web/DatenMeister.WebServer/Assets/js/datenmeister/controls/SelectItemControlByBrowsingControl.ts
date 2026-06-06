@@ -106,6 +106,7 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
     
     itemSelected: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
     itemClicked: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
+    selectionCancelled: UserEvent<void> = new UserEvent<void>();
 
     /** Root `<table>` of the rendered control; `undefined` after {@link removeControl}. */
     private containerDiv: JQuery;
@@ -233,7 +234,7 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
         });
 
         cancelButton.on("click", () => {
-            this.removeControl();
+            this.selectionCancelled.invoke();
         });
 
         if (settings?.hideAtStartup) {
@@ -262,14 +263,6 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
         if (this.containerDiv !== undefined) {
             this.containerDiv.hide();
         }
-    }
-
-    /**
-     * Removes the control. This means that 'init(Async)' must be called again
-     */
-    removeControl() {
-        this.containerDiv?.remove();
-        this.containerDiv = undefined;
     }
 
     /**

@@ -79,8 +79,8 @@ export class SelectItemControl implements ISelectItemControl {
     
     
     
-    public init(containerDiv: JQuery, settings: ContainerSettings) {
-        this.initDom(settings, containerDiv);
+    public init(containerDiv: JQuery, settings?: ContainerSettings) {
+        return this.initDom(settings, containerDiv);
     }
 
     /**
@@ -125,17 +125,19 @@ export class SelectItemControl implements ISelectItemControl {
         if (this.settings.headline !== undefined) {
             $(".dm-selectitemcontrol-headline", div).text(settings.headline);
         }
-        
+
         // Adds the by browsing
         const byBrowseDiv = $(".dm-selectitemcontrol-bybrowse", div);
         this.byBrowseControl = new ByBrowseControl.SelectItemControlByBrowsingControl();
         this.byBrowseControl.init(byBrowseDiv, this.settings.browseSettings);
-        
+
         const tthis = this;
         this.byBrowseControl.itemSelected.addListener(
             (x) => tthis.itemSelected.invoke(x));
         this.byBrowseControl.itemClicked.addListener(
             (x) => tthis.itemClicked.invoke(x));
+        this.byBrowseControl.selectionCancelled.addListener(
+            () => tthis.removeControl());
 
         return div;
     }
@@ -152,11 +154,26 @@ export class SelectItemControl implements ISelectItemControl {
     getSelectedItem(): ItemWithNameAndId {
         return this.byBrowseControl.getSelectedItem();
     }
+    
+    getCurrentlySelectedWorkspace()
+    {
+        return this.byBrowseControl.getUserSelectedWorkspaceId();
+    }
+    
     showControl(): void {
         this.byBrowseControl.showControl();
     }
+    
     hideControl(): void {
         this.byBrowseControl.hideControl();
+    }
+
+    /**
+     * Removes the control. This means that 'init(Async)' must be called again
+     */
+    removeControl() {
+        this.containerDiv?.remove();
+        this.containerDiv = undefined;
     }
 }
 

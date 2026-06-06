@@ -74,8 +74,8 @@ export class Field extends BaseField implements IFormField {
                     containerDiv.empty();
                     const selectItem = new SIC.SelectItemControl();
                     const settings = new SIC.ContainerSettings();
-                    settings.showWorkspaceInBreadcrumb = true;
-                    settings.showExtentInBreadcrumb = true;
+                    settings.browseSettings.showWorkspaceInBreadcrumb = true;
+                    settings.browseSettings.showExtentInBreadcrumb = true;
                     await selectItem.setWorkspaceById(Settings.WorkspaceTypes);
                     selectItem.itemSelected.addListener(
                         selectedItem => {

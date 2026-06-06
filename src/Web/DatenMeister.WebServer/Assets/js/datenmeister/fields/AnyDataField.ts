@@ -214,9 +214,9 @@ export class Field extends BaseField implements IFormField {
                     containerChangeCell.empty();
                     const selectItem = new SIC.SelectItemControl();
                     const settings = new SIC.ContainerSettings();
-                    settings.showWorkspaceInBreadcrumb = true;
-                    settings.showExtentInBreadcrumb = true;
-                    settings.hideAtStartup = true;
+                    settings.browseSettings.showWorkspaceInBreadcrumb = true;
+                    settings.browseSettings.showExtentInBreadcrumb = true;
+                    settings.browseSettings.hideAtStartup = true;
                     selectItem.itemSelected.addListener(
                         async selectedItem => {
                             await ClientItem.setPropertyReference(
@@ -225,7 +225,7 @@ export class Field extends BaseField implements IFormField {
                                 {
                                     property: tthis.field.get('name'),
                                     referenceUri: selectedItem.uri,
-                                    workspaceId: selectItem.getUserSelectedWorkspaceId()
+                                    workspaceId: selectItem.getCurrentlySelectedWorkspace()
                                 }
                             );
                             

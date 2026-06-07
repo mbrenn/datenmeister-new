@@ -1,6 +1,7 @@
 import { UserEvent } from "../../burnsystems/Events.js";
 import * as GlobalSettings from "../Settings.js";
 import * as ByBrowseControl from "./SelectItemControlByBrowsingControl.js";
+import * as BySearch from "./SelectItemControlBySearch.js";
 export class ContainerSettings {
     /**
      * Optional headline rendered in the control's title row. When `undefined`,
@@ -13,6 +14,7 @@ export class ContainerSettings {
      */
     hideAtStartup = false;
     browseSettings;
+    searchSettings;
     /**
      * When `true`, a "Cancel" button is rendered next to the "Set" button.
      * Clicking it removes the control from the DOM (see
@@ -70,6 +72,10 @@ export class SelectItemControl {
      * Stores the 'byBrowseControl' instance for browsing functionality.
      */
     byBrowseControl = new ByBrowseControl.SelectItemControlByBrowsingControl();
+    /**
+     * Stores the 'bySearch' instance for browsing functionality.
+     */
+    bySearchControl = new BySearch.SelectItemControlBySearch();
     /*
      * Public events that callers can subscribe to.
      */
@@ -86,6 +92,7 @@ export class SelectItemControl {
      */
     itemClicked = new UserEvent();
     selectionCancelled = new UserEvent();
+    currentTab = "byBrowse";
     init(containerDiv, settings) {
         return this.initDom(settings, containerDiv);
     }
@@ -116,7 +123,12 @@ export class SelectItemControl {
         // Creates the template
         const div = $("<div class='dm-selectitemcontrol'>" +
             "<div class='dm-selectitemcontrol-headline'>Select item:</div>" +
+            "<div class='dm-selectitemcontrol-tabs'>" +
+            "<div class='dm-selectitemcontrol-tab-bybrowse'><button>Browse</button></div>" +
+            "<div class='dm-selectitemcontrol-tab-search'><button>Search</button></div>" +
+            "</div>" +
             "<div class='dm-selectitemcontrol-bybrowse'></div>" +
+            "<div class='dm-selectitemcontrol-search'></div>" +
             (this.settings.hideButtonRow !== true
                 ?
                     "<div class='dm-selectitemcontrol-buttons'>" +
@@ -129,6 +141,10 @@ export class SelectItemControl {
         // Sets the button logic
         const setButton = $(".dm-sic-button", div);
         const cancelButton = $(".dm-sic-cancelbtn", div);
+        const byBrowseButton = $(".dm-selectitemcontrol-tab-bybrowse button", div);
+        const bySearchButton = $(".dm-selectitemcontrol-tab-search button", div);
+        byBrowseButton.on('click', () => { this.updateTabStatus("byBrowse"); });
+        bySearchButton.on('click', () => { this.updateTabStatus("bySearch"); });
         // throws the event, when the user clicks on the set button
         setButton.text(this.settings.setButtonText);
         setButton.on("click", () => {
@@ -148,11 +164,30 @@ export class SelectItemControl {
         const tthis = this;
         this.byBrowseControl.itemSelected.addListener((x) => tthis.itemSelected.invoke(x));
         this.byBrowseControl.itemClicked.addListener((x) => tthis.itemClicked.invoke(x));
+        // Adds the searching
+        const bySearchDiv = $(".dm-selectitemcontrol-search", div);
+        this.bySearchControl.init(bySearchDiv, this.settings.searchSettings);
+        this.updateTabStatus();
         // Checks whether we need to hide the control at startup
         if (settings?.hideAtStartup) {
             this.hideControl();
         }
         return div;
+    }
+    updateTabStatus(nextTab) {
+        if (nextTab !== undefined) {
+            this.currentTab = nextTab;
+        }
+        switch (this.currentTab) {
+            case "byBrowse":
+                this.byBrowseControl.showControl();
+                this.bySearchControl.hideControl();
+                break;
+            case "bySearch":
+                this.byBrowseControl.hideControl();
+                this.bySearchControl.showControl();
+                break;
+        }
     }
     async setWorkspaceById(workspaceId) {
         await this.byBrowseControl.setWorkspaceById(workspaceId);

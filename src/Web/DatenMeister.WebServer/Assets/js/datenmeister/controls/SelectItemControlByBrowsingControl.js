@@ -156,6 +156,12 @@ export class SelectItemControlByBrowsingControl {
         this.isDomInitializationDone = true;
         return div;
     }
+    showControl() {
+        this.containerDiv.show();
+    }
+    hideControl() {
+        this.containerDiv.hide();
+    }
     /**
      * This method will be called when the user changed the selected workspace
      * @private

@@ -193,6 +193,16 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
         return div;
     }
 
+    showControl()
+    {
+        this.containerDiv.show();
+    }
+
+    hideControl()
+    {
+        this.containerDiv.hide();
+    }
+
     /**
      * This method will be called when the user changed the selected workspace
      * @private

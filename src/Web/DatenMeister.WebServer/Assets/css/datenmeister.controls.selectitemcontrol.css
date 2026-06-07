@@ -4,16 +4,50 @@
     width: fit-content;
     background-color: #EEEEFF;
     padding: 5px;    
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    grid-template: 
+        "title tabs"
+        "control control"
+        "buttons buttons";    
 }
 .dm-selectitemcontrol .dm-selectitemcontrol-headline
 {
     font-weight: bold;
+    grid-area: title;
+}
+
+.dm-selectitemcontrol .dm-selectitemcontrol-tabs
+{
+    display: flex;    
+    flex-direction: row;
+    flex-wrap: nowrap;    
+    justify-content: flex-end;
+    grid-area: tabs;
+}
+
+.dm-selectitemcontrol .dm-selectitemcontrol-tab-bybrowse
+{
+}
+.dm-selectitemcontrol .dm-selectitemcontrol-tab-search
+{
+}
+
+.dm-selectitemcontrol .dm-selectitemcontrol-bybrowse
+{
+    grid-area: control;    
+}
+
+.dm-selectitemcontrol .dm-selectitemcontrol-search
+{
+    grid-area: control;
 }
 
 .dm-selectitemcontrol .dm-selectitemcontrol-buttons
 {
     margin-top: 5px;
-}
+    grid-area: buttons;
+} 
 
 .dm-sic-bb {
     border-collapse: collapse;

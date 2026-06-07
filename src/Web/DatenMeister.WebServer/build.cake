@@ -57,26 +57,8 @@ Task("Compress CSS")
      	{
      		args.AppendQuoted(file);
      	}
-     
-        // Run the minimum                        
-        var process = new System.Diagnostics.Process
-        {
-            StartInfo =
-            {
-                FileName = "npx",
-                UseShellExecute = true,            
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                CreateNoWindow = true,    
-                Arguments = "cleancss --format keep-breaks --source-map " + args.Render(),
-            }
-        };
-        process.Start();
-        process.WaitForExit();
-        
-        if(process.ExitCode != 0)        
-        {
-            throw new Exception($"cleancss failed with exit code {process.ExitCode}");
-        }
+     	
+        NpmExec("cleancss", new [] {"--format keep-breaks --source-map ", args.Render()});
     });
 
 Task("Compile TS")

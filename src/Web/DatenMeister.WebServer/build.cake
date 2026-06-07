@@ -85,33 +85,6 @@ Task("Compile TS")
         Information("Compile TypeScript files");        
         
         NpmExec("tsc");
-        
-        /*
-
-        var mainProcess = new System.Diagnostics.Process
-        {
-            StartInfo =
-            {
-                FileName = "tsc",
-                UseShellExecute = false,
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                CreateNoWindow = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true               
-            }
-        };
-        
-        mainProcess.Start();
-        var stdout = mainProcess.StandardOutput.ReadToEnd();
-        var stderr = mainProcess.StandardError.ReadToEnd();
-        mainProcess.WaitForExit();
-        if (!string.IsNullOrWhiteSpace(stdout)) Information(stdout);
-        if (!string.IsNullOrWhiteSpace(stderr)) Error(stderr);
-        
-        if(mainProcess.ExitCode != 0)        
-        {
-            throw new Exception($"tsc failed with exit code {mainProcess.ExitCode}");
-        }*/
     });
 
 Task("Compress JS")
@@ -120,6 +93,13 @@ Task("Compress JS")
         Information("Compiling and minifying TypeScript files");
         
         NpmExec("esbuild", new [] {"\"Assets/js/**/*.js\" --minify --sourcemap --outbase=Assets/js --outdir=wwwroot/js --platform=browser --format=esm"});        
+    });
+    
+Task("Compile and Compress JS")
+    .IsDependentOn("Compile TS")
+    .IsDependentOn("Compress JS")
+    .Does(() =>
+    {
     });
 
 Task("Build")

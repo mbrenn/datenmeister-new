@@ -81,7 +81,7 @@ export class TypeSelectionControl {
         }
 
         const settings = new SIC.ContainerSettings();
-        settings.browseSettings.setButtonText = "Use Type";
+        settings.setButtonText = "Use Type";
         settings.headline = "Select Type:";
         await this.selectionField.initAsync(controlSelect, settings);
 

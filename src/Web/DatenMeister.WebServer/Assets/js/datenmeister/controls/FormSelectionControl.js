@@ -65,7 +65,7 @@ export class FormSelectionControl {
         const t2 = this.selectionField.setWorkspaceById("Management")
             .then(async () => {
             const settings = new SIC.ContainerSettings();
-            settings.browseSettings.setButtonText = "Change Form";
+            settings.setButtonText = "Change Form";
             settings.headline = "Select Form:";
             await this.selectionField.initAsync(controlSelect, settings);
             if (this.currentFormUrl !== undefined) {

@@ -115,7 +115,7 @@ export class Control extends BaseField {
         const settings = new SIC.ContainerSettings();
         settings.browseSettings.showWorkspaceInBreadcrumb = true;
         settings.browseSettings.showExtentInBreadcrumb = true;
-        settings.browseSettings.hideButtonRow = isSelectionInline;
+        settings.hideButtonRow = isSelectionInline;
         // Depending on whether we are having a inline item, we react upon an explicit click via 'set' button
         // or directly while the user is navigating
         const eventType = isSelectionInline ? selectItem.itemClicked : selectItem.itemSelected;

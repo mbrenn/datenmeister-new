@@ -20,6 +20,28 @@ export class ContainerSettings{
     hideAtStartup = false;
     
     browseSettings: ByBrowseControl.ControlSettings;
+
+    /**
+     * When `true`, a "Cancel" button is rendered next to the "Set" button.
+     * Clicking it removes the control from the DOM (see
+     * {@link SelectItemControlByBrowsingControl.removeControl}). Has no effect when
+     * {@link hideButtonRow} is `true`.
+     */
+    showCancelButton = true;
+
+    /**
+     * When `true`, the entire button row (Set/Cancel) is omitted from the DOM.
+     * Use this when the host container wants to provide its own confirmation
+     * affordances and read the selection via
+     * {@link SelectItemControlByBrowsingControl.getSelectedItem}.
+     */
+    hideButtonRow = false;
+
+    /**
+     * Label of the primary confirmation button. Defaults to `"Set"` and can be
+     * overridden to fit the surrounding UI (e.g. `"Choose"`, `"Apply"`).
+     */
+    setButtonText = "Set";
     
     constructor() {
         this.browseSettings = new ByBrowseControl.ControlSettings();
@@ -83,7 +105,7 @@ export class SelectItemControl implements ISelectItemControl {
      */
     itemClicked: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
     
-    
+    selectionCancelled: UserEvent<void> = new UserEvent<void>();
     
     public init(containerDiv: JQuery, settings?: ContainerSettings) {
         return this.initDom(settings, containerDiv);
@@ -122,10 +144,34 @@ export class SelectItemControl implements ISelectItemControl {
         const div = $(
             "<table class='dm-selectitemcontrol'>" +
             "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
-            "<tr><th colspan='2' class='dm-selectitemcontrol-bybrowse'></th></tr>" +
+            "<tr><th colspan='2' class='dm-selectitemcontrol-bybrowse'></th></tr>"  +
+            (this.settings.hideButtonRow !== true
+                ?
+                "<tr><td></td><td class='selected'>" +
+                (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
+                "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>"
+                :
+                "") +
             "</table>");
 
         this.containerDiv.append(div);
+
+        // Sets the button logic
+        const setButton = $(".dm-sic-button", div);
+        const cancelButton = $(".dm-sic-cancelbtn", div);
+
+        // throws the event, when the user clicks on the set button
+        setButton.text(this.settings.setButtonText);
+        setButton.on("click", () => {
+            tthis.itemSelected.invoke(this.getSelectedItem());
+        });
+
+        cancelButton.on("click", () => {
+            this.selectionCancelled.invoke();
+        });
+        
+        this.selectionCancelled.addListener(
+            () => tthis.removeControl());
 
         // Checks whether we need a headline
         if (this.settings.headline !== undefined) {
@@ -142,8 +188,6 @@ export class SelectItemControl implements ISelectItemControl {
             (x) => tthis.itemSelected.invoke(x));
         this.byBrowseControl.itemClicked.addListener(
             (x) => tthis.itemClicked.invoke(x));
-        this.byBrowseControl.selectionCancelled.addListener(
-            () => tthis.removeControl());
 
         // Checks whether we need to hide the control at startup
         if (settings?.hideAtStartup) {

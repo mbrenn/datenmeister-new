@@ -261,7 +261,7 @@ class TableForm {
                 const settings = new SIC.ContainerSettings();
                 settings.browseSettings.showWorkspaceInBreadcrumb = true;
                 settings.browseSettings.showExtentInBreadcrumb = true;
-                settings.browseSettings.setButtonText = 'Create new Item';
+                settings.setButtonText = 'Create new Item';
                 selectItem.itemSelected.addListener(selectedItem => {
                     if (tthis.itemUrl === undefined) {
                         document.location.href = Navigator.getLinkForNavigateToCreateNewItemInExtent(tthis.workspace, tthis.extentUri, selectedItem === undefined ? undefined : selectedItem.uri, selectedItem === undefined ? undefined : selectedItem.workspace);

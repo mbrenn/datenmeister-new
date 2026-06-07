@@ -216,7 +216,7 @@ export class Field extends BaseField implements IFormField {
                     const settings = new SIC.ContainerSettings();
                     settings.browseSettings.showWorkspaceInBreadcrumb = true;
                     settings.browseSettings.showExtentInBreadcrumb = true;
-                    settings.browseSettings.hideAtStartup = true;
+                    settings.hideAtStartup = true;
                     selectItem.itemSelected.addListener(
                         async selectedItem => {
                             await ClientItem.setPropertyReference(

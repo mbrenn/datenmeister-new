@@ -31,30 +31,6 @@ export class ControlSettings {
      * Default `false`.
      */
     showExtentInBreadcrumb = false;
-    /**
-     * When `true`, a "Cancel" button is rendered next to the "Set" button.
-     * Clicking it removes the control from the DOM (see
-     * {@link SelectItemControlByBrowsingControl.removeControl}). Has no effect when
-     * {@link hideButtonRow} is `true`.
-     */
-    showCancelButton = true;
-    /**
-     * When `true`, the entire button row (Set/Cancel) is omitted from the DOM.
-     * Use this when the host container wants to provide its own confirmation
-     * affordances and read the selection via
-     * {@link SelectItemControlByBrowsingControl.getSelectedItem}.
-     */
-    hideButtonRow = false;
-    /**
-     * When `true`, the control is created in a hidden state (`display: none`)
-     * and must be made visible by calling {@link SelectItemControlByBrowsingControl.showControl}.
-     */
-    hideAtStartup = false;
-    /**
-     * Label of the primary confirmation button. Defaults to `"Set"` and can be
-     * overridden to fit the surrounding UI (e.g. `"Choose"`, `"Apply"`).
-     */
-    setButtonText = "Set";
 }
 export class SelectItemControlByBrowsingControl {
     /**
@@ -86,7 +62,6 @@ export class SelectItemControlByBrowsingControl {
     selectedItem;
     itemSelected = new UserEvent();
     itemClicked = new UserEvent();
-    selectionCancelled = new UserEvent();
     /** Root `<table>` of the rendered control; `undefined` after {@link removeControl}. */
     containerDiv;
     /**
@@ -162,7 +137,6 @@ export class SelectItemControlByBrowsingControl {
         this.htmlExtentSelect.on("change", () => tthis.onExtentChangedByUser());
         // Creates the template
         const div = $("<table class='dm-selectitemcontrol'>" +
-            "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
             "<tr><th>Workspace: </th><td class='dm-sic-workspace'></td></tr>" +
             "<tr><th>Extent: </th><td class='dm-sic-extent'></td></tr>" +
             "<tr><th>Selected Item: </th><td><div class='dm-sic-selected'></div></td></tr>" +
@@ -170,53 +144,17 @@ export class SelectItemControlByBrowsingControl {
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
             "<div class='dm-sic-items'></div>" +
             "</td></tr>" +
-            (this.settings.hideButtonRow !== true
-                ?
-                    "<tr><td></td><td class='selected'>" +
-                        (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
-                        "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>"
-                :
-                    "") +
             "</table>");
-        const setButton = $(".dm-sic-button", div);
-        const cancelButton = $(".dm-sic-cancelbtn", div);
         // Adds the elements
         $(".dm-sic-workspace", div).append(this.htmlWorkspaceSelect);
         $(".dm-sic-extent", div).append(this.htmlExtentSelect);
         $(".dm-sic-items", div).append(this.htmlItemsList);
         $(".dm-sic-selected", div).append(this.htmlSelectedElements);
         this.htmlBreadcrumbList = $(".breadcrumb", div);
-        // throws the event, when the user clicks on the set button
-        setButton.text(this.settings.setButtonText);
-        setButton.on("click", () => {
-            tthis.itemSelected.invoke(tthis.selectedItem);
-        });
-        cancelButton.on("click", () => {
-            this.selectionCancelled.invoke();
-        });
-        if (settings?.hideAtStartup) {
-            div.hide();
-        }
         container.append(div);
         this.containerDiv = div;
         this.isDomInitializationDone = true;
         return div;
-    }
-    /**
-     * Shows the control (by revoking the hide status)
-     */
-    showControl() {
-        if (this.containerDiv !== undefined) {
-            this.containerDiv.show();
-        }
-    }
-    /**
-     * Hides the control (by revoking the hide status)
-     */
-    hideControl() {
-        if (this.containerDiv !== undefined) {
-            this.containerDiv.hide();
-        }
     }
     /**
      * This method will be called when the user changed the selected workspace

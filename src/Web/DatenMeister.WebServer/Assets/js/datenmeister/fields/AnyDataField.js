@@ -181,7 +181,7 @@ export class Field extends BaseField {
                     const settings = new SIC.ContainerSettings();
                     settings.browseSettings.showWorkspaceInBreadcrumb = true;
                     settings.browseSettings.showExtentInBreadcrumb = true;
-                    settings.browseSettings.hideAtStartup = true;
+                    settings.hideAtStartup = true;
                     selectItem.itemSelected.addListener(async (selectedItem) => {
                         await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
                             property: tthis.field.get('name'),

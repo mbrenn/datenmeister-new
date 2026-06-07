@@ -7,7 +7,31 @@ export class ContainerSettings {
      * the default `"Select item:"` text from the template is used.
      */
     headline = undefined;
+    /**
+     * When `true`, the control is created in a hidden state (`display: none`)
+     * and must be made visible by calling {@link SelectItemControlByBrowsingControl.showControl}.
+     */
+    hideAtStartup = false;
     browseSettings;
+    /**
+     * When `true`, a "Cancel" button is rendered next to the "Set" button.
+     * Clicking it removes the control from the DOM (see
+     * {@link SelectItemControlByBrowsingControl.removeControl}). Has no effect when
+     * {@link hideButtonRow} is `true`.
+     */
+    showCancelButton = true;
+    /**
+     * When `true`, the entire button row (Set/Cancel) is omitted from the DOM.
+     * Use this when the host container wants to provide its own confirmation
+     * affordances and read the selection via
+     * {@link SelectItemControlByBrowsingControl.getSelectedItem}.
+     */
+    hideButtonRow = false;
+    /**
+     * Label of the primary confirmation button. Defaults to `"Set"` and can be
+     * overridden to fit the surrounding UI (e.g. `"Choose"`, `"Apply"`).
+     */
+    setButtonText = "Set";
     constructor() {
         this.browseSettings = new ByBrowseControl.ControlSettings();
     }
@@ -61,6 +85,7 @@ export class SelectItemControl {
      * for live previews; use {@link itemSelected} to react to a final choice.
      */
     itemClicked = new UserEvent();
+    selectionCancelled = new UserEvent();
     init(containerDiv, settings) {
         return this.initDom(settings, containerDiv);
     }
@@ -93,8 +118,27 @@ export class SelectItemControl {
         const div = $("<table class='dm-selectitemcontrol'>" +
             "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
             "<tr><th colspan='2' class='dm-selectitemcontrol-bybrowse'></th></tr>" +
+            (this.settings.hideButtonRow !== true
+                ?
+                    "<tr><td></td><td class='selected'>" +
+                        (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
+                        "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>"
+                :
+                    "") +
             "</table>");
         this.containerDiv.append(div);
+        // Sets the button logic
+        const setButton = $(".dm-sic-button", div);
+        const cancelButton = $(".dm-sic-cancelbtn", div);
+        // throws the event, when the user clicks on the set button
+        setButton.text(this.settings.setButtonText);
+        setButton.on("click", () => {
+            tthis.itemSelected.invoke(this.getSelectedItem());
+        });
+        cancelButton.on("click", () => {
+            this.selectionCancelled.invoke();
+        });
+        this.selectionCancelled.addListener(() => tthis.removeControl());
         // Checks whether we need a headline
         if (this.settings.headline !== undefined) {
             $(".dm-selectitemcontrol-headline", div).text(settings.headline);
@@ -106,7 +150,10 @@ export class SelectItemControl {
         const tthis = this;
         this.byBrowseControl.itemSelected.addListener((x) => tthis.itemSelected.invoke(x));
         this.byBrowseControl.itemClicked.addListener((x) => tthis.itemClicked.invoke(x));
-        this.byBrowseControl.selectionCancelled.addListener(() => tthis.removeControl());
+        // Checks whether we need to hide the control at startup
+        if (settings?.hideAtStartup) {
+            this.hideControl();
+        }
         return div;
     }
     async setWorkspaceById(workspaceId) {
@@ -125,10 +172,14 @@ export class SelectItemControl {
         return this.byBrowseControl.getUserSelectedWorkspaceId();
     }
     showControl() {
-        this.byBrowseControl.showControl();
+        if (this.containerDiv !== undefined) {
+            this.containerDiv.show();
+        }
     }
     hideControl() {
-        this.byBrowseControl.hideControl();
+        if (this.containerDiv !== undefined) {
+            this.containerDiv.hide();
+        }
     }
     /**
      * Removes the control. This means that 'init(Async)' must be called again

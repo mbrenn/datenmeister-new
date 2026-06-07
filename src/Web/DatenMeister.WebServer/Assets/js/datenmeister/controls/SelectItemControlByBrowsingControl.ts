@@ -36,28 +36,6 @@ export class ControlSettings {
      * Default `false`.
      */
     showExtentInBreadcrumb = false;
-
-    /**
-     * When `true`, a "Cancel" button is rendered next to the "Set" button.
-     * Clicking it removes the control from the DOM (see
-     * {@link SelectItemControlByBrowsingControl.removeControl}). Has no effect when
-     * {@link hideButtonRow} is `true`.
-     */
-    showCancelButton = true;
-
-    /**
-     * When `true`, the entire button row (Set/Cancel) is omitted from the DOM.
-     * Use this when the host container wants to provide its own confirmation
-     * affordances and read the selection via
-     * {@link SelectItemControlByBrowsingControl.getSelectedItem}.
-     */
-    hideButtonRow = false;
-
-    /**
-     * Label of the primary confirmation button. Defaults to `"Set"` and can be
-     * overridden to fit the surrounding UI (e.g. `"Choose"`, `"Apply"`).
-     */
-    setButtonText = "Set";
 }
 
 export class SelectItemControlByBrowsingControl implements ISelectItemControl {
@@ -100,7 +78,6 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
     
     itemSelected: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
     itemClicked: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
-    selectionCancelled: UserEvent<void> = new UserEvent<void>();
 
     /** Root `<table>` of the rendered control; `undefined` after {@link removeControl}. */
     private containerDiv: JQuery;
@@ -193,7 +170,6 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
         // Creates the template
         const div = $(
             "<table class='dm-selectitemcontrol'>" +
-            "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
             "<tr><th>Workspace: </th><td class='dm-sic-workspace'></td></tr>" +
             "<tr><th>Extent: </th><td class='dm-sic-extent'></td></tr>" +
             "<tr><th>Selected Item: </th><td><div class='dm-sic-selected'></div></td></tr>" +
@@ -201,17 +177,7 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
             "<div class='dm-sic-items'></div>" +
             "</td></tr>" +
-            (this.settings.hideButtonRow !== true
-                ?
-                "<tr><td></td><td class='selected'>" +
-                (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
-                "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>"
-                :
-                "") +
             "</table>");
-
-        const setButton = $(".dm-sic-button", div);
-        const cancelButton = $(".dm-sic-cancelbtn", div);
 
         // Adds the elements
         $(".dm-sic-workspace", div).append(this.htmlWorkspaceSelect);
@@ -220,16 +186,6 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
         $(".dm-sic-selected", div).append(this.htmlSelectedElements);
 
         this.htmlBreadcrumbList = $(".breadcrumb", div);
-
-        // throws the event, when the user clicks on the set button
-        setButton.text(this.settings.setButtonText);
-        setButton.on("click", () => {
-            tthis.itemSelected.invoke(tthis.selectedItem);
-        });
-
-        cancelButton.on("click", () => {
-            this.selectionCancelled.invoke();
-        });
 
         container.append(div);
         this.containerDiv = div;

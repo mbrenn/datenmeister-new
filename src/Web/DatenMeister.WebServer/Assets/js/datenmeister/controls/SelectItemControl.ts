@@ -1,10 +1,10 @@
-﻿import {ItemWithNameAndId} from "../ApiModels.js";
+﻿import * as ApiModels from "../ApiModels.js";
+import {ItemWithNameAndId} from "../ApiModels.js";
 import {UserEvent} from "../../burnsystems/Events.js";
-import * as ApiModels from "../ApiModels.js";
 import * as GlobalSettings from "../Settings.js";
 import {ISelectItemControl} from "./Interfaces.js";
 import * as ByBrowseControl from "./SelectItemControlByBrowsingControl.js"
-import {ControlSettings} from "./SelectItemControlByBrowsingControl.js";
+import {ControlSettings} from "./SelectItemControlByBrowsingControl.js"
 
 export class ContainerSettings{
     /**
@@ -85,7 +85,8 @@ export class SelectItemControl implements ISelectItemControl {
     /**
      * Stores the 'byBrowseControl' instance for browsing functionality.
      */
-    byBrowseControl: ByBrowseControl.SelectItemControlByBrowsingControl
+    byBrowseControl : ByBrowseControl.SelectItemControlByBrowsingControl 
+        = new ByBrowseControl.SelectItemControlByBrowsingControl();
 
     /*
      * Public events that callers can subscribe to.
@@ -124,8 +125,7 @@ export class SelectItemControl implements ISelectItemControl {
 
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
-        const div = this.initDom(settings, parent);
-        return div;
+        return this.initDom(settings, parent);
     }
 
     /**
@@ -142,17 +142,17 @@ export class SelectItemControl implements ISelectItemControl {
 
         // Creates the template
         const div = $(
-            "<table class='dm-selectitemcontrol'>" +
-            "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
-            "<tr><th colspan='2' class='dm-selectitemcontrol-bybrowse'></th></tr>"  +
+            "<div class='dm-selectitemcontrol'>" +
+            "<div class='dm-selectitemcontrol-headline'>Select item:</div>" +
+            "<div class='dm-selectitemcontrol-bybrowse'></div>"  +
             (this.settings.hideButtonRow !== true
                 ?
-                "<tr><td></td><td class='selected'>" +
+                "<div class='dm-selectitemcontrol-buttons'>" +
                 (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
-                "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>"
+                "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></div>"
                 :
                 "") +
-            "</table>");
+            "</div>");
 
         this.containerDiv.append(div);
 
@@ -180,7 +180,6 @@ export class SelectItemControl implements ISelectItemControl {
 
         // Adds the by browsing
         const byBrowseDiv = $(".dm-selectitemcontrol-bybrowse", div);
-        this.byBrowseControl = new ByBrowseControl.SelectItemControlByBrowsingControl();
         this.byBrowseControl.init(byBrowseDiv, this.settings.browseSettings);
 
         const tthis = this;

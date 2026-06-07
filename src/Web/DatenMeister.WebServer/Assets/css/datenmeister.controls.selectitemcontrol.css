@@ -1,0 +1,81 @@
+.dm-selectitemcontrol
+{
+    border: 1px solid black;
+    width: fit-content;
+    background-color: #EEEEFF;
+    padding: 5px;    
+}
+.dm-selectitemcontrol .dm-selectitemcontrol-headline
+{
+    font-weight: bold;
+}
+
+.dm-selectitemcontrol .dm-selectitemcontrol-buttons
+{
+    margin-top: 5px;
+}
+
+.dm-sic-bb {
+    border-collapse: collapse;
+}
+
+.dm-sic-bb th {
+    padding: 5px 10px 5px 10px;
+    font-weight: bold;
+    border: black 1px solid;
+    vertical-align: top;
+}
+
+.dm-sic-bb td {
+    padding: 5px 10px 5px 10px;
+    border: black 1px solid;
+    vertical-align: top;
+}
+
+.dm-sic-bb select {
+    width: 400px;
+}
+
+.dm-sic-bb ul {
+    list-style-type: none;
+    list-style-position: outside;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.dm-sic-bb ul li {
+    list-style-position: outside;
+}
+
+.dm-sic-bb .dm-sic-bb-items ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Makes the selectable items like a small button */
+.dm-sic-bb .dm-sic-bb-item
+{
+    background: lightblue;
+    border: 1px solid dimgray;
+    border-radius: 2px;
+    padding: 3px 10px 3px 10px;
+    margin-bottom: 2px;
+    font-size: 80%;
+    cursor: pointer;
+}
+
+.dm-sic-bb .dm-sic-bb-selected
+{
+    background: lightskyblue;
+    border: 1px solid dimgray;
+    border-radius: 2px;
+    padding: 3px 10px 3px 10px;
+    margin-bottom: 2px;
+    font-weight: bold;
+    color: black;
+}
+
+.dm-sic-bb .dm-sic-bb-selected a
+{
+    color: black;
+}

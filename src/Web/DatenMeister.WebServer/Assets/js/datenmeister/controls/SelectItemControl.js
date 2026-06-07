@@ -69,7 +69,7 @@ export class SelectItemControl {
     /**
      * Stores the 'byBrowseControl' instance for browsing functionality.
      */
-    byBrowseControl;
+    byBrowseControl = new ByBrowseControl.SelectItemControlByBrowsingControl();
     /*
      * Public events that callers can subscribe to.
      */
@@ -101,8 +101,7 @@ export class SelectItemControl {
     async initAsync(parent, settings) {
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
-        const div = this.initDom(settings, parent);
-        return div;
+        return this.initDom(settings, parent);
     }
     /**
      * This method just creates the DOM and connects the events of the elements to the
@@ -115,17 +114,17 @@ export class SelectItemControl {
         this.settings = settings ?? new ContainerSettings();
         this.containerDiv = container;
         // Creates the template
-        const div = $("<table class='dm-selectitemcontrol'>" +
-            "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
-            "<tr><th colspan='2' class='dm-selectitemcontrol-bybrowse'></th></tr>" +
+        const div = $("<div class='dm-selectitemcontrol'>" +
+            "<div class='dm-selectitemcontrol-headline'>Select item:</div>" +
+            "<div class='dm-selectitemcontrol-bybrowse'></div>" +
             (this.settings.hideButtonRow !== true
                 ?
-                    "<tr><td></td><td class='selected'>" +
+                    "<div class='dm-selectitemcontrol-buttons'>" +
                         (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
-                        "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>"
+                        "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></div>"
                 :
                     "") +
-            "</table>");
+            "</div>");
         this.containerDiv.append(div);
         // Sets the button logic
         const setButton = $(".dm-sic-button", div);
@@ -145,7 +144,6 @@ export class SelectItemControl {
         }
         // Adds the by browsing
         const byBrowseDiv = $(".dm-selectitemcontrol-bybrowse", div);
-        this.byBrowseControl = new ByBrowseControl.SelectItemControlByBrowsingControl();
         this.byBrowseControl.init(byBrowseDiv, this.settings.browseSettings);
         const tthis = this;
         this.byBrowseControl.itemSelected.addListener((x) => tthis.itemSelected.invoke(x));

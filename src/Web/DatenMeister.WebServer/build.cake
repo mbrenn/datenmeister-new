@@ -84,6 +84,17 @@ Task("Compile and Compress JS")
     .Does(() =>
     {
     });
+    
+    
+Task("Compile and Compress JS and CSS")
+    .IsDependentOn("Compress CSS")
+    .IsDependentOn("Compile TS")
+    .IsDependentOn("Compress JS")
+    .Does(() =>
+    {
+    });
+    
+
 
 Task("Build")
     .IsDependentOn("Install Npm")

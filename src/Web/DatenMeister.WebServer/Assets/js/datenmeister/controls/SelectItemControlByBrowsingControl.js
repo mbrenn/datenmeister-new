@@ -136,20 +136,20 @@ export class SelectItemControlByBrowsingControl {
         this.htmlWorkspaceSelect.on("change", () => tthis.onWorkspaceChangedByUser());
         this.htmlExtentSelect.on("change", () => tthis.onExtentChangedByUser());
         // Creates the template
-        const div = $("<table class='dm-selectitemcontrol'>" +
-            "<tr><th>Workspace: </th><td class='dm-sic-workspace'></td></tr>" +
-            "<tr><th>Extent: </th><td class='dm-sic-extent'></td></tr>" +
-            "<tr><th>Selected Item: </th><td><div class='dm-sic-selected'></div></td></tr>" +
+        const div = $("<table class='dm-sic-bb'>" +
+            "<tr><th>Workspace: </th><td class='dm-sic-bb-workspace'></td></tr>" +
+            "<tr><th>Extent: </th><td class='dm-sic-bb-extent'></td></tr>" +
+            "<tr><th>Selected Item: </th><td><div class='dm-sic-bb-selected'></div></td></tr>" +
             "<tr><th>Children: </th>" +
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
-            "<div class='dm-sic-items'></div>" +
+            "<div class='dm-sic-bb-items'></div>" +
             "</td></tr>" +
             "</table>");
         // Adds the elements
-        $(".dm-sic-workspace", div).append(this.htmlWorkspaceSelect);
-        $(".dm-sic-extent", div).append(this.htmlExtentSelect);
-        $(".dm-sic-items", div).append(this.htmlItemsList);
-        $(".dm-sic-selected", div).append(this.htmlSelectedElements);
+        $(".dm-sic-bb-workspace", div).append(this.htmlWorkspaceSelect);
+        $(".dm-sic-bb-extent", div).append(this.htmlExtentSelect);
+        $(".dm-sic-bb-items", div).append(this.htmlItemsList);
+        $(".dm-sic-bb-selected", div).append(this.htmlSelectedElements);
         this.htmlBreadcrumbList = $(".breadcrumb", div);
         container.append(div);
         this.containerDiv = div;
@@ -425,7 +425,7 @@ export class SelectItemControlByBrowsingControl {
                     if (!items.hasOwnProperty(n))
                         continue;
                     const item = items[n];
-                    const option = $("<li class='dm-sic-item'></li>");
+                    const option = $("<li class='dm-sic-bb-item'></li>");
                     option.append(convertItemWithNameAndIdToDom(item, { inhibitItemLink: true, inhibitEditItemLink: true }));
                     // Creates the clickability of the list of items
                     ((innerItem) => option.on("click", async () => {
@@ -480,7 +480,7 @@ export class SelectItemControlByBrowsingControl {
         }
         this.htmlBreadcrumbList.empty();
         if (this.settings.showBreadcrumb) {
-            // Starts by showing the button to select to select the Workspaces
+            // Starts by showing the button to select the Workspaces
             if (this.settings.showWorkspaceInBreadcrumb) {
                 this.addBreadcrumbItem("Workspaces", async () => {
                     this.preSelectWorkspaceById = "";

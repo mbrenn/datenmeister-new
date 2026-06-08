@@ -68,7 +68,6 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
     /** `<ul class='breadcrumb'>` rendering the path to the selected item. */
     private htmlBreadcrumbList: JQuery<HTMLElement>;
 
-
     /** Last list of workspaces fetched from the server, used by {@link getSelectedWorkspace}. */
     private loadedWorkspaces: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     /** Last list of extents fetched for the active workspace, used by {@link getSelectedExtent}. */
@@ -143,7 +142,6 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
         await this.loadWorkspaces();
         return div;
     }
-
 
     /**
      * This method just creates the DOM and connects the events of the elements to the

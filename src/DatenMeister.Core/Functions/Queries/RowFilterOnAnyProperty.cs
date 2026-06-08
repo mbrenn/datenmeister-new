@@ -7,6 +7,8 @@ namespace DatenMeister.Core.Functions.Queries;
 public class RowFilterOnAnyProperty(IReflectiveCollection collection) : ProxyReflectiveCollection(collection)
 {
     public string FreeText { get; set; } = string.Empty;
+    
+    public string? PropertyName { get; set; }
 
     public override IEnumerator<object> GetEnumerator()
     {
@@ -54,7 +56,11 @@ public class RowFilterOnAnyProperty(IReflectiveCollection collection) : ProxyRef
             return false;
         }
 
-        foreach (var property in properties.getPropertiesBeingSet())
+        var propertyNames = string.IsNullOrEmpty(PropertyName) 
+            ? properties.getPropertiesBeingSet()
+            : [PropertyName];
+
+        foreach (var property in propertyNames)
         {
             var content = valueAsObject.get(property)?.ToString();
             content = content?.ToLower();

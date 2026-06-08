@@ -25,6 +25,7 @@ public class RowFilterByFreeTextAnywhereNodeEvaluation : IDataViewNodeEvaluation
         
         var wrappedViewNode = new DataViews.Row.RowFilterByFreeTextAnywhere_Wrapper(viewNode);
         var freeText = wrappedViewNode.freeText;
+        var propertyName = wrappedViewNode.propertyName;
 
         if (string.IsNullOrEmpty(freeText))
         {
@@ -33,7 +34,8 @@ public class RowFilterByFreeTextAnywhereNodeEvaluation : IDataViewNodeEvaluation
 
         return new RowFilterOnAnyProperty(input)
         {
-            FreeText = freeText
+            FreeText = freeText,
+            PropertyName = propertyName
         };
     }
 }

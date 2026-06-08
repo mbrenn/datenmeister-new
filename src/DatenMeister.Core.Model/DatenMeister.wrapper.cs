@@ -2976,6 +2976,14 @@ public class DataViews
                 }
             }
 
+            public string? @propertyName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("propertyName");
+                set => 
+                    _wrappedElement.set("propertyName", value);
+            }
+
             public string? @name
             {
                 get =>

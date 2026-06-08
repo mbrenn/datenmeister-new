@@ -336,6 +336,7 @@
         <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="2722721d-dbb9-4f24-ad16-9ba07c106a12" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="2f5a7112-010e-4e94-974c-21108986abcb" name="freeText" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4d4eea81-5f77-4936-89d4-b4a1befe0d4c" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="c4634c09-7669-48a3-812f-3174fd979332" name="propertyName" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FilterByPropertyValueNode" name="RowFilterByPropertyValueNode">
         <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="b08ec0ba-93c0-45ec-a75f-e2b76db2be85" general-ref="#DatenMeister.Models.DataViews.ViewNode" />

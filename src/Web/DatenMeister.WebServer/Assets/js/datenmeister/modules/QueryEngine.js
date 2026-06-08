@@ -71,15 +71,18 @@ export function limit(builder, limitValue) {
     builder.setResultNode(viewNode);
     return viewNode;
 }
-export function createForFilterByFreetext(input, freeText) {
+export function createForFilterByFreetext(input, freeText, propertyName) {
     const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.input, Mof.DmObject.createAsReferenceFromLocalId(input));
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, freeText);
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere._name_, "Filter by free text " + freeText);
+    if (propertyName !== undefined) {
+        viewNode.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.propertyName, propertyName);
+    }
     return viewNode;
 }
-export function filterByFreetext(builder, freeText) {
-    const viewNode = createForFilterByFreetext(builder.getResultNode(), freeText);
+export function filterByFreetext(builder, freeText, propertyName) {
+    const viewNode = createForFilterByFreetext(builder.getResultNode(), freeText, propertyName);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
     return viewNode;
@@ -122,6 +125,18 @@ export function addDynamicSource(builder, name) {
     builder.addNode(dynamicSource);
     builder.setResultNode(dynamicSource);
     return dynamicSource;
+}
+export function createForGetElementsOfWorkspace(workspaceId) {
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Source.__SelectByWorkspaceNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._Source._SelectByWorkspaceNode.workspaceId, workspaceId);
+    viewNode.set(_DatenMeister._DataViews._Source._SelectByWorkspaceNode._name_, "Select by workspace " + workspaceId);
+    return viewNode;
+}
+export function getElementsOfWorkspace(builder, workspaceId) {
+    const viewNode = createForGetElementsOfWorkspace(workspaceId);
+    builder.addNode(viewNode);
+    builder.setResultNode(viewNode);
+    return viewNode;
 }
 export function createForGetElementsOfExtent(workspaceId, extentUrl) {
     const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Source.__SelectByExtentNode_Uri);

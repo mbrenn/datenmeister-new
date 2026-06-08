@@ -118,6 +118,8 @@ export class SelectItemControl implements ISelectItemControl {
     selectionCancelled: UserEvent<void> = new UserEvent<void>();
     
     currentTab: "byBrowse" | "bySearch" = "byBrowse";
+    private byBrowserControlDiv: JQuery<HTMLElement>;
+    private bySearchControlDiv: JQuery<HTMLElement>;
     
     public init(containerDiv: JQuery, settings?: ContainerSettings) {
         return this.initDom(settings, containerDiv);
@@ -177,6 +179,8 @@ export class SelectItemControl implements ISelectItemControl {
         const cancelButton = $(".dm-sic-cancelbtn", div);
         const byBrowseButton = $(".dm-selectitemcontrol-tab-bybrowse button", div);
         const bySearchButton = $(".dm-selectitemcontrol-tab-search button", div);
+        this.byBrowserControlDiv = $(".dm-selectitemcontrol-bybrowse", div);
+        this.bySearchControlDiv = $(".dm-selectitemcontrol-search", div);
         byBrowseButton.on('click', () => {this.updateTabStatus("byBrowse");});
         bySearchButton.on('click', () => {this.updateTabStatus("bySearch");});
 
@@ -229,12 +233,12 @@ export class SelectItemControl implements ISelectItemControl {
         
         switch (this.currentTab) {
             case "byBrowse":
-                this.byBrowseControl.showControl();
-                this.bySearchControl.hideControl();
+                this.byBrowserControlDiv.show();
+                this.bySearchControlDiv.hide();
                 break;
             case "bySearch":
-                this.byBrowseControl.hideControl();
-                this.bySearchControl.showControl();
+                this.byBrowserControlDiv.hide();
+                this.bySearchControlDiv.show();
                 break;
         }
     }

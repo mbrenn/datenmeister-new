@@ -468,6 +468,7 @@ export var _DataViews;
         class _RowFilterByFreeTextAnywhere {
             static freeText = "freeText";
             static input = "input";
+            static propertyName = "propertyName";
             static _name_ = "name";
         }
         _Row._RowFilterByFreeTextAnywhere = _RowFilterByFreeTextAnywhere;

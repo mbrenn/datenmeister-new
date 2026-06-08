@@ -538,6 +538,7 @@ export namespace _DataViews
                 {
                     static freeText = "freeText";
                     static input = "input";
+                    static propertyName = "propertyName";
                     static _name_ = "name";
                 }
 

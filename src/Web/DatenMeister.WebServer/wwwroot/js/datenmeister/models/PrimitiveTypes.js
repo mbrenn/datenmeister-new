@@ -1,0 +1,2 @@
+var a;(function(l){class e{}l._Boolean=e,l.__Boolean_Uri="dm:///_internal/model/primitivetypes#Boolean";class t{}l._Integer=t,l.__Integer_Uri="dm:///_internal/model/primitivetypes#Integer";class _{}l._Real=_,l.__Real_Uri="dm:///_internal/model/primitivetypes#Real";class r{}l._String=r,l.__String_Uri="dm:///_internal/model/primitivetypes#String";class o{}l._UnlimitedNatural=o,l.__UnlimitedNatural_Uri="dm:///_internal/model/primitivetypes#UnlimitedNatural"})(a||(a={}));export{a as _PrimitiveTypes};
+//# sourceMappingURL=PrimitiveTypes.js.map

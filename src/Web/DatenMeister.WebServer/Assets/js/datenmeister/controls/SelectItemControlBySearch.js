@@ -1,3 +1,4 @@
+import { UserEvent } from "../../burnsystems/Events.js";
 import * as Mof from "../Mof.js";
 import * as EL from "../client/Elements.js";
 import * as QueryEngine from "../modules/QueryEngine.js";
@@ -6,8 +7,8 @@ import * as DomHelper from "../DomHelper.js";
 export class ControlSettings {
 }
 export class SelectItemControlBySearch {
-    itemClicked;
-    itemSelected;
+    itemClicked = new UserEvent();
+    itemSelected = new UserEvent;
     containerDiv;
     inputBoxDiv;
     resultsDiv;

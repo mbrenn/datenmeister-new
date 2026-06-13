@@ -203,7 +203,12 @@ export class SelectItemControl {
         await this.byBrowseControl.setItemByUri(workspaceId, itemUri);
     }
     getSelectedItem() {
-        return this.byBrowseControl.getSelectedItem();
+        switch (this.currentTab) {
+            case "byBrowse":
+                return this.byBrowseControl.getSelectedItem();
+            case "bySearch":
+                return this.bySearchControl.getSelectedItem();
+        }
     }
     getCurrentlySelectedWorkspace() {
         return this.byBrowseControl.getUserSelectedWorkspaceId();

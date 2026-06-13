@@ -3,13 +3,17 @@ import {DmObject} from "./Mof.js";
 import {ItemWithNameAndId} from "./ApiModels.js";
 import * as Navigator from "./Navigator.js";
 
-export interface IInjectNameByUriParams {
+
+
+export interface IInjectNameByUriParams{
+    inhibitItemLink?: boolean;
+    inhibitEditItemLink?: boolean;
     onClick?: (item: ItemWithNameAndId) => (void);
 }
 
-export async function injectNameByObject(domElement: JQuery, element: DmObject)
+export async function injectNameByObject(domElement: JQuery, element: DmObject, parameter?: IInjectNameByUriParams)
 {
-    return injectNameByUri(domElement, element.workspace, element.uri);   
+    return injectNameByUri(domElement, element.workspace, element.uri, parameter);   
 }
 
 export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string, parameter?: IInjectNameByUriParams) {
@@ -18,13 +22,7 @@ export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspace
         const x = await ElementClient.loadNameByUri(workspaceId, elementUri);
 
         domElement.empty();
-
-        const paramCall: IConvertItemWithNameAndIdParameters = {};
-        if (parameter !== undefined) {
-            paramCall.onClick = parameter.onClick;
-        }
-
-        domElement.append(convertItemWithNameAndIdToDom(x, paramCall));
+        domElement.append(convertItemWithNameAndIdToDom(x, parameter));
 
     } catch (error) {
         console.log(error);
@@ -32,7 +30,7 @@ export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspace
     }
 }
 
-export async function convertDmObjectToDom(item: DmObject, params?: IConvertItemWithNameAndIdParameters) {
+export async function convertDmObjectToDom(item: DmObject, params?: IInjectNameByUriParams) {
     const x = await ElementClient.loadNameByUri(item.workspace, item.uri);
     return convertItemWithNameAndIdToDom(x, params);
 }
@@ -45,18 +43,12 @@ export function debugElementToDom(mofElement: any, domSelector: string | JQuery)
     }
 }
 
-export interface IConvertItemWithNameAndIdParameters{
-    inhibitItemLink?: boolean;
-    inhibitEditItemLink?: boolean;
-    onClick?: (item: ItemWithNameAndId) => (void);
-}
-
 /*
  * Converts an ItemWithNameAndId to a Dom Element which reflects the content
  */
 export function convertItemWithNameAndIdToDom(
     item: ItemWithNameAndId,
-    params?: IConvertItemWithNameAndIdParameters): JQuery {
+    params?: IInjectNameByUriParams): JQuery {
     let result = $("<span></span>");
     
     // Checks, if we have valid link information, so the user can click on the item to move to it

@@ -253,7 +253,13 @@ export class SelectItemControl implements ISelectItemControl {
         await this.byBrowseControl.setItemByUri(workspaceId, itemUri)    
     }
     getSelectedItem(): ItemWithNameAndId {
-        return this.byBrowseControl.getSelectedItem();
+        switch(this.currentTab)
+        {
+            case "byBrowse":
+                return this.byBrowseControl.getSelectedItem();
+            case "bySearch":
+                return this.bySearchControl.getSelectedItem();
+        }
     }
     
     getCurrentlySelectedWorkspace()

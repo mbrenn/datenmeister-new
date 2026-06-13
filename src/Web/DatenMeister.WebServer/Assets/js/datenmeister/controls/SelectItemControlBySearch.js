@@ -12,6 +12,7 @@ export class SelectItemControlBySearch {
     inputBoxDiv;
     resultsDiv;
     htmlWorkspaceSelect;
+    selectedItem;
     /** Last list of workspaces fetched from the server, used by {@link getSelectedWorkspace}. */
     loadedWorkspaces = new Array();
     /**
@@ -45,12 +46,12 @@ export class SelectItemControlBySearch {
         const tthis = this;
         // Creates the template
         const div = $("<div class='dm-sic-search'>" +
-            "<div class='dm-sic-search-workspace'></div>" +
-            "<div class='dm-sic-search-input'>" +
-            "<input type='text' />" +
-            "</div>" +
-            "<div class='dm-sic-search-results'></div>" +
-            "</div>");
+            "<table>" +
+            "<tr><td><span>Workspace:</span></td><td><div class='dm-sic-search-workspace'></div></td></tr>" +
+            "<tr><td><span>Searchtext:</span></td>" +
+            "<td><div class='dm-sic-search-input'><input type='text' /></div></td></tr>" +
+            "<tr><td colspan='2'><div class='dm-sic-search-results'></div></td></tr>" +
+            "</table></div>");
         this.inputBoxDiv = $(".dm-sic-search-input input", div);
         this.resultsDiv = $(".dm-sic-search-results", div);
         const workspaceDiv = $(".dm-sic-search-workspace", div);
@@ -125,15 +126,19 @@ export class SelectItemControlBySearch {
         return Promise.resolve(undefined);
     }
     lastLoadIndex = 0;
+    lastSelectedDiv;
     async onInputChanged() {
+        const tthis = this;
         this.lastLoadIndex++;
         const loadIndex = this.lastLoadIndex;
         const selectWorkspace = this.getUserSelectedWorkspaceId();
         const text = this.inputBoxDiv.val().toString();
         if (text === "" || text === null || text === undefined) {
+            this.resultsDiv.empty();
             this.resultsDiv.hide();
         }
         else if (selectWorkspace === undefined || selectWorkspace === "") {
+            this.resultsDiv.empty();
             this.resultsDiv.append("<div>Please select a workspace</div>");
             this.resultsDiv.show();
         }
@@ -152,7 +157,19 @@ export class SelectItemControlBySearch {
                         continue;
                     const item = result.result[n];
                     const itemDiv = $("<div>" + item.get("name", Mof.ObjectType.String) + "</div>");
-                    const _ = DomHelper.injectNameByObject(itemDiv, item);
+                    const _ = DomHelper.injectNameByObject(itemDiv, item, {
+                        inhibitItemLink: true
+                    });
+                    ((innerItem) => itemDiv.on('click', () => {
+                        if (this.lastSelectedDiv !== undefined) {
+                            tthis.lastSelectedDiv.removeClass('selected');
+                        }
+                        itemDiv.addClass('selected');
+                        tthis.lastSelectedDiv = itemDiv;
+                        tthis.selectedItem = innerItem;
+                        tthis.itemClicked.invoke(innerItem);
+                        alert(item.id);
+                    }))(item);
                     this.resultsDiv.append(itemDiv);
                 }
             }

@@ -113,3 +113,38 @@
 {
     color: black;
 }
+
+.dm-sic-search-results{
+    display: flex;
+    flex-direction: column;
+}
+
+.dm-sic-search-results div {
+    padding: 5px;
+    border: 1px solid black;
+    margin: 5px;
+}
+
+.dm-sic-search-results div.selected {
+    background-color: lightskyblue;
+    border: 3px solid black;
+}
+
+
+.dm-sic-search table {
+    margin-top: 5px;
+    border-collapse: collapse;
+}
+
+.dm-sic-search table th {
+    padding: 5px 10px 5px 10px;
+    font-weight: bold;
+    border: black 1px solid;
+    vertical-align: top;
+}
+
+.dm-sic-search table td {
+    padding: 5px 10px 5px 10px;
+    border: black 1px solid;
+    vertical-align: top;
+}

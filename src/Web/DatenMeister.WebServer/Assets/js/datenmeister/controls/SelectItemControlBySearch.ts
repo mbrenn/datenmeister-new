@@ -6,19 +6,22 @@ import * as EL from "../client/Elements.js";
 import * as QueryEngine from "../modules/QueryEngine.js";
 import * as ClientElements from "../client/Elements.js";
 import * as DomHelper from "../DomHelper.js";
+import {DmObject} from "../Mof.js";
 
 
 export class ControlSettings {
 }
 
 export class SelectItemControlBySearch implements ISelectItemControl {
-    itemClicked: UserEvent<ItemWithNameAndId>;
-    itemSelected: UserEvent<ItemWithNameAndId>;
+    itemClicked: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
+    itemSelected: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>;
     private containerDiv: JQuery<HTMLElement>;
 
     private inputBoxDiv: JQuery<HTMLElement>;
     private resultsDiv: JQuery<HTMLElement>;
     private htmlWorkspaceSelect: JQuery<HTMLElement>;
+    
+    private selectedItem: DmObject;
 
     /** Last list of workspaces fetched from the server, used by {@link getSelectedWorkspace}. */
     private loadedWorkspaces: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
@@ -62,12 +65,12 @@ export class SelectItemControlBySearch implements ISelectItemControl {
         // Creates the template
         const div = $(
             "<div class='dm-sic-search'>" +
-            "<div class='dm-sic-search-workspace'></div>" +
-            "<div class='dm-sic-search-input'>" +
-            "<input type='text' />" +
-            "</div>" +
-            "<div class='dm-sic-search-results'></div>" + 
-            "</div>");
+            "<table>" +
+            "<tr><td><span>Workspace:</span></td><td><div class='dm-sic-search-workspace'></div></td></tr>" +
+            "<tr><td><span>Searchtext:</span></td>" +
+            "<td><div class='dm-sic-search-input'><input type='text' /></div></td></tr>" +
+            "<tr><td colspan='2'><div class='dm-sic-search-results'></div></td></tr>" + 
+            "</table></div>");
         
         this.inputBoxDiv = $(".dm-sic-search-input input", div);
         this.resultsDiv = $(".dm-sic-search-results", div);
@@ -77,7 +80,6 @@ export class SelectItemControlBySearch implements ISelectItemControl {
         this.htmlWorkspaceSelect.on("change", () => tthis.onWorkspaceChangedByUser());
         $("dm-sic-search-workspace", div).append(this.htmlWorkspaceSelect);
         workspaceDiv.append(this.htmlWorkspaceSelect);
-        
         
         this.inputBoxDiv.on("input", () => tthis.onInputChanged());
 
@@ -165,8 +167,10 @@ export class SelectItemControlBySearch implements ISelectItemControl {
     }
 
     lastLoadIndex = 0;
+    lastSelectedDiv: JQuery<HTMLElement>;
     private async onInputChanged() {
 
+        const tthis = this;
         this.lastLoadIndex++;
         const loadIndex = this.lastLoadIndex;
         
@@ -174,10 +178,12 @@ export class SelectItemControlBySearch implements ISelectItemControl {
         const text = this.inputBoxDiv.val().toString();
         if(text === "" || text === null || text === undefined)
         {
+            this.resultsDiv.empty();
             this.resultsDiv.hide();
         } 
         else if (selectWorkspace === undefined || selectWorkspace === "")
         {
+            this.resultsDiv.empty();
             this.resultsDiv.append("<div>Please select a workspace</div>");
             this.resultsDiv.show();
         }
@@ -201,7 +207,25 @@ export class SelectItemControlBySearch implements ISelectItemControl {
 
                    const item = result.result[n];
                    const itemDiv = $("<div>" + item.get("name", Mof.ObjectType.String) + "</div>");
-                   const _ = DomHelper.injectNameByObject(itemDiv, item);
+                   const _ = DomHelper.injectNameByObject(itemDiv, item,
+                       {
+                           inhibitItemLink: true
+                       });
+
+
+                   ((innerItem) =>
+                       itemDiv.on('click', () => {
+                           if(this.lastSelectedDiv !== undefined) {
+                               tthis.lastSelectedDiv.removeClass('selected');
+                           }
+                           
+                           itemDiv.addClass('selected');
+                           tthis.lastSelectedDiv = itemDiv;
+
+                           tthis.selectedItem = innerItem;
+                           tthis.itemClicked.invoke(innerItem);
+                           alert(item.id);
+                       }))(item);
 
                    this.resultsDiv.append(itemDiv);
                }

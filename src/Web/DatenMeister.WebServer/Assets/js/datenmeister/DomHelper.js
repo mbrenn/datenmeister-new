@@ -1,17 +1,13 @@
 import * as ElementClient from "./client/Elements.js";
 import * as Navigator from "./Navigator.js";
-export async function injectNameByObject(domElement, element) {
-    return injectNameByUri(domElement, element.workspace, element.uri);
+export async function injectNameByObject(domElement, element, parameter) {
+    return injectNameByUri(domElement, element.workspace, element.uri, parameter);
 }
 export async function injectNameByUri(domElement, workspaceId, elementUri, parameter) {
     try {
         const x = await ElementClient.loadNameByUri(workspaceId, elementUri);
         domElement.empty();
-        const paramCall = {};
-        if (parameter !== undefined) {
-            paramCall.onClick = parameter.onClick;
-        }
-        domElement.append(convertItemWithNameAndIdToDom(x, paramCall));
+        domElement.append(convertItemWithNameAndIdToDom(x, parameter));
     }
     catch (error) {
         console.log(error);

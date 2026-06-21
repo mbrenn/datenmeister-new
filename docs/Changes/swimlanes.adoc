@@ -1,0 +1,118 @@
+= Swimlanes
+
+== Purpose and Usecase
+
+We would like to generate a report out of a set of objects which collect the objects in a swimlane-based table view.
+
+Using as an example:
+
+* We have a set of tasks which are planned on a sprint and are assigned to a person.
+* Out of that set of tasks, a table shall be created in which the sprints are ordered and shown as vertical swimlanes.
+** The assigned person are shown as horizontal swimlanes.
+
+As an example assuming the following data
+
+=== Example Data
+
+[cols="1,2,2", options="header"]
+|===
+| Task | Sprint | Assigned To
+
+| Fix login bug
+| Sprint 1
+| Alice
+
+| Write unit tests
+| Sprint 1
+| Bob
+
+| Implement search
+| Sprint 2
+| Alice
+
+| Code review
+| Sprint 2
+| Alice
+
+| Deploy to staging
+| Sprint 2
+| Bob
+
+| Update documentation
+| Sprint 3
+| Carol
+
+| Performance tuning
+| Sprint 3
+| Bob
+
+| Fix export issue
+| Sprint 3
+| Carol
+|===
+
+=== Resulting Swimlane Table
+
+The sprints form the columns (vertical swimlanes) and the assigned persons form the rows (horizontal swimlanes):
+
+[cols="1,2,2,2", options="header"]
+|===
+| Assigned To | Sprint 1 | Sprint 2 | Sprint 3
+
+| Alice
+| Fix login bug
+| Implement search +
+Code review
+|
+
+| Bob
+| Write unit tests
+| Deploy to staging
+| Performance tuning
+
+| Carol
+|
+|
+| Update documentation +
+Fix export issue
+|===
+
+== Requirements
+
+* The swimlane table shall support a vertical and horizontal swimlane, each by a configurable property
+* The swimlane can be shown in the webview by clicking on a Swimlane-Table-Configuration
+* The Object and collection view shall support a tab of a Swimlane Table as a configurable plugin. 
+* The swimlane table shall exportable as a file (html)
+* The clustering of data in swimlane rows and columns shall be supported as a datatransformation, so other tools can
+directly work on the transformed data.
+
+== Design
+
+* An own assembly with data types and Javascript files will be implemented
+* The extent url will be "dm:///intern.types.swimlanes.datenmeister/"
+
+The following tasks: 
+
+* [ ] Create new Assembly
+* [ ] Add project configuration for Extent for types
+* [ ] Add project configuration for Typescript conversion
+
+=== Configuration
+
+The Swimlane configuration describes of how to create the swimlane table. It does not contain the reference to the 
+data itself, it just describes how the swimlane table shall be generated out of objects which are 'filled-in'.
+
+The configuration data will be the following: 
+
+[cols="1,3", options="header"]
+|===
+|Property|Meaning
+|verticalSwimlaneProperty|Name of the property which will be spanned up in vertical swimlanes. As in the example 
+above, it is the "Sprint".
+|horizontalSwimlaneProperty|Name of the property which will be spanned up in vertical swimlanes. As in the example
+above, it is the "Assigned To"
+|cellContent|Scriban template which will be used to show the content. In case the value is not set, the standard
+Name will be used
+|linkContent|Boolean indicating whether a link shall be added. 
+|===
+

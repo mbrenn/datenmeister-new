@@ -6,6 +6,16 @@ import { loadDefaultModules } from "../actions/DefaultLoader.js";
 import * as PathQueryDebugControl from "../controls/PathQueryDebugControl.js";
 import * as ElementsTreeView from "../controls/ElementsTreeView.js";
 loadDefaultModules();
+function attachItemSelectedAlert(control) {
+    control.itemSelected.addListener(x => {
+        if (x === undefined) {
+            alert('No item selected');
+        }
+        else {
+            alert("Uri:" + x.uri + ", Extent:" + x.extentUri + ", Workspace: " + x.workspace);
+        }
+    });
+}
 export async function pageTestTreeView() {
     const config = {
         workspace: "Types",
@@ -27,14 +37,14 @@ export async function pageOpenSelectItemControl() {
     const selectItemControl = $("#selectitemcontrol");
     selectItemControl.empty();
     const control = new SIC.SelectItemControl();
-    control.itemSelected.addListener(x => alert("Uri:" + x.uri + ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
+    attachItemSelectedAlert(control);
     await control.initAsync(selectItemControl);
 }
 export async function pageOpenSelectItemControlFullBreadcrumb() {
     const selectItemControl = $("#selectitemcontrol");
     selectItemControl.empty();
     const control = new SIC.SelectItemControl();
-    control.itemSelected.addListener(x => alert("Uri:" + x.uri + ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
+    attachItemSelectedAlert(control);
     const settings = new SIC.ContainerSettings();
     settings.browseSettings.showExtentInBreadcrumb = true;
     settings.browseSettings.showWorkspaceInBreadcrumb = true;
@@ -44,7 +54,7 @@ export async function pageOpenSelectItemControlWithWorkspace() {
     const selectItemControl = $("#selectitemcontrol");
     selectItemControl.empty();
     const control = new SIC.SelectItemControl();
-    control.itemSelected.addListener(x => alert("Uri:" + x.uri + ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
+    attachItemSelectedAlert(control);
     await control.setWorkspaceById("Types");
     await control.initAsync(selectItemControl);
 }
@@ -52,7 +62,7 @@ export async function pageOpenSelectItemControlWithExtent() {
     const selectItemControl = $("#selectitemcontrol");
     selectItemControl.empty();
     const control = new SIC.SelectItemControl();
-    control.itemSelected.addListener(x => alert("Uri:" + x.uri + ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
+    attachItemSelectedAlert(control);
     await control.setExtentByUri("Types", "dm:///_internal/types/internal");
     await control.initAsync(selectItemControl);
 }
@@ -60,14 +70,14 @@ export async function pageOpenSelectItemControlWithItem() {
     const selectItemControl = $("#selectitemcontrol");
     selectItemControl.empty();
     const control = new SIC.SelectItemControl();
-    control.itemSelected.addListener(x => alert("Uri:" + x.uri + ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
+    attachItemSelectedAlert(control);
     await control.setItemByUri("Types", "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
     await control.initAsync(selectItemControl);
 }
 export async function openNavigateToExtentPropertiesViaClientNavigation() {
     const navigate = new Mof.DmObject();
     navigate.setMetaClassByUri(_DatenMeister._Actions._ClientActions.__NavigateToExtentClientAction_Uri);
-    navigate.set(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId, "Data");
+    navigate.set(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId, "TemporaryData");
     navigate.set(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri, "dm:///_internal/temp");
     await FormActions.executeClientAction(navigate);
 }

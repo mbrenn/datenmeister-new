@@ -8,7 +8,6 @@ export class ControlSettings {
 }
 export class SelectItemControlBySearch {
     itemClicked = new UserEvent();
-    itemSelected = new UserEvent;
     containerDiv;
     inputBoxDiv;
     resultsDiv;
@@ -115,7 +114,7 @@ export class SelectItemControlBySearch {
         this.containerDiv.hide();
     }
     getSelectedItem() {
-        return undefined;
+        return this.selectedItem;
     }
     setExtentByUri(workspaceId, extentUri) {
         return Promise.resolve(undefined);
@@ -169,7 +168,6 @@ export class SelectItemControlBySearch {
                         tthis.lastSelectedDiv = itemDiv;
                         tthis.selectedItem = innerItem;
                         tthis.itemClicked.invoke(innerItem);
-                        alert(item.id);
                     }))(item);
                     this.resultsDiv.append(itemDiv);
                 }

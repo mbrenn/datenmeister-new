@@ -207,11 +207,11 @@ export class SelectItemControl implements ISelectItemControl {
         this.byBrowseControl.init(byBrowseDiv, this.settings.browseSettings);        
 
         const tthis = this;
-        this.byBrowseControl.itemSelected.addListener(
-            (x) => tthis.itemSelected.invoke(x));
         this.byBrowseControl.itemClicked.addListener(
             (x) => tthis.itemClicked.invoke(x));
-        
+        this.bySearchControl.itemClicked.addListener(
+            (x) => tthis.itemClicked.invoke(x));
+                
         // Adds the searching
         const bySearchDiv = $(".dm-selectitemcontrol-search", div);
         this.bySearchControl.init(bySearchDiv, this.settings.searchSettings);

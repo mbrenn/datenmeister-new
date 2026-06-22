@@ -14,7 +14,7 @@ export class ControlSettings {
 
 export class SelectItemControlBySearch implements ISelectItemControl {
     itemClicked: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
-    itemSelected: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>;
+    
     private containerDiv: JQuery<HTMLElement>;
 
     private inputBoxDiv: JQuery<HTMLElement>;
@@ -151,7 +151,7 @@ export class SelectItemControlBySearch implements ISelectItemControl {
     }
     
     getSelectedItem(): ItemWithNameAndId {
-        return undefined;
+        return this.selectedItem;
     }
 
     setExtentByUri(workspaceId: string, extentUri: string): Promise<void> {
@@ -224,7 +224,6 @@ export class SelectItemControlBySearch implements ISelectItemControl {
 
                            tthis.selectedItem = innerItem;
                            tthis.itemClicked.invoke(innerItem);
-                           alert(item.id);
                        }))(item);
 
                    this.resultsDiv.append(itemDiv);

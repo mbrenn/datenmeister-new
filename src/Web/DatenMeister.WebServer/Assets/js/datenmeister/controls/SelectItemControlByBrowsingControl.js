@@ -60,7 +60,6 @@ export class SelectItemControlByBrowsingControl {
     loadedExtents = new Array();
     /** Currently selected item, or `undefined` if nothing is selected. */
     selectedItem;
-    itemSelected = new UserEvent();
     itemClicked = new UserEvent();
     /** Root `<table>` of the rendered control; `undefined` after {@link removeControl}. */
     containerDiv;

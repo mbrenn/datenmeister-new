@@ -12,17 +12,7 @@ import {ItemWithNameAndId} from "../ApiModels.js";
  * selection events.
  */
 export interface ISelectItemControl {
-
-    /**
-     * Fired when the user has confirmed a selection via the 'Set' button
-     * (or, for sub-controls without an explicit confirmation, when an item is
-     * picked and considered final).
-     *
-     * The payload is the selected item, or `undefined` when nothing is
-     * selected — listeners must handle the `undefined` case.
-     */
-    itemSelected: UserEvent<ItemWithNameAndId>;
-
+    
     /**
      * Fired when the user has highlighted/clicked an item in the list without
      * yet confirming the selection. Use this to react to navigation, e.g. to

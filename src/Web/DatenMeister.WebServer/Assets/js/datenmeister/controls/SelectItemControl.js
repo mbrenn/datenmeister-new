@@ -34,9 +34,6 @@ export class ContainerSettings {
      * overridden to fit the surrounding UI (e.g. `"Choose"`, `"Apply"`).
      */
     setButtonText = "Set";
-    constructor() {
-        this.browseSettings = new ByBrowseControl.ControlSettings();
-    }
 }
 /**
  * Web control that lets the user pick a single item from the MOF object tree.
@@ -95,9 +92,6 @@ export class SelectItemControl {
     currentTab = "byBrowse";
     byBrowserControlDiv;
     bySearchControlDiv;
-    init(containerDiv, settings) {
-        return this.initDom(settings, containerDiv);
-    }
     /**
      * Async variant of {@link init}. Renders the control into `parent` and
      * resolves the returned promise once the workspace list (and any
@@ -119,7 +113,7 @@ export class SelectItemControl {
      * @param container JQuery-Container Element hosting the content
      * @private
      */
-    initDom(settings, container) {
+    async initDom(settings, container) {
         this.settings = settings ?? new ContainerSettings();
         this.containerDiv = container;
         // Creates the template
@@ -171,25 +165,32 @@ export class SelectItemControl {
         // Adds the searching
         const bySearchDiv = $(".dm-selectitemcontrol-search", div);
         this.bySearchControl.init(bySearchDiv, this.settings.searchSettings);
-        this.updateTabStatus();
+        await this.updateTabStatus();
         // Checks whether we need to hide the control at startup
         if (settings?.hideAtStartup) {
             this.hideControl();
         }
         return div;
     }
-    updateTabStatus(nextTab) {
+    async updateTabStatus(nextTab) {
+        const currentWorkspace = this.getCurrentlySelectedWorkspace();
         if (nextTab !== undefined) {
             this.currentTab = nextTab;
         }
         switch (this.currentTab) {
             case "byBrowse":
                 this.byBrowserControlDiv.show();
+                if (currentWorkspace !== undefined && currentWorkspace !== "" && currentWorkspace !== null) {
+                    await this.byBrowseControl.setWorkspaceById(currentWorkspace);
+                }
                 this.bySearchControlDiv.hide();
                 break;
             case "bySearch":
                 this.byBrowserControlDiv.hide();
                 this.bySearchControlDiv.show();
+                if (currentWorkspace !== undefined && currentWorkspace !== "" && currentWorkspace !== null) {
+                    await this.bySearchControl.setWorkspaceById(currentWorkspace);
+                }
                 break;
         }
     }
@@ -211,7 +212,12 @@ export class SelectItemControl {
         }
     }
     getCurrentlySelectedWorkspace() {
-        return this.byBrowseControl.getUserSelectedWorkspaceId();
+        switch (this.currentTab) {
+            case "byBrowse":
+                return this.byBrowseControl.getUserSelectedWorkspaceId();
+            case "bySearch":
+                return this.bySearchControl.getUserSelectedWorkspaceId();
+        }
     }
     showControl() {
         if (this.containerDiv !== undefined) {
@@ -282,7 +288,7 @@ export function selectItem(changeContainerCell, parameter) {
                 uri: selectedItem.uri
             });
         });
-        selectItem.init(changeContainerCell, settings);
+        await selectItem.initAsync(changeContainerCell, settings);
     });
 }
 //# sourceMappingURL=SelectItemControl.js.map

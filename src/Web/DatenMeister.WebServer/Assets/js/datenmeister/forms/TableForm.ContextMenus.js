@@ -137,7 +137,7 @@ export function createFunctionToLoadCurrentView(tableForm) {
                 const selectItemControlSettings = new SelectItemControl.ContainerSettings();
                 selectItemControlSettings.showCancelButton = false;
                 selectItemControlSettings.headline = "Select View";
-                selectItemControl.init(selectField, selectItemControlSettings);
+                await selectItemControl.initAsync(selectField, selectItemControlSettings);
                 selectItemControl.itemSelected.addListener(async (item) => {
                     tableForm.tableState.queryStatement =
                         await ClientItems.getObjectByUri(item.workspace, item.uri);
@@ -184,7 +184,7 @@ export function createFunctionToStoreCurrentView(tableForm) {
                 selectItemControlSettings.hideButtonRow = true;
                 selectItemControlSettings.showCancelButton = false;
                 selectItemControlSettings.headline = "Select Package";
-                selectItemControl.init(packageField, selectItemControlSettings);
+                await selectItemControl.initAsync(packageField, selectItemControlSettings);
                 submitButton.on('click', async () => {
                     const name = nameTextField.val();
                     if (name === undefined || name === "") {

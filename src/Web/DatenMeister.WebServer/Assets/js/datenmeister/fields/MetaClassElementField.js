@@ -29,11 +29,11 @@ export class Field extends BaseField {
             const changeMetaClassDiv = $("<div></div>");
             const button = $("<button class='btn btn-secondary' type='button'></button>");
             button.text("Change MetaClass");
-            button.on('click', () => {
+            button.on('click', async () => {
                 changeMetaClassDiv.empty();
                 const selectItemCtrl = new SelectItemControl();
-                const divSelectItem = selectItemCtrl.init(changeMetaClassDiv);
-                selectItemCtrl.setExtentByUri("Types", "dm:///_internal/types/internal");
+                const divSelectItem = await selectItemCtrl.initAsync(changeMetaClassDiv);
+                await selectItemCtrl.setExtentByUri("Types", "dm:///_internal/types/internal");
                 selectItemCtrl.itemSelected.addListener((selectedItem) => {
                     setMetaclass(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
                         .then(() => divSelectItem.remove()).then(() => {

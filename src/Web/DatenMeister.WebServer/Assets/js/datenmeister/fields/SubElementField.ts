@@ -252,7 +252,7 @@ export class Control {
             "</div>");
 
         // Adds the button which allows the user to attach an existing item
-        $(".dm-subelements-attachitem-btn", attachItem).on("click", () => {
+        $(".dm-subelements-attachitem-btn", attachItem).on("click", async () => {
             const containerDiv = $(".dm-subelements-attachitem-box", attachItem);
             containerDiv.empty();
             const selectItem = new SIC.SelectItemControl();
@@ -274,7 +274,7 @@ export class Control {
                     });
                 });
 
-            selectItem.init(containerDiv, settings);
+            await selectItem.initAsync(containerDiv, settings);
 
             return false;
         });

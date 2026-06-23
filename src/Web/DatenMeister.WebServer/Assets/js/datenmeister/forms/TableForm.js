@@ -272,7 +272,7 @@ class TableForm {
                 });
                 await selectItem.setWorkspaceById('Types');
                 await selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
-                selectItem.init(typeSelection, settings);
+                await selectItem.initAsync(typeSelection, settings);
             });
             tthis.tableCache.cacheButtons.append(btn);
             tthis.tableCache.cacheButtonsTypeSelection.append(typeSelection);

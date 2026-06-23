@@ -33,13 +33,13 @@ export class Field extends BaseField implements IFormField {
 
             const button = $("<button class='btn btn-secondary' type='button'></button>");
             button.text("Change MetaClass");
-            button.on('click', () => {
+            button.on('click', async () => {
 
                 changeMetaClassDiv.empty();
                 const selectItemCtrl = new SelectItemControl();
-                const divSelectItem = selectItemCtrl.init(changeMetaClassDiv);
+                const divSelectItem = await selectItemCtrl.initAsync(changeMetaClassDiv);
 
-                selectItemCtrl.setExtentByUri("Types", "dm:///_internal/types/internal");
+                await selectItemCtrl.setExtentByUri("Types", "dm:///_internal/types/internal");
 
                 selectItemCtrl.itemSelected.addListener(
                     (selectedItem) => {

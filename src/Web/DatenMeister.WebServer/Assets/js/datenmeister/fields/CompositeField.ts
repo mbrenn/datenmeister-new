@@ -95,7 +95,7 @@ export class Field extends BaseField implements IFormField {
                                 false);
                         });
 
-                    selectItem.init(containerDiv, settings);
+                    await selectItem.initAsync(containerDiv, settings);
 
                     return false;
                 });

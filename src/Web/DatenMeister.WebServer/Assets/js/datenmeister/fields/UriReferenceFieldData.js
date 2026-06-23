@@ -67,7 +67,7 @@ export class Field extends BaseField {
             domContainer.append(table);
             // Append the html for the selection field
             this._elementSelection = $(".dm-urireference-element", table);
-            this._selectField.init(this._elementSelection);
+            await this._selectField.initAsync(this._elementSelection);
             this._propertyField = $(".dm-urireference-property", table);
             this._fullNameField = $(".dm-urireference-fullname", table);
             this._compositeSelection = $(".dm-urireference-composites", table);

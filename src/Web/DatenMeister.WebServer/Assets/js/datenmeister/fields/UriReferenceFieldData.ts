@@ -81,7 +81,7 @@ export class Field extends BaseField implements IFormField
 
             // Append the html for the selection field
             this._elementSelection = $(".dm-urireference-element", table)
-            this._selectField.init(this._elementSelection);
+            await this._selectField.initAsync(this._elementSelection);
 
             this._propertyField = $(".dm-urireference-property", table)
             this._fullNameField = $(".dm-urireference-fullname", table)

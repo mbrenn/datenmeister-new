@@ -304,7 +304,7 @@ export function createMetaClassSelectionButtonForNewItem(buttonDiv, containerDiv
         });
         await selectItem.setWorkspaceById('Types');
         await selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
-        selectItem.init(containerDiv, settings);
+        await selectItem.initAsync(containerDiv, settings);
     });
 }
 //# sourceMappingURL=CollectionForm.js.map

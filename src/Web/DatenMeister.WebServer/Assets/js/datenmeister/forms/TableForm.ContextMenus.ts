@@ -166,7 +166,7 @@ export function createFunctionToLoadCurrentView(tableForm: TableForm) {
                 selectItemControlSettings.showCancelButton = false;
                 selectItemControlSettings.headline = "Select View";
 
-                selectItemControl.init(selectField, selectItemControlSettings);
+                await selectItemControl.initAsync(selectField, selectItemControlSettings);
 
                 selectItemControl.itemSelected.addListener(
                     async (item) => {
@@ -224,7 +224,7 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                 selectItemControlSettings.showCancelButton = false;
                 selectItemControlSettings.headline = "Select Package";
 
-                selectItemControl.init(packageField, selectItemControlSettings);
+                await selectItemControl.initAsync(packageField, selectItemControlSettings);
 
                 submitButton.on('click', async () => {
                     const name = nameTextField.val();

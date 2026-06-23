@@ -163,8 +163,9 @@ export class SelectItemControlBySearch implements ISelectItemControl {
         return Promise.resolve(undefined);
     }
 
-    setWorkspaceById(workspaceId: string): Promise<void> {
-        return Promise.resolve(undefined);
+    async setWorkspaceById(workspaceId: string): Promise<void> {
+        this.preSelectWorkspaceById = workspaceId;
+        await this.loadWorkspaces();
     }
 
     lastLoadIndex = 0;

@@ -125,8 +125,9 @@ export class SelectItemControlBySearch {
     setItemByUri(workspaceId, itemUri) {
         return Promise.resolve(undefined);
     }
-    setWorkspaceById(workspaceId) {
-        return Promise.resolve(undefined);
+    async setWorkspaceById(workspaceId) {
+        this.preSelectWorkspaceById = workspaceId;
+        await this.loadWorkspaces();
     }
     lastLoadIndex = 0;
     lastSelectedDiv;

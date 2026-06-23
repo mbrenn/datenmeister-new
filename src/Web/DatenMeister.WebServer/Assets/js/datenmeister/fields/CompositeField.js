@@ -66,7 +66,7 @@ export class Field extends BaseField {
                         }
                         document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, selectedItem.uri, selectedItem.workspace, propertyName, false);
                     });
-                    selectItem.init(containerDiv, settings);
+                    await selectItem.initAsync(containerDiv, settings);
                     return false;
                 });
                 buttonsDom.append(createButton);

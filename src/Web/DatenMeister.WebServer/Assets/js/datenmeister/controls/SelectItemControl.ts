@@ -116,10 +116,6 @@ export class SelectItemControl implements ISelectItemControl {
     currentTab: "byBrowse" | "bySearch" = "byBrowse";
     private byBrowserControlDiv: JQuery<HTMLElement>;
     private bySearchControlDiv: JQuery<HTMLElement>;
-    
-    public init(containerDiv: JQuery, settings?: ContainerSettings) {
-        return this.initDom(settings, containerDiv);
-    }
 
     /**
      * Async variant of {@link init}. Renders the control into `parent` and
@@ -144,7 +140,7 @@ export class SelectItemControl implements ISelectItemControl {
      * @param container JQuery-Container Element hosting the content
      * @private
      */
-    private initDom(settings: ContainerSettings, container: JQuery<HTMLElement>) {
+    private async initDom(settings: ContainerSettings, container: JQuery<HTMLElement>) {
         this.settings = settings ?? new ContainerSettings();
 
         this.containerDiv = container;
@@ -212,7 +208,7 @@ export class SelectItemControl implements ISelectItemControl {
         const bySearchDiv = $(".dm-selectitemcontrol-search", div);
         this.bySearchControl.init(bySearchDiv, this.settings.searchSettings);
         
-        this.updateTabStatus();
+        await this.updateTabStatus();
 
         // Checks whether we need to hide the control at startup
         if (settings?.hideAtStartup) {
@@ -222,7 +218,8 @@ export class SelectItemControl implements ISelectItemControl {
         return div;
     }
     
-    updateTabStatus(nextTab? : "byBrowse" | "bySearch") {
+    async updateTabStatus(nextTab? : "byBrowse" | "bySearch") {
+        const currentWorkspace= this.getCurrentlySelectedWorkspace();
         if(nextTab !== undefined) {
             this.currentTab = nextTab;
         }
@@ -230,11 +227,18 @@ export class SelectItemControl implements ISelectItemControl {
         switch (this.currentTab) {
             case "byBrowse":
                 this.byBrowserControlDiv.show();
+                if(currentWorkspace !== undefined && currentWorkspace !== "" && currentWorkspace !== null) {
+                    await this.byBrowseControl.setWorkspaceById(currentWorkspace);
+                }
+                
                 this.bySearchControlDiv.hide();
                 break;
             case "bySearch":
                 this.byBrowserControlDiv.hide();
                 this.bySearchControlDiv.show();
+                if(currentWorkspace !== undefined && currentWorkspace !== "" && currentWorkspace !== null) {
+                    await this.bySearchControl.setWorkspaceById(currentWorkspace);
+                }
                 break;
         }
     }
@@ -260,7 +264,12 @@ export class SelectItemControl implements ISelectItemControl {
     
     getCurrentlySelectedWorkspace()
     {
-        return this.byBrowseControl.getUserSelectedWorkspaceId();
+        switch(this.currentTab) {
+            case "byBrowse":
+                return this.byBrowseControl.getUserSelectedWorkspaceId();
+            case "bySearch":
+                return this.bySearchControl.getUserSelectedWorkspaceId();
+        }
     }
     
     showControl(): void {
@@ -344,7 +353,7 @@ export function selectItem(changeContainerCell: JQuery<HTMLElement>, parameter: 
                 });
             });
 
-        selectItem.init(changeContainerCell, settings);
+        await selectItem.initAsync(changeContainerCell, settings);
     });
 }
 

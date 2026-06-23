@@ -403,6 +403,6 @@ export function createMetaClassSelectionButtonForNewItem(buttonDiv: JQuery, cont
         await selectItem.setWorkspaceById('Types');
         await selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
 
-        selectItem.init(containerDiv, settings);
+        await selectItem.initAsync(containerDiv, settings);
     });
 }

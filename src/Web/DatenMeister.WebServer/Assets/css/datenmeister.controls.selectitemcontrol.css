@@ -123,11 +123,12 @@
     padding: 5px;
     border: 1px solid black;
     margin: 5px;
+    cursor: pointer;
 }
 
 .dm-sic-search-results div.selected {
     background-color: lightskyblue;
-    border: 3px solid black;
+    border: 1px solid black;
 }
 
 

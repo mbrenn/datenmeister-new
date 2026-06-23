@@ -20,9 +20,9 @@ export class ContainerSettings{
      */
     hideAtStartup = false;
     
-    browseSettings: ByBrowseControl.ControlSettings;
+    browseSettings: ByBrowseControl.ControlSettings = new ByBrowseControl.ControlSettings();
 
-    searchSettings: BySearch.ControlSettings;
+    searchSettings: BySearch.ControlSettings = new BySearch.ControlSettings();
 
     /**
      * When `true`, a "Cancel" button is rendered next to the "Set" button.
@@ -45,10 +45,6 @@ export class ContainerSettings{
      * overridden to fit the surrounding UI (e.g. `"Choose"`, `"Apply"`).
      */
     setButtonText = "Set";
-    
-    constructor() {
-        this.browseSettings = new ByBrowseControl.ControlSettings();
-    }
 }
 
 

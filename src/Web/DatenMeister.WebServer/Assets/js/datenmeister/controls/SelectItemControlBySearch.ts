@@ -8,8 +8,8 @@ import * as ClientElements from "../client/Elements.js";
 import * as DomHelper from "../DomHelper.js";
 import {DmObject} from "../Mof.js";
 
-
 export class ControlSettings {
+    maxItemsPerSearch: number = 10;
 }
 
 export class SelectItemControlBySearch implements ISelectItemControl {
@@ -32,7 +32,7 @@ export class SelectItemControlBySearch implements ISelectItemControl {
      * pending".
      */
     private preSelectWorkspaceById: string | undefined;
-
+    private settings: ControlSettings;
 
     init(parent: JQuery<HTMLElement>, settings?: ControlSettings): JQuery {
 
@@ -62,6 +62,7 @@ export class SelectItemControlBySearch implements ISelectItemControl {
     private initDom(settings: ControlSettings, container: JQuery<HTMLElement>) {
 
         const tthis = this;
+        this.settings = settings ?? new ControlSettings();
         // Creates the template
         const div = $(
             "<div class='dm-sic-search'>" +
@@ -194,7 +195,7 @@ export class SelectItemControlBySearch implements ISelectItemControl {
             QueryEngine.getElementsOfWorkspace(queryBuilder, selectWorkspace);
             QueryEngine.flatten(queryBuilder);
             QueryEngine.filterByFreetext(queryBuilder, text, "name");
-            QueryEngine.limit(queryBuilder, 100);
+            QueryEngine.limit(queryBuilder, this.settings.maxItemsPerSearch + 1);
             
             const result = await ClientElements.queryObject(
                 queryBuilder.queryStatement
@@ -202,9 +203,22 @@ export class SelectItemControlBySearch implements ISelectItemControl {
             
            if(this.lastLoadIndex == loadIndex) {
                this.resultsDiv.empty();
+               let found = 0;
                for (const n in result.result) {
                    if (!result.result.hasOwnProperty(n)) continue;
 
+                   // Only 10 items shall be shown. 
+                   if(found >= this.settings.maxItemsPerSearch)
+                   {
+                       const itemDiv = $("<div><em>... and more ...</em></div>");
+                       this.resultsDiv.append(itemDiv);
+                       break;
+                   }
+                   
+                   found++;
+                   
+                   // Create the div for the items themselves
+                   
                    const item = result.result[n];
                    const itemDiv = $("<div>" + item.get("name", Mof.ObjectType.String) + "</div>");
                    const _ = DomHelper.injectNameByObject(itemDiv, item,

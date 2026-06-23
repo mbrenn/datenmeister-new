@@ -13,8 +13,8 @@ export class ContainerSettings {
      * and must be made visible by calling {@link SelectItemControlByBrowsingControl.showControl}.
      */
     hideAtStartup = false;
-    browseSettings;
-    searchSettings;
+    browseSettings = new ByBrowseControl.ControlSettings();
+    searchSettings = new BySearch.ControlSettings();
     /**
      * When `true`, a "Cancel" button is rendered next to the "Set" button.
      * Clicking it removes the control from the DOM (see

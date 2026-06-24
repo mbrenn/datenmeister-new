@@ -244,11 +244,27 @@ export class SelectItemControl implements ISelectItemControl {
     }
     
     async setWorkspaceById(workspaceId: string) {
-        await this.byBrowseControl.setWorkspaceById(workspaceId);
+        switch(this.currentTab) {
+            case "byBrowse":
+                await this.byBrowseControl.setWorkspaceById(workspaceId);
+                break;
+            case "bySearch":
+                await this.bySearchControl.setWorkspaceById(workspaceId);
+                break;
+        }        
     }
+    
     async setExtentByUri(workspaceId: string, extentUri: string): Promise<void> {
-        await this.byBrowseControl.setExtentByUri(workspaceId, extentUri)    
+        switch(this.currentTab) {
+            case "byBrowse":
+                await this.byBrowseControl.setExtentByUri(workspaceId, extentUri);
+                break;
+            case "bySearch":
+                await this.bySearchControl.setExtentByUri(workspaceId, extentUri);
+                break;
+        }
     }
+    
     async setItemByUri(workspaceId: string, itemUri: string): Promise<void> {
         await this.byBrowseControl.setItemByUri(workspaceId, itemUri)    
     }

@@ -35,7 +35,7 @@ The names of these controls are:
 
 ==== Mode: Browsing instance
 
-* Nothing to be specified here, we can keep the existing concept. The interfaces from the container element to that instance need to be propagated
+[x] Nothing to be specified here, we can keep the existing concept. The interfaces from the container element to that instance need to be propagated
 
 ==== Mode: Last History Instance
 
@@ -43,11 +43,11 @@ The names of these controls are:
 
 ==== Mode: Find by Freetext
 
-* The user has to select the Workspace itself. This is a standard Dropdown. By selecting the workspace, the search space can be reduced and higher performance can be achieved.
-* The user can select the interface in which the extent is being searched. In case nothing is selected, within all extents of the given workspace will be selected
-* The user can type-in a free text. Upon all elements of the selected extent(s), the name field will be evaluated. In case an element is found via the compositing properties, it will be shown as a list. The user can now click on that element to select it.
-* The search is performed via the query logic. No other logic will be implemented on server side since the existing infrastructure is able to support the current need. 
-* While the user is typing the freetext, the query shall be sent out after 500 ms via client-side buffering. It is to be ensured that older requests will not overwrite the results of the new requests
-* The first 100 items are to be shown in a scrollable window. This scrollable window has a size showing about 10 items. 
-* In case the user clicks on one of the items, it is to be regarded as selected according the configuration of 
+* [x] The user has to select the Workspace itself. This is a standard Dropdown. By selecting the workspace, the search space can be reduced and higher performance can be achieved.
+* [ ] The user can select the the extent which is scoped for searching. In case nothing is selected, within all extents of the given workspace will be selected
+* [x] The user can type-in a free text. Upon all elements of the selected extent(s), the name field will be evaluated. In case an element is found via the compositing properties, it will be shown as a list. The user can now click on that element to select it.
+* [x] The search is performed via the query logic. No other logic will be implemented on server side since the existing infrastructure is able to support the current need. 
+* [ ] While the user is typing the freetext, the query shall be sent out after 500 ms via client-side buffering. It is to be ensured that older requests will not overwrite the results of the new requests
+* [ ] The first 100 items are to be shown in a scrollable window. This scrollable window has a size showing about 10 items. 
+* [ ] In case the user clicks on one of the items, it is to be regarded as selected according the configuration of the SelectItemControl.cs
 

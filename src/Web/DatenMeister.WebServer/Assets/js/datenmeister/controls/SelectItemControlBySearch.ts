@@ -20,19 +20,20 @@ export class SelectItemControlBySearch implements ISelectItemControl {
     private inputBoxDiv: JQuery<HTMLElement>;
     private resultsDiv: JQuery<HTMLElement>;
     private htmlWorkspaceSelect: JQuery<HTMLElement>;
+    private htmlExtentSelect: JQuery<HTMLElement>;
     
     private selectedItem: DmObject;
 
     /** Last list of workspaces fetched from the server, used by {@link getSelectedWorkspace}. */
     private loadedWorkspaces: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     
-    /**
-     * Workspace id queued for pre-selection. Consumed on the next workspace
-     * load and reset to `undefined`. `undefined` means "no pre-selection
-     * pending".
-     */
+    /** Last list of extents fetched for the active workspace, used by {@link getSelectedExtent}. */
+    private loadedExtents: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
+    
     private preSelectWorkspaceById: string | undefined;
+    private preSelectExtentByUri: string | undefined;
     private settings: ControlSettings;
+    
 
     init(parent: JQuery<HTMLElement>, settings?: ControlSettings): JQuery {
 
@@ -68,19 +69,24 @@ export class SelectItemControlBySearch implements ISelectItemControl {
             "<div class='dm-sic-search'>" +
             "<table>" +
             "<tr><td><span>Workspace:</span></td><td><div class='dm-sic-search-workspace'></div></td></tr>" +
-            "<tr><td><span>Searchtext:</span></td>" +
+            "<tr><td><span>Extent:</span></td><td><div class='dm-sic-search-workspace'></div></td></tr>" +
+            "<tr><td><span>Search text:</span></td>" +
             "<td><div class='dm-sic-search-input'><input type='text' /></div></td></tr>" +
             "<tr><td colspan='2'><div class='dm-sic-search-results'></div></td></tr>" + 
             "</table></div>");
         
         this.inputBoxDiv = $(".dm-sic-search-input input", div);
         this.resultsDiv = $(".dm-sic-search-results", div);
-        const workspaceDiv = $(".dm-sic-search-workspace", div);        
-        
+
+        // Creates the dropdown for the workspaces
         this.htmlWorkspaceSelect = $("<select></select>");
-        this.htmlWorkspaceSelect.on("change", () => tthis.onWorkspaceChangedByUser());
-        $("dm-sic-search-workspace", div).append(this.htmlWorkspaceSelect);
-        workspaceDiv.append(this.htmlWorkspaceSelect);
+        this.htmlWorkspaceSelect.on("change", async () => await tthis.onWorkspaceChangedByUser());
+        $(".dm-sic-search-workspace", div).append(this.htmlWorkspaceSelect);
+        
+        // Creates the dropdown for the extents
+        this.htmlExtentSelect = $("<select></select>");
+        this.htmlExtentSelect.on("change", () => tthis.onExtentChangedByUser());
+        $(".dm-sic-search-extent", div).append(this.htmlExtentSelect);
         
         this.inputBoxDiv.on("input", () => tthis.onInputChanged());
 
@@ -88,19 +94,25 @@ export class SelectItemControlBySearch implements ISelectItemControl {
         this.containerDiv = div;
         return div;
     }
-
-    /**
-     * Returns the workspace id currently selected in the dropdown, or the
-     * empty string if no workspace is selected. This reflects the *DOM* state
-     * — pending pre-selections that have not been applied yet are not visible
-     * here.
-     */
+    
     getUserSelectedWorkspaceId(): string {
         return this.htmlWorkspaceSelect.val()?.toString() ?? "";
     }
+    
+    getUserSelectedExtent(): string {
+        return this.htmlExtentSelect.val()?.toString() ?? "";
+    }
 
-    onWorkspaceChangedByUser(): any {
+    async onWorkspaceChangedByUser() {
         this.inputBoxDiv.trigger('focus');        
+        this.inputBoxDiv.val('');
+        this.htmlExtentSelect.val("");
+        this.preSelectExtentByUri = "";
+        await this.loadExtents();
+    }
+
+    onExtentChangedByUser() {
+        this.inputBoxDiv.trigger('focus');
         this.inputBoxDiv.val('');
     }
 
@@ -139,6 +151,60 @@ export class SelectItemControlBySearch implements ISelectItemControl {
         if (currentlySelectedWorkspace !== undefined) {
             this.htmlWorkspaceSelect.val(currentlySelectedWorkspace);
         }
+    }
+
+    /**
+     * Loads the extents for the currently selected workspace and (re)populates
+     * the extent dropdown. Honors a pending {@link preSelectExtentByUri} value,
+     * consuming it in the process. After the dropdown has been refreshed,
+     * {@link loadItems} is called so that the child list and breadcrumb stay
+     * in sync.
+     *
+     * @returns A promise that resolves to `true` when the GUI is updated.
+     */
+    async loadExtents() {
+        const tthis = this;
+
+        const workspaceId = this.getUserSelectedWorkspaceId();
+
+        let extentUri = this.getUserSelectedExtent();
+        if (this.preSelectExtentByUri !== undefined) {
+            extentUri = this.preSelectExtentByUri;
+            this.preSelectExtentByUri = undefined;
+        }
+
+        this.htmlExtentSelect.empty();
+
+        if (workspaceId === "") {
+            const select = $("<option value=''>--- Select Workspace ---</option>");
+            this.htmlExtentSelect.append(select);
+        } else {
+            const items = await EL.getAllExtents(workspaceId);
+            this.htmlExtentSelect.empty();
+
+            const none = $("<option value=''>--- None ---</option>");
+            tthis.htmlExtentSelect.append(none);
+
+            tthis.loadedExtents = items;
+
+            for (const n in items) {
+                if (!items.hasOwnProperty(n)) continue;
+
+                const item = items[n];
+                const option = $("<option></option>");
+                option.val(item.extentUri);
+                option.text(item.name);
+
+                tthis.htmlExtentSelect.append(option);
+            }
+
+            // Restores the selected item
+            if (extentUri !== undefined) {
+                this.htmlExtentSelect.val(extentUri);
+            }
+        }
+
+        return true;
     }
 
     showControl()
@@ -191,9 +257,16 @@ export class SelectItemControlBySearch implements ISelectItemControl {
         }
         else
         {
+            const extentName = this.getUserSelectedExtent();
+            
             // Now load the items with the given freetext name
             const queryBuilder = new QueryEngine.QueryBuilder();
-            QueryEngine.getElementsOfWorkspace(queryBuilder, selectWorkspace);
+            if(extentName === undefined || extentName === null || extentName === "") {
+                QueryEngine.getElementsOfWorkspace(queryBuilder, selectWorkspace);
+            }
+            else {
+                QueryEngine.getElementsOfExtent(queryBuilder, selectWorkspace, extentName);
+            }
             QueryEngine.flatten(queryBuilder);
             QueryEngine.filterByFreetext(queryBuilder, text, "name");
             QueryEngine.limit(queryBuilder, this.settings.maxItemsPerSearch + 1);
@@ -209,17 +282,16 @@ export class SelectItemControlBySearch implements ISelectItemControl {
                    if (!result.result.hasOwnProperty(n)) continue;
 
                    // Only 10 items shall be shown. 
-                   if(found >= this.settings.maxItemsPerSearch)
-                   {
+                   if (found >= this.settings.maxItemsPerSearch) {
                        const itemDiv = $("<div class='more'><em>... and more ...</em></div>");
                        this.resultsDiv.append(itemDiv);
                        break;
                    }
-                   
+
                    found++;
-                   
+
                    // Create the div for the items themselves
-                   
+
                    const item = result.result[n];
                    const itemDiv = $("<div>" + item.get("name", Mof.ObjectType.String) + "</div>");
                    const _ = DomHelper.injectNameByObject(itemDiv, item,
@@ -230,10 +302,10 @@ export class SelectItemControlBySearch implements ISelectItemControl {
 
                    ((innerItem) =>
                        itemDiv.on('click', () => {
-                           if(this.lastSelectedDiv !== undefined) {
+                           if (this.lastSelectedDiv !== undefined) {
                                tthis.lastSelectedDiv.removeClass('selected');
                            }
-                           
+
                            itemDiv.addClass('selected');
                            tthis.lastSelectedDiv = itemDiv;
 

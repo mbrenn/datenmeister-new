@@ -195,10 +195,24 @@ export class SelectItemControl {
         }
     }
     async setWorkspaceById(workspaceId) {
-        await this.byBrowseControl.setWorkspaceById(workspaceId);
+        switch (this.currentTab) {
+            case "byBrowse":
+                await this.byBrowseControl.setWorkspaceById(workspaceId);
+                break;
+            case "bySearch":
+                await this.bySearchControl.setWorkspaceById(workspaceId);
+                break;
+        }
     }
     async setExtentByUri(workspaceId, extentUri) {
-        await this.byBrowseControl.setExtentByUri(workspaceId, extentUri);
+        switch (this.currentTab) {
+            case "byBrowse":
+                await this.byBrowseControl.setExtentByUri(workspaceId, extentUri);
+                break;
+            case "bySearch":
+                await this.bySearchControl.setExtentByUri(workspaceId, extentUri);
+                break;
+        }
     }
     async setItemByUri(workspaceId, itemUri) {
         await this.byBrowseControl.setItemByUri(workspaceId, itemUri);

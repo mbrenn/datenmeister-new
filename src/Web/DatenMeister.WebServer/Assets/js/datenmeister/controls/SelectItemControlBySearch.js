@@ -13,15 +13,14 @@ export class SelectItemControlBySearch {
     inputBoxDiv;
     resultsDiv;
     htmlWorkspaceSelect;
+    htmlExtentSelect;
     selectedItem;
     /** Last list of workspaces fetched from the server, used by {@link getSelectedWorkspace}. */
     loadedWorkspaces = new Array();
-    /**
-     * Workspace id queued for pre-selection. Consumed on the next workspace
-     * load and reset to `undefined`. `undefined` means "no pre-selection
-     * pending".
-     */
+    /** Last list of extents fetched for the active workspace, used by {@link getSelectedExtent}. */
+    loadedExtents = new Array();
     preSelectWorkspaceById;
+    preSelectExtentByUri;
     settings;
     init(parent, settings) {
         // Performs the initialization of the DOM, providing all elements
@@ -51,32 +50,40 @@ export class SelectItemControlBySearch {
         const div = $("<div class='dm-sic-search'>" +
             "<table>" +
             "<tr><td><span>Workspace:</span></td><td><div class='dm-sic-search-workspace'></div></td></tr>" +
-            "<tr><td><span>Searchtext:</span></td>" +
+            "<tr><td><span>Extent:</span></td><td><div class='dm-sic-search-workspace'></div></td></tr>" +
+            "<tr><td><span>Search text:</span></td>" +
             "<td><div class='dm-sic-search-input'><input type='text' /></div></td></tr>" +
             "<tr><td colspan='2'><div class='dm-sic-search-results'></div></td></tr>" +
             "</table></div>");
         this.inputBoxDiv = $(".dm-sic-search-input input", div);
         this.resultsDiv = $(".dm-sic-search-results", div);
-        const workspaceDiv = $(".dm-sic-search-workspace", div);
+        // Creates the dropdown for the workspaces
         this.htmlWorkspaceSelect = $("<select></select>");
-        this.htmlWorkspaceSelect.on("change", () => tthis.onWorkspaceChangedByUser());
-        $("dm-sic-search-workspace", div).append(this.htmlWorkspaceSelect);
-        workspaceDiv.append(this.htmlWorkspaceSelect);
+        this.htmlWorkspaceSelect.on("change", async () => await tthis.onWorkspaceChangedByUser());
+        $(".dm-sic-search-workspace", div).append(this.htmlWorkspaceSelect);
+        // Creates the dropdown for the extents
+        this.htmlExtentSelect = $("<select></select>");
+        this.htmlExtentSelect.on("change", () => tthis.onExtentChangedByUser());
+        $(".dm-sic-search-extent", div).append(this.htmlExtentSelect);
         this.inputBoxDiv.on("input", () => tthis.onInputChanged());
         container.append(div);
         this.containerDiv = div;
         return div;
     }
-    /**
-     * Returns the workspace id currently selected in the dropdown, or the
-     * empty string if no workspace is selected. This reflects the *DOM* state
-     * — pending pre-selections that have not been applied yet are not visible
-     * here.
-     */
     getUserSelectedWorkspaceId() {
         return this.htmlWorkspaceSelect.val()?.toString() ?? "";
     }
-    onWorkspaceChangedByUser() {
+    getUserSelectedExtent() {
+        return this.htmlExtentSelect.val()?.toString() ?? "";
+    }
+    async onWorkspaceChangedByUser() {
+        this.inputBoxDiv.trigger('focus');
+        this.inputBoxDiv.val('');
+        this.htmlExtentSelect.val("");
+        this.preSelectExtentByUri = "";
+        await this.loadExtents();
+    }
+    onExtentChangedByUser() {
         this.inputBoxDiv.trigger('focus');
         this.inputBoxDiv.val('');
     }
@@ -109,6 +116,50 @@ export class SelectItemControlBySearch {
         if (currentlySelectedWorkspace !== undefined) {
             this.htmlWorkspaceSelect.val(currentlySelectedWorkspace);
         }
+    }
+    /**
+     * Loads the extents for the currently selected workspace and (re)populates
+     * the extent dropdown. Honors a pending {@link preSelectExtentByUri} value,
+     * consuming it in the process. After the dropdown has been refreshed,
+     * {@link loadItems} is called so that the child list and breadcrumb stay
+     * in sync.
+     *
+     * @returns A promise that resolves to `true` when the GUI is updated.
+     */
+    async loadExtents() {
+        const tthis = this;
+        const workspaceId = this.getUserSelectedWorkspaceId();
+        let extentUri = this.getUserSelectedExtent();
+        if (this.preSelectExtentByUri !== undefined) {
+            extentUri = this.preSelectExtentByUri;
+            this.preSelectExtentByUri = undefined;
+        }
+        this.htmlExtentSelect.empty();
+        if (workspaceId === "") {
+            const select = $("<option value=''>--- Select Workspace ---</option>");
+            this.htmlExtentSelect.append(select);
+        }
+        else {
+            const items = await EL.getAllExtents(workspaceId);
+            this.htmlExtentSelect.empty();
+            const none = $("<option value=''>--- None ---</option>");
+            tthis.htmlExtentSelect.append(none);
+            tthis.loadedExtents = items;
+            for (const n in items) {
+                if (!items.hasOwnProperty(n))
+                    continue;
+                const item = items[n];
+                const option = $("<option></option>");
+                option.val(item.extentUri);
+                option.text(item.name);
+                tthis.htmlExtentSelect.append(option);
+            }
+            // Restores the selected item
+            if (extentUri !== undefined) {
+                this.htmlExtentSelect.val(extentUri);
+            }
+        }
+        return true;
     }
     showControl() {
         this.containerDiv.show();
@@ -147,9 +198,15 @@ export class SelectItemControlBySearch {
             this.resultsDiv.show();
         }
         else {
+            const extentName = this.getUserSelectedExtent();
             // Now load the items with the given freetext name
             const queryBuilder = new QueryEngine.QueryBuilder();
-            QueryEngine.getElementsOfWorkspace(queryBuilder, selectWorkspace);
+            if (extentName === undefined || extentName === null || extentName === "") {
+                QueryEngine.getElementsOfWorkspace(queryBuilder, selectWorkspace);
+            }
+            else {
+                QueryEngine.getElementsOfExtent(queryBuilder, selectWorkspace, extentName);
+            }
             QueryEngine.flatten(queryBuilder);
             QueryEngine.filterByFreetext(queryBuilder, text, "name");
             QueryEngine.limit(queryBuilder, this.settings.maxItemsPerSearch + 1);

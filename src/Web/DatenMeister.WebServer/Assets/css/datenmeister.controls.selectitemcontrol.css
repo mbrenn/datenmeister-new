@@ -126,6 +126,10 @@
     cursor: pointer;
 }
 
+.dm-sic-search-results div.more {
+    cursor: default;
+}
+
 .dm-sic-search-results div.selected {
     background-color: lightskyblue;
     border: 1px solid black;

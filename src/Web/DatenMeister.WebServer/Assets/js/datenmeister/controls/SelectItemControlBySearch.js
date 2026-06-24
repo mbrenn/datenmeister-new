@@ -162,7 +162,7 @@ export class SelectItemControlBySearch {
                         continue;
                     // Only 10 items shall be shown. 
                     if (found >= this.settings.maxItemsPerSearch) {
-                        const itemDiv = $("<div><em>... and more ...</em></div>");
+                        const itemDiv = $("<div class='more'><em>... and more ...</em></div>");
                         this.resultsDiv.append(itemDiv);
                         break;
                     }

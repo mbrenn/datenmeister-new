@@ -51,7 +51,7 @@ export interface ISelectItemControl {
      * @returns A promise that resolves once the GUI reflects the selection.
      * @throws When no item can be resolved for the given workspace/URI pair.
      */
-    setItemByUri(workspaceId: string, itemUri: string) : Promise<void>;
+    setItemByUri?(workspaceId: string, itemUri: string) : Promise<void>;
 
     /**
      * Returns the currently selected item, or `undefined` if nothing is

@@ -68,9 +68,9 @@ export class SelectItemControlBySearch implements ISelectItemControl {
         const div = $(
             "<div class='dm-sic-search'>" +
             "<table>" +
-            "<tr><td><span>Workspace:</span></td><td><div class='dm-sic-search-workspace'></div></td></tr>" +
-            "<tr><td><span>Extent:</span></td><td><div class='dm-sic-search-workspace'></div></td></tr>" +
-            "<tr><td><span>Search text:</span></td>" +
+            "<tr><th><span>Workspace:</span></th><td><div class='dm-sic-search-workspace'></div></td></tr>" +
+            "<tr><th><span>Extent:</span></th><td><div class='dm-sic-search-extent'></div></td></tr>" +
+            "<tr><th><span>Search text:</span></th>" +
             "<td><div class='dm-sic-search-input'><input type='text' /></div></td></tr>" +
             "<tr><td colspan='2'><div class='dm-sic-search-results'></div></td></tr>" + 
             "</table></div>");
@@ -99,7 +99,7 @@ export class SelectItemControlBySearch implements ISelectItemControl {
         return this.htmlWorkspaceSelect.val()?.toString() ?? "";
     }
     
-    getUserSelectedExtent(): string {
+    getUserSelectedExtentUri(): string {
         return this.htmlExtentSelect.val()?.toString() ?? "";
     }
 
@@ -151,6 +151,8 @@ export class SelectItemControlBySearch implements ISelectItemControl {
         if (currentlySelectedWorkspace !== undefined) {
             this.htmlWorkspaceSelect.val(currentlySelectedWorkspace);
         }
+
+        await this.loadExtents();
     }
 
     /**
@@ -167,7 +169,7 @@ export class SelectItemControlBySearch implements ISelectItemControl {
 
         const workspaceId = this.getUserSelectedWorkspaceId();
 
-        let extentUri = this.getUserSelectedExtent();
+        let extentUri = this.getUserSelectedExtentUri();
         if (this.preSelectExtentByUri !== undefined) {
             extentUri = this.preSelectExtentByUri;
             this.preSelectExtentByUri = undefined;
@@ -221,12 +223,11 @@ export class SelectItemControlBySearch implements ISelectItemControl {
         return this.selectedItem;
     }
 
-    setExtentByUri(workspaceId: string, extentUri: string): Promise<void> {
-        return Promise.resolve(undefined);
-    }
-
-    setItemByUri(workspaceId: string, itemUri: string): Promise<void> {
-        return Promise.resolve(undefined);
+    async setExtentByUri(workspaceId: string, extentUri: string): Promise<void> {
+        this.preSelectWorkspaceById = workspaceId;
+        this.preSelectExtentByUri = extentUri;
+        await this.loadWorkspaces();
+        await this.loadExtents();
     }
 
     async setWorkspaceById(workspaceId: string): Promise<void> {
@@ -257,7 +258,7 @@ export class SelectItemControlBySearch implements ISelectItemControl {
         }
         else
         {
-            const extentName = this.getUserSelectedExtent();
+            const extentName = this.getUserSelectedExtentUri();
             
             // Now load the items with the given freetext name
             const queryBuilder = new QueryEngine.QueryBuilder();

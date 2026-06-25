@@ -174,22 +174,29 @@ export class SelectItemControl {
     }
     async updateTabStatus(nextTab) {
         const currentWorkspace = this.getCurrentlySelectedWorkspace();
+        const currentExtentUri = this.getCurrentlySelectedExtentUri();
         if (nextTab !== undefined) {
             this.currentTab = nextTab;
         }
         switch (this.currentTab) {
             case "byBrowse":
+                this.bySearchControlDiv.hide();
                 this.byBrowserControlDiv.show();
                 if (currentWorkspace !== undefined && currentWorkspace !== "" && currentWorkspace !== null) {
                     await this.byBrowseControl.setWorkspaceById(currentWorkspace);
                 }
-                this.bySearchControlDiv.hide();
+                if (currentExtentUri !== undefined && currentExtentUri !== "" && currentExtentUri !== null) {
+                    await this.byBrowseControl.setExtentByUri(currentWorkspace, currentExtentUri);
+                }
                 break;
             case "bySearch":
                 this.byBrowserControlDiv.hide();
                 this.bySearchControlDiv.show();
                 if (currentWorkspace !== undefined && currentWorkspace !== "" && currentWorkspace !== null) {
                     await this.bySearchControl.setWorkspaceById(currentWorkspace);
+                }
+                if (currentExtentUri !== undefined && currentExtentUri !== "" && currentExtentUri !== null) {
+                    await this.bySearchControl.setExtentByUri(currentWorkspace, currentExtentUri);
                 }
                 break;
         }
@@ -231,6 +238,14 @@ export class SelectItemControl {
                 return this.byBrowseControl.getUserSelectedWorkspaceId();
             case "bySearch":
                 return this.bySearchControl.getUserSelectedWorkspaceId();
+        }
+    }
+    getCurrentlySelectedExtentUri() {
+        switch (this.currentTab) {
+            case "byBrowse":
+                return this.byBrowseControl.getUserSelectedExtentUri();
+            case "bySearch":
+                return this.bySearchControl.getUserSelectedExtentUri();
         }
     }
     showControl() {

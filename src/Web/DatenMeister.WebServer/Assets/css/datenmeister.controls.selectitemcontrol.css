@@ -137,7 +137,6 @@
 
 
 .dm-sic-search table {
-    margin-top: 5px;
     border-collapse: collapse;
 }
 
@@ -152,4 +151,8 @@
     padding: 5px 10px 5px 10px;
     border: black 1px solid;
     vertical-align: top;
+}
+
+.dm-sic-search select {
+    width: 400px;
 }

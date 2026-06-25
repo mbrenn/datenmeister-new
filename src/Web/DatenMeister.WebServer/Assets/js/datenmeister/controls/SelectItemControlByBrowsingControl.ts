@@ -475,7 +475,7 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
                 // complete extent
                 selectedItem = undefined;
             } else {
-                // User has selected a specfic item
+                // User has selected a specific item
                 selectedItem =
                     {
                         uri: this.preSelectItemUri,
@@ -645,7 +645,6 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
         }
     }
 
-
     /**
      * Appends a single clickable entry to the breadcrumb list.
      *
@@ -669,5 +668,4 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
 
         this.htmlBreadcrumbList.append(breadcrumbItem);
     }
-    
 }

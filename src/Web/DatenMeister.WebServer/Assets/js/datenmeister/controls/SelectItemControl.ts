@@ -229,26 +229,24 @@ export class SelectItemControl implements ISelectItemControl {
             case "byBrowse":
                 this.bySearchControlDiv.hide();
                 this.byBrowserControlDiv.show();
-                if(currentWorkspace !== undefined && currentWorkspace !== "" && currentWorkspace !== null) {
+
+                if (currentExtentUri !== undefined && currentExtentUri !== "" && currentExtentUri !== null) {
+                    await this.byBrowseControl.setExtentByUri(currentWorkspace, currentExtentUri);
+                } else if (currentWorkspace !== undefined && currentWorkspace !== "" && currentWorkspace !== null) {
                     await this.byBrowseControl.setWorkspaceById(currentWorkspace);
                 }
-                
-                if(currentExtentUri !== undefined && currentExtentUri !== "" && currentExtentUri !== null) {
-                    await this.byBrowseControl.setExtentByUri(currentWorkspace, currentExtentUri);
-                }
-                
+
                 break;
             case "bySearch":
                 this.byBrowserControlDiv.hide();
                 this.bySearchControlDiv.show();
-                if(currentWorkspace !== undefined && currentWorkspace !== "" && currentWorkspace !== null) {
+
+                if (currentExtentUri !== undefined && currentExtentUri !== "" && currentExtentUri !== null) {
+                    await this.bySearchControl.setExtentByUri(currentWorkspace, currentExtentUri);
+                } else if (currentWorkspace !== undefined && currentWorkspace !== "" && currentWorkspace !== null) {
                     await this.bySearchControl.setWorkspaceById(currentWorkspace);
                 }
 
-                if(currentExtentUri !== undefined && currentExtentUri !== "" && currentExtentUri !== null) {
-                    await this.bySearchControl.setExtentByUri(currentWorkspace, currentExtentUri);
-                }
-                
                 break;
         }
     }

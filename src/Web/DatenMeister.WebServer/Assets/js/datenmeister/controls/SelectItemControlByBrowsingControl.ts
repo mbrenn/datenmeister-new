@@ -443,7 +443,8 @@ export class SelectItemControlByBrowsingControl implements ISelectItemControl {
      * {@link getUserSelectedWorkspaceId} for the same caveat.
      */
     getUserSelectedExtentUri(): string {
-        return this.htmlExtentSelect.val()?.toString() ?? "";
+        const extent = this.htmlExtentSelect.val()?.toString() ?? "";
+        return extent === "" ? undefined : extent;
     }
 
     /**

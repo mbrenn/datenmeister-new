@@ -369,7 +369,8 @@ export class SelectItemControlByBrowsingControl {
      * {@link getUserSelectedWorkspaceId} for the same caveat.
      */
     getUserSelectedExtentUri() {
-        return this.htmlExtentSelect.val()?.toString() ?? "";
+        const extent = this.htmlExtentSelect.val()?.toString() ?? "";
+        return extent === "" ? undefined : extent;
     }
     /**
      * Refreshes the children list and the "Selected Item" display so that

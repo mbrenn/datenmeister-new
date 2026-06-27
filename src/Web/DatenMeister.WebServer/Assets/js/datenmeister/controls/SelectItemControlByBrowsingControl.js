@@ -400,7 +400,7 @@ export class SelectItemControlByBrowsingControl {
                 selectedItem = undefined;
             }
             else {
-                // User has selected a specfic item
+                // User has selected a specific item
                 selectedItem =
                     {
                         uri: this.preSelectItemUri,

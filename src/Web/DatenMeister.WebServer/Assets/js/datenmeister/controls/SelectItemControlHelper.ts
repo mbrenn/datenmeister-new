@@ -2,8 +2,16 @@ import * as SICInterface from './Interfaces.js'
 import * as EL from "../client/Elements.js";
 import {ItemWithNameAndId} from "../ApiModels.js";
 
+export interface IWorkspaceAndExtentSelectionCallbacks {
+    onWorkspaceSelected (workspaceId: string): Promise<void>;
+    onExtentSelected (workspaceId: string, extentUri: string): Promise<void>;
+}
+
 export class SelectItemControlHelperForWorkspaceAndExtent {
-    private control: SICInterface.ISelectItemControl;
+    private control: IWorkspaceAndExtentSelectionCallbacks;
+
+    private htmlWorkspaceDiv: JQuery<HTMLElement>;
+    private htmlExtentDiv: JQuery<HTMLElement>;
     private htmlWorkspaceSelect: JQuery<HTMLElement>;
     private htmlExtentSelect: JQuery<HTMLElement>;
 
@@ -25,20 +33,41 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
     /** Last list of extents fetched for the active workspace, used by {@link getSelectedExtent}. */
     private loadedExtents: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
 
-    constructor(control: SICInterface.ISelectItemControl) {
+    constructor(control: IWorkspaceAndExtentSelectionCallbacks) {
         this.control = control;
     }
 
     initialize(table: JQuery<HTMLElement>) {
-        this.htmlWorkspaceSelect = $("workspace-select", table);
-        this.htmlExtentSelect = $("extent-select", table);
+        const tthis = this;
+        this.htmlWorkspaceDiv = $(".dm-sic-workspace", table);
+        this.htmlExtentDiv = $(".dm-sic-extent", table);
+        
+        // Creates the dropdown for the workspaces
+        this.htmlWorkspaceSelect = $("<select></select>");
+        this.htmlWorkspaceSelect.on("change", async () => await tthis.onWorkspaceChangedByUser());
+        this.htmlWorkspaceDiv.append(this.htmlWorkspaceSelect);
+        
+        // Creates the dropdown for the extents
+        this.htmlExtentSelect = $("<select></select>");
+        this.htmlExtentSelect.on("change", () => tthis.onExtentChangedByUser());
+        this.htmlExtentDiv.append(this.htmlExtentSelect);
+    }
+
+    async onExtentChangedByUser() {
+        await this.control.onExtentSelected(
+            this.getUserSelectedWorkspaceId(), this.getUserSelectedExtentUri());
+    }
+
+    async onWorkspaceChangedByUser() {
+        await this.loadExtents();
+        await this.control.onWorkspaceSelected(this.getUserSelectedWorkspaceId());
     }
 
     /**
      * Loads the workspaces and adds them into the control element containing the parameter
      * @private
      */
-    private async loadWorkspaces() {
+    async loadWorkspaces() {
         this.htmlWorkspaceSelect.empty();
 
         let currentlySelectedWorkspace = this.getUserSelectedWorkspaceId();
@@ -149,5 +178,17 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
     getUserSelectedExtentUri(): string {
         const extent = this.htmlExtentSelect.val()?.toString() ?? "";
         return extent === "" ? undefined : extent;
+    }
+
+    async setExtentByUri(workspaceId: string, extentUri: string): Promise<void> {
+        this.preSelectWorkspaceById = workspaceId;
+        this.preSelectExtentByUri = extentUri;
+        await this.loadWorkspaces();
+        await this.loadExtents();
+    }
+
+    async setWorkspaceById(workspaceId: string): Promise<void> {
+        this.preSelectWorkspaceById = workspaceId;
+        await this.loadWorkspaces();
     }
 }

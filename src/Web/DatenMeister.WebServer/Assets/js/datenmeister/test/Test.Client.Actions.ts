@@ -6,7 +6,6 @@ import * as ClientWorkspace from "../client/Workspace.js";
 import * as ClientItems from "../client/Items.js";
 import {_UML} from "../models/UML.js";
 
-import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 export function includeTests() {

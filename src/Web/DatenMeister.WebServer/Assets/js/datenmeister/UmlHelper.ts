@@ -5,7 +5,7 @@ import {_UML} from "./models/UML.js";
 /**
  * Module providing utilities for handling named elements.
  */
-export module NamedElement{
+export namespace NamedElement{
     /**
      * Retrieves the name of a given Mof.DmObject element. If the name attribute is
      * undefined or empty, the method returns the ID of the element instead.

@@ -123,7 +123,7 @@ export class ObjectFormCreator implements IForm.IPageForm {
 
                 const factoryFunction = FormFactory.getObjectFormFactory(tab.metaClass.uri);
                 if (factoryFunction !== undefined) {
-                    const detailForm = factoryFunction();
+                    const detailForm = factoryFunction();                    
                     detailForm.pageNavigation = tthis.pageNavigation;
                     detailForm.workspace = this.workspace;
                     detailForm.extentUri = this.extentUri;
@@ -146,7 +146,7 @@ export class ObjectFormCreator implements IForm.IPageForm {
                 this.htmlElements.itemContainer.append(form);
 
                 this.statusTextControl.setListStatus("Create Tab " + n, true);
-            } catch (error) {
+            } catch (error: any) {
                 const errorMessage
                     = $("<div>An Exception has occured during the creation: <span></span></div>");
                 $("span", errorMessage).text(error.stack === undefined ? error : error.stack);
@@ -199,7 +199,7 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
         }
 
         if (p.get('formUri') !== null) {
-            this._overrideFormUrl = p.get('formUri');
+            this._overrideFormUrl = p.get('formUri') ?? "";
         }
 
         try {
@@ -256,6 +256,10 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
                         const containers = await ClientItems.getContainer(tthis.workspace, tthis.itemUri);
                         if (containers !== undefined && containers.length > 0) {
                             const parentWorkspace = containers[0].workspace;
+                            if(parentWorkspace === undefined) {
+                                throw Error("Parent workspace is undefined");
+                            }
+                            
                             if (containers.length === 2) {
                                 // If user has selected would move to an extent, he should move to the items enumeration
                                 navigateToExtentItems(parentWorkspace, containers[0].uri);
@@ -324,6 +328,10 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
                         this.itemUri,
                         configuration.viewMode
                     );
+                    
+                    if(result.createdForm.workspace === undefined) {
+                        throw Error("Workspace is undefined");
+                    }
 
                     Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
                 });

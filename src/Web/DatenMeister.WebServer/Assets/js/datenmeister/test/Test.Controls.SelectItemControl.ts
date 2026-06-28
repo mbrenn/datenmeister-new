@@ -3,11 +3,11 @@ import * as ClientExtent from "../client/Extents.js";
 import * as ClientItems from "../client/Items.js";
 import {SelectItemControl} from "../controls/SelectItemControl.js";
 
-import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 
-function lookForChildWithText(children: JQuery<HTMLElement>, textToLookFor: string) {
+function lookForChildWithText(children: JQuery<HTMLElement>, textToLookFor: string)
+    : { found: boolean, foundItem: HTMLElement | undefined } {
     let found = false;
     let foundItem: HTMLElement | undefined = undefined;    
     children.each((index, child) => {
@@ -16,6 +16,7 @@ function lookForChildWithText(children: JQuery<HTMLElement>, textToLookFor: stri
             foundItem = child;
         }
     });
+    
     return {found, foundItem};
 }
 
@@ -127,7 +128,8 @@ export function includeTests() {
                             assert.isTrue(foundItem !== undefined, "Item Dom was not found was not found");
                             assert.isTrue(itemCounter === 0, "Item Counter is not 0");
 
-                            if (foundItem === undefined) throw 'Should not happen';
+                            if (foundItem === undefined) 
+                                throw 'Should not happen';
                             foundItem.click();
 
                             await sic.byBrowseControl.loadItems();

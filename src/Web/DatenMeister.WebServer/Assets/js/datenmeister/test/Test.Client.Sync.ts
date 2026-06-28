@@ -3,7 +3,7 @@ import * as ClientItems from "../client/Items.js";
 import * as Mof from "../Mof.js"
 import {sync} from "../MofSync.js";
 
-import '../../node_modules/chai/register-assert.js';
+//import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 export function includeTests() {
@@ -12,7 +12,7 @@ export function includeTests() {
         it('Create Temporary Object and do Sync without property update', async function () {
             const result = await ClientElements.createTemporaryElement();
             
-            assert.isTrue(result.success === true);
+            assert.isTrue(result?.success === true);
             assert.isTrue(result.workspace !== undefined && result.workspace !== "");
             assert.isTrue(result.uri !== undefined && result.uri !== "");
 
@@ -44,7 +44,7 @@ export function includeTests() {
             const checkResult = await ClientItems.getObjectByUri(result.workspace, result.uri);
             const reference = checkResult.get('test', Mof.ObjectType.Object);
             assert.isTrue(reference !== undefined, 'Reference should be set');   
-            assert.isTrue(reference.uri === result2.uri, 'Uri of reference should be set');
+            assert.isTrue(reference?.uri === result2.uri, 'Uri of reference should be set');
         });
 
         it ( 'Unset Properties', async function()

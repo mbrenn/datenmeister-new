@@ -11,6 +11,10 @@ export function executeSearchByText(searchText: string) {
                 );
                 break;
             case 'referenceExtent':
+                if (result.reference.extentUri === undefined) {
+                    throw new Error("Extent URI is undefined");
+                }
+
                 navigateToExtentItems(
                     result.reference.workspace,
                     result.reference.extentUri

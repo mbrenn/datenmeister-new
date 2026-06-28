@@ -55,7 +55,7 @@ class WorkspaceExtentLoadOrCreateAction extends FormActions.ItemFormActionModule
         this.actionVerb = "Choose Extent Type";
     }
     
-    async loadForm(): Promise<Mof.DmObject> | undefined {
+    async loadForm(): Promise<Mof.DmObject>{
         return await FormClient.getForm("dm:///_internal/forms/internal#WorkspacesAndExtents.Extent.SelectType");
     }
 
@@ -85,10 +85,12 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
         this.actionVerb = "Create/Load Extent";
     }
 
-    async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
+    async loadObject(): Promise<Mof.DmObjectWithSync> {
         let p = new URLSearchParams(window.location.search);
         const workspaceId= p.get("workspaceId");
         const metaClassUri = p.get("metaClass");
+        if(workspaceId === null) throw new Error("WorkspaceId is undefined");
+        if(metaClassUri === null) throw new Error("MetaClassUri is undefined");
 
         const result =
             await MofSync.createTemporaryDmObject(metaClassUri);
@@ -112,7 +114,7 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
             }
         );
 
-        if (result.success !== true) {
+        if (!result.success) {
             alert('Extent was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
         } else {
             Navigator.navigateToExtentItems(result.resultAsDmObject.get("workspaceId"), result.resultAsDmObject.get("extentUri"));
@@ -127,7 +129,7 @@ class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBas
         this.actionVerb = "Create Xmi Extent";
     }
     
-    async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
+    async loadObject(): Promise<Mof.DmObjectWithSync> {
         let p = new URLSearchParams(window.location.search);
         
         const result = await MofSync.createTemporaryDmObject(_DatenMeister._ExtentLoaderConfigs.__XmiStorageLoaderConfig_Uri);

@@ -144,6 +144,11 @@ export async function createActionFormForEmptyObject(
         }
     }
     
+    if(form === undefined)
+    {
+        throw FormError("No form could be found for the action");
+    }
+    
     statusOverview.setListStatus("Load Form", true);
 
     // Creates the object as being provided by the uri

@@ -57,8 +57,14 @@ export async function getForm(formUri: string, formType?: FormType): Promise<Mof
         encodeURIComponent(formUri) +
         (formType === undefined ? "" : "?formtype=" + encodeURIComponent(formType))
     );
-    
-    return Mof.convertJsonObjectToDmObject(resultFromServer);
+
+
+    const result = Mof.convertJsonObjectToDmObject(resultFromServer);
+    if (result === undefined) {
+        throw Error("Result is undefined: " + formUri + ", " + formType);
+    }
+
+    return result;
 }
 
 /*
@@ -74,7 +80,13 @@ export async function getObjectFormForItem(workspace: string, item: string, view
         "/" +
         encodeURIComponent(viewMode)
     );
-    return Mof.convertJsonObjectToDmObject(resultFromServer);
+
+    const result = Mof.convertJsonObjectToDmObject(resultFromServer);
+    if (result === undefined) {
+        throw Error("Result is undefined: " + workspace + ", " + item + ", " + viewMode);
+    }
+
+    return result;
 }
 
 export interface ICreateCollectionFormForExtentResult {
@@ -134,7 +146,10 @@ export async function getViewModes() : Promise<IGetViewModesResult> {
     for (let n in resultFromServer.viewModes) {
         const value = resultFromServer.viewModes[n];
 
-        result.viewModes.push(Mof.convertJsonObjectToDmObject(value));
+        const innerResult = Mof.convertJsonObjectToDmObject(value);
+        if(innerResult !== undefined) {
+            result.viewModes.push(innerResult);
+        }        
     }
 
     return result;
@@ -153,7 +168,12 @@ export async function getDefaultViewMode(workspace: string, extentUri: string): 
         "/" +
         encodeURIComponent(extentUri));
 
+    const result = Mof.convertJsonObjectToDmObject(apiResult.viewMode);
+    if (result === undefined) {
+        throw Error("ViewMode is not returned. ")
+    }
+
     return {
-        viewMode: Mof.convertJsonObjectToDmObject(apiResult.viewMode)
+        viewMode: result
     }
 }

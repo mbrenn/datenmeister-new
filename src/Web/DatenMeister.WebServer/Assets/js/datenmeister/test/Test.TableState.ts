@@ -24,13 +24,13 @@ export function includeTests() {
                 tableState.setOrderBy("name", true);
                 let orderBy = tableState.getOrderBy();
                 expect(orderBy).to.not.be.undefined;
-                expect(orderBy.property).to.equal("name");
-                expect(orderBy.descending).to.be.true;
+                expect(orderBy?.property).to.equal("name");
+                expect(orderBy?.descending).to.be.true;
 
                 tableState.setOrderBy("age", false);
                 orderBy = tableState.getOrderBy();
-                expect(orderBy.property).to.equal("age");
-                expect(orderBy.descending).to.be.false;
+                expect(orderBy?.property).to.equal("age");
+                expect(orderBy?.descending).to.be.false;
 
                 tableState.removeOrderBy();
                 expect(tableState.getOrderBy()).to.be.undefined;
@@ -101,7 +101,7 @@ export function includeTests() {
                 tableState.setFreeTextFilter("test");
                 tableState.setLimit(10);
 
-                expect(tableState.getOrderBy().property).to.equal("name");
+                expect(tableState.getOrderBy()?.property).to.equal("name");
                 expect(tableState.getFreeTextFilter()).to.equal("test");
                 expect(tableState.getLimit()).to.equal(10);
 

@@ -44,13 +44,17 @@ class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase 
         this.actionVerb = "Update Extent Properties";
     }
 
-    async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
+    async loadObject(): Promise<Mof.DmObjectWithSync> {
 
         let p = new URLSearchParams(window.location.search);
 
         const workspace = p.get('workspace');
         const extentUri = p.get('extent');
 
+        if (workspace === null || extentUri === null) {
+            throw new Error("No workspace or extent given");
+        }
+        
         return await ClientExtents.getProperties(workspace, extentUri);
     }
 
@@ -63,6 +67,9 @@ class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase 
         } else {
             const workspace = p.get('workspace');
             const extentUri = p.get('extent');
+            if (workspace === null || extentUri === null) {
+                throw new Error("No workspace or extent given");
+            }
 
             await ClientExtents.setProperties(workspace, extentUri, element);
             Navigator.navigateToExtentItems(workspace, extentUri);
@@ -88,11 +95,21 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
     loadParameterFromUrl()
     {
         let p = new URLSearchParams(window.location.search);
-        this.workspace = p.get('workspace');
-        this.itemUri = p.get('item');
-        this.metaClass = p.get('metaclass');
-        this.property = p.get('property');
-        this.metaclassWorkspace = p.get('metaclassworkspace');
+        const workspace = p.get('workspace');
+        const itemUri = p.get('item');
+        const metaClass = p.get('metaclass');
+        const property = p.get('property');
+        const metaclassWorkspace = p.get('metaclassworkspace');
+        if (workspace === null || itemUri === null || metaClass === null || property === null || metaclassWorkspace === null) {
+            throw new Error('Not all parameters are set correctly (workspace, item, metaclass, property, metaclassworkspace)');
+        }
+        
+        this.workspace = workspace;
+        this.itemUri = itemUri;
+        this.metaClass = metaClass;
+        this.property = property;
+        this.metaclassWorkspace = metaclassWorkspace;
+        
         const isListParameter = p.get('islist');
         if(isListParameter !== null && isListParameter !== undefined)
         {
@@ -101,10 +118,6 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
         
         this.isForExtent = 
             this.property === null || this.property === undefined || this.property === "";
-
-        if (this.itemUri === null || this.workspace === null) {
-            alert('There is no extent given');
-        }
     }
 
     /**
@@ -442,6 +455,9 @@ class ExtentXmiExport extends FormActions.ItemFormActionModuleBase {
         } else {
             const workspace = p.get('workspace');
             const extentUri = p.get('extentUri');
+            if(workspace === null || extentUri === null) {
+                throw new Error('workspace or extentUri is undefined');
+            }
 
             // Export the Xmi and stores it into the element
             const exportedXmi = await ClientExtents.exportXmi(workspace, extentUri);

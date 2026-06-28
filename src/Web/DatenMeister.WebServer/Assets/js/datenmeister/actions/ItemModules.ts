@@ -44,7 +44,7 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         this.actionVerb = "Move/Copy Item";
     }
     
-    async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
+    async loadObject(): Promise<Mof.DmObjectWithSync> {
 
         let p = new URLSearchParams(window.location.search);
 
@@ -53,13 +53,21 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         // TODO: Set Result
         const sourceWorkspace = p.get('workspaceId');
         const sourceItemUri = p.get('itemUri');
+        if(sourceWorkspace === null || sourceItemUri === null) {
+            throw Error("Invalid parameters");
+        }
 
         const source = Mof.DmObject.createFromReference(sourceWorkspace, sourceItemUri);
         result.set(_DatenMeister._Actions._MoveOrCopyAction.source, source);
 
         const container = await ItemClient.getContainer(sourceWorkspace, sourceItemUri);
         if (container.length > 0) {
-            const target = Mof.DmObject.createFromReference(container[0].workspace, container[0].uri);
+            const workspace = container[0].workspace;
+            if(workspace === undefined) {
+                throw Error("Workspace of container is not set.");
+            }
+            
+            const target = Mof.DmObject.createFromReference(workspace, container[0].uri);
             result.set(_DatenMeister._Actions._MoveOrCopyAction.target, target);
         }
 
@@ -68,7 +76,7 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         return Promise.resolve(result);
     }
 
-    async loadForm(): Promise<Mof.DmObject> | undefined {
+    async loadForm(): Promise<Mof.DmObject> {
         return await FormClient.getForm("dm:///_internal/forms/internal#Item.MoveOrCopy");
     }
         
@@ -177,6 +185,9 @@ class ItemXmiExport extends FormActions.ItemFormActionModuleBase {
         } else {
             const workspace = p.get('workspace');
             const itemUri = p.get('itemUri');
+            if(workspace === null || itemUri === null) {
+                throw Error("Invalid parameters");
+            }
 
             // Export the Xmi and stores it into the element
             const exportedXmi = await ItemClient.exportXmi(workspace, itemUri);
@@ -225,6 +236,9 @@ class ItemXmiImport extends FormActions.ItemFormActionModuleBase {
         } else {
             const workspace = p.get('workspace');
             const itemUri = p.get('itemUri');
+            if(workspace === null || itemUri === null) {
+                throw Error("Invalid parameters");
+            }
 
             // Export the Xmi and stores it into the element
             const importedXmi = await ItemClient.importXmi(
@@ -249,7 +263,7 @@ class ItemCreateTemporarySetMetaclass extends FormActions.ItemFormActionModuleBa
         this.actionVerb = "Define Metaclass";
     }
 
-    async loadForm(): Promise<Mof.DmObject> | undefined {
+    async loadForm(): Promise<Mof.DmObject> {
         return await FormClient.getForm("dm:///_internal/forms/internal#Item.Create.Temporary.SetMetaclass");
     }
     

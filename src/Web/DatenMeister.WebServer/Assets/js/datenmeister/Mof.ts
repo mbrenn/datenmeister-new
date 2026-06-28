@@ -38,13 +38,13 @@ export enum ObjectType{
  * Used internally for type-safe property access.
  */
 type DmObjectReturnTypeMap = {
-    [ObjectType.Default]: any;
-    [ObjectType.Single]: any;
+    [ObjectType.Default]: any | undefined;
+    [ObjectType.Single]: any | undefined;
     [ObjectType.String]: string;
     [ObjectType.Array]: Array<any>;
     [ObjectType.Boolean]: boolean;
     [ObjectType.Number]: number;
-    [ObjectType.Object]: DmObject;
+    [ObjectType.Object]: DmObject | undefined;
 };
 
 /**
@@ -244,38 +244,44 @@ export class DmObject {
      * @param objectType Optional type specification for conversion
      * @returns The property value, converted according to objectType
      */
-    get<T extends ObjectType>(key: string, objectType?: T): DmObjectReturnType<T> | undefined {
+    get<T extends ObjectType>(key: string, objectType?: T): DmObjectReturnType<T> {
         const objectValue = this.values[DmObject.internalizeKey(key)];
 
+        let hasValue = true;
         let result = objectValue?.value;
         if (objectValue !== undefined && objectValue.isSet === false) {
             result = objectValue.defaultValue;
             if(result === undefined || result === null)
-                return undefined;
+                hasValue = false;
         }
 
         switch (objectType) {
             case ObjectType.Default:
-                if(result instanceof DmObject)
-                {
-                    if(result.isReference && result.referencedObject !== undefined)
-                    {
+                if (!hasValue)
+                    return undefined as DmObjectReturnType<T>;
+
+                if (result instanceof DmObject) {
+                    if (result.isReference && result.referencedObject !== undefined) {
                         return result.referencedObject as DmObjectReturnType<T>;
                     }
                 }
-                
+
                 return result as DmObjectReturnType<T>;
             case ObjectType.Object:
-                if(result instanceof DmObject)
-                {
-                    if(result.isReference && result.referencedObject !== undefined)
-                    {
+                if (!hasValue)
+                    return undefined as DmObjectReturnType<T>;
+
+                if (result instanceof DmObject) {
+                    if (result.isReference && result.referencedObject !== undefined) {
                         return result.referencedObject as DmObjectReturnType<T>;
                     }
                 }
-                
+
                 return result as DmObjectReturnType<T>;
             case ObjectType.Single:
+                if (!hasValue)
+                    return undefined as DmObjectReturnType<T>;
+
                 if (Array.isArray(result)) {
                     return result[0] as DmObjectReturnType<T>;
                 }
@@ -283,7 +289,7 @@ export class DmObject {
                 return result;
 
             case ObjectType.Array:
-                if (result === undefined || result === null) {
+                if (!hasValue || result === undefined || result === null) {
                     return [] as DmObjectReturnType<T>;
                 }
                 if (Array.isArray(result)) {
@@ -294,20 +300,25 @@ export class DmObject {
             case ObjectType.String:
                 const resultString = Array.isArray(result) ? result[0] : result;
                 if (resultString === undefined) {
-                    return undefined;
+                    return undefined as DmObjectReturnType<T>;
                 }
+                
                 return (resultString?.toString() ?? "") as DmObjectReturnType<T>;
 
             case ObjectType.Boolean:
                 if (Array.isArray(result)) {
                     result = result[0];
                 }
-                
+
                 // Take the standard routine but also check that there is no '0' in the text
                 return (Boolean(result) && result !== "0" && result !== "false") as DmObjectReturnType<T>;
 
             case ObjectType.Number:
-                 return result === undefined ? undefined : Number(result) as DmObjectReturnType<T>;
+                if (!hasValue || result === undefined) {
+                    return Number(0) as DmObjectReturnType<T>;
+                }
+
+                return Number(result) as DmObjectReturnType<T>;
         }
 
         return result as DmObjectReturnType<T>;

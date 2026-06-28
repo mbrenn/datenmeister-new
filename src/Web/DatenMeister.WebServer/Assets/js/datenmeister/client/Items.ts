@@ -4,7 +4,7 @@ import * as ApiConnection from "../ApiConnection.js"
 import {ISuccessResult, ItemWithNameAndId} from "../ApiModels.js";
 
 export async function createItemInExtent(workspaceId: string, extentUri: string, param: ICreateItemInExtentParams) {
-    const evaluatedParameter =
+    const evaluatedParameter: { metaClass: string | undefined; properties: Mof.JsonFromMofObject | undefined }  =
         {
             metaClass: param.metaClass,
             properties: undefined
@@ -36,7 +36,7 @@ export interface ICreateItemInExtentResult{
 
 export async function addToContainer(workspaceId: string, itemUri: string, param: IAddToContainerParams)
 {
-    const evaluatedParameter =
+    const evaluatedParameter: { metaClass: string | undefined; properties: Mof.JsonFromMofObject | undefined }  =
         {
             metaClass: param.metaClass,
             properties: undefined
@@ -69,7 +69,7 @@ export interface IAddToContainerResult
 
 export async function createItemAsChild(workspaceId: string, itemUri: string, param: ICreateItemAsChildParams)
 {
-    const evaluatedParameter =
+    const evaluatedParameter: { metaClass: string | undefined; property: string; asList: boolean, properties: Mof.JsonFromMofObject | undefined }  =
         {
             metaClass: param.metaClass,
             property: param.property,
@@ -145,38 +145,31 @@ export async function getObject(workspace: string, extent: string, id: string) {
     return Mof.convertJsonObjectToDmObject(resultFromServer, extent, workspace);
 }
 
-export async function getObjectByUri(workspace: string, url: string): Promise<Mof.DmObjectWithSync | undefined> {
-    try {
-        const resultFromServer = await ApiConnection.get<object>(
-            Settings.baseUrl +
-            "api/items/get?w=" +
-            encodeURIComponent(workspace) +
-            "&u=" +
-            encodeURIComponent(url)
-        );
+export async function getObjectByUri(workspace: string, url: string): Promise<Mof.DmObjectWithSync> {
+    const resultFromServer = await ApiConnection.get<object>(
+        Settings.baseUrl +
+        "api/items/get?w=" +
+        encodeURIComponent(workspace) +
+        "&u=" +
+        encodeURIComponent(url)
+    );
 
-        return Mof.convertJsonObjectToDmObject(resultFromServer, undefined, workspace);
+    const result = Mof.convertJsonObjectToDmObject(resultFromServer, undefined, workspace);
+    if (result === undefined) {
+        throw new Error("Object not found");
     }
-    catch(e)
-    {
-        return undefined;
-    }
+
+    return result;
 }
 
-export async function getItemWithNameAndId(workspace: string, url: string): Promise<ItemWithNameAndId | undefined> {
-    try {
-        return await ApiConnection.get<ItemWithNameAndId>(
-            Settings.baseUrl +
-            "api/items/get_itemwithnameandid?w=" +
-            encodeURIComponent(workspace) +
-            "&u=" +
-            encodeURIComponent(url)
-        );
-    }
-    catch(e)
-    {
-        return undefined;
-    }
+export async function getItemWithNameAndId(workspace: string, url: string): Promise<ItemWithNameAndId> {
+    return await ApiConnection.get<ItemWithNameAndId>(
+        Settings.baseUrl +
+        "api/items/get_itemwithnameandid?w=" +
+        encodeURIComponent(workspace) +
+        "&u=" +
+        encodeURIComponent(url)
+    );
 }
 
 export interface IGetRootElementsParameter{
@@ -265,7 +258,10 @@ export function convertToMofObjects(resultFromServer: string, extent?: string, w
     for (let n in x) {
         if (Object.prototype.hasOwnProperty.call(x, n)) {
             const v = x[n];
-            result.push(Mof.convertJsonObjectToDmObject(v, extent, workspace));
+            const itemResult = Mof.convertJsonObjectToDmObject(v, extent, workspace);
+            if(itemResult !== undefined) {
+                result.push(itemResult);
+            }
         }
     }
     return result;

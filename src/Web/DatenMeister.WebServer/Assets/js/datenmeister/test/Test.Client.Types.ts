@@ -1,7 +1,7 @@
 ﻿import * as ClientTypes from "../client/Types.js"
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 
-import '../../node_modules/chai/register-assert.js';
+//import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 export function includeTests() {
@@ -18,7 +18,7 @@ export function includeTests() {
                     _DatenMeister._CommonTypes._OSIntegration.__CommandLineApplication_Uri,
                     _DatenMeister._CommonTypes._OSIntegration._CommandLineApplication._name_);
 
-                assert.isTrue(result.id === "String");
+                assert.isTrue(result?.id === "String");
 
 
                 result = await ClientTypes.getPropertyType(

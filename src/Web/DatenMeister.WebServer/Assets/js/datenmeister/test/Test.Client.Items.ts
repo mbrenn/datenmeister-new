@@ -8,7 +8,7 @@ import * as DatenMeister from "../models/DatenMeister.class.js"
 import {_Actions, _CommonTypes} from "../models/DatenMeister.class.js"
 
 
-import '../../node_modules/chai/register-assert.js';
+//import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 export function includeTests() {

@@ -35,7 +35,7 @@ export class ElementBreadcrumb {
             // Finds the item
             const item = container[n];
             const element = $("<a></a>");
-            element.text(item.name);
+            element.text(item.name ?? "Unknown name");
             if (item.ententType === EntentType.Extent) {
                 const link = Navigator.getLinkForNavigateToExtentItems(item.workspace, item.extentUri);
                 if (link !== null) {

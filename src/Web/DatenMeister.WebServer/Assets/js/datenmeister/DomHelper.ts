@@ -98,24 +98,25 @@ export function convertItemWithNameAndIdToDom(
             const linkElement = $("<a class='dm-item-edit-button'>✒️</a>");
 
             linkElement.attr('href', Navigator.getLinkForNavigateToItemByUrl(
-                item.workspace, item.uri, {editMode: true}
+                item.workspace ?? "", item.uri, {editMode: true}
             ));
             linkElement.on('click', () => {
-                Navigator.navigateToItemByUrl(item.workspace, item.uri, {editMode: true});
+                Navigator.navigateToItemByUrl(item.workspace ?? "", item.uri, {editMode: true});
                 return false;
             });
 
             result.append(linkElement);
         }
     } else {
-        result.text(item.name);
+        result.text(item.name ?? "Unknown");
     }
     
     // Add the metaclass
-    if (item.metaClassName !== undefined && item.metaClassName !== null) {
+    if (item.metaClassName !== undefined && item.metaClassName !== null
+        && item.metaClassUri !== undefined && item.metaClassUri !== null) {
         const metaClassText = $("<span class='dm-metaclass'></span>");
         metaClassText
-            .attr('title',item.metaClassUri)
+            .attr('title', item.metaClassUri)
             .text(" [" + item.metaClassName + "]");
         result.append(metaClassText);
     }

@@ -10,7 +10,7 @@ import * as ClientWorkspace from "../client/Workspace.js";
 import _ViewMode = _DatenMeister._Forms._ViewMode;
 
 
-import '../../node_modules/chai/register-assert.js';
+// import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 class X implements IForm.IObjectFormElement {
@@ -30,7 +30,8 @@ class X implements IForm.IObjectFormElement {
     }
 
     storeFormValuesIntoDom(reuseExistingElement?: boolean): Promise<Mof.DmObject> {
-        return Promise.resolve(undefined);
+        this.element = new Mof.DmObject();
+        return Promise.resolve(this.element);
     }    
 }
 
@@ -48,7 +49,8 @@ class Y implements IForm.ICollectionFormElement {
     }
 
     storeFormValuesIntoDom(reuseExistingElement?: boolean): Promise<Mof.DmObject> {
-        return Promise.resolve(undefined);
+        this.element = new Mof.DmObject();
+        return Promise.resolve(this.element);
     }
 
     elements: Array<Mof.DmObject>;
@@ -81,8 +83,13 @@ export function includeTests() {
             assert.isTrue(FormFactory.getCollectionFormFactory("no") === undefined);
             assert.isTrue(FormFactory.getObjectFormFactory("objectForm") !== undefined);
             assert.isTrue(FormFactory.getCollectionFormFactory("collectionForm") !== undefined);
-            assert.isTrue((FormFactory.getObjectFormFactory("objectForm")() as X).type === "X");
-            assert.isTrue((FormFactory.getCollectionFormFactory("collectionForm")() as Y).type === "Y");
+            const objectFormFactory =  FormFactory.getObjectFormFactory("objectForm");
+            assert.isTrue(objectFormFactory !== undefined);
+            assert.isTrue((objectFormFactory!() as X).type === "X");
+            
+            const collectionFormFactory =  FormFactory.getCollectionFormFactory("collectionForm");
+            assert.isTrue(collectionFormFactory !== undefined);
+            assert.isTrue((collectionFormFactory!() as Y).type === "Y");
         });
 
         it('Test Default Database', () => {

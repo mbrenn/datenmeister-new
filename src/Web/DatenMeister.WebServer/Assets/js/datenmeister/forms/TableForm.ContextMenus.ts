@@ -5,7 +5,7 @@ import _FieldData = _DatenMeister._Forms._FieldTypes._FieldData;
 import _TableForm = _DatenMeister._Forms._FormTypes._TableForm;
 import * as Mof from "../Mof.js";
 import {truncateText} from "../../burnsystems/StringManipulation.js";
-import TableForm from "./TableForm.js";
+import {TableForm, MenuItemData} from "./TableForm.js";
 import * as SelectItemControl from "../controls/SelectItemControl.js";
 import * as Settings from "../Settings.js";
 import * as Navigator from "../Navigator.js"
@@ -15,10 +15,10 @@ import _NamedElement = _UML._CommonStructure._NamedElement;
 
 /**
  * Creates the function which allows to remove all properties of all items within the extent
+ * @param tableForm Table form which show the elements whose properties shall be removed
  * @param field Field for which the properties shall be removed
  */
-export function createFunctionToRemoveAllProperties(field: Mof.DmObject) {
-    const tthis = this;
+export function createFunctionToRemoveAllProperties(tableForm: TableForm, field: Mof.DmObject) : MenuItemData {
     return {
         cellKeyTitle: "Clear",
         onCreateDom: (popup: burnJsPopup.PopupResult, jquery: JQuery) => {
@@ -26,7 +26,7 @@ export function createFunctionToRemoveAllProperties(field: Mof.DmObject) {
             button.on('click', async () => {
                 // Gets the data
                 const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);
-                const dataUrl = tthis.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String);
+                const dataUrl = tableForm.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String);
 
                 // Creates the action
                 const action = new Mof.DmObject(_DatenMeister._Actions.__DeletePropertyFromCollectionAction_Uri);
@@ -38,7 +38,7 @@ export function createFunctionToRemoveAllProperties(field: Mof.DmObject) {
                 };
 
                 await Actions.executeActionDirectly("Execute", parameter);
-                await tthis.refreshForm();
+                await tableForm.refreshForm();
             });
 
             jquery.append(button);
@@ -50,7 +50,7 @@ export function createFunctionToRemoveAllProperties(field: Mof.DmObject) {
 /**
  * Creates the dropdown which allows the user to filter within the properties
  */
-export function createFunctionToFilterInProperty(tthis: TableForm, field: Mof.DmObject) {
+export function createFunctionToFilterInProperty(tthis: TableForm, field: Mof.DmObject) : MenuItemData {
     const dropDown = $("<select class=''></select>");
     const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);
 
@@ -122,6 +122,8 @@ export function createFunctionToFilterInProperty(tthis: TableForm, field: Mof.Dm
                 query.append($("<span>F</span>"));
                 return true;
             }
+            
+            return false;
         }
     };
 }
@@ -170,6 +172,10 @@ export function createFunctionToLoadCurrentView(tableForm: TableForm) {
 
                 selectItemControl.itemSelected.addListener(
                     async (item) => {
+                        if(item.workspace === undefined) {
+                            throw new Error("Workspace is undefined");
+                        }
+                        
                         tableForm.tableState.queryStatement = 
                             await ClientItems.getObjectByUri(item.workspace, item.uri);
                         popup.closePopup();

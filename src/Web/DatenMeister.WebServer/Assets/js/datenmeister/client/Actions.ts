@@ -20,9 +20,8 @@ export interface ExecuteActionResult
     result: any;
 }
 
-export interface ExecuteActionWithDmObjectResult
-extends ExecuteActionResult{
-    resultAsDmObject: Mof.DmObject | undefined;
+export interface ExecuteActionWithDmObjectResult extends ExecuteActionResult {
+    resultAsDmObject: Mof.DmObject;
 }
 
 export async function executeActionDirectly(actionName: string, parameter: ExecuteActionParams)

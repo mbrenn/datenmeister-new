@@ -220,8 +220,7 @@ export class TableState {
         // in case the given limit < 0, then no limit is applied
         if (limit === undefined) {
             QueryEngine.limit(builder, 101);
-        }
-        if (limit > 0) {
+        } else if (limit > 0) {
             QueryEngine.limit(builder, limit);
         }
         

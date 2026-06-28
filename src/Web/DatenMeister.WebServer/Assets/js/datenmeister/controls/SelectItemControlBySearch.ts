@@ -32,7 +32,7 @@ export class SelectItemControlBySearch implements IWorkspaceAndExtentSelectionCa
     init(parent: JQuery<HTMLElement>, settings?: ControlSettings): JQuery {
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
-        const div = this.initDom(settings, parent);
+        const div = this.initDom(settings ?? new ControlSettings(), parent);
         const _ = this.workspaceAndExtent.loadWorkspaces();
         return div;
     }
@@ -41,7 +41,7 @@ export class SelectItemControlBySearch implements IWorkspaceAndExtentSelectionCa
 
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
-        const div = this.initDom(settings, parent);
+        const div = this.initDom(settings ?? new ControlSettings(), parent);
         await this.workspaceAndExtent.loadWorkspaces();
         return div;
     }
@@ -56,7 +56,6 @@ export class SelectItemControlBySearch implements IWorkspaceAndExtentSelectionCa
     private initDom(settings: ControlSettings, container: JQuery<HTMLElement>) {
 
         const tthis = this;
-        this.settings = settings ?? new ControlSettings();
         // Creates the template
         const div = $(
             "<div class='dm-sic-search'>" +
@@ -80,7 +79,7 @@ export class SelectItemControlBySearch implements IWorkspaceAndExtentSelectionCa
         return div;
     }
     
-    getUserSelectedWorkspaceId(): string {
+    getUserSelectedWorkspaceId(): string | undefined {
         return this.workspaceAndExtent.getUserSelectedWorkspaceId();
     }
     

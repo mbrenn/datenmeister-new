@@ -2,8 +2,8 @@ import * as EL from "../client/Elements.js";
 import {ItemWithNameAndId} from "../ApiModels.js";
 
 export interface IWorkspaceAndExtentSelectionCallbacks {
-    onWorkspaceSelected (workspaceId: string): Promise<void>;
-    onExtentSelected (workspaceId: string, extentUri: string): Promise<void>;
+    onWorkspaceSelected (workspaceId: string | undefined): Promise<void>;
+    onExtentSelected (workspaceId: string | undefined, extentUri: string | undefined): Promise<void>;
 }
 
 export class SelectItemControlHelperForWorkspaceAndExtent {
@@ -71,7 +71,7 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
      */
     async loadWorkspaces() {
         
-        if(this.isDomInitialized !== false) {
+        if(this.isDomInitialized) {
 
             this.htmlWorkspaceSelect.empty();
 
@@ -93,6 +93,9 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
                 if (!items.hasOwnProperty(n)) continue;
 
                 const item = items[n];
+                if(item.id === undefined || item.name === undefined) 
+                    continue;
+                
                 const option = $("<option></option>");
                 option.val(item.id);
                 option.text(item.name);
@@ -127,11 +130,16 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
      */
     async loadExtents() {
 
-        if(this.isDomInitialized !== false) {
+        if(this.isDomInitialized) {
 
             const tthis = this;
 
             const workspaceId = this.getUserSelectedWorkspaceId();
+            if( workspaceId === undefined)
+            {
+                return;
+            }
+            
             this.textOfSelectedItem = workspaceId;
 
             let extentUri = this.getUserSelectedExtentUri();
@@ -160,6 +168,7 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
                     if (!items.hasOwnProperty(n)) continue;
 
                     const item = items[n];
+                    if(item.extentUri === undefined || item.name === undefined) continue;
                     const option = $("<option></option>");
                     option.val(item.extentUri);
                     option.text(item.name);
@@ -191,7 +200,7 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
      * here.
      */
     getUserSelectedWorkspaceId(): string | undefined {
-        if(this.isDomInitialized === false) return undefined;
+        if(!this.isDomInitialized) return undefined;
         return this.htmlWorkspaceSelect.val()?.toString() ?? undefined;
     }
 
@@ -201,20 +210,20 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
      * {@link getUserSelectedWorkspaceId} for the same issue.
      */
     getUserSelectedExtentUri(): string | undefined {
-        if(this.isDomInitialized === false) return undefined;
+        if(!this.isDomInitialized) return undefined;
         
         const extent = this.htmlExtentSelect.val()?.toString() ?? "";
         return extent === "" ? undefined : extent;
     }
 
-    async setExtentByUri(workspaceId: string, extentUri: string): Promise<void> {
+    async setExtentByUri(workspaceId: string | undefined, extentUri: string | undefined): Promise<void> {
         this.preSelectWorkspaceById = workspaceId;
         this.preSelectExtentByUri = extentUri;
         await this.loadWorkspaces();
         await this.loadExtents();
     }
 
-    async setWorkspaceById(workspaceId: string): Promise<void> {
+    async setWorkspaceById(workspaceId: string | undefined): Promise<void> {
         this.preSelectWorkspaceById = workspaceId;
         this.preSelectExtentByUri = undefined;
         await this.loadWorkspaces();

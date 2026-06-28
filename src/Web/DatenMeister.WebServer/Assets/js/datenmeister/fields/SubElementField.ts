@@ -301,12 +301,7 @@ export class Control {
                     return;
                 }
 
-                document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
-                    tthis.form.workspace,
-                    tthis.itemUrl,
-                    x.selectedType.uri,
-                    x.selectedType.workspace,
-                    tthis.propertyName);
+                document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName, x.selectedType.uri, x.selectedType.workspace);
             });
 
             await control.createControl();
@@ -351,12 +346,7 @@ export class Control {
                     'click',
                     () => {
                         document.location.href =
-                            Navigator.getLinkForNavigateToCreateItemInProperty(
-                                tthis.form.workspace,
-                                tthis.itemUrl,
-                                metaClassUri,
-                                metaClassWorkspace,
-                                tthis.propertyName);
+                            Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName, metaClassUri, metaClassWorkspace);
                     });
 
 

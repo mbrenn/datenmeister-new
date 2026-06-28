@@ -185,10 +185,13 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                 viewModeForm.viewModeSelected.addListener(
                     viewMode => {
                         configuration.viewMode = viewMode;
-                        configuration.refreshForm();
+
+                        if (configuration.refreshForm !== undefined) {
+                            configuration.refreshForm();
+                        }
                     });
 
-                this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+                this.htmlElements.viewModeSelectorContainer!.append(htmlViewModeForm);
 
                 this.statusTextControl.setListStatus("Create Viewmode Selection", true);
             })();
@@ -207,6 +210,10 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
             this._overrideFormUrl === undefined ?
                 await ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode) :
                 await ClientForms.getForm(this._overrideFormUrl, IForm.FormType.Collection);
+        if(form === undefined) {
+            throw new Error("Form is undefined");
+        }
+        
         this.statusTextControl.setListStatus("Loading Form", true);
         
         // Wait for both
@@ -263,6 +270,9 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
         configuration: IFormConfiguration) {
 
         const tableContainer = this.htmlElements.tableContainer;
+        if(tableContainer === undefined) {
+            return;
+        }
 
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
@@ -350,7 +360,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                 const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
                 if (formFactory !== undefined) {
                     const tableForm = formFactory();
-                    tableForm.pageNavigation = this;
+                    tableForm.pageNavigation = tthis;
                     tableForm.callbackLoadItems = async (x) => {
                         const result = await callbackLoadItems(x);
                         tableForm.setInfoText(result.message);

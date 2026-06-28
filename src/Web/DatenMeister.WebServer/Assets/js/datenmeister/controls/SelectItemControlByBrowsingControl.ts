@@ -97,10 +97,10 @@ export class SelectItemControlByBrowsingControl implements IWorkspaceAndExtentSe
      * @returns The root `<table>` of the rendered control.
      */
     init(parent: JQuery<HTMLElement>, settings?: ControlSettings): JQuery {
-
+        
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
-        const result = this.initDom(settings, parent);
+        const result = this.initDom(settings ?? new ControlSettings(), parent);
         const _ = this.workspaceAndExtent.loadWorkspaces();
         return result;
     }
@@ -118,7 +118,7 @@ export class SelectItemControlByBrowsingControl implements IWorkspaceAndExtentSe
 
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
-        const result = this.initDom(settings, parent);
+        const result = this.initDom(settings ?? new ControlSettings(), parent);
         await this.workspaceAndExtent.loadWorkspaces();
         return result;
     }
@@ -259,7 +259,7 @@ export class SelectItemControlByBrowsingControl implements IWorkspaceAndExtentSe
      * — pending pre-selections that have not been applied yet are not visible
      * here.
      */
-    getUserSelectedWorkspaceId(): string {
+    getUserSelectedWorkspaceId(): string | undefined {
         return this.workspaceAndExtent.getUserSelectedWorkspaceId();
     }
 
@@ -280,13 +280,14 @@ export class SelectItemControlByBrowsingControl implements IWorkspaceAndExtentSe
      * fires {@link itemClicked} and recursively reloads the list.
      */
     async loadItems() {
-        if (this.isDomInitialized === true) {
+        if (this.isDomInitialized) {
             const tthis = this;
             let selectedItem = this.selectedItem;
 
             // Checks, whether the user has selected or preselected an item
             if (this.preSelectItemUri !== undefined) {
-                if (this.preSelectItemUri === "") {
+                const selectedWorkspace = this.getUserSelectedWorkspaceId();
+                if (this.preSelectItemUri === "" || selectedWorkspace === undefined) {
                     // Empty string is used to indicate that the user would like to select the 
                     // complete extent
                     selectedItem = undefined;
@@ -295,7 +296,7 @@ export class SelectItemControlByBrowsingControl implements IWorkspaceAndExtentSe
                     selectedItem =
                         {
                             uri: this.preSelectItemUri,
-                            workspace: this.getUserSelectedWorkspaceId()
+                            workspace: selectedWorkspace
                         };
                 }
 
@@ -397,8 +398,9 @@ export class SelectItemControlByBrowsingControl implements IWorkspaceAndExtentSe
         const currentWorkspace = this.getUserSelectedWorkspaceId();
         const currentExtent = this.getUserSelectedExtentUri();
 
-        let containerItems: string | any[];
-        if (this.selectedItem !== undefined && this.selectedItem.uri !== undefined) {
+        let containerItems: ItemWithNameAndId[] = [];
+        if (this.selectedItem !== undefined && this.selectedItem.uri !== undefined
+            && currentWorkspace !== undefined) {
             containerItems = await ItemsClient.getContainer(currentWorkspace, this.selectedItem.uri, true);
         }
 
@@ -406,6 +408,11 @@ export class SelectItemControlByBrowsingControl implements IWorkspaceAndExtentSe
 
         if (this.settings.showBreadcrumb) {
 
+            if(currentWorkspace === undefined) {
+                this.addBreadcrumbItem("No Workspace selected", async () => {});
+                return;
+            }
+            
             // Starts by showing the button to select the Workspaces
             if (this.settings.showWorkspaceInBreadcrumb) {
                 this.addBreadcrumbItem("Workspaces", async () => {
@@ -434,10 +441,10 @@ export class SelectItemControlByBrowsingControl implements IWorkspaceAndExtentSe
                             await this.workspaceAndExtent.setExtentByUri(this.getUserSelectedExtentUri(), currentExtent);
                             this.selectedItem =
                                 {
-                                    workspace: this.getUserSelectedWorkspaceId(),
-                                    extentUri: this.getUserSelectedExtentUri(),
+                                    workspace: currentWorkspace,
+                                    extentUri: currentExtent,
                                     ententType: EntentType.Extent,
-                                    uri: this.getUserSelectedExtentUri()
+                                    uri: currentExtent
                                 };
                         }
                     );
@@ -457,7 +464,7 @@ export class SelectItemControlByBrowsingControl implements IWorkspaceAndExtentSe
 
                     ((innerItem) => {
                         this.addBreadcrumbItem(
-                            item.name,
+                            item.name ?? "Unknown Name",
                             async () => {
                                 this.selectedItem = innerItem;
                                 await tthis.loadItems();

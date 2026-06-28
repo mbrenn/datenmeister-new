@@ -22,7 +22,7 @@ export interface ItemWithNameAndId {
     extentUri?: string;
     fullName?: string;
     id?: string;
-    workspace?: string;
+    workspace: string;
     metaClassName?: string;
     metaClassUri?: string;
     ententType?: EntentType;

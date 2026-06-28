@@ -3,10 +3,7 @@ import * as ClientWorkspace from "../client/Workspace.js";
 import * as ClientItems from "../client/Items.js";
 import * as ClientForms from "../client/Forms.js";
 import * as Mof from "../Mof.js";
-import * as _DatenMeister from "../models/DatenMeister.class.js";
-import {FormType} from "../forms/Interfaces.js";
 
-import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 export function includeTests() {
@@ -45,7 +42,7 @@ export function includeTests() {
             const form = await ClientForms.getCollectionFormForExtent('Test', 'dm:///unittest', '');
             assert.isTrue(form !== undefined, 'Form was not found');
 
-            const tab = form.get('tab');
+            const tab = form?.get('tab');
             assert.isTrue(tab !== undefined, 'tabs are not defined');
             assert.isTrue(Array.isArray(tab), 'Tabs is not an array');
             const firstTab = tab[0]
@@ -71,7 +68,7 @@ export function includeTests() {
             const form = await ClientForms.getObjectFormForItem('Test', itemUri, '');
             assert.isTrue(form !== undefined, 'Form was not found');
 
-            const tab = form.get('tab');
+            const tab = form?.get('tab');
             assert.isTrue(tab !== undefined, 'tabs are not defined');
             assert.isTrue(Array.isArray(tab), 'Tabs is not an array');
             const firstTab = tab[0]
@@ -108,28 +105,34 @@ export function includeTests() {
         {
             const result =
                 await ClientForms.createCollectionFormForExtent("Types", "dm:///_internal/types/internal");
+            assert.isTrue(result !== undefined, "Result is undefined");
+            assert.isTrue(result.createdForm !== undefined, "createdForm is undefined");
+            assert.isTrue(result.createdForm.workspace !== undefined, "workspace is undefined");
 
-            const foundForm = await ClientItems.getItemWithNameAndId(result.createdForm.workspace, result.createdForm.uri);
+            const foundForm = await ClientItems.getItemWithNameAndId(result.createdForm.workspace ?? "", result.createdForm.uri);
 
             assert.isTrue(foundForm !== undefined, "Form was not found");
             assert.isTrue(foundForm.workspace === "Management", "Form is not in management");
             assert.isTrue(foundForm.metaClassName === "CollectionForm", "Form is not Collection Form");
 
-            await ClientItems.deleteItem(result.createdForm.workspace, result.createdForm.uri);
+            await ClientItems.deleteItem(result.createdForm.workspace ?? "", result.createdForm.uri);
         });
 
 
         it('Create Object Form For Extent', async () => {
             const result =
                 await ClientForms.createObjectFormForItem("Management", "dm:///_internal/forms/internal#ImportManagerFindExtent");
+            assert.isTrue(result !== undefined, "Result is undefined");
+            assert.isTrue(result.createdForm !== undefined, "createdForm is undefined");
+            assert.isTrue(result.createdForm.workspace !== undefined, "workspace is undefined");
 
-            const foundForm = await ClientItems.getItemWithNameAndId(result.createdForm.workspace, result.createdForm.uri);
+            const foundForm = await ClientItems.getItemWithNameAndId(result.createdForm.workspace ?? "", result.createdForm.uri);
 
             assert.isTrue(foundForm !== undefined, "Form was not found");
             assert.isTrue(foundForm.workspace === "Management", "Form is not in management");
             assert.isTrue(foundForm.metaClassName === "ObjectForm", "Form is not ObjectForm Form");
 
-            await ClientItems.deleteItem(result.createdForm.workspace, result.createdForm.uri);
+            await ClientItems.deleteItem(result.createdForm.workspace ?? "", result.createdForm.uri);
         });
 
         it('Load ViewModes', async () => {

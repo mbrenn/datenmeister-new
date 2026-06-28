@@ -126,7 +126,7 @@ export class SelectItemControl {
 
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
-        return this.initDom(settings, parent);
+        return await this.initDom(settings, parent);
     }
 
     /**
@@ -192,7 +192,7 @@ export class SelectItemControl {
 
         // Adds the by browsing
         const byBrowseDiv = $(".dm-selectitemcontrol-bybrowse", div);
-        this.byBrowseControl.init(byBrowseDiv, this.settings.browseSettings);        
+        await this.byBrowseControl.initAsync(byBrowseDiv, this.settings.browseSettings);        
 
         const tthis = this;
         this.byBrowseControl.itemClicked.addListener(
@@ -202,7 +202,7 @@ export class SelectItemControl {
                 
         // Adds the searching
         const bySearchDiv = $(".dm-selectitemcontrol-search", div);
-        this.bySearchControl.init(bySearchDiv, this.settings.searchSettings);
+        await this.bySearchControl.initAsync(bySearchDiv, this.settings.searchSettings);
         
         await this.updateTabStatus();
 

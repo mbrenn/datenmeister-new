@@ -9,7 +9,7 @@ declare var assert: Chai.AssertStatic;
 
 function lookForChildWithText(children: JQuery<HTMLElement>, textToLookFor: string) {
     let found = false;
-    let foundItem: HTMLElement | undefined = undefined;
+    let foundItem: HTMLElement | undefined = undefined;    
     children.each((index, child) => {
         if ($(child).text().indexOf(textToLookFor) !== -1) {
             found = true;
@@ -116,7 +116,7 @@ export function includeTests() {
 
                             await sic.setExtentByUri("Test", 'dm:///unittest');
 
-                            const items = $(".dm-sic-items ul", query);
+                            const items = $(".dm-sic-bb-items ul", query);
                             assert.isTrue(items !== undefined, "No select given");
 
                             const children = items.children();
@@ -136,7 +136,7 @@ export function includeTests() {
                             assert.isTrue(itemCounter === 1, "Item Counter is not 1");
 
                             // Check, if the enumerated list is given
-                            const itemsUl = $(".dm-sic-items ul", query);
+                            const itemsUl = $(".dm-sic-bb-items ul", query);
                             assert.isTrue(itemsUl !== undefined, "No select given");
 
                             const childrenUl = itemsUl.children();

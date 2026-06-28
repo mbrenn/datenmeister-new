@@ -226,6 +226,7 @@ export class SelectItemControlByBrowsingControl implements IWorkspaceAndExtentSe
             };
         
         await this.workspaceAndExtent.setExtentByUri(workspaceId, extentUri);
+        await this.loadItems();
     }
 
     /**

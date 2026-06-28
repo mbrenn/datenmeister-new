@@ -74,7 +74,7 @@ export function includeTests() {
                 });
                 const query = await sic.initAsync(div);
                 await sic.setExtentByUri("Test", 'dm:///unittest');
-                const items = $(".dm-sic-items ul", query);
+                const items = $(".dm-sic-bb-items ul", query);
                 assert.isTrue(items !== undefined, "No select given");
                 const children = items.children();
                 const textToLookFor = "NamedElement";
@@ -89,7 +89,7 @@ export function includeTests() {
                 // The click should have happened synchronously.
                 assert.isTrue(itemCounter === 1, "Item Counter is not 1");
                 // Check, if the enumerated list is given
-                const itemsUl = $(".dm-sic-items ul", query);
+                const itemsUl = $(".dm-sic-bb-items ul", query);
                 assert.isTrue(itemsUl !== undefined, "No select given");
                 const childrenUl = itemsUl.children();
                 let result = lookForChildWithText(childrenUl, 'ChildElement');

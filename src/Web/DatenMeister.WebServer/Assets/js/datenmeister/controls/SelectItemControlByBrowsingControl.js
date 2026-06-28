@@ -180,6 +180,7 @@ export class SelectItemControlByBrowsingControl {
                 uri: extentUri
             };
         await this.workspaceAndExtent.setExtentByUri(workspaceId, extentUri);
+        await this.loadItems();
     }
     /**
      * Pre-selects a specific item by resolving the corresponding workspace and

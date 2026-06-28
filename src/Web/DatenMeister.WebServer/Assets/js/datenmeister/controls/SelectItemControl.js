@@ -101,7 +101,7 @@ export class SelectItemControl {
     async initAsync(parent, settings) {
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
-        return this.initDom(settings, parent);
+        return await this.initDom(settings, parent);
     }
     /**
      * This method just creates the DOM and connects the events of the elements to the
@@ -155,13 +155,13 @@ export class SelectItemControl {
         }
         // Adds the by browsing
         const byBrowseDiv = $(".dm-selectitemcontrol-bybrowse", div);
-        this.byBrowseControl.init(byBrowseDiv, this.settings.browseSettings);
+        await this.byBrowseControl.initAsync(byBrowseDiv, this.settings.browseSettings);
         const tthis = this;
         this.byBrowseControl.itemClicked.addListener((x) => tthis.itemClicked.invoke(x));
         this.bySearchControl.itemClicked.addListener((x) => tthis.itemClicked.invoke(x));
         // Adds the searching
         const bySearchDiv = $(".dm-selectitemcontrol-search", div);
-        this.bySearchControl.init(bySearchDiv, this.settings.searchSettings);
+        await this.bySearchControl.initAsync(bySearchDiv, this.settings.searchSettings);
         await this.updateTabStatus();
         // Checks whether we need to hide the control at startup
         if (settings?.hideAtStartup) {

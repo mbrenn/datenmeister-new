@@ -23,12 +23,10 @@ public class ObjectFileStorage<T> where T : class
             return null;
         }
 
-        using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-        {
-            var serializer = new XmlSerializer(typeof(T), GetAdditionalTypes());
-            return (T) 
-                (serializer.Deserialize(fileStream) ?? throw new InvalidOperationException("Deserialization failed"));
-        }
+        using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+        var serializer = new XmlSerializer(typeof(T), GetAdditionalTypes());
+        return (T) 
+            (serializer.Deserialize(fileStream) ?? throw new InvalidOperationException("Deserialization failed"));
     }
 
     public void Save(string filePath, T collection)
@@ -41,10 +39,8 @@ public class ObjectFileStorage<T> where T : class
             Directory.CreateDirectory(directoryName);
         }
 
-        using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-        {
-            var serializer = new XmlSerializer(typeof(T), GetAdditionalTypes());
-            serializer.Serialize(fileStream, collection);
-        }
+        using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+        var serializer = new XmlSerializer(typeof(T), GetAdditionalTypes());
+        serializer.Serialize(fileStream, collection);
     }
 }

@@ -1,8 +1,7 @@
 ﻿namespace DatenMeister.Core.Exceptions;
 
 /// <summary>
-/// Defines the exception that is used within DatenMeister containing and object with
-/// an exception object being a Mof Object
+/// Defines the exception that is used within DatenMeister as base class
 /// </summary>
 public class DatenMeisterRawException : Exception
 {

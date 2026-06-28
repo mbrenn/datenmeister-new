@@ -5,7 +5,7 @@ import * as ClientElements from "../client/Elements.js";
 import * as DomHelper from "../DomHelper.js";
 import { SelectItemControlHelperForWorkspaceAndExtent } from "./SelectItemControlHelper.js";
 export class ControlSettings {
-    maxItemsPerSearch = 10;
+    maxItemsPerSearch = 50;
 }
 export class SelectItemControlBySearch {
     itemClicked = new UserEvent();
@@ -19,14 +19,14 @@ export class SelectItemControlBySearch {
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
         const div = this.initDom(settings, parent);
-        const _ = this.loadWorkspaces();
+        const _ = this.workspaceAndExtent.loadWorkspaces();
         return div;
     }
     async initAsync(parent, settings) {
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
         const div = this.initDom(settings, parent);
-        await this.loadWorkspaces();
+        await this.workspaceAndExtent.loadWorkspaces();
         return div;
     }
     /**
@@ -65,35 +65,10 @@ export class SelectItemControlBySearch {
     async onWorkspaceSelected(workspaceId) {
         this.inputBoxDiv.trigger('focus');
         this.inputBoxDiv.val('');
-        await this.workspaceAndExtent.setExtentByUri(this.getUserSelectedWorkspaceId(), undefined);
     }
     async onExtentSelected(workspaceId, extentUri) {
         this.inputBoxDiv.trigger('focus');
         this.inputBoxDiv.val('');
-    }
-    async onWorkspaceChangedByUser() {
-        await this.loadExtents();
-    }
-    onExtentChangedByUser() {
-    }
-    /**
-     * Loads the workspaces and adds them into the control element containing the parameter
-     * @private
-     */
-    async loadWorkspaces() {
-        await this.workspaceAndExtent.loadWorkspaces();
-    }
-    /**
-     * Loads the extents for the currently selected workspace and (re)populates
-     * the extent dropdown. Honors a pending {@link preSelectExtentByUri} value,
-     * consuming it in the process. After the dropdown has been refreshed,
-     * {@link loadItems} is called so that the child list and breadcrumb stay
-     * in sync.
-     *
-     * @returns A promise that resolves to `true` when the GUI is updated.
-     */
-    async loadExtents() {
-        await this.workspaceAndExtent.loadExtents();
     }
     showControl() {
         this.containerDiv.show();
@@ -133,6 +108,7 @@ export class SelectItemControlBySearch {
             }
             QueryEngine.flatten(queryBuilder);
             QueryEngine.filterByFreetext(queryBuilder, text, "name");
+            QueryEngine.orderByProperty(queryBuilder, "name");
             QueryEngine.limit(queryBuilder, this.settings.maxItemsPerSearch + 1);
             const result = await ClientElements.queryObject(queryBuilder.queryStatement);
             if (this.lastLoadIndex == loadIndex) {

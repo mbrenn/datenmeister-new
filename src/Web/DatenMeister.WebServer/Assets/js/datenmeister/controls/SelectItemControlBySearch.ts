@@ -1,4 +1,3 @@
-import {ISelectItemControl} from "./Interfaces.js";
 import {UserEvent} from "../../burnsystems/Events.js";
 import {ItemWithNameAndId} from "../ApiModels.js";
 import * as Mof from "../Mof.js"
@@ -12,10 +11,10 @@ import {
 } from "./SelectItemControlHelper.js"
 
 export class ControlSettings {
-    maxItemsPerSearch: number = 10;
+    maxItemsPerSearch: number = 50;
 }
 
-export class SelectItemControlBySearch implements ISelectItemControl, IWorkspaceAndExtentSelectionCallbacks {
+export class SelectItemControlBySearch implements IWorkspaceAndExtentSelectionCallbacks {
     itemClicked: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
     
     private containerDiv: JQuery<HTMLElement>;
@@ -34,16 +33,16 @@ export class SelectItemControlBySearch implements ISelectItemControl, IWorkspace
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
         const div = this.initDom(settings, parent);
-
-        const _ = this.loadWorkspaces();
+        const _ = this.workspaceAndExtent.loadWorkspaces();
         return div;
     }
+    
     async initAsync(parent: JQuery<HTMLElement>, settings?: ControlSettings): Promise<JQuery> {
 
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
         const div = this.initDom(settings, parent);
-        await this.loadWorkspaces();
+        await this.workspaceAndExtent.loadWorkspaces();
         return div;
     }
 
@@ -85,47 +84,17 @@ export class SelectItemControlBySearch implements ISelectItemControl, IWorkspace
         return this.workspaceAndExtent.getUserSelectedWorkspaceId();
     }
     
-    getUserSelectedExtentUri(): string {
+    getUserSelectedExtentUri(): string | undefined {
         return this.workspaceAndExtent.getUserSelectedExtentUri();
     }
     async onWorkspaceSelected(workspaceId: string): Promise<void> {
         this.inputBoxDiv.trigger('focus');
         this.inputBoxDiv.val('');
-        await this.workspaceAndExtent.setExtentByUri(this.getUserSelectedWorkspaceId(), undefined)
     }
     
     async onExtentSelected(workspaceId: string, extentUri: string): Promise<void>{
         this.inputBoxDiv.trigger('focus');
         this.inputBoxDiv.val('');
-    }
-
-    async onWorkspaceChangedByUser() {
-
-        await this.loadExtents();
-    }
-
-    onExtentChangedByUser() {
-    }
-
-    /**
-     * Loads the workspaces and adds them into the control element containing the parameter
-     * @private
-     */
-    private async loadWorkspaces() {
-        await this.workspaceAndExtent.loadWorkspaces();
-    }
-
-    /**
-     * Loads the extents for the currently selected workspace and (re)populates
-     * the extent dropdown. Honors a pending {@link preSelectExtentByUri} value,
-     * consuming it in the process. After the dropdown has been refreshed,
-     * {@link loadItems} is called so that the child list and breadcrumb stay
-     * in sync.
-     *
-     * @returns A promise that resolves to `true` when the GUI is updated.
-     */
-    async loadExtents() {
-        await this.workspaceAndExtent.loadExtents();
     }
 
     showControl()
@@ -179,6 +148,7 @@ export class SelectItemControlBySearch implements ISelectItemControl, IWorkspace
             }
             QueryEngine.flatten(queryBuilder);
             QueryEngine.filterByFreetext(queryBuilder, text, "name");
+            QueryEngine.orderByProperty(queryBuilder, "name");
             QueryEngine.limit(queryBuilder, this.settings.maxItemsPerSearch + 1);
             
             const result = await ClientElements.queryObject(
@@ -208,7 +178,6 @@ export class SelectItemControlBySearch implements ISelectItemControl, IWorkspace
                        {
                            inhibitItemLink: true
                        });
-
 
                    ((innerItem) =>
                        itemDiv.on('click', () => {

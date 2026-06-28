@@ -66,7 +66,7 @@ export function createForOrderByProperty(input: Mof.DmObject | undefined, proper
     return viewNode;
 }
 
-export function orderByProperty(builder: QueryBuilder, property: string, descending: boolean) {
+export function orderByProperty(builder: QueryBuilder, property: string, descending: boolean = false) {
     const viewNode = createForOrderByProperty(builder.getResultNode(), property, descending);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);

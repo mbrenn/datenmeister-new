@@ -1,4 +1,3 @@
-import * as SICInterface from './Interfaces.js'
 import * as EL from "../client/Elements.js";
 import {ItemWithNameAndId} from "../ApiModels.js";
 
@@ -8,6 +7,8 @@ export interface IWorkspaceAndExtentSelectionCallbacks {
 }
 
 export class SelectItemControlHelperForWorkspaceAndExtent {
+    private isDomInitialized: boolean = false;
+    
     private control: IWorkspaceAndExtentSelectionCallbacks;
 
     private htmlWorkspaceDiv: JQuery<HTMLElement>;
@@ -28,9 +29,8 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
      */
     private preSelectExtentByUri: string | undefined;
 
-    /** Last list of workspaces fetched from the server, used by {@link getSelectedWorkspace}. */
     private loadedWorkspaces: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
-    /** Last list of extents fetched for the active workspace, used by {@link getSelectedExtent}. */
+    
     private loadedExtents: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
 
     constructor(control: IWorkspaceAndExtentSelectionCallbacks) {
@@ -51,6 +51,8 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
         this.htmlExtentSelect = $("<select></select>");
         this.htmlExtentSelect.on("change", () => tthis.onExtentChangedByUser());
         this.htmlExtentDiv.append(this.htmlExtentSelect);
+        
+        this.isDomInitialized = true;
     }
 
     async onExtentChangedByUser() {
@@ -68,38 +70,48 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
      * @private
      */
     async loadWorkspaces() {
-        this.htmlWorkspaceSelect.empty();
+        
+        if(this.isDomInitialized !== false) {
 
-        let currentlySelectedWorkspace = this.getUserSelectedWorkspaceId();
-        if (this.preSelectWorkspaceById !== undefined) {
-            // If there is a pre-selection, the pre-selection is valid
-            currentlySelectedWorkspace = this.preSelectWorkspaceById;
-            this.preSelectWorkspaceById = undefined;
+            this.htmlWorkspaceSelect.empty();
+
+            let currentlySelectedWorkspace = this.getUserSelectedWorkspaceId();
+            if (this.preSelectWorkspaceById !== undefined) {
+                // If there is a pre-selection, the pre-selection is valid
+                currentlySelectedWorkspace = this.preSelectWorkspaceById;
+                this.preSelectWorkspaceById = undefined;
+            }
+
+            const items = await EL.getAllWorkspaces();
+
+            this.loadedWorkspaces = items;
+            const none = $("<option value=''>--- None ---</option>");
+            this.htmlWorkspaceSelect.append(none);
+
+            let found = false;
+            for (const n in items) {
+                if (!items.hasOwnProperty(n)) continue;
+
+                const item = items[n];
+                const option = $("<option></option>");
+                option.val(item.id);
+                option.text(item.name);
+                
+                if(item.id === currentlySelectedWorkspace) {
+                    found = true;
+                }
+
+                this.htmlWorkspaceSelect.append(option);
+            }
+
+            // Restores the currently selected workspace
+            if (currentlySelectedWorkspace !== undefined && found) {
+                this.htmlWorkspaceSelect.val(currentlySelectedWorkspace);
+                await this.control.onWorkspaceSelected(currentlySelectedWorkspace);
+            }
+
+            await this.loadExtents();
         }
-
-        const items = await EL.getAllWorkspaces();
-
-        this.loadedWorkspaces = items;
-        const none = $("<option value=''>--- None ---</option>");
-        this.htmlWorkspaceSelect.append(none);
-
-        for (const n in items) {
-            if (!items.hasOwnProperty(n)) continue;
-
-            const item = items[n];
-            const option = $("<option></option>");
-            option.val(item.id);
-            option.text(item.name);
-
-            this.htmlWorkspaceSelect.append(option);
-        }
-
-        // Restores the currently selected workspace
-        if (currentlySelectedWorkspace !== undefined) {
-            this.htmlWorkspaceSelect.val(currentlySelectedWorkspace);
-        }
-
-        await this.loadExtents();
     }
     
     textOfSelectedItem: string;
@@ -114,50 +126,62 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
      * @returns A promise that resolves to `true` when the GUI is updated.
      */
     async loadExtents() {
-        const tthis = this;
 
-        const workspaceId = this.getUserSelectedWorkspaceId();
-        this.textOfSelectedItem = workspaceId;
+        if(this.isDomInitialized !== false) {
 
-        let extentUri = this.getUserSelectedExtentUri();
-        if (this.preSelectExtentByUri !== undefined) {
-            extentUri = this.preSelectExtentByUri;
-            this.preSelectExtentByUri = undefined;
-        }
+            const tthis = this;
 
-        this.htmlExtentSelect.empty();
+            const workspaceId = this.getUserSelectedWorkspaceId();
+            this.textOfSelectedItem = workspaceId;
 
-        if (workspaceId === "") {
-            const select = $("<option value=''>--- Select Workspace ---</option>");
-            this.htmlExtentSelect.append(select);
-        } else {
-            const items = await EL.getAllExtents(workspaceId);
+            let extentUri = this.getUserSelectedExtentUri();
+            if (this.preSelectExtentByUri !== undefined) {
+                extentUri = this.preSelectExtentByUri;
+                this.preSelectExtentByUri = undefined;
+            }
+
             this.htmlExtentSelect.empty();
 
-            const none = $("<option value=''>--- None ---</option>");
-            tthis.htmlExtentSelect.append(none);
+            if (workspaceId === "") {
+                const select = $("<option value=''>--- Select Workspace ---</option>");
+                this.htmlExtentSelect.append(select);
+            } else {
+                const items = await EL.getAllExtents(workspaceId);
+                this.htmlExtentSelect.empty();
 
-            tthis.loadedExtents = items;
+                const none = $("<option value=''>--- None ---</option>");
+                tthis.htmlExtentSelect.append(none);
 
-            for (const n in items) {
-                if (!items.hasOwnProperty(n)) continue;
+                tthis.loadedExtents = items;
 
-                const item = items[n];
-                const option = $("<option></option>");
-                option.val(item.extentUri);
-                option.text(item.name);
+                let found = false;
 
-                tthis.htmlExtentSelect.append(option);
+                for (const n in items) {
+                    if (!items.hasOwnProperty(n)) continue;
+
+                    const item = items[n];
+                    const option = $("<option></option>");
+                    option.val(item.extentUri);
+                    option.text(item.name);
+                    if (item.extentUri === extentUri) {
+                        found = true;
+                    }
+
+                    tthis.htmlExtentSelect.append(option);
+                }
+
+                // Restores the selected item
+                if (extentUri !== undefined && found) {
+                    this.htmlExtentSelect.val(extentUri);
+                    this.textOfSelectedItem = extentUri;
+                    await this.control.onExtentSelected(workspaceId, extentUri);
+                } else {
+                    this.htmlExtentSelect.val("");
+                }
             }
 
-            // Restores the selected item
-            if (extentUri !== undefined) {
-                this.htmlExtentSelect.val(extentUri);
-                this.textOfSelectedItem = extentUri;
-            }
+            return true;
         }
-
-        return true;
     }
 
     /**
@@ -166,16 +190,19 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
      * — pending pre-selections that have not been applied yet are not visible
      * here.
      */
-    getUserSelectedWorkspaceId(): string {
-        return this.htmlWorkspaceSelect.val()?.toString() ?? "";
+    getUserSelectedWorkspaceId(): string | undefined {
+        if(this.isDomInitialized === false) return undefined;
+        return this.htmlWorkspaceSelect.val()?.toString() ?? undefined;
     }
 
     /**
      * Returns the extent URI currently selected in the dropdown, or the empty
      * string if no extent is selected. Reflects the DOM state only; see
-     * {@link getUserSelectedWorkspaceId} for the same caveat.
+     * {@link getUserSelectedWorkspaceId} for the same issue.
      */
-    getUserSelectedExtentUri(): string {
+    getUserSelectedExtentUri(): string | undefined {
+        if(this.isDomInitialized === false) return undefined;
+        
         const extent = this.htmlExtentSelect.val()?.toString() ?? "";
         return extent === "" ? undefined : extent;
     }
@@ -189,6 +216,7 @@ export class SelectItemControlHelperForWorkspaceAndExtent {
 
     async setWorkspaceById(workspaceId: string): Promise<void> {
         this.preSelectWorkspaceById = workspaceId;
+        this.preSelectExtentByUri = undefined;
         await this.loadWorkspaces();
     }
 }

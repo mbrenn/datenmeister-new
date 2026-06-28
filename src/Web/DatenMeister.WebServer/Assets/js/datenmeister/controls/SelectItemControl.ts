@@ -2,7 +2,6 @@
 import {ItemWithNameAndId} from "../ApiModels.js";
 import {UserEvent} from "../../burnsystems/Events.js";
 import * as GlobalSettings from "../Settings.js";
-import {ISelectItemControl} from "./Interfaces.js";
 import * as ByBrowseControl from "./SelectItemControlByBrowsingControl.js"
 import * as BySearch from "./SelectItemControlBySearch.js"
 import {ControlSettings} from "./SelectItemControlByBrowsingControl.js"
@@ -66,11 +65,8 @@ export class ContainerSettings{
  * Pre-selection is supported via {@link setWorkspaceById},
  * {@link setExtentByUri} and {@link setItemByUri}; those calls are safe even
  * before {@link init}/{@link initAsync} have completed.
- *
- * The class implements {@link ISelectItemControl} so that it can be used
- * interchangeably with other selection sub-controls (browse, freetext, …).
  */
-export class SelectItemControl implements ISelectItemControl {
+export class SelectItemControl {
     
     /** Root `<table>` of the rendered control; `undefined` after {@link removeControl}. */
     private containerDiv: JQuery;

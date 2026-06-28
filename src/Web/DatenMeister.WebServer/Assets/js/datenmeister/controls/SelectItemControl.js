@@ -53,9 +53,6 @@ export class ContainerSettings {
  * Pre-selection is supported via {@link setWorkspaceById},
  * {@link setExtentByUri} and {@link setItemByUri}; those calls are safe even
  * before {@link init}/{@link initAsync} have completed.
- *
- * The class implements {@link ISelectItemControl} so that it can be used
- * interchangeably with other selection sub-controls (browse, freetext, …).
  */
 export class SelectItemControl {
     /** Root `<table>` of the rendered control; `undefined` after {@link removeControl}. */

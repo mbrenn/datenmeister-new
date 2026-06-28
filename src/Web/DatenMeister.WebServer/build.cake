@@ -72,7 +72,7 @@ Task("Compile TS")
 Task("Compress JS")
     .Does(() =>
     {
-        Information("Compiling and minifying TypeScript files");
+        Information("Minifying TypeScript files");
         
         NpmExec("esbuild", new [] {"\"Assets/js/burnsystems/**/*.js\" --minify --sourcemap --outbase=Assets/js/burnsystems --outdir=wwwroot/js/burnsystems --platform=browser --format=esm"});
         NpmExec("esbuild", new [] {"\"Assets/js/datenmeister/**/*.js\" --minify --sourcemap --outbase=Assets/js/datenmeister --outdir=wwwroot/js/datenmeister --platform=browser --format=esm"});        

@@ -36,7 +36,7 @@ internal class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage
                 typeof(Plugin),
                 "DatenMeister.Reports.Forms.Js.DatenMeister.Reports.Forms.js",
                 "DatenMeister.Reports.Forms.js",
-                "../../Datenmeister.Reports.Forms/js/DatenMeister.Reports.Forms.js");
+                "../../Datenmeister.Reports.Forms/Js/DatenMeister.Reports.Forms.js");
             pluginLogic.AddJavaScriptFromResource(
                 typeof(Plugin),
                 "DatenMeister.Reports.Forms.Js.DatenMeister.Reports.Types.js",

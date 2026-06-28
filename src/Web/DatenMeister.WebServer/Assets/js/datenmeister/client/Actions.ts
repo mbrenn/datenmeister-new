@@ -22,7 +22,7 @@ export interface ExecuteActionResult
 
 export interface ExecuteActionWithDmObjectResult
 extends ExecuteActionResult{
-    resultAsDmObject: Mof.DmObject;
+    resultAsDmObject: Mof.DmObject | undefined;
 }
 
 export async function executeActionDirectly(actionName: string, parameter: ExecuteActionParams)

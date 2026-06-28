@@ -146,7 +146,7 @@ function parseNavigateToItemParam(param? : INavigateToItemParams) {
 export function getLinkForNavigateToCreateNewItemInExtent(workspace: string,
                                                           extentUri: string,
                                                           metaclass: string,
-                                                          metaClassWorkspace: string) {
+                                                          metaClassWorkspace?: string) {
     return Settings.baseUrl +
         "ItemAction/Extent.CreateNewItem" +
         "?workspace=" + encodeURIComponent(workspace) +
@@ -166,7 +166,7 @@ export function navigateToCreateNewItemInExtent(workspace: string,
         workspace, extentUri, metaclass, metaClassWorkspace);
 }
 
-export function getLinkForNavigateToAction(parameter: any, actionName: string, formUri: string) {
+export function getLinkForNavigateToAction(parameter: any, actionName: string, formUri?: string) {
     let urlParameter = "";
 
     if (parameter !== undefined) {

@@ -13,7 +13,7 @@ export interface IInjectNameByUriParams{
 
 export async function injectNameByObject(domElement: JQuery, element: DmObject, parameter?: IInjectNameByUriParams)
 {
-    return injectNameByUri(domElement, element.workspace, element.uri, parameter);   
+    return injectNameByUri(domElement, element.workspace, element.uri ?? "", parameter);   
 }
 
 export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string, parameter?: IInjectNameByUriParams) {
@@ -31,7 +31,7 @@ export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspace
 }
 
 export async function convertDmObjectToDom(item: DmObject, params?: IInjectNameByUriParams) {
-    const x = await ElementClient.loadNameByUri(item.workspace, item.uri);
+    const x = await ElementClient.loadNameByUri(item.workspace, item.uri ?? "");
     return convertItemWithNameAndIdToDom(x, params);
 }
 
@@ -65,21 +65,23 @@ export function convertItemWithNameAndIdToDom(
         // The inhibition link
         if (!inhibitLink) {
             const linkElement = $("<a></a>");
-            linkElement.text(item.name);
+            linkElement.text(item.name ?? "");
 
             if (params?.onClick !== undefined) {
                 // There is a special click handler, so we execute that one instead of a generic uri
                 linkElement.attr('href', '#');
                 linkElement.on('click', () => {
-                    params.onClick(item);
+                    if(params?.onClick !== undefined) {
+                        params.onClick(item);
+                    }
                     return false;
                 });
             } else {
                 linkElement.attr(                    
                     "href",
-                    Navigator.getLinkForNavigateToItemByUrl(item.workspace, item.uri));
+                    Navigator.getLinkForNavigateToItemByUrl(item.workspace ?? "", item.uri));
                 linkElement.on('click', () => {
-                    Navigator.navigateToItemByUrl(item.workspace, item.uri)
+                    Navigator.navigateToItemByUrl(item.workspace ?? "", item.uri)
                 });
             }
 
@@ -87,7 +89,7 @@ export function convertItemWithNameAndIdToDom(
         }
         else {
             const linkElement = $("<span></span>");
-            linkElement.text(item.name);
+            linkElement.text(item.name ?? "");
             result.append(linkElement);
         }
 
@@ -153,7 +155,7 @@ export function convertToDom(mofElement: any, isReferenced?: boolean): JQuery {
                 .attr('title', asElement.metaClass.uri)
                 .text("[[MetaClass: " + name + "]]");
             
-            ElementClient.loadNameByUri(asElement.metaClass.workspace, asElement.metaClass.uri).then(
+            ElementClient.loadNameByUri(asElement.metaClass.workspace ?? "", asElement.metaClass.uri).then(
                 (x) => {
                     $("em", row).text("[[MetaClass: " + x.name + "]]");
                 }           

@@ -96,5 +96,5 @@ async function loadReport(workspace: string, itemUri: string) : Promise<string> 
     };
 
     const result = await ActionClient.executeActionDirectly("Execute", parameter);
-    return result.resultAsDmObject.get(Model._Root._RequestReportResult.report);
+    return result.resultAsDmObject?.get(Model._Root._RequestReportResult.report);
 }

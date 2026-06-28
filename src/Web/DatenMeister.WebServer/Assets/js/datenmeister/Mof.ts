@@ -91,7 +91,7 @@ export class DmObject {
     metaClass: ItemWithNameAndId;
 
     /** The URI identifying this object within its extent */
-    uri: string | undefined;
+    uri: string = "";
 
     /** Indicates whether this object is a reference to another object (true) or a full object (false) */
     isReference: boolean = false;
@@ -450,6 +450,7 @@ export class DmObject {
      * @param workspace The workspace containing the metaclass (defaults to "Types")
      */
     setMetaClassByUri(metaClassUri: string | undefined, workspace?: string | undefined) {
+        if (metaClassUri === undefined) return;
         if (workspace === undefined) {
             workspace = "Types";
         }
@@ -521,7 +522,7 @@ export class DmObject {
      */
     static createFromItemWithNameAndId(item: ItemWithNameAndId)
     {
-        return this.createFromReference(item.workspace, item.uri);
+        return this.createFromReference(item.workspace ?? "", item.uri);
     }
 }
 
@@ -774,7 +775,7 @@ export function convertJsonObjectToObjects(
     workspace: string | undefined = undefined): any {
     if (Array.isArray(element)) {
         // Recursively convert array elements
-        const arrayResult = [];
+        const arrayResult: any[] = [];
         for (let m in element) {
             const inner = element[m];
             arrayResult.push(convertJsonObjectToObjects(inner, extent, workspace));
@@ -831,7 +832,7 @@ export function convertJsonObjectToDmObject(
 
     // Parse string JSON if needed
     if (typeof element === 'string' || element instanceof String) {
-        element = JSON.parse(element as string);
+        element = JSON.parse(element as string) as object;
     }
 
     const result = new DmObjectWithSync();
@@ -868,7 +869,7 @@ export function convertJsonObjectToDmObject(
 
                 if (Array.isArray(value)) {
                     // Recursively convert array elements
-                    const finalValue = [];
+                    const finalValue: any[] = [];
                     for (const m in value) {
                         if (!((value as object[]).hasOwnProperty(m))) {
                             continue;

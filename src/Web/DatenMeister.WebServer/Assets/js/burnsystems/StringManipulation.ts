@@ -35,7 +35,7 @@ export function truncateText(value:string, parameter?: ITruncateParameters) {
         }
     }
 
-    if (parameter.maxLines !== undefined && parameter.maxLines > 0) {
+    if (parameter?.maxLines !== undefined && parameter.maxLines > 0) {
         let lines = value.split('\n');
         if (lines.length > parameter.maxLines) {
             value = lines.splice(0, parameter.maxLines).join('\n').trim();

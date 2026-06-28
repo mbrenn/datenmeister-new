@@ -555,7 +555,7 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
                         configuration: this.configuration,
                         field: field,
                         itemUrl: element.uri,
-                        isReadOnly: this.configuration.isReadOnly,
+                        isReadOnly: this.configuration.isReadOnly === true,
                         form: this
                     });
 

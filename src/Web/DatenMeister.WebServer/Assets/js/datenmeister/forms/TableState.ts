@@ -5,15 +5,15 @@ import * as QueryEngine from "../modules/QueryEngine.js";
 export class TableState {
     queryStatement: Mof.DmObject = new Mof.DmObject(_DatenMeister._DataViews.__QueryStatement_Uri);
 
-    overrideQueryWorkspace: string = undefined;
-    overrideQueryItem: string = undefined;
+    overrideQueryWorkspace: string | undefined = undefined;
+    overrideQueryItem: string  | undefined  = undefined;
 
     getOrderBy(): { property: string, descending: boolean } | undefined {
         const node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
         if (node) {
             return {
-                property: node.get(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, Mof.ObjectType.String),
-                descending: node.get(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, Mof.ObjectType.Boolean)
+                property: node.get(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, Mof.ObjectType.String) ?? "",
+                descending: node.get(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, Mof.ObjectType.Boolean) ?? false
             };
         }
         return undefined;

@@ -12,14 +12,14 @@ import * as ActionClient from "./client/Actions.js"
 export interface IItemFormActionModule
 {
     /**
-     * Defines the name of the action. This name is used to look up the action 
+     * Defines the name of the action. This name is used to look up the action
      */
-    actionName: string;
+    actionName: string | undefined;
 
-    /** 
+    /**
      * Alternatively, defines the action by its metaclass uri.
      */
-    actionMetaClassUri: string; 
+    actionMetaClassUri: string | undefined;
 
     /**
      * Defines the verb of the action. This information is used to fill the button
@@ -35,13 +35,13 @@ export interface IItemFormActionModule
      * Loads the object for a certain action. 
      * Can be undefined, if a default object can be used
      */
-    loadObject(): Promise<Mof.DmObjectWithSync> | undefined;
+    loadObject(): Promise<Mof.DmObjectWithSync | undefined> | undefined;
 
     /**
      * Loads a certain form fitting to the action
-     * Can be undefined, if a default form shall be generated 
+     * Can be undefined, if a default form shall be generated
      */
-    loadForm(metaClass?: string): Promise<Mof.DmObject> | undefined;
+    loadForm(metaClass?: string): Promise<Mof.DmObject | undefined> | undefined;
 
     /**
      * Will be called to execute the action 
@@ -55,8 +55,8 @@ export interface IItemFormActionModule
      * user. 
      */
     execute(
-        form: IIForms.IFormNavigation,
-        element: Mof.DmObject,
+        form?: IIForms.IFormNavigation,
+        element?: Mof.DmObject,
         parameter?: Mof.DmObject,
         submitMethod?: SubmitMethod): Promise<Mof.DmObject | void>;
 
@@ -97,15 +97,15 @@ export class ItemFormActionModuleBase implements IItemFormActionModule {
         this.actionMetaClassUri = actionMetaClassUri;
     }
 
-    /** 
+    /**
      * Name of the action as a coded information
      */
-    actionName: string;
+    actionName: string | undefined;
 
-    /** 
-     * Defines the uri of the metaclass of the action which provides a unique and 
+    /**
+     * Defines the uri of the metaclass of the action which provides a unique and
      */
-    actionMetaClassUri: string;
+    actionMetaClassUri: string | undefined;
 
     /**
      * Defines the headline of the action form. Can be undefined, so actionVerb is used. 
@@ -131,11 +131,11 @@ export class ItemFormActionModuleBase implements IItemFormActionModule {
      */
     skipSaving: boolean | undefined;
         
-    execute(form: IIForms.IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<Mof.DmObject | void> {
+    execute(form?: IIForms.IFormNavigation, element?: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<Mof.DmObject | void> {
         return Promise.resolve(undefined);
     }
 
-    loadForm(metaClass?: string): Promise<Mof.DmObject> | undefined {
+    loadForm(metaClass?: string): Promise<Mof.DmObject | undefined> | undefined {
         return Promise.resolve(undefined);
     }
 
@@ -143,7 +143,7 @@ export class ItemFormActionModuleBase implements IItemFormActionModule {
         return Promise.resolve();
     }
 
-    loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
+    loadObject(): Promise<Mof.DmObjectWithSync | undefined> | undefined {
         if (this.defaultMetaClassUri !== undefined) {
             return Promise.resolve(
                 new Mof.DmObjectWithSync(this.defaultMetaClassUri)
@@ -166,7 +166,7 @@ export function addModule(module: IItemFormActionModule) {
     modules.push(module);
 }
 
-export function getModule(actionName:string): IItemFormActionModule | undefined {
+export function getModule(actionName: string | undefined): IItemFormActionModule | undefined {
     for (let n in modules) {
         const module = modules[n];
         if (module.actionName === actionName) {

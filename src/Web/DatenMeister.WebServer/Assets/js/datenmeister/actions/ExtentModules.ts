@@ -114,13 +114,16 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
      * @param metaClass Url of the metaclass to which the form shall be created
      * @returns The form to be used for the item creation. 
      */
-    override async loadForm(metaClass:string): Promise<Mof.DmObject> | undefined {
+    override async loadForm(metaClass:string): Promise<Mof.DmObject> {
         
         this.loadParameterFromUrl();
         
         // Gets the form
         const form = await ClientForms.getDefaultObjectForMetaClass(
             metaClass, "ViewMode.DataManipulation");
+        if(form === undefined) {
+            throw "The form for the given metaclass could not be found";
+        }
         
         // Tries to find the first tab and its fields
         const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);
@@ -487,9 +490,16 @@ class ExtentXmiImport extends FormActions.ItemFormActionModuleBase {
         } else {
             const workspace = p.get('workspace');
             const extentUri = p.get('extentUri');
+            if (workspace === undefined || extentUri === undefined || workspace === null || extentUri === null) {
+                throw "The workspace or extentUri is undefined via Query Parameter of Url";
+            }
 
             // Export the Xmi and stores it into the element
-            const importedXmi = await ClientExtents.importXmi(workspace, extentUri, element.get(_DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, Mof.ObjectType.String));
+            const importedXmi =
+                await ClientExtents.importXmi(
+                    workspace,
+                    extentUri,
+                    element.get(_DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, Mof.ObjectType.String) ?? "");
 
             if (importedXmi.success) {
                 Navigator.navigateToExtentItems(workspace, extentUri);

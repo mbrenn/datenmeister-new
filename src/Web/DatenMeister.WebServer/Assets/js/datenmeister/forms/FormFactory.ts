@@ -40,7 +40,7 @@ export function registerObjectForm(uri: string, factoryFunction: () => IForm.IOb
     );
 }
 
-export function getCollectionFormFactory(uri: string): () => IForm.ICollectionFormElement | undefined {
+export function getCollectionFormFactory(uri: string): (() => IForm.ICollectionFormElement | undefined) | undefined {
 
     const indexUri = uri.indexOf('#');
     if (indexUri !== -1) {
@@ -63,7 +63,7 @@ export function getCollectionFormFactory(uri: string): () => IForm.ICollectionFo
     return undefined;
 }
 
-export function getObjectFormFactory(uri: string): () => IForm.IObjectFormElement | undefined {
+export function getObjectFormFactory(uri: string): (() => IForm.IObjectFormElement | undefined) | undefined {
     const indexUri = uri.indexOf('#');
     if (indexUri !== -1) {
         uri = uri.substring(indexUri + 1);

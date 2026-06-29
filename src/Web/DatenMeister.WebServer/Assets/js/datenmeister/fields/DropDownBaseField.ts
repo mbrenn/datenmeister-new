@@ -71,7 +71,7 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
                 // If yes, get the value
                 const textValue = await ClientItems.getItemWithNameAndId(value.workspace, value.uri);
                 const result = $("<span></span>");
-                result.text(textValue.name);
+                result.text(textValue.name ?? "Unknown Name");
                 return result;
             }
             else {
@@ -93,6 +93,10 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
                 if (Array.isArray(this._loadedFields)) {
                     this._dropDown = $("<select></select>");
                     for (const field of this._loadedFields) {
+                        if(field.value === undefined) {
+                            continue;
+                        }
+                        
                         const option = $("<option></option>");
                         option.text(field.title);
                         option.val(field.value);
@@ -124,6 +128,8 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
 
                 for (const n in this._loadedFields) {
                     const item = this._loadedFields[n];
+                    if(item.key === undefined) 
+                        continue
                     const option = $("<option></option>");
                     option.attr('value', item.key);
 

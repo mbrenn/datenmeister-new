@@ -241,6 +241,10 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
 
                     // Ok, get the package url
                     const packageUrl = selectItemControl.getSelectedItem();
+                    if(packageUrl === undefined) {
+                        alert ('No item selected');
+                        return;
+                    }
 
                     // Prepare the action to store the current viewset into the selected package
                     const actionParameter = new Mof.DmObject(_DatenMeister._Actions.__StoreElementAction_Uri);

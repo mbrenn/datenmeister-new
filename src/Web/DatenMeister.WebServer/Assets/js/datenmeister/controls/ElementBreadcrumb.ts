@@ -53,6 +53,10 @@ export class ElementBreadcrumb {
             // Adds the properties, in case the ententType is of type Extent
             if (item.ententType === EntentType.Extent) {
                 const propertyElement = $("<a>(Properties)</a>");
+                if (item.extentUri === undefined || item.extentUri === null) {
+                    throw new Error("Extent URI is undefined or null");
+                }
+
                 $(propertyElement).attr('href', Navigator.getLinkForNavigateToExtentProperties(item.workspace, item.extentUri));
                 this._container.append($("<span> </span>"));
                 this._container.append(propertyElement);

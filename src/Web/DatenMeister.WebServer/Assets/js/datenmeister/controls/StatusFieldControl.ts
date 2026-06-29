@@ -35,8 +35,7 @@ export class StatusFieldControl {
         this.htmlElement = htmlElement;
         StatusFieldControl.listStatusCollection ??= new Array<ListStatusItem>();
 
-        this.configuration = configuration;
-        this.configuration ??= {
+        this.configuration = configuration ?? {
             hideOnComplete: false
         };
         this.configuration.hideOnComplete ??= false;

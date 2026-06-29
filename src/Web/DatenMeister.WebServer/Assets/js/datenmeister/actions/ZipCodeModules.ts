@@ -20,7 +20,7 @@ class ZipCodeTestAction extends FormActions.ItemFormActionModuleBase{
         this.skipSaving = true;
     }
     
-    async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
+    async loadObject(): Promise<Mof.DmObjectWithSync> {
         const result = await MofSync.createTemporaryDmObject(
             "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
         return Promise.resolve(result);

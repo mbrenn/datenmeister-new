@@ -38,7 +38,7 @@ export class Control {
      * Stores the property type. This information is used to pre-select the
      * SubElementField in which the user can define the metaclass for a element to be created
      */
-    propertyType: ItemWithNameAndId;
+    propertyType: ItemWithNameAndId | undefined;
 
     /** 
      * Additional Types to be directly created. 
@@ -158,7 +158,7 @@ export class Control {
                                 field: fieldData,
                                 isReadOnly: true,
                                 itemUrl: innerValue.uri,
-                                configuration: {formType: this.configuration.formType},
+                                configuration: {formType: this.configuration.formType, isReadOnly: false},
                                 form: tthis.form
                             });
                         const dom = await field.createDom(innerValue);

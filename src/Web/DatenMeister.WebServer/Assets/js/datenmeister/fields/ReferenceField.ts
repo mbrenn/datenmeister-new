@@ -29,7 +29,10 @@ export class Control extends BaseField {
     
     constructor(field?: Mof.DmObject) {
         super();
-        this.field = field;
+        if(field !== undefined) {
+            this.field = field;
+        }
+        
         this._list = $("<span></span>");
     }
 

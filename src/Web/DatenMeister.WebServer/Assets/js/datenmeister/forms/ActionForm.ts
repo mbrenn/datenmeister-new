@@ -146,7 +146,7 @@ export async function createActionFormForEmptyObject(
     
     if(form === undefined)
     {
-        throw FormError("No form could be found for the action");
+        throw Error("No form could be found for the action");
     }
     
     statusOverview.setListStatus("Load Form", true);

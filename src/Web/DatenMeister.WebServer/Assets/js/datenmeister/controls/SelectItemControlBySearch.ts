@@ -121,7 +121,7 @@ export class SelectItemControlBySearch implements IWorkspaceAndExtentSelectionCa
         const loadIndex = this.lastLoadIndex;
         
         const selectWorkspace = this.getUserSelectedWorkspaceId();
-        const text = this.inputBoxDiv.val().toString();
+        const text = this.inputBoxDiv.val()?.toString();
         if(text === "" || text === null || text === undefined)
         {
             this.resultsDiv.empty();

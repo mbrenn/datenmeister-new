@@ -34,13 +34,18 @@ export async function executeActionDirectly(actionName: string, parameter: Execu
         url,
         {parameter: Mof.createJsonFromObject(parameter.parameter)});
     
+    const resultingObject = Mof.convertJsonObjectToDmObject(result.result);
+    if(resultingObject === undefined) {
+        throw new Error("Resulting object is undefined");
+    }
+    
     const resultAsDmObject: ExecuteActionWithDmObjectResult =
         {
             success: result.success,
             result: result.result,
-            reason: result.reason,
+            reason: result.reason,  
             stackTrace: result.stackTrace,
-            resultAsDmObject: Mof.convertJsonObjectToDmObject(result.result)
+            resultAsDmObject: resultingObject
         };
 
     return resultAsDmObject;
@@ -55,13 +60,19 @@ export async function executeAction(workspaceId: string, itemUri: string) {
     const result =
         await ApiConnection.post<ExecuteActionResult>(
             url, {});
+    
+    const resultingObject = Mof.convertJsonObjectToDmObject(result.result);
+    if(resultingObject === undefined) {
+        throw new Error("Resulting object is undefined");
+    }
+    
     const resultAsDmObject: ExecuteActionWithDmObjectResult =
         {
             success: result.success,
             result: result.result,
             reason: result.reason,
             stackTrace: result.stackTrace,
-            resultAsDmObject: Mof.convertJsonObjectToDmObject(result.result)
+            resultAsDmObject: resultingObject
         };
 
     return resultAsDmObject;

@@ -25,8 +25,10 @@ export class Control {
         // Add click handler to the button        
         const queryButton = this._control.find('.dm-pathquery-debug-query');
         queryButton.on('click', async () => {
-            const pathWorkspace = this._control.find('.dm-pathquery-debug-workspace').val().toString();
-            const pathInput = this._control.find('.dm-pathquery-debug-path').val().toString();
+            const pathWorkspace = 
+                this._control.find('.dm-pathquery-debug-workspace').val()?.toString() ?? "";
+            const pathInput = 
+                this._control.find('.dm-pathquery-debug-path').val()?.toString() ?? "";
             await tthis.performQuery(pathWorkspace, pathInput);
         });
 
@@ -49,8 +51,7 @@ export class Control {
         try {
             const serverResult = await ElementClient.queryObject(queryBuilder.queryStatement);
             result.append(DomHelper.convertToDom(serverResult.result));
-        }
-        catch (textMessage) {
+        } catch (textMessage: any) {
             result.append($("<div class='alert-warning'></div>").text(textMessage.toString()));
         }
     }

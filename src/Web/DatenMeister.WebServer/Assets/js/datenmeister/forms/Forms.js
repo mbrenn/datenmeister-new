@@ -1,5 +1,6 @@
 import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
+import * as Settings from "../Settings.js";
 export var FormModel;
 (function (FormModel) {
     function createEmptyFormObject() {
@@ -7,13 +8,15 @@ export var FormModel;
         form.metaClass =
             {
                 id: _DatenMeister._Forms._FormTypes.__ObjectForm_Uri,
-                uri: _DatenMeister._Forms._FormTypes.__ObjectForm_Uri
+                uri: _DatenMeister._Forms._FormTypes.__ObjectForm_Uri,
+                workspace: Settings.WorkspaceTypes
             };
         const detailForm = new Mof.DmObject();
         detailForm.metaClass =
             {
                 id: _DatenMeister._Forms._FormTypes.__RowForm_Uri,
-                uri: _DatenMeister._Forms._FormTypes.__RowForm_Uri
+                uri: _DatenMeister._Forms._FormTypes.__RowForm_Uri,
+                workspace: Settings.WorkspaceTypes
             };
         form.set('tab', [detailForm]);
         return form;

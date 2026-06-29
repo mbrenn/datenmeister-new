@@ -42,7 +42,6 @@ internal class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage
                 "DatenMeister.Reports.Forms.Js.DatenMeister.Reports.Types.js",
                 "DatenMeister.Reports.Types.js",
                 "../../Datenmeister.Reports.Forms/js/DatenMeister.Reports.Types.js");
-
             pluginLogic.AddCssFileFromResource(
                 typeof(Plugin),
                 "DatenMeister.Reports.Forms.Css.DatenMeister.Reports.Forms.css",

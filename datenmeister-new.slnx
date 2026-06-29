@@ -200,6 +200,12 @@
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>
   </Folder>
+  <Folder Name="/Library - .Net Standard/Templates/">
+    <Project Path="Templates/DatenMeister.Templates.TypeScriptAndTypesPlugin/DatenMeister.Templates.TypeScriptAndTypesPlugin.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+  </Folder>
   <Folder Name="/Library - .Net Standard/Tools/">
     <Project Path="src/DatenMeister.Mail/DatenMeister.Mail.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />

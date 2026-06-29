@@ -81,8 +81,9 @@ Fix export issue
 
 * The swimlane table shall support a vertical and horizontal swimlane, each by a configurable property
 * The swimlane can be shown in the webview by clicking on a Swimlane-Table-Configuration
-* The Object and collection view shall support a tab of a Swimlane Table as a configurable plugin. 
+* The Object and Collection view shall support a tab of a Swimlane Table as a configurable plugin. 
 * The swimlane table shall exportable as a file (html)
+** The rendering of the swimlane shall happen in JavaScript to support offline export
 * The clustering of data in swimlane rows and columns shall be supported as a datatransformation, so other tools can
 directly work on the transformed data.
 
@@ -90,10 +91,11 @@ directly work on the transformed data.
 
 * An own assembly with data types and Javascript files will be implemented
 * The extent url will be "dm:///intern.types.swimlanes.datenmeister/"
+** We need to have a template for that procedure. 
 
 The following tasks: 
 
-* [ ] Create new Assembly
+* [ ] Create new Assembly: DatenMeister.Reports.Swimlane
 * [ ] Add project configuration for Extent for types
 * [ ] Add project configuration for Typescript conversion
 

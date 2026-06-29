@@ -1,7 +1,7 @@
 ﻿/// <reference types="chai" />
 import * as VML from "../forms/ViewModeLogic.js";
 
-//import '../../node_modules/chai/register-assert.js';
+import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 

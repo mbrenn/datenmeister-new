@@ -10,7 +10,7 @@ import * as ClientWorkspace from "../client/Workspace.js";
 import _ViewMode = _DatenMeister._Forms._ViewMode;
 
 
-// import '../../node_modules/chai/register-assert.js';
+import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 class X implements IForm.IObjectFormElement {

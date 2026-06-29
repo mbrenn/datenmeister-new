@@ -89,6 +89,7 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         );
 
         if (result.success) {
+            if(result.resultAsDmObject === undefined) throw Error("Result is not set");
             const itemUrl = result.resultAsDmObject.get(_DatenMeister._Actions._TargetReferenceResult.targetUrl, Mof.ObjectType.String);
             const workspace = result.resultAsDmObject.get(_DatenMeister._Actions._TargetReferenceResult.targetWorkspace, Mof.ObjectType.String);
             Navigator.navigateToItemByUrl(workspace, itemUrl);

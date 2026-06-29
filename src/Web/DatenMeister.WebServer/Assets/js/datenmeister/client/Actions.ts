@@ -21,7 +21,7 @@ export interface ExecuteActionResult
 }
 
 export interface ExecuteActionWithDmObjectResult extends ExecuteActionResult {
-    resultAsDmObject: Mof.DmObject;
+    resultAsDmObject: Mof.DmObject | undefined;
 }
 
 export async function executeActionDirectly(actionName: string, parameter: ExecuteActionParams)
@@ -34,10 +34,7 @@ export async function executeActionDirectly(actionName: string, parameter: Execu
         url,
         {parameter: Mof.createJsonFromObject(parameter.parameter)});
     
-    const resultingObject = Mof.convertJsonObjectToDmObject(result.result);
-    if(resultingObject === undefined) {
-        throw new Error("Resulting object is undefined");
-    }
+    const resultingObject = Mof.convertJsonObjectToDmObject(result.result);    
     
     const resultAsDmObject: ExecuteActionWithDmObjectResult =
         {
@@ -62,9 +59,6 @@ export async function executeAction(workspaceId: string, itemUri: string) {
             url, {});
     
     const resultingObject = Mof.convertJsonObjectToDmObject(result.result);
-    if(resultingObject === undefined) {
-        throw new Error("Resulting object is undefined");
-    }
     
     const resultAsDmObject: ExecuteActionWithDmObjectResult =
         {

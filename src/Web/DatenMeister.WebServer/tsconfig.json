@@ -8,7 +8,11 @@
     "module": "Node16",
     "moduleResolution": "node16",
     "strictPropertyInitialization": false,
-    "types": [ "chai", "mocha", "jquery", "jquery.fancytree" ]
+    "types": [ "chai", "mocha", "jquery", "jquery.fancytree" ],
+    "rootDirs": [
+      "./Assets/js",
+      "."
+    ]
   },
   "compileOnSave": true,
   "exclude": [

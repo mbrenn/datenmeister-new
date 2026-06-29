@@ -6,6 +6,7 @@ import * as ClientWorkspace from "../client/Workspace.js";
 import * as ClientItems from "../client/Items.js";
 import {_UML} from "../models/UML.js";
 
+import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 export function includeTests() {
@@ -43,9 +44,9 @@ export function includeTests() {
                     {parameter: parameter}
                 );
 
-                assert.isTrue(result.success === true);
+                assert.isTrue(result.success);
                 assert.isTrue(result.resultAsDmObject !== undefined);
-                assert.isTrue(result.resultAsDmObject.get("returnText", Mof.ObjectType.String) === "Returned");
+                assert.isTrue(result.resultAsDmObject!.get("returnText", Mof.ObjectType.String) === "Returned");
             });
 
             it('No success Echo', async () => {
@@ -58,13 +59,13 @@ export function includeTests() {
                     {parameter: parameter}
                 );
 
-                assert.isTrue(result.success === false);
+                assert.isTrue(!result.success);
             });
 
             it('Create Extent via Action', async () => {
                 
                 let success = await ClientExtent.exists("Test", "dm:///unittestaction");
-                assert.isTrue(success.exists === false, "dm:///unittestaction may not exist");
+                assert.isTrue(!success.exists, "dm:///unittestaction may not exist");
 
                 const parameter = new Mof.DmObject();
                 parameter.setMetaClassByUri(_DatenMeister._Actions.__LoadExtentAction_Uri, 'Types');
@@ -79,7 +80,7 @@ export function includeTests() {
                 await ClientActions.executeActionDirectly("Execute", {parameter: parameter});
 
                 success = await ClientExtent.exists("Test", "dm:///unittestaction");
-                assert.isTrue(success.exists === true, "dm:///unittestaction should exist");
+                assert.isTrue(success.exists, "dm:///unittestaction should exist");
 
                 const drop = new Mof.DmObject();
                 drop.setMetaClassByUri(_DatenMeister._Actions.__DropExtentAction_Uri, 'Types');
@@ -89,7 +90,7 @@ export function includeTests() {
                 await ClientActions.executeActionDirectly("Execute", {parameter: drop});
 
                 success = await ClientExtent.exists("Test", "dm:///unittestaction");
-                assert.isTrue(success.exists === false, "dm:///unittestaction should have been deleted");
+                assert.isTrue(!success.exists, "dm:///unittestaction should have been deleted");
             });
 
             it('Copy item', async () => {
@@ -129,12 +130,12 @@ export function includeTests() {
                 assert.isTrue(copyResult !== undefined, "Copy Result should have a return");
                 assert.isTrue(copyResult.resultAsDmObject !== undefined,"Copy Result should have a result");
                 const copyResultUri =
-                    copyResult.resultAsDmObject.get(
+                    copyResult.resultAsDmObject!.get(
                         _DatenMeister._Actions._TargetReferenceResult.targetUrl,
                         Mof.ObjectType.String
                     );
                 const copyResultWorkspace =
-                    copyResult.resultAsDmObject.get(
+                    copyResult.resultAsDmObject!.get(
                         _DatenMeister._Actions._TargetReferenceResult.targetWorkspace,
                         Mof.ObjectType.String
                     );
@@ -203,12 +204,12 @@ export function includeTests() {
                 assert.isTrue(copyResult !== undefined);
                 assert.isTrue(copyResult.resultAsDmObject !== undefined);
                 const copyResultUri =
-                    copyResult.resultAsDmObject.get(
+                    copyResult.resultAsDmObject!.get(
                         _DatenMeister._Actions._TargetReferenceResult.targetUrl,
                         Mof.ObjectType.String
                     );
                 const copyResultWorkspace =
-                    copyResult.resultAsDmObject.get(
+                    copyResult.resultAsDmObject!.get(
                         _DatenMeister._Actions._TargetReferenceResult.targetWorkspace,
                         Mof.ObjectType.String
                     );

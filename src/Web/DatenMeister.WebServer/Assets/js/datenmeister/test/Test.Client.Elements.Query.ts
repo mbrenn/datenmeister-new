@@ -4,8 +4,8 @@ import { _UML } from "../models/UML.js"
 import * as Query from "../modules/QueryEngine.js"
 
 
-/*import '../../node_modules/chai/register-assert.js';
-import '../../node_modules/chai/register-expect.js';*/
+import '../../node_modules/chai/register-assert.js';
+import '../../node_modules/chai/register-expect.js';
 declare var assert: Chai.AssertStatic;
 declare var expect: Chai.ExpectStatic;
 

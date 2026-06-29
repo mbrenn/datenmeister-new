@@ -264,7 +264,8 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                         await Actions.executeActionDirectly("Execute", {
                             parameter: actionParameter
                         });
-
+                    
+                    if(result.resultAsDmObject === undefined) throw Error("Result is not set");
                     const uri = result.resultAsDmObject.get(
                         _DatenMeister._Actions._TargetReferenceResult.targetUrl,
                         Mof.ObjectType.String);
@@ -273,19 +274,15 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                         Mof.ObjectType.String);
 
                     // If we have the result, we show it with a link to navigate
-                    if (result.resultAsDmObject !== undefined) {
-                        selectItemControl.removeControl();
-                        const resultText = $("<span>View is created: <a>Click here to navigate to the view</a></span>");
-                        const anchor = resultText.find("a");
-                        anchor.attr("href",
-                            Navigator.getLinkForNavigateToItemByUrl(
-                                workspace,
-                                uri));
-                        resultCell.empty();
-                        resultCell.append(resultText);
-                    } else {
-                        alert('Something went wrong.');
-                    }
+                    selectItemControl.removeControl();
+                    const resultText = $("<span>View is created: <a>Click here to navigate to the view</a></span>");
+                    const anchor = resultText.find("a");
+                    anchor.attr("href",
+                        Navigator.getLinkForNavigateToItemByUrl(
+                            workspace,
+                            uri));
+                    resultCell.empty();
+                    resultCell.append(resultText);
                 });
 
                 innerQuery.append(storeTable);

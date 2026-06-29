@@ -3,6 +3,7 @@ import * as ClientExtent from "../client/Extents.js";
 import * as ClientItems from "../client/Items.js";
 import {SelectItemControl} from "../controls/SelectItemControl.js";
 
+import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 

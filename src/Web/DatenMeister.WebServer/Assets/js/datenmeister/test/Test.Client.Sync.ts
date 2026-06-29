@@ -3,7 +3,7 @@ import * as ClientItems from "../client/Items.js";
 import * as Mof from "../Mof.js"
 import {sync} from "../MofSync.js";
 
-//import '../../node_modules/chai/register-assert.js';
+import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 export function includeTests() {

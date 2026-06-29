@@ -114,10 +114,11 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
             }
         );
 
-        if (!result.success) {
-            alert('Extent was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
-        } else {
+        if (result.success) {
+            if (result.resultAsDmObject === undefined) throw Error("Result is not set");
             Navigator.navigateToExtentItems(result.resultAsDmObject.get("workspaceId"), result.resultAsDmObject.get("extentUri"));
+        } else {
+            alert('Extent was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
         }
     }
 }

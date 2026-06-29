@@ -468,7 +468,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             );
 
             if (result.success) {
-                if (result.result === null) {
+                if (result.result === null || result.resultAsDmObject === undefined) {
                     showRowFormInfoPopup(infoCell, 'No metadata could be retrieved for that property');
                 } else {
                     const resultText =

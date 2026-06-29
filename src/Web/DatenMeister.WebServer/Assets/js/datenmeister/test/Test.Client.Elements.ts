@@ -1,7 +1,7 @@
 ﻿import * as ClientElements from "../client/Elements.js"
 import * as ClientItems from "../client/Items.js"
 
-//import '../../node_modules/chai/register-assert.js';
+import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
 export function includeTests() {

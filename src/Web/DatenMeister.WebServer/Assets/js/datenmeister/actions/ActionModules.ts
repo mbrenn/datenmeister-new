@@ -22,8 +22,8 @@ class AlertClientAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        alert(parameter.get(_DatenMeister._Actions._ClientActions._AlertClientAction.messageText, Mof.ObjectType.String));
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {        
+        alert(parameter?.get(_DatenMeister._Actions._ClientActions._AlertClientAction.messageText, Mof.ObjectType.String) ?? "Invalid alert text");
     }
 }
 
@@ -78,6 +78,9 @@ class ActionExecuteOnItemAction extends FormActions.ItemFormActionModuleBase {
         const workspace = p.get('workspace');
         const itemUri = p.get('itemUri');
         const metaClass = p.get('metaClass');
+        if(workspace === null || itemUri === null || metaClass === null) {
+            throw Error("Invalid parameters");
+        }
 
         // Sets the reference on which the action shall be executed
         const reference = Mof.DmObject.createFromReference(workspace, itemUri);

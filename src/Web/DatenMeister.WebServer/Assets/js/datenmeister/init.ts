@@ -9,7 +9,7 @@ $(() => {
     $("#dm-search-btn").on(
         'click',
         () => {
-            executeSearchByText($("#dm-search-textbox").val().toString());
+            executeSearchByText($("#dm-search-textbox").val()?.toString() ?? "");
         }
     );
 });

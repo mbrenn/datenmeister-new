@@ -97,7 +97,7 @@ public class TypeScriptInterfaceGenerator : WalkPackageClass
     {
         var name = GetNameOfElement(enumInstance);
 
-        Result.AppendLine($"{stack.Indentation}export module _{name}");
+        Result.AppendLine($"{stack.Indentation}export namespace _{name}");
         Result.AppendLine($"{stack.Indentation}{{");
 
         base.WalkEnum(enumInstance, stack, callee);
@@ -158,8 +158,8 @@ public class TypeScriptInterfaceGenerator : WalkPackageClass
     /// <returns></returns>
     string[] GetReservedKeywords()
     {
-        _reservedKeywords ??= new[]
-        {
+        _reservedKeywords ??=
+        [
             "abstract",
             "arguments",
             "await",
@@ -224,8 +224,8 @@ public class TypeScriptInterfaceGenerator : WalkPackageClass
             "volatile",
             "while",
             "with",
-            "yield",
-        };
+            "yield"
+        ];
 
         return _reservedKeywords;
     }

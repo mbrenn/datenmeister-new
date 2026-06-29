@@ -58,6 +58,12 @@
     <None Update="DatenMeister.Settings.Docker.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Remove="Assets\js\datenmeister\test\Test.Client.Elements.Query.js" />
+    <None Remove="Assets\js\datenmeister\test\Test.Client.Elements.Query.js.map" />
+    <None Remove="Assets\js\datenmeister\test\Test.Client.Forms.js" />
+    <None Remove="Assets\js\datenmeister\test\Test.Client.Forms.js.map" />
+    <None Include="wwwroot\js\burnsystems\.gitignore" />
+    <None Include="wwwroot\js\datenmeister\.gitignore" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\js\" />

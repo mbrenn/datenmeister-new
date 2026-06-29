@@ -4,7 +4,7 @@ using DatenMeister.Core.Uml.Helper;
 namespace DatenMeister.Core.Exceptions;
 
 /// <summary>
-/// Defines the exception that is used within DatenMeister containing and object with
+/// Defines the exception that is used within DatenMeister containing an object with
 /// an exception object being a Mof Object
 /// </summary>
 public class DatenMeisterException : DatenMeisterRawException

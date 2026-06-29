@@ -9,7 +9,7 @@ export enum EntentType {
  * Correspondent to DatenMeister.Json.ItemLink.cs
  */
 export interface ItemLink {
-    workspace?: string;
+    workspace: string;
     uri: string;
 }
 
@@ -22,7 +22,7 @@ export interface ItemWithNameAndId {
     extentUri?: string;
     fullName?: string;
     id?: string;
-    workspace?: string;
+    workspace: string;
     metaClassName?: string;
     metaClassUri?: string;
     ententType?: EntentType;

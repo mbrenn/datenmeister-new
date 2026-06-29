@@ -5,7 +5,7 @@ import _FieldData = _DatenMeister._Forms._FieldTypes._FieldData;
 import _TableForm = _DatenMeister._Forms._FormTypes._TableForm;
 import * as Mof from "../Mof.js";
 import {truncateText} from "../../burnsystems/StringManipulation.js";
-import TableForm from "./TableForm.js";
+import {TableForm, MenuItemData} from "./TableForm.js";
 import * as SelectItemControl from "../controls/SelectItemControl.js";
 import * as Settings from "../Settings.js";
 import * as Navigator from "../Navigator.js"
@@ -15,10 +15,10 @@ import _NamedElement = _UML._CommonStructure._NamedElement;
 
 /**
  * Creates the function which allows to remove all properties of all items within the extent
+ * @param tableForm Table form which show the elements whose properties shall be removed
  * @param field Field for which the properties shall be removed
  */
-export function createFunctionToRemoveAllProperties(field: Mof.DmObject) {
-    const tthis = this;
+export function createFunctionToRemoveAllProperties(tableForm: TableForm, field: Mof.DmObject) : MenuItemData {
     return {
         cellKeyTitle: "Clear",
         onCreateDom: (popup: burnJsPopup.PopupResult, jquery: JQuery) => {
@@ -26,7 +26,7 @@ export function createFunctionToRemoveAllProperties(field: Mof.DmObject) {
             button.on('click', async () => {
                 // Gets the data
                 const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);
-                const dataUrl = tthis.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String);
+                const dataUrl = tableForm.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String);
 
                 // Creates the action
                 const action = new Mof.DmObject(_DatenMeister._Actions.__DeletePropertyFromCollectionAction_Uri);
@@ -38,7 +38,7 @@ export function createFunctionToRemoveAllProperties(field: Mof.DmObject) {
                 };
 
                 await Actions.executeActionDirectly("Execute", parameter);
-                await tthis.refreshForm();
+                await tableForm.refreshForm();
             });
 
             jquery.append(button);
@@ -50,7 +50,7 @@ export function createFunctionToRemoveAllProperties(field: Mof.DmObject) {
 /**
  * Creates the dropdown which allows the user to filter within the properties
  */
-export function createFunctionToFilterInProperty(tthis: TableForm, field: Mof.DmObject) {
+export function createFunctionToFilterInProperty(tthis: TableForm, field: Mof.DmObject) : MenuItemData {
     const dropDown = $("<select class=''></select>");
     const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);
 
@@ -122,6 +122,8 @@ export function createFunctionToFilterInProperty(tthis: TableForm, field: Mof.Dm
                 query.append($("<span>F</span>"));
                 return true;
             }
+            
+            return false;
         }
     };
 }
@@ -166,10 +168,14 @@ export function createFunctionToLoadCurrentView(tableForm: TableForm) {
                 selectItemControlSettings.showCancelButton = false;
                 selectItemControlSettings.headline = "Select View";
 
-                selectItemControl.init(selectField, selectItemControlSettings);
+                await selectItemControl.initAsync(selectField, selectItemControlSettings);
 
                 selectItemControl.itemSelected.addListener(
                     async (item) => {
+                        if(item.workspace === undefined) {
+                            throw new Error("Workspace is undefined");
+                        }
+                        
                         tableForm.tableState.queryStatement = 
                             await ClientItems.getObjectByUri(item.workspace, item.uri);
                         popup.closePopup();
@@ -224,7 +230,7 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                 selectItemControlSettings.showCancelButton = false;
                 selectItemControlSettings.headline = "Select Package";
 
-                selectItemControl.init(packageField, selectItemControlSettings);
+                await selectItemControl.initAsync(packageField, selectItemControlSettings);
 
                 submitButton.on('click', async () => {
                     const name = nameTextField.val();
@@ -235,6 +241,10 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
 
                     // Ok, get the package url
                     const packageUrl = selectItemControl.getSelectedItem();
+                    if(packageUrl === undefined) {
+                        alert ('No item selected');
+                        return;
+                    }
 
                     // Prepare the action to store the current viewset into the selected package
                     const actionParameter = new Mof.DmObject(_DatenMeister._Actions.__StoreElementAction_Uri);
@@ -254,7 +264,8 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                         await Actions.executeActionDirectly("Execute", {
                             parameter: actionParameter
                         });
-
+                    
+                    if(result.resultAsDmObject === undefined) throw Error("Result is not set");
                     const uri = result.resultAsDmObject.get(
                         _DatenMeister._Actions._TargetReferenceResult.targetUrl,
                         Mof.ObjectType.String);
@@ -263,19 +274,15 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                         Mof.ObjectType.String);
 
                     // If we have the result, we show it with a link to navigate
-                    if (result.resultAsDmObject !== undefined) {
-                        selectItemControl.removeControl();
-                        const resultText = $("<span>View is created: <a>Click here to navigate to the view</a></span>");
-                        const anchor = resultText.find("a");
-                        anchor.attr("href",
-                            Navigator.getLinkForNavigateToItemByUrl(
-                                workspace,
-                                uri));
-                        resultCell.empty();
-                        resultCell.append(resultText);
-                    } else {
-                        alert('Something went wrong.');
-                    }
+                    selectItemControl.removeControl();
+                    const resultText = $("<span>View is created: <a>Click here to navigate to the view</a></span>");
+                    const anchor = resultText.find("a");
+                    anchor.attr("href",
+                        Navigator.getLinkForNavigateToItemByUrl(
+                            workspace,
+                            uri));
+                    resultCell.empty();
+                    resultCell.append(resultText);
                 });
 
                 innerQuery.append(storeTable);

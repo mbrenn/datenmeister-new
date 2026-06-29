@@ -24,7 +24,7 @@ export function getAllChildItems(workspaceId: string, itemUrl: string): Promise<
  * The ItemUri may be an extent (then the root items will be loaded)
  * or may be an item (then the composite children will be loaded)
  */
-async function load(workspaceId: string, itemUri: string): Promise<ItemWithNameAndId[]> {
+async function load(workspaceId: string | undefined, itemUri: string | undefined): Promise<ItemWithNameAndId[]> {
     let url = "/api/elements/get_composites?";
     if (workspaceId !== undefined && workspaceId !== null) {
         url += "w=" + encodeURIComponent(workspaceId);
@@ -165,7 +165,10 @@ export async function queryObject(query: Mof.DmObject, parameters?: IQueryObject
     const result = new Array<Mof.DmObject>();
     for (const n in resultFromServer.result) {
         const v = resultFromServer.result[n];
-        result.push(Mof.convertJsonObjectToDmObject(v));
+        const innerResult = Mof.convertJsonObjectToDmObject(v);
+        if (innerResult !== undefined) {
+            result.push(innerResult);
+        }
     }
 
     return {

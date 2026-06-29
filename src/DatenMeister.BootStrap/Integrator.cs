@@ -85,7 +85,7 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
         kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
         // Creates the database path for the DatenMeister.
-        // and avoids to have a non-rooted path because it will lead to double creation of assemblies
+        // and avoids having a non-rooted path because it will lead to double creation of assemblies
         if (!Path.IsPathRooted(settings.DatabasePath))
         {
             var assembly = Assembly.GetEntryAssembly() ??

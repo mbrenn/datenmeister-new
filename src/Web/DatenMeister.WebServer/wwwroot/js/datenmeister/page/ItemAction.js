@@ -1,2 +1,0 @@
-import*as i from"../forms/ActionForm.js";import*as m from"../FormActions.js";import{loadDefaultModules as n}from"../actions/DefaultLoader.js";import{FormType as a}from"../forms/Interfaces.js";async function s(o,t,e){n();const r=await i.createActionFormForEmptyObject($("#form_view"),t,{isReadOnly:!1,allowAddingNewProperties:!0,formUri:e,formType:a.Object},o);window.document.title="Action - '"+m.getActionHeading(r)+"' - Der DatenMeister"}export{s as init};
-//# sourceMappingURL=ItemAction.js.map

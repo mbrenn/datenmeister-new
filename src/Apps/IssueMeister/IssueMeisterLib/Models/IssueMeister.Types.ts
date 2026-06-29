@@ -11,7 +11,7 @@ export namespace _IssueMeister
         }
 
         export const __Issue_Uri = "dm:///intern.types.issues.datenmeister/#IssueMeister.Issue";
-        export module _IssueState
+        export namespace _IssueState
         {
             export const Open = "Open";
             export const InWork = "InWork";

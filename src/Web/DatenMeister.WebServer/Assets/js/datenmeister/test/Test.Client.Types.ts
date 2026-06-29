@@ -18,7 +18,7 @@ export function includeTests() {
                     _DatenMeister._CommonTypes._OSIntegration.__CommandLineApplication_Uri,
                     _DatenMeister._CommonTypes._OSIntegration._CommandLineApplication._name_);
 
-                assert.isTrue(result.id === "String");
+                assert.isTrue(result?.id === "String");
 
 
                 result = await ClientTypes.getPropertyType(

@@ -10,7 +10,7 @@
     "clean-css-cli": "5.6.3",
     "esbuild": "^0.25.0",
     "jquery": "4.0.0",
-    "typescript": "5.9.3"
+    "typescript": "6.0.3"
   },
   "dependencies": {
     "@mbrenn/burnjspopup": "1.0.0",

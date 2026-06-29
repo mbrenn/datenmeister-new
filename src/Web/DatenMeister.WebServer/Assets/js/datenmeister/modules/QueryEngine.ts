@@ -18,9 +18,10 @@ export class QueryBuilder {
             Mof.DmObject.createAsReferenceFromLocalId(node));
     }
 
-    getResultNode(): Mof.DmObject {
+    getResultNode(): Mof.DmObject | undefined {
         return this.queryStatement.get(_DatenMeister._DataViews._QueryStatement.resultNode, Mof.ObjectType.Object);
     }
+    
 }
 
 export function createForReferenceExistingNode(workspaceId: string, nodeUri: string) {
@@ -66,7 +67,7 @@ export function createForOrderByProperty(input: Mof.DmObject | undefined, proper
     return viewNode;
 }
 
-export function orderByProperty(builder: QueryBuilder, property: string, descending: boolean) {
+export function orderByProperty(builder: QueryBuilder, property: string, descending: boolean = false) {
     const viewNode = createForOrderByProperty(builder.getResultNode(), property, descending);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);

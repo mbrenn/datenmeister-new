@@ -33,8 +33,13 @@ export function includeTests() {
             });
 
             it('Get Non-existing item', async function () {
-                const result = await ClientItems.getObjectByUri("Test", "Does_Not_Exist");
-                assert.isUndefined(result);
+                try {
+                    await ClientItems.getObjectByUri("Test", "Does_Not_Exist");
+                    assert.isTrue(false, "Should have thrown an exception")
+                }
+                catch {
+                    // We are good
+                }                
             });
 
             it('Create and Delete Item', async function () {
@@ -51,12 +56,17 @@ export function includeTests() {
                 assert.isTrue(item !== undefined, "Item is not existing");
                 assert.isTrue(item.extentUri === "dm:///unittest", "Extent Uri is not correctly set");
                 assert.isTrue(item.workspace === "Test", "Workspace is not correctly set");
-
-                const resultDelete = await ClientItems.deleteItem("Test", result.itemId);
+                await ClientItems.deleteItem("Test", result.itemId);
                 assert.isTrue(result.success, "Item was not successful deleted");
 
-                const nonFoundItem = await ClientItems.getObjectByUri("Test", result.itemId);
-                assert.isTrue(item !== undefined, "Item was found when it should not be found");
+                try {
+                    await ClientItems.getObjectByUri("Test", result.itemId);
+                    assert.isTrue(false, "Item was found when it should not be found");
+                }
+                catch
+                {
+                    // Everything good
+                }                
             });
 
             it('Create and Delete All', async function () {
@@ -74,8 +84,13 @@ export function includeTests() {
                 const result2 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
                 assert.isTrue(result2.success, "Deletion of all root Elements did not work");
 
-                const nonFoundItem = await ClientItems.getObjectByUri("Test", result.itemId);
-                assert.isTrue(nonFoundItem === undefined, "Item was found when it should not be found");
+                try {
+                    await ClientItems.getObjectByUri("Test", result.itemId);
+                    assert.isTrue(false, "Item was found when it should not be found");
+                }
+                catch {
+                    // Everything good
+                }                
             });
 
             it('Get and Set Properties', async function () {

@@ -19,7 +19,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     private readonly ChangeEventManager? _changeEventManager;
 
     /// <summary>
-    /// Gets the Change Event MAnager
+    /// Gets the Change Event Manager
     /// </summary>
     public IChangeEventManager ChangeEventManager =>
         _changeEventManager ?? throw new InvalidOperationException("ChangeEventManager is null");

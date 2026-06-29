@@ -2,7 +2,6 @@
 import {ItemWithNameAndId} from "../ApiModels.js";
 import {UserEvent} from "../../burnsystems/Events.js";
 import * as GlobalSettings from "../Settings.js";
-import {ISelectItemControl} from "./Interfaces.js";
 import * as ByBrowseControl from "./SelectItemControlByBrowsingControl.js"
 import * as BySearch from "./SelectItemControlBySearch.js"
 import {ControlSettings} from "./SelectItemControlByBrowsingControl.js"
@@ -20,9 +19,9 @@ export class ContainerSettings{
      */
     hideAtStartup = false;
     
-    browseSettings: ByBrowseControl.ControlSettings;
+    browseSettings: ByBrowseControl.ControlSettings = new ByBrowseControl.ControlSettings();
 
-    searchSettings: BySearch.ControlSettings;
+    searchSettings: BySearch.ControlSettings = new BySearch.ControlSettings();
 
     /**
      * When `true`, a "Cancel" button is rendered next to the "Set" button.
@@ -45,10 +44,6 @@ export class ContainerSettings{
      * overridden to fit the surrounding UI (e.g. `"Choose"`, `"Apply"`).
      */
     setButtonText = "Set";
-    
-    constructor() {
-        this.browseSettings = new ByBrowseControl.ControlSettings();
-    }
 }
 
 
@@ -70,14 +65,11 @@ export class ContainerSettings{
  * Pre-selection is supported via {@link setWorkspaceById},
  * {@link setExtentByUri} and {@link setItemByUri}; those calls are safe even
  * before {@link init}/{@link initAsync} have completed.
- *
- * The class implements {@link ISelectItemControl} so that it can be used
- * interchangeably with other selection sub-controls (browse, freetext, …).
  */
-export class SelectItemControl implements ISelectItemControl {
+export class SelectItemControl {
     
     /** Root `<table>` of the rendered control; `undefined` after {@link removeControl}. */
-    private containerDiv: JQuery;
+    private containerDiv: JQuery | undefined;
 
     /**
      * Stores the settings of the container. 
@@ -120,10 +112,6 @@ export class SelectItemControl implements ISelectItemControl {
     currentTab: "byBrowse" | "bySearch" = "byBrowse";
     private byBrowserControlDiv: JQuery<HTMLElement>;
     private bySearchControlDiv: JQuery<HTMLElement>;
-    
-    public init(containerDiv: JQuery, settings?: ContainerSettings) {
-        return this.initDom(settings, containerDiv);
-    }
 
     /**
      * Async variant of {@link init}. Renders the control into `parent` and
@@ -138,7 +126,7 @@ export class SelectItemControl implements ISelectItemControl {
 
         // Performs the initialization of the DOM, providing all elements
         // and event handlers
-        return this.initDom(settings, parent);
+        return await this.initDom(settings, parent);
     }
 
     /**
@@ -148,7 +136,7 @@ export class SelectItemControl implements ISelectItemControl {
      * @param container JQuery-Container Element hosting the content
      * @private
      */
-    private initDom(settings: ContainerSettings, container: JQuery<HTMLElement>) {
+    private async initDom(settings: ContainerSettings | undefined, container: JQuery<HTMLElement>) {
         this.settings = settings ?? new ContainerSettings();
 
         this.containerDiv = container;
@@ -187,7 +175,10 @@ export class SelectItemControl implements ISelectItemControl {
         // throws the event, when the user clicks on the set button
         setButton.text(this.settings.setButtonText);
         setButton.on("click", () => {
-            tthis.itemSelected.invoke(this.getSelectedItem());
+            const selectedItem = this.getSelectedItem();
+            if (selectedItem !== undefined) {
+                tthis.itemSelected.invoke(selectedItem);
+            }
         });
 
         cancelButton.on("click", () => {
@@ -199,24 +190,24 @@ export class SelectItemControl implements ISelectItemControl {
 
         // Checks whether we need a headline
         if (this.settings.headline !== undefined) {
-            $(".dm-selectitemcontrol-headline", div).text(settings.headline);
+            $(".dm-selectitemcontrol-headline", div).text(this.settings.headline);
         }
 
         // Adds the by browsing
         const byBrowseDiv = $(".dm-selectitemcontrol-bybrowse", div);
-        this.byBrowseControl.init(byBrowseDiv, this.settings.browseSettings);        
+        await this.byBrowseControl.initAsync(byBrowseDiv, this.settings.browseSettings);        
 
         const tthis = this;
-        this.byBrowseControl.itemSelected.addListener(
-            (x) => tthis.itemSelected.invoke(x));
         this.byBrowseControl.itemClicked.addListener(
             (x) => tthis.itemClicked.invoke(x));
-        
+        this.bySearchControl.itemClicked.addListener(
+            (x) => tthis.itemClicked.invoke(x));
+                
         // Adds the searching
         const bySearchDiv = $(".dm-selectitemcontrol-search", div);
-        this.bySearchControl.init(bySearchDiv, this.settings.searchSettings);
+        await this.bySearchControl.initAsync(bySearchDiv, this.settings.searchSettings);
         
-        this.updateTabStatus();
+        await this.updateTabStatus();
 
         // Checks whether we need to hide the control at startup
         if (settings?.hideAtStartup) {
@@ -226,33 +217,69 @@ export class SelectItemControl implements ISelectItemControl {
         return div;
     }
     
-    updateTabStatus(nextTab? : "byBrowse" | "bySearch") {
+    async updateTabStatus(nextTab? : "byBrowse" | "bySearch") {
+        const currentWorkspace= this.getCurrentlySelectedWorkspace();
+        const currentExtentUri= this.getCurrentlySelectedExtentUri();
         if(nextTab !== undefined) {
             this.currentTab = nextTab;
         }
         
         switch (this.currentTab) {
             case "byBrowse":
-                this.byBrowserControlDiv.show();
                 this.bySearchControlDiv.hide();
+                this.byBrowserControlDiv.show();
+                
+                if (currentWorkspace !== undefined && currentWorkspace !== "" && currentWorkspace !== null) {
+                    if (currentExtentUri !== undefined && currentExtentUri !== "" && currentExtentUri !== null) {
+                        await this.byBrowseControl.setExtentByUri(currentWorkspace, currentExtentUri);
+                    } else {
+                        await this.byBrowseControl.setWorkspaceById(currentWorkspace);
+                    }
+                }
+
                 break;
             case "bySearch":
                 this.byBrowserControlDiv.hide();
                 this.bySearchControlDiv.show();
+
+                if (currentWorkspace !== undefined && currentWorkspace !== "" && currentWorkspace !== null) {
+                    if (currentExtentUri !== undefined && currentExtentUri !== "" && currentExtentUri !== null) {
+                        await this.bySearchControl.setExtentByUri(currentWorkspace, currentExtentUri);
+                    } else {
+                        await this.bySearchControl.setWorkspaceById(currentWorkspace);
+                    }
+                }
+
                 break;
         }
     }
     
     async setWorkspaceById(workspaceId: string) {
-        await this.byBrowseControl.setWorkspaceById(workspaceId);
+        switch(this.currentTab) {
+            case "byBrowse":
+                await this.byBrowseControl.setWorkspaceById(workspaceId);
+                break;
+            case "bySearch":
+                await this.bySearchControl.setWorkspaceById(workspaceId);
+                break;
+        }        
     }
+    
     async setExtentByUri(workspaceId: string, extentUri: string): Promise<void> {
-        await this.byBrowseControl.setExtentByUri(workspaceId, extentUri)    
+        switch(this.currentTab) {
+            case "byBrowse":
+                await this.byBrowseControl.setExtentByUri(workspaceId, extentUri);
+                break;
+            case "bySearch":
+                await this.bySearchControl.setExtentByUri(workspaceId, extentUri);
+                break;
+        }
     }
+    
     async setItemByUri(workspaceId: string, itemUri: string): Promise<void> {
         await this.byBrowseControl.setItemByUri(workspaceId, itemUri)    
     }
-    getSelectedItem(): ItemWithNameAndId {
+    getSelectedItem(): ItemWithNameAndId | undefined {
         switch(this.currentTab)
         {
             case "byBrowse":
@@ -264,7 +291,22 @@ export class SelectItemControl implements ISelectItemControl {
     
     getCurrentlySelectedWorkspace()
     {
-        return this.byBrowseControl.getUserSelectedWorkspaceId();
+        switch(this.currentTab) {
+            case "byBrowse":
+                return this.byBrowseControl.getUserSelectedWorkspaceId();
+            case "bySearch":
+                return this.bySearchControl.getUserSelectedWorkspaceId();
+        }
+    }
+
+    getCurrentlySelectedExtentUri()
+    {
+        switch(this.currentTab) {
+            case "byBrowse":
+                return this.byBrowseControl.getUserSelectedExtentUri();
+            case "bySearch":
+                return this.bySearchControl.getUserSelectedExtentUri();
+        }
     }
     
     showControl(): void {
@@ -297,7 +339,7 @@ export class SelectItemControl implements ISelectItemControl {
  */
 export function selectPackage(changeContainerCell: JQuery) : Promise<ApiModels.ItemLink> {
 
-    return this.selectItem(changeContainerCell, { workspaceId: GlobalSettings.WorkspaceData, title: "Select Package in which the item shall be created:" });
+    return selectItem(changeContainerCell, { workspaceId: GlobalSettings.WorkspaceData, title: "Select Package in which the item shall be created:" });
 }
 
 /**
@@ -309,7 +351,7 @@ export function selectPackage(changeContainerCell: JQuery) : Promise<ApiModels.I
  */
 export function selectType(changeContainerCell: JQuery) : Promise<ApiModels.ItemLink> {
 
-    return this.selectItem(changeContainerCell, { workspaceId: GlobalSettings.WorkspaceTypes, title: "Select type of new item:" });
+    return selectItem(changeContainerCell, { workspaceId: GlobalSettings.WorkspaceTypes, title: "Select type of new item:" });
 }
 
 /**
@@ -323,8 +365,13 @@ export function selectItem(changeContainerCell: JQuery<HTMLElement>, parameter: 
     return new Promise<ApiModels.ItemLink>(async (resolve, reject) => {
 
         const workspaceId = parameter.workspaceId;
+        if(workspaceId === undefined)
+        {
+            reject("WorkspaceId is undefined");
+            return;
+        }
+        
         const title = parameter.title;
-
         changeContainerCell.empty();
         const selectItem = new SelectItemControl();
         const settings = new ContainerSettings();
@@ -348,7 +395,7 @@ export function selectItem(changeContainerCell: JQuery<HTMLElement>, parameter: 
                 });
             });
 
-        selectItem.init(changeContainerCell, settings);
+        await selectItem.initAsync(changeContainerCell, settings);
     });
 }
 

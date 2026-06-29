@@ -111,7 +111,7 @@ export class FormSelectionControl {
         // Creates the reset button
         const resetButton = $("<button class='btn btn-secondary'>Reset form</button>");
         resetButton.on("click", () => {
-            this.formResetted.invoke(null);
+            this.formResetted.invoke();
         });
         controlReset.append(resetButton);
 

@@ -669,7 +669,7 @@ export namespace _UML
                 }
 
                 export const __Variable_Uri = "dm:///_internal/model/uml#Variable";
-                export module _ObjectNodeOrderingKind
+                export namespace _ObjectNodeOrderingKind
                 {
                     export const unordered = "unordered";
                     export const ordered = "ordered";
@@ -1796,7 +1796,7 @@ export namespace _UML
                 }
 
                 export const __StructuredClassifier_Uri = "dm:///_internal/model/uml#StructuredClassifier";
-                export module _ConnectorKind
+                export namespace _ConnectorKind
                 {
                     export const assembly = "assembly";
                     export const delegation = "delegation";
@@ -2192,7 +2192,7 @@ export namespace _UML
                 }
 
                 export const __Vertex_Uri = "dm:///_internal/model/uml#Vertex";
-                export module _PseudostateKind
+                export namespace _PseudostateKind
                 {
                     export const initial = "initial";
                     export const deepHistory = "deepHistory";
@@ -2220,7 +2220,7 @@ export namespace _UML
                     terminate
                 }
 
-                export module _TransitionKind
+                export namespace _TransitionKind
                 {
                     export const internal = "internal";
                     export const local = "local";
@@ -3383,7 +3383,7 @@ export namespace _UML
                 }
 
                 export const __StateInvariant_Uri = "dm:///_internal/model/uml#StateInvariant";
-                export module _InteractionOperatorKind
+                export namespace _InteractionOperatorKind
                 {
                     export const seq = "seq";
                     export const alt = "alt";
@@ -3415,7 +3415,7 @@ export namespace _UML
                     consider
                 }
 
-                export module _MessageKind
+                export namespace _MessageKind
                 {
                     export const complete = "complete";
                     export const lost = "lost";
@@ -3431,7 +3431,7 @@ export namespace _UML
                     unknown
                 }
 
-                export module _MessageSort
+                export namespace _MessageSort
                 {
                     export const synchCall = "synchCall";
                     export const asynchCall = "asynchCall";
@@ -4269,7 +4269,7 @@ export namespace _UML
                 }
 
                 export const __Usage_Uri = "dm:///_internal/model/uml#Usage";
-                export module _VisibilityKind
+                export namespace _VisibilityKind
                 {
                     export const _public_ = "public";
                     export const _private_ = "private";
@@ -5062,7 +5062,7 @@ export namespace _UML
                 }
 
                 export const __StructuralFeature_Uri = "dm:///_internal/model/uml#StructuralFeature";
-                export module _AggregationKind
+                export namespace _AggregationKind
                 {
                     export const none = "none";
                     export const shared = "shared";
@@ -5076,7 +5076,7 @@ export namespace _UML
                     composite
                 }
 
-                export module _CallConcurrencyKind
+                export namespace _CallConcurrencyKind
                 {
                     export const sequential = "sequential";
                     export const guarded = "guarded";
@@ -5090,7 +5090,7 @@ export namespace _UML
                     concurrent
                 }
 
-                export module _ParameterDirectionKind
+                export namespace _ParameterDirectionKind
                 {
                     export const _in_ = "in";
                     export const inout = "inout";
@@ -5106,7 +5106,7 @@ export namespace _UML
                     _return_
                 }
 
-                export module _ParameterEffectKind
+                export namespace _ParameterEffectKind
                 {
                     export const create = "create";
                     export const read = "read";
@@ -5297,7 +5297,7 @@ export namespace _UML
                 }
 
                 export const __WriteVariableAction_Uri = "dm:///_internal/model/uml#WriteVariableAction";
-                export module _ExpansionKind
+                export namespace _ExpansionKind
                 {
                     export const parallel = "parallel";
                     export const iterative = "iterative";

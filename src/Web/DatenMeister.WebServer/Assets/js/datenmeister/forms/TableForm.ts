@@ -12,11 +12,12 @@ import {TableState} from "./TableState.js"
 import _FieldData = _DatenMeister._Forms._FieldTypes._FieldData;
 import {debugElementToDom} from "../DomHelper.js";
 
-interface MenuItemData
+export interface MenuItemData
 {
     cellKeyTitle?: string;
     onCreateDom: (popupResult: burnJsPopup.PopupResult, jQuery: JQuery) => void;
     onSubmitForm?: () => void;
+    requireConfirmation?: boolean;
 
     /**
      * Allows a menuitem to change the button text which is shown as the table header and 
@@ -82,7 +83,7 @@ class TableJQueryCaches {
     parentHtml: JQuery<HTMLElement>;
 }
 
-class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesForms.IObjectFormElement {
+export class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesForms.IObjectFormElement {
 
     /**
      * Flag to enable debug features like the query debug link
@@ -355,16 +356,16 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
                             document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
                                 tthis.workspace,
                                 tthis.itemUrl,
+                                property, 
                                 selectedItem === undefined ? undefined : selectedItem.uri,
-                                selectedItem === undefined ? undefined : selectedItem.workspace,
-                                property);
+                                selectedItem === undefined ? undefined : selectedItem.workspace);
                         }
                     });
 
                 await selectItem.setWorkspaceById('Types');
                 await selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
 
-                selectItem.init(typeSelection, settings);
+                await selectItem.initAsync(typeSelection, settings);
             });
 
             tthis.tableCache.cacheButtons.append(btn);
@@ -393,12 +394,7 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
                             metaClassUri, 
                             metaClassWorkspace);
                 } else {
-                    document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
-                        tthis.workspace,
-                        tthis.itemUrl,
-                        metaClassUri,
-                        "Types",
-                        property);
+                    document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, property, metaClassUri, "Types");
                 }
             });
 
@@ -555,7 +551,7 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
                         configuration: this.configuration,
                         field: field,
                         itemUrl: element.uri,
-                        isReadOnly: this.configuration.isReadOnly,
+                        isReadOnly: this.configuration.isReadOnly === true,
                         form: this
                     });
 
@@ -616,8 +612,10 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
             onClick = async () => {
                 this.tableState.removeOrderBy();
                 await this.reloadTable();
-            };
-            
+            };            
+        }
+        else{
+            throw new Error("Unknown sorting state");
         }
 
         sortingArrow.on('click', onClick);
@@ -688,13 +686,13 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
     }
 
     async createPropertyMenuItems(field: Mof.DmObject): Promise<MenuItemData[]> {
-        let result = [];
+        let result: MenuItemData[] = [];
 
         if (field.metaClass !== undefined && field.metaClass !== null && 
             field.metaClass.uri !== _DatenMeister._Forms._FieldTypes.__ActionFieldData_Uri
             && field.metaClass.uri !== _DatenMeister._Forms._FieldTypes.__MetaClassElementFieldData_Uri) {
 
-            result.push(ContextMenu.createFunctionToRemoveAllProperties(field));
+            result.push(ContextMenu.createFunctionToRemoveAllProperties(this, field));
             
             if (this.tableParameter.allowFilteringOnProperty) {
                 result.push(ContextMenu.createFunctionToFilterInProperty(this, field));
@@ -724,7 +722,7 @@ class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesFor
             const itemResult = await ClientItem.getObjectByUri(this.tableState.overrideQueryWorkspace, this.tableState.overrideQueryItem);
             const name = itemResult.get('name', Mof.ObjectType.String) ?? "Unknown";
             result = 'Stored Query: ' + name;
-            return;
+            return result;
         }
 
         const orderBy = this.tableState.getOrderBy();

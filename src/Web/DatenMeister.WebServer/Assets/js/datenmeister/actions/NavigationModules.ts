@@ -27,6 +27,7 @@ class NavigateToUrl extends FormActions.ItemFormActionModuleBase
     }
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        if(parameter === undefined) throw new Error("Parameter is undefined");
         document.location.href = Settings.baseUrl + parameter.get(_Actions._ClientActions._NavigateToUrlClientAction.url); 
     }
 }
@@ -38,6 +39,7 @@ class ChangeForm extends FormActions.ItemFormActionModuleBase {
     }
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        if(parameter === undefined) throw new Error("Parameter is undefined");
         const formUrl = parameter.get("formUrl", Mof.ObjectType.String);
 
         var asFormPage = form as IPageForm;
@@ -66,6 +68,7 @@ class CreateAction extends FormActions.ItemFormActionModuleBase {
     }
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        if(parameter === undefined) throw new Error("Parameter is undefined");
         const actionType = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.actionName, Mof.ObjectType.String);
         const formUrl = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.formUrl, Mof.ObjectType.String);
         const metaClassUrl = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.metaClassUrl, Mof.ObjectType.String);

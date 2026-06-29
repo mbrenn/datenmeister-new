@@ -52,7 +52,7 @@ export function createForOrderByProperty(input, property, descending) {
     viewNode.set(_DatenMeister._DataViews._Row._RowOrderByNode._name_, "Order by " + property + (descending ? " descending" : " ascending"));
     return viewNode;
 }
-export function orderByProperty(builder, property, descending) {
+export function orderByProperty(builder, property, descending = false) {
     const viewNode = createForOrderByProperty(builder.getResultNode(), property, descending);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);

@@ -117,22 +117,28 @@
 .dm-sic-search-results{
     display: flex;
     flex-direction: column;
+    max-height: 25em;
+    overflow-y: auto;
 }
 
 .dm-sic-search-results div {
     padding: 5px;
     border: 1px solid black;
     margin: 5px;
+    cursor: pointer;
+}
+
+.dm-sic-search-results div.more {
+    cursor: default;
 }
 
 .dm-sic-search-results div.selected {
     background-color: lightskyblue;
-    border: 3px solid black;
+    border: 1px solid black;
 }
 
 
 .dm-sic-search table {
-    margin-top: 5px;
     border-collapse: collapse;
 }
 
@@ -147,4 +153,8 @@
     padding: 5px 10px 5px 10px;
     border: black 1px solid;
     vertical-align: top;
+}
+
+.dm-sic-search select {
+    width: 400px;
 }

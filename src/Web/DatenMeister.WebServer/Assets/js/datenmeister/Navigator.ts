@@ -39,9 +39,8 @@ export interface NavigationToExtentItemsParameter{
 }
 
 export function getLinkForNavigateToExtentItems(workspace: string | undefined, extentUri: string | undefined, parameter?: NavigationToExtentItemsParameter) {
-    if(workspace === undefined || extentUri === undefined)
-    {
-        return null;
+    if(workspace === undefined || extentUri === undefined) {
+        throw new Error('workspace or extentUri is undefined');
     }
     
     let urlParameter = "";
@@ -145,8 +144,8 @@ function parseNavigateToItemParam(param? : INavigateToItemParams) {
 
 export function getLinkForNavigateToCreateNewItemInExtent(workspace: string,
                                                           extentUri: string,
-                                                          metaclass: string,
-                                                          metaClassWorkspace: string) {
+                                                          metaclass?: string,
+                                                          metaClassWorkspace?: string) {
     return Settings.baseUrl +
         "ItemAction/Extent.CreateNewItem" +
         "?workspace=" + encodeURIComponent(workspace) +
@@ -166,7 +165,7 @@ export function navigateToCreateNewItemInExtent(workspace: string,
         workspace, extentUri, metaclass, metaClassWorkspace);
 }
 
-export function getLinkForNavigateToAction(parameter: any, actionName: string, formUri: string) {
+export function getLinkForNavigateToAction(parameter: any, actionName: string, formUri?: string) {
     let urlParameter = "";
 
     if (parameter !== undefined) {
@@ -188,23 +187,24 @@ export function navigateToAction(actionName: string, formUri?: string, parameter
     document.location.href = getLinkForNavigateToAction(parameter, actionName, formUri);
 }
 
-export function getLinkForNavigateToCreateItemInProperty(workspace: string, 
+export function getLinkForNavigateToCreateItemInProperty(workspace: string,
                                                          itemUrl: string,
-                                                         metaclass: string,
-                                                         metaclassWorkspace: string, 
                                                          propertyName: string,
+                                                         metaclass?: string,
+                                                         metaclassWorkspace?: string,
                                                          isList?: boolean) {
     return Settings.baseUrl +
         "ItemAction/Extent.CreateNewItem" +
         "?workspace=" + encodeURIComponent(workspace) +
         "&item=" + encodeURIComponent(itemUrl) +
+        "&property=" + encodeURIComponent(propertyName) +
         (metaclass !== undefined
             ? "&metaclass=" + encodeURIComponent(metaclass)
             : "") +
         (metaclassWorkspace !== undefined
             ? "&metaclassworkspace=" + encodeURIComponent(metaclassWorkspace)
             : "") +
-        "&property=" + encodeURIComponent(propertyName) +
+        
         (isList !== undefined 
             ? isList ? "&islist=true" : "&islist=false" 
             : "");
@@ -217,5 +217,5 @@ export function navigateToCreateItemInProperty(workspace: string,
                                                          metaclassWorkspace: string,
                                                          propertyName: string) {
     document.location.href = 
-        getLinkForNavigateToCreateItemInProperty(workspace, itemUrl, metaclass, metaclassWorkspace, propertyName);
+        getLinkForNavigateToCreateItemInProperty(workspace, itemUrl, propertyName, metaclass, metaclassWorkspace);
 }

@@ -240,7 +240,7 @@ export namespace _Actions
         }
 
         export const __MoveOrCopyAction_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.MoveOrCopyAction";
-        export module _MoveOrCopyType
+        export namespace _MoveOrCopyType
         {
             export const Copy = "Copy";
             export const Move = "Move";
@@ -252,7 +252,7 @@ export namespace _Actions
             Move
         }
 
-        export module _MoveDirectionType
+        export namespace _MoveDirectionType
         {
             export const Up = "Up";
             export const Down = "Down";
@@ -496,7 +496,7 @@ export namespace _DataViews
         }
 
         export const __ViewNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode";
-        export module _ComparisonMode
+        export namespace _ComparisonMode
         {
             export const Equal = "Equal";
             export const NotEqual = "NotEqual";
@@ -732,7 +732,7 @@ export namespace _Reports
         }
 
         export const __HtmlReportInstance_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance";
-        export module _DescendentMode
+        export namespace _DescendentMode
         {
             export const None = "None";
             export const Inline = "Inline";
@@ -797,7 +797,7 @@ export namespace _Reports
                 }
 
                 export const __ReportTable_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable";
-                export module _ReportTableForTypeMode
+                export namespace _ReportTableForTypeMode
                 {
                     export const PerType = "PerType";
                     export const AllTypes = "AllTypes";
@@ -1037,7 +1037,7 @@ export namespace _ExtentLoaderConfigs
         }
 
         export const __EnvironmentalVariableLoaderConfig_Uri = "dm:///_internal/types/internal#10151dfc-f18b-4a58-9434-da1be1e030a3";
-        export module _ExtentLoaderImportType
+        export namespace _ExtentLoaderImportType
         {
             export const NoSync = "NoSync";
             export const ReadOnlySync = "ReadOnlySync";
@@ -1087,7 +1087,7 @@ export namespace _Forms
         export const __NavigateToFieldsForTestAction_Uri = "dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0";
         export namespace _FormTypes
         {
-                export module _FormType
+                export namespace _FormType
                 {
                     export const Object = "Object";
                     export const Collection = "Collection";
@@ -1520,7 +1520,7 @@ export namespace _AttachedExtent
 
 export namespace _Management
 {
-        export module _ExtentLoadingState
+        export namespace _ExtentLoadingState
         {
             export const Unknown = "Unknown";
             export const Unloaded = "Unloaded";
@@ -1617,7 +1617,7 @@ export namespace _Management
 
 export namespace _FastViewFilters
 {
-        export module _ComparisonType
+        export namespace _ComparisonType
         {
             export const Equal = "Equal";
             export const GreaterThan = "GreaterThan";

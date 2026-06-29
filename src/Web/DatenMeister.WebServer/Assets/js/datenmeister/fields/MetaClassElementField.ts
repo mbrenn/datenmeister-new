@@ -16,7 +16,7 @@ export class Field extends BaseField implements IFormField {
                 div.text(dmElement.metaClass.id ?? dmElement.metaClass.uri);
                 injectNameByUri(div, dmElement.metaClass.workspace, encodeURIComponent(dmElement.metaClass.uri));
             } else if (dmElement.metaClass.id !== null && dmElement.metaClass.extentUri !== null) {
-                div.text(dmElement.metaClass.id);
+                div.text(dmElement.metaClass?.id ?? "Unknown id");
                 injectNameByUri(div, dmElement.metaClass.workspace, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
             } else {
                 div.append($("<em>unknown</em>"));
@@ -33,13 +33,13 @@ export class Field extends BaseField implements IFormField {
 
             const button = $("<button class='btn btn-secondary' type='button'></button>");
             button.text("Change MetaClass");
-            button.on('click', () => {
+            button.on('click', async () => {
 
                 changeMetaClassDiv.empty();
                 const selectItemCtrl = new SelectItemControl();
-                const divSelectItem = selectItemCtrl.init(changeMetaClassDiv);
+                const divSelectItem = await selectItemCtrl.initAsync(changeMetaClassDiv);
 
-                selectItemCtrl.setExtentByUri("Types", "dm:///_internal/types/internal");
+                await selectItemCtrl.setExtentByUri("Types", "dm:///_internal/types/internal");
 
                 selectItemCtrl.itemSelected.addListener(
                     (selectedItem) => {

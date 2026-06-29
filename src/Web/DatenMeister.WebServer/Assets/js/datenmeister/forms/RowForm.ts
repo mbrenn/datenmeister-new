@@ -13,9 +13,12 @@ import * as ClientAction from "../client/Actions.js";
 class FieldInForm {
     fieldElement: InterfacesFields.IFormField;
     field: Mof.DmObject;
-    checkbox: JQuery<HTMLElement>;
+    checkbox: JQuery<HTMLElement> | undefined | null;
 
     setCheckboxState(isSet: boolean) {
+        if(this.checkbox === undefined || this.checkbox === null) 
+            throw Error("Checkbox is undefined.");
+        
         this.checkbox.prop("checked", isSet);
         if (isSet) {
             this.checkbox.attr(
@@ -31,15 +34,14 @@ class FieldInForm {
     /**
      * Retrieves the current state of the checkbox.
      *
-     * @return {boolean|undefined} Returns true if the checkbox is checked, false if it is unchecked,
-     * or undefined if the checkbox is not existing.
+     * @return {boolean} Returns true if the checkbox is checked, false if it is unchecked.
      */
     getCheckboxState() {
-        if (this.checkbox !== null) {
+        if (this.checkbox !== null && this.checkbox !== undefined) {
             return this.checkbox.prop("checked") !== false;
         }
         
-        return undefined;
+        return false;
     }    
 
     addChangeCallbackToFieldElement(callback: () => void) {
@@ -85,7 +87,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
     fieldElements: Array<FieldInForm>;
 
     onCancel: () => void;
-    onChange: (element: Mof.DmObject, method: SubmitMethod) => void;
+    onChange: (element: Mof.DmObjectWithSync, method: SubmitMethod) => void;
     parentHtml: JQuery<HTMLElement>;
     configuration: IFormConfiguration;
 
@@ -146,7 +148,6 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
 
             const fieldMetaClassId = field.metaClass?.id;
             const fieldMetaClassUri = field.metaClass?.uri ?? "Undefined metaclass";
-            let fieldElement = null; // The instance if IFormField allowing to create the dom
             let htmlElement; // The dom that had been created...
             const isFieldReadOnly = 
                 field.get(_DatenMeister._Forms._FieldTypes._FieldData.isReadOnly, Mof.ObjectType.Boolean)
@@ -161,7 +162,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             const propertyName = field.get(_DatenMeister._Forms._FieldTypes._FieldData._name_, Mof.ObjectType.String);
 
             // Creates the field to be shown 
-            fieldElement = createField(
+            const fieldElement = createField(
                 fieldMetaClassUri,
                 {
                     configuration: configuration,
@@ -236,6 +237,10 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                     htmlElementInner.then(x => {
                         // And finally adds it            
                         $(".value", trInner).append(x);
+                        if(innerFieldInForm.checkbox === undefined || innerFieldInForm.checkbox === null) {
+                            throw Error("Checkbox is undefined.");
+                        }
+                        
                         innerFieldInForm.checkbox.prop("disabled", isFieldReadOnly);   
 
                         if(propertyName === undefined || propertyName === null || propertyName === "" || !showValue) {
@@ -274,7 +279,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 textField.isReadOnly = configuration.isReadOnly;
                 textField.OverridePropertyValue =
                     () => {
-                        return propertyTextField.val().toString();
+                        return propertyTextField.val()?.toString() ?? "";
                     };
 
                 textField.createDom(tthis.element).then(
@@ -353,7 +358,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
 
         $(".dm-detail-info-id-value", tableInfo).text((this.element.id) ?? "none");
         let isEditing = false;
-        let editField: JQuery<HTMLElement> = null;
+        let editField: JQuery<HTMLElement> | null = null;
         $(".dm-detail-info-id-edit", tableInfo).on('click', async () => {
             if (!isEditing) {
                 editField = $("<input type='text' class='dm-detail-info-id-value-field' />");
@@ -361,15 +366,19 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 $(".dm-detail-info-id-value", tableInfo).empty().append(editField);
                 $(".dm-detail-info-id-edit", tableInfo).text('Change ID');
             } else {
+                if(editField === null ) {
+                    throw new Error("editField is null. It should have been set before jumping to Edit Mode");
+                }
+                
                 const oldId = this.element.id;
-                const newId = editField.val().toString();
+                const newId = editField.val()?.toString() ?? "";
 
                 if (newId === '') {
                     $(".dm-detail-info-id", tableInfo).append("<span class='text-warning'>An empty id cannot be set.</span>")
                     return;
                 }
 
-                this.element.id = editField.val().toString();
+                this.element.id = editField.val()?.toString() ?? "";
 
                 if (oldId !== this.element.id) {
                     try {
@@ -432,7 +441,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             $(".dm-detail-info-metaclass", tableInfo).text("none");
             $(".dm-detail-info-metaclass", tableInfo).addClass("nolink");
         } else {
-            $(".dm-detail-info-metaclass", tableInfo).text(this.element.metaClass?.fullName);
+            $(".dm-detail-info-metaclass", tableInfo).text(this.element.metaClass?.fullName ?? "None");
 
             $(".dm-detail-info-metaclass", tableInfo).attr('href', Navigation.getLinkForNavigateToItem(
                 this.element.metaClass.workspace,
@@ -459,7 +468,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             );
 
             if (result.success) {
-                if (result.result === null) {
+                if (result.result === null || result.resultAsDmObject === undefined) {
                     showRowFormInfoPopup(infoCell, 'No metadata could be retrieved for that property');
                 } else {
                     const resultText =
@@ -483,10 +492,10 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 let managed = false;
 
                 // Just take the fields which are not readonly
-                if (fieldInForm.field.get(_DatenMeister._Forms._FieldTypes._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
+                if (!fieldInForm.field.get(_DatenMeister._Forms._FieldTypes._FieldData.isReadOnly, Mof.ObjectType.Boolean)) {
 
                     // Unsets the field in case the checkbox is not set
-                    if(fieldInForm.getCheckboxState() === false) {
+                    if(!fieldInForm.getCheckboxState()) {
                         this.element.unset(fieldInForm.field.get(_DatenMeister._Forms._FieldTypes._FieldData._name_, Mof.ObjectType.String));
                         managed = true;
                     }                 
@@ -500,5 +509,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
 
             return this.element;
         }
+        
+        return this.element;
     }
 }

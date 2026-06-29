@@ -38,7 +38,7 @@ export function includeTests() {
                 expect(result.result.length > 2).to.be.true;
 
                 // Second, expect that at least one package is called DatenMeister
-                let found = null;
+                let found : Mof.DmObject | null= null;
                 for (i = 0; i < result.result.length; i++) {
                     if (result.result[i].get("name", Mof.ObjectType.String) === "DatenMeister") {
                         found = result.result[i];
@@ -76,7 +76,7 @@ export function includeTests() {
                 expect(result.result.length > 2).to.be.true;
 
                 // Second, expect that at least one package is called LoadExtentAction
-                let found = null;
+                let found : Mof.DmObject | null= null;
                 for (i = 0; i < result.result.length; i++) {
                     if (result.result[i].get("name", Mof.ObjectType.String) === "LoadExtentAction") {
                         found = result.result[i];
@@ -119,7 +119,7 @@ export function includeTests() {
                 expect(result.result.length > 2).to.be.true;
 
                 // Second, expect that at least one package is called Actions
-                let found = null;
+                let found : Mof.DmObject | null= null;
                 for (i = 0; i < result.result.length; i++) {
                     if (result.result[i].get("name", Mof.ObjectType.String) === "LoadExtentAction") {
                         found = result.result[i];

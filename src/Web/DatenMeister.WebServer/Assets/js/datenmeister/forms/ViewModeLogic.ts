@@ -34,7 +34,7 @@ export function isCurrentViewModeSet() :boolean
 export function setCurrentViewMode(viewModeId: string) {
     try {
         sessionStorage.setItem(sessionPropertyName, viewModeId);
-    } catch (exc) {
+    } catch (exc: any) {
         // Should not happen, but I have no clue of how to capture that
         if (exc.code === DOMException.QUOTA_EXCEEDED_ERR) {
             alert('Quota exceeded');

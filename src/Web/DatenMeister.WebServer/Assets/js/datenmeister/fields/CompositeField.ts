@@ -86,16 +86,10 @@ export class Field extends BaseField implements IFormField {
                                 return;
                             }
 
-                            document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
-                                tthis.form.workspace,
-                                tthis.itemUrl,
-                                selectedItem.uri,
-                                selectedItem.workspace,
-                                propertyName,
-                                false);
+                            document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, propertyName, selectedItem.uri, selectedItem.workspace, false);
                         });
 
-                    selectItem.init(containerDiv, settings);
+                    await selectItem.initAsync(containerDiv, settings);
 
                     return false;
                 });

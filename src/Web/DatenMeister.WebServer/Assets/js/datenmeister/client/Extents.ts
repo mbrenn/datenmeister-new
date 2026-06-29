@@ -134,6 +134,11 @@ export function getProperties(workspace: string, extentUri: string) {
             .then(x => {
                 const dmObject =
                     Mof.convertJsonObjectToDmObject(x);
+
+                if (dmObject === undefined) {
+                    throw new Error("Could not convert JSON object to DM object");
+                }
+
                 resolve(dmObject);
             });
     });

@@ -38,7 +38,7 @@ export class Control {
      * Stores the property type. This information is used to pre-select the
      * SubElementField in which the user can define the metaclass for a element to be created
      */
-    propertyType: ItemWithNameAndId;
+    propertyType: ItemWithNameAndId | undefined;
 
     /** 
      * Additional Types to be directly created. 
@@ -158,7 +158,7 @@ export class Control {
                                 field: fieldData,
                                 isReadOnly: true,
                                 itemUrl: innerValue.uri,
-                                configuration: {formType: this.configuration.formType},
+                                configuration: {formType: this.configuration.formType, isReadOnly: false},
                                 form: tthis.form
                             });
                         const dom = await field.createDom(innerValue);
@@ -252,7 +252,7 @@ export class Control {
             "</div>");
 
         // Adds the button which allows the user to attach an existing item
-        $(".dm-subelements-attachitem-btn", attachItem).on("click", () => {
+        $(".dm-subelements-attachitem-btn", attachItem).on("click", async () => {
             const containerDiv = $(".dm-subelements-attachitem-box", attachItem);
             containerDiv.empty();
             const selectItem = new SIC.SelectItemControl();
@@ -274,7 +274,7 @@ export class Control {
                     });
                 });
 
-            selectItem.init(containerDiv, settings);
+            await selectItem.initAsync(containerDiv, settings);
 
             return false;
         });
@@ -301,12 +301,7 @@ export class Control {
                     return;
                 }
 
-                document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
-                    tthis.form.workspace,
-                    tthis.itemUrl,
-                    x.selectedType.uri,
-                    x.selectedType.workspace,
-                    tthis.propertyName);
+                document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName, x.selectedType.uri, x.selectedType.workspace);
             });
 
             await control.createControl();
@@ -351,12 +346,7 @@ export class Control {
                     'click',
                     () => {
                         document.location.href =
-                            Navigator.getLinkForNavigateToCreateItemInProperty(
-                                tthis.form.workspace,
-                                tthis.itemUrl,
-                                metaClassUri,
-                                metaClassWorkspace,
-                                tthis.propertyName);
+                            Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName, metaClassUri, metaClassWorkspace);
                     });
 
 

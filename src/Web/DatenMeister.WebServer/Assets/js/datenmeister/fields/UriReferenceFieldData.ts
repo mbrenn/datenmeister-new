@@ -81,7 +81,7 @@ export class Field extends BaseField implements IFormField
 
             // Append the html for the selection field
             this._elementSelection = $(".dm-urireference-element", table)
-            this._selectField.init(this._elementSelection);
+            await this._selectField.initAsync(this._elementSelection);
 
             this._propertyField = $(".dm-urireference-property", table)
             this._fullNameField = $(".dm-urireference-fullname", table)
@@ -104,7 +104,11 @@ export class Field extends BaseField implements IFormField
             return;
         }
 
-        let url = this._selectField.getSelectedItem().uri;
+        let url = this._selectField.getSelectedItem()?.uri;
+        if(url === undefined) {
+            this._textBox.val("");
+            return;
+        }
 
         // Check, if we have an object id (which is located after the #). The object id must be put at the end of the url after
         // having added the parameters

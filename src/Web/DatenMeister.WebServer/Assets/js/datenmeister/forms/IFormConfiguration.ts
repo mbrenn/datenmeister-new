@@ -4,7 +4,7 @@ import {FormType} from "./Interfaces.js";
 
 export interface IFormConfiguration {
     allowAddingNewProperties?: boolean;
-    isReadOnly?: boolean;
+    isReadOnly: boolean;
     isNewItem?: boolean;
     submitName?: string;
     showCancelButton?: boolean;

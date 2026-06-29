@@ -37,11 +37,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Css\DatenMeister.Reports.Forms.css" />
     <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.js" />
-    <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.ts" />
     <EmbeddedResource Include="Js\DatenMeister.Reports.Types.js" />
-    <EmbeddedResource Include="Js\DatenMeister.Reports.Types.ts" />
+    <EmbeddedResource Include="Css\DatenMeister.Reports.Forms.css" />
     <EmbeddedResource Include="Xmi\DatenMeister.Reports.Types.xmi" />
     <EmbeddedResource Include="Xmi\DatenMeister.Reports.Forms.xmi" />
   </ItemGroup>
@@ -58,6 +56,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Js\" />
     <Folder Include="Model\" />
   </ItemGroup>
 

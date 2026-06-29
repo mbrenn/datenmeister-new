@@ -92,13 +92,6 @@
     <Project Path="src/DatenMeister.Modules.ZipCodeExample/DatenMeister.Modules.ZipCodeExample.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>
-    <Project Path="src/DatenMeister.Reports.Forms/DatenMeister.Reports.Forms.csproj">
-      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
-      <BuildType Solution="WPF|*" Project="Debug" />
-    </Project>
-    <Project Path="src/DatenMeister.Reports/DatenMeister.Reports.csproj">
-      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
-    </Project>
     <Project Path="src/DatenMeister.SourcecodeGenerator/DatenMeister.SourcecodeGenerator.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>
@@ -196,6 +189,15 @@
     <Project Path="src/Tests/DatenMeister.Provider.Json.Test/DatenMeister.Provider.Json.Test.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
       <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/Library - .Net Standard/Reports/">
+    <Project Path="src/DatenMeister.Reports.Forms/DatenMeister.Reports.Forms.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="src/DatenMeister.Reports/DatenMeister.Reports.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>
   </Folder>
   <Folder Name="/Library - .Net Standard/Tools/">

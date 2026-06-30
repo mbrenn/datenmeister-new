@@ -1,9 +1,7 @@
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
-using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Extent.Manager;
-using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
+using DatenMeister.Plugins.Helper;
 using DatenMeister.WebServer.Library.PageRegistration;
 
 namespace DatenMeister.Templates.TypeScriptAndTypesPlugin;
@@ -17,26 +15,25 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
 
     public Task Start(PluginLoadingPosition position)
     {
-        if (position == PluginLoadingPosition.AfterLoadingOfExtents)
-        {
-            var assemblyType = typeof(Plugin);
-
-            // Load the types
-            var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
-            var resourcePathTypes = AssemblyName + ".Xmi.Types.xmi";
-            extentManager.LoadNonPersistentExtentFromResources(assemblyType, resourcePathTypes,
-                WorkspaceNames.WorkspaceTypes, DmTypesUriReference);
-
-            // Adds the javascript
-            var pageRegistrationData = scopeStorage.Get<PageRegistrationData>();
-            var pageRegistrationLogic = new PageRegistrationLogic(pageRegistrationData);
-            pageRegistrationLogic.AddJavaScriptFromResource(
-                typeof(Plugin),
-                AssemblyName + ".Js.Demo.js",
-                AssemblyName + ".Demo.js",
-                "../../" + AssemblyName + "/Js/Demo.js");
-        }
-
+        // Defines the pluginhelper
+        var pluginHelper = new PluginHelper(
+            new PluginHelperConfiguration
+            {
+                PluginType = typeof(Plugin),
+                Position = position,
+                ScopeStorage = scopeStorage,
+                WorkspaceLogic = workspaceLogic
+            });
+        
+        // Adds the extent
+        pluginHelper.AddExtentForTypesFromManifest("Xmi.Types.xmi", DmTypesUriReference);
+        
+        // Adds the javascript file
+        var jsParameter = new AddJavaScriptFileToWebserverParameter();
+        jsParameter.SetByRelativeFileName("Js/Demo.js");
+        jsParameter.ProjectsRelativePathToDevelopmentFile = "../../../DatenMeister.Templates.TypeScriptAndTypesPlugin";
+        pluginHelper.AddJavaScriptFileToWebServer(jsParameter);
+        
         return Task.CompletedTask;
     }
 }

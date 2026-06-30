@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\DatenMeister.Plugins.Helper\DatenMeister.Plugins.Helper.csproj" />
       <ProjectReference Include="..\..\src\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
       <ProjectReference Include="..\..\src\Web\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj" />
     </ItemGroup>

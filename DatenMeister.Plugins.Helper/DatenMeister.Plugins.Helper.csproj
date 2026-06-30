@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\src\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
+      <ProjectReference Include="..\src\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+      <ProjectReference Include="..\src\Web\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj" />
+    </ItemGroup>
+
+</Project>

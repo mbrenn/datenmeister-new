@@ -17,4 +17,9 @@
         <PackageReference Include="BurnSystems" Version="1.2.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\DatenMeister.Core.Interfaces\DatenMeister.Core.Interfaces.csproj" />
+      <ProjectReference Include="..\DatenMeister.Core.Model\DatenMeister.Core.Model.csproj" />
+    </ItemGroup>
+
 </Project>

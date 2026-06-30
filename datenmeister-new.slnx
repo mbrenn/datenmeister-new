@@ -115,6 +115,10 @@
     </Project>
   </Folder>
   <Folder Name="/Library - .Net Standard/Core/">
+    <Project Path="DatenMeister.Plugins.Helper/DatenMeister.Plugins.Helper.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
     <Project Path="src/DatenMeister.Core.Extensions/DatenMeister.Core.Extensions.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>

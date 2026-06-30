@@ -5,6 +5,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
+using DatenMeister.Plugins.Helper;
 
 namespace DatenMeister.Domains;
 
@@ -17,28 +18,21 @@ public class DomainPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSto
     public const string DmInternTypesDomainsDatenmeister = "dm:///intern.types.domains.datenmeister/";
     public const string DmInternManagementDomainsDatenmeister = "dm:///intern.management.domains.datenmeister/";
 
-
     public async Task Start(PluginLoadingPosition position)
     {
-        switch (position)
-        {
-            case PluginLoadingPosition.AfterLoadingOfExtents:
-               
-                // Add the two xmi-extents to the workspace
-                var assemblyType = typeof(DomainPlugin);
-                var resourcePathTypes = "DatenMeister.Domains.Xmi.DatenMeister.Domains.Types.xmi";
-                var resourcePathManagement = "DatenMeister.Domains.Xmi.DatenMeister.Domains.Management.xmi";
-                
-                // Create the extentManager
-                var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
-                extentManager.LoadNonPersistentExtentFromResources(assemblyType, resourcePathTypes, WorkspaceNames.WorkspaceTypes, DmInternTypesDomainsDatenmeister);
-                extentManager.LoadNonPersistentExtentFromResources(assemblyType, resourcePathManagement, WorkspaceNames.WorkspaceManagement, DmInternManagementDomainsDatenmeister);
-                
-                // Add the Action Handler
-                var actionLogicState = scopeStorage.Get<ActionLogicState>();
-                actionLogicState.AddActionHandler(new DomainCreateFoundationActionHandler(workspaceLogic, scopeStorage));
-                break;
-        }
+        // Defines the pluginhelper
+        var pluginHelper = new PluginHelper(
+            new PluginHelperConfiguration
+            {
+                PluginType = typeof(DomainPlugin),
+                Position = position,
+                ScopeStorage = scopeStorage,
+                WorkspaceLogic = workspaceLogic
+            });
+        
+        pluginHelper.AddExtentForTypesFromManifest("Xmi.DatenMeister.Domains.Types.xmi", DmInternTypesDomainsDatenmeister);
+        pluginHelper.AddExtentForManagementFromManifest("Xmi.DatenMeister.Domains.Management.xmi", DmInternManagementDomainsDatenmeister);
+        pluginHelper.AddActionHander(new DomainCreateFoundationActionHandler(workspaceLogic, scopeStorage));
         
         await Task.CompletedTask;
     }

@@ -1,4 +1,5 @@
-
+using DatenMeister.Actions;
+using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager;
 using DatenMeister.Extent.Manager.ExtentStorage;
@@ -22,13 +23,28 @@ public class PluginHelper(PluginHelperConfiguration configuration)
     /// <param name="extentName">Name of the extent in which the manifest will be added</param>
     public void AddExtentForTypesFromManifest(string manifestPath, string extentName)
     {
+        LoadExtentFromManifest(manifestPath, extentName, WorkspaceNames.WorkspaceTypes);
+    }
+    /// <summary>
+    /// Loads an adds an extent from the manifest. It used the configuration to identify the assembly
+    /// </summary>
+    /// <param name="manifestPath">Relative path of the manifest without the assembly name.
+    /// (e.g. 'Xmi.Types.xmi' for a file 'Xmi/Types.xmi')</param>
+    /// <param name="extentName">Name of the extent in which the manifest will be added</param>
+    public void AddExtentForManagementFromManifest(string manifestPath, string extentName)
+    {
+        LoadExtentFromManifest(manifestPath, extentName, WorkspaceNames.WorkspaceManagement);
+    }
+
+    private void LoadExtentFromManifest(string manifestPath, string extentName, string workspaceName)
+    {
         if (configuration.Position != PluginLoadingPosition.AfterLoadingOfExtents) 
             return;
         
         var extentManager = new ExtentManager(configuration.WorkspaceLogic, configuration.ScopeStorage);
         var resourcePathTypes = configuration.AssemblyName + "." + manifestPath;
         extentManager.LoadNonPersistentExtentFromResources(configuration.PluginType, resourcePathTypes,
-            WorkspaceNames.WorkspaceTypes, extentName);
+            workspaceName, extentName);
     }
 
     /// <summary>
@@ -37,6 +53,9 @@ public class PluginHelper(PluginHelperConfiguration configuration)
     /// <param name="parameter">Parameter of the function</param>
     public void AddJavaScriptFileToWebServer(AddJavaScriptFileToWebserverParameter parameter)
     {
+        if (configuration.Position != PluginLoadingPosition.AfterLoadingOfExtents) 
+            return;
+        
         // Adds the javascript
         var pageRegistrationData = configuration.ScopeStorage.Get<PageRegistrationData>();
         var pageRegistrationLogic = new PageRegistrationLogic(pageRegistrationData);
@@ -48,5 +67,18 @@ public class PluginHelper(PluginHelperConfiguration configuration)
                 parameter.ProjectsRelativePathToDevelopmentFile,
                 parameter.DirectoryPath, 
                 parameter.FileName));
+    }
+
+    /// <summary>
+    /// Adds an action handler to the system
+    /// </summary>
+    /// <param name="actionHandler">Actionhandler to be added</param>
+    public void AddActionHander(IActionHandler actionHandler)
+    {
+        if (configuration.Position != PluginLoadingPosition.AfterLoadingOfExtents)
+            return;
+        var actionLogicState = configuration.ScopeStorage.Get<ActionLogicState>();
+        actionLogicState.AddActionHandler(actionHandler);
+        
     }
 }

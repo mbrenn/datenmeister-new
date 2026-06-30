@@ -2,7 +2,6 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Plugins;
 using DatenMeister.Plugins.Helper;
-using DatenMeister.WebServer.Library.PageRegistration;
 
 namespace DatenMeister.Templates.TypeScriptAndTypesPlugin;
 

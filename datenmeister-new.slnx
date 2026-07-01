@@ -33,10 +33,6 @@
     </Project>
   </Folder>
   <Folder Name="/Library - .Net Standard/">
-    <Project Path="src/DatenMeister.DataView.Actions.Tests/DatenMeister.DataView.Actions.Tests.csproj">
-      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
-      <BuildType Solution="WPF|*" Project="Debug" />
-    </Project>
     <Project Path="src/DatenMeister.Actions.Transformations/DatenMeister.Actions.Transformations.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
       <BuildType Solution="WPF|*" Project="Debug" />
@@ -50,14 +46,6 @@
     </Project>
     <Project Path="src/DatenMeister.BootStrap/DatenMeister.BootStrap.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
-    </Project>
-    <Project Path="src/DatenMeister.DataView.Actions/DatenMeister.DataView.Actions.csproj">
-      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
-      <BuildType Solution="WPF|*" Project="Debug" />
-    </Project>
-    <Project Path="src/DatenMeister.DataView/DatenMeister.DataView.csproj">
-      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
-      <BuildType Solution="WPF|*" Project="Debug" />
     </Project>
     <Project Path="src/DatenMeister.DependencyInjection/DatenMeister.DependencyInjection.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
@@ -152,6 +140,20 @@
       <BuildType Solution="WPF|*" Project="Debug" />
     </Project>
   </Folder>
+  <Folder Name="/Library - .Net Standard/DataViews/">
+    <Project Path="src/DatenMeister.DataView.Actions.Tests/DatenMeister.DataView.Actions.Tests.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="src/DatenMeister.DataView.Actions/DatenMeister.DataView.Actions.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+    <Project Path="src/DatenMeister.DataView/DatenMeister.DataView.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
+  </Folder>
   <Folder Name="/Library - .Net Standard/Domains/">
     <Project Path="src/DatenMeister.Domains/DatenMeister.Domains.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
@@ -202,6 +204,12 @@
     </Project>
     <Project Path="src/DatenMeister.Reports/DatenMeister.Reports.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/Library - .Net Standard/Swimlanes/">
+    <Project Path="src/DatenMeister.Swimlane/DatenMeister.Swimlane.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
     </Project>
   </Folder>
   <Folder Name="/Library - .Net Standard/Templates/">

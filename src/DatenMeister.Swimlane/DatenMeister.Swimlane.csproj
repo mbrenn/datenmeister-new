@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\DatenMeister.Plugins.Helper\DatenMeister.Plugins.Helper.csproj" />    
+        <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <TypeScriptConfigFile Include="tsconfig.json" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Xmi\Types.xmi" />
+      <None Remove="Js\DatenMeister.Swimlane.js" />
+      <EmbeddedResource Include="Js\DatenMeister.Swimlane.js" />
+      <None Remove="Js\DatenMeister.Swimlane.js.map" />
+      <EmbeddedResource Include="Js\DatenMeister.Swimlane.js.map" />
+    </ItemGroup>
+
+    <Target Name="RunCakeBuild" BeforeTargets="Build">
+        <Exec Command="npm install" />
+        <Exec Command="dotnet tool install Cake.Tool --version 6.1.0" />
+        <Exec Command="dotnet cake build.cake --target=Build" />
+    </Target>
+</Project>

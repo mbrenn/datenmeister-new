@@ -32,9 +32,9 @@ export class Field extends BaseField implements IFormField {
 
         const bindingKey = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.bindingKey, Mof.ObjectType.String);
         if (bindingKey) {
-            const bindingKeyModifierCtrl = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.bindingKeyModifierCtrl, Mof.ObjectType.Boolean) === true;
-            const bindingKeyModifierShift = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.bindingKeyModifierShift, Mof.ObjectType.Boolean) === true;
-            const bindingKeyModifierAlt = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.bindingKeyModifierAlt, Mof.ObjectType.Boolean) === true;
+            const bindingKeyModifierCtrl = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.bindingKeyModifierCtrl, Mof.ObjectType.Boolean);
+            const bindingKeyModifierShift = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.bindingKeyModifierShift, Mof.ObjectType.Boolean);
+            const bindingKeyModifierAlt = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.bindingKeyModifierAlt, Mof.ObjectType.Boolean);
             addKeyBindingEvent(this.button, bindingKey, bindingKeyModifierCtrl, bindingKeyModifierShift, bindingKeyModifierAlt);
         }
 

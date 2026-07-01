@@ -12,11 +12,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\DatenMeister.Plugins.Helper\DatenMeister.Plugins.Helper.csproj" />
       <ProjectReference Include="..\DatenMeister.Actions\DatenMeister.Actions.csproj" />
       <ProjectReference Include="..\DatenMeister.Core.Interfaces\DatenMeister.Core.Interfaces.csproj" />
       <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
       <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+      <ProjectReference Include="..\DatenMeister.Plugins.Helper\DatenMeister.Plugins.Helper.csproj" />
     </ItemGroup>
 
 </Project>

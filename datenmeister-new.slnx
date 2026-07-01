@@ -115,7 +115,7 @@
     </Project>
   </Folder>
   <Folder Name="/Library - .Net Standard/Core/">
-    <Project Path="DatenMeister.Plugins.Helper/DatenMeister.Plugins.Helper.csproj">
+    <Project Path="src/DatenMeister.Plugins.Helper/DatenMeister.Plugins.Helper.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
       <BuildType Solution="WPF|*" Project="Debug" />
     </Project>
@@ -205,7 +205,7 @@
     </Project>
   </Folder>
   <Folder Name="/Library - .Net Standard/Templates/">
-    <Project Path="Templates/DatenMeister.Templates.TypeScriptAndTypesPlugin/DatenMeister.Templates.TypeScriptAndTypesPlugin.csproj">
+    <Project Path="src/Templates/DatenMeister.Templates.TypeScriptAndTypesPlugin/DatenMeister.Templates.TypeScriptAndTypesPlugin.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
       <BuildType Solution="WPF|*" Project="Debug" />
     </Project>

@@ -9,7 +9,6 @@ namespace DatenMeister.Templates.TypeScriptAndTypesPlugin;
 // ReSharper disable once UnusedType.Global
 public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private const string AssemblyName = "DatenMeister.Templates.TypeScriptAndTypesPlugin";
     private const string DmTypesUriReference = "dm:///intern.types.template.typescriptandtypesplugin.datenmeister/";
 
     public Task Start(PluginLoadingPosition position)

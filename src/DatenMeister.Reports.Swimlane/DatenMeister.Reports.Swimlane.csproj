@@ -15,9 +15,10 @@
     <ItemGroup>
       <EmbeddedResource Include="Xmi\Types.xmi" />
       <None Remove="Js\DatenMeister.Swimlane.js" />
-      <EmbeddedResource Include="Js\DatenMeister.Swimlane.js" />
       <None Remove="Js\DatenMeister.Swimlane.js.map" />
-      <EmbeddedResource Include="Js\DatenMeister.Swimlane.js.map" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Js\" />
     </ItemGroup>
 
     <Target Name="RunCakeBuild" BeforeTargets="Build">

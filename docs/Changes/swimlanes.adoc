@@ -90,14 +90,14 @@ directly work on the transformed data.
 == Design
 
 * An own assembly with data types and Javascript files will be implemented
-* The extent url will be "dm:///intern.types.swimlanes.datenmeister/"
+* The extent url will be "dm:///intern.types.swimlane.datenmeister/"
 ** We need to have a template for that procedure. 
 
 The following tasks: 
 
-* [ ] Create new Assembly: DatenMeister.Reports.Swimlane
-* [ ] Add project configuration for Extent for types
-* [ ] Add project configuration for Typescript conversion
+* [x] Create new Assembly: DatenMeister.Reports.Swimlane
+* [x] Add project configuration for Extent for types
+* [x] Add project configuration for Typescript conversion
 
 === Configuration
 

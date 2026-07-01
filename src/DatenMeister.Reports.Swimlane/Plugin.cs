@@ -3,7 +3,7 @@ using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Plugins;
 using DatenMeister.Plugins.Helper;
 
-namespace DatenMeister.Swimlane;
+namespace DatenMeister.Reports.Swimlane;
 
 [PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
 // ReSharper disable once UnusedType.Global
@@ -28,8 +28,8 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
         
         // Adds the javascript file
         var jsParameter = new AddJavaScriptFileToWebserverParameter();
-        jsParameter.SetByRelativeFileName("Js/DatenMeister.Swimlane.js");
-        jsParameter.ProjectsRelativePathToDevelopmentFile = "../../../DatenMeister.Swimlane";
+        jsParameter.SetByRelativeFileName("Js/DatenMeister.Reports.Swimlane.js");
+        jsParameter.ProjectsRelativePathToDevelopmentFile = "../../../DatenMeister.Reports.Swimlane";
         pluginHelper.AddJavaScriptFileToWebServer(jsParameter);
         
         return Task.CompletedTask;

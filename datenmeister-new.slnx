@@ -207,7 +207,7 @@
     </Project>
   </Folder>
   <Folder Name="/Library - .Net Standard/Swimlanes/">
-    <Project Path="src/DatenMeister.Swimlane/DatenMeister.Swimlane.csproj">
+    <Project Path="src\DatenMeister.Reports.Swimlane\DatenMeister.Reports.Swimlane.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
       <BuildType Solution="WPF|*" Project="Debug" />
     </Project>

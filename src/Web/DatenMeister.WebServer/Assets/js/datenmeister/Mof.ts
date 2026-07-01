@@ -299,7 +299,7 @@ export class DmObject {
 
             case ObjectType.String:
                 const resultString = Array.isArray(result) ? result[0] : result;
-                if (resultString === undefined) {
+                if (resultString === undefined || resultString === null) {
                     return undefined as DmObjectReturnType<T>;
                 }
                 
@@ -314,7 +314,7 @@ export class DmObject {
                 return (Boolean(result) && result !== "0" && result !== "false") as DmObjectReturnType<T>;
 
             case ObjectType.Number:
-                if (!hasValue || result === undefined) {
+                if (!hasValue || result === undefined || result === null) {
                     return Number(0) as DmObjectReturnType<T>;
                 }
 

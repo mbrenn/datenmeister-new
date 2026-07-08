@@ -1,7 +1,4 @@
 Assets/**/*.js
 Assets/**/*.js.map
 
-Js/*.js
-Js/*.js.map
-
 tools/*

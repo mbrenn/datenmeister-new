@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\DatenMeister.Reports.Swimlane\DatenMeister.Reports.Swimlane.csproj" />
     <ProjectReference Include="..\..\Templates\DatenMeister.Templates.TypeScriptAndTypesPlugin\DatenMeister.Templates.TypeScriptAndTypesPlugin.csproj" />
     <ProjectReference Include="..\..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Actions.Transformations\DatenMeister.Actions.Transformations.csproj" />

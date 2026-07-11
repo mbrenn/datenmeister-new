@@ -14,8 +14,10 @@
     </ItemGroup>
     <ItemGroup>
       <EmbeddedResource Include="Xmi\Types.xmi" />
-      <None Remove="Js\DatenMeister.Swimlane.js" />
-      <None Remove="Js\DatenMeister.Swimlane.js.map" />
+      <None Remove="Js\DatenMeister.Reports.Swimlane.js" />
+      <EmbeddedResource Include="Js\DatenMeister.Reports.Swimlane.js" />
+      <None Remove="Js\DatenMeister.Reports.Swimlane.js.map" />
+      <EmbeddedResource Include="Js\DatenMeister.Reports.Swimlane.js.map" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Js\" />

@@ -5,11 +5,19 @@ var configuration = Argument("configuration", "Debug");
 var target = Argument("target", "Build");
 
 
+Task("Merge TS")
+    .Does(() =>
+    {
+        var swimlane = System.IO.File.ReadAllText("Assets/Js/DatenMeister.Reports.Swimlane.Source.ts");
+        var types = System.IO.File.ReadAllText("Model/Types.ts");
+        var result = "// This file is generated in build.cake. Do NOT modify that file.\n\n" + swimlane + "\n\n" + types;
+        System.IO.File.WriteAllText("Assets/Js/DatenMeister.Reports.Swimlane.ts", result);
+    });
+
 Task("Compile TS")
+    .IsDependentOn("Merge TS")
     .Does(() => 
-    {    
-        Information("Compile TypeScript files");        
-        
+    {
         NpmExec("tsc");
     });
     

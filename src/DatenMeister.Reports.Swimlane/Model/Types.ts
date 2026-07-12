@@ -1,9 +1,3 @@
-// This file is generated in build.cake. Do NOT modify that file.
-
-
-console.log("We got it");
-
-
 // Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.3.0.0
 export namespace _Root
 {

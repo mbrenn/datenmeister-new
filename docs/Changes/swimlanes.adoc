@@ -120,7 +120,7 @@ Name will be used
 |linkContent|Boolean indicating whether a link shall be added.
 |===
 
-* [ ] Create the metaclass for the configuration
+* [x] Create the metaclass for the configuration
 
 === The viewdefinition
 
@@ -132,11 +132,11 @@ swimlane. It contains the information about the view definition and how to retri
 [cols="1,3", options="header"]
 |===
 |Property|Meaning
-|viewDefinition|Reference to the view definition
+|swimlaneConfiguration|Reference to the swimlane configuration
 |viewNode|Composite of the viewNode which retrieves all the items that are intended to get rendered.
 |===
 
-* [ ] Create the view definition metaclass
+* [x] Create the view definition metaclass
 
 The viewdefinition will call a specific action to render the swimlane upon a click on the button. 
 
@@ -156,7 +156,7 @@ the rendering of the page itself
 
 An action button starting all the actions above is added to the default form of the Viewdefinition 
 
-* [ ] Include an action button for metaclass of 'SwimlaneRenderAction  
+* [ ] Include an action button for metaclass of 'SwimlaneRenderAction'
 ** [ ] Here, we render 
 
 === Create the action to show the viewdefinition

@@ -288,6 +288,7 @@ public class CommonTypes
             }
 
         }
+
     }
 
     public class OSIntegration

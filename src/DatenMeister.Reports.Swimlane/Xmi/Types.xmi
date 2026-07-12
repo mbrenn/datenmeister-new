@@ -1,5 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xmi>
-  <meta p2:id="bf7573bb-bd76-4bfc-a6c8-4c35c51d6915" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes " __uri="dm:///intern.types.templates.typescriptandtypes.datenmeister/" />
-
+  <meta p2:id="bf7573bb-bd76-4bfc-a6c8-4c35c51d6915" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes " __uri="dm:///intern.types.swimlane.datenmeister/" />
+  <item p2:type="dm:///_internal/model/uml#Class" p2:id="e92b2227-9b93-4033-ac2e-772a2230a869" name="SwimlaneConfiguration" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f664778b-483e-4eec-8a42-6ec6ed99a1a0" name="verticalSwimlaneProperty" type-ref="dm:///_internal/model/primitivetypes#String" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dde6ae77-4a24-4ead-b7d8-e54643038fc6" name="horizontalSwimlaneProperty" type-ref="dm:///_internal/model/primitivetypes#String" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="df4c7530-aef2-4c97-959f-f49fd3a81da2" name="cellContent" type-ref="dm:///_internal/model/primitivetypes#String" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1d80dbd6-1dbb-4a6c-9a30-c0e264a2253e" name="linkContent" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+  </item>
+  <item p2:type="dm:///_internal/model/uml#Class" p2:id="1c8b02e8-1988-4c3b-9d74-8739c400d56c" name="SwimlaneViewdefinition" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a432a0f6-908d-4df8-9087-ec1816f2f46f" name="viewDefinition" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dc3953cb-45f4-454a-a36c-6edda29b48fb" name="viewNode" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isComposite="true" />
+  </item>
 </xmi>

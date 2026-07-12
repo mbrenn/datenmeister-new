@@ -69,7 +69,7 @@ export interface IAddToContainerResult
 
 export async function createItemAsChild(workspaceId: string, itemUri: string, param: ICreateItemAsChildParams)
 {
-    const evaluatedParameter: { metaClass: string | undefined; property: string; asList: boolean, properties: Mof.JsonFromMofObject | undefined }  =
+    const evaluatedParameter: { metaClass: string | undefined; property: string | null; asList: boolean, properties: Mof.JsonFromMofObject | undefined } =
         {
             metaClass: param.metaClass,
             property: param.property,
@@ -91,7 +91,7 @@ export async function createItemAsChild(workspaceId: string, itemUri: string, pa
 
 export interface ICreateItemAsChildParams {
     metaClass?: string;
-    property: string;
+    property: string | null;
     asList?: boolean;
     properties?: Mof.DmObject;    
 }

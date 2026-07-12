@@ -83,7 +83,7 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
     private workspace: string;
     private itemUri: string;
     private metaClass: string;
-    private property: string;
+    private property: string | null;
     private metaclassWorkspace: string;
     private isList: boolean = true;
     
@@ -100,8 +100,8 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
         const metaClass = p.get('metaclass');
         const property = p.get('property');
         const metaclassWorkspace = p.get('metaclassworkspace');
-        if (workspace === null || itemUri === null || metaClass === null || property === null || metaclassWorkspace === null) {
-            throw new Error('Not all parameters are set correctly (workspace, item, metaclass, property, metaclassworkspace)');
+        if (workspace === null || itemUri === null || metaClass === null || metaclassWorkspace === null) {
+            throw new Error('Not all parameters are set correctly (workspace, item, metaclass, metaclassworkspace)');
         }
         
         this.workspace = workspace;

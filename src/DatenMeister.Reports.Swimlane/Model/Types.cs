@@ -33,8 +33,8 @@ public class _Root
         TypeKind = TypeKind.ClassTree)]
     public class _SwimlaneViewdefinition
     {
-        public static readonly string @viewDefinition = "viewDefinition";
-        public IElement? @_viewDefinition = null;
+        public static readonly string @swimlaneConfiguration = "swimlaneConfiguration";
+        public IElement? @_swimlaneConfiguration = null;
 
         public static readonly string @viewNode = "viewNode";
         public IElement? @_viewNode = null;

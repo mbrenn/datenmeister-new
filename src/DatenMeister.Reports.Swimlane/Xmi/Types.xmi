@@ -8,7 +8,7 @@
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1d80dbd6-1dbb-4a6c-9a30-c0e264a2253e" name="linkContent" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
   </item>
   <item p2:type="dm:///_internal/model/uml#Class" p2:id="1c8b02e8-1988-4c3b-9d74-8739c400d56c" name="SwimlaneViewdefinition" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
-    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a432a0f6-908d-4df8-9087-ec1816f2f46f" name="viewDefinition" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a432a0f6-908d-4df8-9087-ec1816f2f46f" name="swimlaneConfiguration" type-ref="#e92b2227-9b93-4033-ac2e-772a2230a869" />
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dc3953cb-45f4-454a-a36c-6edda29b48fb" name="viewNode" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isComposite="true" />
   </item>
 </xmi>

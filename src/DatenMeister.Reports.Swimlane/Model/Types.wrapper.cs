@@ -87,12 +87,12 @@ public class Root
         public static SwimlaneViewdefinition_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // Not found
-        public object? @viewDefinition
+        public object? @swimlaneConfiguration
         {
             get =>
-                _wrappedElement.getOrDefault<object?>("viewDefinition");
+                _wrappedElement.getOrDefault<object?>("swimlaneConfiguration");
             set => 
-                _wrappedElement.set("viewDefinition", value);
+                _wrappedElement.set("swimlaneConfiguration", value);
         }
 
         // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper

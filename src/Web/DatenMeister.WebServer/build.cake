@@ -66,7 +66,7 @@ Task("Compile TS")
     {    
         Information("Compile TypeScript files");        
         
-        NpmExec("tsc");
+        StartProcess("npx", new ProcessSettings { Arguments = "tsc" });
     });
 
 Task("Compress JS")

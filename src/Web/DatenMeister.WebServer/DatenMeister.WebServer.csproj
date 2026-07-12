@@ -73,7 +73,7 @@
     <Folder Include="wwwroot\css\jquery.fancytree\skin-win8\" />
   </ItemGroup>
 
-  <Target Name="RunCakeBuild" BeforeTargets="Build">
+  <Target Name="RunCakeBuild" BeforeTargets="PrepareForBuild">
     <Exec Command="dotnet cake build.cake --target=Build" />
   </Target>  
 

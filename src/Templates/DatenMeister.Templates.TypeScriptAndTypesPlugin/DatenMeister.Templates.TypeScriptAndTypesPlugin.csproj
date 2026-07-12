@@ -23,7 +23,7 @@
       <EmbeddedResource Include="Xmi\Types.xmi" />
     </ItemGroup>
 
-    <Target Name="RunCakeBuild" BeforeTargets="Build">
+    <Target Name="RunCakeBuild" BeforeTargets="PrepareForBuild">
         <Exec Command="npm install" />
         <Exec Command="dotnet tool install Cake.Tool --version 6.1.0" />
         <Exec Command="dotnet cake build.cake --target=Build" />

@@ -168,18 +168,19 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
         FormCreationContext context,
         FormCreationResultMultipleForms result)
     {
+        var findQuery =
+            new FindFormQuery
+            {
+                ViewModeId = context.ViewModeId,
+                MetaClass = parameter.MetaClass,
+                FormType = _Forms._FormTypes.___FormType.Row,
+                WorkspaceId = parameter.Extent?.GetWorkspace()?.id ?? string.Empty,
+                ExtentTypes = parameter.ExtentTypes ?? [],
+                ExtentUri = parameter.Extent?.contextURI() ?? string.Empty
+            };
+        
         if (!context.IsInExtensionCreationMode())
         {
-            var findQuery =
-                new FindFormQuery
-                {
-                    ViewModeId = context.ViewModeId,
-                    MetaClass = parameter.MetaClass,
-                    FormType = _Forms._FormTypes.___FormType.Row,
-                    WorkspaceId = parameter.Extent?.GetWorkspace()?.id ?? string.Empty,
-                    ExtentTypes = parameter.ExtentTypes ?? [],
-                    ExtentUri = parameter.Extent?.contextURI() ?? string.Empty
-                };
 
             Find(result, findQuery);
         }
@@ -193,25 +194,17 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
                 // We have no result to which an extension is required to be added
                 return;
             }
-            
-            var findQuery =
-                new FindFormQuery
-                {
-                    ViewModeId = context.ViewModeId,
-                    FormType = _Forms._FormTypes.___FormType.RowExtension,
-                    WorkspaceId = parameter.Extent?.GetWorkspace()?.id ?? string.Empty,
-                    ExtentTypes = parameter.ExtentTypes ?? [],
-                    ExtentUri = parameter.Extent?.contextURI() ?? string.Empty
-                };
+
+            findQuery.FormType = _Forms._FormTypes.___FormType.RowExtension;
             
             var foundForms = FindAll(findQuery);
             foreach (var extensionForm in foundForms)
             {
                 foreach (var field in
-                         extensionForm.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
+                         extensionForm.get<IReflectiveCollection>(_Forms._FormTypes._RowForm.field)
                              .OfType<IElement>())
                 {
-                    form.AddCollectionItem(_Forms._FormTypes._ObjectForm.tab, field);
+                    form.AddCollectionItem(_Forms._FormTypes._RowForm.field, field);
                 }
             }
         }
@@ -265,7 +258,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) :
                          extensionForm.getOrDefault<IReflectiveCollection>(_Forms._FormTypes._TableForm.field)
                              .OfType<IElement>())
                 {
-                    form.AddCollectionItem(_Forms._FormTypes._ObjectForm.tab, field);
+                    form.AddCollectionItem(_Forms._FormTypes._TableForm.field, field);
                 }
             }
         }

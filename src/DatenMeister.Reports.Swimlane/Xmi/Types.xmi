@@ -6,9 +6,11 @@
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dde6ae77-4a24-4ead-b7d8-e54643038fc6" name="horizontalSwimlaneProperty" type-ref="dm:///_internal/model/primitivetypes#String" />
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="df4c7530-aef2-4c97-959f-f49fd3a81da2" name="cellContent" type-ref="dm:///_internal/model/primitivetypes#String" />
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1d80dbd6-1dbb-4a6c-9a30-c0e264a2253e" name="linkContent" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b7d7eb26-4108-4236-a058-c6ad20ca4aac" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
   </item>
   <item p2:type="dm:///_internal/model/uml#Class" p2:id="1c8b02e8-1988-4c3b-9d74-8739c400d56c" name="SwimlaneViewdefinition" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a432a0f6-908d-4df8-9087-ec1816f2f46f" name="swimlaneConfiguration" type-ref="#e92b2227-9b93-4033-ac2e-772a2230a869" />
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dc3953cb-45f4-454a-a36c-6edda29b48fb" name="viewNode" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isComposite="true" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7f195869-7da0-44a8-ab65-0b367808e239" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
   </item>
 </xmi>

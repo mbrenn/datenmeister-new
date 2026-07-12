@@ -62,6 +62,14 @@ public class Root
                 _wrappedElement.set("linkContent", value);
         }
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///intern.types.swimlane.datenmeister/#1c8b02e8-1988-4c3b-9d74-8739c400d56c",
@@ -114,6 +122,14 @@ public class Root
                     _wrappedElement.set("viewNode", value);
                 }
             }
+        }
+
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
         }
 
     }

@@ -8,7 +8,7 @@ namespace DatenMeister.Forms.FormFinder;
 
 public record FindFormQuery
 {
-    public _Forms._FormTypes.___FormType FormType { get; init; }
+    public _Forms._FormTypes.___FormType FormType { get; set; }
 
     public IElement? MetaClass { get; init; }
 

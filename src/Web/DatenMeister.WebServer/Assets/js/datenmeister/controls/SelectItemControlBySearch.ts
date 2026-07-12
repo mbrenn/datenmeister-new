@@ -55,6 +55,7 @@ export class SelectItemControlBySearch implements IWorkspaceAndExtentSelectionCa
      */
     private initDom(settings: ControlSettings, container: JQuery<HTMLElement>) {
 
+        this.settings = settings;
         const tthis = this;
         // Creates the template
         const div = $(

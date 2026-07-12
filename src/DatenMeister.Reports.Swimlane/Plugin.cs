@@ -10,7 +10,8 @@ namespace DatenMeister.Reports.Swimlane;
 public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
     private const string DmTypesUriReference = "dm:///intern.types.swimlane.datenmeister/";
-
+    private const string DmFormsUriReference = "dm:///intern.management.swimlane.datenmeister/";
+    
     public Task Start(PluginLoadingPosition position)
     {
         // Defines the pluginhelper
@@ -25,6 +26,7 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
         
         // Adds the extent
         pluginHelper.AddExtentForTypesFromManifest("Xmi.Types.xmi", DmTypesUriReference);
+        pluginHelper.AddExtentForManagementFromManifest("Xmi.Forms.xmi", DmFormsUriReference);
         
         // Adds the javascript file
         var jsParameter = new AddJavaScriptFileToWebserverParameter();

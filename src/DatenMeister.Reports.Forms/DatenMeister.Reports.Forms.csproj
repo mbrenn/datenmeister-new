@@ -61,7 +61,7 @@
   </ItemGroup>
 
 
-  <Target Name="RunCakeBuild" BeforeTargets="Build">
+  <Target Name="RunCakeBuild" BeforeTargets="PrepareForBuild">
     <Exec Command="dotnet cake build.cake --target=Build" />
   </Target>
 </Project>

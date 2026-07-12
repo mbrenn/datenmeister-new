@@ -24,6 +24,9 @@ public class _Root
         public static readonly string @linkContent = "linkContent";
         public IElement? @_linkContent = null;
 
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
     }
 
     public _SwimlaneConfiguration @SwimlaneConfiguration = new ();
@@ -38,6 +41,9 @@ public class _Root
 
         public static readonly string @viewNode = "viewNode";
         public IElement? @_viewNode = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
 
     }
 

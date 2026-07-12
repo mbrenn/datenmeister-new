@@ -249,7 +249,7 @@ export class SelectItemControlByBrowsingControl implements IWorkspaceAndExtentSe
         this.preSelectItemUri = item.uri;
 
         if (this.isDomInitialized) {
-            await this.workspaceAndExtent.loadWorkspaces();
+            await this.loadItems();
         }
     }
 
@@ -284,7 +284,7 @@ export class SelectItemControlByBrowsingControl implements IWorkspaceAndExtentSe
             const tthis = this;
             let selectedItem = this.selectedItem;
 
-            // Checks, whether the user has selected or preselected an item
+            // Check, whether the user has selected or preselected an item
             if (this.preSelectItemUri !== undefined) {
                 const selectedWorkspace = this.getUserSelectedWorkspaceId();
                 if (this.preSelectItemUri === "" || selectedWorkspace === undefined) {

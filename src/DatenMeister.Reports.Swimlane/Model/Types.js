@@ -15,6 +15,7 @@ export var _Root;
     _SwimlaneViewdefinition.swimlaneConfiguration = "swimlaneConfiguration";
     _SwimlaneViewdefinition.viewNode = "viewNode";
     _SwimlaneViewdefinition._name_ = "name";
+    _SwimlaneViewdefinition.isDisabled = "isDisabled";
     _Root._SwimlaneViewdefinition = _SwimlaneViewdefinition;
     _Root.__SwimlaneViewdefinition_Uri = "dm:///intern.types.swimlane.datenmeister/#1c8b02e8-1988-4c3b-9d74-8739c400d56c";
 })(_Root || (_Root = {}));

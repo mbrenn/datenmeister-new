@@ -136,7 +136,10 @@ swimlane. It contains the information about the view definition and how to retri
 |viewNode|Composite of the viewNode which retrieves all the items that are intended to get rendered.
 |===
 
+The viewdefinition will become inherited by an Action which will allow the direct triggering of an actionhandler.
+
 * [x] Create the view definition metaclass
+* [ ] Inherit from ActionHandler
 
 The viewdefinition will call a specific action to render the swimlane upon a click on the button.
 
@@ -146,17 +149,15 @@ just performed on the client by directly returning the Client Action to open the
 The same action under context of 'render' returns again a ClientAction which triggers the formlogic and performs
 the rendering of the page itself
 
-* [ ] Realize Action Logic for 'SwimlaneRenderAction'
-* [ ] Add context to IActionHandler implementation
 * [ ] Create Clientaction which opens a new window with a specific url
+* [ ] Create ClientAction which opens the new Master Page triggering the context. 
 
 * [ ] Create new Master Page just loading the action in a specific context
-* [ ] Realize clientaction to render a form
+* [ ] Realize clientaction to render a form, the form should be directly returned via the post query. 
 
 An action button starting all the actions above is added to the default form of the Viewdefinition 
 
-* [ ] Include an action button for metaclass of 'SwimlaneRenderAction'
-** [ ] Here, we render 
+* [x] Include an action button for metaclass of 'SwimlaneRenderAction'
 
 === Create the action to show the viewdefinition
 

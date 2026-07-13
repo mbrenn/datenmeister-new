@@ -801,6 +801,45 @@ public class _Actions
         public _NavigateToUrlClientAction @NavigateToUrlClientAction = new ();
         public MofObjectShadow @__NavigateToUrlClientAction = new ("dm:///_internal/types/internal#f1b5a13d-14fa-4ae8-8850-0feddf7ba0e5");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#746ecf7c-63d6-4fdf-95ae-837a13a032ed",
+            TypeKind = TypeKind.ClassTree)]
+        public class _NavigateOpenWindow
+        {
+            public static readonly string @url = "url";
+            public IElement? @_url = null;
+
+            public static readonly string @actionName = "actionName";
+            public IElement? @_actionName = null;
+
+            public static readonly string @element = "element";
+            public IElement? @_element = null;
+
+            public static readonly string @parameter = "parameter";
+            public IElement? @_parameter = null;
+
+        }
+
+        public _NavigateOpenWindow @NavigateOpenWindow = new ();
+        public MofObjectShadow @__NavigateOpenWindow = new ("dm:///_internal/types/internal#746ecf7c-63d6-4fdf-95ae-837a13a032ed");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#77ff9c01-0651-4657-823a-ce41bbe0e5e5",
+            TypeKind = TypeKind.ClassTree)]
+        public class _NavigateOpenActionInWindow
+        {
+            public static readonly string @actionName = "actionName";
+            public IElement? @_actionName = null;
+
+            public static readonly string @element = "element";
+            public IElement? @_element = null;
+
+            public static readonly string @parameter = "parameter";
+            public IElement? @_parameter = null;
+
+        }
+
+        public _NavigateOpenActionInWindow @NavigateOpenActionInWindow = new ();
+        public MofObjectShadow @__NavigateOpenActionInWindow = new ("dm:///_internal/types/internal#77ff9c01-0651-4657-823a-ce41bbe0e5e5");
+
     }
 
     public _ClientActions ClientActions = new ();

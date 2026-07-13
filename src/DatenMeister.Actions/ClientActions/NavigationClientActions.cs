@@ -11,4 +11,8 @@ public static class NavigationClientActions
     public const string CreateActionActionName = "DatenMeister.Navigation.CreateAction";
     
     public const string ToExtentActionName = "DatenMeister.Navigation.ToExtent";
+
+    public const string NavigateOpenWindow = "DatenMeister.Navigation.OpenWindow";
+
+    public const string NavigateOpenActionInWindow = "DatenMeister.Navigation.OpenActionInWindow";
 }

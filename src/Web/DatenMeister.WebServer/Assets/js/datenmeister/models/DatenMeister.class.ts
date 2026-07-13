@@ -366,6 +366,23 @@ export namespace _Actions
                 }
 
                 export const __NavigateToUrlClientAction_Uri = "dm:///_internal/types/internal#f1b5a13d-14fa-4ae8-8850-0feddf7ba0e5";
+                export class _NavigateOpenWindow
+                {
+                    static url = "url";
+                    static actionName = "actionName";
+                    static element = "element";
+                    static parameter = "parameter";
+                }
+
+                export const __NavigateOpenWindow_Uri = "dm:///_internal/types/internal#746ecf7c-63d6-4fdf-95ae-837a13a032ed";
+                export class _NavigateOpenActionInWindow
+                {
+                    static actionName = "actionName";
+                    static element = "element";
+                    static parameter = "parameter";
+                }
+
+                export const __NavigateOpenActionInWindow_Uri = "dm:///_internal/types/internal#77ff9c01-0651-4657-823a-ce41bbe0e5e5";
         }
 
         export namespace _Forms

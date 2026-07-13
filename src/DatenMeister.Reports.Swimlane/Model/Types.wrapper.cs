@@ -132,6 +132,14 @@ public class Root
                 _wrappedElement.set("name", value);
         }
 
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
 }

@@ -16,6 +16,7 @@ export namespace _Root
             static swimlaneConfiguration = "swimlaneConfiguration";
             static viewNode = "viewNode";
             static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __SwimlaneViewdefinition_Uri = "dm:///intern.types.swimlane.datenmeister/#1c8b02e8-1988-4c3b-9d74-8739c400d56c";

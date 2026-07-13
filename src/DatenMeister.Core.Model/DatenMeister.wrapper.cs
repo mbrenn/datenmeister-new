@@ -2075,6 +2075,116 @@ public class Actions
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#746ecf7c-63d6-4fdf-95ae-837a13a032ed",
+            TypeKind = TypeKind.WrappedClass)]
+        public class NavigateOpenWindow_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public NavigateOpenWindow_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public NavigateOpenWindow_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#746ecf7c-63d6-4fdf-95ae-837a13a032ed");
+
+            public static NavigateOpenWindow_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // Not found
+            public object? @url
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("url");
+                set => 
+                    _wrappedElement.set("url", value);
+            }
+
+            public string? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionName");
+                set => 
+                    _wrappedElement.set("actionName", value);
+            }
+
+            // Not found
+            public object? @element
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("element");
+                set => 
+                    _wrappedElement.set("element", value);
+            }
+
+            // Not found
+            public object? @parameter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("parameter");
+                set => 
+                    _wrappedElement.set("parameter", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#77ff9c01-0651-4657-823a-ce41bbe0e5e5",
+            TypeKind = TypeKind.WrappedClass)]
+        public class NavigateOpenActionInWindow_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public NavigateOpenActionInWindow_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public NavigateOpenActionInWindow_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#77ff9c01-0651-4657-823a-ce41bbe0e5e5");
+
+            public static NavigateOpenActionInWindow_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // Not found
+            public object? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("actionName");
+                set => 
+                    _wrappedElement.set("actionName", value);
+            }
+
+            // Not found
+            public object? @element
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("element");
+                set => 
+                    _wrappedElement.set("element", value);
+            }
+
+            // Not found
+            public object? @parameter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("parameter");
+                set => 
+                    _wrappedElement.set("parameter", value);
+            }
+
+        }
+
     }
 
     public class Forms

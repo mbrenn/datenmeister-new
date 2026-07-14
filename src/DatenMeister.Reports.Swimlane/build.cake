@@ -56,6 +56,8 @@ Task("Build")
         .Append("--format=esm");
         
     NpmExec("esbuild", new [] { args.Render() });
+    
+    System.IO.File.Delete(mergedOutputFile);
 });
 
 RunTarget(target);

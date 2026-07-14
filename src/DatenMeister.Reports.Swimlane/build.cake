@@ -3,13 +3,14 @@
 var configuration = Argument("configuration", "Debug");
 var target = Argument("target", "Build");
 
-var swimlaneSourceFile = "Assets/Js/DatenMeister.Reports.Swimlane.Source.ts";
-var typesSourceFile = "Model/Types.ts";
-var mergedOutputFile = "Assets/Js/DatenMeister.Reports.Swimlane.ts";
 
 Task("Merge TS")
     .Does(() =>
     {
+        var swimlaneSourceFile = "Assets/Js/DatenMeister.Reports.Swimlane.ts";
+        var typesSourceFile = "Model/Types.ts";
+        var mergedOutputFile = "Assets/Js/DatenMeister.Reports.Swimlane.Combine.ts";
+        
         var outputExists = System.IO.File.Exists(mergedOutputFile);
         if (outputExists)
         {
@@ -57,7 +58,13 @@ Task("Build")
         
     NpmExec("esbuild", new [] { args.Render() });
     
-    System.IO.File.Delete(mergedOutputFile);
+    System.IO.File.Delete("Assets/Js/DatenMeister.Reports.Swimlane.Combine.ts");
+    System.IO.File.Delete("Assets/Js/DatenMeister.Reports.Swimlane.Combine.js");
+    System.IO.File.Delete("Assets/Js/DatenMeister.Reports.Swimlane.Combine.js.map");
+    System.IO.File.Delete("Js/DatenMeister.Reports.Swimlane.js");
+    System.IO.File.Delete("Js/DatenMeister.Reports.Swimlane.js.map");
+    System.IO.File.Move("Js/DatenMeister.Reports.Swimlane.Combine.js", "Js/DatenMeister.Reports.Swimlane.js");
+    System.IO.File.Move("Js/DatenMeister.Reports.Swimlane.Combine.js.map", "Js/DatenMeister.Reports.Swimlane.js.map");
 });
 
 RunTarget(target);

@@ -13,14 +13,12 @@
         <TypeScriptConfigFile Include="tsconfig.json" />
     </ItemGroup>
     <ItemGroup>
+      <None Remove="Xmi\Forms.xmi" />
       <EmbeddedResource Include="Xmi\Types.xmi" />
-      <EmbeddedResource Remove="Xmi\Forms.xmi" />
-      <None Remove="Js\DatenMeister.Reports.Swimlane.js" />
-      <EmbeddedResource Include="Js\DatenMeister.Reports.Swimlane.js" />
-      <None Remove="Js\DatenMeister.Reports.Swimlane.js.map" />
-      <EmbeddedResource Include="Js\DatenMeister.Reports.Swimlane.js.map" />
       <None Remove="Xmi\Forms.xmi" />
       <EmbeddedResource Include="Xmi\Forms.xmi" />
+      <None Remove="Js\DatenMeister.Reports.Swimlane.js" />
+      <EmbeddedResource Include="Js\DatenMeister.Reports.Swimlane.js" />
       
     </ItemGroup>
     <ItemGroup>

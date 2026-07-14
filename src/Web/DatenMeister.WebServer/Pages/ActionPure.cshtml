@@ -1,0 +1,30 @@
+@page "/ActionPure"
+@using System.Web
+@model DatenMeister.WebServer.Pages.ActionPureModel
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Action - Der DatenMeister";
+}
+
+
+<div>
+
+    <div class="dm-status-text-container"></div>
+
+
+    <script type="module">
+
+import * as Page from './js/datenmeister/page/ActionPure.js';
+
+$(function()
+{
+    Page.init(
+        "@HttpUtility.JavaScriptStringEncode(Model.Context)",
+        "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
+        "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
+});
+
+</script>
+
+    <div id="pageContent">Loading...</div>
+</div>

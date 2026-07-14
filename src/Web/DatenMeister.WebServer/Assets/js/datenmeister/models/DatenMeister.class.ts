@@ -378,6 +378,9 @@ export namespace _Actions
                 export const __NavigateOpenWindow_Uri = "dm:///_internal/types/internal#746ecf7c-63d6-4fdf-95ae-837a13a032ed";
                 export class _NavigateOpenActionInWindow
                 {
+                    static context = "context";
+                    static actionUrl = "actionUrl";
+                    static workspaceId = "workspaceId";
                     static actionName = "actionName";
                     static element = "element";
                     static parameter = "parameter";

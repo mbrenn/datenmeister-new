@@ -329,6 +329,9 @@ export var _Actions;
         _ClientActions.__NavigateOpenWindow_Uri = "dm:///_internal/types/internal#746ecf7c-63d6-4fdf-95ae-837a13a032ed";
         class _NavigateOpenActionInWindow {
         }
+        _NavigateOpenActionInWindow.context = "context";
+        _NavigateOpenActionInWindow.actionUrl = "actionUrl";
+        _NavigateOpenActionInWindow.workspaceId = "workspaceId";
         _NavigateOpenActionInWindow.actionName = "actionName";
         _NavigateOpenActionInWindow.element = "element";
         _NavigateOpenActionInWindow.parameter = "parameter";

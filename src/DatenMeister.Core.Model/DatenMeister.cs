@@ -829,6 +829,15 @@ public class _Actions
             TypeKind = TypeKind.ClassTree)]
         public class _NavigateOpenActionInWindow
         {
+            public static readonly string @context = "context";
+            public IElement? @_context = null;
+
+            public static readonly string @actionUrl = "actionUrl";
+            public IElement? @_actionUrl = null;
+
+            public static readonly string @workspaceId = "workspaceId";
+            public IElement? @_workspaceId = null;
+
             public static readonly string @actionName = "actionName";
             public IElement? @_actionName = null;
 

@@ -15,6 +15,7 @@ export function loadModules() {
     FormActions.addModule(new NavigateToExtent());
     FormActions.addModule(new NavigateToUrl());
     FormActions.addModule(new NavigateOpenWindow());
+    FormActions.addModule(new NavigateOpenActionInWindow());
 }
 
 /**
@@ -51,6 +52,29 @@ class NavigateOpenWindow extends FormActions.ItemFormActionModuleBase
         const isAbsoluteUrl = element.get(_Actions._ClientActions._NavigateOpenWindow.isAbsoluteUrl, Mof.ObjectType.Boolean) === true;
         window.open(isAbsoluteUrl ? url : Settings.baseUrl + url, "_blank");
     }
+}
+
+class NavigateOpenActionInWindow extends FormActions.ItemFormActionModuleBase
+{
+    constructor() {
+        super("DatenMeister.Navigation.OpenActionInWindow",
+            _Actions._ClientActions.__NavigateOpenActionInWindow_Uri);
+        this.skipSaving = true;
+    }
+
+
+
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        const context = element.get(_Actions._ClientActions._NavigateOpenActionInWindow.context, Mof.ObjectType.String);
+        const actionUrl = element.get(_Actions._ClientActions._NavigateOpenActionInWindow.actionUrl, Mof.ObjectType.String);
+        const workspace = element.get(_Actions._ClientActions._NavigateOpenActionInWindow.workspaceId, Mof.ObjectType.String);
+
+        const Url = Settings.baseUrl + "ActionPure?context=" + encodeURIComponent(context)
+            + "&workspace=" + encodeURIComponent(workspace)
+            + "&actionUrl=" + encodeURIComponent(actionUrl);
+        window.open(Url, "_blank");
+    }
+    
 }
 
 class ChangeForm extends FormActions.ItemFormActionModuleBase {

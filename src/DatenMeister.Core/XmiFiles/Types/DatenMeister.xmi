@@ -246,8 +246,10 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="875a8dad-b32f-4356-b0d3-6498b6e80ccd" name="isAbsoluteUrl" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="77ff9c01-0651-4657-823a-ce41bbe0e5e5" name="NavigateOpenActionInWindow">
-        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="5035490f-7be6-4593-8387-cc99728259cc" name="actionName" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="5035490f-7be6-4593-8387-cc99728259cc" type-ref="dm:///_internal/model/primitivetypes#String" name="context" />
         <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="bc1e9dbb-69a4-401d-a190-e49ddceadb56" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4035dd12-ed77-4514-a5ce-b0e957097e73" name="actionUrl" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="e371d3c6-a33f-40c9-9691-947e309e7a2f" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="97ddd1b8-bd3d-4c43-82ed-5c55abda0929" name="Forms">

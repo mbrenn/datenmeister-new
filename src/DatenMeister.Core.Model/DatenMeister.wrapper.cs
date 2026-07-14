@@ -2164,11 +2164,34 @@ public class Actions
 
             public static NavigateOpenActionInWindow_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
-            // Not found
-            public object? @actionName
+            public string? @context
             {
                 get =>
-                    _wrappedElement.getOrDefault<object?>("actionName");
+                    _wrappedElement.getOrDefault<string?>("context");
+                set => 
+                    _wrappedElement.set("context", value);
+            }
+
+            public string? @actionUrl
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionUrl");
+                set => 
+                    _wrappedElement.set("actionUrl", value);
+            }
+
+            public string? @workspaceId
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("workspaceId");
+                set => 
+                    _wrappedElement.set("workspaceId", value);
+            }
+
+            public string? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionName");
                 set => 
                     _wrappedElement.set("actionName", value);
             }

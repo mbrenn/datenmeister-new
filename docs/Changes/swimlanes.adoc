@@ -139,17 +139,22 @@ swimlane. It contains the information about the view definition and how to retri
 The viewdefinition will become inherited by an Action which will allow the direct triggering of an actionhandler.
 
 * [x] Create the view definition metaclass
-* [ ] Inherit from ActionHandler
+* [x] Inherit from ActionHandler
 
 The viewdefinition will call a specific action to render the swimlane upon a click on the button.
 
 The corresponding action will be called 'SwimlaneRenderAction' and will create the new page upon click. The action is
 just performed on the client by directly returning the Client Action to open the new window. 
 
-The same action under context of 'render' returns again a ClientAction which triggers the formlogic and performs
-the rendering of the page itself
+The new page is a simple page which takes a url of an action. The action is then executed on the server and the
+returned ClientActions are evaluated by the FormActions.ts. The page is called 'ActionPure'. It contains the 
+necessary TypeScript logic in the Page/ActionPure.ts and a simple div (name: pageContent) which can be used by the
+client actions to render the result. 
 
-* [ ] Create Clientaction which opens a new window with a specific url
+The same action under context of 'render' returns again a ClientAction which triggers the formlogic and performs
+the rendering of the page itself.
+
+* [x] Create Clientaction which opens a new window with a specific url
 * [ ] Create ClientAction which opens the new Master Page triggering the context. 
 
 * [ ] Create new Master Page just loading the action in a specific context

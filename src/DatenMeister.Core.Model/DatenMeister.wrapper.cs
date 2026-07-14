@@ -2106,6 +2106,14 @@ public class Actions
                     _wrappedElement.set("url", value);
             }
 
+            public bool @isAbsoluteUrl
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isAbsoluteUrl");
+                set => 
+                    _wrappedElement.set("isAbsoluteUrl", value);
+            }
+
             public string? @actionName
             {
                 get =>

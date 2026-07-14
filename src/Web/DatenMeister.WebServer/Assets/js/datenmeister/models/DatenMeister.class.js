@@ -321,6 +321,7 @@ export var _Actions;
         class _NavigateOpenWindow {
         }
         _NavigateOpenWindow.url = "url";
+        _NavigateOpenWindow.isAbsoluteUrl = "isAbsoluteUrl";
         _NavigateOpenWindow.actionName = "actionName";
         _NavigateOpenWindow.element = "element";
         _NavigateOpenWindow.parameter = "parameter";

@@ -14,6 +14,7 @@ export function loadModules() {
     FormActions.addModule(new CreateAction());
     FormActions.addModule(new NavigateToExtent());
     FormActions.addModule(new NavigateToUrl());
+    FormActions.addModule(new NavigateOpenWindow());
 }
 
 /**
@@ -22,13 +23,33 @@ export function loadModules() {
 class NavigateToUrl extends FormActions.ItemFormActionModuleBase
 {
     constructor() {
-        super("DatenMeister.Navigation.ToUrl");
+        super("DatenMeister.Navigation.ToUrl",
+            _Actions._ClientActions.__NavigateToUrlClientAction_Uri);
         this.skipSaving = true;
     }
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         if(parameter === undefined) throw new Error("Parameter is undefined");
-        document.location.href = Settings.baseUrl + parameter.get(_Actions._ClientActions._NavigateToUrlClientAction.url); 
+        document.location.href = Settings.baseUrl + parameter.get(_Actions._ClientActions._NavigateToUrlClientAction.url);
+    }
+}
+
+/**
+ * Opens the given url in a new browser window
+ */
+class NavigateOpenWindow extends FormActions.ItemFormActionModuleBase
+{
+    constructor() {
+        super("DatenMeister.Navigation.OpenWindow",
+            _Actions._ClientActions.__NavigateOpenWindow_Uri);
+        this.skipSaving = true;
+    }
+
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        const url = element.get(_Actions._ClientActions._NavigateOpenWindow.url, Mof.ObjectType.String);
+        if(url === undefined || url === null || url === "") throw new Error("Url is not set");
+        const isAbsoluteUrl = element.get(_Actions._ClientActions._NavigateOpenWindow.isAbsoluteUrl, Mof.ObjectType.Boolean) === true;
+        window.open(isAbsoluteUrl ? url : Settings.baseUrl + url, "_blank");
     }
 }
 
@@ -92,3 +113,4 @@ class NavigateToExtent extends FormActions.ItemFormActionModuleBase {
         );
     }
 }
+

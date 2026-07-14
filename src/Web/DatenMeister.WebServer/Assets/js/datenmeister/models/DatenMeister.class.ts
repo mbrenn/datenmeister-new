@@ -369,6 +369,7 @@ export namespace _Actions
                 export class _NavigateOpenWindow
                 {
                     static url = "url";
+                    static isAbsoluteUrl = "isAbsoluteUrl";
                     static actionName = "actionName";
                     static element = "element";
                     static parameter = "parameter";

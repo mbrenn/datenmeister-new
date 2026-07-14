@@ -243,6 +243,7 @@
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="746ecf7c-63d6-4fdf-95ae-837a13a032ed" name="NavigateOpenWindow">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7c6ef401-ea78-4e29-980a-ba0e60ddcb70" name="url" />
         <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="2c39f0b7-bdcf-4567-9343-3d011262b52f" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="875a8dad-b32f-4356-b0d3-6498b6e80ccd" name="isAbsoluteUrl" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="77ff9c01-0651-4657-823a-ce41bbe0e5e5" name="NavigateOpenActionInWindow">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="5035490f-7be6-4593-8387-cc99728259cc" name="actionName" />

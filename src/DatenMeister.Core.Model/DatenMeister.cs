@@ -808,6 +808,9 @@ public class _Actions
             public static readonly string @url = "url";
             public IElement? @_url = null;
 
+            public static readonly string @isAbsoluteUrl = "isAbsoluteUrl";
+            public IElement? @_isAbsoluteUrl = null;
+
             public static readonly string @actionName = "actionName";
             public IElement? @_actionName = null;
 

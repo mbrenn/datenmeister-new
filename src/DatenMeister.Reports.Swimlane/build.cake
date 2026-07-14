@@ -7,8 +7,11 @@ var target = Argument("target", "Build");
 Task("Merge TS")
     .Does(() =>
     {
+        System.IO.File.Delete("Assets/Js/Types.ts");
+        System.IO.File.Copy("Model/Types.ts", "Assets/Js/Types.ts");
+        
         var swimlaneSourceFile = "Assets/Js/DatenMeister.Reports.Swimlane.ts";
-        var typesSourceFile = "Model/Types.ts";
+        var typesSourceFile = "Assets/Js/Types.ts";
         var mergedOutputFile = "Assets/Js/DatenMeister.Reports.Swimlane.Combine.ts";
         
         var outputExists = System.IO.File.Exists(mergedOutputFile);

@@ -3,6 +3,7 @@
     "noImplicitAny": false,
     "strictPropertyInitialization": false,
     "noEmitOnError": true,
+    "incremental": true,
     "removeComments": false,
     "sourceMap": true,
     "target": "ES2020",

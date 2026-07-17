@@ -9,8 +9,14 @@ Task("Compile TS")
     .Does(() => 
     {    
         Information("Compile TypeScript files");        
-        
-        StartProcess("npx", new ProcessSettings { Arguments = "tsc" });
+        if (IsRunningOnWindows())
+        {
+            NpmExec("tsc");
+        }
+        else
+        {
+            StartProcess("npx", new ProcessSettings { Arguments = "tsc" });
+        }
     });
     
 Task("Build")

@@ -42,7 +42,14 @@ Task("Compile TS")
     .IsDependentOn("Merge TS")
     .Does(() => 
     {
-        StartProcess("npx", new ProcessSettings { Arguments = "tsc" });
+        if (IsRunningOnWindows())
+        {
+            NpmExec("tsc");
+        }
+        else
+        {
+            StartProcess("npx", new ProcessSettings { Arguments = "tsc" });
+        }    
     });
     
 Task("Build")

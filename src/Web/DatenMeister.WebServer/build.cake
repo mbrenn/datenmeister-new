@@ -64,9 +64,16 @@ Task("Compress CSS")
 Task("Compile TS")
     .Does(() => 
     {    
-        Information("Compile TypeScript files");        
-        
-        StartProcess("npx", new ProcessSettings { Arguments = "tsc" });
+        Information("Compile TypeScript files");
+                
+        if (IsRunningOnWindows())
+        {
+            NpmExec("tsc");
+        }
+        else
+        {
+            StartProcess("npx", new ProcessSettings { Arguments = "tsc" });
+        }
     });
 
 Task("Compress JS")

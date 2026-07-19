@@ -32,7 +32,7 @@ public class DomainPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSto
         
         pluginHelper.AddExtentForTypesFromManifest("Xmi.DatenMeister.Domains.Types.xmi", DmInternTypesDomainsDatenmeister);
         pluginHelper.AddExtentForManagementFromManifest("Xmi.DatenMeister.Domains.Management.xmi", DmInternManagementDomainsDatenmeister);
-        pluginHelper.AddActionHander(new DomainCreateFoundationActionHandler(workspaceLogic, scopeStorage));
+        pluginHelper.AddActionHandler(new DomainCreateFoundationActionHandler(workspaceLogic, scopeStorage));
         
         await Task.CompletedTask;
     }

@@ -85,7 +85,7 @@ public class PageRegistrationLogic
         if (originalFilePath != null && File.Exists(originalFilePath) && AllowLoadingFromLocalFile)
         {
             _logger.Info($"Local file used instead of resource: {originalFilePath}");
-        }
+        } 
             
         AddUrl(
             $"js/datenmeister/module/{uriFileName}",

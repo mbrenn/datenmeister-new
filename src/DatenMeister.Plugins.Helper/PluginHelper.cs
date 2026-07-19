@@ -73,12 +73,11 @@ public class PluginHelper(PluginHelperConfiguration configuration)
     /// Adds an action handler to the system
     /// </summary>
     /// <param name="actionHandler">Actionhandler to be added</param>
-    public void AddActionHander(IActionHandler actionHandler)
+    public void AddActionHandler(IActionHandler actionHandler)
     {
         if (configuration.Position != PluginLoadingPosition.AfterLoadingOfExtents)
             return;
         var actionLogicState = configuration.ScopeStorage.Get<ActionLogicState>();
         actionLogicState.AddActionHandler(actionHandler);
-        
     }
 }

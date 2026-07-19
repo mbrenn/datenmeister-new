@@ -34,7 +34,7 @@ public class _Root
 
     [TypeUri(Uri = "dm:///intern.types.swimlane.datenmeister/#1c8b02e8-1988-4c3b-9d74-8739c400d56c",
         TypeKind = TypeKind.ClassTree)]
-    public class _SwimlaneViewdefinition
+    public class _SwimlaneViewDefinition
     {
         public static readonly string @swimlaneConfiguration = "swimlaneConfiguration";
         public IElement? @_swimlaneConfiguration = null;
@@ -50,8 +50,8 @@ public class _Root
 
     }
 
-    public _SwimlaneViewdefinition @SwimlaneViewdefinition = new ();
-    public MofObjectShadow @__SwimlaneViewdefinition = new ("dm:///intern.types.swimlane.datenmeister/#1c8b02e8-1988-4c3b-9d74-8739c400d56c");
+    public _SwimlaneViewDefinition @SwimlaneViewDefinition = new ();
+    public MofObjectShadow @__SwimlaneViewDefinition = new ("dm:///intern.types.swimlane.datenmeister/#1c8b02e8-1988-4c3b-9d74-8739c400d56c");
 
     public static readonly _Root TheOne = new ();
 

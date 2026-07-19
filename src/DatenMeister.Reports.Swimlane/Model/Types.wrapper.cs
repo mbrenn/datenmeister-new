@@ -74,16 +74,16 @@ public class Root
 
     [TypeUri(Uri = "dm:///intern.types.swimlane.datenmeister/#1c8b02e8-1988-4c3b-9d74-8739c400d56c",
         TypeKind = TypeKind.WrappedClass)]
-    public class SwimlaneViewdefinition_Wrapper : IElementWrapper
+    public class SwimlaneViewDefinition_Wrapper : IElementWrapper
     {
         private readonly IElement _wrappedElement;
 
-        public SwimlaneViewdefinition_Wrapper(IElement innerDmElement)
+        public SwimlaneViewDefinition_Wrapper(IElement innerDmElement)
         {
             _wrappedElement = innerDmElement;
         }
 
-        public SwimlaneViewdefinition_Wrapper(IFactory factory)
+        public SwimlaneViewDefinition_Wrapper(IFactory factory)
         {
             _wrappedElement = factory.create(_metaClass);
         }
@@ -92,7 +92,7 @@ public class Root
 
         private static readonly MofObjectShadow _metaClass = new ("dm:///intern.types.swimlane.datenmeister/#1c8b02e8-1988-4c3b-9d74-8739c400d56c");
 
-        public static SwimlaneViewdefinition_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+        public static SwimlaneViewDefinition_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         // Not found
         public object? @swimlaneConfiguration

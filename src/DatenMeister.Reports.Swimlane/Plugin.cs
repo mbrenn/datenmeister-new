@@ -24,15 +24,18 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
                 WorkspaceLogic = workspaceLogic
             });
         
-        // Adds the extent
+        // Adds the extents for types and forms
         pluginHelper.AddExtentForTypesFromManifest("Xmi.Types.xmi", DmTypesUriReference);
         pluginHelper.AddExtentForManagementFromManifest("Xmi.Forms.xmi", DmFormsUriReference);
         
         // Adds the javascript file
         var jsParameter = new AddJavaScriptFileToWebserverParameter();
         jsParameter.SetByRelativeFileName("Js/DatenMeister.Reports.Swimlane.js");
-        jsParameter.ProjectsRelativePathToDevelopmentFile = "../../../DatenMeister.Reports.Swimlane";
+        jsParameter.ProjectsRelativePathToDevelopmentFile = "../../DatenMeister.Reports.Swimlane";
         pluginHelper.AddJavaScriptFileToWebServer(jsParameter);
+        
+        // Adds the Action
+        pluginHelper.AddActionHandler(new SwimLaneViewDefinitionActionHandler());
         
         return Task.CompletedTask;
     }

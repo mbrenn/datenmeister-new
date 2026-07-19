@@ -214,7 +214,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 // No field element was created.
                 htmlElement = $("<em></em>");
                 htmlElement.text(fieldMetaClassId ?? "unknown");
-                $(".value", tr).append(fieldElement);
+                $(".value", tr).append(htmlElement);
                 checkbox.prop("disabled", true);
             } else {
                 fieldElement.field = field;

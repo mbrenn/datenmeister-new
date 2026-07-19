@@ -1,6 +1,6 @@
 # Install .Net Pre-Requisites
 apt-get update && apt-get install -y python3 npm git dotnet-sdk-10.0
-npm install -g typescript@5.9.2
+npm install -g typescript@7.0.2
 
 # Install .Net Cake
 cd ../src/DatenMeister.Reports.Forms

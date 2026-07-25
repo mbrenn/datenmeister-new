@@ -1,0 +1,6 @@
+<Project>
+  <Target Name="RunBSMake"
+          BeforeTargets="CoreCompile">
+    <Exec Command="bsmake build $(MSBuildProjectDirectory)" />
+  </Target>
+</Project>

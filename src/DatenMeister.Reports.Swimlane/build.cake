@@ -1,6 +1,6 @@
 #addin nuget:?package=Cake.Npm&version=5.1.0
 
-var configuration = Argument("configuration", "Debug");
+/*var configuration = Argument("configuration", "Debug");
 var target = Argument("target", "Build");
 
 
@@ -77,4 +77,4 @@ Task("Build")
     System.IO.File.Move("Js/DatenMeister.Reports.Swimlane.Combine.js.map", "Js/DatenMeister.Reports.Swimlane.js.map");
 });
 
-RunTarget(target);
+RunTarget(target);*/

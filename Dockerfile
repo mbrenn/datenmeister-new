@@ -2,6 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS base
 RUN apt-get update && apt-get install -y python3 npm && rm -rf /var/lib/apt/lists/*
 RUN npm install -g typescript@6.0.3
+RUN npm install -g bsmake@1.0.1
 
 # Build stage
 FROM base AS build

@@ -7,7 +7,8 @@ pipeline {
         {
             steps
             {                    
-                sh """                 
+                sh """     
+                    npm install -g bsmake@1.0.1            
                     cd src/DatenMeister.Reports.Forms
                     npm install
                     cd ../..

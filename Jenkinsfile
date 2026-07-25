@@ -9,8 +9,7 @@ pipeline {
             {                    
                 sh """     
                     dotnet tool install --global BSMake --version 1.0.0
-                    
-                    npm install -g bsmake@1.0.1            
+                           
                     cd src/DatenMeister.Reports.Forms
                     npm install
                     cd ../..

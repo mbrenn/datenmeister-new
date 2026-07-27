@@ -1,14 +1,12 @@
 // Merge.ts
-
-using System.Diagnostics;
+using BurnSystems.Make.BuildAgent;
 
 MergeTs();
 await CompileTs();
 await CompileJs();
 MoveTs();
 
-return 0; 
-
+return 0;
 
 void MergeTs()
 {
@@ -49,7 +47,7 @@ async Task CompileTs()
 {
     Console.WriteLine("Compiling Typescript");
 
-    await Process.Start("npx", ["tsc"]).WaitForExitAsync();
+    await ProcessInvoke.Run("npx", ["tsc"]);
 }
 
 
@@ -59,10 +57,10 @@ async Task CompileJs()
 {
     Console.WriteLine("Compiling Javascript");
 
-    await Process.Start("npx",
+    await ProcessInvoke.Run("npx",
     [
         "esbuild", "Assets/Js/*.js", "--minify", "--sourcemap", "--outdir=Js", "--platform=browser", "--format=esm"
-    ]).WaitForExitAsync();
+    ]);
 }
 
 void MoveTs()

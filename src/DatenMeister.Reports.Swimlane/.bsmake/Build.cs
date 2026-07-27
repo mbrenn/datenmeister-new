@@ -7,6 +7,8 @@ await CompileTs();
 await CompileJs();
 MoveTs();
 
+return 0;
+
 void MergeTs()
 {
     File.Delete("Assets/Js/Types.ts");

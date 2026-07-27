@@ -21,12 +21,10 @@
       <EmbeddedResource Include="Js\Demo.js" />
       <None Remove="Xmi\Types.xmi" />
       <EmbeddedResource Include="Xmi\Types.xmi" />
+      <None Include=".bsmake\Build.cs" />
     </ItemGroup>
 
-    <Target Name="RunCakeBuild" BeforeTargets="PrepareForBuild">
-        <Exec Command="npm install" />
-        <Exec Command="dotnet tool install Cake.Tool --version 6.1.0" />
-        <Exec Command="dotnet cake build.cake --target=Build" />
-    </Target>
-
+    <ItemGroup>
+      <Content Include=".bsmake\Build.csproj" />
+    </ItemGroup>
 </Project>

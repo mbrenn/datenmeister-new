@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include=".bsmake\Build.csproj" />
     <TypeScriptConfigFile Include="tsconfig.json" />
     <Content Update="tsconfig.json">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -34,6 +35,7 @@
     <None Remove="Js\DatenMeister.Reports.Types.ts" />
     <None Remove="Xmi\DatenMeister.Reports.Forms.xmi" />
     <None Remove="Xmi\DatenMeister.Reports.Types.xmi" />
+    <None Include=".bsmake\Build.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,9 +62,5 @@
     <Folder Include="Model\" />
   </ItemGroup>
 
-
-  <Target Name="RunCakeBuild" BeforeTargets="PrepareForBuild">
-    <Exec Command="dotnet cake build.cake --target=Build" />
-  </Target>
 </Project>
 

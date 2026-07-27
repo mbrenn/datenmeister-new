@@ -17,6 +17,10 @@ using NPOI.POIFS.FileSystem;
 TheLog.FilterThreshold = LogLevel.Trace;
 TheLog.AddProvider(new DebugProvider(), LogLevel.Trace);
 TheLog.AddProvider(new ConsoleProvider(), LogLevel.Trace);
+
+if(!Directory.Exists(IntegrationSettings.DefaultDatabasePath)) 
+    Directory.CreateDirectory(IntegrationSettings.DefaultDatabasePath);
+
 TheLog.AddProvider(new FileProvider(
     Path.Combine(IntegrationSettings.DefaultDatabasePath, "executor.log"), true));
 #else

@@ -64,6 +64,7 @@
     <None Remove="Assets\js\datenmeister\test\Test.Client.Elements.Query.js.map" />
     <None Remove="Assets\js\datenmeister\test\Test.Client.Forms.js" />
     <None Remove="Assets\js\datenmeister\test\Test.Client.Forms.js.map" />
+    <None Include=".bsmake\Build.cs" />
     <None Include="wwwroot\js\burnsystems\.gitignore" />
     <None Include="wwwroot\js\datenmeister\.gitignore" />
   </ItemGroup>
@@ -72,11 +73,10 @@
     <Folder Include="wwwroot\css\jquery.fancytree\css\" />
     <Folder Include="wwwroot\css\jquery.fancytree\skin-win8\" />
   </ItemGroup>
-
-  <Target Name="RunCakeBuild" BeforeTargets="PrepareForBuild">
-    <Exec Command="dotnet cake build.cake --target=Build" />
-  </Target>  
-
+  <ItemGroup>
+    <Content Include=".bsmake\Build.csproj" />
+  </ItemGroup>
+    
   <Target Name="CopyIconPngFiles" BeforeTargets="BeforeCompile">
     <Copy SourceFiles="@(IconPngFiles)" DestinationFiles="@(IconPngFiles->'wwwroot/img/%(Filename)%(Extension)')" />
   </Target>

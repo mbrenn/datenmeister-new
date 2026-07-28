@@ -12,7 +12,7 @@ public class DropExtentActionHandler: IActionHandler
             _Actions.TheOne.__DropExtentAction) == true;
     }
 
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         await Task.Run(async () =>
         {

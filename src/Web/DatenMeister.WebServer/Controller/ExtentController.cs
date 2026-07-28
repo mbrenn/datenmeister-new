@@ -267,7 +267,7 @@ public class ExtentController(IWorkspaceLogic workspaceLogic, IScopeStorage scop
         action.set(_Actions._ImportXmiAction.itemUri, extent);
         action.set(_Actions._ImportXmiAction.xmi, param.Xmi);
             
-        await importXmi.Evaluate(actionLogic, action);
+        await importXmi.Evaluate(actionLogic, action, null);
 
         return new ImportXmiResult { Success = true };
     }

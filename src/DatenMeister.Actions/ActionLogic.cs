@@ -118,7 +118,7 @@ public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
             {
                 try
                 {
-                    return await actionHandler.Evaluate(this, action);
+                    return await actionHandler.Evaluate(this, action, null);
                 }
                 catch (Exception exc)
                 {

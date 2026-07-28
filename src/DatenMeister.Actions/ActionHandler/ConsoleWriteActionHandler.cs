@@ -11,7 +11,7 @@ public class ConsoleWriteActionHandler: IActionHandler
             _Actions.TheOne.OSIntegration.__ConsoleWriteAction) == true;
     }
 
-    public Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         var wrapper = new DatenMeister.Core.Models.Actions.OSIntegration.ConsoleWriteAction_Wrapper(action);
         Console.WriteLine(wrapper.text);

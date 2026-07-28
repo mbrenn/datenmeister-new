@@ -35,7 +35,7 @@ public class ImportXmiTests
         action.set(_Actions._ImportXmiAction.itemUri, "dm:///test");
         action.set(_Actions._ImportXmiAction.xmi, xmi);
             
-        await importXmi.Evaluate(actionLogic, action);
+        await importXmi.Evaluate(actionLogic, action, null);
 
         Assert.That(newExtent.elements().Count(), Is.EqualTo(2));
         Assert.That(newExtent.elements().OfType<IElement>().First().getOrDefault<string>("state"),
@@ -70,7 +70,7 @@ public class ImportXmiTests
         action.set(_Actions._ImportXmiAction.addToCollection, false);
         action.set(_Actions._ImportXmiAction.xmi, xmi);
             
-        await importXmi.Evaluate(actionLogic, action);
+        await importXmi.Evaluate(actionLogic, action, null);
 
         Assert.That(newExtent.elements().Count(), Is.EqualTo(1));
 
@@ -109,7 +109,7 @@ public class ImportXmiTests
         action.set(_Actions._ImportXmiAction.addToCollection, true);
         action.set(_Actions._ImportXmiAction.xmi, xmi);
             
-        await importXmi.Evaluate(actionLogic, action);
+        await importXmi.Evaluate(actionLogic, action, null);
 
         Assert.That(newExtent.elements().Count(), Is.EqualTo(1));
 
@@ -132,7 +132,7 @@ public class ImportXmiTests
         action.set(_Actions._ImportXmiAction.addToCollection, true);
         action.set(_Actions._ImportXmiAction.xmi, xmi2);
             
-        await importXmi.Evaluate(actionLogic, action);
+        await importXmi.Evaluate(actionLogic, action, null);
             
         issueCollection = newItem.getOrDefault<IReflectiveCollection>("issue");
         Assert.That(issueCollection, Is.Not.Null);

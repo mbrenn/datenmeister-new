@@ -20,7 +20,7 @@ public class FreezeViewResultInMemoryHandler: IActionHandler
             _Actions.TheOne.Data.__FreezeViewResultInMemory) == true;
     }
 
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         var workspaceLogic = actionLogic.WorkspaceLogic;
         var scopeStorage = actionLogic.ScopeStorage;

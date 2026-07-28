@@ -21,7 +21,7 @@ public class ImportXmiActionHandler : IActionHandler
             _Actions.TheOne.__ImportXmiAction) == true;
     }
 
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         await Task.Run(() =>
         {

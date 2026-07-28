@@ -11,7 +11,7 @@ namespace DatenMeister.Forms.Actions;
 
 internal class NavigateToFieldsForTestActionHandler : IActionHandler
 {
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         // First, create a temporary object
         var temporaryExtentLogic = new TemporaryExtentLogic(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);

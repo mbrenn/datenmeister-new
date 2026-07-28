@@ -26,7 +26,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
             _Actions.TheOne.Forms.__CreateFormByMetaClass) == true;
     }
 
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         await Task.Run(() =>
         {

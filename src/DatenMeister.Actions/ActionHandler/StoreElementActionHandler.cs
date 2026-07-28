@@ -21,7 +21,7 @@ public class StoreElementActionHandler : IActionHandler
             _Actions.TheOne.__StoreElementAction) == true;
     }
 
-    public Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         var targetWorkspace =
             action.getOrDefault<string>(_Actions._StoreElementAction.workspace);

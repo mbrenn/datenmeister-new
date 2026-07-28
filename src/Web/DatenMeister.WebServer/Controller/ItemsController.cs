@@ -1022,7 +1022,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         action.set(_Actions._ImportXmiAction.addToCollection, addToCollection);
         action.set(_Actions._ImportXmiAction.xmi, parameter.Xmi);
 
-        await importXmi.Evaluate(actionLogic, action);
+        await importXmi.Evaluate(actionLogic, action, null);
 
         return new ImportXmiResult { Success = true };
     }

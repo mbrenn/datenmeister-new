@@ -14,7 +14,7 @@ public class MoveOrCopyActionHandler : IActionHandler
             _Actions.TheOne.__MoveOrCopyAction) == true;
     }
 
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         return await Task.Run(() =>
         {

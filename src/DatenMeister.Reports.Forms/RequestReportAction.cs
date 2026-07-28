@@ -12,7 +12,7 @@ namespace DatenMeister.Reports.Forms;
 
 internal class RequestReportAction(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IActionHandler
 {
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         var workspace = action.getOrDefault<string>(_Root._RequestReportAction.workspace);
         var itemUri = action.getOrDefault<string>(_Root._RequestReportAction.itemUri);

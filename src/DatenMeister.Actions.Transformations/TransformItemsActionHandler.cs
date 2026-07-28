@@ -21,7 +21,7 @@ public class TransformItemsActionHandler : IActionHandler
             _Actions.TheOne.__TransformItemsAction) == true;
     }
 
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         await Task.Run(() =>
         {

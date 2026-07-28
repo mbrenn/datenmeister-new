@@ -22,7 +22,7 @@ public class CopyElementsActionHandler : IActionHandler
             _Actions.TheOne.__CopyElementsAction) == true;
     }
 
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         await Task.Run(() =>
         {

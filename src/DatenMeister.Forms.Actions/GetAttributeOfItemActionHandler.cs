@@ -18,7 +18,7 @@ public class GetAttributeOfItemActionHandler(IWorkspaceLogic workspaceLogic) : I
             _Actions.TheOne.Forms.__GetAttributeOfItem) == true;
     }
 
-    public Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         try
         {

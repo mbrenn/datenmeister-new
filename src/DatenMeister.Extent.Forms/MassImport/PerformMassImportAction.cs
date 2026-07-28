@@ -14,7 +14,7 @@ namespace DatenMeister.Extent.Forms.MassImport;
 internal class PerformMassImportActionHandler(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     : IActionHandler
 {
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         // Check the extent
         var extent = action.getOrDefault<IObject>(_Root._MassImportDefinitionAction.item);

@@ -19,6 +19,7 @@ public interface IActionHandler
     /// </summary>
     /// <param name="actionLogic">The action logic context.</param>
     /// <param name="action">The action to be handled.</param>
+    /// <param name="actionVerb">The verb under which the action shall be executed. It is null, if no verb is specified.</param>
     /// <returns>The result of the action evaluation.</returns>
-    public Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action);
+    public Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb);
 }

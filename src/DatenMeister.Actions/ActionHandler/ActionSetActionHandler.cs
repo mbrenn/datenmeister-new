@@ -19,7 +19,8 @@ public class ActionSetActionHandler : IActionHandler
     /// </summary>
     /// <param name="actionLogic">Action plugin to be added</param>
     /// <param name="action">Action to be executed</param>
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    /// <param name="actionVerb"></param>
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         return await actionLogic.ExecuteActionSet(action);
     }

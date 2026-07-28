@@ -14,7 +14,7 @@ public class HtmlReportActionHandler : IActionHandler
             _Actions.TheOne.Reports.__HtmlReportAction) == true;
     }
 
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         await Task.Run(() =>
         {

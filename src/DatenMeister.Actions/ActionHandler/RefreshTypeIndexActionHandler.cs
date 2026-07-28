@@ -25,8 +25,9 @@ public class RefreshTypeIndexActionHandler : IActionHandler
     /// </summary>
     /// <param name="actionLogic">The action logic to be used.</param>
     /// <param name="action">The action to be executed.</param>
+    /// <param name="actionVerb"></param>
     /// <returns>Null, as the result is not needed.</returns>
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         var waitForRefresh = action.getOrDefault<bool>(_Actions._RefreshTypeIndexAction.waitForRefresh);
         var typeIndexLogic = new TypeIndexLogic(actionLogic.WorkspaceLogic);

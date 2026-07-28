@@ -16,13 +16,13 @@ public class ActionPureModel : PageModel
 
     [Parameter] public string Workspace { get; set; } = string.Empty;
 
-    [Parameter] public string ItemUrl { get; set; } = string.Empty;
+    [Parameter] public string ActionUrl { get; set; } = string.Empty;
 
     public ActionResult OnGet(string actionName)
     {
         Context = Request.Query["context"].ToString() ?? string.Empty;
         Workspace = Request.Query["workspace"].ToString() ?? string.Empty;
-        ItemUrl = Request.Query["itemUrl"].ToString() ?? string.Empty;
+        ActionUrl = Request.Query["actionUrl"].ToString() ?? string.Empty;
         return Page();
     }
 }

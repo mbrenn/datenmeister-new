@@ -24,7 +24,7 @@ public class DomainCreateFoundationActionHandler(IWorkspaceLogic workspaceLogic,
             _Root.TheOne.__DomainCreateFoundationAction) == true;
     }
 
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
         var domainCreate = new Root.DomainCreateFoundationAction_Wrapper(action);

@@ -17,14 +17,20 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 export async function init(
     context: string,
     workspace: string,
-    itemUrl: string): Promise<void> {
+    actionUrl: string): Promise<void> {
 
     loadDefaultModules();
 
     window.document.title = "Action - Der DatenMeister";
 
-    if (workspace !== "" && itemUrl !== "") {
-        await executeReferencedAction(context, workspace, itemUrl);
+    if (workspace !== "" && actionUrl !== "") {        
+        await executeReferencedAction(context, workspace, actionUrl);
+    }
+    else
+    {   
+        const pageContentDiv = $("#pageContent");
+        pageContentDiv.empty();
+        pageContentDiv.text('Workspace or actionUrl is missing');
     }
 }
 
@@ -41,13 +47,13 @@ async function executeReferencedAction(
         const result = await ActionClient.executeAction(workspace, itemUrl);
 
         if (!result.success) {
-            renderError(result.reason, result.stackTrace);
+            renderError(result.reason);
             return;
         }
 
         await dispatchClientActions(result.resultAsDmObject);
     } catch (exception) {
-        renderError(String(exception), "");
+        renderError(String(exception));
     }
 }
 
@@ -63,13 +69,13 @@ async function executeActionByName(actionName: string, context: string): Promise
     try {
         const result = await ActionClient.executeActionDirectly("Execute", { parameter });
         if (!result.success) {
-            renderError(result.reason, result.stackTrace);
+            renderError(result.reason);
             return;
         }
 
         await dispatchClientActions(result.resultAsDmObject);
     } catch (exception) {
-        renderError(String(exception), "");
+        renderError(String(exception));
     }
 }
 
@@ -78,29 +84,35 @@ async function dispatchClientActions(actionResult: Mof.DmObject | undefined): Pr
         renderMessage("Action executed. No further client actions were returned.");
         return;
     }
+    
+    if(actionResult.metaClass.uri !== _DatenMeister._Actions.__ActionResult_Uri)
+    {
+        renderError("The action result is not of type ActionResult");
+        return;
+    }
 
     const clientActions = actionResult.get(
         _DatenMeister._Actions._ActionResult.clientActions,
         Mof.ObjectType.Array);
 
     if (clientActions === undefined || clientActions.length === 0) {
-        renderMessage("Action executed. No further client actions were returned.");
+        renderMessage("Action executed on server. No client actions were returned.");
         return;
     }
 
     for (const n in clientActions) {
         const clientAction = clientActions[n] as Mof.DmObject;
+        alert('Action Execution of ' 
+            + clientAction.get(_DatenMeister._Actions._ClientActions._ClientAction.name, Mof.ObjectType.String));
+        
         await FormActions.executeClientAction(clientAction);
     }
 }
 
-function renderError(reason: string, stackTrace: string): void {
+function renderError(reason: string): void {
     const container = $("#pageContent");
     container.empty();
     container.append($("<div class='alert alert-danger'></div>").text(reason));
-    if (stackTrace !== "") {
-        container.append($("<pre></pre>").text(stackTrace));
-    }
 }
 
 function renderMessage(message: string): void {

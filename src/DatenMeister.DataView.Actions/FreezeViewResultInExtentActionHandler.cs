@@ -13,7 +13,7 @@ public class FreezeViewResultInExtentHandler : IActionHandler
             _Actions.TheOne.Data.__FreezeViewResultInExtent) == true;
     }
 
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         var extentLoaderConfig = action.getOrDefault<IElement?>(_Actions._Data._FreezeViewResultInExtent.extentLoaderConfig);
         

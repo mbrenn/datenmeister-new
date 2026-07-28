@@ -20,7 +20,7 @@ public class CommandExecutionActionHandler : IActionHandler
             _Actions.TheOne.OSIntegration.__CommandExecutionAction) == true;
     }
 
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         await Task.Run(() =>
         {

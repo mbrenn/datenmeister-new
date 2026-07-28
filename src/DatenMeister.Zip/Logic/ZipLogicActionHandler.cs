@@ -27,8 +27,9 @@ public class ZipLogicActionHandler : IActionHandler
     /// </summary>
     /// <param name="actionLogic">The action logic context.</param>
     /// <param name="action">The element containing the action parameters.</param>
+    /// <param name="actionVerb"></param>
     /// <returns>A result element indicating the outcome of the extraction.</returns>
-    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         // Caches the stuff
         var sourcePath = action.getOrDefault<string>(_Root._ZipFileExtractAction.sourcePath);

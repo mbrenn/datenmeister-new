@@ -101,10 +101,7 @@ async function dispatchClientActions(actionResult: Mof.DmObject | undefined): Pr
     }
 
     for (const n in clientActions) {
-        const clientAction = clientActions[n] as Mof.DmObject;
-        alert('Action Execution of ' 
-            + clientAction.get(_DatenMeister._Actions._ClientActions._ClientAction.name, Mof.ObjectType.String));
-        
+        const clientAction = clientActions[n] as Mof.DmObject;  
         await FormActions.executeClientAction(clientAction);
     }
 }

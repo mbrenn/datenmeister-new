@@ -22,8 +22,11 @@ class AlertClientAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {        
-        alert(parameter?.get(_DatenMeister._Actions._ClientActions._AlertClientAction.messageText, Mof.ObjectType.String) ?? "Invalid alert text");
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        alert(
+            element?.get(_DatenMeister._Actions._ClientActions._AlertClientAction.messageText, Mof.ObjectType.String)
+            ?? parameter?.get(_DatenMeister._Actions._ClientActions._AlertClientAction.messageText, Mof.ObjectType.String)
+            ?? "Invalid alert text");
     }
 }
 

@@ -17,7 +17,7 @@ void CopyNodeModules()
         .Where(x =>
         {
             var extension = Path.GetExtension(x);
-            return extension == ".js" || extension == ".css" || extension == ".d.,ts";
+            return extension == ".js" || extension == ".css" || extension == ".d.ts";
         }).ToList();
 
     foreach (var file in files)
@@ -104,8 +104,8 @@ void MoveJS()
 {
     Console.WriteLine("Copying burnJsPopup Files to wwwroot");
 
-    CopyFiles("node_modules/@mbrenn/burnJsPopup/dist/js/", "wwwroot/js");
-    CopyFiles("node_modules/@mbrenn/burnJsPopup/dist/css/", "wwwroot/css");
+    CopyFiles("node_modules/@mbrenn/burnjspopup/dist/js/", "wwwroot/js/burnsystems/");
+    CopyFiles("node_modules/@mbrenn/burnjspopup/dist/css/", "wwwroot/css");
 
     Console.WriteLine("Copying JQuery FancyTree");
 

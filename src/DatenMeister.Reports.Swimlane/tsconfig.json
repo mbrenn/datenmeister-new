@@ -2,6 +2,7 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "strictPropertyInitialization": false,
+    "incremental": true,
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,

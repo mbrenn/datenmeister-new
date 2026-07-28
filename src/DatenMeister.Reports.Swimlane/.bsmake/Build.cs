@@ -1,14 +1,17 @@
 // Merge.ts
 using BurnSystems.Make.BuildAgent;
 
-MergeTs();
-await CompileTs();
-await CompileJs();
-MoveTs();
+if (MergeTs())
+{
+    await CompileTs();
+    await CompileJs();
+    MoveTs();
+}
 
 return 0;
 
-void MergeTs()
+/// Returns true, in case the merge was done
+bool MergeTs()
 {
     File.Delete("Assets/Js/Types.ts");
     File.Copy("Model/Types.ts", "Assets/Js/Types.ts");
@@ -24,10 +27,12 @@ void MergeTs()
         var swimlaneTime = File.GetLastWriteTimeUtc(swimlaneSourceFile);
         var typesTime = File.GetLastWriteTimeUtc(typesSourceFile);
 
+        Console.WriteLine($"{swimlaneTime} <= {outputTime} && {typesTime} <= {outputTime}");
+
         if (swimlaneTime <= outputTime && typesTime <= outputTime)
         {
             Console.WriteLine("Skipping Merge TS: {0} is up-to-date.", mergedOutputFile);
-            return;
+            return false;
         }
     }
 
@@ -39,6 +44,8 @@ void MergeTs()
 
     result += swimlane + "\n\n" + types;
     File.WriteAllText(mergedOutputFile, result);
+    Console.WriteLine($"{mergedOutputFile} was created: {File.Exists(mergedOutputFile)}");
+    return true;
 }
 
 // Compile.ts
@@ -50,9 +57,7 @@ async Task CompileTs()
     await ProcessInvoke.Run("npx", ["tsc"]);
 }
 
-
 // Asset
-
 async Task CompileJs()
 {
     Console.WriteLine("Compiling Javascript");
@@ -67,9 +72,6 @@ void MoveTs()
 {
     Console.WriteLine("Moving Javascript files");
 
-    File.Delete("Assets/Js/DatenMeister.Reports.Swimlane.Combine.ts");
-    File.Delete("Assets/Js/DatenMeister.Reports.Swimlane.Combine.js");
-    File.Delete("Assets/Js/DatenMeister.Reports.Swimlane.Combine.js.map");
     File.Delete("Js/DatenMeister.Reports.Swimlane.js");
     File.Delete("Js/DatenMeister.Reports.Swimlane.js.map");
     File.Move("Js/DatenMeister.Reports.Swimlane.Combine.js", "Js/DatenMeister.Reports.Swimlane.js");

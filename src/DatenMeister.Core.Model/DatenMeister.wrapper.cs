@@ -1895,6 +1895,14 @@ public class Actions
                     _wrappedElement.set("parameter", value);
             }
 
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971",
@@ -1951,6 +1959,14 @@ public class Actions
                     _wrappedElement.getOrDefault<object?>("parameter");
                 set => 
                     _wrappedElement.set("parameter", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
             }
 
         }
@@ -2140,6 +2156,14 @@ public class Actions
                     _wrappedElement.set("parameter", value);
             }
 
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///_internal/types/internal#77ff9c01-0651-4657-823a-ce41bbe0e5e5",
@@ -2212,6 +2236,14 @@ public class Actions
                     _wrappedElement.getOrDefault<object?>("parameter");
                 set => 
                     _wrappedElement.set("parameter", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
             }
 
         }

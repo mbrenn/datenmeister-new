@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
-  <meta p2:id="6fdf34b3-c96e-4893-a95f-c291eda52653" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes" __uri="dm:///intern.datenmeister.types/"></meta>
+  <meta p2:id="6fdf34b3-c96e-4893-a95f-c291eda52653" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes" __uri="dm:///_internal/types/internal"></meta>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_CommonTypes" name="CommonTypes" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#PrimitiveType" p1:id="DateTime" name="DateTime"></packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="Default" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
@@ -223,6 +223,7 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="cadbcfa6-9adc-4234-89ae-18386059496a" name="actionName" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4b032c92-833a-4d5e-9103-fbb3dbb8e9af" name="element" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="9e318252-1b57-45d9-aa3f-23d766388354" name="parameter" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="9ab1e098-e1b9-4ca6-a9fb-b18cacc77d30" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="0ee17f2a-5407-4d38-b1b4-34ead2186971" name="AlertClientAction">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f506ec76-264d-4bf9-9ce7-fcbde08bc3c3" name="messageText" type-ref="dm:///_internal/model/primitivetypes#String" />

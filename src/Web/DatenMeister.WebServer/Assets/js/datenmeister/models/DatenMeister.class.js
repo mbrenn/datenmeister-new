@@ -290,6 +290,7 @@ export var _Actions;
         _ClientAction.actionName = "actionName";
         _ClientAction.element = "element";
         _ClientAction.parameter = "parameter";
+        _ClientAction._name_ = "name";
         _ClientActions._ClientAction = _ClientAction;
         _ClientActions.__ClientAction_Uri = "dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998";
         class _AlertClientAction {
@@ -298,6 +299,7 @@ export var _Actions;
         _AlertClientAction.actionName = "actionName";
         _AlertClientAction.element = "element";
         _AlertClientAction.parameter = "parameter";
+        _AlertClientAction._name_ = "name";
         _ClientActions._AlertClientAction = _AlertClientAction;
         _ClientActions.__AlertClientAction_Uri = "dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971";
         class _NavigateToExtentClientAction {
@@ -325,6 +327,7 @@ export var _Actions;
         _NavigateOpenWindow.actionName = "actionName";
         _NavigateOpenWindow.element = "element";
         _NavigateOpenWindow.parameter = "parameter";
+        _NavigateOpenWindow._name_ = "name";
         _ClientActions._NavigateOpenWindow = _NavigateOpenWindow;
         _ClientActions.__NavigateOpenWindow_Uri = "dm:///_internal/types/internal#746ecf7c-63d6-4fdf-95ae-837a13a032ed";
         class _NavigateOpenActionInWindow {
@@ -335,6 +338,7 @@ export var _Actions;
         _NavigateOpenActionInWindow.actionName = "actionName";
         _NavigateOpenActionInWindow.element = "element";
         _NavigateOpenActionInWindow.parameter = "parameter";
+        _NavigateOpenActionInWindow._name_ = "name";
         _ClientActions._NavigateOpenActionInWindow = _NavigateOpenActionInWindow;
         _ClientActions.__NavigateOpenActionInWindow_Uri = "dm:///_internal/types/internal#77ff9c01-0651-4657-823a-ce41bbe0e5e5";
     })(_ClientActions = _Actions._ClientActions || (_Actions._ClientActions = {}));

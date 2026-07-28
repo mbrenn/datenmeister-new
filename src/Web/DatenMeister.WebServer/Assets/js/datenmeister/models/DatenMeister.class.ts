@@ -333,6 +333,7 @@ export namespace _Actions
                     static actionName = "actionName";
                     static element = "element";
                     static parameter = "parameter";
+                    static _name_ = "name";
                 }
 
                 export const __ClientAction_Uri = "dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998";
@@ -342,6 +343,7 @@ export namespace _Actions
                     static actionName = "actionName";
                     static element = "element";
                     static parameter = "parameter";
+                    static _name_ = "name";
                 }
 
                 export const __AlertClientAction_Uri = "dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971";
@@ -373,6 +375,7 @@ export namespace _Actions
                     static actionName = "actionName";
                     static element = "element";
                     static parameter = "parameter";
+                    static _name_ = "name";
                 }
 
                 export const __NavigateOpenWindow_Uri = "dm:///_internal/types/internal#746ecf7c-63d6-4fdf-95ae-837a13a032ed";
@@ -384,6 +387,7 @@ export namespace _Actions
                     static actionName = "actionName";
                     static element = "element";
                     static parameter = "parameter";
+                    static _name_ = "name";
                 }
 
                 export const __NavigateOpenActionInWindow_Uri = "dm:///_internal/types/internal#77ff9c01-0651-4657-823a-ce41bbe0e5e5";

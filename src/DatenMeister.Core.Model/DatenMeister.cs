@@ -730,6 +730,9 @@ public class _Actions
             public static readonly string @parameter = "parameter";
             public IElement? @_parameter = null;
 
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
         }
 
         public _ClientAction @ClientAction = new ();
@@ -750,6 +753,9 @@ public class _Actions
 
             public static readonly string @parameter = "parameter";
             public IElement? @_parameter = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
 
         }
 
@@ -820,6 +826,9 @@ public class _Actions
             public static readonly string @parameter = "parameter";
             public IElement? @_parameter = null;
 
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
         }
 
         public _NavigateOpenWindow @NavigateOpenWindow = new ();
@@ -846,6 +855,9 @@ public class _Actions
 
             public static readonly string @parameter = "parameter";
             public IElement? @_parameter = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
 
         }
 

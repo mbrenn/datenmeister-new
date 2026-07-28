@@ -22,8 +22,8 @@ public class SwimLaneViewDefinitionActionHandler : IActionHandler
         
         // The alert result
         var result = InMemoryObject.CreateEmpty(_Actions.TheOne.ClientActions.__AlertClientAction);
-        result.set(_Actions._ClientActions._AlertClientAction.messageText, "This is a message");
-        //result.set(_Actions._ClientActions._AlertClientAction.name, "Message Provider");
+        result.set(_Actions._ClientActions._AlertClientAction.messageText, "This is a message"); 
+        result.set(_Actions._ClientActions._AlertClientAction.name, "Message Provider");
         
         // Now consolidating all the information
         actionResult.set(_Actions._ActionResult.clientActions, new[]{result});

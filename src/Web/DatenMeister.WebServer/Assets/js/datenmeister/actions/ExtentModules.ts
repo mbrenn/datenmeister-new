@@ -26,6 +26,7 @@ export function loadModules() {
     FormActions.addModule(new ExtentClearAction());
     FormActions.addModule(new ExtentDeleteAction());
     FormActions.addModule(new ExtentNavigateToAction());
+    FormActions.addModule(new ExtentNavigateInPopupAction());
     FormActions.addModule(new ExtentPropertiesAction());
     FormActions.addModule(new ExtentsListViewItemAction());
     FormActions.addModule(new ExtentsListDeleteItemAction());

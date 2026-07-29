@@ -83,7 +83,7 @@ public class Program
         TheLog.AddProvider(new DebugProvider(), LogLevel.Trace);
         TheLog.AddProvider(InMemoryDatabaseProvider.TheOne, LogLevel.Trace);
 #else
-            TheLog.AddProvider(InMemoryDatabaseProvider.TheOne);
+        TheLog.AddProvider(InMemoryDatabaseProvider.TheOne);
 #endif
         // Preload Public Settings
         var publicSettings = 

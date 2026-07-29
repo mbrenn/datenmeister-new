@@ -104,22 +104,12 @@ void MoveJS()
 {
     Console.WriteLine("Copying burnJsPopup Files to wwwroot");
 
-    CopyFiles("node_modules/@mbrenn/burnjspopup/dist/js/", "wwwroot/js/burnsystems/");
-    CopyFiles("node_modules/@mbrenn/burnjspopup/dist/css/", "wwwroot/css");
+    DirectoryHelper.CopyFiles("node_modules/@mbrenn/burnjspopup/dist/js/", "wwwroot/js/burnsystems/");
+    DirectoryHelper.CopyFiles("node_modules/@mbrenn/burnjspopup/dist/css/", "wwwroot/css");
 
     Console.WriteLine("Copying JQuery FancyTree");
 
-    CopyFiles("node_modules/jquery.fancytree/dist/", "wwwroot/js", searchPattern: "*.min.js");
-    CopyFiles("node_modules/jquery.fancytree/dist/skin-win8/", "wwwroot/css/jquery.fancytree/css", searchPattern: "*.css");
+    DirectoryHelper.CopyFiles("node_modules/jquery.fancytree/dist/", "wwwroot/js", searchPattern: "*.min.js");
+    DirectoryHelper.CopyFiles("node_modules/jquery.fancytree/dist/skin-win8/", "wwwroot/css/jquery.fancytree/css", searchPattern: "*.css");
     
-}
-
-void CopyFiles(string sourceDirectory, string targetDirectory, bool overwrite = true, string searchPattern = "*.*")
-{
-    foreach (var sourceFile in Directory.GetFiles(sourceDirectory, searchPattern))
-    {
-        var filename = Path.GetFileName(sourceFile);
-        var targetFile = Path.Combine(targetDirectory, filename);
-        File.Copy(sourceFile, targetFile, overwrite);
-    }
 }

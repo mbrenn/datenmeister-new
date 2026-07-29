@@ -18,6 +18,7 @@ import _ObjectForm = _DatenMeister._Forms._FormTypes._ObjectForm;
 import _RowForm = _DatenMeister._Forms._FormTypes._RowForm;
 import _ActionFieldData = _DatenMeister._Forms._FieldTypes._ActionFieldData;
 import TableForm from "../forms/TableForm.js";
+import * as NavigationActions from "./NavigationModules.js"
 
 export function loadModules() {
     FormActions.addModule(new ExtentPropertiesUpdateAction());
@@ -292,6 +293,22 @@ class ExtentNavigateToAction extends FormActions.ItemFormActionModuleBase {
         let extentUri = element.get('uri');
         let workspaceId = element.get('workspaceId');
         Navigator.navigateToExtentItems(workspaceId, extentUri);
+    }
+}
+
+class ExtentNavigateInPopupAction extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("Extent.NavigateInPopup");
+        this.skipSaving = true;
+    }
+
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+
+        let extentUri = element.get('uri');
+        let workspaceId = element.get('workspaceId');
+        const url = Navigator.getLinkForNavigateToExtentItems(workspaceId, extentUri);
+        
+        NavigationActions.openWindow({url: url});
     }
 }
 

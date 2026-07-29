@@ -48,10 +48,38 @@ class NavigateOpenWindow extends FormActions.ItemFormActionModuleBase
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         const url = element.get(_Actions._ClientActions._NavigateOpenWindow.url, Mof.ObjectType.String);
-        if(url === undefined || url === null || url === "") throw new Error("Url is not set");
+        if (url === undefined || url === null || url === "") throw new Error("Url is not set");
         const isAbsoluteUrl = element.get(_Actions._ClientActions._NavigateOpenWindow.isAbsoluteUrl, Mof.ObjectType.Boolean) === true;
-        window.open(isAbsoluteUrl ? url : Settings.baseUrl + url, "_blank");
+
+        openWindow({
+                url: url,
+                isAbsoluteUrl: isAbsoluteUrl,
+            }
+        );
     }
+}
+
+/**
+ * Stores the parameter of the window opening
+ */
+export interface OpenWindowParameter
+{
+    /**
+     * The url website to be opened
+     */
+    url: string;
+    /**
+     * Information, if the url is an absolute url. If it is not absolute, the baseurl will be prepended 
+     */
+    isAbsoluteUrl?: boolean;
+}
+
+/**
+ * Opens the window according the parameter
+ * @param parameter Parameter of the window opening
+ */
+export function openWindow(parameter: OpenWindowParameter){
+    window.open(parameter.isAbsoluteUrl ? parameter.url : Settings.baseUrl + parameter.url, "_blank");
 }
 
 class NavigateOpenActionInWindow extends FormActions.ItemFormActionModuleBase

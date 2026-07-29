@@ -23,6 +23,7 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
     : IDatenMeisterPlugin
 {
     public const string NavigationExtentNavigateTo = "Extent.NavigateTo";
+    public const string NavigationExtentNavigateInPopup = "Extent.NavigateInPopup";
     public const string NavigationExtentDeleteExtent = "Extent.Delete";
     public const string NavigationExtentClear = "Extent.Clear";
     public const string NavigationExtentProperties = "Extent.Properties";
@@ -87,6 +88,14 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
 
         ActionButtonToFormAdder.AddTableActionButton(
             formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentNavigateTo, "View Items")
+            {
+                PredicateForParameter =
+                    x => x.MetaClass?.equals(_Management.TheOne.__Extent) == true,
+                ActionButtonPosition = 0
+            });
+
+        ActionButtonToFormAdder.AddTableActionButton(
+            formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentNavigateInPopup, "View Items in Popup")
             {
                 PredicateForParameter =
                     x => x.MetaClass?.equals(_Management.TheOne.__Extent) == true,

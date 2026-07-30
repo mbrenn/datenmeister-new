@@ -2,7 +2,6 @@ import * as FormActions from "../FormActions.js"
 import * as ActionClient from "../client/Actions.js"
 import * as Mof from "../Mof.js";
 import { loadDefaultModules } from "../actions/DefaultLoader.js";
-import * as _DatenMeister from "../models/DatenMeister.class.js";
 
 /**
  * Initializes the ActionPure page.
@@ -51,7 +50,7 @@ async function executeReferencedAction(
             return;
         }
 
-        await dispatchClientActions(result.resultAsDmObject);
+        await FormActions.executeClientActionResult(result.resultAsDmObject);
     } catch (exception) {
         renderError(String(exception));
     }
@@ -73,39 +72,11 @@ async function executeActionByName(actionName: string, context: string): Promise
             return;
         }
 
-        await dispatchClientActions(result.resultAsDmObject);
+        await FormActions.executeClientActionResult(result.resultAsDmObject);
     } catch (exception) {
         renderError(String(exception));
     }
 }
-
-async function dispatchClientActions(actionResult: Mof.DmObject | undefined): Promise<void> {
-    if (actionResult === undefined) {
-        renderMessage("Action executed. No further client actions were returned.");
-        return;
-    }
-    
-    if(actionResult.metaClass.uri !== _DatenMeister._Actions.__ActionResult_Uri)
-    {
-        renderError("The action result is not of type ActionResult");
-        return;
-    }
-
-    const clientActions = actionResult.get(
-        _DatenMeister._Actions._ActionResult.clientActions,
-        Mof.ObjectType.Array);
-
-    if (clientActions === undefined || clientActions.length === 0) {
-        renderMessage("Action executed on server. No client actions were returned.");
-        return;
-    }
-
-    for (const n in clientActions) {
-        const clientAction = clientActions[n] as Mof.DmObject;  
-        await FormActions.executeClientAction(clientAction);
-    }
-}
-
 function renderError(reason: string): void {
     const container = $("#pageContent");
     container.empty();
@@ -115,3 +86,4 @@ function renderError(reason: string): void {
 function renderMessage(message: string): void {
     $("#pageContent").text(message);
 }
+

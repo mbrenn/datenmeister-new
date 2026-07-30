@@ -237,6 +237,37 @@ export async function executeClientAction(
 }
 
 /**
+ * Takes an action result and executes all containing client actions.
+ * @param actionResult The action result whose client actions shall be executed
+ */
+export async function executeClientActionResult(actionResult: Mof.DmObject | undefined): Promise<void> {
+    if (actionResult === undefined) {
+        console.log("Action executed. No further client actions were returned.");
+        return;
+    }
+
+    if(actionResult.metaClass.uri !== _DatenMeister._Actions.__ActionResult_Uri)
+    {
+        console.log("The action result is not of type ActionResult");
+        return;
+    }
+
+    const clientActions = actionResult.get(
+        _DatenMeister._Actions._ActionResult.clientActions,
+        Mof.ObjectType.Array);
+
+    if (clientActions === undefined || clientActions.length === 0) {
+        console.log("Action executed on server. No client actions were returned.");
+        return;
+    }
+
+    for (const n in clientActions) {
+        const clientAction = clientActions[n] as Mof.DmObject;
+        await executeClientAction(clientAction);
+    }
+}
+
+/**
  * 
  * Executes the action by the given action object and executes the returned client actions
  * @param action The action to be executed

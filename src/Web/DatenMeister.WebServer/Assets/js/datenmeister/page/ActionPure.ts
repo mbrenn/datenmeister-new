@@ -9,12 +9,12 @@ import { loadDefaultModules } from "../actions/DefaultLoader.js";
  * The page simply invokes the given server-side action and lets the returned
  * ClientActions render the actual UI into the `pageContent` div.
  *
- * The action receives a `context` string parameter, e.g. "render", which lets
+ * The action receives a `actionVerb` string parameter, e.g. "render", which lets
  * the same action produce different result types depending on the calling
  * situation.
  */
 export async function init(
-    context: string,
+    actionVerb: string,
     workspace: string,
     actionUrl: string): Promise<void> {
 
@@ -23,7 +23,7 @@ export async function init(
     window.document.title = "Action - Der DatenMeister";
 
     if (workspace !== "" && actionUrl !== "") {        
-        await executeReferencedAction(context, workspace, actionUrl);
+        await executeReferencedAction(actionVerb, workspace, actionUrl);
     }
     else
     {   
@@ -38,7 +38,7 @@ export async function init(
  * ClientActions returned by the server are dispatched to their handlers.
  */
 async function executeReferencedAction(
-    context: string,
+    actionVerb: string,
     workspace: string,
     itemUrl: string): Promise<void> {
 
@@ -58,12 +58,12 @@ async function executeReferencedAction(
 
 /**
  * Executes an action by name via /api/action/execute_directly with a small
- * synthetic parameter that carries the request context.
+ * synthetic parameter that carries the request actionVerb.
  */
-async function executeActionByName(actionName: string, context: string): Promise<void> {
+async function executeActionByName(actionName: string, actionVerb: string): Promise<void> {
     const parameter = new Mof.DmObject();
     parameter.set("actionName", actionName);
-    parameter.set("context", context);
+    parameter.set("actionVerb", actionVerb);
 
     try {
         const result = await ActionClient.executeActionDirectly("Execute", { parameter });

@@ -19,7 +19,7 @@ import * as Page from './js/datenmeister/page/ActionPure.js';
 $(function()
 {
     Page.init(
-        "@HttpUtility.JavaScriptStringEncode(Model.Context)",
+        "@HttpUtility.JavaScriptStringEncode(Model.ActionVerb)",
         "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
         "@HttpUtility.JavaScriptStringEncode(Model.ActionUrl)");
 });

@@ -1,0 +1,42 @@
+= Implementation for ActionPure
+
+We would like to have a popup window which shows dedicated information 
+upon an action.
+
+The popup windows can be triggered by two mechanisms:
+
+. The function requesting to create the view directly referencing the action which will be called to retrieve the client actions which are executed in context of the new popup window. 
+. The function already has all the client-actions and the outputs of these clientactions are to be executed in the context of the popup window. This means that rendering requests or other display modifications requests are done in that context. 
+
+== Use Case 1: Execution of action on server
+
+This usecase is the more simple to implement. 
+
+The ActionPure.cshtml is called with a reference of the action within the url parameter: 
+
+|===
+|Key|Meaning
+
+|workspace|Workspace in which the action is residing
+|actionUrl|Url of the action to be executed on server
+|actionVerb|Optional paramater which defines the verb under which the action shall be executed. 
+|===
+
+This referenced action is called via the ActionController ('/api/action/) and the resulting ClientActions are executed directly in that window.
+
+This is a straight-forward implementation in file 'ActionPure.ts'. 
+
+== Use Case 2: Execution of action on client
+
+This use case assumes that the client actions are already known on the client and 'just' need to be executed in context of the window popup. 
+
+These are usually one of the following classes of client actions:
+
+* Rendering
+* Alert and information
+* Navigation
+
+To indicate that Use Case 2 is to be applied, we use the additional parameter 'executeClientActions=1' which is read in the ActionPure.ts. 
+
+After having opened it, it calls 'windows.opener.DMgetClientActions'. This method is prepared on the opener side. This call is prepared in DomHelper.ts by call 'createPopupWindowWithClientActions'. 
+

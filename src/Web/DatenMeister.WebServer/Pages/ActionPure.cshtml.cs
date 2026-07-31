@@ -12,7 +12,7 @@ namespace DatenMeister.WebServer.Pages;
 /// </summary>
 public class ActionPureModel : PageModel
 {
-    [Parameter] public string Context { get; set; } = string.Empty;
+    [Parameter] public string ActionVerb { get; set; } = string.Empty;
 
     [Parameter] public string Workspace { get; set; } = string.Empty;
 
@@ -20,7 +20,7 @@ public class ActionPureModel : PageModel
 
     public ActionResult OnGet(string actionName)
     {
-        Context = Request.Query["context"].ToString() ?? string.Empty;
+        ActionVerb = Request.Query["verb"].ToString() ?? string.Empty;
         Workspace = Request.Query["workspace"].ToString() ?? string.Empty;
         ActionUrl = Request.Query["actionUrl"].ToString() ?? string.Empty;
         return Page();

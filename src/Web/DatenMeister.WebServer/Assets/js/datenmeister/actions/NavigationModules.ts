@@ -97,7 +97,7 @@ class NavigateOpenActionInWindow extends FormActions.ItemFormActionModuleBase
         const actionUrl = element.get(_Actions._ClientActions._NavigateOpenActionInWindow.actionUrl, Mof.ObjectType.String);
         const workspace = element.get(_Actions._ClientActions._NavigateOpenActionInWindow.workspaceId, Mof.ObjectType.String);
 
-        const Url = Settings.baseUrl + "ActionPure?context=" + encodeURIComponent(context)
+        const Url = Settings.baseUrl + "ActionPure?actionVerb=" + encodeURIComponent(context)
             + "&workspace=" + encodeURIComponent(workspace)
             + "&actionUrl=" + encodeURIComponent(actionUrl);
         window.open(Url, "_blank");

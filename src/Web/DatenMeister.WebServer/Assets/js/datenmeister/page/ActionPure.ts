@@ -1,7 +1,7 @@
 import * as FormActions from "../FormActions.js"
 import * as ActionClient from "../client/Actions.js"
-import * as Mof from "../Mof.js";
 import { loadDefaultModules } from "../actions/DefaultLoader.js";
+import * as DomPopup from "../DomHelper.Popup.js"
 
 /**
  * Initializes the ActionPure page.
@@ -20,13 +20,26 @@ export async function init(
 
     loadDefaultModules();
 
+    // Gets the information, whether we can receive the clientaction from the opener
+    let p = new URLSearchParams(window.location.search);
+    if (p.has(DomPopup.urlParameterName)) {
+        const index = Number(p.get(DomPopup.urlParameterName));
+        if (isNaN(index))
+            throw new Error("Unrecognized parameter name");
+
+        const clientActions = DomPopup.getClientActionsFromOpener(index);
+        for (let i = 0; i < clientActions.length; i++) {
+            await FormActions.executeClientAction(clientActions[i]);
+        }
+
+        return;
+    }
+
     window.document.title = "Action - Der DatenMeister";
 
-    if (workspace !== "" && actionUrl !== "") {        
+    if (workspace !== "" && actionUrl !== "") {
         await executeReferencedAction(actionVerb, workspace, actionUrl);
-    }
-    else
-    {   
+    } else {
         const pageContentDiv = $("#pageContent");
         pageContentDiv.empty();
         pageContentDiv.text('Workspace or actionUrl is missing');
@@ -56,34 +69,10 @@ async function executeReferencedAction(
     }
 }
 
-/**
- * Executes an action by name via /api/action/execute_directly with a small
- * synthetic parameter that carries the request actionVerb.
- */
-async function executeActionByName(actionName: string, actionVerb: string): Promise<void> {
-    const parameter = new Mof.DmObject();
-    parameter.set("actionName", actionName);
-    parameter.set("actionVerb", actionVerb);
-
-    try {
-        const result = await ActionClient.executeActionDirectly("Execute", { parameter });
-        if (!result.success) {
-            renderError(result.reason);
-            return;
-        }
-
-        await FormActions.executeClientActionResult(result.resultAsDmObject);
-    } catch (exception) {
-        renderError(String(exception));
-    }
-}
 function renderError(reason: string): void {
     const container = $("#pageContent");
     container.empty();
     container.append($("<div class='alert alert-danger'></div>").text(reason));
 }
 
-function renderMessage(message: string): void {
-    $("#pageContent").text(message);
-}
 

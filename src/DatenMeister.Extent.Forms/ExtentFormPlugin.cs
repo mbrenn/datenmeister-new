@@ -86,16 +86,15 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
                     x => x.MetaClass?.equals(_Management.TheOne.__Extent) == true
             });
 
-        ActionButtonToFormAdder.AddTableActionButton(
-            formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentNavigateTo, "View Items")
+        ActionButtonToFormAdder.AddRowActionButton(
+            formsPlugin, new ActionButtonAdderParameterForRow(NavigationExtentNavigateInPopup, "View Items in Popup")
             {
                 PredicateForParameter =
-                    x => x.MetaClass?.equals(_Management.TheOne.__Extent) == true,
-                ActionButtonPosition = 0
+                    x => x.MetaClass?.equals(_Management.TheOne.__Extent) == true
             });
 
         ActionButtonToFormAdder.AddTableActionButton(
-            formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentNavigateInPopup, "View Items in Popup")
+            formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentNavigateTo, "View Items")
             {
                 PredicateForParameter =
                     x => x.MetaClass?.equals(_Management.TheOne.__Extent) == true,

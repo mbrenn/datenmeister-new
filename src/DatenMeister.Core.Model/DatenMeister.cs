@@ -864,6 +864,27 @@ public class _Actions
         public _NavigateOpenActionInWindow @NavigateOpenActionInWindow = new ();
         public MofObjectShadow @__NavigateOpenActionInWindow = new ("dm:///_internal/types/internal#77ff9c01-0651-4657-823a-ce41bbe0e5e5");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#ffa8c9f8-9454-423d-882d-a44b98eaf4ea",
+            TypeKind = TypeKind.ClassTree)]
+        public class _RenderFormClientAction
+        {
+            public static readonly string @dataWorkspaceId = "dataWorkspaceId";
+            public IElement? @_dataWorkspaceId = null;
+
+            public static readonly string @dataUri = "dataUri";
+            public IElement? @_dataUri = null;
+
+            public static readonly string @formAutoGenerate = "formAutoGenerate";
+            public IElement? @_formAutoGenerate = null;
+
+            public static readonly string @formType = "formType";
+            public IElement? @_formType = null;
+
+        }
+
+        public _RenderFormClientAction @RenderFormClientAction = new ();
+        public MofObjectShadow @__RenderFormClientAction = new ("dm:///_internal/types/internal#ffa8c9f8-9454-423d-882d-a44b98eaf4ea");
+
     }
 
     public _ClientActions ClientActions = new ();

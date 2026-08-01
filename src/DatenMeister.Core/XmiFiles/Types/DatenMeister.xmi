@@ -252,6 +252,12 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4035dd12-ed77-4514-a5ce-b0e957097e73" name="actionUrl" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="e371d3c6-a33f-40c9-9691-947e309e7a2f" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="ffa8c9f8-9454-423d-882d-a44b98eaf4ea" name="RenderFormClientAction">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="08bd5f42-f2ea-47ed-8fdc-380201c0a24a" name="dataWorkspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="3478161c-8da6-43ac-ab7b-e7358490ec9c" name="dataUri" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="552ffc3f-0025-4e5a-b878-6edc36226339" name="formAutoGenerate" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a715203c-154c-41cf-872c-5253e30c4366" name="formType" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType" />
+      </packagedElement>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="97ddd1b8-bd3d-4c43-82ed-5c55abda0929" name="Forms">
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DatenMeister.Models.Actions.CreateFormByMetaclass" name="CreateFormByMetaClass">

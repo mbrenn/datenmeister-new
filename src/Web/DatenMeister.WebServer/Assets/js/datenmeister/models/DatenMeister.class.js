@@ -341,6 +341,14 @@ export var _Actions;
         }
         _ClientActions._NavigateOpenActionInWindow = _NavigateOpenActionInWindow;
         _ClientActions.__NavigateOpenActionInWindow_Uri = "dm:///_internal/types/internal#77ff9c01-0651-4657-823a-ce41bbe0e5e5";
+        class _RenderFormClientAction {
+            static dataWorkspaceId = "dataWorkspaceId";
+            static dataUri = "dataUri";
+            static formAutoGenerate = "formAutoGenerate";
+            static formType = "formType";
+        }
+        _ClientActions._RenderFormClientAction = _RenderFormClientAction;
+        _ClientActions.__RenderFormClientAction_Uri = "dm:///_internal/types/internal#ffa8c9f8-9454-423d-882d-a44b98eaf4ea";
     })(_ClientActions = _Actions._ClientActions || (_Actions._ClientActions = {}));
     let _Forms;
     (function (_Forms) {

@@ -2248,6 +2248,63 @@ public class Actions
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#ffa8c9f8-9454-423d-882d-a44b98eaf4ea",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RenderFormClientAction_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public RenderFormClientAction_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public RenderFormClientAction_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#ffa8c9f8-9454-423d-882d-a44b98eaf4ea");
+
+            public static RenderFormClientAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @dataWorkspaceId
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("dataWorkspaceId");
+                set => 
+                    _wrappedElement.set("dataWorkspaceId", value);
+            }
+
+            public string? @dataUri
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("dataUri");
+                set => 
+                    _wrappedElement.set("dataUri", value);
+            }
+
+            public bool @formAutoGenerate
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("formAutoGenerate");
+                set => 
+                    _wrappedElement.set("formAutoGenerate", value);
+            }
+
+            // Not found
+            public object? @formType
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("formType");
+                set => 
+                    _wrappedElement.set("formType", value);
+            }
+
+        }
+
     }
 
     public class Forms

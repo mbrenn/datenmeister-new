@@ -391,6 +391,15 @@ export namespace _Actions
                 }
 
                 export const __NavigateOpenActionInWindow_Uri = "dm:///_internal/types/internal#77ff9c01-0651-4657-823a-ce41bbe0e5e5";
+                export class _RenderFormClientAction
+                {
+                    static dataWorkspaceId = "dataWorkspaceId";
+                    static dataUri = "dataUri";
+                    static formAutoGenerate = "formAutoGenerate";
+                    static formType = "formType";
+                }
+
+                export const __RenderFormClientAction_Uri = "dm:///_internal/types/internal#ffa8c9f8-9454-423d-882d-a44b98eaf4ea";
         }
 
         export namespace _Forms

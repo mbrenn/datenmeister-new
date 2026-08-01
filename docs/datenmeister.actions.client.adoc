@@ -1,0 +1,27 @@
+﻿= Client Action
+
+This chapter describes the client actions
+
+== RenderFormClientAction
+
+Requests to render a form in the designated render area of the active document. 
+
+To render the form, the following information is needed: 
+
+* The data to be rendered
+* The used form to perform the rendering
+
+The data to be rendered is directly included in the properties of the clientactions ('dataWorkspaceId', 'dataUri'). 
+
+The form is to be automatically created.
+
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+|dataWorkspaceId|Workspace of the data to be rendered
+|dataUri|Uri under which the data can be retrieved
+|formAutoGenerate|Must be true, in the current implementation
+|formType|Can be Collection or Object. Is an enumeration of 'FormType'
+|===

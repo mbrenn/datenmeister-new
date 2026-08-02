@@ -1,13 +1,11 @@
 import * as FormActions from "../FormActions.js";
-import {IFormNavigation} from "../forms/Interfaces.js";
+import {FormType, IFormNavigation} from "../forms/Interfaces.js";
 import * as Mof from "../Mof.js";
 import {SubmitMethod} from "../forms/Forms.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ClientForm from "../client/Forms.js"
 import * as ViewModeLogic from "../forms/ViewModeLogic.js"
 import * as ObjectForm from "../forms/ObjectForm.js"
-import * as CollectionForm from "../forms/CollectionForm.js"
-import {ObjectFormCreator, ObjectFormHtmlElements} from "../forms/ObjectForm.js";
 
 export function loadModules() {
     FormActions.addModule(new RenderHtml());
@@ -76,11 +74,13 @@ class RenderForm extends FormActions.ItemFormActionModuleBase
                 container.itemContainer = $("#pageContent");
                 
                 const objectForm = new ObjectForm.ObjectFormCreator(container);
-                objectForm.createFormByObject(
+                await objectForm.createFormByObject(
                     {
-                        isReadOnly : true
+                        isReadOnly : true, 
+                        formType: FormType.Object,
+                        viewMode: ViewModeLogic.ViewModes.Default
                     });
-                )
+                
                 break;
             case _DatenMeister._Forms._FormTypes._FormType.Collection:
                 createdForm = await ClientForm.getCollectionFormForExtent(

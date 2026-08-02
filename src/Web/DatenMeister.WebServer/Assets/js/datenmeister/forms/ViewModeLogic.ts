@@ -7,6 +7,10 @@ import * as Mof from "../Mof.js";
 import * as FormsClient from "../client/Forms.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 
+export enum ViewModes {
+    Default = "ViewMode.Default"
+}
+
 const sessionPropertyName = "dm_current_viewmode";
 
 /**
@@ -15,7 +19,7 @@ const sessionPropertyName = "dm_current_viewmode";
 export function getCurrentViewMode() {
     const viewMode = sessionStorage.getItem(sessionPropertyName);
     if (viewMode === null) {
-        return "ViewMode.Default";
+        return ViewModes.Default;
     }
 
     return viewMode;

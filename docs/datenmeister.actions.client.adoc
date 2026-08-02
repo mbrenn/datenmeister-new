@@ -2,6 +2,20 @@
 
 This chapter describes the client actions
 
+== RenderHtmlClientAction
+
+Requests to render a specific html test into the render area of the active document
+
+
+[cols="1,3"]
+|===
+| Parameter | Description
+
+|html|Html to be rendered
+|text|Text to be rendered. Will only be applied in case 'html' is not set. 
+
+|===
+
 == RenderFormClientAction
 
 Requests to render a form in the designated render area of the active document. 

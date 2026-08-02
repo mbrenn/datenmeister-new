@@ -257,6 +257,12 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="3478161c-8da6-43ac-ab7b-e7358490ec9c" name="dataUri" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="552ffc3f-0025-4e5a-b878-6edc36226339" name="formAutoGenerate" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a715203c-154c-41cf-872c-5253e30c4366" name="formType" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType" />
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="4e164393-ada5-4e4d-bd33-746723d327cf" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
+      </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="30f7e380-73e1-4ade-b797-1cc948b63c4f" name="RenderHtmlClientAction">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="8efcc0b2-face-4104-8895-916517d6578d" name="html" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="70c295d3-ac2d-40b5-94b7-008107c0e9e4" name="text" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="42616015-9efa-43af-9ddd-4478f6326d11" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
       </packagedElement>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="97ddd1b8-bd3d-4c43-82ed-5c55abda0929" name="Forms">

@@ -2303,6 +2303,114 @@ public class Actions
                     _wrappedElement.set("formType", value);
             }
 
+            public string? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionName");
+                set => 
+                    _wrappedElement.set("actionName", value);
+            }
+
+            // Not found
+            public object? @element
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("element");
+                set => 
+                    _wrappedElement.set("element", value);
+            }
+
+            // Not found
+            public object? @parameter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("parameter");
+                set => 
+                    _wrappedElement.set("parameter", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#30f7e380-73e1-4ade-b797-1cc948b63c4f",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RenderHtmlClientAction_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public RenderHtmlClientAction_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public RenderHtmlClientAction_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#30f7e380-73e1-4ade-b797-1cc948b63c4f");
+
+            public static RenderHtmlClientAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @html
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("html");
+                set => 
+                    _wrappedElement.set("html", value);
+            }
+
+            public string? @text
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("text");
+                set => 
+                    _wrappedElement.set("text", value);
+            }
+
+            public string? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionName");
+                set => 
+                    _wrappedElement.set("actionName", value);
+            }
+
+            // Not found
+            public object? @element
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("element");
+                set => 
+                    _wrappedElement.set("element", value);
+            }
+
+            // Not found
+            public object? @parameter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("parameter");
+                set => 
+                    _wrappedElement.set("parameter", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
         }
 
     }

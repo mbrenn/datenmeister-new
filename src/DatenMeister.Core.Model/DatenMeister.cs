@@ -880,10 +880,49 @@ public class _Actions
             public static readonly string @formType = "formType";
             public IElement? @_formType = null;
 
+            public static readonly string @actionName = "actionName";
+            public IElement? @_actionName = null;
+
+            public static readonly string @element = "element";
+            public IElement? @_element = null;
+
+            public static readonly string @parameter = "parameter";
+            public IElement? @_parameter = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
         }
 
         public _RenderFormClientAction @RenderFormClientAction = new ();
         public MofObjectShadow @__RenderFormClientAction = new ("dm:///_internal/types/internal#ffa8c9f8-9454-423d-882d-a44b98eaf4ea");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#30f7e380-73e1-4ade-b797-1cc948b63c4f",
+            TypeKind = TypeKind.ClassTree)]
+        public class _RenderHtmlClientAction
+        {
+            public static readonly string @html = "html";
+            public IElement? @_html = null;
+
+            public static readonly string @text = "text";
+            public IElement? @_text = null;
+
+            public static readonly string @actionName = "actionName";
+            public IElement? @_actionName = null;
+
+            public static readonly string @element = "element";
+            public IElement? @_element = null;
+
+            public static readonly string @parameter = "parameter";
+            public IElement? @_parameter = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _RenderHtmlClientAction @RenderHtmlClientAction = new ();
+        public MofObjectShadow @__RenderHtmlClientAction = new ("dm:///_internal/types/internal#30f7e380-73e1-4ade-b797-1cc948b63c4f");
 
     }
 

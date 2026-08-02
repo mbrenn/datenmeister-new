@@ -46,11 +46,7 @@ pipeline {
         {
             steps
             {                    
-                sh """                 
-                    cd src/DatenMeister.Reports.Forms
-                    dotnet new tool-manifest --force
-                    cd ../..
-
+                sh """      
                     cd src/Web/DatenMeister.WebServer
                     dotnet new tool-manifest --force
                     dotnet tool install BS_Remove_File_Attribute_From_JUnit

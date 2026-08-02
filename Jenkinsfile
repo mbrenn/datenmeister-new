@@ -8,8 +8,6 @@ pipeline {
             steps
             {                    
                 sh """     
-                    dotnet tool install --global BurnSystems.Make.Exe
-                           
                     cd src/DatenMeister.Reports.Forms
                     npm install
                     cd ../..

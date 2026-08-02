@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        PATH = '$PATH:~/.dotnet/tools'
+    }
+
     stages {
         
         stage('NPM install')
@@ -8,7 +12,6 @@ pipeline {
             steps
             {                    
                 sh """
-                    PATH="$HOME/.dotnet/tools:$PATH"
      
                     dotnet tool install --global BurnSystems.Make.Exe
                            
@@ -46,12 +49,10 @@ pipeline {
                 sh """                 
                     cd src/DatenMeister.Reports.Forms
                     dotnet new tool-manifest --force
-                    dotnet tool install Cake.Tool --version 6.1.0
                     cd ../..
 
                     cd src/Web/DatenMeister.WebServer
                     dotnet new tool-manifest --force
-                    dotnet tool install Cake.Tool --version 6.1.0
                     dotnet tool install BS_Remove_File_Attribute_From_JUnit
                     cd ../../..
                 """

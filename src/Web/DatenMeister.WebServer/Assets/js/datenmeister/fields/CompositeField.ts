@@ -44,7 +44,7 @@ export class Field extends BaseField implements IFormField {
 
         const propertyName = this.field.get('name');
 
-        let value = await ClientItem.getProperty(this.form.workspace, this.element.uri, propertyName);
+        let value = await ClientItem.getProperty(this.element.workspace, this.element.uri, propertyName);
         if(Array.isArray(value))
         {
             value = value[0];

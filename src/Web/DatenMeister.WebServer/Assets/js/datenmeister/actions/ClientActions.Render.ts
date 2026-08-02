@@ -79,6 +79,7 @@ class RenderForm extends FormActions.ItemFormActionModuleBase
 
                 const objectForm = new ObjectForm.ObjectFormCreator(container);
                 objectForm.element = element;
+                objectForm.workspace = dataWorkspace;
                 await objectForm.createFormByObject(
                     {
                         isReadOnly: true,
@@ -105,7 +106,8 @@ class RenderForm extends FormActions.ItemFormActionModuleBase
                 container.itemContainer = $("#pageContent");
 
                 const collectionForm = new CollectionForm.CollectionFormCreator(container);
-                collectionForm.createCollectionForRootElements(
+                collectionForm.workspace = dataWorkspace;
+                await collectionForm.createCollectionForRootElements(
                     dataWorkspace,
                     dataUri,
                     {

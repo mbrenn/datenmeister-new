@@ -81,7 +81,7 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
             if (workspace == null) throw new InvalidOperationException($"Workspace '{workspaceId}' is not found");
 
             if (workspace.Resolve(itemUri, ResolveType.IncludeWorkspace) is not IObject foundElement)
-                throw new InvalidOperationException($"Element '{itemUri}' in Workspace {workspaceId} is not found");
+                throw new InvalidOperationException($"'Element '{itemUri}' in Workspace {workspaceId} is not found");
 
             return foundElement;
         }

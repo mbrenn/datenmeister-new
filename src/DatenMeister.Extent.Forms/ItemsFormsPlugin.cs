@@ -22,6 +22,7 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
     public const string NavigationItemMoveOrCopyNavigate = "Item.MoveOrCopy.Navigate";
     public const string NavigationExportXmi = "Item.ExportXmi.Navigate";
     public const string NavigationImportXmi = "Item.ImportXmi.Navigate";
+    public const string NavigationAsPopup = "Item.NavigateInPopup";
 
     public Task Start(PluginLoadingPosition position)
     {
@@ -34,6 +35,9 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 
                 ActionButtonToFormAdder.AddRowActionButton(
                     formsPlugin, new ActionButtonAdderParameterForRow(NavigationItemDelete, "Delete Item"));
+
+                ActionButtonToFormAdder.AddRowActionButton(
+                    formsPlugin, new ActionButtonAdderParameterForRow(NavigationAsPopup, "As Popup"));
 
 
                 ActionButtonToFormAdder.AddRowActionButton(

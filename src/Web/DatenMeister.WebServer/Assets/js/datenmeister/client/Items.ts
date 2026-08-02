@@ -390,6 +390,17 @@ export async function setProperties(workspaceId: string, itemUrl: string, proper
 
 export async function getProperty(
     workspaceId: string, itemUrl: string, property: string): Promise<any> {
+    
+    if(workspaceId === undefined)
+    {
+        throw new Error("Workspace is undefined");
+    }
+    if(itemUrl === undefined) {
+        throw new Error("ItemUrl is undefined");
+    }
+    if(property === undefined) {
+        throw new Error("Property is undefined");
+    }
 
     let url = Settings.baseUrl +
         "api/items/get_property?w=" +

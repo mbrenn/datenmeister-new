@@ -11,6 +11,9 @@ import * as ItemClient from "../client/Items.js";
 import * as Navigator from "../Navigator.js";
 import {moveItemInCollectionDown, moveItemInCollectionUp} from "../client/Actions.Items.js";
 import * as ClientElements from "../client/Elements.js";
+import * as DomPopup from "../DomHelper.Popup.js";
+import {_Forms} from "../models/DatenMeister.class.js";
+import _FormTypes = _Forms._FormTypes;
 
 export function loadModules() {   
     FormActions.addModule(new ItemMoveOrCopyActionNavigate());
@@ -18,6 +21,7 @@ export function loadModules() {
     FormActions.addModule(new ItemDeleteAction());
     FormActions.addModule(new ItemMoveUpItemAction());
     FormActions.addModule(new ItemMoveDownItemAction());
+    FormActions.addModule(new ItemNavigateInPopupAction());
     FormActions.addModule(new ItemXmiExportNavigate());
     FormActions.addModule(new ItemXmiExport());
     FormActions.addModule(new ItemXmiImportNavigate());
@@ -150,6 +154,28 @@ class ItemMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
             form.formElement.get(_DatenMeister._Forms._FormTypes._TableForm.property),
             element.uri);
         document.location.reload();
+    }
+}
+
+
+class ItemNavigateInPopupAction extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("Item.NavigateInPopup");
+        this.skipSaving = true;
+    }
+
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+
+        let extentUri = element.uri;
+        let workspaceId = element.workspace;
+
+        const clientAction1 = new Mof.DmObject(_DatenMeister._Actions._ClientActions.__RenderFormClientAction_Uri);
+        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.dataUri, extentUri);
+        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.dataWorkspaceId, workspaceId);
+        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.formAutoGenerate, true);
+        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.formType, _FormTypes._FormType.Object);
+
+        DomPopup.createPopupWindowWithClientActions([clientAction1]);
     }
 }
 

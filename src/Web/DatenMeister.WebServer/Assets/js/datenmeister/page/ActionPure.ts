@@ -28,6 +28,9 @@ export async function init(
             throw new Error("Unrecognized parameter name");
 
         const clientActions = DomPopup.getClientActionsFromOpener(index);
+        
+        $("#pageContent").empty();
+        
         for (let i = 0; i < clientActions.length; i++) {
             await FormActions.executeClientAction(clientActions[i]);
         }
@@ -57,6 +60,8 @@ async function executeReferencedAction(
 
     try {
         const result = await ActionClient.executeAction(workspace, itemUrl);
+
+        $("#pageContent").empty();
 
         if (!result.success) {
             renderError(result.reason);

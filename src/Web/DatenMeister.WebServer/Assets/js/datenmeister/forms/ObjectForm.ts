@@ -98,6 +98,9 @@ export class ObjectFormCreator implements IForm.IPageForm {
         configuration: IFormConfiguration) {
         // First, store the parent and the configuration
         this.htmlItemContainer = configuration;
+        if (configuration.formElement !== undefined) {
+            this.formElement = configuration.formElement;
+        }
 
         await this.createFormForItem();
     }
@@ -145,8 +148,8 @@ export class ObjectFormCreator implements IForm.IPageForm {
                     const detailForm = factoryFunction();                    
                     detailForm.pageNavigation = tthis.pageNavigation;
                     detailForm.workspace = this.workspace;
-                    detailForm.extentUri = this.extentUri;
-                    detailForm.itemUrl = this.itemUrl;
+                    detailForm.extentUri = this.extentUri ?? this.element.extentUri;
+                    detailForm.itemUrl = this.itemUrl ?? this.element.uri;
                     detailForm.formElement = tab;
                     detailForm.element = this.element;                              
 

@@ -7,7 +7,11 @@ pipeline {
         {
             steps
             {                    
-                sh """     
+                sh """
+                    dotnet tool uninstall --global bsmake
+                    dotnet tool uninstall --global BurnSystems.Make.Exe     
+                    dotnet tool update --global BurnSystems.Make.Exe
+                           
                     cd src/DatenMeister.Reports.Forms
                     npm install
                     cd ../..

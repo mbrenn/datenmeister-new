@@ -18,6 +18,10 @@ pipeline {
                     cd src/DatenMeister.Reports.Forms
                     npm install
                     cd ../..
+                    
+                    cd src/DatenMeister.Reports.Swimlane
+                    npm install
+                    cd ../..
 
                     cd src/Web/DatenMeister.WebServer
                     npm install 

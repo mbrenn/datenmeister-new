@@ -8,7 +8,7 @@ pipeline {
             steps
             {                    
                 sh """     
-                    dotnet tool install --global BSMake --version 1.0.1
+                    dotnet tool install --global BurnSystems.Make.Exe
                            
                     cd src/DatenMeister.Reports.Forms
                     npm install

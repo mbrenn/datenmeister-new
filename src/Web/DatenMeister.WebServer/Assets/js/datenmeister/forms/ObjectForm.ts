@@ -22,15 +22,18 @@ import {StatusFieldControl} from "../controls/StatusFieldControl.js";
 import {config} from "chai";
 import {FormType} from "./Interfaces.js";
 
+/**
+ * Defines all the JQuery Container for the different button and content areas
+ */
 export class ObjectFormHtmlElements
 {
-    /*
+    /**
     Here, the items themselves will be added.
     This element should be a 'div' or another container item which is capable to hold a table
      */
     itemContainer: JQuery;    
     
-    /*
+    /**
     Here, the options for selection will be added. 
     This element shall be 'div' which is capable to store the select element
      */
@@ -65,8 +68,16 @@ export class ObjectFormCreator implements IForm.IPageForm {
     /** Stores instance to the page to allow navigation */
     pageNavigation: IForm.IPageNavigation;
 
+    /**
+     * Stores the element whose properties shall be rendered within the form. 
+     */
     element: Mof.DmObjectWithSync;
     extentUri: string;
+
+    /**
+     * This is the MofObject containing the properties of the form. 
+     * Must be of Type 'ObjectForm' (or compatible)
+     */
     formElement: Mof.DmObject;
     htmlItemContainer: IFormConfiguration;
     itemUrl: string;    
@@ -95,6 +106,14 @@ export class ObjectFormCreator implements IForm.IPageForm {
 
     }
 
+    /**
+     * Creates a fresh form for the given object and links itself to the 'refreshForm' callback
+     * of the configuration.
+     * 
+     * Parses through all the tabs of the current formElement. 
+     * It creates the tabs by using the FormFactory.getObjectFormFactory
+     * @private
+     */
     private async createFormForItem() {
         const configuration = this.htmlItemContainer;
         const tthis = this;

@@ -5,6 +5,10 @@
 import * as Mof from "../Mof.js";
 import * as FormsClient from "../client/Forms.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
+export var ViewModes;
+(function (ViewModes) {
+    ViewModes["Default"] = "ViewMode.Default";
+})(ViewModes || (ViewModes = {}));
 const sessionPropertyName = "dm_current_viewmode";
 /**
  * Gets the current view mode. It is 'Default', when no viewmode has been selected by the user.
@@ -12,7 +16,7 @@ const sessionPropertyName = "dm_current_viewmode";
 export function getCurrentViewMode() {
     const viewMode = sessionStorage.getItem(sessionPropertyName);
     if (viewMode === null) {
-        return "ViewMode.Default";
+        return ViewModes.Default;
     }
     return viewMode;
 }

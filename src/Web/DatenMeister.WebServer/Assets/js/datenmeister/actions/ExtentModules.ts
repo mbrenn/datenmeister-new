@@ -20,8 +20,9 @@ import _ActionFieldData = _DatenMeister._Forms._FieldTypes._ActionFieldData;
 import TableForm from "../forms/TableForm.js";
 import * as NavigationActions from "./NavigationModules.js"
 import * as DomPopup from "../DomHelper.Popup.js"
-import {_Actions} from "../models/DatenMeister.class.js";
+import {_Actions, _Forms} from "../models/DatenMeister.class.js";
 import _AlertClientAction = _Actions._ClientActions._AlertClientAction;
+import _FormTypes = _Forms._FormTypes;
 
 export function loadModules() {
     FormActions.addModule(new ExtentPropertiesUpdateAction());
@@ -311,8 +312,11 @@ class ExtentNavigateInPopupAction extends FormActions.ItemFormActionModuleBase {
         let extentUri = element.get('uri');
         let workspaceId = element.get('workspaceId');
         
-        const clientAction1 = new Mof.DmObject(_DatenMeister._Actions._ClientActions.__AlertClientAction_Uri);
-        clientAction1.set(_AlertClientAction.messageText, "This is a test");
+        const clientAction1 = new Mof.DmObject(_DatenMeister._Actions._ClientActions.__RenderFormClientAction_Uri);
+        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.dataUri, extentUri);
+        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.dataWorkspaceId, workspaceId);
+        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.formAutoGenerate, true);
+        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.formType, _FormTypes._FormType.Collection);
                 
         DomPopup.createPopupWindowWithClientActions([clientAction1]);
     }

@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        PATH+DOTNETTOOLS="${env.HOME}/.dotnet/tools"
+        PATH+DOTNETTOOLS = "${env.HOME}/.dotnet/tools"
     }
 
     stages {

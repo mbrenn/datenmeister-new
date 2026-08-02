@@ -7,7 +7,9 @@ pipeline {
         {
             steps
             {                    
-                sh """     
+                sh """
+                    PATH="$HOME/.dotnet/tools:$PATH"
+     
                     dotnet tool install --global BurnSystems.Make.Exe
                            
                     cd src/DatenMeister.Reports.Forms

@@ -26,6 +26,10 @@ pipeline {
                     cd src/Web/DatenMeister.WebServer
                     npm install 
                     cd ../../..
+                    
+                    cd src/Templates/DatenMeister.Templates.TypeScriptAndTypesPlugin
+                    npm install 
+                    cd ../../..
                 """
             }
         }

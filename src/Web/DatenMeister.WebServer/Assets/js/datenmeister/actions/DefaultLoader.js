@@ -5,6 +5,7 @@ import * as WorkspaceModules from "./WorkspaceModules.js";
 import * as FormModules from "./FormModules.js";
 import * as ActionModules from "./ActionModules.js";
 import * as NavigationModules from "./NavigationModules.js";
+import * as ClientActionsRender from "./ClientActions.Render.js";
 let loaded = false;
 export function loadDefaultModules() {
     if (!loaded) {
@@ -15,6 +16,7 @@ export function loadDefaultModules() {
         FormModules.loadModules();
         ActionModules.loadModules();
         NavigationModules.loadModules();
+        ClientActionsRender.loadModules();
     }
     loaded = true;
 }

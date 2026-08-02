@@ -26,6 +26,12 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     /// Stores the referenced extent
     /// </summary>
     private MofExtent? _referencedExtent;
+    
+    /// <summary>
+    /// Sets a flag which prevents a Debugger.Break on a not found item.
+    /// This allows having an early indication if references are wrongly set. 
+    /// </summary>
+    public static bool BreakOnNotFoundItem = false;
 
     /// <summary>
     /// Gets the extent of the mof object
@@ -37,7 +43,8 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
         {
             if (value == null)
             {
-                if ((_extent as MofUriExtent)?.Navigator.IsInResolveCache("#" + ProviderObject.Id) == true)
+                if (BreakOnNotFoundItem
+                    && (_extent as MofUriExtent)?.Navigator.IsInResolveCache("#" + ProviderObject.Id) == true)
                 {
                     Debugger.Break();
                 }

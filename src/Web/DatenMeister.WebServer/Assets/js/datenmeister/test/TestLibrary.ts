@@ -14,6 +14,7 @@ import * as Forms from "./Test.Forms.js"
 import * as ViewModeLogic from "./Test.Forms.ViewModeLogic.js"
 import * as TableState from "./Test.TableState.js"
 import * as UserEvents from "../../burnsystems/tests/events.test.js"
+import * as TestFormActions from "./Test.FormActions.ClientActions.js"
 
 export function includeTests()
 {
@@ -33,4 +34,5 @@ export function includeTests()
     ViewModeLogic.includeTests();
     TableState.includeTests();
     Forms.includeTests();
+    TestFormActions.includeTests();
 }

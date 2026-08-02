@@ -346,9 +346,23 @@ export var _Actions;
             static dataUri = "dataUri";
             static formAutoGenerate = "formAutoGenerate";
             static formType = "formType";
+            static actionName = "actionName";
+            static element = "element";
+            static parameter = "parameter";
+            static _name_ = "name";
         }
         _ClientActions._RenderFormClientAction = _RenderFormClientAction;
         _ClientActions.__RenderFormClientAction_Uri = "dm:///_internal/types/internal#ffa8c9f8-9454-423d-882d-a44b98eaf4ea";
+        class _RenderHtmlClientAction {
+            static html = "html";
+            static text = "text";
+            static actionName = "actionName";
+            static element = "element";
+            static parameter = "parameter";
+            static _name_ = "name";
+        }
+        _ClientActions._RenderHtmlClientAction = _RenderHtmlClientAction;
+        _ClientActions.__RenderHtmlClientAction_Uri = "dm:///_internal/types/internal#30f7e380-73e1-4ade-b797-1cc948b63c4f";
     })(_ClientActions = _Actions._ClientActions || (_Actions._ClientActions = {}));
     let _Forms;
     (function (_Forms) {

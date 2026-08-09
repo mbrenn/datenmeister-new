@@ -2,6 +2,7 @@
 using DatenMeister.Actions;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.TypeIndexAssembly;
@@ -9,11 +10,12 @@ using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Plugins;
+using DatenMeister.WebServer.Shared;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 
-public class AboutModel : PageModel
+public class AboutModel(IScopeStorage scopeStorage) : _Layout(scopeStorage)
 {
     public void OnGet()
     {

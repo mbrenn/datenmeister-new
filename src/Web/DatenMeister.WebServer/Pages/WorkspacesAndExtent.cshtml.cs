@@ -1,13 +1,15 @@
-﻿using DatenMeister.Core.Runtime.Workspaces;
+﻿using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.InterfaceController;
 using DatenMeister.WebServer.Models;
+using DatenMeister.WebServer.Shared;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 
-public class WorkspacesAndExtent(WorkspaceController workspaceController) : PageModel
+public class WorkspacesAndExtent(WorkspaceController workspaceController, IScopeStorage scopeStorage) : _Layout(scopeStorage)
 {
     public List<WorkspaceModel> Workspaces = new();
 

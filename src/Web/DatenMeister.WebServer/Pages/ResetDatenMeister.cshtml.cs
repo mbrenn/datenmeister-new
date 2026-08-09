@@ -1,16 +1,18 @@
 ﻿using Autofac;
 using DatenMeister.BootStrap;
 using DatenMeister.Core;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
+using DatenMeister.WebServer.Shared;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 
-public class ResetDatenMeister : PageModel
+public class ResetDatenMeister(IScopeStorage scopeStorage) : _Layout(scopeStorage)
 {
     /// <summary>
     ///     Gets or sets the information whether the restart has been performed

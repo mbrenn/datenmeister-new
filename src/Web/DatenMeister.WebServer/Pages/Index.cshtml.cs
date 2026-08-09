@@ -1,9 +1,11 @@
-﻿using DatenMeister.WebServer.Library.ServerConfiguration;
+﻿using DatenMeister.Core.Interfaces;
+using DatenMeister.WebServer.Library.ServerConfiguration;
+using DatenMeister.WebServer.Shared;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 
-public class IndexModel(ILogger<IndexModel> logger) : PageModel
+public class IndexModel(ILogger<IndexModel> logger, IScopeStorage scopeStorage) : _Layout(scopeStorage)
 {
     private readonly ILogger<IndexModel> _logger = logger;
 

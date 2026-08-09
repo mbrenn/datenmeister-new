@@ -1,12 +1,14 @@
 ﻿using System.Text;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.WebServer.Library.Helper;
+using DatenMeister.WebServer.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 
-public class ItemModel : PageModel
+public class ItemModel(IScopeStorage scopeStorage) : _Layout(scopeStorage)
 {
     public readonly StringBuilder ScriptLines = new();
 

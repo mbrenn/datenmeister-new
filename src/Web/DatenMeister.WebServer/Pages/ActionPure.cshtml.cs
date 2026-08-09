@@ -1,4 +1,6 @@
+using DatenMeister.Core.Interfaces;
 using DatenMeister.WebServer.Library.Helper;
+using DatenMeister.WebServer.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,8 +12,14 @@ namespace DatenMeister.WebServer.Pages;
 /// ClientActions render the actual content into the pageContent div. The page carries
 /// no form of its own — it is a container which the action fills.
 /// </summary>
-public class ActionPureModel : PageModel
+public class ActionPureModel : _Layout
 {
+    public ActionPureModel(IScopeStorage scopeStorage) : base(scopeStorage)
+    {
+        HideTopBar = true;
+        HideSideBar = true;
+    }
+    
     [Parameter] public string ActionVerb { get; set; } = string.Empty;
 
     [Parameter] public string Workspace { get; set; } = string.Empty;

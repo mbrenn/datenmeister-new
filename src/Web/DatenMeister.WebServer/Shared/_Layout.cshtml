@@ -29,8 +29,10 @@
 <body class="dm-grid-container" style="@(WebServerSettingHandler.TheOne.BodyCssStyle)">
 @{
     
-var hideSideToolbar = WebServerSettingHandler.TheOne.WebServerSettings.layoutHideSideToolbar;
-var hideTopToolbar = WebServerSettingHandler.TheOne.WebServerSettings.layoutHideTopToolbar;
+var hideSideToolbar = WebServerSettingHandler.TheOne.WebServerSettings.layoutHideSideToolbar 
+                      || ((Model as _Layout)?.HideSideBar ?? false);
+var hideTopToolbar = WebServerSettingHandler.TheOne.WebServerSettings.layoutHideTopToolbar
+                     || ((Model as _Layout)?.HideTopBar ?? false);
         
 }
 @if (!hideTopToolbar)

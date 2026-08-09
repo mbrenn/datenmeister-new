@@ -1,10 +1,12 @@
-﻿using DatenMeister.WebServer.Library.Helper;
+﻿using DatenMeister.Core.Interfaces;
+using DatenMeister.WebServer.Library.Helper;
+using DatenMeister.WebServer.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 
-public class ExtentOverviewModel(ILogger<ExtentOverviewModel> logger) : PageModel
+public class ExtentOverviewModel(ILogger<ExtentOverviewModel> logger, IScopeStorage scopeStorage) : _Layout(scopeStorage)
 {
     private readonly ILogger<ExtentOverviewModel> _logger = logger;
 

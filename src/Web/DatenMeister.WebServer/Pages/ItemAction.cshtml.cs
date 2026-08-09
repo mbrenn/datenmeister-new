@@ -1,19 +1,17 @@
 using System.Web;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Provider.ExtentManagement;
+using DatenMeister.WebServer.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 
-public class CreateItemModel : PageModel
+public class CreateItemModel(IScopeStorage scopeStorage) : _Layout(scopeStorage)
 {
-    public CreateItemModel()
-    {
-    }
-
     [Parameter] public string? MetaClass { get; set; } = string.Empty;
 
     [Parameter] public string ActionName { get; set; } = string.Empty;

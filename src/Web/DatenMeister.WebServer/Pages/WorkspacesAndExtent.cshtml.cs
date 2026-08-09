@@ -5,7 +5,6 @@ using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.InterfaceController;
 using DatenMeister.WebServer.Models;
 using DatenMeister.WebServer.Shared;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 

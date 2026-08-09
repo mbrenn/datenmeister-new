@@ -4,7 +4,6 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.WebServer.Library.Helper;
 using DatenMeister.WebServer.Shared;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 

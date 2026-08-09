@@ -11,7 +11,6 @@ using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Plugins;
 using DatenMeister.WebServer.Shared;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 

@@ -5,7 +5,6 @@ using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.ZipCodeExample.Model;
 using DatenMeister.Types;
 using DatenMeister.WebServer.Shared;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 

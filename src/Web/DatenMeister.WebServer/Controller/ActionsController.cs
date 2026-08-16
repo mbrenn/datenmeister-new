@@ -18,7 +18,10 @@ namespace DatenMeister.WebServer.Controller;
 public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : ControllerBase
 {
     [HttpPost("api/action/execute_directly/{actionName}")]
-    public async Task<ActionResult<ExecuteActionResult>> ExecuteAction(string actionName, [FromBody] ActionParams actionParams)
+    public async Task<ActionResult<ExecuteActionResult>> ExecuteAction(
+        string actionName,
+        [FromBody] ActionParams actionParams,
+        [FromQuery(Name="verb")] string? actionVerb)
     {
         var success = true;
         if (actionParams.Parameter == null)
@@ -61,7 +64,8 @@ public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage sco
                 try
                 {
                     var resultOfAction = await actionLogic.ExecuteAction(
-                        mofParameter
+                        mofParameter,
+                        actionVerb
                     );
                         
                     object? resultText = null;
@@ -84,7 +88,10 @@ public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage sco
     }
 
     [HttpPost("api/action/execute/{workspaceId}/{itemUri}")]
-    public async Task<ActionResult<ExecuteActionResult>> ExecuteAction(string workspaceId, string itemUri)
+    public async Task<ActionResult<ExecuteActionResult>> ExecuteAction(
+        string workspaceId, 
+        string itemUri,
+        [FromQuery(Name="verb")] string? actionVerb)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
@@ -99,7 +106,8 @@ public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage sco
         try
         {
             var result = await actionLogic.ExecuteAction(
-                action
+                action,
+                actionVerb
             );
 
             object? resultText = null;
@@ -132,7 +140,11 @@ public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage sco
     /// <param name="Reason">Reason why it was not created successfully</param>
     /// <param name="StackTrace">The corresponding stacktrace</param>
     /// <param name="Result">The resulting Json Text</param>
-    public record ExecuteActionResult(bool Success, string Reason, string StackTrace, object? Result = null)
+    public record ExecuteActionResult(
+        bool Success,
+        string Reason, 
+        string StackTrace, 
+        object? Result = null)
     {
         public override string ToString()
         {

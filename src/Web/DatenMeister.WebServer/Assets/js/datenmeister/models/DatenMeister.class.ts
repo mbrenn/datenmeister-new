@@ -730,6 +730,7 @@ export namespace _DataViews
                 {
                     static input = "input";
                     static propertyName = "propertyName";
+                    static _name_ = "name";
                 }
 
                 export const __SelectByProperty_Uri = "dm:///_internal/types/internal#2a5ac57c-e5d2-498b-b575-7b07354e2645";

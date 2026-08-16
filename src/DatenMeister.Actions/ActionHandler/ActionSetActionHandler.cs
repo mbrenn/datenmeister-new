@@ -22,6 +22,6 @@ public class ActionSetActionHandler : IActionHandler
     /// <param name="actionVerb"></param>
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
-        return await actionLogic.ExecuteActionSet(action);
+        return await actionLogic.ExecuteActionSet(action, actionVerb);
     }
 }

@@ -1592,6 +1592,9 @@ public class _DataViews
             public static readonly string @propertyName = "propertyName";
             public IElement? @_propertyName = null;
 
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
         }
 
         public _SelectByProperty @SelectByProperty = new ();

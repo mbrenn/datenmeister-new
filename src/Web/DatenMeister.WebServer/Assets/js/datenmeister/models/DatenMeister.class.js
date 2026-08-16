@@ -636,6 +636,7 @@ export var _DataViews;
         class _SelectByProperty {
             static input = "input";
             static propertyName = "propertyName";
+            static _name_ = "name";
         }
         _Transformation._SelectByProperty = _SelectByProperty;
         _Transformation.__SelectByProperty_Uri = "dm:///_internal/types/internal#2a5ac57c-e5d2-498b-b575-7b07354e2645";

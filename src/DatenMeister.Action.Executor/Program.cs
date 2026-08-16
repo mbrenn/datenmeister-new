@@ -81,7 +81,7 @@ try
     using (new StopWatchLogger(new ClassLogger(typeof(Program)), "Action Execution"))
     {
         var actionLogic = GiveMe.Scope.Resolve<ActionLogic>();
-        await actionLogic.ExecuteAction(actionElement);
+        await actionLogic.ExecuteAction(actionElement, arguments.ActionVerb);
     }
 
     TheLog.Info($"Action has been executed");

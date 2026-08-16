@@ -446,7 +446,7 @@
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="2a5ac57c-e5d2-498b-b575-7b07354e2645" name="SelectByProperty">
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ecf82b7e-3c93-4b19-88b3-76d48832268b" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="10682eef-923c-4f18-b981-db27f24fc7cc" name="propertyName" type-ref="dm:///_internal/model/primitivetypes#String" />
-        <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="4e2893e0-75d9-4f47-b1b6-bb6af4bfdbb6" general-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.DataViews.ViewNode" />
+        <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="4e2893e0-75d9-4f47-b1b6-bb6af4bfdbb6" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
       </packagedElement>
     </packagedElement>
   </item>

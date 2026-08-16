@@ -9,4 +9,7 @@ public class Arguments
     
     [UnnamedArgument(HelpText = "Path of action to be executed (e.g. #transform). This can also be an absolute Url", IsRequired = true)]
     public string ActionPath { get; set; } = string.Empty;
+    
+    [UnnamedArgument(HelpText = "Verb of the action to be executed", IsRequired = false)]
+    public string? ActionVerb { get; set; }
 }

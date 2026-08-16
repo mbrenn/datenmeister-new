@@ -10,6 +10,23 @@ using DatenMeister.Core.Uml.Helper;
 namespace DatenMeister.Actions;
 
 /// <summary>
+/// Defines a default set of action verbs that can be used.
+/// Additional action verbs can be added to this list or directly used without registration
+/// </summary>
+public static class ActionVerbs
+{
+    /// <summary>
+    /// Defines that we need an execution
+    /// </summary>
+    public const string Execute = "execute";
+    
+    /// <summary>
+    /// Defines that we need a rendering
+    /// </summary>
+    public const string Render = "render";
+}
+
+/// <summary>
 /// Defines the execution state for a set of actions.
 /// </summary>
 /// <param name="element">The element that stores the execution state.</param>
@@ -67,8 +84,9 @@ public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// Executes the given action set.
     /// </summary>
     /// <param name="actionSet">Action-Set to be executed.</param>
+    /// <param name="actionVerb">The verb to be executed</param>
     /// <returns>The result of the action set execution.</returns>
-    public async Task<IElement?> ExecuteActionSet(IElement actionSet)
+    public async Task<IElement?> ExecuteActionSet(IElement actionSet, string? actionVerb = null)
     {
         var result = InMemoryObject.CreateEmpty();
             
@@ -89,7 +107,7 @@ public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
                 continue;
             }
                 
-            await ExecuteAction(action);
+            await ExecuteAction(action, actionVerb);
             actionSetExecutionState.IncrementNumberOfActions();
         }
 
@@ -100,9 +118,10 @@ public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// Executes a certain action 
     /// </summary>
     /// <param name="action">Action to be executed</param>
-    /// <returns>The element which indicates the result of an action. It may be null, if there
+    /// <param name="actionVerb">The verb to be executed</param>
+    /// <returns>The element which indicates the result of an action. It may be null if there
     /// is no result</returns>
-    public async Task<IElement?> ExecuteAction(IElement action)
+    public async Task<IElement?> ExecuteAction(IElement action, string? actionVerb = null)
     {
         IElement? result = null;
         var found = false;
@@ -118,7 +137,7 @@ public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
             {
                 try
                 {
-                    return await actionHandler.Evaluate(this, action, null);
+                    return await actionHandler.Evaluate(this, action, actionVerb);
                 }
                 catch (Exception exc)
                 {

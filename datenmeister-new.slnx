@@ -141,6 +141,10 @@
     </Project>
   </Folder>
   <Folder Name="/Library - .Net Standard/DataViews/">
+    <Project Path="src/DatenMeister.DataView.Forms/DatenMeister.DataView.Forms.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
     <Project Path="src/DatenMeister.DataView.Actions.Tests/DatenMeister.DataView.Actions.Tests.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
       <BuildType Solution="WPF|*" Project="Debug" />

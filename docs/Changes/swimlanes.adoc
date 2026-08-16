@@ -178,7 +178,7 @@ This is done by the following steps:
 To actively render the found items, a temporary action is created which requests the rendering of the form.
 This is managed via the client as a Client Action via 'DatenMeister.ViewNodes.RenderItemsInPopup'.
 
-* [ ] Define class of the ViewNodeRendererAction 
+* [ ] Define class of the ViewNodeRenderAction 
 * [ ] Create temporary element upon click.
 * [ ] Navigate ActionPure to that element.
 

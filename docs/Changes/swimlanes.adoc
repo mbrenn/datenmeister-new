@@ -172,8 +172,8 @@ By clicking on that button, the popup shall be opened and all selected items is 
 
 This is done by the following steps: 
 
-* [ ] Add the button upon ViewNode, here a new assembly will be created called 'DatenMeister.DataView.Forms'.
-** [ ] Here, we probably need to add a simple check whether the instance's type is generalized to a ViewNode.
+* [x] Add the button upon ViewNode, here a new assembly will be created called 'DatenMeister.DataView.Forms'.
+** [x] Here, we probably need to add a simple check whether the instance's type is generalized to a ViewNode.
 
 To actively render the found items, a temporary action is created which requests the rendering of the form.
 This is managed via the client as a Client Action via 'DatenMeister.ViewNodes.RenderItemsInPopup'.

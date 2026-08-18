@@ -12,12 +12,14 @@ In this instance of the form association, the rule set is defined.
 |Name|Meaning
 |name|Name of the form association
 |formType|Type of the form that can be assigned. The possible types can be found in the table below.
-|metaClass|If the selected object or the list behind it is of this object type, this association can be selected.
+|metaClass|If the selected object or the list behind it is of this object type, this association can be selected. (e.g. Class listing items of *Property* instances)
+|includeGeneralization|true, if also Generalizations of the given object shall be regarded as matching
 |extentType|If the extent is of this type, this association can be selected.
 |viewModeId|If the user is in this view, this association can be selected.
-|parentMetaClass|If elements of a list are selected and the owning object is of this type, this can be selected.
-|parentProperty|If elements of a list are selected and this list is in this property of the owning object, this can be selected.
+|parentMetaClass|If properties of a list are selected and the owning object is of this type, this can be selected. (e.g. *Class* listing items of Property instances)
+|parentProperty|If properties of a list are selected and this list is in this property of the owning object, this can be selected. (e.g. Class listing items in *ownedAttribute*)
 |form|This describes the form that can be selected if the properties above match, as far as they are chosen.
+
 |===
 
 === Form Types

@@ -69,219 +69,15 @@ public class FormFinder
 
         foreach (var element in formAssociations.OfType<IElement>())
         {
-            InternalDebug("-");
-            if (element is IHasId hasId)
-            {
-                InternalDebug(
-                    $"- Handling: ID = {hasId.Id ?? "none"}, Name = {NamedElementMethods.GetFullName(element)}");
-            }
-
-            // Checks, if we want to perform a break
-            if (query.DebugActive && element.getOrDefault<bool>(_Forms._FormTypes._FormAssociation.debugActive))
-            {
-                Debugger.Break();
-            }
-
-            var points = 0;
-            if (element == null) throw new NullReferenceException("element");
-
-            var associationExtentType =
-                element.getOrDefault<string>(_Forms._FormTypes._FormAssociation.extentType);
-            var associationMetaClass =
-                element.getOrDefault<IElement?>(_Forms._FormTypes._FormAssociation.metaClass);
-            var associationViewType =
-                element.getOrNull<_Forms._FormTypes.___FormType>(_Forms._FormTypes._FormAssociation.formType);
-            var associationParentMetaclass =
-                element.getOrDefault<IElement?>(_Forms._FormTypes._FormAssociation.parentMetaClass);
-            var associationParentProperty =
-                element.getOrDefault<string>(_Forms._FormTypes._FormAssociation.parentProperty);
+            var points = EvaluateFormAssociation(query, element, queryViewModeIds);
             var associationForm = element.getOrDefault<IElement?>(_Forms._FormTypes._FormAssociation.form);
-            var associationWorkspaceId = element.getOrDefault<string>(_Forms._FormTypes._FormAssociation.workspaceId);
-            var associationExtentUri = element.getOrDefault<string>(_Forms._FormTypes._FormAssociation.extentUri);
-            var associationViewModeId =
-                element.getOrDefault<string>(_Forms._FormTypes._FormAssociation.viewModeId);
-            if (string.IsNullOrEmpty(associationExtentType) && associationMetaClass == null
-                                                            && associationParentMetaclass == null
-                                                            && string.IsNullOrEmpty(associationParentProperty)
-                                                            && string.IsNullOrEmpty(associationViewModeId)
-                                                            && associationViewType == null
-                                                            && string.IsNullOrEmpty(associationWorkspaceId)
-                                                            && string.IsNullOrEmpty(associationExtentUri))
-            {
-                InternalDebug("- - This item is too unspecific");
-                // Skip item because it is too unspecific
-                continue;
-            }
-
             if (associationForm == null)
             {
-                Logger.Warn(
-                    $"Given form of '{NamedElementMethods.GetName(element)}' has null value. " +
-                    $"This is not recommended and will lead of unintended behavior of default views.");
-                if(Debugger.IsAttached) Debugger.Break();
                 continue;
             }
 
-            var isMatching = true;
-
-            // Now go through each property and get the points
-
-            // ExtentType
-            if (!string.IsNullOrEmpty(associationExtentType))
-            {
-                if (query.ExtentTypes.Any()
-                    && query.ExtentTypes.All(x=> x.Contains(associationExtentType)))
-                {
-                    InternalDebug("-- MATCH: Requested ExtentType: " + string.Join(", ", query.ExtentTypes) + ", FormAssociation ExtentType: " +
-                                  associationExtentType);
-                    points++;
-                }
-                else
-                {
-                    InternalDebug("-- NO MATCH: Requested ExtentType: " + string.Join(", ", query.ExtentTypes) +
-                                  ", FormAssociation ExtentType: " +
-                                  associationExtentType);
-                    isMatching = false;
-                }
-            }
-
-            // ViewMode Id
-            if (!string.IsNullOrEmpty(associationViewModeId))
-            {
-                if (queryViewModeIds != null
-                    && queryViewModeIds.Contains(associationViewModeId))
-                {
-                    InternalDebug("-- MATCH: Requested ViewMode: " + query.ViewModeId + ", FormAssociation ViewModeId: " +
-                                  associationViewModeId);
-                    points++;
-                }
-                else
-                {
-                    InternalDebug("-- NO MATCH: Requested ViewMode: " + query.ViewModeId +
-                                  ", FormAssociation ViewMode: " +
-                                  associationViewModeId);
-                    isMatching = false;
-                }
-            }
-
-            // MetaClass
-            if (associationMetaClass != null)
-            {
-                if (query.MetaClass != null && query.MetaClass?.equals(associationMetaClass) == true)
-                {
-                    InternalDebug("-- MATCH: Requested metaClass: " + NamedElementMethods.GetName(query.MetaClass) +
-                                  ", FormAssociation innerMetaClass: " +
-                                  NamedElementMethods.GetName(associationMetaClass));
-                    points++;
-                }
-                else
-                {
-                    InternalDebug("-- NO MATCH: Requested metaClass: " + NamedElementMethods.GetName(query.MetaClass) +
-                                  ", FormAssociation innerMetaClass: " +
-                                  NamedElementMethods.GetName(associationMetaClass));
-                    isMatching = false;
-                }
-            }
-
-            // ViewType
-            if (!query.FormType.Equals(associationViewType))
-            {
-                InternalDebug("-- NO MATCH: Requested viewType: " + query.FormType + ", FormAssociation viewType: " +
-                              associationViewType);
-                isMatching = false;
-            }
-            else
-            {
-                InternalDebug("-- MATCH: Requested viewType: " + query.FormType + ", FormAssociation viewType: " +
-                              associationViewType);
-            }
-
-            // ´ParentMetaClass
-            if (associationParentMetaclass != null)
-            {
-                if (query.ParentMetaClass != null &&
-                    query.ParentMetaClass?.equals(associationParentMetaclass) == true)
-                {
-                    InternalDebug("-- MATCH: Requested parentMetaClass: " +
-                                  NamedElementMethods.GetName(query.ParentMetaClass) +
-                                  ", FormAssociation parentMetaClass: " +
-                                  NamedElementMethods.GetName(associationParentMetaclass));
-                    points++;
-                }
-                else
-                {
-                    InternalDebug("-- NO MATCH: Requested parentMetaClass: " +
-                                  NamedElementMethods.GetName(query.ParentMetaClass) +
-                                  ", FormAssociation parentMetaClass: " +
-                                  NamedElementMethods.GetName(associationParentMetaclass));
-                    isMatching = false;
-                }
-            }
-
-            // ParentProperty
-            if (!string.IsNullOrEmpty(associationParentProperty))
-            {
-                if (!string.IsNullOrEmpty(query.ParentProperty) &&
-                    query.ParentProperty.Equals(associationParentProperty))
-                {
-                    InternalDebug("-- MATCH: Requested ParentProperty: " + query.ParentProperty +
-                                  ", FormAssociation ParentProperty: " +
-                                  associationParentProperty);
-                    points++;
-                }
-                else
-                {
-                    InternalDebug("-- NO MATCH: Requested ParentProperty: " + query.ParentProperty +
-                                  ", FormAssociation ParentProperty: " +
-                                  associationParentProperty);
-                    isMatching = false;
-                }
-            }
-
-            // WorkspaceId
-            if (!string.IsNullOrEmpty(associationWorkspaceId))
-            {
-                if (!string.IsNullOrEmpty(query.WorkspaceId) &&
-                    query.WorkspaceId.Equals(associationWorkspaceId))
-                {
-                    InternalDebug("-- MATCH: Requested WorkspaceId: " + query.WorkspaceId +
-                                  ", FormAssociation WorkspaceId: " +
-                                  associationWorkspaceId);
-                    points++;
-                }
-                else
-                {
-                    InternalDebug("-- NO MATCH: Requested WorkspaceId: " + query.WorkspaceId +
-                                  ", FormAssociation WorkspaceId: " +
-                                  associationWorkspaceId);
-                    isMatching = false;
-                }
-            }
-
-            // WorkspaceId
-            if (!string.IsNullOrEmpty(associationExtentUri))
-            {
-                if (!string.IsNullOrEmpty(query.ExtentUri) &&
-                    query.ExtentUri.Equals(associationExtentUri))
-                {
-                    InternalDebug("-- MATCH: Requested extentUri: " + query.ExtentUri +
-                                  ", FormAssociation extentUri: " +
-                                  associationExtentUri);
-                    points++;
-                }
-                else
-                {
-                    InternalDebug("-- NO MATCH: Requested extentUri: " + query.ExtentUri +
-                                  ", FormAssociation extentUri: " +
-                                  associationExtentUri);
-                    isMatching = false;
-                }
-            }
-
-            InternalDebug("-- Points: " + points + ", Matched: " + isMatching);
-
             // The matching view with the maximum points win
-            if (isMatching)
+            if (points != -1)
             {
                 var foundForm = new FoundForm(
                     associationForm,
@@ -303,6 +99,247 @@ public class FormFinder
             });
 
         return selectedForms;
+    }
+
+    /// <summary>
+    /// Evaluates the form association for the specified query and calculates a score indicating how well the form matches.
+    /// </summary>
+    /// <param name="query">The form query containing the parameters for the evaluation.</param>
+    /// <param name="formAssociation">The form association to be evaluated.</param>
+    /// <param name="queryViewModeIds">An array of view mode identifiers to be considered during the evaluation.</param>
+    /// <returns>Returns the calculated score indicating the quality of the match for the form association.</returns>
+    public int EvaluateFormAssociation(FindFormQuery query, IElement formAssociation, string[]? queryViewModeIds)
+    {
+        InternalDebug("-");
+        if (formAssociation is IHasId hasId)
+        {
+            InternalDebug(
+                $"- Handling: ID = {hasId.Id ?? "none"}, Name = {NamedElementMethods.GetFullName(formAssociation)}");
+        }
+
+        // Checks, if we want to perform a break
+        if (query.DebugActive && formAssociation.getOrDefault<bool>(_Forms._FormTypes._FormAssociation.debugActive))
+        {
+            Debugger.Break();
+        }
+
+        var points = 0;
+        if (formAssociation == null) throw new NullReferenceException("element");
+
+        var associationExtentType =
+            formAssociation.getOrDefault<string>(_Forms._FormTypes._FormAssociation.extentType);
+        var associationMetaClass =
+            formAssociation.getOrDefault<IElement?>(_Forms._FormTypes._FormAssociation.metaClass);
+        var associationViewType =
+            formAssociation.getOrNull<_Forms._FormTypes.___FormType>(_Forms._FormTypes._FormAssociation.formType);
+        var associationParentMetaclass =
+            formAssociation.getOrDefault<IElement?>(_Forms._FormTypes._FormAssociation.parentMetaClass);
+        var associationParentProperty =
+            formAssociation.getOrDefault<string>(_Forms._FormTypes._FormAssociation.parentProperty);
+        var foundAssociationForm = formAssociation.getOrDefault<IElement?>(_Forms._FormTypes._FormAssociation.form);
+        var associationWorkspaceId = formAssociation.getOrDefault<string>(_Forms._FormTypes._FormAssociation.workspaceId);
+        var associationExtentUri = formAssociation.getOrDefault<string>(_Forms._FormTypes._FormAssociation.extentUri);
+        var associationViewModeId =
+            formAssociation.getOrDefault<string>(_Forms._FormTypes._FormAssociation.viewModeId);
+        var includeGeneralization =
+            formAssociation.getOrDefault<bool>(_Forms._FormTypes._FormAssociation.includeGeneralization);
+        if (string.IsNullOrEmpty(associationExtentType) && associationMetaClass == null
+                                                        && associationParentMetaclass == null
+                                                        && string.IsNullOrEmpty(associationParentProperty)
+                                                        && string.IsNullOrEmpty(associationViewModeId)
+                                                        && associationViewType == null
+                                                        && string.IsNullOrEmpty(associationWorkspaceId)
+                                                        && string.IsNullOrEmpty(associationExtentUri))
+        {
+            InternalDebug("- - This item is too unspecific");
+            // Skip item because it is too unspecific
+            return points;
+        }
+
+        if (foundAssociationForm == null)
+        {
+            Logger.Warn(
+                $"Given form of '{NamedElementMethods.GetName(formAssociation)}' has null value. " +
+                $"This is not recommended and will lead of unintended behavior of default views.");
+            if(Debugger.IsAttached) Debugger.Break();
+            return points;
+        }
+
+        var isMatching = true;
+
+        // Now go through each property and get the points
+
+        // ExtentType
+        if (!string.IsNullOrEmpty(associationExtentType))
+        {
+            if (query.ExtentTypes.Any()
+                && query.ExtentTypes.All(x=> x.Contains(associationExtentType)))
+            {
+                InternalDebug("-- MATCH: Requested ExtentType: " + string.Join(", ", query.ExtentTypes) + ", FormAssociation ExtentType: " +
+                              associationExtentType);
+                points++;
+            }
+            else
+            {
+                InternalDebug("-- NO MATCH: Requested ExtentType: " + string.Join(", ", query.ExtentTypes) +
+                              ", FormAssociation ExtentType: " +
+                              associationExtentType);
+                isMatching = false;
+            }
+        }
+
+        // ViewMode Id
+        if (!string.IsNullOrEmpty(associationViewModeId))
+        {
+            if (queryViewModeIds != null
+                && queryViewModeIds.Contains(associationViewModeId))
+            {
+                InternalDebug("-- MATCH: Requested ViewMode: " + query.ViewModeId + ", FormAssociation ViewModeId: " +
+                              associationViewModeId);
+                points++;
+            }
+            else
+            {
+                InternalDebug("-- NO MATCH: Requested ViewMode: " + query.ViewModeId +
+                              ", FormAssociation ViewMode: " +
+                              associationViewModeId);
+                isMatching = false;
+            }
+        }
+
+        // MetaClass
+        if (associationMetaClass != null)
+        {
+            bool isMetaClassMatching;
+            if (includeGeneralization && query.MetaClass != null)
+            {
+                isMetaClassMatching = ClassifierMethods.IsSpecializedClassifierOf(
+                    query.MetaClass, associationMetaClass);
+            }
+            else
+            {
+                isMetaClassMatching = query.MetaClass != null && query.MetaClass?.equals(associationMetaClass) == true;
+            }
+                
+            if (isMetaClassMatching)
+            {
+                InternalDebug("-- MATCH: Requested metaClass: " + NamedElementMethods.GetName(query.MetaClass) +
+                              ", FormAssociation innerMetaClass: " +
+                              NamedElementMethods.GetName(associationMetaClass));
+                points++;
+            }
+            else
+            {
+                InternalDebug("-- NO MATCH: Requested metaClass: " + NamedElementMethods.GetName(query.MetaClass) +
+                              ", FormAssociation innerMetaClass: " +
+                              NamedElementMethods.GetName(associationMetaClass));
+                isMatching = false;
+            }
+        }
+
+        // ViewType
+        if (!query.FormType.Equals(associationViewType))
+        {
+            InternalDebug("-- NO MATCH: Requested viewType: " + query.FormType + ", FormAssociation viewType: " +
+                          associationViewType);
+            isMatching = false;
+        }
+        else
+        {
+            InternalDebug("-- MATCH: Requested viewType: " + query.FormType + ", FormAssociation viewType: " +
+                          associationViewType);
+        }
+
+        // ´ParentMetaClass
+        if (associationParentMetaclass != null)
+        {
+            if (query.ParentMetaClass != null &&
+                query.ParentMetaClass?.equals(associationParentMetaclass) == true)
+            {
+                InternalDebug("-- MATCH: Requested parentMetaClass: " +
+                              NamedElementMethods.GetName(query.ParentMetaClass) +
+                              ", FormAssociation parentMetaClass: " +
+                              NamedElementMethods.GetName(associationParentMetaclass));
+                points++;
+            }
+            else
+            {
+                InternalDebug("-- NO MATCH: Requested parentMetaClass: " +
+                              NamedElementMethods.GetName(query.ParentMetaClass) +
+                              ", FormAssociation parentMetaClass: " +
+                              NamedElementMethods.GetName(associationParentMetaclass));
+                isMatching = false;
+            }
+        }
+
+        // ParentProperty
+        if (!string.IsNullOrEmpty(associationParentProperty))
+        {
+            if (!string.IsNullOrEmpty(query.ParentProperty) &&
+                query.ParentProperty.Equals(associationParentProperty))
+            {
+                InternalDebug("-- MATCH: Requested ParentProperty: " + query.ParentProperty +
+                              ", FormAssociation ParentProperty: " +
+                              associationParentProperty);
+                points++;
+            }
+            else
+            {
+                InternalDebug("-- NO MATCH: Requested ParentProperty: " + query.ParentProperty +
+                              ", FormAssociation ParentProperty: " +
+                              associationParentProperty);
+                isMatching = false;
+            }
+        }
+
+        // WorkspaceId
+        if (!string.IsNullOrEmpty(associationWorkspaceId))
+        {
+            if (!string.IsNullOrEmpty(query.WorkspaceId) &&
+                query.WorkspaceId.Equals(associationWorkspaceId))
+            {
+                InternalDebug("-- MATCH: Requested WorkspaceId: " + query.WorkspaceId +
+                              ", FormAssociation WorkspaceId: " +
+                              associationWorkspaceId);
+                points++;
+            }
+            else
+            {
+                InternalDebug("-- NO MATCH: Requested WorkspaceId: " + query.WorkspaceId +
+                              ", FormAssociation WorkspaceId: " +
+                              associationWorkspaceId);
+                isMatching = false;
+            }
+        }
+
+        // WorkspaceId
+        if (!string.IsNullOrEmpty(associationExtentUri))
+        {
+            if (!string.IsNullOrEmpty(query.ExtentUri) &&
+                query.ExtentUri.Equals(associationExtentUri))
+            {
+                InternalDebug("-- MATCH: Requested extentUri: " + query.ExtentUri +
+                              ", FormAssociation extentUri: " +
+                              associationExtentUri);
+                points++;
+            }
+            else
+            {
+                InternalDebug("-- NO MATCH: Requested extentUri: " + query.ExtentUri +
+                              ", FormAssociation extentUri: " +
+                              associationExtentUri);
+                isMatching = false;
+            }
+        }
+
+        InternalDebug("-- Points: " + points + ", Matched: " + isMatching);
+
+        if (!isMatching)
+        {
+            points = -1;
+        }
+
+        return points;
     }
 
     /// <summary>

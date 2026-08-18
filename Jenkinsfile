@@ -29,7 +29,7 @@ pipeline {
                     
                     cd src/DatenMeister.DataView.Forms
                     npm install 
-                    cd ../../..
+                    cd ../..
                     
                     cd src/Templates/DatenMeister.Templates.TypeScriptAndTypesPlugin
                     npm install 

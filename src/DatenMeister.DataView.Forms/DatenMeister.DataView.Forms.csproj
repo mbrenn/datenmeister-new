@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Include="Xmi\Forms.xmi" />
       <EmbeddedResource Include="Xmi\Types.xmi" />
       <None Remove="Js\DatenMeister.ViewNode.Forms.js" />
       <EmbeddedResource Include="Js\DatenMeister.ViewNode.Forms.js" />

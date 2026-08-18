@@ -705,6 +705,7 @@
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="34eb3326-c3d2-4330-b916-5067235a5533" name="debugActive" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="71d98bef-e8db-4574-b256-b878800d4adf" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" lower="0" upper="1" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0387e43e-215c-4e6c-9b2c-df5f03178b57" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" lower="0" upper="1" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="853f19f2-d92c-49c0-8552-a053fddebf29" name="includeGeneralization" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       </packagedElement>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="d2ad03e4-4ded-47fe-af57-dab6a2aedb57" name="FieldTypes">

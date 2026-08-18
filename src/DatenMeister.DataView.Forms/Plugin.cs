@@ -10,6 +10,7 @@ namespace DatenMeister.DataView.Forms;
 public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
     private const string DmTypesUriReference = "dm:///types.forms.dataview.datenmeister/";
+    private const string DmManagementUriReference = "dm:///management.forms.dataview.datenmeister/";
 
     public Task Start(PluginLoadingPosition position)
     {
@@ -25,6 +26,7 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
         
         // Adds the extent
         pluginHelper.AddExtentForTypesFromManifest("Xmi.Types.xmi", DmTypesUriReference);
+        pluginHelper.AddExtentForManagementFromManifest("Xmi.Forms.xmi", DmManagementUriReference);
         
         // Adds the javascript file
         var jsParameter = new AddJavaScriptFileToWebserverParameter();

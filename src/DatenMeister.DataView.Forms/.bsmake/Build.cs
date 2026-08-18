@@ -12,7 +12,7 @@ return 0;
 async Task CopyModel()
 {
     Console.WriteLine("Copying model");
-    File.Copy("Model/Types.ts", "Assets/Js/Types.ts");
+    File.Copy("Model/Types.ts", "Assets/Js/Types.ts", true);
 }
 
 async Task CompileTs()

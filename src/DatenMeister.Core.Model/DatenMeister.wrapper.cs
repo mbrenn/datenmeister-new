@@ -7648,6 +7648,14 @@ public class Forms
                     _wrappedElement.set("extentUri", value);
             }
 
+            public bool @includeGeneralization
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("includeGeneralization");
+                set => 
+                    _wrappedElement.set("includeGeneralization", value);
+            }
+
         }
 
     }

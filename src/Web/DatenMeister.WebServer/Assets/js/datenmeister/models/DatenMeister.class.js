@@ -1123,6 +1123,7 @@ export var _Forms;
         _FormAssociation.debugActive = "debugActive";
         _FormAssociation.workspaceId = "workspaceId";
         _FormAssociation.extentUri = "extentUri";
+        _FormAssociation.includeGeneralization = "includeGeneralization";
         _FormTypes._FormAssociation = _FormAssociation;
         _FormTypes.__FormAssociation_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation";
     })(_FormTypes = _Forms._FormTypes || (_Forms._FormTypes = {}));

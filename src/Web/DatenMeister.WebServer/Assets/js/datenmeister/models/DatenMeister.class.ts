@@ -1265,6 +1265,7 @@ export namespace _Forms
                     static debugActive = "debugActive";
                     static workspaceId = "workspaceId";
                     static extentUri = "extentUri";
+                    static includeGeneralization = "includeGeneralization";
                 }
 
                 export const __FormAssociation_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation";

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xmi>
+  <meta p2:id="5ac33b86-eeda-4f61-b506-9957dac8a62f" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="DatenMeister.Forms " __uri="dm:///management.forms.dataview.datenmeister/" />
+  <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" p2:id="14bbffa2-c328-42c4-97c7-db30c8072346" title="Extension for ActionField" name="Extension for ActionField" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <field p2:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData" p2:id="9097e0bf-20e3-498b-b5ee-8c47c9b567d7" name="Show Data" title="Show Data" actionName="DatenMeister.ViewNodes.RenderItemsInPopup" buttonText="Show Data" />
+  </item>
+  <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p2:id="9d2efd53-2066-497c-b1d5-5fb3f83614e2" name="Association for ViewDate" formType="RowExtension" metaClass-ref="dm:///intern.types.swimlane.datenmeister/#1c8b02e8-1988-4c3b-9d74-8739c400d56c" xmlns:p2="http://www.omg.org/spec/XMI/20131001" form-ref="#14bbffa2-c328-42c4-97c7-db30c8072346" />
+</xmi>

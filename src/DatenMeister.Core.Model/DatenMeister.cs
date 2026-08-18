@@ -2859,6 +2859,9 @@ public class _Forms
             public static readonly string @extentUri = "extentUri";
             public IElement? @_extentUri = null;
 
+            public static readonly string @includeGeneralization = "includeGeneralization";
+            public IElement? @_includeGeneralization = null;
+
         }
 
         public _FormAssociation @FormAssociation = new ();

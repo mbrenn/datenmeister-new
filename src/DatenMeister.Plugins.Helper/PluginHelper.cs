@@ -67,6 +67,9 @@ public class PluginHelper(PluginHelperConfiguration configuration)
                 parameter.ProjectsRelativePathToDevelopmentFile,
                 parameter.DirectoryPath, 
                 parameter.FileName));
+        
+        // If available, also add the js.map file
+        
     }
 
     /// <summary>

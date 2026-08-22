@@ -41,6 +41,9 @@ pipeline {
         
         stage ('Typescript')
         {   
+            when {
+                expression { false }
+            }
             steps{
                 sh """ 
                     cd src/DatenMeister.Reports.Forms

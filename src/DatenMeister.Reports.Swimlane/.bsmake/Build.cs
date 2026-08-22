@@ -16,35 +16,24 @@ bool MergeTs()
     File.Delete("Assets/Js/Types.ts");
     File.Copy("Model/Types.ts", "Assets/Js/Types.ts");
 
-    var swimlaneSourceFile = "Assets/Js/DatenMeister.Reports.Swimlane.ts";
-    var typesSourceFile = "Assets/Js/Types.ts";
-    var mergedOutputFile = "Assets/Js/DatenMeister.Reports.Swimlane.Combine.ts";
-
-    var outputExists = File.Exists(mergedOutputFile);
-    if (outputExists)
-    {
-        var outputTime = File.GetLastWriteTimeUtc(mergedOutputFile);
-        var swimlaneTime = File.GetLastWriteTimeUtc(swimlaneSourceFile);
-        var typesTime = File.GetLastWriteTimeUtc(typesSourceFile);
-
-        Console.WriteLine($"{swimlaneTime} <= {outputTime} && {typesTime} <= {outputTime}");
-
-        if (swimlaneTime <= outputTime && typesTime <= outputTime)
-        {
-            Console.WriteLine("Skipping Merge TS: {0} is up-to-date.", mergedOutputFile);
-            return false;
-        }
-    }
-
-    var swimlane = File.ReadAllText(swimlaneSourceFile);
-    var types = File.ReadAllText(typesSourceFile);
     var result = "// This file is generated in build.cake. Do NOT modify that file.\n";
     result += "// Modify DatenMeister.Reports.Swimlane.Source.ts\n";
     result += "// noinspection DuplicatedCode\n\n";
 
-    result += swimlane + "\n\n" + types;
-    File.WriteAllText(mergedOutputFile, result);
-    Console.WriteLine($"{mergedOutputFile} was created: {File.Exists(mergedOutputFile)}");
+    var mergeOptions = new FileMergeOptions()
+    {
+        FirstFile = "Assets/Js/DatenMeister.Reports.Swimlane.ts",
+        SecondFile = "Assets/Js/Types.ts",
+        TargetFile = "Assets/Js/DatenMeister.Reports.Swimlane.Combine.ts",
+        PrefixTextTarget = result
+    };
+
+    if (!FileHelper.MergeFiles(mergeOptions))
+    {
+        return false;
+    }
+
+    Console.WriteLine($"{mergeOptions.TargetFile} was created: {File.Exists(mergeOptions.TargetFile)}");
     return true;
 }
 

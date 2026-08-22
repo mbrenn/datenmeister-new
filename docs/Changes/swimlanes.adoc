@@ -164,7 +164,6 @@ An action button starting all the actions above is added to the default form of 
 
 * [x] Include an action button for metaclass of 'SwimlaneRenderAction'
 
-
 === Create an action which shows the result of a Viewnode
 
 We would like to have a button on all detail forms of the specializations of the ViewNode. 

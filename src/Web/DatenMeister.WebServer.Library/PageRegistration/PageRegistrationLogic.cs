@@ -105,9 +105,63 @@ public class PageRegistrationLogic
         if (registrationType == RegistrationType.EmbedAndLoad)
         {
             _data.JavaScriptFiles.Add(uriFileName);
-        }
+        }AddJavaScriptMapFromResourceIfAvailable(
+            manifestType,
+            manifestName,
+            uriFileName,
+            originalFilePath);
     }
-                
+
+    /// <summary>
+    /// Adds a JavaScript map file from an embedded resource if it is available.
+    /// </summary>
+    /// <param name="manifestType">The type from the assembly where the embedded resource is located.</param>
+    /// <param name="manifestName">The name of the resource manifest for the JavaScript map file.</param>
+    /// <param name="uriFileName">The URI file name associated with the map file.</param>
+    /// <param name="originalFilePath">
+    /// The optional original file path for the JavaScript map file, used if local loading is enabled.
+    /// </param>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the resource stream for the specified map file cannot be found.
+    /// </exception>
+    private void AddJavaScriptMapFromResourceIfAvailable(
+        Type manifestType,
+        string manifestName,
+        string uriFileName,
+        string? originalFilePath)
+    {
+        var mapManifestName = manifestName + ".map";
+        var mapUriFileName = uriFileName + ".map";
+        var mapOriginalFilePath = originalFilePath == null ? null : originalFilePath + ".map";
+
+        using (var mapResourceStream = manifestType.GetTypeInfo().Assembly.GetManifestResourceStream(mapManifestName))
+        {
+            if (mapResourceStream == null)
+            {
+                return;
+            }
+        }
+
+        if (mapOriginalFilePath != null && File.Exists(mapOriginalFilePath) && AllowLoadingFromLocalFile)
+        {
+            _logger.Info($"Local file used instead of resource: {mapOriginalFilePath}");
+        }
+
+        AddUrl(
+            $"js/datenmeister/module/{mapUriFileName}",
+            "application/json",
+            () =>
+            {
+                if (mapOriginalFilePath != null && File.Exists(mapOriginalFilePath) && AllowLoadingFromLocalFile)
+                {
+                    return new FileStream(mapOriginalFilePath, FileMode.Open, FileAccess.Read);
+                }
+
+                return manifestType.GetTypeInfo().Assembly.GetManifestResourceStream(mapManifestName)
+                       ?? throw new InvalidOperationException($"The manifest {mapManifestName} was not found");
+            });
+    }
+
     /// <summary>
     /// Adds a new Javascript file for the webserver
     /// The JavaScript file is taken from a resource and will be available under js/{fileName}

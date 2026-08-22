@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="BurnSystems.Make.BuildAgent" Version="1.0.2" />
+      <PackageReference Include="BurnSystems.Make.BuildAgent" Version="1.0.4.1" />
       <PackageReference Include="BurnSystems" Version="1.2.0" />
     </ItemGroup>
 

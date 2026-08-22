@@ -2,6 +2,7 @@
 using BurnSystems.Make.BuildAgent;
 
 await CopyModel();
+await MergeJs();
 await CompileTs();
 await CompileJs();
 
@@ -13,6 +14,19 @@ async Task CopyModel()
 {
     Console.WriteLine("Copying model");
     File.Copy("Model/Types.ts", "Assets/Js/Types.ts", true);
+}
+
+async Task MergeJs()
+{
+    Console.WriteLine("Merge model");
+    var mergeOptions = new FileMergeOptions()
+    {
+        FirstFile = "Assets/Js/DatenMeister.ViewNode.Forms.ts",
+        SecondFile = "Assets/Js/Types.ts",
+        TargetFile = "Assets/Js/Packed.ts"
+    };
+    
+    FileHelper.MergeFiles(mergeOptions);
 }
 
 async Task CompileTs()

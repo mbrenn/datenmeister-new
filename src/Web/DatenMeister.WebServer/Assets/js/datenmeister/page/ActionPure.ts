@@ -59,7 +59,7 @@ async function executeReferencedAction(
     itemUrl: string): Promise<void> {
 
     try {
-        const result = await ActionClient.executeAction(workspace, itemUrl);
+        const result = await ActionClient.executeAction(workspace, itemUrl, actionVerb);
 
         $("#pageContent").empty();
 

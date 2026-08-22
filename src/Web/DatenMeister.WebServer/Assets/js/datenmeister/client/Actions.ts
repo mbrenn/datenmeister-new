@@ -48,11 +48,15 @@ export async function executeActionDirectly(actionName: string, parameter: Execu
     return resultAsDmObject;
 }
 
-export async function executeAction(workspaceId: string, itemUri: string) {
+export async function executeAction(workspaceId: string, itemUri: string, actionVerb?: string) {
     let url = Settings.baseUrl +
         "api/action/execute/" +
         encodeURIComponent(workspaceId) + "/" +
         encodeURIComponent(itemUri);
+    
+    if(actionVerb) {
+        url += "?verb=" + encodeURIComponent(actionVerb);
+    }
 
     const result =
         await ApiConnection.post<ExecuteActionResult>(

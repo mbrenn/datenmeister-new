@@ -34,6 +34,9 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
         jsParameter.ProjectsRelativePathToDevelopmentFile = "../../DatenMeister.DataView.Forms";
         pluginHelper.AddJavaScriptFileToWebServer(jsParameter);
         
+        // Adds the action handler
+        pluginHelper.AddActionHandler(new ViewNodeRenderActionHandler());
+        
         return Task.CompletedTask;
     }
 }

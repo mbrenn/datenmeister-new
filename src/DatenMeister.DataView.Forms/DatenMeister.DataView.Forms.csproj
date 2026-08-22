@@ -14,9 +14,10 @@
 
     <ItemGroup>
       <None Remove="Js\Packed.js" />
-      <EmbeddedResource Include="Js\Packed.js" />
         <EmbeddedResource Include="Xmi\Forms.xmi" />
         <EmbeddedResource Include="Xmi\Types.xmi" />
+        <None Remove="Js\DatenMeister.ViewNode.Forms.js" />
+        <EmbeddedResource Include="Js\DatenMeister.ViewNode.Forms.js" />
     </ItemGroup>
 
     <ItemGroup>

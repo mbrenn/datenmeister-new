@@ -2,7 +2,7 @@
 using BurnSystems.Make.BuildAgent;
 
 await CopyModel();
-await MergeJs();
+// await MergeJs(); /* We need to find a better solution here */
 await CompileTs();
 await CompileJs();
 

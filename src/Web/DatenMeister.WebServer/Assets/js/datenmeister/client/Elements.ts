@@ -84,6 +84,16 @@ export async function createTemporaryElement(metaClassUri?: string) : Promise<IC
         });
 }
 
+/**
+ * Converts the result information from the temporary element to create a DmObjectSync-object
+ * which can be set properties and sync it with the server later
+ * @param result The information which was returned by the creation of the server
+ */
+export function createDmObjectByTemporaryElement(result: ICreateTemporaryElementResult)
+{
+    return Mof.DmObjectWithSync.createFromReference(result.workspace, result.uri);
+}
+
 export function findBySearchString(searchString): Promise<IFindBySearchStringResult> {
     return ApiConnection.get<IFindBySearchStringResult>(
         Settings.baseUrl +

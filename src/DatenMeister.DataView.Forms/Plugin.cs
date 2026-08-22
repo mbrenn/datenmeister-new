@@ -30,7 +30,7 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
         
         // Adds the javascript file
         var jsParameter = new AddJavaScriptFileToWebserverParameter();
-        jsParameter.SetByRelativeFileName("Js/Packed.js");
+        jsParameter.SetByRelativeFileName("Js/DatenMeister.ViewNode.Forms.js");
         jsParameter.ProjectsRelativePathToDevelopmentFile = "../../DatenMeister.DataView.Forms";
         pluginHelper.AddJavaScriptFileToWebServer(jsParameter);
         

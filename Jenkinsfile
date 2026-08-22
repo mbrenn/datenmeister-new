@@ -41,9 +41,6 @@ pipeline {
         
         stage ('Typescript')
         {   
-            when {
-                expression { false }
-            }
             steps{
                 sh """ 
                     cd src/DatenMeister.Reports.Forms
@@ -124,6 +121,9 @@ pipeline {
 
         stage ('JS Tests')
         {
+            when {
+                expression { false }
+            }
             steps
             {
                 sh """

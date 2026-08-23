@@ -191,7 +191,7 @@ This action will return a ClientAction of a new type called 'ViewDataTable' and 
 |tableForm|Tableform instance that shall be used for the rendering
 |===
 
-* [ ] Create the Xmi structure for that
+* [x] Create the Xmi structure for that
 * [ ] Return the structure from the ViewNodeStructure Action Handler implementation
 ** [ ] Use the automatic Form Factory to create the table from. Here, only the first 100 items shall be used.
 

@@ -125,9 +125,7 @@ export function renderInto(container: JQuery<HTMLElement>, data: SwimlaneData): 
     }
     table.append(tbody);
     container.append(table);
-}
-
-// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.3.0.0
+}// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.3.0.0
 export namespace _Root
 {
         export class _SwimlaneConfiguration

@@ -250,8 +250,14 @@ public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMoveme
             throw new InvalidOperationException($"Value is of type {value.GetType()}");
     }
 
+    private static int _recursiveProtector; 
+    
     public override string ToString()
     {
+        _recursiveProtector++;
+        if (_recursiveProtector > 100)
+            return "Recurse Maximum";
+        
         if (IsPropertySet("name")) return GetProperty("name")?.ToString() ?? string.Empty;
 
         var builder = new StringBuilder();

@@ -258,6 +258,7 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="552ffc3f-0025-4e5a-b878-6edc36226339" name="formAutoGenerate" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a715203c-154c-41cf-872c-5253e30c4366" name="formType" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType" />
         <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="4e164393-ada5-4e4d-bd33-746723d327cf" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="eaa6bd87-c5ed-4767-9e7f-cf80afdbf9b1" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" name="form" isComposite="true" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="30f7e380-73e1-4ade-b797-1cc948b63c4f" name="RenderHtmlClientAction">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="8efcc0b2-face-4104-8895-916517d6578d" name="html" type-ref="dm:///_internal/model/primitivetypes#String" />
@@ -644,6 +645,7 @@
         <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-CollectionExtension" name="CollectionExtension" />
         <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-RowExtension" name="RowExtension" />
         <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-TableExtension" name="TableExtension" />
+        <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="894ba5aa-5bbf-4a3b-9d1c-552aaf9558a1" name="Decoupled" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.Form" name="Form">
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="341f1b1f-c83e-48b8-90b4-23ef10c4d5cf" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />

@@ -41,7 +41,7 @@ export class SwitchToReport extends FormActions.ItemFormActionModuleBase impleme
 }
 
 // Shows the report within the form
-export class ReportForm implements IIForms.IObjectFormElement {
+export class ReportForm implements IIForms.IObjectForm {
 
     pageNavigation: IIForms.IPageNavigation;
     workspace: string;

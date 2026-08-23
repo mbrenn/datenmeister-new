@@ -83,7 +83,7 @@ class TableJQueryCaches {
     parentHtml: JQuery<HTMLElement>;
 }
 
-export class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesForms.IObjectFormElement {
+export class TableForm implements InterfacesForms.ICollectionForm, InterfacesForms.IObjectForm {
 
     /**
      * Flag to enable debug features like the query debug link

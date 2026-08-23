@@ -397,6 +397,7 @@ export namespace _Actions
                     static dataUri = "dataUri";
                     static formAutoGenerate = "formAutoGenerate";
                     static formType = "formType";
+                    static form = "form";
                     static actionName = "actionName";
                     static element = "element";
                     static parameter = "parameter";
@@ -1147,6 +1148,7 @@ export namespace _Forms
                     export const CollectionExtension = "CollectionExtension";
                     export const RowExtension = "RowExtension";
                     export const TableExtension = "TableExtension";
+                    export const Decoupled = "Decoupled";
                 }
 
                 export enum ___FormType
@@ -1158,7 +1160,8 @@ export namespace _Forms
                     ObjectExtension,
                     CollectionExtension,
                     RowExtension,
-                    TableExtension
+                    TableExtension,
+                    Decoupled
                 }
 
                 export class _Form

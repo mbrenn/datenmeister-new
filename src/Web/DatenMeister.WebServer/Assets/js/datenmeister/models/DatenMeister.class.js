@@ -347,6 +347,7 @@ export var _Actions;
         _RenderFormClientAction.dataUri = "dataUri";
         _RenderFormClientAction.formAutoGenerate = "formAutoGenerate";
         _RenderFormClientAction.formType = "formType";
+        _RenderFormClientAction.form = "form";
         _RenderFormClientAction.actionName = "actionName";
         _RenderFormClientAction.element = "element";
         _RenderFormClientAction.parameter = "parameter";
@@ -1012,6 +1013,7 @@ export var _Forms;
             _FormType.CollectionExtension = "CollectionExtension";
             _FormType.RowExtension = "RowExtension";
             _FormType.TableExtension = "TableExtension";
+            _FormType.Decoupled = "Decoupled";
         })(_FormType = _FormTypes._FormType || (_FormTypes._FormType = {}));
         let ___FormType;
         (function (___FormType) {
@@ -1023,6 +1025,7 @@ export var _Forms;
             ___FormType[___FormType["CollectionExtension"] = 5] = "CollectionExtension";
             ___FormType[___FormType["RowExtension"] = 6] = "RowExtension";
             ___FormType[___FormType["TableExtension"] = 7] = "TableExtension";
+            ___FormType[___FormType["Decoupled"] = 8] = "Decoupled";
         })(___FormType = _FormTypes.___FormType || (_FormTypes.___FormType = {}));
         class _Form {
         }

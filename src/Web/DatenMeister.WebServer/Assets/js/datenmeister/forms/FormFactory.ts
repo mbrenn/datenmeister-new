@@ -1,24 +1,44 @@
 ﻿import * as IForm from "./Interfaces.js";
 
-interface EntryCollectionForm
-{
+interface IHasUri<T> {
     uri: string;
-    factoryFunction: () => IForm.ICollectionFormElement;
+    factoryFunction: () => T;
 }
 
-interface EntryObjectForm
+interface EntryCollectionForm extends IHasUri<IForm.ICollectionForm>
 {
     uri: string;
-    factoryFunction: () => IForm.IObjectFormElement;
+    factoryFunction: () => IForm.ICollectionForm;
 }
 
-const registerDataCollectionForm: Array<EntryCollectionForm> = 
-    new Array<EntryCollectionForm>();
+interface EntryObjectForm extends IHasUri<IForm.IObjectForm> {
+    uri: string;
+    factoryFunction: () => IForm.IObjectForm;
+}
 
-const registerDataObjectForm: Array<EntryObjectForm> 
-    = new Array<EntryObjectForm>();
+interface EntryDecoupledForm extends IHasUri<IForm.IDecoupledForm> {
+    uri: string;
+    factoryFunction: () => IForm.IDecoupledForm;
+}
 
-export function registerCollectionForm(uri: string, factoryFunction: () => IForm.ICollectionFormElement) {
+const registerDataDecoupledForm: Array<EntryDecoupledForm> = new Array<EntryDecoupledForm>();
+
+const registerDataCollectionForm: Array<EntryCollectionForm> = new Array<EntryCollectionForm>();
+
+const registerDataObjectForm: Array<EntryObjectForm> = new Array<EntryObjectForm>();
+
+export function registerDecoupledForm(uri: string, factoryFunction: () => IForm.IDecoupledForm) {
+    if(getDecoupledFormFactory(uri) !== undefined) return;
+
+    registerDataDecoupledForm.push(
+        {
+            uri: uri,
+            factoryFunction: factoryFunction
+        }
+    );
+}
+
+export function registerCollectionForm(uri: string, factoryFunction: () => IForm.ICollectionForm) {
     if(getCollectionFormFactory(uri) !== undefined) return;
 
     registerDataCollectionForm.push(
@@ -29,7 +49,7 @@ export function registerCollectionForm(uri: string, factoryFunction: () => IForm
     );
 }
 
-export function registerObjectForm(uri: string, factoryFunction: () => IForm.IObjectFormElement) {
+export function registerObjectForm(uri: string, factoryFunction: () => IForm.IObjectForm) {
     if(getObjectFormFactory(uri) !== undefined) return;
     
     registerDataObjectForm.push(
@@ -40,15 +60,14 @@ export function registerObjectForm(uri: string, factoryFunction: () => IForm.IOb
     );
 }
 
-export function getCollectionFormFactory(uri: string): (() => IForm.ICollectionFormElement) | undefined {
-
+function getFormByUri<T>(uri: string, register: Array<IHasUri<T>>): (() => T) | undefined {
     const indexUri = uri.indexOf('#');
     if (indexUri !== -1) {
         uri = uri.substring(indexUri + 1);
     }
 
-    for (let n in registerDataCollectionForm) {
-        const item = registerDataCollectionForm[n];
+    for (let n in register) {
+        const item = register[n];
 
         const indexItemUri = item.uri.indexOf('#');
         if (indexItemUri !== -1) {
@@ -63,25 +82,14 @@ export function getCollectionFormFactory(uri: string): (() => IForm.ICollectionF
     return undefined;
 }
 
-export function getObjectFormFactory(uri: string): (() => IForm.IObjectFormElement) | undefined {
-    const indexUri = uri.indexOf('#');
-    if (indexUri !== -1) {
-        uri = uri.substring(indexUri + 1);
-    }
+export function getDecoupledFormFactory(uri: string): (() => IForm.IDecoupledForm) | undefined {
+    return getFormByUri<IForm.IDecoupledForm>(uri, registerDataDecoupledForm);
+}
 
-    for (let n in registerDataObjectForm) {
-        
-        const item = registerDataObjectForm[n];
+export function getCollectionFormFactory(uri: string): (() => IForm.ICollectionForm) | undefined {
+    return getFormByUri<IForm.ICollectionForm>(uri, registerDataCollectionForm);
+}
 
-        const indexItemUri = item.uri.indexOf('#');
-        if (indexItemUri !== -1) {
-            item.uri = item.uri.substring(indexItemUri + 1);
-        }
-
-        if (item.uri === uri) {
-            return item.factoryFunction;
-        }
-    }
-
-    return undefined;
+export function getObjectFormFactory(uri: string): (() => IForm.IObjectForm) | undefined {
+    return getFormByUri<IForm.IObjectForm>(uri, registerDataObjectForm);
 }

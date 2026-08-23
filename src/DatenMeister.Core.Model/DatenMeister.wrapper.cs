@@ -2303,6 +2303,27 @@ public class Actions
                     _wrappedElement.set("formType", value);
             }
 
+            // DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper
+            public DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper? @form
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("form");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FormTypes.Form_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("form", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("form", value);
+                    }
+                }
+            }
+
             public string? @actionName
             {
                 get =>

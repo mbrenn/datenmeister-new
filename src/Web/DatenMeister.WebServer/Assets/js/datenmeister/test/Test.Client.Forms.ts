@@ -13,7 +13,7 @@ import _ViewMode = _DatenMeister._Forms._ViewMode;
 import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
 
-class X implements IForm.IObjectFormElement {
+class X implements IForm.IObjectForm {
     pageNavigation: IForm.IPageNavigation;
     element: Mof.DmObject;
     extentUri: string;
@@ -35,7 +35,7 @@ class X implements IForm.IObjectFormElement {
     }    
 }
 
-class Y implements IForm.ICollectionFormElement {
+class Y implements IForm.ICollectionForm {
     callbackLoadItems: (query: Mof.DmObject) => Promise<Array<Mof.DmObject>>;
     pageNavigation: IForm.IPageNavigation;
     element: Mof.DmObject;

@@ -192,7 +192,7 @@ This action will return a ClientAction of a new type called 'ViewDataTable' and 
 |===
 
 * [x] Create the Xmi structure for that
-* [ ] Return the structure from the ViewNodeStructure Action Handler implementation
+* [ ] Return the structure from the ViewNodeRenderActionHandler implementation
 ** [ ] Use the automatic Form Factory to create the table from. Here, only the first 100 items shall be used.
 
 The clientside loads the elements of the view by using the existing query interface and limits the number of rows by 100 elements. 

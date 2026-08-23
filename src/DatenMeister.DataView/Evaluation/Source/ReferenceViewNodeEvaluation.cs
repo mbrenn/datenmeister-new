@@ -8,7 +8,7 @@ namespace DatenMeister.DataView.Evaluation.Source;
 /// <summary>
 /// Implements the evaluation for the node reference node
 /// </summary>
-public class NodeReferenceNodeEvaluation : IDataViewNodeEvaluation
+public class ReferenceViewNodeEvaluation : IDataViewNodeEvaluation
 {
     /// <inheritdoc />
     public bool IsResponsible(IElement node)

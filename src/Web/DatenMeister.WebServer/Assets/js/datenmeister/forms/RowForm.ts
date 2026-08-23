@@ -76,7 +76,7 @@ function showRowFormInfoPopup(infoCell: JQuery<HTMLElement>, text: string) {
     popup.data("dm-rowform-info-popup-timeout", timeout);
 }
 
-export class RowForm implements InterfacesForms.IObjectFormElement {
+export class RowForm implements InterfacesForms.IObjectForm {
     pageNavigation: InterfacesForms.IPageNavigation;
     workspace: string;
     extentUri: string;

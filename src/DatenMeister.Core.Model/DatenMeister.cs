@@ -880,6 +880,9 @@ public class _Actions
             public static readonly string @formType = "formType";
             public IElement? @_formType = null;
 
+            public static readonly string @form = "form";
+            public IElement? @_form = null;
+
             public static readonly string @actionName = "actionName";
             public IElement? @_actionName = null;
 
@@ -2560,6 +2563,8 @@ public class _Forms
             public IElement @__RowExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-RowExtension");
             public static string @TableExtension = "TableExtension";
             public IElement @__TableExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TableExtension");
+            public static string @Decoupled = "Decoupled";
+            public IElement? @__Decoupled = null;
 
         }
 
@@ -2576,7 +2581,8 @@ public class _Forms
             @ObjectExtension,
             @CollectionExtension,
             @RowExtension,
-            @TableExtension
+            @TableExtension,
+            @Decoupled
         }
 
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form",

@@ -3,7 +3,6 @@ using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.DataView.Evaluation;
 using DatenMeister.DataView.Evaluation.Column;
 using DatenMeister.DataView.Evaluation.Row;
 using DatenMeister.DataView.Evaluation.Source;
@@ -90,21 +89,24 @@ public class DataViewPlugin(
     public static DataViewNodeFactories GetDefaultViewNodeFactories()
     {
         var result = new DataViewNodeFactories();
-        result.Add(new DynamicSourceNodeEvaluation());            
-        result.Add(new RowFilterByPropertyValueNodeEvaluation());
-        result.Add(new RowFilterByMetaclassNodeEvaluation());
-        result.Add(new RowFlattenNodeEvaluation());
         result.Add(new SelectByPathNodeEvaluation());
         result.Add(new SelectByFullNameNodeEvaluation());
         result.Add(new SelectByExtentNodeEvaluation());
         result.Add(new SelectFromAllWorkspacesNodeEvaluation());
         result.Add(new SelectByWorkspaceNodeEvaluation());
-        result.Add(new ColumnFilterExcludeEvaluation());
-        result.Add(new ColumnFilterIncludeOnlyEvaluation());
+        result.Add(new DynamicSourceNodeEvaluation());       
+             
+        result.Add(new RowFilterByPropertyValueNodeEvaluation());
+        result.Add(new RowFilterByMetaclassNodeEvaluation());
+        result.Add(new RowFlattenNodeEvaluation());
         result.Add(new RowFilterOnPositionEvaluation());
         result.Add(new RowOrderByNodeEvaluation());
         result.Add(new RowFilterByFreeTextAnywhereNodeEvaluation());
-        result.Add(new NodeReferenceNodeEvaluation());
+        
+        result.Add(new ColumnFilterExcludeEvaluation());
+        result.Add(new ColumnFilterIncludeOnlyEvaluation());
+        
+        result.Add(new ReferenceViewNodeEvaluation());
         result.Add(new SelectByPropertyEvaluation());
 
         return result;

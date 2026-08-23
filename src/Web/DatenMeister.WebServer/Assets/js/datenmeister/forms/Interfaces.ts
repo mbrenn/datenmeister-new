@@ -1,5 +1,6 @@
 ﻿import * as Mof from "../Mof.js";
-import { IFormConfiguration } from "./IFormConfiguration.js";
+import {IDecoupledFormConfiguration, IFormConfiguration} from "./IFormConfiguration.js";
+import {ItemFormActionModuleBase} from "../FormActions.js";
 
 export enum FormType {
     Object = "object",
@@ -46,12 +47,26 @@ export interface IForm extends IFormNavigation
     refreshForm(): Promise<void>;
 }
 
+/**
+ * Describes a decoupled form which has the information about the data in the formdefinition itself 
+ */
+export interface IDecoupledForm
+{
+    /**
+     * Creates the form by using the provided configuration
+     * @param parent Html-Parent element where the form shall be created
+     * @param configuration Configuration which shall be used to create the form
+     */
+    createForm(parent: JQuery<HTMLElement>, configuration: IDecoupledFormConfiguration): Promise<void>;    
+}
+
 export interface IPageForm extends IForm {
 
     /** Stores instance to the page to allow navigation */
     pageNavigation: IPageNavigation;
 }
-export interface IObjectFormElement extends IPageForm {
+
+export interface IObjectForm extends IPageForm {
     /**
      * The element which is required to be shown
      */
@@ -65,7 +80,7 @@ export interface IObjectFormElement extends IPageForm {
  * The elements will receive a set of elements and a reference to its parent item ('itemUrl'). 
  * Usually, the task of the implementation is to show the collections
  */
-export interface ICollectionFormElement extends IPageForm {
+export interface ICollectionForm extends IPageForm {
     /**
      * Elements which are required to shown
      * @param query Query to be used for the collection. The query is a MofObject which contains the parameters

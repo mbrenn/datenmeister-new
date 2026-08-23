@@ -1,5 +1,5 @@
 ﻿import * as Mof from "../Mof.js";
-import { SubmitMethod } from "./Forms.js";
+import {SubmitMethod} from "./Forms.js";
 import {FormType} from "./Interfaces.js";
 
 export interface IFormConfiguration {
@@ -23,4 +23,12 @@ export interface IFormConfiguration {
      * Defines the view mode for the configuration
      */
     viewMode?: string;
+}
+
+/**
+ * Defines the configuration for a decoupled form
+ */
+export interface IDecoupledFormConfiguration
+{
+    form: Mof.DmObject;
 }

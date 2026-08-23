@@ -53,5 +53,71 @@ public class Root
 
     }
 
+    [TypeUri(Uri = "dm:///types.forms.dataview.datenmeister/#0e2986e0-2982-426e-8024-71a100f1e7d0",
+        TypeKind = TypeKind.WrappedClass)]
+    public class ViewDataTable_Wrapper : IElementWrapper
+    {
+        private readonly IElement _wrappedElement;
+
+        public ViewDataTable_Wrapper(IElement innerDmElement)
+        {
+            _wrappedElement = innerDmElement;
+        }
+
+        public ViewDataTable_Wrapper(IFactory factory)
+        {
+            _wrappedElement = factory.create(_metaClass);
+        }
+
+        public IElement GetWrappedElement() => _wrappedElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///types.forms.dataview.datenmeister/#0e2986e0-2982-426e-8024-71a100f1e7d0");
+
+        public static ViewDataTable_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @viewNode
+        {
+            get
+            {
+                var foundElement = _wrappedElement.getOrDefault<IElement?>("viewNode");
+                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+            }
+            set 
+            {
+                if(value is IElementWrapper wrappedElement)
+                {
+                    _wrappedElement.set("viewNode", wrappedElement.GetWrappedElement());
+                }
+                else
+                {
+                    _wrappedElement.set("viewNode", value);
+                }
+            }
+        }
+
+        // DatenMeister.Core.Models.Forms.FormTypes.TableForm_Wrapper
+        public DatenMeister.Core.Models.Forms.FormTypes.TableForm_Wrapper? @tableForm
+        {
+            get
+            {
+                var foundElement = _wrappedElement.getOrDefault<IElement?>("tableForm");
+                return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FormTypes.TableForm_Wrapper(foundElement);
+            }
+            set 
+            {
+                if(value is IElementWrapper wrappedElement)
+                {
+                    _wrappedElement.set("tableForm", wrappedElement.GetWrappedElement());
+                }
+                else
+                {
+                    _wrappedElement.set("tableForm", value);
+                }
+            }
+        }
+
+    }
+
 }
 

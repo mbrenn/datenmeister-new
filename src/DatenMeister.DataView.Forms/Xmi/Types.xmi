@@ -4,4 +4,8 @@
   <item p2:type="dm:///_internal/model/uml#Class" p2:id="06f21d5d-3813-4810-a63c-16f12ef5d175" name="ViewNodeRenderAction" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="fdb4263a-e154-4304-bf82-ce3ac138448c" name="viewNode" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
   </item>
+  <item p2:type="dm:///_internal/model/uml#Class" p2:id="0e2986e0-2982-426e-8024-71a100f1e7d0" name="ViewDataTable" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b7ea97be-e96c-4c34-a1c5-c0a644cbc7b1" name="viewNode" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a9424bac-e95a-4417-a2da-be33162b99c3" name="tableForm" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm" />
+  </item>
 </xmi>

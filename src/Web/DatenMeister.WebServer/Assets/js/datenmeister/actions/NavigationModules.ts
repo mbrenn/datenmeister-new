@@ -90,8 +90,6 @@ class NavigateOpenActionInWindow extends FormActions.ItemFormActionModuleBase
         this.skipSaving = true;
     }
 
-
-
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         const context = element.get(_Actions._ClientActions._NavigateOpenActionInWindow.context, Mof.ObjectType.String);
         const actionUrl = element.get(_Actions._ClientActions._NavigateOpenActionInWindow.actionUrl, Mof.ObjectType.String);
@@ -101,8 +99,7 @@ class NavigateOpenActionInWindow extends FormActions.ItemFormActionModuleBase
             + "&workspace=" + encodeURIComponent(workspace)
             + "&actionUrl=" + encodeURIComponent(actionUrl);
         window.open(Url, "_blank");
-    }
-    
+    }    
 }
 
 class ChangeForm extends FormActions.ItemFormActionModuleBase {

@@ -19,18 +19,12 @@ public class ViewNodeRenderActionHandler : IActionHandler
     {
         if (actionVerb != "render")
         {
-            // Creates the action result
-            var actionResult = InMemoryObject.CreateEmpty(_Actions.TheOne.__ActionResult);
-            actionResult.set(_Actions._ActionResult.isSuccess, false);
-        
             // The alert result
-            var result = InMemoryObject.CreateEmpty(_Actions.TheOne.ClientActions.__AlertClientAction);
-            result.set(_Actions._ClientActions._AlertClientAction.messageText, "ActionHandler 'ViewNodeRenderActionHandler' just supports rendering"); 
-            result.set(_Actions._ClientActions._AlertClientAction.name, "Information");
+            var result = Core.Models.Actions.ClientActions.AlertClientAction_Wrapper.Create(InMemoryObject.TemporaryFactory);
+            result.messageText = "ActionHandler 'ViewNodeRenderActionHandler' just supports rendering";
+            result.name = "Information";
         
-            // Now consolidating all the information
-            actionResult.set(_Actions._ActionResult.clientActions, new[]{result});
-            return actionResult;
+            return ActionModelHelper.CreateActionResult(false, [result.GetWrappedElement()]);
         }
         else
         {

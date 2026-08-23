@@ -177,9 +177,29 @@ This is done by the following steps:
 To actively render the found items, a temporary action is created which requests the rendering of the form.
 This is managed via the client as a Client Action via 'DatenMeister.ViewNodes.RenderItemsInPopup'.
 
-* [ ] Define class of the ViewNodeRenderAction 
-* [ ] Create temporary element upon click.
-* [ ] Navigate ActionPure to that element.
+* [x] Define class of the ViewNodeRenderAction 
+* [x] Create temporary element upon click.
+* [x] Navigate ActionPure to that element.
+
+This action will return a ClientAction of a new type called 'ViewDataTable' and a table definition. This form contains the following properties:
+
+[cols="1,3", options="header"]
+|===
+|Property|Meaning
+
+|viewNode|View to be rendered
+|tableForm|Tableform instance that shall be used for the rendering
+|===
+
+* [ ] Create the Xmi structure for that
+* [ ] Return the structure from the ViewNodeStructure Action Handler implementation
+** [ ] Use the automatic Form Factory to create the table from. Here, only the first 100 items shall be used.
+
+The clientside loads the elements of the view by using the existing query interface and limits the number of rows by 100 elements. 
+
+* [ ] Create new client action
+* [ ] Load the elements by using the query interface
+* [ ] Use the existing TableForm to generate the items
 
 === Create the action to show the viewdefinition
 

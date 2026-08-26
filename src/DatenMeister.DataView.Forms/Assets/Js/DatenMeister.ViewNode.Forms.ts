@@ -25,7 +25,10 @@ class ViewNodeRenderAction
         this.actionName = "DatenMeister.ViewNodes.RenderItemsInPopup";
     }
 
-    async execute(form?: FormInterfaces.IFormNavigation, element?: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<Mof.DmObject | void> {
+    async execute(form?: FormInterfaces.IFormNavigation, 
+                  element?: Mof.DmObject, 
+                  parameter?: Mof.DmObject,
+                  submitMethod?: SubmitMethod): Promise<Mof.DmObject | void> {
         if(element === undefined) throw new Error("element is null");
         
         // We have to create the temporary action on the server to navigate to it. 
@@ -34,7 +37,7 @@ class ViewNodeRenderAction
             {
                 property:_Root._ViewNodeRenderAction.viewNode,
                 referenceUri: element.uri
-            });        
+            });
         
         // Now open the popup window
         const createWindow = new Mof.DmObject(DmModel._Actions._ClientActions.__NavigateOpenActionInWindow_Uri);
@@ -50,8 +53,6 @@ class ViewNodeRenderAction
 class ViewNodeRenderForm implements FormInterfaces.IDecoupledForm
 {
     async createForm(parent: JQuery<HTMLElement>, configuration: IDecoupledFormConfiguration): Promise<void> {
-        parent.append("<div>ViewNodeRenderForm.</div>");
-
         const viewNode = configuration.form.get(_Root._ViewDataTable.viewNode, Mof.ObjectType.Object);
         if (viewNode === undefined)
             throw new Error("ViewNode is undefined");
@@ -61,19 +62,26 @@ class ViewNodeRenderForm implements FormInterfaces.IDecoupledForm
 
         const viewData = await ClientElements.queryObject(query.queryStatement);
 
+        const tableFormObject = configuration.form.get(_Root._ViewDataTable.tableForm, Mof.ObjectType.Object);
         const tableForm = new TableForm.TableForm({
-            formElement: configuration.form,
+            formElement: tableFormObject,
             isReadOnly: true,
             formType: FormInterfaces.FormType.Collection
         });
         
+        tableForm.tableParameter.hideButtonsForNewElements = true;
+        tableForm.tableParameter.allowSortingOfColumn = false;
+        tableForm.tableParameter.allowFilteringOnProperty = false;
+        tableForm.tableParameter.allowFreeTextFiltering = false;
+        tableForm.tableParameter.showFilterQuery = false;
+        tableForm.tableParameter.showSettingsButtons = false;
+        tableForm.tableParameter.showColumnSettingsButtons = false;
+
         tableForm.callbackLoadItems = async () => {
             return Promise.resolve(viewData.result);
         };
 
         await tableForm.createFormByCollection(parent);
-
-        parent.append("<div>" + viewData.result + "</div>");
     }
 }
 

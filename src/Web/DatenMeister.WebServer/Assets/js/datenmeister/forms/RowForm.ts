@@ -126,14 +126,13 @@ export class RowForm implements InterfacesForms.IObjectForm {
 
         // Creates the table itself
         let tr;
-        let table;
         const tthis = this;
         parent.empty();
         this.fieldElements = new Array<FieldInForm>();
 
         const fields = this.formElement.getAsArray("field");
 
-        table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-rowform'></table>");
+        let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-rowform'></table>");
         const tableBody = $(
             "<tbody><tr>" +
             "<th>Name</th>" +

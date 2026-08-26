@@ -36,23 +36,29 @@ class ViewNodeRenderAction extends FormActions.ItemFormActionModuleBase {
 }
 class ViewNodeRenderForm {
     async createForm(parent, configuration) {
-        parent.append("<div>ViewNodeRenderForm.</div>");
         const viewNode = configuration.form.get(_Root._ViewDataTable.viewNode, Mof.ObjectType.Object);
         if (viewNode === undefined)
             throw new Error("ViewNode is undefined");
         const query = new QueryEngine.QueryBuilder();
         QueryEngine.referenceExistingNode(query, viewNode.workspace, viewNode.uri);
         const viewData = await ClientElements.queryObject(query.queryStatement);
+        const tableFormObject = configuration.form.get(_Root._ViewDataTable.tableForm, Mof.ObjectType.Object);
         const tableForm = new TableForm.TableForm({
-            formElement: configuration.form,
+            formElement: tableFormObject,
             isReadOnly: true,
             formType: FormInterfaces.FormType.Collection
         });
+        tableForm.tableParameter.hideButtonsForNewElements = true;
+        tableForm.tableParameter.allowSortingOfColumn = false;
+        tableForm.tableParameter.allowFilteringOnProperty = false;
+        tableForm.tableParameter.allowFreeTextFiltering = false;
+        tableForm.tableParameter.showFilterQuery = false;
+        tableForm.tableParameter.showSettingsButtons = false;
+        tableForm.tableParameter.showColumnSettingsButtons = false;
         tableForm.callbackLoadItems = async () => {
             return Promise.resolve(viewData.result);
         };
         await tableForm.createFormByCollection(parent);
-        parent.append("<div>" + viewData.result + "</div>");
     }
 }
 // Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.3.0.0

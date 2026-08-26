@@ -37,6 +37,21 @@ export class TableFormParameter {
     showFilterQuery: boolean = true;
 
     /**
+     * Flag, whether the settings buttons are shown or not
+     */
+    showSettingsButtons: boolean = true;
+
+    /**
+     * Flag, whether the column settings buttons are shown or not
+     */
+    showColumnSettingsButtons: boolean = true;
+
+    /**
+     * Gets or sets a flag hiding the new buttons
+     */
+    hideButtonsForNewElements: boolean = false;
+
+    /**
      * MetaClass that is used to filter only upon the items having that specific metaclass
      */
     metaClass: string; 
@@ -166,7 +181,6 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
      * @param parent The Html to which the table shall be added
      */
     async createFormByObject(parent: JQuery<HTMLElement>) {
-
         const tthis = this;
 
         // We need to get a loading mechanism in case the user wants to filter or sort. Unfortunately, the queries are not support
@@ -219,10 +233,10 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
 
             this.tableCache.cacheContainer = $("<div class='dm-tableform-container'></div>");
             parent.append(this.tableCache.cacheContainer);
-            
+
             this.tableCache.cacheHeadline = $("<h2><a></a></h2>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheHeadline);
-            
+
             this.tableCache.cacheLoadingInfoText = $("<div class='dm-tableform-loadinginfotext'></div>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheLoadingInfoText);
 
@@ -235,12 +249,15 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
             this.tableCache.cacheContainer.append(this.tableCache.cacheButtonsTypeSelection);
 
             this.tableCache.cacheSettings = $("<div class='dm-tableform-settings'><a class='btn btn-secondary'>Tableform Settings</a></div>");
-            this.tableCache.cacheContainer.append(this.tableCache.cacheSettings);
-            
-            this.tableCache.cacheSettingsButton = $("<div class='dm-tableform-settings-button'></div>");
-            this.tableCache.cacheSettings.append(this.tableCache.cacheSettingsButton);
-            await this.initializeTableSettingsButton();
-            
+
+            if (this.tableParameter.showSettingsButtons) {
+                this.tableCache.cacheContainer.append(this.tableCache.cacheSettings);
+                this.tableCache.cacheSettingsButton = $("<div class='dm-tableform-settings-button'></div>");
+                this.tableCache.cacheSettings.append(this.tableCache.cacheSettingsButton);
+                await this.initializeTableSettingsButton();
+            }
+
+
             this.tableCache.cacheQueryText = $('<div class="dm-tableform-querytext"></div>');
             this.tableCache.cacheSettings.append(this.tableCache.cacheQueryText);
 
@@ -252,12 +269,12 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
             if (this.isDebug) {
                 this.tableCache.cacheSettings.append(this.tableCache.cacheQueryDebugLink);
             }
-            
+
             this.tableCache.cacheSettings.append(this.tableCache.cacheQueryDebugOutput = $("<span class=\"dm-tableform-debugquery-content\"></span>"));
 
             this.tableCache.cacheEmptyDiv = $("<div></div>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheEmptyDiv);
-            
+
             this.tableCache.cacheTableContainer = $("<div class='dm-tableform-tablecontainer'></div>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheTableContainer);
 
@@ -292,7 +309,9 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
         this.tableCache.cacheButtons.empty();
 
         // Evaluate the new buttons to create objects
-        this.createButtonsForNewInstance();
+        if(!this.tableParameter.hideButtonsForNewElements) {
+            this.createButtonsForNewInstance();
+        }
 
         // Create Query Text
         const _ = this.updateFilterQueryText();
@@ -530,8 +549,10 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
                 this.createSortingButton(field, titleButtons);
             }
 
-            // Create the column menu
-            await this.appendColumnMenus(field, titleButtons);
+            if(this.tableParameter.showColumnSettingsButtons) {
+                // Create the column menu
+                await this.appendColumnMenus(field, titleButtons);
+            }
 
             innerRow.append(cell);
         }

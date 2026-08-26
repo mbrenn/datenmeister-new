@@ -31,7 +31,12 @@ export interface IFormNavigation {
      */
     itemUrl: string;
 
-    formElement: Mof.DmObject;
+    formElement: Mof.DmObject | undefined;
+
+    /**
+     * Gets the form element
+     */
+    getFormElement(): Mof.DmObject;
 
     /**
      * Stores the values of the form into the DOM, this is an optional method
@@ -72,7 +77,7 @@ export interface IObjectForm extends IPageForm {
      */
     element: Mof.DmObject;
 
-    createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) : Promise<void>;
+    createFormByObject(parent: JQuery<HTMLElement>) : Promise<void>;
 }
 
 /**
@@ -94,7 +99,7 @@ export interface ICollectionForm extends IPageForm {
      */
     setInfoText(message: string): void;
 
-    createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean): Promise<void>
+    createFormByCollection(parent: JQuery<HTMLElement>): Promise<void>
 }
 
 export interface IQueryFilterResult

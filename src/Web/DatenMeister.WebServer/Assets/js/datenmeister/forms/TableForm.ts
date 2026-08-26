@@ -42,7 +42,6 @@ export class TableFormParameter {
     metaClass: string; 
 }
 
-
 class TableJQueryCaches {
     /* 
     Stores the overall div which hosts the full Table Form including all Buttons, Headline, Table, etc.
@@ -84,7 +83,6 @@ class TableJQueryCaches {
 }
 
 export class TableForm implements InterfacesForms.ICollectionForm, InterfacesForms.IObjectForm {
-
     /**
      * Flag to enable debug features like the query debug link
      */
@@ -101,7 +99,7 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
      */
     element: Mof.DmObject;
     extentUri: string;
-    formElement: Mof.DmObject;
+    formElement: Mof.DmObject | undefined;
     itemUrl: string;
     workspace: string;
 
@@ -111,6 +109,14 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
     tableCache: TableJQueryCaches = new TableJQueryCaches();
 
     pageNavigation: InterfacesForms.IPageNavigation;
+    
+    getFormElement(): Mof.DmObject {
+        if (this.formElement === undefined) {
+            throw new Error("Form element is undefined");
+        }
+        
+        return this.formElement;
+    }
 
     /**
      * This callback allows to load the items in case the user has changed the QueryFilterParameters
@@ -118,6 +124,11 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
     callbackLoadItems: (query: Mof.DmObject) => Promise<Array<Mof.DmObject>>;
 
     firstRun: boolean = true;
+    
+    constructor(configuration: IFormConfiguration) {
+        this.configuration = configuration;
+        this.formElement = configuration.formElement;
+    }
 
     /**
      * Refreshes the complete form including the parent item which might contain multiple tables
@@ -127,7 +138,7 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
         if (this.configuration.refreshForm !== undefined) {
             await this.configuration.refreshForm();
         } else {
-            await this.createFormByCollection(this.tableCache.parentHtml, this.configuration, true);
+            await this.createFormByCollection(this.tableCache.parentHtml);
         }
     }
 
@@ -137,7 +148,7 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
      */
     async reloadTable(): Promise<void> {
         const _ = this.updateFilterQueryText();
-        await this.createFormByCollection(this.tableCache.parentHtml, this.configuration, true);
+        await this.createFormByCollection(this.tableCache.parentHtml);
     }
 
     async refreshTable(): Promise<void> {
@@ -153,10 +164,8 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
      * This method just calls the createFormByCollection since a TableForm can 
      * show the extent's elements directly or just the properties of an elemnet
      * @param parent The Html to which the table shall be added
-     * @param configuration The Configuration for the table
-     * @param refresh true, if we just would like to refresh the table and not create new elements
      */
-    async createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean) {
+    async createFormByObject(parent: JQuery<HTMLElement>) {
 
         const tthis = this;
 
@@ -167,7 +176,7 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
             this.tableParameter.allowFilteringOnProperty = false;
 
             // Loads the properties as a whole
-            const property = this.formElement.get(_DatenMeister._Forms._FormTypes._TableForm.property, Mof.ObjectType.String);
+            const property = this.getFormElement().get(_DatenMeister._Forms._FormTypes._TableForm.property, Mof.ObjectType.String);
 
             const result = await ClientItem.getProperty(tthis.workspace, tthis.itemUrl, property);
             if (Array.isArray(result)) {
@@ -178,21 +187,19 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
             }
         };
 
-        return await this.createFormByCollection(parent, configuration, refresh);
+        return await this.createFormByCollection(parent);
     }
 
     /**
      * Creates the form by the given collection
      * @param parent The parent html element
      * @param configuration The configuration for the form
-     * @param refresh true, if we just would like to refresh the table and not create new elements
      */
-    async createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean) {
+    async createFormByCollection(parent: JQuery<HTMLElement>) {
         this.tableCache.parentHtml = parent;
-        this.configuration = configuration;
-
-        this.tableParameter.metaClass = (this.formElement.get('metaClass') as Mof.DmObject)?.uri;
-        const tthis = this;
+        const formElement = this.getFormElement();
+        
+        this.tableParameter.metaClass = (formElement.get('metaClass') as Mof.DmObject)?.uri;
 
         if (this.configuration.isReadOnly === undefined) {
             this.configuration.isReadOnly = true;
@@ -270,15 +277,16 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
         this.elements = await this.callbackLoadItems(this.tableState.queryStatement);
 
         const headLineLink = $("a", this.tableCache.cacheHeadline);
-        headLineLink.text(
-            this.formElement.get('title')
-            ?? this.formElement.get('name'));
-
-        const link = Navigator.getLinkForNavigateToExtentItems(
-            this.workspace, this.extentUri, {metaClass: this.tableParameter.metaClass});
-        if (link !== null) {
-            headLineLink.attr(
-                'href', link);
+        headLineLink.text(formElement.get('title') ?? formElement.get('name'));
+        
+        // Adds the link of the headline
+        if(this.workspace !== undefined && this.extentUri !== undefined) {
+            const link = Navigator.getLinkForNavigateToExtentItems(
+                this.workspace, this.extentUri, {metaClass: this.tableParameter.metaClass});
+            if (link !== null) {
+                headLineLink.attr(
+                    'href', link);
+            }
         }
 
         this.tableCache.cacheButtons.empty();
@@ -310,16 +318,18 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
      * Creates the buttons for the new instance
      */
     private createButtonsForNewInstance() {
-        const property = this.formElement.get('property');
+        const formElement = this.getFormElement();
+        
+        const property = formElement.get('property');
         const tthis = this;
 
-        if (this.formElement.get(_DatenMeister._Forms._FormTypes._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean) !== true) {
+        if (formElement.get(_DatenMeister._Forms._FormTypes._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean) !== true) {
             // Creates default unclassified button
             createUnclassifiedButton();
         }
 
         // Goes through all the elements
-        const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");
+        const defaultTypesForNewElements = formElement.getAsArray("defaultTypesForNewElements");
         if (defaultTypesForNewElements !== undefined) {
             for (let n in defaultTypesForNewElements) {
                 const inner = defaultTypesForNewElements[n] as Mof.DmObject;
@@ -356,7 +366,7 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
                             document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
                                 tthis.workspace,
                                 tthis.itemUrl,
-                                property, 
+                                property,
                                 selectedItem === undefined ? undefined : selectedItem.uri,
                                 selectedItem === undefined ? undefined : selectedItem.workspace);
                         }
@@ -377,21 +387,21 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
          * @param name - The name of the button
          * @param metaClass - The metaclass of the item to be created
          */
-        function createButton (name: string, metaClass?: Mof.DmObject) {
+        function createButton(name: string, metaClass?: Mof.DmObject) {
             const metaClassUri = metaClass?.uri;
             const metaClassWorkspace = metaClass?.workspace;
-            
+
             const btn = $("<btn class='btn btn-secondary'></btn>");
             btn.text("Create " + name);
             btn.on('click', () => {
-                                
+
                 // Creates the location to the buttons
                 if (property === undefined || property === null) {
                     document.location.href =
                         Navigator.getLinkForNavigateToCreateNewItemInExtent(
                             tthis.workspace,
                             tthis.extentUri,
-                            metaClassUri, 
+                            metaClassUri,
                             metaClassWorkspace);
                 } else {
                     document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, property, metaClassUri, "Types");
@@ -493,10 +503,11 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
     * Creates the table itself that shall be shown
     */
     private async createTable() {
+        const formElement = this.getFormElement();
         if (this.tableCache?.cacheTable === undefined) return;
         this.tableCache.cacheTable.empty();
 
-        const fields = this.formElement.getAsArray("field") as Mof.DmObject[];
+        const fields = formElement.getAsArray("field") as Mof.DmObject[];
 
         const headerRow = $("<tbody><tr></tr></tbody>");
         const innerRow = $("tr", headerRow);
@@ -527,7 +538,7 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
 
         this.tableCache.cacheTable.append(headerRow);
 
-        let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
+        let noItemsWithMetaClass = formElement.get('noItemsWithMetaClass');
         const metaClassFilter = this.tableParameter.metaClass;
 
         for (const element of this.elements) {
@@ -734,7 +745,6 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
 
             andText = ' AND ';
         }
-
         
         const freeTextFilter = this.tableState.getFreeTextFilter();
         if (freeTextFilter !== undefined && freeTextFilter !== "") {

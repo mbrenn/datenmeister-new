@@ -5,8 +5,6 @@ import * as MofSync from "../MofSync.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import { addKeyBindingEvent } from "../../burnsystems/Events.js";
 export class Field extends BaseField {
-    button;
-    inConfirmation;
     async createDom(dmElement) {
         const tthis = this;
         const title = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.title, Mof.ObjectType.String);

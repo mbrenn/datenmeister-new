@@ -26,7 +26,7 @@ export function createFunctionToRemoveAllProperties(tableForm: TableForm, field:
             button.on('click', async () => {
                 // Gets the data
                 const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);
-                const dataUrl = tableForm.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String);
+                const dataUrl = tableForm.getFormElement().get(_TableForm.dataUrl, Mof.ObjectType.String);
 
                 // Creates the action
                 const action = new Mof.DmObject(_DatenMeister._Actions.__DeletePropertyFromCollectionAction_Uri);

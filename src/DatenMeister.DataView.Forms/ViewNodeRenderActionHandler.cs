@@ -44,7 +44,8 @@ public class ViewNodeRenderActionHandler : IActionHandler
         form.viewNode = actionAsObject.viewNode;
         
         // Gets the elements behind the viewnode
-        var viewNode = form.viewNode?.GetWrappedElement() ?? throw new InvalidOperationException("Not set viewnode");
+        var viewNode = form.viewNode?.GetWrappedElement() 
+                       ?? throw new InvalidOperationException("Not set viewnode");
         var dataViewLogic = new DataViewLogic(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
         
         // Gets the form itself 

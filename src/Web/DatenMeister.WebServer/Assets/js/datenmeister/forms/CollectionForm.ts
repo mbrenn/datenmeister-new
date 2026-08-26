@@ -101,6 +101,11 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
      */
     private _overrideFormUrl?: string;
 
+    getFormElement(): Mof.DmObject {
+        return this.formElement;
+    }
+
+
     constructor(htmlElements: CollectionFormHtmlElements) {
         this.htmlElements = htmlElements;
         this.statusTextControl = new StatusFieldControl(
@@ -359,7 +364,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
 
                 const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
                 if (formFactory !== undefined) {
-                    const tableForm = formFactory();
+                    const tableForm = formFactory(configuration);
                     tableForm.pageNavigation = tthis;
                     tableForm.callbackLoadItems = async (x) => {
                         const result = await callbackLoadItems(x);
@@ -369,7 +374,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                     tableForm.formElement = tab;
                     tableForm.workspace = tthis.workspace;
                     tableForm.extentUri = tthis.extentUri;
-                    await tableForm.createFormByCollection(form, configuration);
+                    await tableForm.createFormByCollection(form);
                 } else {
                     form.addClass('alert alert-warning');
                     const nameValue = tab.get('name', Mof.ObjectType.String);

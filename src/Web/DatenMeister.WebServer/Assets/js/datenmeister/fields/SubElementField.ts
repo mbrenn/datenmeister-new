@@ -158,7 +158,7 @@ export class Control {
                                 field: fieldData,
                                 isReadOnly: true,
                                 itemUrl: innerValue.uri,
-                                configuration: {formType: this.configuration.formType, isReadOnly: false},
+                                configuration: {formType: this.configuration.formType, isReadOnly: false, formElement: tthis.form.formElement},
                                 form: tthis.form
                             });
                         const dom = await field.createDom(innerValue);

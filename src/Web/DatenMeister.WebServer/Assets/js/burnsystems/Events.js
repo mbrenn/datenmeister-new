@@ -30,7 +30,9 @@ export function addKeyBindingEvent(button, bindingKey, bindingKeyModifierCtrl = 
     });
 }
 export class UserEvent {
-    assigned = new Array();
+    constructor() {
+        this.assigned = new Array();
+    }
     // Adds a new listener to the event handler
     addListener(func) {
         const result = {

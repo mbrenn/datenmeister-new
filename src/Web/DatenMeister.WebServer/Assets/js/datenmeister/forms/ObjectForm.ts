@@ -85,6 +85,10 @@ export class ObjectFormCreator implements IForm.IPageForm {
     private statusTextControl: StatusFieldControl;
     private htmlElements: ObjectFormHtmlElements;
     
+    getFormElement(): Mof.DmObject {
+        return this.formElement;
+    }
+    
     constructor (htmlElements: ObjectFormHtmlElements) {
         this.htmlElements = htmlElements;
         this.statusTextControl = new StatusFieldControl(
@@ -145,7 +149,7 @@ export class ObjectFormCreator implements IForm.IPageForm {
 
                 const factoryFunction = FormFactory.getObjectFormFactory(tab.metaClass.uri);
                 if (factoryFunction !== undefined) {
-                    const detailForm = factoryFunction();                    
+                    const detailForm = factoryFunction(configuration);                    
                     detailForm.pageNavigation = tthis.pageNavigation;
                     detailForm.workspace = this.workspace;
                     detailForm.extentUri = this.extentUri ?? this.element.extentUri;
@@ -153,7 +157,7 @@ export class ObjectFormCreator implements IForm.IPageForm {
                     detailForm.formElement = tab;
                     detailForm.element = this.element;                              
 
-                    await detailForm.createFormByObject(form, configuration);
+                    await detailForm.createFormByObject(form);
                 } else {
                     form.addClass('alert alert-warning');
                     const nameValue = tab.get('name', Mof.ObjectType.String);
@@ -169,8 +173,7 @@ export class ObjectFormCreator implements IForm.IPageForm {
 
                 this.statusTextControl.setListStatus("Create Tab " + n, true);
             } catch (error: any) {
-                const errorMessage
-                    = $("<div>An Exception has occured during the creation: <span></span></div>");
+                const errorMessage = $("<div>An Exception has occured during the creation: <span></span></div>");
                 $("span", errorMessage).text(error.stack === undefined ? error : error.stack);
                 this.htmlElements.itemContainer.append(errorMessage);
             }

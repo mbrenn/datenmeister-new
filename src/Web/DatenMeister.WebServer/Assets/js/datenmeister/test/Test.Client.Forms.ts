@@ -1,5 +1,6 @@
 ﻿import * as FormFactory from '../forms/FormFactory.js'
 import * as IForm from '../forms/Interfaces.js'
+import {FormType} from '../forms/Interfaces.js'
 import * as FormConfiguration from '../forms/IFormConfiguration.js'
 import * as ModuleFormLoader from '../forms/DefaultLoader.js'
 import * as Mof from '../Mof.js'
@@ -7,10 +8,11 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ClientExtent from "../client/Extents.js";
 import * as ClientForms from "../client/Forms.js";
 import * as ClientWorkspace from "../client/Workspace.js";
-import _ViewMode = _DatenMeister._Forms._ViewMode;
 
 
 import '../../node_modules/chai/register-assert.js';
+import _ViewMode = _DatenMeister._Forms._ViewMode;
+
 declare var assert: Chai.AssertStatic;
 
 class X implements IForm.IObjectForm {
@@ -22,7 +24,12 @@ class X implements IForm.IObjectForm {
     workspace: string;
     type: string = "X";
 
-    createFormByObject(parent: JQuery<HTMLElement>, configuration: FormConfiguration.IFormConfiguration): Promise<void> {
+    getFormElement(): Mof.DmObject {
+        return this.formElement;
+    }
+
+
+    createFormByObject(parent: JQuery<HTMLElement>): Promise<void> {
         return Promise.resolve(undefined);
     }
 
@@ -45,6 +52,11 @@ class Y implements IForm.ICollectionForm {
     workspace: string;
 
     type: string = "Y";
+    
+    getFormElement(): Mof.DmObject {
+        return this.formElement;
+    }
+
     async refreshForm(): Promise<void> {
     }
 
@@ -55,7 +67,7 @@ class Y implements IForm.ICollectionForm {
 
     elements: Array<Mof.DmObject>;
 
-    createFormByCollection(parent: JQuery<HTMLElement>, configuration: FormConfiguration.IFormConfiguration, refresh?: boolean): Promise<void> {
+    createFormByCollection(parent: JQuery<HTMLElement>): Promise<void> {
         return Promise.resolve(undefined);
     }
     
@@ -76,20 +88,28 @@ export function includeTests() {
         });
         
         it('Test Register Database', () => {
-            FormFactory.registerCollectionForm("collectionForm", () => new Y());
-            FormFactory.registerObjectForm("objectForm", () => new X());
+            FormFactory.registerCollectionForm("collectionForm", (c) => new Y());
+            FormFactory.registerObjectForm("objectForm", (c) => new X());
 
             assert.isTrue(FormFactory.getObjectFormFactory("no") === undefined);
             assert.isTrue(FormFactory.getCollectionFormFactory("no") === undefined);
             assert.isTrue(FormFactory.getObjectFormFactory("objectForm") !== undefined);
             assert.isTrue(FormFactory.getCollectionFormFactory("collectionForm") !== undefined);
-            const objectFormFactory =  FormFactory.getObjectFormFactory("objectForm");
+            const objectFormFactory = FormFactory.getObjectFormFactory("objectForm");
             assert.isTrue(objectFormFactory !== undefined);
-            assert.isTrue((objectFormFactory!() as X).type === "X");
-            
-            const collectionFormFactory =  FormFactory.getCollectionFormFactory("collectionForm");
+            assert.isTrue((objectFormFactory!(
+                {
+                    isReadOnly: false,
+                    formType: FormType.Object
+                }) as X).type === "X");
+
+            const collectionFormFactory = FormFactory.getCollectionFormFactory("collectionForm");
             assert.isTrue(collectionFormFactory !== undefined);
-            assert.isTrue((collectionFormFactory!() as Y).type === "Y");
+            assert.isTrue((collectionFormFactory!(
+                {
+                    isReadOnly: false,
+                    formType: FormType.Collection
+                }) as Y).type === "Y");
         });
 
         it('Test Default Database', () => {
@@ -133,9 +153,7 @@ export function includeTests() {
             
             assert.isTrue(found, "Default ViewMode has not been found");
         });
-
-
-
+        
         after(async function () {
 
             await ClientExtent.deleteExtent({

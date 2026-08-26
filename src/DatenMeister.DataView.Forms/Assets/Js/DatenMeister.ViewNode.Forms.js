@@ -3,8 +3,10 @@ import * as Mof from "/js/datenmeister/Mof.js";
 import * as ClientElements from "/js/datenmeister/client/Elements.js";
 import * as ClientItems from "/js/datenmeister/client/Items.js";
 import * as DmModel from '/js/datenmeister/models/DatenMeister.class.js';
+import * as FormInterfaces from '/js/datenmeister/forms/Interfaces.js';
 import * as FormFactory from "/js/datenmeister/forms/FormFactory.js";
 import * as QueryEngine from "/js/datenmeister/modules/QueryEngine.js";
+import * as TableForm from "/js/datenmeister/forms/TableForm.js";
 export function init() {
     FormActions.addModule(new ViewNodeRenderAction());
     FormFactory.registerDecoupledForm(_Root.__ViewDataTable_Uri, () => new ViewNodeRenderForm());
@@ -41,6 +43,15 @@ class ViewNodeRenderForm {
         const query = new QueryEngine.QueryBuilder();
         QueryEngine.referenceExistingNode(query, viewNode.workspace, viewNode.uri);
         const viewData = await ClientElements.queryObject(query.queryStatement);
+        const tableForm = new TableForm.TableForm({
+            formElement: configuration.form,
+            isReadOnly: true,
+            formType: FormInterfaces.FormType.Collection
+        });
+        tableForm.callbackLoadItems = async () => {
+            return Promise.resolve(viewData.result);
+        };
+        await tableForm.createFormByCollection(parent);
         parent.append("<div>" + viewData.result + "</div>");
     }
 }

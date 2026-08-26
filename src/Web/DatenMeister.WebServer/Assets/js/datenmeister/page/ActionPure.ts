@@ -69,8 +69,9 @@ async function executeReferencedAction(
         }
 
         await FormActions.executeClientActionResult(result.resultAsDmObject);
-    } catch (exception) {
-        renderError(String(exception));
+    } catch (exception: any) {
+        const message = exception.stack !== undefined ? exception.stack : exception;
+        renderError(String(message));
     }
 }
 

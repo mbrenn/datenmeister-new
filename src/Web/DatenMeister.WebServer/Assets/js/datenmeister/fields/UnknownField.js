@@ -1,7 +1,5 @@
 import { BaseField } from "./Interfaces.js";
 export class Field extends BaseField {
-    // Defines the name of the field name which is not known
-    unknownFieldUri;
     constructor(unknownFieldUri) {
         super();
         this.unknownFieldUri = unknownFieldUri;

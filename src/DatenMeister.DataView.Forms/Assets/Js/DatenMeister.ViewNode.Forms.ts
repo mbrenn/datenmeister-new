@@ -1,6 +1,4 @@
-
 import * as FormActions from '/js/datenmeister/FormActions.js';
-import {IFormNavigation} from "/js/datenmeister/forms/Interfaces";
 import * as Mof from "/js/datenmeister/Mof.js";
 import {SubmitMethod} from "/js/datenmeister/forms/Forms.js";
 import * as ClientElements from "/js/datenmeister/client/Elements.js"
@@ -8,8 +6,9 @@ import * as ClientItems from "/js/datenmeister/client/Items.js"
 import * as DmModel from '/js/datenmeister/models/DatenMeister.class.js';
 import * as FormInterfaces from '/js/datenmeister/forms/Interfaces.js';
 import * as FormFactory from "/js/datenmeister/forms/FormFactory.js";
-import {IDecoupledFormConfiguration} from "/js/datenmeister/forms/IFormConfiguration";
+import {IDecoupledFormConfiguration} from "/js/datenmeister/forms/IFormConfiguration.js";
 import * as QueryEngine from "/js/datenmeister/modules/QueryEngine.js";
+import * as TableForm from "/js/datenmeister/forms/TableForm.js";
 
 export function init()
 {
@@ -26,7 +25,7 @@ class ViewNodeRenderAction
         this.actionName = "DatenMeister.ViewNodes.RenderItemsInPopup";
     }
 
-    async execute(form?: IFormNavigation, element?: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<Mof.DmObject | void> {
+    async execute(form?: FormInterfaces.IFormNavigation, element?: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<Mof.DmObject | void> {
         if(element === undefined) throw new Error("element is null");
         
         // We have to create the temporary action on the server to navigate to it. 
@@ -59,8 +58,21 @@ class ViewNodeRenderForm implements FormInterfaces.IDecoupledForm
 
         const query = new QueryEngine.QueryBuilder();
         QueryEngine.referenceExistingNode(query, viewNode.workspace, viewNode.uri);
-        
+
         const viewData = await ClientElements.queryObject(query.queryStatement);
+
+        const tableForm = new TableForm.TableForm({
+            formElement: configuration.form,
+            isReadOnly: true,
+            formType: FormInterfaces.FormType.Collection
+        });
+        
+        tableForm.callbackLoadItems = async () => {
+            return Promise.resolve(viewData.result);
+        };
+
+        await tableForm.createFormByCollection(parent);
+
         parent.append("<div>" + viewData.result + "</div>");
     }
 }

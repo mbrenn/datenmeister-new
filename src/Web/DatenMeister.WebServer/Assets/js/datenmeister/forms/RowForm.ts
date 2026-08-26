@@ -90,31 +90,38 @@ export class RowForm implements InterfacesForms.IObjectForm {
     onChange: (element: Mof.DmObjectWithSync, method: SubmitMethod) => void;
     parentHtml: JQuery<HTMLElement>;
     configuration: IFormConfiguration;
-
-    async refreshForm(): Promise<void> {
-        this.createFormByObject(this.parentHtml, this.configuration);
+    
+    getFormElement(): Mof.DmObject {
+        return this.formElement;
+    }
+    
+    constructor(configuration: IFormConfiguration) {
+        this.configuration = configuration;
     }
 
-    async createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
+    async refreshForm(): Promise<void> {
+        await this.createFormByObject(this.parentHtml);
+    }
+
+    async createFormByObject(parent: JQuery<HTMLElement>) {
         this.parentHtml = parent;
-        this.configuration = configuration;
 
         // Connect the events
-        if (configuration.onCancel !== undefined) {
-            this.onCancel = configuration.onCancel;
+        if (this.configuration.onCancel !== undefined) {
+            this.onCancel = this.configuration.onCancel;
         }
 
-        if (configuration.onSubmit !== undefined) {
-            this.onChange = configuration.onSubmit;
+        if (this.configuration.onSubmit !== undefined) {
+            this.onChange = this.configuration.onSubmit;
         }
 
         // Sets pre-defined configuration
-        if (configuration.isReadOnly === undefined) {
-            configuration.isReadOnly = true;
+        if (this.configuration.isReadOnly === undefined) {
+            this.configuration.isReadOnly = true;
         }
 
-        if (configuration.allowAddingNewProperties === undefined) {
-            configuration.allowAddingNewProperties = false;
+        if (this.configuration.allowAddingNewProperties === undefined) {
+            this.configuration.allowAddingNewProperties = false;
         }
 
         // Creates the table itself
@@ -151,7 +158,7 @@ export class RowForm implements InterfacesForms.IObjectForm {
             let htmlElement; // The dom that had been created...
             const isFieldReadOnly = 
                 field.get(_DatenMeister._Forms._FieldTypes._FieldData.isReadOnly, Mof.ObjectType.Boolean)
-                || configuration.isReadOnly;
+                || this.configuration.isReadOnly;
 
             let name =
                 (field.get(_DatenMeister._Forms._FieldTypes._FieldData.title) as any as string);
@@ -165,7 +172,7 @@ export class RowForm implements InterfacesForms.IObjectForm {
             const fieldElement = createField(
                 fieldMetaClassUri,
                 {
-                    configuration: configuration,
+                    configuration: this.configuration,
                     field: field,
                     itemUrl: itemUri,
                     isReadOnly: isFieldReadOnly,
@@ -264,7 +271,7 @@ export class RowForm implements InterfacesForms.IObjectForm {
 
         // Checks, if user may add additional properties, if yes, include a button and create the corresponding
         // logic
-        if (!configuration.isReadOnly && configuration.allowAddingNewProperties) {
+        if (!this.configuration.isReadOnly && this.configuration.allowAddingNewProperties) {
             tr = $("<tr class='dm-row-newproperty'><td></td><td><button class='btn btn-secondary'>Add new property</button></td></tr>");
             tableBody.append(tr);
 
@@ -276,7 +283,7 @@ export class RowForm implements InterfacesForms.IObjectForm {
                 const textField = new TextField.Field();
                 textField.field = new Mof.DmObject();
                 textField.form = tthis;
-                textField.isReadOnly = configuration.isReadOnly;
+                textField.isReadOnly = this.configuration.isReadOnly;
                 textField.OverridePropertyValue =
                     () => {
                         return propertyTextField.val()?.toString() ?? "";
@@ -299,10 +306,10 @@ export class RowForm implements InterfacesForms.IObjectForm {
         }
 
         // Checks, if the form is a read-only form. If it is not a read-only, create the Accept and Reject buttons
-        if (!configuration.isReadOnly) {
+        if (!this.configuration.isReadOnly) {
             // Add the Cancel and Submit buttons at the end of the creation to the table
             // allowing the cancelling and setting of the properties
-            const submitName = configuration.submitName ?? "Save";
+            const submitName = this.configuration.submitName ?? "Save";
 
             const cancelButton = $("<button class='btn btn-secondary dm-detail-form-cancel'>Cancel</button>");
             const saveButton = $("<button class='btn btn-primary dm-detail-form-save'></button>").text(submitName);
@@ -311,13 +318,13 @@ export class RowForm implements InterfacesForms.IObjectForm {
             tr = $("<tr><td></td><td class='dm-form-submitbutton-cell'></td><td></td></tr>");
             const formSubmitButtonsCell = $('.dm-form-submitbutton-cell', tr);
 
-            if (configuration.showCancelButton !== false) {
+            if (this.configuration.showCancelButton !== false) {
                 formSubmitButtonsCell.append(cancelButton);
             }
 
             formSubmitButtonsCell.append(saveButton);
 
-            if (configuration.submitName === undefined) {
+            if (this.configuration.submitName === undefined) {
                 formSubmitButtonsCell.append(saveAndCloseButton);
             }
 

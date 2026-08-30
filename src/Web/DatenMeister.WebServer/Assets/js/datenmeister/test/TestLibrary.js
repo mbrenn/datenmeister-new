@@ -13,6 +13,7 @@ import * as ControlSelectItemControl from "./Test.Controls.SelectItemControl.js"
 import * as Forms from "./Test.Forms.js";
 import * as ViewModeLogic from "./Test.Forms.ViewModeLogic.js";
 import * as TableState from "./Test.TableState.js";
+import * as StaticObjectQuery from "./Test.StaticObjectQuery.js";
 import * as UserEvents from "../../burnsystems/tests/events.test.js";
 import * as TestFormActions from "./Test.FormActions.ClientActions.js";
 export function includeTests() {
@@ -31,6 +32,7 @@ export function includeTests() {
     ControlSelectItemControl.includeTests();
     ViewModeLogic.includeTests();
     TableState.includeTests();
+    StaticObjectQuery.includeTests();
     Forms.includeTests();
     TestFormActions.includeTests();
 }

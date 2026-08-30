@@ -224,7 +224,7 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
     async createFormByCollection(parent: JQuery<HTMLElement>) {
         this.tableCache.parentHtml = parent;
         const formElement = this.getFormElement();
-        
+
         this.tableParameter.metaClass = (formElement.get('metaClass') as Mof.DmObject)?.uri;
 
         if (this.configuration.isReadOnly === undefined) {
@@ -303,20 +303,19 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
             // Initialize the table state by also creating the empty query
             this.tableState.initialize();
         }
-        
+
         this.elements = await this.callbackLoadItems(this.tableState.queryStatement);
 
-        const headLineText =formElement.get('title') ?? formElement.get('name');
-        if(headLineText === "" || headLineText === undefined) {
+        const headLineText = formElement.get('title') ?? formElement.get('name');
+        if (headLineText === "" || headLineText === undefined) {
             this.tableCache.cacheHeadline.hide();
-        }
-        else {
+        } else {
             this.tableCache.cacheHeadline.show();
             const headLineLink = $("a", this.tableCache.cacheHeadline);
             headLineLink.text(headLineText);
-            
+
             // Adds the link of the headline
-            if(this.workspace !== undefined && this.extentUri !== undefined) {
+            if (this.workspace !== undefined && this.extentUri !== undefined) {
                 const link = Navigator.getLinkForNavigateToExtentItems(
                     this.workspace, this.extentUri, {metaClass: this.tableParameter.metaClass});
                 if (link !== null) {
@@ -329,16 +328,15 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
         this.tableCache.cacheButtons.empty();
 
         // Evaluate the new buttons to create objects
-        if(this.tableParameter.hideButtonsForNewElements) {
+        if (this.tableParameter.hideButtonsForNewElements) {
             this.tableCache.cacheButtons.hide();
-        }
-        else {
+        } else {
             this.createButtonsForNewInstance();
         }
 
         // Create Query Text
         const _ = this.updateFilterQueryText();
-        
+
         // Creates the table 
         if (this.elements === undefined) {
             this.elements = [];

@@ -9,6 +9,7 @@ import * as FormFactory from "/js/datenmeister/forms/FormFactory.js";
 import {IDecoupledFormConfiguration} from "/js/datenmeister/forms/IFormConfiguration.js";
 import * as QueryEngine from "/js/datenmeister/modules/QueryEngine.js";
 import * as TableForm from "/js/datenmeister/forms/TableForm.js";
+import {StaticObjectQuery} from "/js/datenmeister/modules/StaticObjectQuery.js";
 
 export function init()
 {
@@ -77,8 +78,9 @@ class ViewNodeRenderForm implements FormInterfaces.IDecoupledForm
         tableForm.tableParameter.showSettingsButtons = false;
         tableForm.tableParameter.showColumnSettingsButtons = true;
 
-        tableForm.callbackLoadItems = async () => {
-            return Promise.resolve(viewData.result);
+        const staticObjects = new StaticObjectQuery(viewData.result);
+        tableForm.callbackLoadItems = async (parameter) => {
+            return staticObjects.getFilteredObject(parameter);
         };
 
         await tableForm.createFormByCollection(parent);

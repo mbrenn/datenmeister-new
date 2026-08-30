@@ -6,6 +6,7 @@ import { IFormConfiguration } from '/js/datenmeister/forms/IFormConfiguration.js
 import * as FormFactory from "/js/datenmeister/forms/FormFactory.js"
 import * as Model from "./DatenMeister.Reports.Types.js"
 import * as ActionClient from '/js/datenmeister/client/Actions.js'
+import {DmObject} from "/js/datenmeister/Mof.js";
 
 export function init() {
     FormActions.addModule(new SwitchToReport());
@@ -48,9 +49,13 @@ export class ReportForm implements IIForms.IObjectForm {
     extentUri: string;
     itemUrl: string;
     formElement: Mof.DmObject;
-
     element: Mof.DmObject;
-    async createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration): Promise<void> {
+        
+    getFormElement(){
+        return this.formElement;
+    }
+
+    async createFormByObject(parent: JQuery<HTMLElement>): Promise<void> {
 
         // Add the loading information
         const loadingDiv = $("<div class='loading'>Loading...</div>");

@@ -49,12 +49,12 @@ class ViewNodeRenderForm {
             formType: FormInterfaces.FormType.Collection
         });
         tableForm.tableParameter.hideButtonsForNewElements = true;
-        tableForm.tableParameter.allowSortingOfColumn = false;
-        tableForm.tableParameter.allowFilteringOnProperty = false;
-        tableForm.tableParameter.allowFreeTextFiltering = false;
-        tableForm.tableParameter.showFilterQuery = false;
+        tableForm.tableParameter.allowSortingOfColumn = true;
+        tableForm.tableParameter.allowFilteringOnProperty = true;
+        tableForm.tableParameter.allowFreeTextFiltering = true;
+        tableForm.tableParameter.showFilterQuery = true;
         tableForm.tableParameter.showSettingsButtons = false;
-        tableForm.tableParameter.showColumnSettingsButtons = false;
+        tableForm.tableParameter.showColumnSettingsButtons = true;
         tableForm.callbackLoadItems = async () => {
             return Promise.resolve(viewData.result);
         };

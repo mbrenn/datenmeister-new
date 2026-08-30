@@ -170,9 +170,22 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
         const _ = this.updateFilterQueryText();
         await this.createTable();
     }
-    
+
+    /**
+     * Updates the informational text displayed in the table cache UI element.
+     * If the provided message is null, undefined, or an empty string, the text is hidden.
+     * Otherwise, the text is updated and displayed.
+     *
+     * @param {string} message The informational text to display. Passing null, undefined, or an empty string will hide the text.
+     * @return {void}
+     */
     setInfoText(message: string) {
-        this.tableCache.cacheLoadingInfoText.text(message);
+        if (message === null || message === undefined || message === "") {
+            this.tableCache.cacheLoadingInfoText.hide();
+        } else {
+            this.tableCache.cacheLoadingInfoText.show();
+            this.tableCache.cacheLoadingInfoText.text(message);
+        }
     }
 
     /**
@@ -207,7 +220,6 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
     /**
      * Creates the form by the given collection
      * @param parent The parent html element
-     * @param configuration The configuration for the form
      */
     async createFormByCollection(parent: JQuery<HTMLElement>) {
         this.tableCache.parentHtml = parent;
@@ -235,9 +247,11 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
             parent.append(this.tableCache.cacheContainer);
 
             this.tableCache.cacheHeadline = $("<h2><a></a></h2>");
+            this.tableCache.cacheHeadline.hide();
             this.tableCache.cacheContainer.append(this.tableCache.cacheHeadline);
 
             this.tableCache.cacheLoadingInfoText = $("<div class='dm-tableform-loadinginfotext'></div>");
+            this.tableCache.cacheLoadingInfoText.hide();
             this.tableCache.cacheContainer.append(this.tableCache.cacheLoadingInfoText);
 
             this.tableCache.cacheFreeTextField = $("<div class='dm-tableform-freetextform'></div>");
@@ -256,7 +270,6 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
                 this.tableCache.cacheSettings.append(this.tableCache.cacheSettingsButton);
                 await this.initializeTableSettingsButton();
             }
-
 
             this.tableCache.cacheQueryText = $('<div class="dm-tableform-querytext"></div>');
             this.tableCache.cacheSettings.append(this.tableCache.cacheQueryText);
@@ -293,23 +306,33 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
         
         this.elements = await this.callbackLoadItems(this.tableState.queryStatement);
 
-        const headLineLink = $("a", this.tableCache.cacheHeadline);
-        headLineLink.text(formElement.get('title') ?? formElement.get('name'));
-        
-        // Adds the link of the headline
-        if(this.workspace !== undefined && this.extentUri !== undefined) {
-            const link = Navigator.getLinkForNavigateToExtentItems(
-                this.workspace, this.extentUri, {metaClass: this.tableParameter.metaClass});
-            if (link !== null) {
-                headLineLink.attr(
-                    'href', link);
+        const headLineText =formElement.get('title') ?? formElement.get('name');
+        if(headLineText === "" || headLineText === undefined) {
+            this.tableCache.cacheHeadline.hide();
+        }
+        else {
+            this.tableCache.cacheHeadline.show();
+            const headLineLink = $("a", this.tableCache.cacheHeadline);
+            headLineLink.text(headLineText);
+            
+            // Adds the link of the headline
+            if(this.workspace !== undefined && this.extentUri !== undefined) {
+                const link = Navigator.getLinkForNavigateToExtentItems(
+                    this.workspace, this.extentUri, {metaClass: this.tableParameter.metaClass});
+                if (link !== null) {
+                    headLineLink.attr(
+                        'href', link);
+                }
             }
         }
 
         this.tableCache.cacheButtons.empty();
 
         // Evaluate the new buttons to create objects
-        if(!this.tableParameter.hideButtonsForNewElements) {
+        if(this.tableParameter.hideButtonsForNewElements) {
+            this.tableCache.cacheButtons.hide();
+        }
+        else {
             this.createButtonsForNewInstance();
         }
 

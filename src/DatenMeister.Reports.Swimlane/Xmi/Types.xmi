@@ -13,4 +13,8 @@
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dc3953cb-45f4-454a-a36c-6edda29b48fb" name="viewNode" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isComposite="true" />
     <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="e5c3733f-3910-43e6-9b7c-4d5464bd12ac" general-ref="dm:///_internal/types/internal#Actions.Action" />
   </item>
+  <item p2:type="dm:///_internal/model/uml#Class" p2:id="142cb4a2-9a07-4e63-a212-32b0a1f0a289" name="SwimlaneForm" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b8ea97be-e96c-4c34-a1c5-c0a644cbc7b2" name="swimlaneViewDefinition" type-ref="#1c8b02e8-1988-4c3b-9d74-8739c400d56c" />
+    <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="1c5880ca-8018-4ac5-8484-a314d5214679" general-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" />
+  </item>
 </xmi>

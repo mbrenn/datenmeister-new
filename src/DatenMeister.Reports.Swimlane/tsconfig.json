@@ -12,7 +12,7 @@
       "/js/datenmeister/*": [ "../Web/DatenMeister.WebServer/Assets/js/datenmeister/*" ],
       "module/*": [ "./Js/*" ]
     },
-    "types": ["jquery"]
+    "types": ["jquery", "mocha", "chai"]
   },
   "compileOnSave": true,
   "include": [

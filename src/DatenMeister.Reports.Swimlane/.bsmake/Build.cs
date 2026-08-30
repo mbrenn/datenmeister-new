@@ -1,43 +1,17 @@
 // Merge.ts
 using BurnSystems.Make.BuildAgent;
 
-if (MergeTs())
-{
-    await CompileTs();
-    await CompileJs();
-    MoveTs();
-}
+await CopyModel();
+await CompileTs();
+await CompileJs();
 
 return 0;
 
-/// Returns true, in case the merge was done
-bool MergeTs()
+async Task CopyModel()
 {
-    File.Delete("Assets/Js/Types.ts");
-    File.Copy("Model/Types.ts", "Assets/Js/Types.ts");
-
-    var result = "// This file is generated in build.cake. Do NOT modify that file.\n";
-    result += "// Modify DatenMeister.Reports.Swimlane.Source.ts\n";
-    result += "// noinspection DuplicatedCode\n\n";
-
-    var mergeOptions = new FileMergeOptions()
-    {
-        FirstFile = "Assets/Js/DatenMeister.Reports.Swimlane.ts",
-        SecondFile = "Assets/Js/Types.ts",
-        TargetFile = "Assets/Js/DatenMeister.Reports.Swimlane.Combine.ts",
-        PrefixTextTarget = result
-    };
-
-    if (!FileHelper.MergeFiles(mergeOptions))
-    {
-        return false;
-    }
-
-    Console.WriteLine($"{mergeOptions.TargetFile} was created: {File.Exists(mergeOptions.TargetFile)}");
-    return true;
+    Console.WriteLine("Copying model");
+    File.Copy("Model/Types.ts", "Assets/Js/Types.ts", true);
 }
-
-// Compile.ts
 
 async Task CompileTs()
 {
@@ -46,7 +20,6 @@ async Task CompileTs()
     await ProcessInvoke.Run("npx", ["tsc"]);
 }
 
-// Asset
 async Task CompileJs()
 {
     Console.WriteLine("Compiling Javascript");
@@ -55,14 +28,4 @@ async Task CompileJs()
     [
         "esbuild", "Assets/Js/*.js", "--minify", "--sourcemap", "--outdir=Js", "--platform=browser", "--format=esm"
     ]);
-}
-
-void MoveTs()
-{
-    Console.WriteLine("Moving Javascript files");
-
-    File.Delete("Js/DatenMeister.Reports.Swimlane.js");
-    File.Delete("Js/DatenMeister.Reports.Swimlane.js.map");
-    File.Move("Js/DatenMeister.Reports.Swimlane.Combine.js", "Js/DatenMeister.Reports.Swimlane.js");
-    File.Move("Js/DatenMeister.Reports.Swimlane.Combine.js.map", "Js/DatenMeister.Reports.Swimlane.js.map");
 }

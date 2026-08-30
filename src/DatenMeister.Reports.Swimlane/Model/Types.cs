@@ -36,22 +36,31 @@ public class _Root
         TypeKind = TypeKind.ClassTree)]
     public class _SwimlaneViewDefinition
     {
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
         public static readonly string @swimlaneConfiguration = "swimlaneConfiguration";
         public IElement? @_swimlaneConfiguration = null;
 
         public static readonly string @viewNode = "viewNode";
         public IElement? @_viewNode = null;
 
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @isDisabled = "isDisabled";
-        public IElement? @_isDisabled = null;
-
     }
 
     public _SwimlaneViewDefinition @SwimlaneViewDefinition = new ();
     public MofObjectShadow @__SwimlaneViewDefinition = new ("dm:///intern.types.swimlane.datenmeister/#1c8b02e8-1988-4c3b-9d74-8739c400d56c");
+
+    [TypeUri(Uri = "dm:///intern.types.swimlane.datenmeister/#83f81e3a-7d9a-4c27-9759-994f796a5bc8",
+        TypeKind = TypeKind.ClassTree)]
+    public class _SwimlaneRenderAction
+    {
+        public static readonly string @swimlaneViewDefinition = "swimlaneViewDefinition";
+        public IElement? @_swimlaneViewDefinition = null;
+
+    }
+
+    public _SwimlaneRenderAction @SwimlaneRenderAction = new ();
+    public MofObjectShadow @__SwimlaneRenderAction = new ("dm:///intern.types.swimlane.datenmeister/#83f81e3a-7d9a-4c27-9759-994f796a5bc8");
 
     [TypeUri(Uri = "dm:///intern.types.swimlane.datenmeister/#142cb4a2-9a07-4e63-a212-32b0a1f0a289",
         TypeKind = TypeKind.ClassTree)]

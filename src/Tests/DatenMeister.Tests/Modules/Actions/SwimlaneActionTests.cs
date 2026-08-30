@@ -50,6 +50,50 @@ public class SwimlaneActionTests
     }
 
     [Test]
+    public async Task TestSwimlaneRenderActionHandlerWithRenderVerb()
+    {
+        var actionLogic = ActionSetTests.CreateActionLogic();
+        var handler = new SwimLaneViewDefinitionActionHandler();
+
+        var viewDef = InMemoryObject.CreateEmpty(_Root.TheOne.__SwimlaneViewDefinition);
+        viewDef.set(_Root._SwimlaneViewDefinition.name, "Sprint Overview");
+
+        var config = InMemoryObject.CreateEmpty(_Root.TheOne.__SwimlaneConfiguration);
+        config.set(_Root._SwimlaneConfiguration.verticalSwimlaneProperty, "Sprint");
+        config.set(_Root._SwimlaneConfiguration.horizontalSwimlaneProperty, "Assigned To");
+        viewDef.set(_Root._SwimlaneViewDefinition.swimlaneConfiguration, config);
+
+        var renderAction = InMemoryObject.CreateEmpty(_Root.TheOne.__SwimlaneRenderAction);
+        renderAction.set(_Root._SwimlaneRenderAction.swimlaneViewDefinition, viewDef);
+
+        Assert.That(handler.IsResponsible(renderAction), Is.True);
+
+        var result = await handler.Evaluate(actionLogic, renderAction, "render");
+        Assert.That(result, Is.Not.Null);
+
+        var actionResultWrapper = new DatenMeister.Core.Models.Actions.ActionResult_Wrapper(result!);
+        var clientActionList = (actionResultWrapper.clientActions as IEnumerable<object>)?.ToList();
+        Assert.That(clientActionList, Is.Not.Null);
+        Assert.That(clientActionList!.Count, Is.EqualTo(1));
+
+        var renderFormAction = clientActionList[0] as IElement;
+        Assert.That(renderFormAction, Is.Not.Null);
+        Assert.That(renderFormAction!.getMetaClass()?.equals(
+            _Actions.TheOne.ClientActions.__RenderFormClientAction), Is.True);
+
+        var form = renderFormAction.getOrDefault<IElement>(
+            _Actions._ClientActions._RenderFormClientAction.form);
+        Assert.That(form, Is.Not.Null);
+        Assert.That(form!.getMetaClass()?.equals(_Root.TheOne.__SwimlaneForm), Is.True);
+
+        var title = form.getOrDefault<string>(_Root._SwimlaneForm.title);
+        Assert.That(title, Is.EqualTo("Swimlane: Sprint Overview"));
+
+        var swimlaneViewDef = form.getOrDefault<IElement>(_Root._SwimlaneForm.swimlaneViewDefinition);
+        Assert.That(swimlaneViewDef, Is.EqualTo(viewDef));
+    }
+
+    [Test]
     public async Task TestSwimlaneActionHandlerWithInvalidVerbReturnsAlert()
     {
         var actionLogic = ActionSetTests.CreateActionLogic();

@@ -15,11 +15,15 @@ export namespace _Root
         {
             static swimlaneConfiguration = "swimlaneConfiguration";
             static viewNode = "viewNode";
-            static _name_ = "name";
-            static isDisabled = "isDisabled";
         }
 
         export const __SwimlaneViewDefinition_Uri = "dm:///intern.types.swimlane.datenmeister/#1c8b02e8-1988-4c3b-9d74-8739c400d56c";
+        export class _SwimlaneRenderAction
+        {
+            static swimlaneViewDefinition = "swimlaneViewDefinition";
+        }
+
+        export const __SwimlaneRenderAction_Uri = "dm:///intern.types.swimlane.datenmeister/#83f81e3a-7d9a-4c27-9759-994f796a5bc8";
         export class _SwimlaneForm
         {
             static swimlaneViewDefinition = "swimlaneViewDefinition";

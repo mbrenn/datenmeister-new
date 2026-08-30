@@ -15,11 +15,11 @@ import * as Navigator from "/js/datenmeister/Navigator.js";
 
 export function init()
 {
-    FormActions.addModule(new SwimlaneShowReportAction());
+    FormActions.addModule(new SwimlaneRenderAction());
     FormFactory.registerDecoupledForm(_Root.__SwimlaneForm_Uri, () => new SwimlaneForm());
 }
 
-class SwimlaneShowReportAction
+class SwimlaneRenderAction
     extends FormActions.ItemFormActionModuleBase
     implements FormActions.IItemFormActionModule 
 {
@@ -30,11 +30,20 @@ class SwimlaneShowReportAction
     
     async execute(form?: IFormNavigation, element?: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<DmObject | void> {
         if(element === undefined) throw new Error("element is null"); 
+        
+        // We have to create the temporary action on the server to navigate to it. 
+        const temporaryItemResult = await ClientElements.createTemporaryElement(_Root.__SwimlaneRenderAction_Uri);
+        await ClientItems.setPropertyReference(temporaryItemResult.workspace, temporaryItemResult.uri,
+            {
+                property: _Root._SwimlaneRenderAction.swimlaneViewDefinition,
+                referenceUri: element.uri
+            });
             
+        // Now open the popup window
         const createWindow = new DmObject(DmModel._Actions._ClientActions.__NavigateOpenActionInWindow_Uri);
         createWindow.set(DmModel._Actions._ClientActions._NavigateOpenActionInWindow.context, "render");
-        createWindow.set(DmModel._Actions._ClientActions._NavigateOpenActionInWindow.actionUrl, element.uri);
-        createWindow.set(DmModel._Actions._ClientActions._NavigateOpenActionInWindow.workspaceId, element.workspace);        
+        createWindow.set(DmModel._Actions._ClientActions._NavigateOpenActionInWindow.actionUrl, temporaryItemResult.uri);
+        createWindow.set(DmModel._Actions._ClientActions._NavigateOpenActionInWindow.workspaceId, temporaryItemResult.workspace);        
 
         await FormActions.executeClientAction(createWindow);
         return Promise.resolve(undefined);
@@ -293,6 +302,12 @@ export namespace _Root
     }
 
     export const __SwimlaneViewDefinition_Uri = "dm:///intern.types.swimlane.datenmeister/#1c8b02e8-1988-4c3b-9d74-8739c400d56c";
+    export class _SwimlaneRenderAction
+    {
+        static swimlaneViewDefinition = "swimlaneViewDefinition";
+    }
+
+    export const __SwimlaneRenderAction_Uri = "dm:///intern.types.swimlane.datenmeister/#83f81e3a-7d9a-4c27-9759-994f796a5bc8";
     export class _SwimlaneForm
     {
         static swimlaneViewDefinition = "swimlaneViewDefinition";

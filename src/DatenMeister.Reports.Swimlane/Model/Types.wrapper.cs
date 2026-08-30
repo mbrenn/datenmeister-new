@@ -94,6 +94,14 @@ public class Root
 
         public static SwimlaneViewDefinition_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
         // Not found
         public object? @swimlaneConfiguration
         {
@@ -124,20 +132,37 @@ public class Root
             }
         }
 
-        public string? @name
+    }
+
+    [TypeUri(Uri = "dm:///intern.types.swimlane.datenmeister/#83f81e3a-7d9a-4c27-9759-994f796a5bc8",
+        TypeKind = TypeKind.WrappedClass)]
+    public class SwimlaneRenderAction_Wrapper : IElementWrapper
+    {
+        private readonly IElement _wrappedElement;
+
+        public SwimlaneRenderAction_Wrapper(IElement innerDmElement)
         {
-            get =>
-                _wrappedElement.getOrDefault<string?>("name");
-            set => 
-                _wrappedElement.set("name", value);
+            _wrappedElement = innerDmElement;
         }
 
-        public bool @isDisabled
+        public SwimlaneRenderAction_Wrapper(IFactory factory)
+        {
+            _wrappedElement = factory.create(_metaClass);
+        }
+
+        public IElement GetWrappedElement() => _wrappedElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///intern.types.swimlane.datenmeister/#83f81e3a-7d9a-4c27-9759-994f796a5bc8");
+
+        public static SwimlaneRenderAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+        // Not found
+        public object? @swimlaneViewDefinition
         {
             get =>
-                _wrappedElement.getOrDefault<bool>("isDisabled");
+                _wrappedElement.getOrDefault<object?>("swimlaneViewDefinition");
             set => 
-                _wrappedElement.set("isDisabled", value);
+                _wrappedElement.set("swimlaneViewDefinition", value);
         }
 
     }

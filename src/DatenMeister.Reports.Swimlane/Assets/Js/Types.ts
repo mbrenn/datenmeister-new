@@ -13,6 +13,7 @@ export namespace _Root
         export const __SwimlaneConfiguration_Uri = "dm:///intern.types.swimlane.datenmeister/#e92b2227-9b93-4033-ac2e-772a2230a869";
         export class _SwimlaneViewDefinition
         {
+            static _name_ = "name";
             static swimlaneConfiguration = "swimlaneConfiguration";
             static viewNode = "viewNode";
         }

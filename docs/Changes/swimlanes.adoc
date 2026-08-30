@@ -80,7 +80,7 @@ Fix export issue
 == Requirements
 
 * The swimlane table shall support a vertical and horizontal swimlane, each by a configurable property
-* The swimlane can be shown in the webview by clicking on a Swimlane-Table-Configuration
+* The swimlane can be shown in the webview by clicking the action button on a SwimlaneViewDefinition
 * The Object and Collection view shall support a tab of a Swimlane Table as a configurable plugin. 
 * The swimlane table shall exportable as a file (html)
 ** The rendering of the swimlane shall happen in JavaScript to support offline export
@@ -113,7 +113,7 @@ The configuration data will be the following:
 |Property|Meaning
 |verticalSwimlaneProperty|Name of the property which will be spanned up in vertical swimlanes. As in the example
 above, it is the "Sprint".
-|horizontalSwimlaneProperty|Name of the property which will be spanned up in vertical swimlanes. As in the example
+|horizontalSwimlaneProperty|Name of the property which will be spanned up in horizontal swimlanes (rows). As in the example
 above, it is the "Assigned To"
 |cellContent|Scriban template which will be used to show the content. In case the value is not set, the standard
 Name will be used
@@ -127,42 +127,32 @@ Name will be used
 The Swimlane view definition contains the specific view information which allows the rendering of the
 swimlane. It contains the information about the view definition and how to retrieve the items.
 
-*SwimlaneViewdefinition*
+*SwimlaneViewDefinition*
 
 [cols="1,3", options="header"]
 |===
 |Property|Meaning
+|name|Name of the view definition
 |swimlaneConfiguration|Reference to the swimlane configuration
-|viewNode|Composite of the viewNode which retrieves all the items that are intended to get rendered.
+|viewNode|Reference to the ViewNode which retrieves the items that are intended to get rendered.
 |===
 
-The viewdefinition will become inherited by an Action which will allow the direct triggering of an actionhandler.
+The view definition triggers a dedicated action `SwimlaneRenderAction` to render the swimlane.
 
 * [x] Create the view definition metaclass
-* [x] Inherit from ActionHandler
+* [x] Create the SwimlaneRenderAction action metaclass
+* [x] Implement SwimLaneViewDefinitionActionHandler (implementing IActionHandler)
 
-The viewdefinition will call a specific action to render the swimlane upon a click on the button.
+The view definition form provides an action button to render the swimlane upon click.
 
-The corresponding action will be called 'SwimlaneRenderAction' and will create the new page upon click. The action is
-just performed on the client by directly returning the Client Action to open the new window. 
+The corresponding client action module (`Reports.Swimlane.Show`) creates a temporary `SwimlaneRenderAction` element on the server, sets its `swimlaneViewDefinition` reference, and returns the Client Action `NavigateOpenActionInWindow` to open the `ActionPure` page in a popup window. 
 
-The new page is a simple page which takes a url of an action. The action is then executed on the server and the
-returned ClientActions are evaluated by the FormActions.ts. The page is called 'ActionPure'. It contains the 
-necessary TypeScript logic in the Page/ActionPure.ts and a simple div (name: pageContent) which can be used by the
-client actions to render the result. 
+The `ActionPure` page takes the URL of the action element. When loaded, the action is executed on the server under context 'render'. The server action handler evaluates the action and returns a `RenderFormClientAction` containing the decoupled form (`SwimlaneForm`).
 
-The same action under context of 'render' returns again a ClientAction which triggers the formlogic and performs
-the rendering of the page itself.
-
-* [x] Create Clientaction which opens a new window with a specific url
-* [x] Create ClientAction which opens the new Master Page triggering the context. 
-
-* [x] Create new Master Page just loading the action in a specific context
-* [x] Realize clientaction to render a form, the form should be directly returned via the post query. 
-
-An action button starting all the actions above is added to the default form of the Viewdefinition 
-
-* [x] Include an action button for metaclass of 'SwimlaneRenderAction'
+* [x] Create ClientAction which opens a new window with a specific url (`NavigateOpenActionInWindow`)
+* [x] Create new Master Page `ActionPure` loading the action in a specific context
+* [x] Realize client action to render a decoupled form (`RenderFormClientAction`)
+* [x] Include an action button on the form of `SwimlaneViewDefinition` for action `Reports.Swimlane.Show`
 
 === Create an action which shows the result of a Viewnode
 
@@ -203,20 +193,182 @@ The clientside loads the elements of the view by using the existing query interf
 
 === Create the action to show the viewdefinition
 
-The item view of the view definition needs to include a button which just shows the swimlane as a separate page.
+The item view of the view definition includes a button which shows the swimlane as a separate page.
 
 * [x] Include a button to request the action as a popup
 
-It shall open the page and request the action execution with actionverb 'render'. As a return, a dedicated form is returned which includes the form to show the swimlane as an item form. 
+It opens the page and requests the action execution with actionVerb 'render'. As a return, a dedicated decoupled form (`SwimlaneForm`) is returned to render the swimlane. 
 
-The item form loads the viewnode and context and requests also the transformation on the server. Here, a special viewnode will be generated which just takes the SwimlangeViewDefinition and returns an enumeration of items in row and columns.
+The decoupled form loads the view definition, configuration, and view node. It queries the view node elements via the client query interface, clusters the items into horizontal and vertical swimlane cells in JavaScript (`buildSwimlaneData`), and renders the table into the container (`renderInto`).
 
-* [ ] Create the action handler which returns a form. It shall just react upon actionVerb="Render"
-** [ ] Update the action handler chain to manage the actionVerb
-* [ ] Create clientform class definition (SwimlaneForm) for the swimlane
-** [ ] Data (reference to SwimlaneViewDefinition)
-** [ ] Register in JavaScript just to return a dummy element
-* [ ] Update the action handler that the SwimlaneView is return
-* [ ] Implement special viewnode for SwimlaneTransformation
-* [ ] Add Javascript that the viewnode is called and data is returned
-* [ ] Render the table itself
+* [x] Create the action handler which returns a form. It shall just react upon actionVerb="render"
+** [x] Update the action handler chain to manage the actionVerb
+* [x] Create client form class definition (SwimlaneForm) for the swimlane
+** [x] Data (reference to SwimlaneViewDefinition)
+** [x] Register in JavaScript as decoupled form
+* [x] Update the action handler that the SwimlaneForm is returned
+* [x] Add JavaScript that queries the view node and retrieves data
+* [x] Render the swimlane table itself in JavaScript (with configurable headers, links, and cell templates)
+
+== Sequence Chart & Execution Flow
+
+The following sequence diagram and description outline the end-to-end workflow from the user clicking the action button on a `SwimlaneViewDefinition` until the swimlane report is rendered in the browser.
+
+[plantuml, swimlane-render-sequence, svg]
+----
+@startuml
+autonumber
+actor User
+participant "Item Form\n(SwimlaneViewDefinition)" as ItemForm
+participant "SwimlaneRenderAction\n(TS Client Module)" as ClientModule
+participant "DatenMeister Server\n(API / Engine)" as Server
+participant "ActionPure Page\n(ActionPure.ts)" as ActionPure
+participant "SwimLaneViewDefinition\nActionHandler (C#)" as ActionHandler
+participant "SwimlaneForm\n(Decoupled Form TS)" as SwimlaneForm
+
+User -> ItemForm: Click "Show Swimlane" action button
+ItemForm -> ClientModule: execute(form, element=SwimlaneViewDefinition)
+activate ClientModule
+
+ClientModule -> Server: POST createTemporaryElement(SwimlaneRenderAction)
+Server --> ClientModule: Return temporary action { workspace, uri }
+
+ClientModule -> Server: setPropertyReference(tempAction, swimlaneViewDefinition, element.uri)
+Server --> ClientModule: OK
+
+ClientModule -> ActionPure: executeClientAction(NavigateOpenActionInWindow\ncontext="render", actionUrl=tempAction.uri)
+deactivate ClientModule
+activate ActionPure
+
+ActionPure -> Server: POST executeAction(actionUrl, context="render")
+activate Server
+Server -> ActionHandler: Evaluate(actionLogic, SwimlaneRenderAction, actionVerb="render")
+activate ActionHandler
+
+ActionHandler -> ActionHandler: Resolve target SwimlaneViewDefinition\nCreate SwimlaneForm(isReadOnly, title, viewDef)
+ActionHandler -> ActionHandler: Wrap into RenderFormClientAction
+ActionHandler --> Server: Return ActionResult(clientActions=[RenderFormClientAction])
+deactivate ActionHandler
+Server --> ActionPure: Return ActionResult JSON
+deactivate Server
+
+ActionPure -> SwimlaneForm: FormFactory.getDecoupledForm(SwimlaneForm) & renderInto(container, form)
+deactivate ActionPure
+activate SwimlaneForm
+
+SwimlaneForm -> Server: Fetch SwimlaneViewDefinition, SwimlaneConfiguration & ViewNode
+Server --> SwimlaneForm: Return view definition and configuration
+
+SwimlaneForm -> Server: ClientElements.executeViewNode(viewNode)
+Server --> SwimlaneForm: Return queried elements
+
+SwimlaneForm -> SwimlaneForm: buildSwimlaneData(elements, config)\n- Identify unique vertical & horizontal values\n- Cluster elements into 2D cell matrix
+
+SwimlaneForm -> SwimlaneForm: Render HTML <table> with <thead> headers,\n<tbody> rows, cell templates, and item links
+
+SwimlaneForm -> User: Display rendered Swimlane Table in pageContent DOM
+deactivate SwimlaneForm
+@enduml
+----
+
+=== Execution Description
+
+1. **Button Click & Client Action Dispatch**:
+   * The user navigates to a `SwimlaneViewDefinition` item form and clicks the action button associated with `Reports.Swimlane.Show`.
+   * The client action registry routes execution to the `SwimlaneRenderAction` client module (`Assets/Js/DatenMeister.Reports.Swimlane.ts`).
+
+2. **Temporary Action Creation**:
+   * The client invokes `ClientElements.createTemporaryElement` on the server to instantiate a temporary `SwimlaneRenderAction` element.
+   * It sets the `swimlaneViewDefinition` reference property of the temporary action to point to the active `SwimlaneViewDefinition` element URI.
+
+3. **Navigation to ActionPure**:
+   * The client constructs and executes a `NavigateOpenActionInWindow` client action specifying `context: "render"` and the temporary action's URI.
+   * A popup window is opened displaying the `/ActionPure.html` master page.
+
+4. **Server-Side Action Evaluation**:
+   * `ActionPure.ts` initializes on page load and posts an action execution request to the server with `context: "render"`.
+   * The server routes the request to `SwimLaneViewDefinitionActionHandler.cs` (`IActionHandler`).
+   * The handler inspects the `SwimlaneRenderAction`, resolves the referenced `SwimlaneViewDefinition`, and creates a temporary `SwimlaneForm` object with the view definition attached.
+   * The handler wraps `SwimlaneForm` inside a `RenderFormClientAction` and returns an `ActionResult`.
+
+5. **Decoupled Form Instantiation**:
+   * `ActionPure.ts` receives the `ActionResult` and executes the `RenderFormClientAction`.
+   * `FormFactory` detects that `SwimlaneForm` is registered as a decoupled form (`FormFactory.registerDecoupledForm`) and instantiates `SwimlaneForm`.
+
+6. **ViewNode Query & Data Clustering**:
+   * `SwimlaneForm` loads the `SwimlaneViewDefinition`, its `SwimlaneConfiguration`, and the referenced `ViewNode`.
+   * It executes `ClientElements.executeViewNode` to fetch the source items defined by the ViewNode.
+   * `buildSwimlaneData` parses the items and groups them according to `verticalSwimlaneProperty` (columns) and `horizontalSwimlaneProperty` (rows) into a two-dimensional cell grid.
+
+7. **DOM Rendering**:
+   * `renderInto` dynamically generates the HTML `<table>` structure with styled column headers (`<thead>`), row titles, and table cells (`<td>`).
+   * For each item in a cell, the template (`cellContent`) is evaluated (or default name fallback) and navigation links are injected when `linkContent` is enabled.
+   * The rendered swimlane table is injected into the `pageContent` container on `ActionPure.html` and presented to the user.
+
+== Open Tasks / Future Work
+
+The following features were specified as requirements or future extensions and are not yet implemented:
+
+* [ ] Implement server-side ViewNode data transformation for SwimlaneTransformation (clustering rows and columns on the server as a ViewNode so external tools can directly access transformed data)
+* [ ] Support a Swimlane Table tab as a configurable plugin in Object and Collection views
+* [ ] Export swimlane table as a standalone file (html)
+
+== Implementation Reference (DatenMeister.Reports.Swimlane)
+
+The following describes the implementation of each file located in the `DatenMeister.Reports.Swimlane` project:
+
+=== Plugin & Backend Logic
+
+* `Plugin.cs`:
+  The entry point for the plugin implementing `IDatenMeisterPlugin` with `[PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]`. It uses `PluginHelper` to load and register the type extent (`Xmi/Types.xmi`), the management form extent (`Xmi/Forms.xmi`), the client-side JavaScript asset (`Js/DatenMeister.Reports.Swimlane.js`), and the `SwimLaneViewDefinitionActionHandler`.
+* `SwimLaneViewDefinitionActionHandler.cs`:
+  The action handler implementing `IActionHandler`. It handles `SwimlaneRenderAction` and `SwimlaneViewDefinition` elements when executed with `actionVerb == "render"`. It constructs a `SwimlaneForm` instance referencing the target `SwimlaneViewDefinition` and returns an `ActionResult` containing a `RenderFormClientAction`.
+
+=== Model & Form Definitions (XMI)
+
+* `Xmi/Types.xmi`:
+  The MOF/UML metamodel containing the class definitions for the Swimlane report:
+  ** `SwimlaneConfiguration`: Defines the configuration properties (`verticalSwimlaneProperty`, `horizontalSwimlaneProperty`, `cellContent`, and `linkContent`).
+  ** `SwimlaneViewDefinition`: Defines the view definition entity with a `name`, a reference to `SwimlaneConfiguration`, and a reference to the source `ViewNode`.
+  ** `SwimlaneRenderAction`: Dedicated action type referencing the `SwimlaneViewDefinition` to trigger the popup rendering workflow.
+  ** `SwimlaneForm`: Decoupled form specialization of `DatenMeister.Models.Forms.Form` carrying a reference to `SwimlaneViewDefinition`.
+* `Xmi/Forms.xmi`:
+  The form definitions for the metamodel types:
+  ** Form for `SwimlaneConfiguration` providing property fields for vertical/horizontal properties, cell template, and link options.
+  ** Form for `SwimlaneViewDefinition` providing fields for view definition metadata and an action button (`Reports.Swimlane.Show`) that executes `SwimlaneRenderAction`.
+
+=== Generated Models & Wrappers
+
+* `Model/Types.cs`:
+  The generated C# classes, URI constants, and property descriptors for the types defined in `Types.xmi`.
+* `Model/Types.wrapper.cs`:
+  The generated C# strongly-typed wrapper classes (`SwimlaneConfiguration_Wrapper`, `SwimlaneViewDefinition_Wrapper`, `SwimlaneRenderAction_Wrapper`, and `SwimlaneForm_Wrapper`) providing typed access to underlying `IElement` properties.
+* `Model/Types.ts`:
+  The generated TypeScript interfaces and type constants corresponding to `Types.xmi`.
+* `Assets/Js/Types.ts`:
+  TypeScript namespace, URI constants, and property name constants copied from `Model/Types.ts` for client-side JavaScript usage.
+
+=== Client-Side Implementation (TypeScript / JavaScript)
+
+* `Assets/Js/DatenMeister.Reports.Swimlane.ts`:
+  The main client-side implementation containing:
+  ** `init()`: Registers the `SwimlaneRenderAction` action module under `Reports.Swimlane.Show` with `FormActions` and registers `SwimlaneForm` with `FormFactory.registerDecoupledForm`.
+  ** `SwimlaneRenderAction`: Client action module (`IItemFormActionModule`) that creates a temporary `SwimlaneRenderAction` on the server referencing the current `SwimlaneViewDefinition` and executes `NavigateOpenActionInWindow` in the `render` context.
+  ** `SwimlaneForm`: Decoupled form component (`IDecoupledForm`) that fetches the `SwimlaneViewDefinition`, its configuration, and the referenced `ViewNode`, queries the `ViewNode` elements via `ClientElements.executeViewNode`, clusters the items into row and column cells (`buildSwimlaneData`), and dynamically renders the HTML table into the DOM (`renderInto`) with templating and navigation links.
+* `Assets/Js/Test.Swimlane.ts`:
+  Client-side test and verification script for swimlane clustering and rendering logic.
+* `Js/DatenMeister.Reports.Swimlane.js`:
+  The compiled, bundled, and minified ECMAScript module produced by `esbuild` from `Assets/Js/DatenMeister.Reports.Swimlane.ts`, embedded as a resource in the assembly and served to the browser.
+* `Js/Test.Swimlane.js` and `Js/Types.js`:
+  Compiled JavaScript outputs corresponding to `Assets/Js/Test.Swimlane.ts` and `Assets/Js/Types.ts`.
+
+=== Build & Project Configuration
+
+* `DatenMeister.Reports.Swimlane.csproj`:
+  The .NET C# project file configuring project references (`DatenMeister.Plugins`, `DatenMeister.Plugins.Helper`), target framework (`net10.0`), and embedded resources (`Types.xmi`, `Forms.xmi`, `DatenMeister.Reports.Swimlane.js`).
+* `.bsmake/Build.cs` and `.bsmake/Build.csproj`:
+  BurnSystems build agent script that automates copying model definitions (`Model/Types.ts` to `Assets/Js/Types.ts`), compiling TypeScript (`npx tsc`), and bundling JavaScript into `Js/` (`npx esbuild`).
+* `build.cake`:
+  Cake build script for building and bundling TypeScript and JavaScript assets.
+* `package.json` and `tsconfig.json`:
+  NPM dependencies, script definitions, and TypeScript compiler settings for the project's frontend assets.

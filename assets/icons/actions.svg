@@ -1,82 +1,100 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="256"
-   height="256"
-   viewBox="0 0 67.733332 67.733335"
-   version="1.1"
-   id="svg8"
-   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)"
-   sodipodi:docname="actions.svg">
-  <defs
-     id="defs2" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="150.20988"
-     inkscape:cy="99.593889"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     inkscape:document-rotation="0"
-     showgrid="true"
-     units="px"
-     inkscape:window-width="3840"
-     inkscape:window-height="2066"
-     inkscape:window-x="-11"
-     inkscape:window-y="-11"
-     inkscape:window-maximized="1"
-     showguides="true"
-     inkscape:guide-bbox="true">
-    <inkscape:grid
-       type="xygrid"
-       id="grid10" />
-    <sodipodi:guide
-       position="-3.7041667,33.866667"
-       orientation="0,-1"
-       id="guide863" />
-    <sodipodi:guide
-       position="33.866667,61.9125"
-       orientation="1,0"
-       id="guide865" />
-  </sodipodi:namedview>
-  <metadata
-     id="metadata5">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     inkscape:label="Ebene 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <rect
-       style="fill:none;fill-rule:evenodd;stroke-width:1.05833334;fill-opacity:1;stroke:#0000ff;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect12"
-       width="65.087502"
-       height="65.087502"
-       x="1.3229166"
-       y="1.3229166"
-       ry="6.6145835" />
-    <path
-       style="fill:#ffff00;stroke:#000000;stroke-width:1.05833334;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:0.30000001"
-       d="M 33.531723,7.7867255 H 50.625882 L 41.010417,23.8125 h 9.615465 L 16.437564,62.274357 29.258183,35.564733 H 20.711104 L 33.531723,7.7867255 v 0"
-       id="path1430" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgActions" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#030712" />
+    </linearGradient>
+
+    <!-- Ambient Glow -->
+    <radialGradient id="glowActions" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.3" />
+      <stop offset="45%" stop-color="#f43f5e" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Border Gradient -->
+    <linearGradient id="borderActions" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.7" />
+      <stop offset="50%" stop-color="#f43f5e" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0.2" />
+    </linearGradient>
+
+    <!-- Bolt Gradients -->
+    <linearGradient id="boltGradMain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fffbeb" />
+      <stop offset="25%" stop-color="#fef08a" />
+      <stop offset="65%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#ea580c" />
+    </linearGradient>
+
+    <linearGradient id="boltFacetLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="40%" stop-color="#fde047" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+
+    <linearGradient id="boltFacetRight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+
+    <!-- Filters -->
+    <filter id="shadowActions" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+    <filter id="glowFilterActions" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Base Canvas -->
+  <rect x="16" y="16" width="224" height="224" rx="48" fill="url(#bgActions)" filter="url(#shadowActions)" />
+  <rect x="16" y="16" width="224" height="224" rx="48" fill="url(#glowActions)" />
+  <rect x="16" y="16" width="224" height="224" rx="48" fill="none" stroke="url(#borderActions)" stroke-width="2" />
+
+  <!-- Dynamic Energy Grid Rays -->
+  <g opacity="0.18" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="4,4">
+    <line x1="128" y1="36" x2="128" y2="70" />
+    <line x1="56" y1="128" x2="90" y2="128" />
+    <line x1="166" y1="128" x2="200" y2="128" />
+    <line x1="128" y1="186" x2="128" y2="220" />
   </g>
+
+  <!-- Energy Aura Glow -->
+  <path d="M 140 44 L 84 136 L 126 136 L 108 212 L 180 114 L 136 114 Z" 
+        fill="#f59e0b" opacity="0.25" filter="url(#glowFilterActions)" />
+
+  <!-- Modern Dynamic 3D Action Bolt -->
+  <g filter="url(#shadowActions)">
+    <!-- Right / Depth Facet -->
+    <path d="M 138 48 L 88 134 L 128 134 L 112 208 L 176 118 L 138 118 Z" 
+          fill="url(#boltFacetRight)" />
+
+    <!-- Main Dynamic Lightning Bolt Body -->
+    <path d="M 138 48 L 88 134 L 128 134 L 112 208 L 176 118 L 138 118 Z" 
+          fill="url(#boltGradMain)" />
+
+    <!-- Left Highlight Ridge Facet -->
+    <path d="M 138 48 L 88 134 L 128 134 L 124 140 L 96 130 L 134 54 Z" 
+          fill="url(#boltFacetLeft)" opacity="0.8" />
+    <path d="M 138 118 L 176 118 L 124 192 L 126 178 Z" 
+          fill="#fffbeb" opacity="0.6" />
+  </g>
+
+  <!-- Floating Energy Nodes / Sparks -->
+  <g filter="url(#glowFilterActions)">
+    <circle cx="178" cy="116" r="3.5" fill="#ffffff" />
+    <circle cx="112" cy="208" r="3" fill="#ffffff" />
+    <circle cx="138" cy="48" r="2.5" fill="#ffffff" />
+    <circle cx="78" cy="110" r="2.5" fill="#fde047" opacity="0.8" />
+    <circle cx="188" cy="150" r="2" fill="#f97316" opacity="0.8" />
+  </g>
+
+  <!-- Top Glass Reflection -->
+  <path d="M 16 64 C 16 38 38 16 64 16 L 192 16 C 218 16 240 38 240 64 C 240 78 170 116 128 116 C 62 116 16 96 16 64 Z" 
+        fill="#ffffff" 
+        opacity="0.04" />
 </svg>

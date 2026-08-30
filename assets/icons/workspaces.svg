@@ -1,157 +1,137 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="256"
-   height="256"
-   viewBox="0 0 67.733332 67.733335"
-   version="1.1"
-   id="svg8"
-   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)"
-   sodipodi:docname="workspaces.svg">
-  <defs
-     id="defs2" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="5.6"
-     inkscape:cx="59.990773"
-     inkscape:cy="126.58208"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     inkscape:document-rotation="0"
-     showgrid="true"
-     units="px"
-     inkscape:window-width="3840"
-     inkscape:window-height="2066"
-     inkscape:window-x="-11"
-     inkscape:window-y="-11"
-     inkscape:window-maximized="1"
-     showguides="true"
-     inkscape:guide-bbox="true">
-    <inkscape:grid
-       type="xygrid"
-       id="grid10" />
-    <sodipodi:guide
-       position="-3.7041667,33.866667"
-       orientation="0,-1"
-       id="guide863" />
-    <sodipodi:guide
-       position="33.866667,61.9125"
-       orientation="1,0"
-       id="guide865" />
-  </sodipodi:namedview>
-  <metadata
-     id="metadata5">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     inkscape:label="Ebene 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <rect
-       style="fill:none;fill-rule:evenodd;stroke-width:1.05833333;fill-opacity:1;stroke:#0000ff;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect12"
-       width="65.087502"
-       height="65.087502"
-       x="1.3229166"
-       y="1.3229166"
-       ry="6.6145835" />
-    <g
-       id="g937"
-       transform="translate(-1.3229167)">
-      <g
-         id="g873-9"
-         transform="translate(23.812501,-3.96875)">
-        <ellipse
-           style="fill:#bebeff;stroke:#0000ff;stroke-width:0.791818;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
-           id="path845-2-74"
-           cx="29.721182"
-           cy="47.47509"
-           rx="12.577254"
-           ry="8.2682104"
-           transform="matrix(1,0,-0.05454991,0.99851105,0,0)" />
-        <path
-           id="rect867-9"
-           style="fill:#bebeff;stroke:#0000ff;stroke-width:0.79375;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
-           d="m 14.552083,47.625 v -31.75 h 25.135416 v 31.75"
-           sodipodi:nodetypes="cccc" />
-        <ellipse
-           style="fill:#bebeff;stroke:#0000ff;stroke-width:0.791558;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
-           id="path845-0"
-           cx="27.939878"
-           cy="15.764381"
-           rx="12.545784"
-           ry="8.2686338"
-           transform="matrix(1,0,-0.05441064,0.99851864,0,0)" />
-      </g>
-      <g
-         id="g873"
-         transform="translate(-6.614583,-3.96875)">
-        <ellipse
-           style="fill:#bebeff;stroke:#0000ff;stroke-width:0.791818;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
-           id="path845-2"
-           cx="29.721182"
-           cy="47.47509"
-           rx="12.577254"
-           ry="8.2682104"
-           transform="matrix(1,0,-0.05454991,0.99851105,0,0)" />
-        <path
-           id="rect867"
-           style="fill:#bebeff;stroke:#0000ff;stroke-width:0.79375;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
-           d="m 14.552083,47.625 v -31.75 h 25.135416 v 31.75"
-           sodipodi:nodetypes="cccc" />
-        <ellipse
-           style="fill:#bebeff;stroke:#0000ff;stroke-width:0.791558;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
-           id="path845"
-           cx="27.939878"
-           cy="15.764381"
-           rx="12.545784"
-           ry="8.2686338"
-           transform="matrix(1,0,-0.05441064,0.99851864,0,0)" />
-      </g>
-      <g
-         id="g873-7"
-         transform="translate(9.2604178,9.2604167)">
-        <ellipse
-           style="fill:#bebeff;stroke:#0000ff;stroke-width:0.791818;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
-           id="path845-2-7"
-           cx="29.721182"
-           cy="47.47509"
-           rx="12.577254"
-           ry="8.2682104"
-           transform="matrix(1,0,-0.05454991,0.99851105,0,0)" />
-        <path
-           id="rect867-4"
-           style="fill:#bebeff;stroke:#0000ff;stroke-width:0.79375;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
-           d="m 14.552083,47.625 v -31.75 h 25.135416 v 31.75"
-           sodipodi:nodetypes="cccc" />
-        <ellipse
-           style="fill:#bebeff;stroke:#0000ff;stroke-width:0.791558;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
-           id="path845-9"
-           cx="27.939878"
-           cy="15.764381"
-           rx="12.545784"
-           ry="8.2686338"
-           transform="matrix(1,0,-0.05441064,0.99851864,0,0)" />
-      </g>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgWorkspaces" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#030712" />
+    </linearGradient>
+
+    <!-- Ambient Glow -->
+    <radialGradient id="glowWorkspaces" cx="50%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35" />
+      <stop offset="50%" stop-color="#6366f1" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Border Gradient -->
+    <linearGradient id="borderWorkspaces" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.7" />
+      <stop offset="50%" stop-color="#818cf8" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#c084fc" stop-opacity="0.2" />
+    </linearGradient>
+
+    <!-- Layer 1: Top Platform (Electric Cyan / Azure) -->
+    <linearGradient id="layerTopTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="layerTopSide" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0c4a6e" />
+    </linearGradient>
+
+    <!-- Layer 2: Middle Platform (Indigo / Violet) -->
+    <linearGradient id="layerMidTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+    <linearGradient id="layerMidSide" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#312e81" />
+    </linearGradient>
+
+    <!-- Layer 3: Bottom Platform (Teal / Emerald) -->
+    <linearGradient id="layerBotTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2dd4bf" />
+      <stop offset="100%" stop-color="#0891b2" />
+    </linearGradient>
+    <linearGradient id="layerBotSide" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0891b2" />
+      <stop offset="100%" stop-color="#155e75" />
+    </linearGradient>
+
+    <!-- Flow Connector Beam Gradient -->
+    <linearGradient id="beamGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#2dd4bf" />
+    </linearGradient>
+
+    <!-- Filters -->
+    <filter id="shadowWorkspaces" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+    <filter id="glowFilterWorkspaces" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Canvas -->
+  <rect x="16" y="16" width="224" height="224" rx="48" fill="url(#bgWorkspaces)" filter="url(#shadowWorkspaces)" />
+  <rect x="16" y="16" width="224" height="224" rx="48" fill="url(#glowWorkspaces)" />
+  <rect x="16" y="16" width="224" height="224" rx="48" fill="none" stroke="url(#borderWorkspaces)" stroke-width="2" />
+
+  <!-- Vertical Data Conduits (Connecting the 3 Layers) -->
+  <g stroke="url(#beamGrad)" stroke-width="2" stroke-linecap="round" filter="url(#glowFilterWorkspaces)">
+    <line x1="128" y1="62" x2="128" y2="186" />
+    <line x1="68" y1="96" x2="68" y2="176" stroke-dasharray="3,3" opacity="0.6" />
+    <line x1="188" y1="96" x2="188" y2="176" stroke-dasharray="3,3" opacity="0.6" />
   </g>
+
+  <!-- Layer 3: Bottom Workspace (Teal/Emerald Data Extents) -->
+  <g filter="url(#shadowWorkspaces)">
+    <!-- Plate Top Face -->
+    <path d="M 128 156 L 196 186 L 128 216 L 60 186 Z" fill="url(#layerBotTop)" stroke="#67e8f9" stroke-width="1.2" />
+    <!-- Plate Thickness / Sides -->
+    <path d="M 60 186 L 128 216 L 128 224 L 60 194 Z" fill="url(#layerBotSide)" />
+    <path d="M 128 216 L 196 186 L 196 194 L 128 224 Z" fill="#0f172a" />
+  </g>
+
+  <!-- Layer 2: Middle Workspace (Indigo/Violet Metamodel Space) -->
+  <g filter="url(#shadowWorkspaces)">
+    <!-- Plate Top Face -->
+    <path d="M 128 108 L 196 138 L 128 168 L 60 138 Z" fill="url(#layerMidTop)" stroke="#e9d5ff" stroke-width="1.2" />
+    <!-- Plate Thickness / Sides -->
+    <path d="M 60 138 L 128 168 L 128 176 L 60 146 Z" fill="url(#layerMidSide)" />
+    <path d="M 128 168 L 196 138 L 196 146 L 128 176 Z" fill="#1e1b4b" />
+  </g>
+
+  <!-- Layer 1: Top Workspace (Active Cyan/Azure Primary Workspace) -->
+  <g filter="url(#shadowWorkspaces)">
+    <!-- Plate Top Face -->
+    <path d="M 128 60 L 196 90 L 128 120 L 60 90 Z" fill="url(#layerTopTop)" stroke="#ffffff" stroke-width="1.5" />
+    <!-- Plate Thickness / Sides -->
+    <path d="M 60 90 L 128 120 L 128 128 L 60 98 Z" fill="url(#layerTopSide)" />
+    <path d="M 128 120 L 196 90 L 196 98 L 128 128 Z" fill="#0c4a6e" />
+    <!-- Grid Facets on Top Plate -->
+    <line x1="94" y1="75" x2="162" y2="105" stroke="#ffffff" stroke-width="1" opacity="0.6" />
+    <line x1="162" y1="75" x2="94" y2="105" stroke="#ffffff" stroke-width="1" opacity="0.6" />
+  </g>
+
+  <!-- Glowing Conduit Nodes & Core Sparkles -->
+  <g filter="url(#glowFilterWorkspaces)">
+    <circle cx="128" cy="90" r="4" fill="#ffffff" />
+    <circle cx="128" cy="90" r="8" fill="#38bdf8" opacity="0.7" />
+    
+    <circle cx="128" cy="138" r="3.5" fill="#ffffff" />
+    <circle cx="128" cy="138" r="7" fill="#a855f7" opacity="0.7" />
+
+    <circle cx="128" cy="186" r="3.5" fill="#ffffff" />
+    <circle cx="128" cy="186" r="7" fill="#2dd4bf" opacity="0.7" />
+
+    <!-- Satellite Corner Nodes -->
+    <circle cx="60" cy="90" r="2.5" fill="#38bdf8" />
+    <circle cx="196" cy="90" r="2.5" fill="#38bdf8" />
+    <circle cx="60" cy="138" r="2.5" fill="#a855f7" />
+    <circle cx="196" cy="138" r="2.5" fill="#a855f7" />
+    <circle cx="60" cy="186" r="2.5" fill="#2dd4bf" />
+    <circle cx="196" cy="186" r="2.5" fill="#2dd4bf" />
+  </g>
+
+  <!-- Top Glass Reflection -->
+  <path d="M 16 64 C 16 38 38 16 64 16 L 192 16 C 218 16 240 38 240 64 C 240 78 170 116 128 116 C 62 116 16 96 16 64 Z" 
+        fill="#ffffff" 
+        opacity="0.04" />
 </svg>

@@ -1,80 +1,118 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="256"
-   height="256"
-   viewBox="0 0 67.733332 67.733335"
-   version="1.1"
-   id="svg8"
-   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)"
-   sodipodi:docname="template.svg">
-  <defs
-     id="defs2" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="166.5239"
-     inkscape:cy="114.49655"
-     inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
-     inkscape:document-rotation="0"
-     showgrid="true"
-     units="px"
-     inkscape:window-width="3840"
-     inkscape:window-height="2066"
-     inkscape:window-x="-11"
-     inkscape:window-y="-11"
-     inkscape:window-maximized="1">
-    <inkscape:grid
-       type="xygrid"
-       id="grid10" />
-  </sodipodi:namedview>
-  <metadata
-     id="metadata5">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     inkscape:label="Ebene 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <rect
-       style="fill:none;fill-rule:evenodd;stroke-width:1.05833333;fill-opacity:1;stroke:#0000ff;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect12"
-       width="65.087502"
-       height="65.087502"
-       x="1.3229166"
-       y="1.3229166"
-       ry="6.6145835" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.296906px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 12.053241,26.458333 34.395833,7.9375 57.032407,26.458333 H 12.053241 v 0"
-       id="path837"
-       sodipodi:nodetypes="ccccc" />
-    <rect
-       style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.05833;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect839"
-       width="39.6875"
-       height="34.395832"
-       x="14.552083"
-       y="26.458332" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgTemplate" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#030712" />
+    </linearGradient>
+
+    <!-- Ambient Glow -->
+    <radialGradient id="glowTemplate" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35" />
+      <stop offset="50%" stop-color="#6366f1" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Border Gradient -->
+    <linearGradient id="borderTemplate" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.7" />
+      <stop offset="50%" stop-color="#818cf8" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#c084fc" stop-opacity="0.2" />
+    </linearGradient>
+
+    <!-- Blueprint Board Gradient -->
+    <linearGradient id="boardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.95" />
+    </linearGradient>
+    <linearGradient id="boardStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#818cf8" />
+    </linearGradient>
+
+    <!-- Template Block Gradients -->
+    <linearGradient id="blockPrimary" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="blockSecondary" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+    <linearGradient id="blockTertiary" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc" />
+      <stop offset="100%" stop-color="#9333ea" />
+    </linearGradient>
+
+    <!-- Filters -->
+    <filter id="shadowTemplate" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+    <filter id="glowFilterTemplate" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Canvas -->
+  <rect x="16" y="16" width="224" height="224" rx="48" fill="url(#bgTemplate)" filter="url(#shadowTemplate)" />
+  <rect x="16" y="16" width="224" height="224" rx="48" fill="url(#glowTemplate)" />
+  <rect x="16" y="16" width="224" height="224" rx="48" fill="none" stroke="url(#borderTemplate)" stroke-width="2" />
+
+  <!-- Background Blueprint Alignment Grid Lines -->
+  <g opacity="0.15" stroke="#38bdf8" stroke-width="1" stroke-dasharray="2,4">
+    <line x1="44" y1="50" x2="212" y2="50" />
+    <line x1="44" y1="206" x2="212" y2="206" />
+    <line x1="50" y1="44" x2="50" y2="212" />
+    <line x1="206" y1="44" x2="206" y2="212" />
   </g>
+
+  <!-- Main Blueprint Layout Canvas / Form Frame -->
+  <g filter="url(#shadowTemplate)">
+    <rect x="52" y="52" width="152" height="152" rx="14" fill="url(#boardGrad)" stroke="url(#boardStroke)" stroke-width="2" />
+
+    <!-- Blueprint Header Bar -->
+    <rect x="64" y="64" width="128" height="20" rx="6" fill="url(#blockPrimary)" />
+    <!-- Header Window Dots -->
+    <circle cx="74" cy="74" r="3" fill="#ffffff" opacity="0.9" />
+    <circle cx="83" cy="74" r="3" fill="#ffffff" opacity="0.6" />
+    <circle cx="92" cy="74" r="3" fill="#ffffff" opacity="0.6" />
+
+    <!-- Left Sidebar / Column Widget -->
+    <rect x="64" y="92" width="38" height="98" rx="8" fill="url(#blockSecondary)" opacity="0.85" />
+    <rect x="70" y="102" width="26" height="6" rx="3" fill="#ffffff" opacity="0.8" />
+    <rect x="70" y="116" width="20" height="5" rx="2.5" fill="#ffffff" opacity="0.5" />
+    <rect x="70" y="128" width="26" height="5" rx="2.5" fill="#ffffff" opacity="0.5" />
+    <rect x="70" y="140" width="18" height="5" rx="2.5" fill="#ffffff" opacity="0.5" />
+
+    <!-- Top Right Content Card -->
+    <rect x="110" y="92" width="82" height="44" rx="8" fill="url(#blockTertiary)" opacity="0.9" />
+    <circle cx="124" cy="114" r="10" fill="#ffffff" opacity="0.3" />
+    <rect x="142" y="106" width="40" height="6" rx="3" fill="#ffffff" opacity="0.9" />
+    <rect x="142" y="118" width="28" height="5" rx="2.5" fill="#ffffff" opacity="0.6" />
+
+    <!-- Bottom Right Content Grid Split Cards -->
+    <rect x="110" y="144" width="38" height="46" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.2" />
+    <line x1="116" y1="156" x2="142" y2="156" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" />
+    <line x1="116" y1="166" x2="136" y2="166" stroke="#64748b" stroke-width="2" stroke-linecap="round" />
+    <line x1="116" y1="176" x2="130" y2="176" stroke="#64748b" stroke-width="2" stroke-linecap="round" />
+
+    <rect x="154" y="144" width="38" height="46" rx="6" fill="#1e293b" stroke="#818cf8" stroke-width="1.2" />
+    <circle cx="173" cy="164" r="9" fill="none" stroke="#c084fc" stroke-width="2" stroke-dasharray="3,3" />
+    <circle cx="173" cy="164" r="3" fill="#c084fc" />
+  </g>
+
+  <!-- Glowing Accent Sparkles -->
+  <g filter="url(#glowFilterTemplate)">
+    <circle cx="192" cy="64" r="3" fill="#ffffff" />
+    <circle cx="192" cy="64" r="6" fill="#38bdf8" opacity="0.6" />
+    <circle cx="52" cy="120" r="2.5" fill="#818cf8" opacity="0.8" />
+    <circle cx="204" cy="160" r="2.5" fill="#c084fc" opacity="0.8" />
+  </g>
+
+  <!-- Top Glass Reflection -->
+  <path d="M 16 64 C 16 38 38 16 64 16 L 192 16 C 218 16 240 38 240 64 C 240 78 170 116 128 116 C 62 116 16 96 16 64 Z" 
+        fill="#ffffff" 
+        opacity="0.04" />
 </svg>

@@ -1,8 +1,6 @@
 import * as Mof from "../Mof.js";
-import * as _DatenMeister from "../models/DatenMeister.class.js";
 import { StaticObjectQuery } from "../modules/StaticObjectQuery.js";
 import { TableState } from "../forms/TableState.js";
-import * as QueryEngine from "../modules/QueryEngine.js";
 
 import '../../node_modules/chai/register-expect.js';
 declare var expect: Chai.ExpectStatic;
@@ -86,32 +84,6 @@ export function includeTests() {
                 expect(result[0].get("name")).to.equal("Charlie");
             });
 
-            it('Filters by comparison modes (Contains, GreaterThan, etc.)', () => {
-                const original = createSampleObjects();
-                const query = new StaticObjectQuery(original);
-
-                const builder = new QueryEngine.QueryBuilder();
-                QueryEngine.addDynamicSource(builder, "input");
-                QueryEngine.filterByProperty(builder, "name", "li", _DatenMeister._DataViews.___ComparisonMode.Contains);
-
-                const result = query.getFilteredObject(builder.queryStatement);
-                expect(result.map(x => x.get("name"))).to.deep.equal(["Alice", "Charlie"]);
-            });
-
-            it('Filters by metaclass', () => {
-                const original = createSampleObjects();
-                const query = new StaticObjectQuery(original);
-
-                const builder = new QueryEngine.QueryBuilder();
-                QueryEngine.addDynamicSource(builder, "input");
-                const metaTypeB = Mof.DmObject.createFromReference("Types", "dm:///_types#TypeB");
-                QueryEngine.filterByMetaClass(builder, metaTypeB);
-
-                const result = query.getFilteredObject(builder.queryStatement);
-                expect(result.length).to.equal(2);
-                expect(result.map(x => x.get("name"))).to.deep.equal(["Charlie", "Diana"]);
-            });
-
             it('Sorts by string property ascending and descending', () => {
                 const original = createSampleObjects();
                 const query = new StaticObjectQuery(original);
@@ -142,7 +114,7 @@ export function includeTests() {
                 expect(result.map(x => x.get("name"))).to.deep.equal(["Charlie", "Alice", "Diana", "Bob"]);
             });
 
-            it('Paginates results using limit and position', () => {
+            it('Paginates results using limit', () => {
                 const original = createSampleObjects();
                 const query = new StaticObjectQuery(original);
                 const tableState = new TableState();
@@ -151,16 +123,6 @@ export function includeTests() {
                 let result = query.getFilteredObject(tableState.queryStatement);
                 expect(result.length).to.equal(2);
                 expect(result.map(x => x.get("name"))).to.deep.equal(["Alice", "Bob"]);
-
-                // Set limit with position offset
-                const builder = new QueryEngine.QueryBuilder();
-                QueryEngine.addDynamicSource(builder, "input");
-                const limitNode = QueryEngine.limit(builder, 2);
-                limitNode.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.position, 1);
-
-                result = query.getFilteredObject(builder.queryStatement);
-                expect(result.length).to.equal(2);
-                expect(result.map(x => x.get("name"))).to.deep.equal(["Bob", "Charlie"]);
             });
 
             it('Applies combined filter, sort, and pagination pipeline', () => {

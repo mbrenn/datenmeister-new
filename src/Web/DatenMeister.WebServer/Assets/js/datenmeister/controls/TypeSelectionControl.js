@@ -5,17 +5,28 @@ import * as ClientItems from "../client/Items.js";
  * Within this control, the user can select a type
  */
 export class TypeSelectionControl {
+    selectionField;
+    /**
+     * This event is thrown when the user has selected a specific form
+     */
+    typeSelected = new Events.UserEvent();
+    /**
+     * This JQuery element contains the control
+     * @private
+     */
+    _container;
     /**
      * The constructor for this control
      * @param container The element in which the element shall be contained
      */
     constructor(container) {
-        /**
-         * This event is thrown when the user has selected a specific form
-         */
-        this.typeSelected = new Events.UserEvent();
         this._container = container;
     }
+    /**
+     * Defines the current form url which is used to link the current form
+     * @private
+     */
+    _currentTypeUrl;
     /**
      * Sets the current type url..
      * This method must be called before calling createControl

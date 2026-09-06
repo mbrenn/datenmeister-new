@@ -1,5 +1,7 @@
 // Class representing the result of a popup creation
 export class PopupResult {
+    htmlPopupWindow; // The outer popup window element
+    htmlContent; // The inner content element of the popup
     // Method to close the popup by removing the outer popup window element
     closePopup() {
         this.htmlPopupWindow.remove();

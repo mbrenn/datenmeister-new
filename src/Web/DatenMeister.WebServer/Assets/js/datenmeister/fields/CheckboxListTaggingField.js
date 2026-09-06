@@ -2,14 +2,18 @@ import { BaseField } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 export class Field extends BaseField {
+    /**
+     * Stores the array of created checkboxes which are used to return back the
+     * value of the selected checkboxes
+     * @private
+     */
+    checkboxes = new Array();
+    freeText;
+    separator;
+    name;
+    isFieldReadOnly;
     constructor() {
         super();
-        /**
-         * Stores the array of created checkboxes which are used to return back the
-         * value of the selected checkboxes
-         * @private
-         */
-        this.checkboxes = new Array();
     }
     async createDom(dmElement) {
         // Ensure local availability of field information

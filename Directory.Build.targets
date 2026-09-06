@@ -1,4 +1,8 @@
 <Project>
+  <PropertyGroup>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+
   <Target Name="RunBSMake"
           BeforeTargets="CoreCompile">
     <Exec Command="bsmake build $(MSBuildProjectDirectory)" />

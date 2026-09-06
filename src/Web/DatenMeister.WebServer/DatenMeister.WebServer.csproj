@@ -8,13 +8,6 @@
     <ImplicitUsings>true</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  <PropertyGroup>
-    <TypeScriptToolsVersion>4.7.4</TypeScriptToolsVersion>
-    <TypeScriptNuGetToolsVersion>4.7.4</TypeScriptNuGetToolsVersion>
-    <TypeScriptTarget>ES6</TypeScriptTarget>
-    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
-    <TypeScriptESModuleInterop>True</TypeScriptESModuleInterop>
-  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="BurnSystems" Version="1.2.0" />

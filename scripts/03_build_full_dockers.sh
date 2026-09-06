@@ -3,15 +3,14 @@ cd ..
 docker build . --target runtime -t mbrenn/datenmeister:latest
 docker build . --target runtime-bash -t mbrenn/datenmeister:executable-latest
 
-docker build . --target runtime -t mbrenn/datenmeister:v0.07
-docker build . --target runtime-bash -t mbrenn/datenmeister:executable-v0.07
+docker build . --target runtime -t mbrenn/datenmeister:v0.08
+docker build . --target runtime-bash -t mbrenn/datenmeister:executable-v0.08
 
 sudo docker push mbrenn/datenmeister:latest
 sudo docker push mbrenn/datenmeister:executable-latest
 
-sudo docker push mbrenn/datenmeister:v0.07
-sudo docker push mbrenn/datenmeister:executable-v0.07
-
+sudo docker push mbrenn/datenmeister:v0.08
+sudo docker push mbrenn/datenmeister:executable-v0.08
 
 cd scripts
 

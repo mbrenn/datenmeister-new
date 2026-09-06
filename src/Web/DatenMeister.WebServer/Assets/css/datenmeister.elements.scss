@@ -1,0 +1,42 @@
+﻿
+/* 
+ * To be used in convertItemWithNameAndIdToDom whenever an item's metaclass is shown. 
+ */
+.dm-metaclass
+{
+    color: dimgray;
+    font-size: 80%;
+    font-style: italic;
+}
+
+
+.dm-breadcrumb {
+    font-size: 80%;
+    margin-bottom: 0;
+}
+
+.dm-breadcrumb-page
+{
+    margin: 5px 0 5px 0;
+    padding: 5px;
+}
+
+.dm-breadcrumb-page a {
+    color: #222222;
+    font-weight: bold;
+}
+
+/* Breadcrumb Items are links and need to have a pointer */
+.dm-breadcrumb .breadcrumb-item{
+    cursor: pointer;
+}
+
+/* The slash between the items do not need a pointer */
+.dm-breadcrumb .breadcrumb-item::before{
+    cursor: default;
+}
+
+/* Prevents that the Breadcrumb adds additional margin at the bottom */
+.dm-breadcrumb ul {
+    margin-bottom: 0;
+}

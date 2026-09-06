@@ -1,160 +1,141 @@
-.dm-selectitemcontrol
-{
-    border: 1px solid black;
-    width: fit-content;
-    background-color: #EEEEFF;
-    padding: 5px;    
-    display: grid;
-    grid-template-columns: 1fr 1fr; 
-    grid-template: 
-        "title tabs"
-        "control control"
-        "buttons buttons";    
-}
-.dm-selectitemcontrol .dm-selectitemcontrol-headline
-{
-    font-weight: bold;
-    grid-area: title;
+.dm-selectitemcontrol {
+  border: 1px solid black;
+  width: fit-content;
+  background-color: #EEEEFF;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template: "title tabs" "control control" "buttons buttons";
 }
 
-.dm-selectitemcontrol .dm-selectitemcontrol-tabs
-{
-    display: flex;    
-    flex-direction: row;
-    flex-wrap: nowrap;    
-    justify-content: flex-end;
-    grid-area: tabs;
+.dm-selectitemcontrol .dm-selectitemcontrol-headline {
+  font-weight: bold;
+  grid-area: title;
 }
 
-.dm-selectitemcontrol .dm-selectitemcontrol-tab-bybrowse
-{
-}
-.dm-selectitemcontrol .dm-selectitemcontrol-tab-search
-{
-}
-
-.dm-selectitemcontrol .dm-selectitemcontrol-bybrowse
-{
-    grid-area: control;    
+.dm-selectitemcontrol .dm-selectitemcontrol-tabs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  grid-area: tabs;
 }
 
-.dm-selectitemcontrol .dm-selectitemcontrol-search
-{
-    grid-area: control;
+.dm-selectitemcontrol .dm-selectitemcontrol-bybrowse {
+  grid-area: control;
 }
 
-.dm-selectitemcontrol .dm-selectitemcontrol-buttons
-{
-    margin-top: 5px;
-    grid-area: buttons;
-} 
+.dm-selectitemcontrol .dm-selectitemcontrol-search {
+  grid-area: control;
+}
+
+.dm-selectitemcontrol .dm-selectitemcontrol-buttons {
+  margin-top: 5px;
+  grid-area: buttons;
+}
 
 .dm-sic-bb {
-    border-collapse: collapse;
+  border-collapse: collapse;
 }
 
 .dm-sic-bb th {
-    padding: 5px 10px 5px 10px;
-    font-weight: bold;
-    border: black 1px solid;
-    vertical-align: top;
+  padding: 5px 10px 5px 10px;
+  font-weight: bold;
+  border: black 1px solid;
+  vertical-align: top;
 }
 
 .dm-sic-bb td {
-    padding: 5px 10px 5px 10px;
-    border: black 1px solid;
-    vertical-align: top;
+  padding: 5px 10px 5px 10px;
+  border: black 1px solid;
+  vertical-align: top;
 }
 
 .dm-sic-bb select {
-    width: 400px;
+  width: 400px;
 }
 
 .dm-sic-bb ul {
-    list-style-type: none;
-    list-style-position: outside;
-    padding-left: 0;
-    margin-left: 0;
+  list-style-type: none;
+  list-style-position: outside;
+  padding-left: 0;
+  margin-left: 0;
 }
 
 .dm-sic-bb ul li {
-    list-style-position: outside;
+  list-style-position: outside;
 }
 
 .dm-sic-bb .dm-sic-bb-items ul {
-    margin-top: 0;
-    margin-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 /* Makes the selectable items like a small button */
-.dm-sic-bb .dm-sic-bb-item
-{
-    background: lightblue;
-    border: 1px solid dimgray;
-    border-radius: 2px;
-    padding: 3px 10px 3px 10px;
-    margin-bottom: 2px;
-    font-size: 80%;
-    cursor: pointer;
+.dm-sic-bb .dm-sic-bb-item {
+  background: lightblue;
+  border: 1px solid dimgray;
+  border-radius: 2px;
+  padding: 3px 10px 3px 10px;
+  margin-bottom: 2px;
+  font-size: 80%;
+  cursor: pointer;
 }
 
-.dm-sic-bb .dm-sic-bb-selected
-{
-    background: lightskyblue;
-    border: 1px solid dimgray;
-    border-radius: 2px;
-    padding: 3px 10px 3px 10px;
-    margin-bottom: 2px;
-    font-weight: bold;
-    color: black;
+.dm-sic-bb .dm-sic-bb-selected {
+  background: lightskyblue;
+  border: 1px solid dimgray;
+  border-radius: 2px;
+  padding: 3px 10px 3px 10px;
+  margin-bottom: 2px;
+  font-weight: bold;
+  color: black;
 }
 
-.dm-sic-bb .dm-sic-bb-selected a
-{
-    color: black;
+.dm-sic-bb .dm-sic-bb-selected a {
+  color: black;
 }
 
-.dm-sic-search-results{
-    display: flex;
-    flex-direction: column;
-    max-height: 25em;
-    overflow-y: auto;
+.dm-sic-search-results {
+  display: flex;
+  flex-direction: column;
+  max-height: 25em;
+  overflow-y: auto;
 }
 
 .dm-sic-search-results div {
-    padding: 5px;
-    border: 1px solid black;
-    margin: 5px;
-    cursor: pointer;
+  padding: 5px;
+  border: 1px solid black;
+  margin: 5px;
+  cursor: pointer;
 }
 
 .dm-sic-search-results div.more {
-    cursor: default;
+  cursor: default;
 }
 
 .dm-sic-search-results div.selected {
-    background-color: lightskyblue;
-    border: 1px solid black;
+  background-color: lightskyblue;
+  border: 1px solid black;
 }
 
-
 .dm-sic-search table {
-    border-collapse: collapse;
+  border-collapse: collapse;
 }
 
 .dm-sic-search table th {
-    padding: 5px 10px 5px 10px;
-    font-weight: bold;
-    border: black 1px solid;
-    vertical-align: top;
+  padding: 5px 10px 5px 10px;
+  font-weight: bold;
+  border: black 1px solid;
+  vertical-align: top;
 }
 
 .dm-sic-search table td {
-    padding: 5px 10px 5px 10px;
-    border: black 1px solid;
-    vertical-align: top;
+  padding: 5px 10px 5px 10px;
+  border: black 1px solid;
+  vertical-align: top;
 }
 
 .dm-sic-search select {
-    width: 400px;
+  width: 400px;
 }

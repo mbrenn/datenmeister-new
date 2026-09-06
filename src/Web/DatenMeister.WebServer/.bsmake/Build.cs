@@ -2,12 +2,24 @@
 using BurnSystems.Make.BuildAgent;
 
 CopyNodeModules();
+await CompileSass();
 await CompressCSS();
 await CompileTS();
 await CompressJS();
 MoveJS();
 
 return 0;
+
+async Task CompileSass()
+{
+    Console.WriteLine("Compiling Sass/SCSS files");
+
+    await ProcessInvoke.Run("npx", [
+        "sass",
+        "Assets/css:Assets/css",
+        "--no-source-map"
+    ]);
+}
 
 void CopyNodeModules()
 {

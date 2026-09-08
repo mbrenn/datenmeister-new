@@ -16,7 +16,7 @@ async Task CopyModel()
     File.Copy("Model/Types.ts", "Assets/Js/Types.ts", true);
 }
 
-async Task MergeJs()
+/*async Task MergeJs()
 {
     Console.WriteLine("Merge model");
     var mergeOptions = new FileMergeOptions()
@@ -27,7 +27,7 @@ async Task MergeJs()
     };
     
     FileHelper.MergeFiles(mergeOptions);
-}
+}*/
 
 async Task CompileTs()
 {

@@ -157,7 +157,7 @@ export async function createActionFormForEmptyObject(
     creator.workspace = element.workspace;
     creator.itemUrl = element.uri;
     creator.extentUri = creator.element.extentUri;
-    configuration.viewMode = "ViewMode.DataManipulation";
+    //configuration.viewMode = "ViewMode.DataManipulation";
     configuration.formType = FormType.Object;
     configuration.isNewItem = true;
     

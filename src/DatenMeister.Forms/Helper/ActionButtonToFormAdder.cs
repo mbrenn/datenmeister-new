@@ -102,29 +102,45 @@ public static class ActionButtonToFormAdder
             FormCreationContext context,
             FormCreationResultMultipleForms result)
         {
-            var mergedActionField = context.Global.Factory.create(_Forms.TheOne.FieldTypes.__MergedFieldsInCellData);
-            mergedActionField.set(_Forms._FieldTypes._MergedFieldsInCellData.name, configuration.Name);
-            mergedActionField.set(_Forms._FieldTypes._MergedFieldsInCellData.title, configuration.Title);
-
-            // Adds the field to the form
             var form = result.Forms.FirstOrDefault();
             if (form == null)
                 throw new InvalidOperationException("Form is null");
-            var fields = form.get<IReflectiveSequence>(_Forms._FormTypes._RowForm.field);
-                fields.add(mergedActionField);
-                
-            // Now walk through all the parameters
-            foreach(var parameter in parameters)
+
+            IElement? mergedActionField = null;
+
+            foreach (var parameter in parameters)
             {
-                var actionField = 
-                    RowAndTableFormModificationForActionButton.CreateActionFieldInCaseItIsValid(parameter, factoryParameter, context);
+                var actionField = RowAndTableFormModificationForActionButton.CreateActionFieldInCaseItIsValid(
+                    parameter,
+                    factoryParameter,
+                    context);
+
                 if (actionField == null)
                 {
                     continue;
                 }
-                
+
+                // Lazily create and add the container field only when the first valid action is found
+                if (mergedActionField == null)
+                {
+                    mergedActionField =
+                        context.Global.Factory.create(_Forms.TheOne.FieldTypes.__MergedFieldsInCellData);
+                    mergedActionField.set(_Forms._FieldTypes._MergedFieldsInCellData.name, configuration.Name);
+                    mergedActionField.set(_Forms._FieldTypes._MergedFieldsInCellData.title, configuration.Title);
+
+                    var fields = form.get<IReflectiveSequence>(_Forms._FormTypes._RowForm.field);
+                    if (parameter.ActionButtonPosition == -1)
+                    {
+                        fields.add(mergedActionField);
+                    }
+                    else
+                    {
+                        fields.add(parameter.ActionButtonPosition, mergedActionField);
+                    }
+                }
+
                 mergedActionField.AddCollectionItem(_Forms._FieldTypes._MergedFieldsInCellData.fields, actionField);
-                
+
                 (parameter as ActionButtonAdderParameterForRow)?.OnCallSuccess?.Invoke(
                     factoryParameter as RowFormFactoryParameter
                     ?? throw new InvalidOperationException("RowFormFactoryParameter is null"));
@@ -132,10 +148,10 @@ public static class ActionButtonToFormAdder
                 (parameter as ActionButtonAdderParameterForTable)?.OnCallSuccess?.Invoke(
                     factoryParameter as TableFormFactoryParameter
                     ?? throw new InvalidOperationException("TableFormFactoryParameter is null"));
-            
+
                 result.AddToFormCreationProtocol(
-                    $"[ActionButtonToFormAdder]: Added Merged Button{parameter.Title}");
-                
+                    $"[ActionButtonToFormAdder]: Added Merged Button: {parameter.Title}");
+
                 result.IsManaged = true;
             }
         }

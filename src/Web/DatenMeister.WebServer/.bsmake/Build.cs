@@ -15,6 +15,7 @@ async Task CompileSass()
     Console.WriteLine("Compiling Sass/SCSS files");
 
     await ProcessInvoke.Run("npx", [
+        "--package=sass-embedded",        
         "sass",
         "Assets/css:Assets/css",
         "--no-source-map"

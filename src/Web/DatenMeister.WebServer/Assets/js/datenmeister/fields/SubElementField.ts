@@ -71,12 +71,6 @@ export class Control {
         const tthis = this;
         this._list.empty();
 
-        if(this.configuration.isNewItem)
-        {
-            // Just return information about being in a new iotem in which we cannot set the content
-            return $("<div><em>New item, content can only be set after saving</em></div>");
-        }
-
         if (this.isReadOnly) {
             // In read-only mode we only display links/names and optional action callbacks.
             if (!Array.isArray(fieldValue)) {
@@ -420,27 +414,29 @@ export class Field extends Control implements IFormField {
         this.itemActionName = this.field.get(_DatenMeister._Forms._FieldTypes._SubElementFieldData.actionName, Mof.ObjectType.String);
         this.additionalTypes = this.field.get(_DatenMeister._Forms._FieldTypes._SubElementFieldData.defaultTypesForNewElements, Mof.ObjectType.Array);
 
+
         if (this.configuration.isNewItem) {
-            return $("<em>Element needs to be saved first</em>");
-        } else {
-            this._element = dmElement;
-            const value = dmElement.get(this.propertyName);
-
-            if (this._element.metaClass?.uri !== undefined
-                && this.propertyName !== undefined
-                && !this.isReadOnly) {
-                this.propertyType =
-                    await ClientTypes.getPropertyType(
-                        this._element.metaClass.workspace,
-                        this._element.metaClass.uri,
-                        this.propertyName);
-            }
-
-            await this.createDomByFieldValue(value);
-
-            return this._list
+            // Just return information about being in a new iotem in which we cannot set the content
+            return $("<div><em>New item, content can only be set after saving</em></div>");
         }
-    }
+
+        this._element = dmElement;
+        const value = dmElement.get(this.propertyName);
+
+        if (this._element.metaClass?.uri !== undefined
+            && this.propertyName !== undefined
+            && !this.isReadOnly) {
+            this.propertyType =
+                await ClientTypes.getPropertyType(
+                    this._element.metaClass.workspace,
+                    this._element.metaClass.uri,
+                    this.propertyName);
+        }
+
+        await this.createDomByFieldValue(value);
+
+        return this._list
+    }    
 
     /**
      * Evaluates and persists DOM changes back to the model.

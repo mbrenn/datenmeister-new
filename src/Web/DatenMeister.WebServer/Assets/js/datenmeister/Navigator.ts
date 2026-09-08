@@ -159,7 +159,7 @@ export function getLinkForNavigateToCreateNewItemInExtent(workspace: string,
 }
 export function navigateToCreateNewItemInExtent(workspace: string, 
                                                 extentUri: string,
-                                                metaclass: string,
+                                                metaclass?: string,
                                                 metaClassWorkspace?: string) {
     document.location.href = getLinkForNavigateToCreateNewItemInExtent(
         workspace, extentUri, metaclass, metaClassWorkspace);

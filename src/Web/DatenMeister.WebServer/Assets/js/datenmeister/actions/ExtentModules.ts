@@ -88,9 +88,9 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
     private isForExtent = false;
     private workspace: string;
     private itemUri: string;
-    private metaClass: string;
+    private metaClass?: string;
     private property: string | null;
-    private metaclassWorkspace: string;
+    private metaclassWorkspace?: string;
     private isList: boolean = true;
     
     constructor() {
@@ -106,15 +106,15 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
         const metaClass = p.get('metaclass');
         const property = p.get('property');
         const metaclassWorkspace = p.get('metaclassworkspace');
-        if (workspace === null || itemUri === null || metaClass === null || metaclassWorkspace === null) {
+        if (workspace === null || itemUri === null) {
             throw new Error('Not all parameters are set correctly (workspace, item, metaclass, metaclassworkspace)');
         }
         
         this.workspace = workspace;
         this.itemUri = itemUri;
-        this.metaClass = metaClass;
+        this.metaClass = metaClass === null ? undefined: metaClass;
         this.property = property;
-        this.metaclassWorkspace = metaclassWorkspace;
+        this.metaclassWorkspace = metaclassWorkspace === null ? undefined : metaclassWorkspace;
         
         const isListParameter = p.get('islist');
         if(isListParameter !== null && isListParameter !== undefined)
@@ -191,7 +191,7 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
         const newItem = await ClientItems.createItemInExtent(
             this.workspace, this.itemUri,
             {
-                metaClass: this.metaClass === undefined ? "" : this.metaClass,
+                metaClass: this.metaClass === null ? "" : this.metaClass,
                 properties: element
             }
         );

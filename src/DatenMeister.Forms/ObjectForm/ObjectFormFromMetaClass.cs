@@ -97,7 +97,7 @@ public class ObjectFormFromMetaClass(IWorkspaceLogic workspaceLogic) : FormFacto
             foreach (var pair in propertyNamesWithCollection)
             {
                 var propertyName = pair.PropertyName;
-
+                
                 result.AddToFormCreationProtocol(
                     "[FormCreator.CreateObjectFormForItem]: Add Table Form for by reflective collection: " +
                     propertyName);

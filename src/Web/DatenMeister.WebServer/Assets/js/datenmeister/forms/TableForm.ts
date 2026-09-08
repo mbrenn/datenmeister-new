@@ -195,6 +195,11 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
      */
     async createFormByObject(parent: JQuery<HTMLElement>) {
         const tthis = this;
+        if(this.configuration.isNewItem)
+        {
+            parent.append($("<div><em>For new items, the table form will not be shown. </em></div>"));
+            return;
+        }
 
         // We need to get a loading mechanism in case the user wants to filter or sort. Unfortunately, the queries are not support
         this.callbackLoadItems = async (query: Mof.DmObject) => {

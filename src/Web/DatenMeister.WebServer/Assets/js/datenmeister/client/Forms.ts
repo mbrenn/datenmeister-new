@@ -26,20 +26,20 @@ export async function getCollectionFormForExtent(workspace: string, extentUri: s
  */
 export async function getDefaultObjectForMetaClass(metaClassUri: string, viewMode?: string) {
 
-    if ( metaClassUri === undefined || metaClassUri === null || metaClassUri === "") {
+    if (metaClassUri === undefined || metaClassUri === null || metaClassUri === "") {
         metaClassUri = "_";
     }
-    
-    const viewModeUri = 
-        viewMode === undefined || viewMode === "" ? 
-            "" : 
+
+    const viewModeUri =
+        viewMode === undefined || viewMode === "" ?
+            "" :
             "/" + encodeURI(viewMode);
 
     if (metaClassUri === undefined || metaClassUri === null || metaClassUri === '') {
         // Replaces empty metaclassUri by '_' to match URI-pattern
         metaClassUri = '_';
     }
-        
+
     const resultFromServer = await ApiConnection.get<object>(
         Settings.baseUrl +
         "api/forms/default_object_for_metaclass/" +

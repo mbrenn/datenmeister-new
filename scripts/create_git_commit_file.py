@@ -1,8 +1,20 @@
 from subprocess import PIPE, Popen;
 import os;
 
-process = Popen(["git", "rev-parse", "HEAD"], stdout=PIPE)
-output = process.communicate()[0].decode("utf-8").strip()
+try:
+    process = Popen(["git", "rev-parse", "HEAD"], stdout=PIPE, stderr=PIPE)
+    output, err = process.communicate()
+    if process.returncode != 0:
+        print("Git repository not found (.git missing) or git command failed. Commit ID will not be updated.")
+        exit(0)
+    output = output.decode("utf-8").strip()
+except Exception as e:
+    print("Failed to get git commit: " + str(e) + ". Commit ID will not be updated.")
+    exit(0)
+
+if not output:
+    print("Empty commit hash. Commit ID will not be updated.")
+    exit(0)
 
 commitComment = ""
 

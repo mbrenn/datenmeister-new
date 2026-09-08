@@ -15,6 +15,13 @@ export class Field extends BaseField implements IFormField
     private _selectField: SIC.SelectItemControl;
 
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
+
+        if(this.configuration.isNewItem)
+        {
+            // Just return information about being in a new iotem in which we cannot set the content
+            return $("<div><em>New item, content can only be set after saving</em></div>");
+        }
+        
         const fieldName = this.field.get('name')?.toString() ?? "";
 
         /* Returns a list element in case an array is given */

@@ -24,6 +24,10 @@ export class Field extends BaseField {
     _fieldValue;
     // Creates the overall DOM
     async createDom(dmElement) {
+        if (this.configuration.isNewItem) {
+            // Just return information about being in a new iotem in which we cannot set the content
+            return $("<div><em>New item, content can only be set after saving</em></div>");
+        }
         const tthis = this;
         this._element = dmElement;
         const result = $("<div>");

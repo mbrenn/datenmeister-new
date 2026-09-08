@@ -71,6 +71,12 @@ export class Control {
         const tthis = this;
         this._list.empty();
 
+        if(this.configuration.isNewItem)
+        {
+            // Just return information about being in a new iotem in which we cannot set the content
+            return $("<div><em>New item, content can only be set after saving</em></div>");
+        }
+
         if (this.isReadOnly) {
             // In read-only mode we only display links/names and optional action callbacks.
             if (!Array.isArray(fieldValue)) {

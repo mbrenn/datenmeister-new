@@ -14,10 +14,10 @@ export class Field extends BaseField implements IFormField {
     resultingDom: JQuery;
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
 
-        if (this.configuration.isNewItem) {
-            // Unfortunately, for non-saved items, the user cannot select a reference since we 
-            // will not find the reference again
-            return $("<em>Element needs to be saved first</em>");
+        if(this.configuration.isNewItem)
+        {
+            // Just return information about being in a new iotem in which we cannot set the content
+            return $("<div><em>New item, content can only be set after saving</em></div>");
         }
         
         // Creates the html-elements, so the data can be shown

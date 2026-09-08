@@ -42,100 +42,98 @@ export class Control extends BaseField {
         const tthis = this;
 
         const asMofDmObject = value as Mof.DmObject;
+
         if (this.configuration.isNewItem) {
-            // Unfortunately, for non-saved items, the user cannot select a reference since we 
-            // will not find the reference again
-            const div = $("<em>Element needs to be saved first</em>");
-            this._list.append(div);
-        } else {
-            const isSelectionInline = this.field?.get('isSelectionInline', Mof.ObjectType.Boolean);
-            
-            if(!isSelectionInline) {
-                if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
-                    const div = $("<div><em class='dm-undefined'>undefined</em></div>");
-                    this._list.append(div);
-                } else {
-                    const div = $("<div />");
-                    let _ = injectNameByUri(div, asMofDmObject.workspace, asMofDmObject.uri);
-                    this._list.append(div);
-                }
+            // Just return information about being in a new iotem in which we cannot set the content
+            return $("<div><em>New item, content can only be set after saving</em></div>");
+        }
+
+        const isSelectionInline = this.field?.get('isSelectionInline', Mof.ObjectType.Boolean);
+
+        if (!isSelectionInline) {
+            if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
+                const div = $("<div><em class='dm-undefined'>undefined</em></div>");
+                this._list.append(div);
+            } else {
+                const div = $("<div />");
+                let _ = injectNameByUri(div, asMofDmObject.workspace, asMofDmObject.uri);
+                this._list.append(div);
             }
+        }
 
-            if (!this.isReadOnly) {
-                const containerChangeCell = $("<div></div>");
-                
-                if(!(this.inhibitInline !== true && isSelectionInline)) {
-                    const createCell = $("<btn class='btn btn-secondary'>Create</btn>");
-                    const changeCell = $("<btn class='btn btn-secondary'>Change</btn>");
-                    const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
+        if (!this.isReadOnly) {
+            const containerChangeCell = $("<div></div>");
 
-                    createCell.on('click', async () => {
-                        // Now it is getting a bit difficult. We have to perform several actions here 
-                        // 1) First, let the user decide on which package, the new item shall be created
-                        // 2) Let the user decide which type shall be created
-                        // 3) In case, the user has done this, we need to create the item
-                        // 4) We need to set the reference of the newly created item
-                        // 5) Reload the control, so the user can decide whether to continue editing the current item
-                        //    or switch to the reference to edit the new item. 
-                        
-                        // 1) Let the user decide on which package the new item shall be created
-                        const packageItem = await SIC.selectPackage(containerChangeCell);
-                        
-                        // 2) Define the type of the new item
-                        const typeItem = await SIC.selectType(containerChangeCell);
-                        
-                        // 3) Let's create the child
-                        const result = await ClientItem.addToContainer(packageItem.workspace, packageItem.uri,
+            if (!(this.inhibitInline !== true && isSelectionInline)) {
+                const createCell = $("<btn class='btn btn-secondary'>Create</btn>");
+                const changeCell = $("<btn class='btn btn-secondary'>Change</btn>");
+                const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
+
+                createCell.on('click', async () => {
+                    // Now it is getting a bit difficult. We have to perform several actions here 
+                    // 1) First, let the user decide on which package, the new item shall be created
+                    // 2) Let the user decide which type shall be created
+                    // 3) In case, the user has done this, we need to create the item
+                    // 4) We need to set the reference of the newly created item
+                    // 5) Reload the control, so the user can decide whether to continue editing the current item
+                    //    or switch to the reference to edit the new item. 
+
+                    // 1) Let the user decide on which package the new item shall be created
+                    const packageItem = await SIC.selectPackage(containerChangeCell);
+
+                    // 2) Define the type of the new item
+                    const typeItem = await SIC.selectType(containerChangeCell);
+
+                    // 3) Let's create the child
+                    const result = await ClientItem.addToContainer(packageItem.workspace, packageItem.uri,
+                        {
+                            metaClass: typeItem.uri
+                        });
+
+                    // 4) Let's set the reference
+                    if (tthis.referenceSetCall !== undefined) {
+                        await this.referenceSetCall(
                             {
-                                metaClass: typeItem.uri
-                            });
-                        
-                        // 4) Let's set the reference
-                        if (tthis.referenceSetCall !== undefined) {
-                            await this.referenceSetCall(
-                                {
-                                    workspace: result.workspace,
-                                    uri: result.itemUri
-                                }
-                            );
-                        }
-                        await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, 
-                            {
-                                property: tthis.propertyName, 
-                                referenceUri: result.itemUri, 
-                                workspaceId: result.workspace
-                            });
-                        
-                        await tthis.reloadValuesFromServer();                        
-                        
-                        return false;
-                    });
-
-                    changeCell.on('click', async () => {
-                        await this.createSelectFields(containerChangeCell, value);
-
-                        return false;
-                    });
-
-                    unsetCell.on('click', () => {
-                        ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(
-                            async () => {
-                                await tthis.reloadValuesFromServer();
+                                workspace: result.workspace,
+                                uri: result.itemUri
                             }
                         );
-                    });
+                    }
+                    await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl,
+                        {
+                            property: tthis.propertyName,
+                            referenceUri: result.itemUri,
+                            workspaceId: result.workspace
+                        });
 
-                    this._list.append(createCell);
-                    this._list.append(changeCell);
-                    this._list.append(unsetCell);
-                }
-                else {
+                    await tthis.reloadValuesFromServer();
+
+                    return false;
+                });
+
+                changeCell.on('click', async () => {
                     await this.createSelectFields(containerChangeCell, value);
-                }
-                
-                this._list.append(containerChangeCell);
+
+                    return false;
+                });
+
+                unsetCell.on('click', () => {
+                    ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(
+                        async () => {
+                            await tthis.reloadValuesFromServer();
+                        }
+                    );
+                });
+
+                this._list.append(createCell);
+                this._list.append(changeCell);
+                this._list.append(unsetCell);
+            } else {
+                await this.createSelectFields(containerChangeCell, value);
             }
-        }       
+
+            this._list.append(containerChangeCell);
+        }
 
         return this._list;
     }

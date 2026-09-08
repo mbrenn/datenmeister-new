@@ -39,6 +39,12 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
 
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
 
+        if(this.configuration.isNewItem)
+        {
+            // Just return information about being in a new iotem in which we cannot set the content
+            return $("<div><em>New item, content can only be set after saving</em></div>");
+        }
+        
         const fieldName = this.field.get('name')?.toString() ?? "";
 
         this._element = dmElement;

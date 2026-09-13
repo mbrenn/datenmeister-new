@@ -70,7 +70,8 @@ export function canBeTextFiltered(field: Mof.DmObject): boolean {
 
 export function createField(fieldMetaClassUri: string, parameter: ICreateFieldParameter): IFormField {
 
-    let result: IFormField;
+    let result: IFormField | undefined = undefined;
+    
     switch (fieldMetaClassUri) {
         case _DatenMeister._Forms._FieldTypes.__TextFieldData_Uri:
             result = new TextField.Field();
@@ -121,13 +122,17 @@ export function createField(fieldMetaClassUri: string, parameter: ICreateFieldPa
             result = new UriReferenceFieldData.Field();
             break;
         default:
-            for (var n in registeredFieldContainers) {
-                var registeredField = registeredFieldContainers[n];
+            for (let n in registeredFieldContainers) {
+                const registeredField = registeredFieldContainers[n];
                 if (registeredField.metaClassFieldData === fieldMetaClassUri) {
                     result = registeredField.factoryMethod();
                 }
             }
-            result = new UnknownField.Field(fieldMetaClassUri);
+            
+            if(result === undefined)
+            {
+                result = new UnknownField.Field(fieldMetaClassUri);
+            }
             break;
     }
 

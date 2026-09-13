@@ -33,7 +33,7 @@ export class Field extends BaseField {
             // If this is the case, then the button itself is asking for confirmation upon the first 
             // click. Only then, the DetailForm itself is executed. 
             if (!requireConfirmation || tthis.inConfirmation) {
-                if (tthis?.form?.storeFormValuesIntoDom !== undefined) {
+                if (tthis.form.storeFormValuesIntoDom !== undefined) {
                     await tthis.form.storeFormValuesIntoDom(true);
                 }
                 const mofWithSync = dmElement;
@@ -41,9 +41,7 @@ export class Field extends BaseField {
                     // We need to set the properties of the item, so the action handler can directly work on the item
                     await MofSync.sync(mofWithSync);
                 }
-                if (tthis.form !== undefined) {
-                    await FormActions.execute(action, tthis.form, dmElement, parameter);
-                }
+                await FormActions.execute(action, tthis.form, dmElement, parameter);
             }
             if (requireConfirmation && !tthis.inConfirmation) {
                 this.button.text("Are you sure?");

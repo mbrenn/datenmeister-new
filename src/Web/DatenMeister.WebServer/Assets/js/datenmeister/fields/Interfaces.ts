@@ -9,7 +9,7 @@ export interface IFieldRenderContext {
     field: Mof.DmObject;
     isReadOnly: boolean;
     itemUrl?: string;
-    form?: IFormNavigation;
+    form: IFormNavigation;
     configuration?: IFormConfiguration;
 }
 
@@ -43,7 +43,7 @@ export interface IFormField
     /**
      * The navigation interface for the parent form
      */
-    readonly form?: IFormNavigation;
+    readonly form: IFormNavigation;
 
     /**
      * Creates the DOM elements for the field based on the provided data element
@@ -100,7 +100,7 @@ export abstract class BaseField implements IFormField
         return this.context.isReadOnly;
     }
 
-    get form(): IFormNavigation | undefined {
+    get form(): IFormNavigation {
         return this.context.form;
     }
 

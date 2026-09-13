@@ -135,6 +135,13 @@ export function includeTests() {
                 field: fieldDef,
                 isReadOnly: true,
                 itemUrl: "dm:///test#1",
+                form: {
+                    workspace: "Test",
+                    extentUri: "dm:///test",
+                    itemUrl: "dm:///test#1",
+                    formElement: undefined,
+                    getFormElement: () => new Mof.DmObject()
+                },
                 configuration: {
                     isReadOnly: true,
                     formType: FormType.Object

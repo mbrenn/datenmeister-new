@@ -85,14 +85,12 @@ export abstract class Control extends BaseField {
                             }
                         );
                     }
-                    if (tthis.form?.workspace !== undefined) {
-                        await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl,
-                            {
-                                property: tthis.propertyName,
-                                referenceUri: result.itemUri,
-                                workspaceId: result.workspace
-                            });
-                    }
+                    await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl,
+                        {
+                            property: tthis.propertyName,
+                            referenceUri: result.itemUri,
+                            workspaceId: result.workspace
+                        });
 
                     await tthis.reloadValuesFromServer();
 
@@ -106,13 +104,11 @@ export abstract class Control extends BaseField {
                 });
 
                 unsetCell.on('click', () => {
-                    if (tthis.form?.workspace !== undefined) {
-                        ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(
-                            async () => {
-                                await tthis.reloadValuesFromServer();
-                            }
-                        );
-                    }
+                    ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(
+                        async () => {
+                            await tthis.reloadValuesFromServer();
+                        }
+                    );
                 });
 
                 this._list.append(createCell);
@@ -153,17 +149,15 @@ export abstract class Control extends BaseField {
                     await this.referenceSetCall(selectedItem);
                 }
                 
-                if (tthis.form?.workspace !== undefined) {
-                    await ClientItem.setPropertyReference(
-                        tthis.form.workspace,
-                        tthis.itemUrl,
-                        {
-                            property: tthis.propertyName,
-                            referenceUri: selectedItem.uri,
-                            workspaceId: selectedItem.workspace
-                        }
-                    );
-                }
+                await ClientItem.setPropertyReference(
+                    tthis.form.workspace,
+                    tthis.itemUrl,
+                    {
+                        property: tthis.propertyName,
+                        referenceUri: selectedItem.uri,
+                        workspaceId: selectedItem.workspace
+                    }
+                );
 
                 if (this.callbackUpdateField !== undefined) {
                     this.callbackUpdateField();
@@ -194,7 +188,7 @@ export abstract class Control extends BaseField {
                 } else {
                     await selectItem.setItemByUri(workspaceId, itemUri);
                 }
-            } else if (this.form?.workspace !== undefined && this.form?.extentUri !== undefined) {
+            } else if (this.form.workspace !== undefined && this.form.extentUri !== undefined) {
                 // If there is no default selection and item has not been pre-selected by the field
                 // configuration itself, choose the extent in which the containing element is residing
                 await selectItem.setExtentByUri(this.form.workspace, this.form.extentUri);
@@ -268,7 +262,6 @@ export class Field extends Control implements IFormField {
     }
 
     async reloadValuesFromServer() {
-        if (this.form?.workspace === undefined) return;
         let value = await ClientItem.getProperty(this.form.workspace, this.element.uri, this.fieldName);
 
         if (Array.isArray(value)) {

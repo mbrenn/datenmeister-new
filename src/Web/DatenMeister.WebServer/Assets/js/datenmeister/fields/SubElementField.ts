@@ -56,9 +56,7 @@ export class Control {
         this._list = $("<div></div>");
         this.isReadOnly = context.isReadOnly;
         this.itemUrl = context.itemUrl ?? "";
-        if (context.form !== undefined) {
-            this.form = context.form;
-        }
+        this.form = context.form;
         if (context.configuration !== undefined) {
             this.configuration = context.configuration;
         }
@@ -167,7 +165,7 @@ export class Control {
                             configuration: {
                                 formType: this.configuration?.formType ?? FormType.Object,
                                 isReadOnly: false,
-                                formElement: tthis.form?.formElement
+                                formElement: tthis.form.formElement
                             },
                             form: tthis.form
                         });

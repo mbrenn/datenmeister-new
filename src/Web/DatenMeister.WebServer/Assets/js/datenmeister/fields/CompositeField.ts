@@ -91,9 +91,7 @@ export class Field extends BaseField implements IFormField {
                                 return;
                             }
 
-                            if (tthis.form?.workspace !== undefined) {
-                                document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, propertyName, selectedItem.uri, selectedItem.workspace, false);
-                            }
+                            document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, propertyName, selectedItem.uri, selectedItem.workspace, false);
                         });
 
                     await selectItem.initAsync(containerDiv, settings);
@@ -107,13 +105,11 @@ export class Field extends BaseField implements IFormField {
                 const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
 
                 unsetCell.on('click', () => {
-                    if (tthis.form?.workspace !== undefined) {
-                        ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, propertyName).then(
-                            async () => {
-                                await tthis.reloadValuesFromServer();
-                            }
-                        );
-                    }
+                    ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, propertyName).then(
+                        async () => {
+                            await tthis.reloadValuesFromServer();
+                        }
+                    );
                 });
 
                 buttonsDom.append(unsetCell);

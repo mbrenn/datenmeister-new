@@ -130,7 +130,6 @@ export class Field extends BaseField implements IFormField {
 
     private async reloadAndUpdateDomContent() {
         const tthis = this;
-        if (this.form?.workspace === undefined) return;
         tthis._fieldValue = await ClientItem.getProperty(
             this.form.workspace,
             this.itemUrl,
@@ -215,9 +214,7 @@ export class Field extends BaseField implements IFormField {
 
                 unsetCell.on('click', async () => {
                     // Unsets the property and close
-                    if (tthis.form?.workspace !== undefined) {
-                        await ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, fieldName);
-                    }
+                    await ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, fieldName);
                     tthis.updateDomContent();
                 });
 
@@ -231,17 +228,15 @@ export class Field extends BaseField implements IFormField {
                     settings.hideAtStartup = true;
                     selectItem.itemSelected.addListener(
                         async selectedItem => {
-                            if (tthis.form?.workspace !== undefined) {
-                                await ClientItem.setPropertyReference(
-                                    tthis.form.workspace,
-                                    tthis.itemUrl,
-                                    {
-                                        property: tthis.field.get('name'),
-                                        referenceUri: selectedItem.uri,
-                                        workspaceId: selectItem.getCurrentlySelectedWorkspace()
-                                    }
-                                );
-                            }
+                            await ClientItem.setPropertyReference(
+                                tthis.form.workspace,
+                                tthis.itemUrl,
+                                {
+                                    property: tthis.field.get('name'),
+                                    referenceUri: selectedItem.uri,
+                                    workspaceId: selectItem.getCurrentlySelectedWorkspace()
+                                }
+                            );
                             
                             if(tthis.callbackUpdateField !== undefined && tthis.callbackUpdateField !== null)                                
                                 tthis.callbackUpdateField();

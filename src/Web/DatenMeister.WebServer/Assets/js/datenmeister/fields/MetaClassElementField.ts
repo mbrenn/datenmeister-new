@@ -47,14 +47,12 @@ export class Field extends BaseField implements IFormField {
 
                 selectItemCtrl.itemSelected.addListener(
                     (selectedItem) => {
-                        if (tthis.form?.workspace !== undefined) {
-                            setMetaclass(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
-                                .then(() => divSelectItem.remove()).then(() => {
-                                if (tthis.configuration?.refreshForm !== undefined) {
-                                    tthis.configuration.refreshForm();
-                                }
-                            });
-                        }
+                        setMetaclass(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
+                            .then(() => divSelectItem.remove()).then(() => {
+                            if (tthis.configuration?.refreshForm !== undefined) {
+                                tthis.configuration.refreshForm();
+                            }
+                        });
                     });
             });
 

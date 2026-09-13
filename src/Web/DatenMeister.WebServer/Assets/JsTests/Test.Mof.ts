@@ -1,6 +1,5 @@
-﻿import * as mof from "../Mof.js"
-import { moveItemInArrayDownByUri, moveItemInArrayUpByUri } from "../MofArray.js";
-
+import * as mof from "../js/datenmeister/Mof.js";
+import { moveItemInArrayDownByUri, moveItemInArrayUpByUri } from "../js/datenmeister/MofArray.js";
 
 import '../../node_modules/chai/register-assert.js';
 declare var assert: Chai.AssertStatic;
@@ -223,10 +222,4 @@ export function includeTests() {
             });
         });
     });
-}
-
-// Auto-run when executed directly under Node/Mocha
-// @ts-ignore
-if (typeof window === 'undefined') {
-    includeTests();
 }

@@ -1,5 +1,5 @@
 import * as Mof from "/js/datenmeister/Mof.js";
-import {buildSwimlaneData, cellKey, _Root} from "./DatenMeister.Reports.Swimlane.js";
+import {buildSwimlaneData, cellKey, _Root} from "../Js/DatenMeister.Reports.Swimlane.js";
 
 import '../../../Web/DatenMeister.WebServer/node_modules/chai/register-expect.js';
 declare var expect: Chai.ExpectStatic;
@@ -113,10 +113,4 @@ export function includeTests() {
             });
         });
     });
-}
-
-// Auto-run when executed directly under Node/Mocha
-// @ts-ignore
-if (typeof window === 'undefined') {
-    includeTests();
 }

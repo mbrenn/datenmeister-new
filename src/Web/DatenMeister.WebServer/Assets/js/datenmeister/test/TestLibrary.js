@@ -1,4 +1,3 @@
-import * as MofTests from "./Test.Mof.js";
 import * as ClientWorkspace from "./Test.Client.Workspace.js";
 import * as ClientExtent from "./Test.Client.Extents.js";
 import * as ClientItems from "./Test.Client.Items.js";
@@ -12,13 +11,8 @@ import * as ClientActionsItems from "./Test.Client.Actions.Item.js";
 import * as ControlSelectItemControl from "./Test.Controls.SelectItemControl.js";
 import * as Forms from "./Test.Forms.js";
 import * as ViewModeLogic from "./Test.Forms.ViewModeLogic.js";
-import * as TableState from "./Test.TableState.js";
-import * as StaticObjectQuery from "./Test.StaticObjectQuery.js";
-import * as UserEvents from "../../burnsystems/tests/events.test.js";
 import * as TestFormActions from "./Test.FormActions.ClientActions.js";
 export function includeTests() {
-    UserEvents.includeTests();
-    MofTests.includeTests();
     ClientWorkspace.includeTests();
     ClientExtent.includeTests();
     ClientItems.includeTests();
@@ -31,8 +25,6 @@ export function includeTests() {
     ClientSync.includeTests();
     ControlSelectItemControl.includeTests();
     ViewModeLogic.includeTests();
-    TableState.includeTests();
-    StaticObjectQuery.includeTests();
     Forms.includeTests();
     TestFormActions.includeTests();
 }

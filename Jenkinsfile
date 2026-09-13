@@ -46,6 +46,9 @@ pipeline {
                     cd src/DatenMeister.Reports.Forms
                     tsc
                     cd ../..
+                    cd src/DatenMeister.Reports.Swimlane
+                    tsc
+                    cd ../..
                     cd src/Web/DatenMeister.WebServer
                     tsc
                     cd ../../..
@@ -59,6 +62,11 @@ pipeline {
             steps
             {                    
                 sh """      
+                    cd src/DatenMeister.Reports.Swimlane
+                    dotnet new tool-manifest --force
+                    dotnet tool install BS_Remove_File_Attribute_From_JUnit
+                    cd ../..
+
                     cd src/Web/DatenMeister.WebServer
                     dotnet new tool-manifest --force
                     dotnet tool install BS_Remove_File_Attribute_From_JUnit
@@ -121,12 +129,14 @@ pipeline {
 
         stage ('JS Tests')
         {
-            when {
-                expression { false }
-            }
             steps
             {
                 sh """
+                    cd src/DatenMeister.Reports.Swimlane
+                    npm test
+                    dotnet tool run bs-remove-file-attribute-from-junit ./jstests.xml
+                    cd ../..
+
                     cd src/Web/DatenMeister.WebServer
                     npm test
                     dotnet tool run bs-remove-file-attribute-from-junit ./jstests.xml
@@ -134,7 +144,10 @@ pipeline {
                 """
 
                 xunit(
-                    tools: [JUnit(pattern: 'src/Web/DatenMeister.WebServer/jstests.xml')]
+                    tools: [
+                        JUnit(pattern: 'src/Web/DatenMeister.WebServer/jstests.xml'),
+                        JUnit(pattern: 'src/DatenMeister.Reports.Swimlane/jstests.xml')
+                    ]
                 )
             }
         }

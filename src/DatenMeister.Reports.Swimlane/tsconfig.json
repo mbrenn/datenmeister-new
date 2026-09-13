@@ -16,7 +16,8 @@
   },
   "compileOnSave": true,
   "include": [
-    "Assets/Js/*.ts"
+    "Assets/Js/*.ts",
+    "Assets/JsTests/*.ts"
   ],
   "exclude": [
     "node_modules",

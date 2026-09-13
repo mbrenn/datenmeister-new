@@ -1,9 +1,15 @@
 {
+  "type": "module",
   "devDependencies": {
     "@types/chai": "^4.3.11",
     "@types/jquery": "^3.5.29",
     "@types/mocha": "^10.0.6",
+    "chai": "^6.2.2",
     "esbuild": "^0.25.0",
+    "mocha": "^11.7.5",
     "typescript": "7.0.2"
+  },
+  "scripts": {
+    "test": "node --import ./register.js ./node_modules/mocha/bin/mocha.js Assets/JsTests/TestLibrary.js --ui bdd --reporter xunit --reporter-option output=jstests.xml"
   }
 }

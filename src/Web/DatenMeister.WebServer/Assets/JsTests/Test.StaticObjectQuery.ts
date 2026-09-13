@@ -1,6 +1,6 @@
-import * as Mof from "../Mof.js";
-import { StaticObjectQuery } from "../modules/StaticObjectQuery.js";
-import { TableState } from "../forms/TableState.js";
+import * as Mof from "../js/datenmeister/Mof.js";
+import { StaticObjectQuery } from "../js/datenmeister/modules/StaticObjectQuery.js";
+import { TableState } from "../js/datenmeister/forms/TableState.js";
 
 import '../../node_modules/chai/register-expect.js';
 declare var expect: Chai.ExpectStatic;
@@ -141,10 +141,4 @@ export function includeTests() {
             });
         });
     });
-}
-
-// Auto-run when executed directly under Node/Mocha
-// @ts-ignore
-if (typeof window === 'undefined') {
-    includeTests();
 }

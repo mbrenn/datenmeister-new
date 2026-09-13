@@ -111,6 +111,18 @@ async Task CompressJS()
             "--platform=browser",
             "--format=esm"
         });
+    await ProcessInvoke.Run("npx",
+        new[]
+        {
+            "esbuild",
+            "Assets/JsTests/**/*.js",
+            "--minify",
+            "--sourcemap",
+            "--outbase=Assets/JsTests",
+            "--outdir=wwwroot/js/JsTests",
+            "--platform=browser",
+            "--format=esm"
+        });
 }
 
 void MoveJS()

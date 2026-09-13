@@ -1,8 +1,8 @@
-import * as _DatenMeister from "../models/DatenMeister.class.js";
-import { TableState } from "../forms/TableState.js";
+import * as _DatenMeister from "../js/datenmeister/models/DatenMeister.class.js";
+import { TableState } from "../js/datenmeister/forms/TableState.js";
+import { _DataViews } from "../js/datenmeister/models/DatenMeister.class.js";
 
 import '../../node_modules/chai/register-expect.js';
-import {_DataViews} from "../models/DatenMeister.class.js";
 declare var expect: Chai.ExpectStatic;
 
 export function includeTests() {
@@ -134,10 +134,4 @@ export function includeTests() {
             });
         });
     });
-}
-
-// Auto-run when executed directly under Node/Mocha
-// @ts-ignore
-if (typeof window === 'undefined') {
-    includeTests();
 }

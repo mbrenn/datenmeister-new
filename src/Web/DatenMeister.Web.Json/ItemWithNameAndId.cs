@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Web;
 using DatenMeister.Core.Helper;
@@ -59,6 +60,7 @@ public record ItemWithNameAndId
     /// <param name="value"></param>
     /// <param name="ententType">Of which kind is the entent of the element</param>
     /// <returns></returns>
+    [return: NotNullIfNotNull(nameof(value))]
     public static ItemWithNameAndId? Create(IObject? value, EntentType ententType = EntentType.Item)
     {
         if (value == null)

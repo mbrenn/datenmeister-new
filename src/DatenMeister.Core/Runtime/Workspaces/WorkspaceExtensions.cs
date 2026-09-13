@@ -298,16 +298,6 @@ public static class WorkspaceExtensions
         }
         
         result = FindExtentAndCollection(workspaceLogic, workspaceId, extentUri).uriExtent;
-
-        if (result != null)
-        {
-            Logger.Warn("Extent was found via FindExtentAndCollection, but not via GetWorkspace");
-            
-            if (Debugger.IsAttached)
-            {
-                Debugger.Break();
-            }
-        }
         
         return result;
     }

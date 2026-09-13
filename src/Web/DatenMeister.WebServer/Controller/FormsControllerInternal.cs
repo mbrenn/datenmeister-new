@@ -73,7 +73,7 @@ public class FormsControllerInternal
         var form = FormCreation.CreateCollectionForm(
             new CollectionFormFactoryParameter
             {
-                Collection = extent.elements(),
+                Collection = collection,
                 Extent = extent,
                 ExtentTypes = extent.GetConfiguration().ExtentTypes
             },

@@ -16,7 +16,7 @@ import * as DropDownByCollection from "../fields/DropDownByCollection.js";
 import * as DropDownByQuery from "../fields/DropDownByQuery.js";
 import * as UriReferenceFieldData from "../fields/UriReferenceFieldData.js";
 import * as UnknownField from "../fields/UnknownField.js";
-var registeredFieldContainers = new Array();
+const registeredFieldContainers = new Array();
 export function registerField(metaClassFieldData, factoryMethod) {
     registeredFieldContainers.push({
         metaClassFieldData: metaClassFieldData,

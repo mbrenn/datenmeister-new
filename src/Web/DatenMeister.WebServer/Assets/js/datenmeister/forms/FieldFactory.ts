@@ -35,7 +35,7 @@ interface IFieldContainer {
     factoryMethod: () => IFormField;
 }
 
-var registeredFieldContainers: IFieldContainer[] = new Array<IFieldContainer>();
+const registeredFieldContainers: IFieldContainer[] = new Array<IFieldContainer>();
 
 export function registerField(metaClassFieldData: string, factoryMethod: () => IFormField): void {
     registeredFieldContainers.push(

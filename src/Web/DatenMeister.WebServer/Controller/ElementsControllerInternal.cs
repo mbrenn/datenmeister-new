@@ -18,7 +18,6 @@ public class ElementsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeSt
 {
     private readonly IScopeStorage _scopeStorage = scopeStorage;
 
-
     public ItemWithNameAndId[]? GetComposites(string? workspaceId, string? itemUrl)
     {
         workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
@@ -67,12 +66,25 @@ public class ElementsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeSt
         }
 
         var workspace = workspaceLogic.GetWorkspace(workspaceId);
-        if (workspace?.Resolve(itemUrl, ResolveType.IncludeWorkspace) is not IObject foundItem) return null;
+        var result = workspace?.Resolve(itemUrl, ResolveType.IncludeWorkspace);
+        if (result is IObject foundItem)
+        {
+            var packagedItems = DefaultClassifierHints.GetPackagedElements(foundItem);
+            return packagedItems
+                .OfType<IObject>()
+                .Select(x => ItemWithNameAndId.Create(x))
+                .ToArray();
+        }
 
-        var packagedItems = DefaultClassifierHints.GetPackagedElements(foundItem);
-        return packagedItems
-            .OfType<IObject>()
-            .Select(x => ItemWithNameAndId.Create(x)!).ToArray();
+        if (result is IReflectiveCollection reflectiveCollection)
+        {
+            return 
+                reflectiveCollection.OfType<IObject>()
+                    .Select(x=>ItemWithNameAndId.Create(x))
+                    .ToArray();
+        }
+
+        return null;
     }
 
     /// <summary>

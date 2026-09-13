@@ -9,6 +9,9 @@ export class Field extends BaseField {
     // retrieve the property key
     OverridePropertyValue;
     _textBox;
+    constructor(context) {
+        super(context);
+    }
     async createDom(dmElement) {
         const fieldName = this.field.get('name')?.toString() ?? "";
         /* Returns a list element in case an array is given */

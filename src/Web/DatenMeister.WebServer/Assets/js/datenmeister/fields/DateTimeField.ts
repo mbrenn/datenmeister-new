@@ -1,11 +1,14 @@
-
-import { BaseField, IFormField } from "./Interfaces.js";
+import { BaseField, IFieldRenderContext, IFormField } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 
 export class Field extends BaseField implements IFormField {
     _dateInput: JQuery<HTMLElement>;
     _timeInput: JQuery<HTMLElement>;
+
+    constructor(context?: IFieldRenderContext) {
+        super(context);
+    }
 
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
         const fieldName = this.field.get('name')?.toString() ?? "";

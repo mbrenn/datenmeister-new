@@ -1,6 +1,8 @@
-﻿import * as Mof from "../Mof.js";
-import {IDecoupledFormConfiguration, IFormConfiguration} from "./IFormConfiguration.js";
+import * as Mof from "../Mof.js";
+import {IDecoupledFormConfiguration, IFormConfiguration, IFormContext, IFormOptions} from "./IFormConfiguration.js";
 import {ItemFormActionModuleBase} from "../FormActions.js";
+
+export {IFormConfiguration, IFormContext, IFormOptions, IDecoupledFormConfiguration};
 
 export enum FormType {
     Object = "object",

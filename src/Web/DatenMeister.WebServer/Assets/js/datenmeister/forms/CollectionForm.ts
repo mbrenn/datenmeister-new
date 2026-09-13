@@ -1,4 +1,4 @@
-﻿/* 
+/* 
     Defines the html fields which will be used for layouting.
  */
 import {IFormConfiguration} from "./IFormConfiguration.js";
@@ -300,9 +300,14 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
 
             for (const n in fields) {
                 const field = fields[n];
-                if (field.metaClass.uri === _DatenMeister._Forms._FieldTypes.__ActionFieldData_Uri) {
-                    const actionField = new ActionField.Field();
-                    actionField.field = field;
+                if (field.metaClass?.uri === _DatenMeister._Forms._FieldTypes.__ActionFieldData_Uri) {
+                    const actionField = new ActionField.Field({
+                        field: field,
+                        isReadOnly: configuration.isReadOnly,
+                        form: tthis,
+                        configuration: configuration,
+                        itemUrl: tthis.extentUri
+                    });
                     actionFields.append(await actionField.createDom(
                         Mof.DmObject.createFromReference(
                             this.workspace,
@@ -311,7 +316,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                     ));
                 } else {
                     actionFields.append(
-                        $("<div>Unsupported Field Type: " + field.metaClass.uri + "</div>")
+                        $("<div>Unsupported Field Type: " + field.metaClass?.uri + "</div>")
                     );
                 }
             }

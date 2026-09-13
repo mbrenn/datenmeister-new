@@ -1,54 +1,33 @@
-const registerDataDecoupledForm = new Array();
-const registerDataCollectionForm = new Array();
-const registerDataObjectForm = new Array();
+const registerDataDecoupledForm = new Map();
+const registerDataCollectionForm = new Map();
+const registerDataObjectForm = new Map();
+function normalizeUri(uri) {
+    const hashIndex = uri.indexOf('#');
+    return hashIndex !== -1 ? uri.substring(hashIndex + 1) : uri;
+}
 export function registerDecoupledForm(uri, factoryFunction) {
-    if (getDecoupledFormFactory(uri) !== undefined)
-        return;
-    registerDataDecoupledForm.push({
-        uri: uri,
-        factoryFunction: factoryFunction
-    });
+    registerDataDecoupledForm.set(uri, factoryFunction);
+    registerDataDecoupledForm.set(normalizeUri(uri), factoryFunction);
 }
 export function registerCollectionForm(uri, factoryFunction) {
-    if (getCollectionFormFactory(uri) !== undefined)
-        return;
-    registerDataCollectionForm.push({
-        uri: uri,
-        factoryFunction: factoryFunction
-    });
+    registerDataCollectionForm.set(uri, factoryFunction);
+    registerDataCollectionForm.set(normalizeUri(uri), factoryFunction);
 }
 export function registerObjectForm(uri, factoryFunction) {
-    if (getObjectFormFactory(uri) !== undefined)
-        return;
-    registerDataObjectForm.push({
-        uri: uri,
-        factoryFunction: factoryFunction
-    });
+    registerDataObjectForm.set(uri, factoryFunction);
+    registerDataObjectForm.set(normalizeUri(uri), factoryFunction);
 }
-function getFormByUri(uri, register) {
-    const indexUri = uri.indexOf('#');
-    if (indexUri !== -1) {
-        uri = uri.substring(indexUri + 1);
-    }
-    for (let n in register) {
-        const item = register[n];
-        const indexItemUri = item.uri.indexOf('#');
-        if (indexItemUri !== -1) {
-            item.uri = item.uri.substring(indexItemUri + 1);
-        }
-        if (item.uri === uri) {
-            return item.factoryFunction;
-        }
+export function getDecoupledFormFactory(uri) {
+    const factory = registerDataDecoupledForm.get(uri) ?? registerDataDecoupledForm.get(normalizeUri(uri));
+    if (factory !== undefined) {
+        return () => factory();
     }
     return undefined;
 }
-export function getDecoupledFormFactory(uri) {
-    return getFormByUri(uri, registerDataDecoupledForm);
-}
 export function getCollectionFormFactory(uri) {
-    return getFormByUri(uri, registerDataCollectionForm);
+    return registerDataCollectionForm.get(uri) ?? registerDataCollectionForm.get(normalizeUri(uri));
 }
 export function getObjectFormFactory(uri) {
-    return getFormByUri(uri, registerDataObjectForm);
+    return registerDataObjectForm.get(uri) ?? registerDataObjectForm.get(normalizeUri(uri));
 }
 //# sourceMappingURL=FormFactory.js.map

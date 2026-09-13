@@ -1,4 +1,4 @@
-import { BaseField, IFormField } from "./Interfaces.js";
+import { BaseField, IFieldRenderContext, IFormField } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import * as ClientItems from "../client/Items.js";
 
@@ -36,12 +36,15 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
 
     private _loadedFields: DropDownOptionField[] = [];
 
+    constructor(context?: IFieldRenderContext) {
+        super(context);
+    }
 
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
 
-        if(this.configuration.isNewItem)
+        if(this.configuration?.isNewItem)
         {
-            // Just return information about being in a new iotem in which we cannot set the content
+            // Just return information about being in a new item in which we cannot set the content
             return $("<div><em>New item, content can only be set after saving</em></div>");
         }
         
@@ -169,7 +172,7 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
     async evaluateDom(dmElement: Mof.DmObject): Promise<void> {
         if (this.fieldType === FieldType.Strings) {
             const fieldName = this.field.get('name').toString();
-            dmElement.set(fieldName, this._dropDown.val());
+            dmElement.set(fieldName, this._dropDown?.val());
         }
         else if (this.fieldType === FieldType.References && this._dropDown !== undefined) {
             const fieldName = this.field.get('name').toString();

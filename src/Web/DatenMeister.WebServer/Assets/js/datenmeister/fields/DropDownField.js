@@ -1,8 +1,8 @@
 import * as DropDownBaseField from "./DropDownBaseField.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 export class Field extends DropDownBaseField.DropDownBaseField {
-    constructor() {
-        super();
+    constructor(context) {
+        super(context);
         this.fieldType = DropDownBaseField.FieldType.Strings;
     }
     async loadFields() {

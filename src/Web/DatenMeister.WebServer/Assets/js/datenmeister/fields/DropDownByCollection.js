@@ -4,8 +4,8 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as DropDownBaseField from "./DropDownBaseField.js";
 import * as QueryBuilder from "../modules/QueryEngine.js";
 export class Field extends DropDownBaseField.DropDownBaseField {
-    constructor() {
-        super();
+    constructor(context) {
+        super(context);
         this.fieldType = DropDownBaseField.FieldType.References;
     }
     async loadFields() {

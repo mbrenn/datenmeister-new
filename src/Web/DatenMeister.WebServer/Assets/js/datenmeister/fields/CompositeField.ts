@@ -1,4 +1,4 @@
-import {BaseField, IFormField} from "./Interfaces.js";
+import {BaseField, IFieldRenderContext, IFormField} from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import * as ClientItem from "../client/Items.js";
 import {injectNameByUri} from "../DomHelper.js";
@@ -12,11 +12,16 @@ export class Field extends BaseField implements IFormField {
     element: Mof.DmObject;
     
     resultingDom: JQuery;
+
+    constructor(context?: IFieldRenderContext) {
+        super(context);
+    }
+
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
 
-        if(this.configuration.isNewItem)
+        if(this.configuration?.isNewItem)
         {
-            // Just return information about being in a new iotem in which we cannot set the content
+            // Just return information about being in a new item in which we cannot set the content
             return $("<div><em>New item, content can only be set after saving</em></div>");
         }
         

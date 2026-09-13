@@ -22,10 +22,13 @@ export class Field extends BaseField {
     _domElement;
     // This is the element describing the property value; the element that shall be shown in this
     _fieldValue;
+    constructor(context) {
+        super(context);
+    }
     // Creates the overall DOM
     async createDom(dmElement) {
-        if (this.configuration.isNewItem) {
-            // Just return information about being in a new iotem in which we cannot set the content
+        if (this.configuration?.isNewItem) {
+            // Just return information about being in a new item in which we cannot set the content
             return $("<div><em>New item, content can only be set after saving</em></div>");
         }
         const tthis = this;
@@ -161,7 +164,7 @@ export class Field extends BaseField {
                 injectNameByUri(div, asDmObject.workspace, asDmObject.uri);
                 this._domElement.append(div);
             }
-            if (this.configuration.isNewItem) {
+            if (this.configuration?.isNewItem) {
                 // If we are having a new element, the element needs to be saved, so we 
                 // have an element id which can be used to reference this element
                 const div = $("<em>Element needs to be saved first</em>");
@@ -239,7 +242,7 @@ export class Field extends BaseField {
         }
         else if (this._mode === ModeValue.Collection) {
             const value = this._fieldValue;
-            if (this.configuration.isNewItem) {
+            if (this.configuration?.isNewItem) {
                 const div = $("<em>Element needs to be saved first</em>");
                 this._domElement.append(div);
             }
@@ -251,12 +254,24 @@ export class Field extends BaseField {
         }
     }
     createReferenceFieldInstance() {
-        const element = new ReferenceField.Control();
+        const element = new ReferenceField.Control({
+            field: this.field,
+            isReadOnly: this.isReadOnly,
+            itemUrl: this.itemUrl,
+            form: this.form,
+            configuration: this.configuration
+        });
         this.cloneField(element);
         return element;
     }
     createSubElementFieldInstance() {
-        const element = new SubElementField.Control();
+        const element = new SubElementField.Control({
+            field: this.field,
+            isReadOnly: this.isReadOnly,
+            itemUrl: this.itemUrl,
+            form: this.form,
+            configuration: this.configuration
+        });
         this.cloneField(element);
         return element;
     }

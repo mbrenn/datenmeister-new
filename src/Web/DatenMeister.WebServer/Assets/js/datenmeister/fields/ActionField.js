@@ -7,6 +7,9 @@ import { addKeyBindingEvent } from "../../burnsystems/Events.js";
 export class Field extends BaseField {
     button;
     inConfirmation;
+    constructor(context) {
+        super(context);
+    }
     async createDom(dmElement) {
         const tthis = this;
         const title = this.field.get(_DatenMeister._Forms._FieldTypes._ActionFieldData.title, Mof.ObjectType.String);

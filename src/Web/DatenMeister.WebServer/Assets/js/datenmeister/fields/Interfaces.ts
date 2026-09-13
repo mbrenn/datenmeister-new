@@ -2,6 +2,17 @@ import {IForm, IFormNavigation} from "../forms/Interfaces.js";
 import * as Mof from "../Mof.js";
 import { IFormConfiguration } from "../forms/IFormConfiguration.js";
 
+/**
+ * Encapsulates the execution and rendering context for a form field
+ */
+export interface IFieldRenderContext {
+    field: Mof.DmObject;
+    isReadOnly: boolean;
+    itemUrl?: string;
+    form?: IFormNavigation;
+    configuration?: IFormConfiguration;
+}
+
 export interface IFormField
 {
     /**
@@ -64,7 +75,7 @@ export interface IFormField
 }
 
 /**
- * Base class for field implementations, providing the standard properties of IFormField
+ * Base class for field implementations, providing the standard properties and defaults
  */
 export class BaseField
 {
@@ -92,6 +103,20 @@ export class BaseField
      * The URL of the item to which this field is connected
      */
     itemUrl: string;
+
+    constructor(context?: IFieldRenderContext) {
+        if (context !== undefined) {
+            this.field = context.field;
+            this.isReadOnly = context.isReadOnly;
+            this.itemUrl = context.itemUrl ?? "";
+            if (context.form !== undefined) {
+                this.form = context.form;
+            }
+            if (context.configuration !== undefined) {
+                this.configuration = context.configuration;
+            }
+        }
+    }
 
     /**
      * Gets a value indicating whether the value of the field is shown.

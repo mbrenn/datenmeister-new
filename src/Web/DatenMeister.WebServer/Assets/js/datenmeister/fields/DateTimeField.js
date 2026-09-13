@@ -4,6 +4,9 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 export class Field extends BaseField {
     _dateInput;
     _timeInput;
+    constructor(context) {
+        super(context);
+    }
     async createDom(dmElement) {
         const fieldName = this.field.get('name')?.toString() ?? "";
         const hideDate = this.field.get(_DatenMeister._Forms._FieldTypes._DateTimeFieldData.hideDate, Mof.ObjectType.Boolean) ?? false;

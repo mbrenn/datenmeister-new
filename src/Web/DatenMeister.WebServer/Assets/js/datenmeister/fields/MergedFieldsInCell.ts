@@ -1,10 +1,14 @@
-import {BaseField, IFormField} from "./Interfaces.js";
+import {BaseField, IFieldRenderContext, IFormField} from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as FieldFactory from "../forms/FieldFactory.js";
 
 export class Field extends BaseField implements IFormField {
     private childFields: IFormField[] = [];
+
+    constructor(context?: IFieldRenderContext) {
+        super(context);
+    }
 
     /**
      * Inhibits the presentation of the checkbox indicating whether the element is set.  

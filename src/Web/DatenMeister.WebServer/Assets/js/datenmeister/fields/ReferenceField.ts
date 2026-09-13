@@ -1,4 +1,4 @@
-﻿import {BaseField, IFormField} from "./Interfaces.js";
+import {BaseField, IFieldRenderContext, IFormField} from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import * as DomHelper from "../DomHelper.js";
 import {injectNameByUri} from "../DomHelper.js";
@@ -23,14 +23,14 @@ export class Control extends BaseField {
 
     /** Initializes a new instance 
      * 
-     * @param field This field contains the definition according ReferenceFieldData. It may be undefined, 
-     * then no support will be given for the selected item
+     * @param contextOrField This field contains either the render context or definition according ReferenceFieldData.
      * */
-    
-    constructor(field?: Mof.DmObject) {
-        super();
-        if(field !== undefined) {
-            this.field = field;
+    constructor(contextOrField?: IFieldRenderContext | Mof.DmObject) {
+        if (contextOrField instanceof Mof.DmObject) {
+            super();
+            this.field = contextOrField;
+        } else {
+            super(contextOrField);
         }
         
         this._list = $("<span></span>");
@@ -43,8 +43,8 @@ export class Control extends BaseField {
 
         const asMofDmObject = value as Mof.DmObject;
 
-        if (this.configuration.isNewItem) {
-            // Just return information about being in a new iotem in which we cannot set the content
+        if (this.configuration?.isNewItem) {
+            // Just return information about being in a new item in which we cannot set the content
             return $("<div><em>New item, content can only be set after saving</em></div>");
         }
 
@@ -70,14 +70,6 @@ export class Control extends BaseField {
                 const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
 
                 createCell.on('click', async () => {
-                    // Now it is getting a bit difficult. We have to perform several actions here 
-                    // 1) First, let the user decide on which package, the new item shall be created
-                    // 2) Let the user decide which type shall be created
-                    // 3) In case, the user has done this, we need to create the item
-                    // 4) We need to set the reference of the newly created item
-                    // 5) Reload the control, so the user can decide whether to continue editing the current item
-                    //    or switch to the reference to edit the new item. 
-
                     // 1) Let the user decide on which package the new item shall be created
                     const packageItem = await SIC.selectPackage(containerChangeCell);
 
@@ -222,6 +214,10 @@ export class Field extends Control implements IFormField {
 
     // The name of the field being derived from the field
     fieldName: string;
+
+    constructor(context?: IFieldRenderContext) {
+        super(context);
+    }
 
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
 

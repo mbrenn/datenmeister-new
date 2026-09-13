@@ -1,14 +1,13 @@
-﻿import {IFormField} from "./Interfaces.js";
+import {IFieldRenderContext, IFormField} from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import * as DropDownBaseField from "./DropDownBaseField.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ElementClient from "../client/Elements.js";
 import * as MofResolver from "../MofResolver.js";
 
-
 export class Field extends DropDownBaseField.DropDownBaseField implements IFormField {
-    constructor() {
-        super();
+    constructor(context?: IFieldRenderContext) {
+        super(context);
         this.fieldType = DropDownBaseField.FieldType.References;
     }
 

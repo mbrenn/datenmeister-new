@@ -1,10 +1,10 @@
-﻿import * as InterfacesForms from "../forms/Interfaces.js";
+import * as InterfacesForms from "../forms/Interfaces.js";
 import * as InterfacesFields from "../fields/Interfaces.js";
 import * as Mof from "../Mof.js";
 import {createField} from "./FieldFactory.js";
 import * as Navigation from "../Navigator.js"
 import * as TextField from "../fields/TextField.js"
-import {IFormConfiguration} from "./IFormConfiguration.js";
+import {IFormConfiguration, IFormContext, IFormOptions} from "./IFormConfiguration.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import {SubmitMethod} from "./Forms.js";
 import * as ClientItem from "../client/Items.js";
@@ -279,10 +279,13 @@ export class RowForm implements InterfacesForms.IObjectForm {
                 const newRow = $("<tr><td><input class='dm-textfield-key' type='text' /></td><td class='dm-row-value'></td></tr>");
                 const rowValue = $(".dm-row-value", newRow);
                 const propertyTextField = $(".dm-textfield-key", newRow);
-                const textField = new TextField.Field();
-                textField.field = new Mof.DmObject();
-                textField.form = tthis;
-                textField.isReadOnly = this.configuration.isReadOnly;
+                const textField = new TextField.Field({
+                    field: new Mof.DmObject(),
+                    isReadOnly: this.configuration.isReadOnly,
+                    form: tthis,
+                    itemUrl: itemUri,
+                    configuration: this.configuration
+                });
                 textField.OverridePropertyValue =
                     () => {
                         return propertyTextField.val()?.toString() ?? "";

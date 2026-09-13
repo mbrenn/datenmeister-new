@@ -1,9 +1,12 @@
-
-import { BaseField, IFormField } from "./Interfaces.js";
+import { BaseField, IFieldRenderContext, IFormField } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 
 export class Field extends BaseField implements IFormField {
     _checkbox: JQuery<HTMLElement>;
+
+    constructor(context?: IFieldRenderContext) {
+        super(context);
+    }
 
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
 

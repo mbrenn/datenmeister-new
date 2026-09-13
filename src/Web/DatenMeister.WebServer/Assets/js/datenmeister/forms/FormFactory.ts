@@ -1,98 +1,48 @@
-﻿import * as IForm from "./Interfaces.js";
+import * as IForm from "./Interfaces.js";
 import {IFormConfiguration} from "./IFormConfiguration.js";
 
-interface IHasUri<T> {
-    uri: string;
-    factoryFunction: (configuration: IFormConfiguration) => T;
+type FormFactoryFunction<T> = (configuration: IFormConfiguration) => T;
+
+const registerDataDecoupledForm = new Map<string, () => IForm.IDecoupledForm>();
+const registerDataCollectionForm = new Map<string, FormFactoryFunction<IForm.ICollectionForm>>();
+const registerDataObjectForm = new Map<string, FormFactoryFunction<IForm.IObjectForm>>();
+
+function normalizeUri(uri: string): string {
+    const hashIndex = uri.indexOf('#');
+    return hashIndex !== -1 ? uri.substring(hashIndex + 1) : uri;
 }
 
-interface EntryCollectionForm extends IHasUri<IForm.ICollectionForm>
-{
-    uri: string;
-    factoryFunction: (configuration: IFormConfiguration) => IForm.ICollectionForm;
-}
-
-interface EntryObjectForm extends IHasUri<IForm.IObjectForm> {
-    uri: string;
-    factoryFunction: (configuration: IFormConfiguration) => IForm.IObjectForm;
-}
-
-interface EntryDecoupledForm extends IHasUri<IForm.IDecoupledForm> {
-    uri: string;
-    factoryFunction: () => IForm.IDecoupledForm;
-}
-
-const registerDataDecoupledForm: Array<EntryDecoupledForm> = new Array<EntryDecoupledForm>();
-
-const registerDataCollectionForm: Array<EntryCollectionForm> = new Array<EntryCollectionForm>();
-
-const registerDataObjectForm: Array<EntryObjectForm> = new Array<EntryObjectForm>();
-
-export function registerDecoupledForm(uri: string, factoryFunction: () => IForm.IDecoupledForm) {
-    if(getDecoupledFormFactory(uri) !== undefined) return;
-
-    registerDataDecoupledForm.push(
-        {
-            uri: uri,
-            factoryFunction: factoryFunction
-        }
-    );
+export function registerDecoupledForm(uri: string, factoryFunction: () => IForm.IDecoupledForm): void {
+    registerDataDecoupledForm.set(uri, factoryFunction);
+    registerDataDecoupledForm.set(normalizeUri(uri), factoryFunction);
 }
 
 export function registerCollectionForm(
     uri: string,
-    factoryFunction: (configuration: IFormConfiguration) => IForm.ICollectionForm) {
-    if(getCollectionFormFactory(uri) !== undefined) return;
-
-    registerDataCollectionForm.push(
-        {
-            uri: uri,
-            factoryFunction: factoryFunction
-        }
-    );
+    factoryFunction: (configuration: IFormConfiguration) => IForm.ICollectionForm): void {
+    registerDataCollectionForm.set(uri, factoryFunction);
+    registerDataCollectionForm.set(normalizeUri(uri), factoryFunction);
 }
 
-export function registerObjectForm(uri: string, factoryFunction: (configuration: IFormConfiguration) => IForm.IObjectForm) {
-    if(getObjectFormFactory(uri) !== undefined) return;
-    
-    registerDataObjectForm.push(
-        {
-            uri: uri,
-            factoryFunction: factoryFunction
-        }
-    );
-}
-
-function getFormByUri<T>(uri: string, register: Array<IHasUri<T>>): ((configuration: IFormConfiguration) => T) | undefined {
-    const indexUri = uri.indexOf('#');
-    if (indexUri !== -1) {
-        uri = uri.substring(indexUri + 1);
-    }
-
-    for (let n in register) {
-        const item = register[n];
-
-        const indexItemUri = item.uri.indexOf('#');
-        if (indexItemUri !== -1) {
-            item.uri = item.uri.substring(indexItemUri + 1);
-        }
-
-        if (item.uri === uri) {
-            return item.factoryFunction;
-        }
-    }
-
-    return undefined;
+export function registerObjectForm(
+    uri: string,
+    factoryFunction: (configuration: IFormConfiguration) => IForm.IObjectForm): void {
+    registerDataObjectForm.set(uri, factoryFunction);
+    registerDataObjectForm.set(normalizeUri(uri), factoryFunction);
 }
 
 export function getDecoupledFormFactory(uri: string): ((configuration: IFormConfiguration) => IForm.IDecoupledForm) | undefined {
-    return getFormByUri<IForm.IDecoupledForm>(uri, registerDataDecoupledForm);
+    const factory = registerDataDecoupledForm.get(uri) ?? registerDataDecoupledForm.get(normalizeUri(uri));
+    if (factory !== undefined) {
+        return () => factory();
+    }
+    return undefined;
 }
 
 export function getCollectionFormFactory(uri: string): ((configuration: IFormConfiguration) => IForm.ICollectionForm) | undefined {
-    return getFormByUri<IForm.ICollectionForm>(uri, registerDataCollectionForm);
+    return registerDataCollectionForm.get(uri) ?? registerDataCollectionForm.get(normalizeUri(uri));
 }
 
 export function getObjectFormFactory(uri: string): ((configuration: IFormConfiguration) => IForm.IObjectForm) | undefined {
-    return getFormByUri<IForm.IObjectForm>(uri, registerDataObjectForm);
+    return registerDataObjectForm.get(uri) ?? registerDataObjectForm.get(normalizeUri(uri));
 }

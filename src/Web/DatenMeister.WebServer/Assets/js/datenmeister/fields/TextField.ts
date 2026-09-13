@@ -1,5 +1,5 @@
 import * as Mof from "../Mof.js";
-import {BaseField, IFormField} from "./Interfaces.js";
+import {BaseField, IFieldRenderContext, IFormField} from "./Interfaces.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import _TextFieldData = _DatenMeister._Forms._FieldTypes._TextFieldData;
 import {truncateText} from "../../burnsystems/StringManipulation.js";
@@ -13,6 +13,10 @@ export class Field extends BaseField implements IFormField
     OverridePropertyValue: () => string;
     
     _textBox: JQuery<HTMLElement>;
+
+    constructor(context?: IFieldRenderContext) {
+        super(context);
+    }
 
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
         const fieldName = this.field.get('name')?.toString() ?? "";

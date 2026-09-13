@@ -1,10 +1,14 @@
 import {injectNameByUri} from "../DomHelper.js";
-import {BaseField, IFormField} from "./Interfaces.js";
+import {BaseField, IFieldRenderContext, IFormField} from "./Interfaces.js";
 import {SelectItemControl} from "../controls/SelectItemControl.js";
 import {setMetaclass} from "../client/Items.js";
 import * as Mof from "../Mof.js";
 
 export class Field extends BaseField implements IFormField {
+
+    constructor(context?: IFieldRenderContext) {
+        super(context);
+    }
 
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
         const tthis = this;
@@ -45,7 +49,7 @@ export class Field extends BaseField implements IFormField {
                     (selectedItem) => {
                         setMetaclass(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
                             .then(() => divSelectItem.remove()).then(() => {
-                            if (tthis.configuration.refreshForm !== undefined) {
+                            if (tthis.configuration?.refreshForm !== undefined) {
                                 tthis.configuration.refreshForm();
                             }
                         });

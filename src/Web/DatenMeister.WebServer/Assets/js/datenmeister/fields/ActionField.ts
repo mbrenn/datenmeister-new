@@ -1,6 +1,5 @@
-
 import * as FormActions from "../FormActions.js";
-import {BaseField, IFormField} from "./Interfaces.js";
+import {BaseField, IFieldRenderContext, IFormField} from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import * as ClientItems from "../client/Items.js";
 import * as MofSync from "../MofSync.js";
@@ -12,6 +11,10 @@ export class Field extends BaseField implements IFormField {
     button: JQuery;
 
     private inConfirmation: boolean;
+
+    constructor(context?: IFieldRenderContext) {
+        super(context);
+    }
 
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
 

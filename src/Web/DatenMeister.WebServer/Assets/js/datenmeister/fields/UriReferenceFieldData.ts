@@ -1,5 +1,5 @@
 import * as Mof from "../Mof.js";
-import {BaseField, IFormField} from "./Interfaces.js";
+import {BaseField, IFieldRenderContext, IFormField} from "./Interfaces.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import _UriReferenceFieldData = _DatenMeister._Forms._FieldTypes._UriReferenceFieldData;
 import * as SIC from "../controls/SelectItemControl.js";
@@ -14,11 +14,15 @@ export class Field extends BaseField implements IFormField
     private _buildUriButton: JQuery<HTMLElement>;
     private _selectField: SIC.SelectItemControl;
 
+    constructor(context?: IFieldRenderContext) {
+        super(context);
+    }
+
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
 
-        if(this.configuration.isNewItem)
+        if(this.configuration?.isNewItem)
         {
-            // Just return information about being in a new iotem in which we cannot set the content
+            // Just return information about being in a new item in which we cannot set the content
             return $("<div><em>New item, content can only be set after saving</em></div>");
         }
         
@@ -52,6 +56,11 @@ export class Field extends BaseField implements IFormField
 
             this._textBox = $("<input size='80' class='dm-textfield' />");
             this._textBox.val(value);
+            this._textBox.on('input change', () => {
+                if (this.callbackUpdateField !== undefined) {
+                    this.callbackUpdateField();
+                }
+            });
             domContainer.append(this._textBox);
 
             // Create the selection field to define a uri
@@ -97,6 +106,9 @@ export class Field extends BaseField implements IFormField
             
             this._buildUriButton.on('click', async () => {
                 await this.buildUrl();
+                if (this.callbackUpdateField !== undefined) {
+                    this.callbackUpdateField();
+                }
             });
             
             return domContainer;

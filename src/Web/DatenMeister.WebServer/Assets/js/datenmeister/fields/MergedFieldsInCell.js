@@ -4,6 +4,9 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as FieldFactory from "../forms/FieldFactory.js";
 export class Field extends BaseField {
     childFields = [];
+    constructor(context) {
+        super(context);
+    }
     /**
      * Inhibits the presentation of the checkbox indicating whether the element is set.
      */

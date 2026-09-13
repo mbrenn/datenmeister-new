@@ -1,11 +1,10 @@
-﻿import {BaseField, IFormField} from "./Interfaces.js";
+import {BaseField, IFieldRenderContext, IFormField} from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import {injectNameByUri} from "../DomHelper.js";
 import * as ClientItem from "../client/Items.js"
 import * as SIC from "../controls/SelectItemControl.js";
 import * as SubElementField from "./SubElementField.js";
 import * as ReferenceField from "./ReferenceField.js";
-
 
 enum ModeValue {
     Value,
@@ -31,11 +30,15 @@ export class Field extends BaseField implements IFormField {
     // This is the element describing the property value; the element that shall be shown in this
     private _fieldValue: any;
 
+    constructor(context?: IFieldRenderContext) {
+        super(context);
+    }
+
     // Creates the overall DOM
     async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
-        if(this.configuration.isNewItem)
+        if(this.configuration?.isNewItem)
         {
-            // Just return information about being in a new iotem in which we cannot set the content
+            // Just return information about being in a new item in which we cannot set the content
             return $("<div><em>New item, content can only be set after saving</em></div>");
         }
                 
@@ -197,7 +200,7 @@ export class Field extends BaseField implements IFormField {
                 this._domElement.append(div);
             }
 
-            if (this.configuration.isNewItem) {
+            if (this.configuration?.isNewItem) {
                 // If we are having a new element, the element needs to be saved, so we 
                 // have an element id which can be used to reference this element
                 const div = $("<em>Element needs to be saved first</em>");
@@ -288,7 +291,7 @@ export class Field extends BaseField implements IFormField {
         } else if (this._mode === ModeValue.Collection) {
 
             const value = this._fieldValue;            
-            if (this.configuration.isNewItem) {
+            if (this.configuration?.isNewItem) {
                 const div = $("<em>Element needs to be saved first</em>");
                 this._domElement.append(div);
             } else {
@@ -300,14 +303,26 @@ export class Field extends BaseField implements IFormField {
     }
 
     private createReferenceFieldInstance() {
-        const element = new ReferenceField.Control();
+        const element = new ReferenceField.Control({
+            field: this.field,
+            isReadOnly: this.isReadOnly,
+            itemUrl: this.itemUrl,
+            form: this.form,
+            configuration: this.configuration
+        });
         this.cloneField(element);
 
         return element;
     }
 
     private createSubElementFieldInstance() {
-        const element = new SubElementField.Control();
+        const element = new SubElementField.Control({
+            field: this.field,
+            isReadOnly: this.isReadOnly,
+            itemUrl: this.itemUrl,
+            form: this.form,
+            configuration: this.configuration
+        });
         this.cloneField(element);
 
         return element;

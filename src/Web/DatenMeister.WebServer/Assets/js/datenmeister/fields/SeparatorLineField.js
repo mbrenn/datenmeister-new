@@ -1,5 +1,8 @@
 import { BaseField } from "./Interfaces.js";
 export class Field extends BaseField {
+    constructor(context) {
+        super(context);
+    }
     async createDom(dmElement) {
         return $("<hr class='dm-separatorline'/>");
     }

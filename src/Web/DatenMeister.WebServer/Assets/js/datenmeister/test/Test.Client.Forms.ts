@@ -1,4 +1,5 @@
-﻿import * as FormFactory from '../forms/FormFactory.js'
+import * as FormFactory from '../forms/FormFactory.js'
+import * as FieldFactory from '../forms/FieldFactory.js'
 import * as IForm from '../forms/Interfaces.js'
 import {FormType} from '../forms/Interfaces.js'
 import * as FormConfiguration from '../forms/IFormConfiguration.js'
@@ -8,7 +9,7 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ClientExtent from "../client/Extents.js";
 import * as ClientForms from "../client/Forms.js";
 import * as ClientWorkspace from "../client/Workspace.js";
-
+import {BaseField, IFieldRenderContext, IFormField} from "../fields/Interfaces.js";
 
 import '../../node_modules/chai/register-assert.js';
 import _ViewMode = _DatenMeister._Forms._ViewMode;
@@ -77,6 +78,16 @@ class Y implements IForm.ICollectionForm {
 
 }
 
+class CustomTestField extends BaseField implements IFormField {
+    createdCount = 0;
+    async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
+        this.createdCount++;
+        return $("<div>CustomField</div>");
+    }
+    async evaluateDom(dmElement: Mof.DmObject): Promise<void> {
+    }
+}
+
 export function includeTests() {
     describe('Forms', () => {
 
@@ -110,6 +121,34 @@ export function includeTests() {
                     isReadOnly: false,
                     formType: FormType.Collection
                 }) as Y).type === "Y");
+        });
+
+        it('Test FieldFactory Registration and Context Creation', () => {
+            const customUri = "dm:///_custom/TestField";
+            FieldFactory.registerField(customUri, ctx => new CustomTestField(ctx));
+
+            const fieldDef = new Mof.DmObject();
+            fieldDef.setMetaClassByUri(customUri, "Types");
+            fieldDef.set("name", "customProp");
+
+            const context: IFieldRenderContext = {
+                field: fieldDef,
+                isReadOnly: true,
+                itemUrl: "dm:///test#1",
+                configuration: {
+                    isReadOnly: true,
+                    formType: FormType.Object
+                }
+            };
+
+            const created1 = FieldFactory.createField(customUri, context);
+            assert.isTrue(created1 instanceof CustomTestField);
+            assert.isTrue(created1.isReadOnly === true);
+            assert.isTrue(created1.itemUrl === "dm:///test#1");
+
+            const created2 = FieldFactory.createField(context);
+            assert.isTrue(created2 instanceof CustomTestField);
+            assert.isTrue(created2.isReadOnly === true);
         });
 
         it('Test Default Database', () => {

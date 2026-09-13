@@ -1,4 +1,4 @@
-﻿import { BaseField, IFormField } from "./Interfaces.js";
+import { BaseField, IFieldRenderContext, IFormField } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 
 export class Field extends BaseField implements IFormField {
@@ -6,8 +6,8 @@ export class Field extends BaseField implements IFormField {
     // Defines the name of the field name which is not known
     unknownFieldUri: string;
 
-    constructor(unknownFieldUri:string) {
-        super();
+    constructor(unknownFieldUri: string, context?: IFieldRenderContext) {
+        super(context);
         this.unknownFieldUri = unknownFieldUri;
     }
 

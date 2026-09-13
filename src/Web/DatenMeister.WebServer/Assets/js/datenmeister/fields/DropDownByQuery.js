@@ -4,8 +4,8 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ElementClient from "../client/Elements.js";
 import * as MofResolver from "../MofResolver.js";
 export class Field extends DropDownBaseField.DropDownBaseField {
-    constructor() {
-        super();
+    constructor(context) {
+        super(context);
         this.fieldType = DropDownBaseField.FieldType.References;
     }
     async loadFields() {

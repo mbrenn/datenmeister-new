@@ -12,8 +12,8 @@ export class Field extends BaseField {
     separator;
     name;
     isFieldReadOnly;
-    constructor() {
-        super();
+    constructor(context) {
+        super(context);
     }
     async createDom(dmElement) {
         // Ensure local availability of field information

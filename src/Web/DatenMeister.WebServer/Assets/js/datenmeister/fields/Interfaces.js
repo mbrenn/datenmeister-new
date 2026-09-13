@@ -1,5 +1,5 @@
 /**
- * Base class for field implementations, providing the standard properties of IFormField
+ * Base class for field implementations, providing the standard properties and defaults
  */
 export class BaseField {
     /**
@@ -22,6 +22,19 @@ export class BaseField {
      * The URL of the item to which this field is connected
      */
     itemUrl;
+    constructor(context) {
+        if (context !== undefined) {
+            this.field = context.field;
+            this.isReadOnly = context.isReadOnly;
+            this.itemUrl = context.itemUrl ?? "";
+            if (context.form !== undefined) {
+                this.form = context.form;
+            }
+            if (context.configuration !== undefined) {
+                this.configuration = context.configuration;
+            }
+        }
+    }
     /**
      * Gets a value indicating whether the value of the field is shown.
      * Default implementation returns true.

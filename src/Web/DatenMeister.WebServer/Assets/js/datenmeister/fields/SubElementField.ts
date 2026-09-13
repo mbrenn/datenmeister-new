@@ -1,4 +1,4 @@
-﻿import { IFormField } from "./Interfaces.js";
+import { IFieldRenderContext, IFormField } from "./Interfaces.js";
 import * as MofResolver from "../MofResolver.js";
 import * as Mof from "../Mof.js";
 import * as FieldFactory from "../forms/FieldFactory.js";
@@ -52,8 +52,18 @@ export class Control {
     /**
      * Initializes the container that holds the rendered subelement list and controls.
      */
-    constructor() {
+    constructor(context?: IFieldRenderContext) {
         this._list = $("<div></div>");
+        if (context !== undefined) {
+            this.isReadOnly = context.isReadOnly;
+            this.itemUrl = context.itemUrl ?? "";
+            if (context.form !== undefined) {
+                this.form = context.form;
+            }
+            if (context.configuration !== undefined) {
+                this.configuration = context.configuration;
+            }
+        }
     }
 
     /**
@@ -153,12 +163,16 @@ export class Control {
                         let fieldData = fieldsData[fieldDataKey];
 
                         const field = FieldFactory.createField(
-                            fieldData.metaClass.uri,
+                            fieldData.metaClass?.uri ?? "",
                             {
                                 field: fieldData,
                                 isReadOnly: true,
                                 itemUrl: innerValue.uri,
-                                configuration: {formType: this.configuration.formType, isReadOnly: false, formElement: tthis.form.formElement},
+                                configuration: {
+                                    formType: this.configuration?.formType ?? FormType.Object,
+                                    isReadOnly: false,
+                                    formElement: tthis.form?.formElement
+                                },
                                 form: tthis.form
                             });
                         const dom = await field.createDom(innerValue);
@@ -214,7 +228,7 @@ export class Control {
             }
         } // if (this.isReadOnly)
         
-        if(this.configuration.formType !== FormType.Collection) {
+        if(this.configuration?.formType !== FormType.Collection) {
             // In collection forms, we don't want to see the modification buttons.
             await this.createAndAttachModificationButtons(tthis);
         }
@@ -321,7 +335,7 @@ export class Control {
                 let metaClassWorkspace;
 
                 // There are two options to reference a metaclass in DefaultTypeForNewElements
-                if (additionalType.metaClass.uri === _DatenMeister._Forms.__DefaultTypeForNewElement_Uri) {
+                if (additionalType.metaClass?.uri === _DatenMeister._Forms.__DefaultTypeForNewElement_Uri) {
                     // One is by using an instance of DefaultTypeForNewElement
                     name = additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement._name_, Mof.ObjectType.String);
                     const metaClass = await MofResolver.resolve(
@@ -380,6 +394,13 @@ export class Field extends Control implements IFormField {
     _element: Mof.DmObject;
     field: Mof.DmObject;
 
+    constructor(context?: IFieldRenderContext) {
+        super(context);
+        if (context?.field !== undefined) {
+            this.field = context.field;
+        }
+    }
+
     /**
      * Reloads the current property from the backend and re-renders the subelement list.
      */
@@ -415,8 +436,8 @@ export class Field extends Control implements IFormField {
         this.additionalTypes = this.field.get(_DatenMeister._Forms._FieldTypes._SubElementFieldData.defaultTypesForNewElements, Mof.ObjectType.Array);
 
 
-        if (this.configuration.isNewItem) {
-            // Just return information about being in a new iotem in which we cannot set the content
+        if (this.configuration?.isNewItem) {
+            // Just return information about being in a new item in which we cannot set the content
             return $("<div><em>New item, content can only be set after saving</em></div>");
         }
 

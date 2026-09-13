@@ -4,7 +4,7 @@ import * as Mof from "../Mof.js";
 export class Field extends BaseField implements IFormField {
     _checkbox: JQuery<HTMLElement>;
 
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
     }
 

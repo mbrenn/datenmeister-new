@@ -12,7 +12,7 @@ export class Field extends BaseField implements IFormField {
 
     private inConfirmation: boolean;
 
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
     }
 
@@ -57,7 +57,9 @@ export class Field extends BaseField implements IFormField {
                         await MofSync.sync(mofWithSync);
                     }
 
-                    await FormActions.execute(action, tthis.form, dmElement, parameter);
+                    if (tthis.form !== undefined) {
+                        await FormActions.execute(action, tthis.form, dmElement, parameter);
+                    }
                 }             
                 
                 if (requireConfirmation && !tthis.inConfirmation) {

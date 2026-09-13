@@ -16,7 +16,6 @@ import * as DropDownByCollection from "../fields/DropDownByCollection.js";
 import * as DropDownByQuery from "../fields/DropDownByQuery.js";
 import * as UriReferenceFieldData from "../fields/UriReferenceFieldData.js";
 import * as UnknownField from "../fields/UnknownField.js";
-import * as Mof from "../Mof.js";
 const registeredFieldFactories = new Map();
 export function registerField(metaClassFieldData, factoryMethod) {
     registeredFieldFactories.set(metaClassFieldData, factoryMethod);
@@ -57,39 +56,14 @@ export function canBeTextFiltered(field) {
     }
     return false;
 }
-export function createField(fieldMetaClassUriOrContext, parameter) {
-    let context;
-    let fieldMetaClassUri;
-    if (typeof fieldMetaClassUriOrContext === "string") {
-        fieldMetaClassUri = fieldMetaClassUriOrContext;
-        context = parameter ?? {
-            field: new Mof.DmObject(),
-            isReadOnly: false
-        };
-    }
-    else {
-        context = fieldMetaClassUriOrContext;
-        fieldMetaClassUri = context.field?.metaClass?.uri ?? "";
-    }
+export function createField(context) {
+    const fieldMetaClassUri = context.field?.metaClass?.uri ?? "";
     const factory = registeredFieldFactories.get(fieldMetaClassUri);
-    let result;
     if (factory !== undefined) {
-        result = factory(context);
+        return factory(context);
     }
     else {
-        result = new UnknownField.Field(fieldMetaClassUri, context);
+        return new UnknownField.Field(fieldMetaClassUri, context);
     }
-    // Ensure context properties are properly attached
-    if (context.configuration !== undefined)
-        result.configuration = context.configuration;
-    if (context.isReadOnly !== undefined)
-        result.isReadOnly = context.isReadOnly;
-    if (context.field !== undefined)
-        result.field = context.field;
-    if (context.itemUrl !== undefined)
-        result.itemUrl = context.itemUrl;
-    if (context.form !== undefined)
-        result.form = context.form;
-    return result;
 }
 //# sourceMappingURL=FieldFactory.js.map

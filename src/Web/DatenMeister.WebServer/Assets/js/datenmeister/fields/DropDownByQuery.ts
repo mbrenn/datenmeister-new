@@ -6,7 +6,7 @@ import * as ElementClient from "../client/Elements.js";
 import * as MofResolver from "../MofResolver.js";
 
 export class Field extends DropDownBaseField.DropDownBaseField implements IFormField {
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
         this.fieldType = DropDownBaseField.FieldType.References;
     }

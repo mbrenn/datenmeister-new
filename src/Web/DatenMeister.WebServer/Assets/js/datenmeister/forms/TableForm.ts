@@ -602,16 +602,13 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
             for (const field of fields) {
                 let cell = $("<td></td>");
 
-                const fieldMetaClassUri = field.metaClass?.uri;
-                const fieldElement = FieldFactory.createField(
-                    fieldMetaClassUri,
-                    {
-                        configuration: this.configuration,
-                        field: field,
-                        itemUrl: element.uri,
-                        isReadOnly: this.configuration.isReadOnly === true,
-                        form: this
-                    });
+                const fieldElement = FieldFactory.createField({
+                    configuration: this.configuration,
+                    field: field,
+                    itemUrl: element.uri,
+                    isReadOnly: this.configuration.isReadOnly === true,
+                    form: this
+                });
 
                 let dom: JQuery;
                 if (fieldElement === undefined) {

@@ -6,7 +6,7 @@ import * as FieldFactory from "../forms/FieldFactory.js";
 export class Field extends BaseField implements IFormField {
     private childFields: IFormField[] = [];
 
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
     }
 
@@ -28,19 +28,16 @@ export class Field extends BaseField implements IFormField {
                 continue;
             }
 
-            const fieldMetaClassUri = field.metaClass?.uri;
             const isFieldReadOnly =
                 this.isReadOnly ||
                 field.get(_DatenMeister._Forms._FieldTypes._FieldData.isReadOnly, Mof.ObjectType.Boolean);
-            const fieldElement = FieldFactory.createField(
-                fieldMetaClassUri,
-                {
-                    configuration: this.configuration,
-                    field: field,
-                    itemUrl: this.itemUrl,
-                    isReadOnly: isFieldReadOnly,
-                    form: this.form
-                });
+            const fieldElement = FieldFactory.createField({
+                configuration: this.configuration,
+                field: field,
+                itemUrl: this.itemUrl,
+                isReadOnly: isFieldReadOnly,
+                form: this.form
+            });
 
             fieldElement.callbackUpdateField = () => {
                 if (this.callbackUpdateField !== undefined) {

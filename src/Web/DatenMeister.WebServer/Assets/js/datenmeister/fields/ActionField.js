@@ -41,7 +41,9 @@ export class Field extends BaseField {
                     // We need to set the properties of the item, so the action handler can directly work on the item
                     await MofSync.sync(mofWithSync);
                 }
-                await FormActions.execute(action, tthis.form, dmElement, parameter);
+                if (tthis.form !== undefined) {
+                    await FormActions.execute(action, tthis.form, dmElement, parameter);
+                }
             }
             if (requireConfirmation && !tthis.inConfirmation) {
                 this.button.text("Are you sure?");

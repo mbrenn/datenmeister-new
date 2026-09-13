@@ -19,7 +19,7 @@ export class Field extends BaseField implements IFormField {
 
     private isFieldReadOnly: boolean;
 
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
     }
 

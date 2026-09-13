@@ -36,7 +36,7 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
 
     private _loadedFields: DropDownOptionField[] = [];
 
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
     }
 

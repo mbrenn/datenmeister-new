@@ -14,7 +14,7 @@ export class Field extends BaseField implements IFormField
     private _buildUriButton: JQuery<HTMLElement>;
     private _selectField: SIC.SelectItemControl;
 
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
     }
 

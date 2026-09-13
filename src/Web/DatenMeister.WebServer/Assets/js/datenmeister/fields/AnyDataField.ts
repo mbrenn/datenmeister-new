@@ -30,7 +30,7 @@ export class Field extends BaseField implements IFormField {
     // This is the element describing the property value; the element that shall be shown in this
     private _fieldValue: any;
 
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
     }
 
@@ -130,6 +130,7 @@ export class Field extends BaseField implements IFormField {
 
     private async reloadAndUpdateDomContent() {
         const tthis = this;
+        if (this.form?.workspace === undefined) return;
         tthis._fieldValue = await ClientItem.getProperty(
             this.form.workspace,
             this.itemUrl,
@@ -214,7 +215,9 @@ export class Field extends BaseField implements IFormField {
 
                 unsetCell.on('click', async () => {
                     // Unsets the property and close
-                    await ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, fieldName);
+                    if (tthis.form?.workspace !== undefined) {
+                        await ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, fieldName);
+                    }
                     tthis.updateDomContent();
                 });
 
@@ -228,15 +231,17 @@ export class Field extends BaseField implements IFormField {
                     settings.hideAtStartup = true;
                     selectItem.itemSelected.addListener(
                         async selectedItem => {
-                            await ClientItem.setPropertyReference(
-                                tthis.form.workspace,
-                                tthis.itemUrl,
-                                {
-                                    property: tthis.field.get('name'),
-                                    referenceUri: selectedItem.uri,
-                                    workspaceId: selectItem.getCurrentlySelectedWorkspace()
-                                }
-                            );
+                            if (tthis.form?.workspace !== undefined) {
+                                await ClientItem.setPropertyReference(
+                                    tthis.form.workspace,
+                                    tthis.itemUrl,
+                                    {
+                                        property: tthis.field.get('name'),
+                                        referenceUri: selectedItem.uri,
+                                        workspaceId: selectItem.getCurrentlySelectedWorkspace()
+                                    }
+                                );
+                            }
                             
                             if(tthis.callbackUpdateField !== undefined && tthis.callbackUpdateField !== null)                                
                                 tthis.callbackUpdateField();
@@ -303,15 +308,14 @@ export class Field extends BaseField implements IFormField {
     }
 
     private createReferenceFieldInstance() {
-        const element = new ReferenceField.Control({
+        const element = new ReferenceField.Field({
             field: this.field,
             isReadOnly: this.isReadOnly,
             itemUrl: this.itemUrl,
             form: this.form,
             configuration: this.configuration
         });
-        this.cloneField(element);
-
+        element.propertyName = this.field.get('name').toString();
         return element;
     }
 
@@ -323,16 +327,7 @@ export class Field extends BaseField implements IFormField {
             form: this.form,
             configuration: this.configuration
         });
-        this.cloneField(element);
-
-        return element;
-    }
-
-    private cloneField(element: ReferenceField.Control | SubElementField.Control) {
-        element.isReadOnly = this.isReadOnly;
-        element.configuration = this.configuration;
-        element.itemUrl = this.itemUrl;
         element.propertyName = this.field.get('name').toString();
-        element.form = this.form;
+        return element;
     }
 }

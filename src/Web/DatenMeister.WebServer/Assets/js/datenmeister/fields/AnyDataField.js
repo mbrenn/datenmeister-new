@@ -102,6 +102,8 @@ export class Field extends BaseField {
     }
     async reloadAndUpdateDomContent() {
         const tthis = this;
+        if (this.form?.workspace === undefined)
+            return;
         tthis._fieldValue = await ClientItem.getProperty(this.form.workspace, this.itemUrl, this.field.get('name').toString());
         await tthis.updateDomContent();
     }
@@ -178,7 +180,9 @@ export class Field extends BaseField {
                 const containerChangeCell = $("<div></div>");
                 unsetCell.on('click', async () => {
                     // Unsets the property and close
-                    await ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, fieldName);
+                    if (tthis.form?.workspace !== undefined) {
+                        await ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, fieldName);
+                    }
                     tthis.updateDomContent();
                 });
                 changeCell.on('click', async () => {
@@ -190,11 +194,13 @@ export class Field extends BaseField {
                     settings.browseSettings.showExtentInBreadcrumb = true;
                     settings.hideAtStartup = true;
                     selectItem.itemSelected.addListener(async (selectedItem) => {
-                        await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
-                            property: tthis.field.get('name'),
-                            referenceUri: selectedItem.uri,
-                            workspaceId: selectItem.getCurrentlySelectedWorkspace()
-                        });
+                        if (tthis.form?.workspace !== undefined) {
+                            await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
+                                property: tthis.field.get('name'),
+                                referenceUri: selectedItem.uri,
+                                workspaceId: selectItem.getCurrentlySelectedWorkspace()
+                            });
+                        }
                         if (tthis.callbackUpdateField !== undefined && tthis.callbackUpdateField !== null)
                             tthis.callbackUpdateField();
                         await tthis.reloadAndUpdateDomContent();
@@ -254,14 +260,14 @@ export class Field extends BaseField {
         }
     }
     createReferenceFieldInstance() {
-        const element = new ReferenceField.Control({
+        const element = new ReferenceField.Field({
             field: this.field,
             isReadOnly: this.isReadOnly,
             itemUrl: this.itemUrl,
             form: this.form,
             configuration: this.configuration
         });
-        this.cloneField(element);
+        element.propertyName = this.field.get('name').toString();
         return element;
     }
     createSubElementFieldInstance() {
@@ -272,15 +278,8 @@ export class Field extends BaseField {
             form: this.form,
             configuration: this.configuration
         });
-        this.cloneField(element);
-        return element;
-    }
-    cloneField(element) {
-        element.isReadOnly = this.isReadOnly;
-        element.configuration = this.configuration;
-        element.itemUrl = this.itemUrl;
         element.propertyName = this.field.get('name').toString();
-        element.form = this.form;
+        return element;
     }
 }
 //# sourceMappingURL=AnyDataField.js.map

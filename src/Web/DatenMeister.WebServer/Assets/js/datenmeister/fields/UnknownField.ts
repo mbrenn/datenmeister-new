@@ -6,7 +6,7 @@ export class Field extends BaseField implements IFormField {
     // Defines the name of the field name which is not known
     unknownFieldUri: string;
 
-    constructor(unknownFieldUri: string, context?: IFieldRenderContext) {
+    constructor(unknownFieldUri: string, context: IFieldRenderContext) {
         super(context);
         this.unknownFieldUri = unknownFieldUri;
     }

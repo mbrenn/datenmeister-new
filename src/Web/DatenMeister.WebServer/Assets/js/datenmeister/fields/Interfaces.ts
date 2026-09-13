@@ -16,29 +16,34 @@ export interface IFieldRenderContext {
 export interface IFormField
 {
     /**
+     * Encapsulates the execution and rendering context for a form field
+     */
+    readonly context: IFieldRenderContext;
+
+    /**
      * The configuration for the form
      */
-    configuration: IFormConfiguration;
+    readonly configuration?: IFormConfiguration;
 
     /**
      * Defines the field definition (metamodel) used to create the UI for this field
      */
-    field: Mof.DmObject;
+    readonly field: Mof.DmObject;
 
     /**
      * Indicates whether the field is in read-only mode
      */
-    isReadOnly: boolean;
+    readonly isReadOnly: boolean;
 
     /**
      * The URL of the item to which this field is connected
      */
-    itemUrl: string;
+    readonly itemUrl: string;
     
     /**
      * The navigation interface for the parent form
      */
-    form: IFormNavigation;
+    readonly form?: IFormNavigation;
 
     /**
      * Creates the DOM elements for the field based on the provided data element
@@ -72,50 +77,45 @@ export interface IFormField
      * This allows creator of a field to explicitly react upon changes within the field
      */
     callbackUpdateField?: () => void;
+
+    destroy?(): void;
 }
 
 /**
  * Base class for field implementations, providing the standard properties and defaults
  */
-export class BaseField
+export abstract class BaseField implements IFormField
 {
-    /**
-     * The configuration for the form
-     */
-    configuration: IFormConfiguration;
+    readonly context: IFieldRenderContext;
 
-    /**
-     * Defines the field definition (metamodel)
-     */
-    field: Mof.DmObject;
+    get configuration(): IFormConfiguration | undefined {
+        return this.context.configuration;
+    }
 
-    /**
-     * Indicates whether the field is in read-only mode
-     */
-    isReadOnly: boolean;
+    get field(): Mof.DmObject {
+        return this.context.field;
+    }
 
-    /**
-     * The navigation interface for the parent form
-     */
-    form: IFormNavigation;
+    get isReadOnly(): boolean {
+        return this.context.isReadOnly;
+    }
 
-    /**
-     * The URL of the item to which this field is connected
-     */
-    itemUrl: string;
+    get form(): IFormNavigation | undefined {
+        return this.context.form;
+    }
 
-    constructor(context?: IFieldRenderContext) {
-        if (context !== undefined) {
-            this.field = context.field;
-            this.isReadOnly = context.isReadOnly;
-            this.itemUrl = context.itemUrl ?? "";
-            if (context.form !== undefined) {
-                this.form = context.form;
-            }
-            if (context.configuration !== undefined) {
-                this.configuration = context.configuration;
-            }
-        }
+    get itemUrl(): string {
+        return this.context.itemUrl ?? "";
+    }
+
+    constructor(context: IFieldRenderContext) {
+        this.context = context;
+    }
+
+    abstract createDom(dmElement: Mof.DmObject) : Promise<JQuery<HTMLElement>>;
+
+    async evaluateDom(dmElement: Mof.DmObject) : Promise<void> {
+        return;
     }
 
     /**

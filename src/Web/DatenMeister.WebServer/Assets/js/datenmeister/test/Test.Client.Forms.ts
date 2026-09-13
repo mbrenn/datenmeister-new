@@ -141,14 +141,10 @@ export function includeTests() {
                 }
             };
 
-            const created1 = FieldFactory.createField(customUri, context);
-            assert.isTrue(created1 instanceof CustomTestField);
-            assert.isTrue(created1.isReadOnly === true);
-            assert.isTrue(created1.itemUrl === "dm:///test#1");
-
-            const created2 = FieldFactory.createField(context);
-            assert.isTrue(created2 instanceof CustomTestField);
-            assert.isTrue(created2.isReadOnly === true);
+            const created = FieldFactory.createField(context);
+            assert.isTrue(created instanceof CustomTestField);
+            assert.isTrue(created.isReadOnly === true);
+            assert.isTrue(created.itemUrl === "dm:///test#1");
         });
 
         it('Test Default Database', () => {

@@ -52,17 +52,15 @@ export class Control {
     /**
      * Initializes the container that holds the rendered subelement list and controls.
      */
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         this._list = $("<div></div>");
-        if (context !== undefined) {
-            this.isReadOnly = context.isReadOnly;
-            this.itemUrl = context.itemUrl ?? "";
-            if (context.form !== undefined) {
-                this.form = context.form;
-            }
-            if (context.configuration !== undefined) {
-                this.configuration = context.configuration;
-            }
+        this.isReadOnly = context.isReadOnly;
+        this.itemUrl = context.itemUrl ?? "";
+        if (context.form !== undefined) {
+            this.form = context.form;
+        }
+        if (context.configuration !== undefined) {
+            this.configuration = context.configuration;
         }
     }
 
@@ -162,19 +160,17 @@ export class Control {
                         const td = $("<td></td>");
                         let fieldData = fieldsData[fieldDataKey];
 
-                        const field = FieldFactory.createField(
-                            fieldData.metaClass?.uri ?? "",
-                            {
-                                field: fieldData,
-                                isReadOnly: true,
-                                itemUrl: innerValue.uri,
-                                configuration: {
-                                    formType: this.configuration?.formType ?? FormType.Object,
-                                    isReadOnly: false,
-                                    formElement: tthis.form?.formElement
-                                },
-                                form: tthis.form
-                            });
+                        const field = FieldFactory.createField({
+                            field: fieldData,
+                            isReadOnly: true,
+                            itemUrl: innerValue.uri,
+                            configuration: {
+                                formType: this.configuration?.formType ?? FormType.Object,
+                                isReadOnly: false,
+                                formElement: tthis.form?.formElement
+                            },
+                            form: tthis.form
+                        });
                         const dom = await field.createDom(innerValue);
                         td.append(dom);
                         tr.append(td);
@@ -392,13 +388,15 @@ export class Control {
 export class Field extends Control implements IFormField {
 
     _element: Mof.DmObject;
-    field: Mof.DmObject;
+    readonly context: IFieldRenderContext;
 
-    constructor(context?: IFieldRenderContext) {
+    get field(): Mof.DmObject {
+        return this.context.field;
+    }
+
+    constructor(context: IFieldRenderContext) {
         super(context);
-        if (context?.field !== undefined) {
-            this.field = context.field;
-        }
+        this.context = context;
     }
 
     /**

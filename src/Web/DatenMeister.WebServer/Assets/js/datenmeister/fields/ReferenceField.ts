@@ -9,7 +9,7 @@ import {ItemWithNameAndId} from "../ApiModels.js";
 import * as Settings from "../Settings.js";
 import * as Uml from "../models/UML.js"
 
-export class Control extends BaseField {
+export abstract class Control extends BaseField {
     propertyName: string;
 
     /** Defines whether the field flag to create the selection fields directly 
@@ -23,16 +23,10 @@ export class Control extends BaseField {
 
     /** Initializes a new instance 
      * 
-     * @param contextOrField This field contains either the render context or definition according ReferenceFieldData.
+     * @param context The render context according IFieldRenderContext.
      * */
-    constructor(contextOrField?: IFieldRenderContext | Mof.DmObject) {
-        if (contextOrField instanceof Mof.DmObject) {
-            super();
-            this.field = contextOrField;
-        } else {
-            super(contextOrField);
-        }
-        
+    constructor(context: IFieldRenderContext) {
+        super(context);
         this._list = $("<span></span>");
     }
 
@@ -91,12 +85,14 @@ export class Control extends BaseField {
                             }
                         );
                     }
-                    await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl,
-                        {
-                            property: tthis.propertyName,
-                            referenceUri: result.itemUri,
-                            workspaceId: result.workspace
-                        });
+                    if (tthis.form?.workspace !== undefined) {
+                        await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl,
+                            {
+                                property: tthis.propertyName,
+                                referenceUri: result.itemUri,
+                                workspaceId: result.workspace
+                            });
+                    }
 
                     await tthis.reloadValuesFromServer();
 
@@ -110,11 +106,13 @@ export class Control extends BaseField {
                 });
 
                 unsetCell.on('click', () => {
-                    ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(
-                        async () => {
-                            await tthis.reloadValuesFromServer();
-                        }
-                    );
+                    if (tthis.form?.workspace !== undefined) {
+                        ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(
+                            async () => {
+                                await tthis.reloadValuesFromServer();
+                            }
+                        );
+                    }
                 });
 
                 this._list.append(createCell);
@@ -155,15 +153,17 @@ export class Control extends BaseField {
                     await this.referenceSetCall(selectedItem);
                 }
                 
-                await ClientItem.setPropertyReference(
-                    tthis.form.workspace,
-                    tthis.itemUrl,
-                    {
-                        property: tthis.propertyName,
-                        referenceUri: selectedItem.uri,
-                        workspaceId: selectedItem.workspace
-                    }
-                );
+                if (tthis.form?.workspace !== undefined) {
+                    await ClientItem.setPropertyReference(
+                        tthis.form.workspace,
+                        tthis.itemUrl,
+                        {
+                            property: tthis.propertyName,
+                            referenceUri: selectedItem.uri,
+                            workspaceId: selectedItem.workspace
+                        }
+                    );
+                }
 
                 if (this.callbackUpdateField !== undefined) {
                     this.callbackUpdateField();
@@ -194,7 +194,7 @@ export class Control extends BaseField {
                 } else {
                     await selectItem.setItemByUri(workspaceId, itemUri);
                 }
-            } else {
+            } else if (this.form?.workspace !== undefined && this.form?.extentUri !== undefined) {
                 // If there is no default selection and item has not been pre-selected by the field
                 // configuration itself, choose the extent in which the containing element is residing
                 await selectItem.setExtentByUri(this.form.workspace, this.form.extentUri);
@@ -215,7 +215,7 @@ export class Field extends Control implements IFormField {
     // The name of the field being derived from the field
     fieldName: string;
 
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
     }
 
@@ -240,7 +240,6 @@ export class Field extends Control implements IFormField {
 
         // Sets the properties being required by the parent class
         this.propertyName = this.fieldName;
-        this.itemUrl = dmElement.uri;
 
         if (this.isReadOnly === true) {
             if (value === undefined || value === null) {
@@ -269,6 +268,7 @@ export class Field extends Control implements IFormField {
     }
 
     async reloadValuesFromServer() {
+        if (this.form?.workspace === undefined) return;
         let value = await ClientItem.getProperty(this.form.workspace, this.element.uri, this.fieldName);
 
         if (Array.isArray(value)) {

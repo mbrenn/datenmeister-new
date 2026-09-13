@@ -19,10 +19,9 @@ export class Field extends BaseField {
             if (!(field instanceof Mof.DmObject)) {
                 continue;
             }
-            const fieldMetaClassUri = field.metaClass?.uri;
             const isFieldReadOnly = this.isReadOnly ||
                 field.get(_DatenMeister._Forms._FieldTypes._FieldData.isReadOnly, Mof.ObjectType.Boolean);
-            const fieldElement = FieldFactory.createField(fieldMetaClassUri, {
+            const fieldElement = FieldFactory.createField({
                 configuration: this.configuration,
                 field: field,
                 itemUrl: this.itemUrl,

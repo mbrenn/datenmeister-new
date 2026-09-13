@@ -4,7 +4,7 @@ import * as DropDownBaseField from "./DropDownBaseField.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 
 export class Field extends DropDownBaseField.DropDownBaseField implements IFormField {
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
         this.fieldType = DropDownBaseField.FieldType.Strings;
     }

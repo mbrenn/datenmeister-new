@@ -14,7 +14,7 @@ export class Field extends BaseField implements IFormField
     
     _textBox: JQuery<HTMLElement>;
 
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
     }
 

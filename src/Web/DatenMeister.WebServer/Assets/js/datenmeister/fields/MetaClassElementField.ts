@@ -6,7 +6,7 @@ import * as Mof from "../Mof.js";
 
 export class Field extends BaseField implements IFormField {
 
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
     }
 
@@ -47,12 +47,14 @@ export class Field extends BaseField implements IFormField {
 
                 selectItemCtrl.itemSelected.addListener(
                     (selectedItem) => {
-                        setMetaclass(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
-                            .then(() => divSelectItem.remove()).then(() => {
-                            if (tthis.configuration?.refreshForm !== undefined) {
-                                tthis.configuration.refreshForm();
-                            }
-                        });
+                        if (tthis.form?.workspace !== undefined) {
+                            setMetaclass(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
+                                .then(() => divSelectItem.remove()).then(() => {
+                                if (tthis.configuration?.refreshForm !== undefined) {
+                                    tthis.configuration.refreshForm();
+                                }
+                            });
+                        }
                     });
             });
 

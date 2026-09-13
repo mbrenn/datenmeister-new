@@ -168,15 +168,13 @@ export class RowForm implements InterfacesForms.IObjectForm {
             const propertyName = field.get(_DatenMeister._Forms._FieldTypes._FieldData._name_, Mof.ObjectType.String);
 
             // Creates the field to be shown 
-            const fieldElement = createField(
-                fieldMetaClassUri,
-                {
-                    configuration: this.configuration,
-                    field: field,
-                    itemUrl: itemUri,
-                    isReadOnly: isFieldReadOnly,
-                    form: this
-                });
+            const fieldElement = createField({
+                configuration: this.configuration,
+                field: field,
+                itemUrl: itemUri,
+                isReadOnly: isFieldReadOnly,
+                form: this
+            });
             
             const showValue = propertyName !== undefined && propertyName !== null && propertyName !=="" &&
                 fieldElement.showValue !== undefined && fieldElement.showValue();
@@ -223,12 +221,7 @@ export class RowForm implements InterfacesForms.IObjectForm {
                 $(".value", tr).append(htmlElement);
                 checkbox.prop("disabled", true);
             } else {
-                fieldElement.field = field;
-                fieldElement.isReadOnly = isFieldReadOnly;
-                fieldElement.form = this;
-                fieldElement.itemUrl = itemUri;
-
-                htmlElement = fieldElement.createDom(this.element);                                
+                htmlElement = fieldElement.createDom(this.element);
                 
                 // Pushes the field to the internal field list, so the data can be retrieved afterwards
                 const fieldInForm = new FieldInForm();

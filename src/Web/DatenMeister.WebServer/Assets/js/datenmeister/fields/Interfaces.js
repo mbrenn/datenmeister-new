@@ -2,38 +2,27 @@
  * Base class for field implementations, providing the standard properties and defaults
  */
 export class BaseField {
-    /**
-     * The configuration for the form
-     */
-    configuration;
-    /**
-     * Defines the field definition (metamodel)
-     */
-    field;
-    /**
-     * Indicates whether the field is in read-only mode
-     */
-    isReadOnly;
-    /**
-     * The navigation interface for the parent form
-     */
-    form;
-    /**
-     * The URL of the item to which this field is connected
-     */
-    itemUrl;
+    context;
+    get configuration() {
+        return this.context.configuration;
+    }
+    get field() {
+        return this.context.field;
+    }
+    get isReadOnly() {
+        return this.context.isReadOnly;
+    }
+    get form() {
+        return this.context.form;
+    }
+    get itemUrl() {
+        return this.context.itemUrl ?? "";
+    }
     constructor(context) {
-        if (context !== undefined) {
-            this.field = context.field;
-            this.isReadOnly = context.isReadOnly;
-            this.itemUrl = context.itemUrl ?? "";
-            if (context.form !== undefined) {
-                this.form = context.form;
-            }
-            if (context.configuration !== undefined) {
-                this.configuration = context.configuration;
-            }
-        }
+        this.context = context;
+    }
+    async evaluateDom(dmElement) {
+        return;
     }
     /**
      * Gets a value indicating whether the value of the field is shown.

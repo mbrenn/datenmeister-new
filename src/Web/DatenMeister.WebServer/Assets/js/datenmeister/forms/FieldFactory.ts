@@ -73,39 +73,13 @@ export function canBeTextFiltered(field: Mof.DmObject): boolean {
     return false;
 }
 
-export function createField(
-    fieldMetaClassUriOrContext: string | IFieldRenderContext,
-    parameter?: IFieldRenderContext): IFormField {
-
-    let context: IFieldRenderContext;
-    let fieldMetaClassUri: string;
-
-    if (typeof fieldMetaClassUriOrContext === "string") {
-        fieldMetaClassUri = fieldMetaClassUriOrContext;
-        context = parameter ?? {
-            field: new Mof.DmObject(),
-            isReadOnly: false
-        };
-    } else {
-        context = fieldMetaClassUriOrContext;
-        fieldMetaClassUri = context.field?.metaClass?.uri ?? "";
-    }
-
+export function createField(context: IFieldRenderContext): IFormField {
+    const fieldMetaClassUri = context.field?.metaClass?.uri ?? "";
     const factory = registeredFieldFactories.get(fieldMetaClassUri);
-    let result: IFormField;
 
     if (factory !== undefined) {
-        result = factory(context);
+        return factory(context);
     } else {
-        result = new UnknownField.Field(fieldMetaClassUri, context);
+        return new UnknownField.Field(fieldMetaClassUri, context);
     }
-
-    // Ensure context properties are properly attached
-    if (context.configuration !== undefined) result.configuration = context.configuration;
-    if (context.isReadOnly !== undefined) result.isReadOnly = context.isReadOnly;
-    if (context.field !== undefined) result.field = context.field;
-    if (context.itemUrl !== undefined) result.itemUrl = context.itemUrl;
-    if (context.form !== undefined) result.form = context.form;
-
-    return result;
 }

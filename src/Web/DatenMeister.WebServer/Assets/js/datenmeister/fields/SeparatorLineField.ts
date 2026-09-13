@@ -3,7 +3,7 @@ import * as Mof from "../Mof.js";
 
 export class Field extends BaseField implements IFormField
 {
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
     }
 

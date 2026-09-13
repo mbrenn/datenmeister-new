@@ -8,7 +8,7 @@ import * as QueryBuilder from "../modules/QueryEngine.js";
 
 export class Field extends DropDownBaseField.DropDownBaseField implements IFormField {
 
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
         this.fieldType = DropDownBaseField.FieldType.References;
     }

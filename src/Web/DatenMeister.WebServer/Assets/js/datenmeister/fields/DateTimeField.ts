@@ -6,7 +6,7 @@ export class Field extends BaseField implements IFormField {
     _dateInput: JQuery<HTMLElement>;
     _timeInput: JQuery<HTMLElement>;
 
-    constructor(context?: IFieldRenderContext) {
+    constructor(context: IFieldRenderContext) {
         super(context);
     }
 

@@ -14,4 +14,9 @@ public static class ViewModes
     /// Name of the view mode which enforces an auto-generation
     /// </summary>
     public const string AutoGenerate = "ViewMode.AutoGenerate";
+    
+    /// <summary>
+    /// Name of the view mode which enforces a generation of fields just by properties and not by metaclasses
+    /// </summary>
+    public const string ByProperties = "ViewMode.ByProperties";
 }

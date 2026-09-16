@@ -40,14 +40,18 @@ public class FormCreationContextFactory(IWorkspaceLogic workspaceLogic, IScopeSt
         context.Global.CollectionFormFactories.Add(new EmptyCollectionFormFactory()
             { Priority = FormFactoryPriorities.Preparation });
         
-        if (viewMode != ViewModes.AutoGenerate)
+        if (viewMode is not ViewModes.AutoGenerate and not ViewModes.ByProperties)
         {
             context.Global.CollectionFormFactories.Add(new FormFinderFactory(workspaceLogic)
                 { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
 
-        context.Global.CollectionFormFactories.Add(new CollectionFormFromMetaClass
-            { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
+        if (viewMode is not ViewModes.ByProperties)
+        {
+            context.Global.CollectionFormFactories.Add(new CollectionFormFromMetaClass
+                { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
+        }
+
         context.Global.CollectionFormFactories.Add(new CollectionFormFromData
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.CollectionFormFactories.Add(new RemovePropertyFromCollectionFormTabs
@@ -59,15 +63,19 @@ public class FormCreationContextFactory(IWorkspaceLogic workspaceLogic, IScopeSt
         context.Global.ObjectFormFactories.Add(new EmptyObjectFormFactory()
             { Priority = FormFactoryPriorities.Preparation });
         
-        if (viewMode != ViewModes.AutoGenerate)
+        if (viewMode is not ViewModes.AutoGenerate and not ViewModes.ByProperties)
         {
             context.Global.ObjectFormFactories.Add(new FormFinderFactory(workspaceLogic)
                 { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
 
-        context.Global.ObjectFormFactories.Add(new ObjectFormFromMetaClass(workspaceLogic)
-            { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
-        context.Global.ObjectFormFactories.Add(new ObjectFormFromData()
+        if (viewMode is not ViewModes.ByProperties)
+        {
+            context.Global.ObjectFormFactories.Add(new ObjectFormFromMetaClass(workspaceLogic)
+                { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
+        }
+
+        context.Global.ObjectFormFactories.Add(new ObjectFormFromData
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.ObjectFormFactories.Add(new AddTableFormForPackagedElements());
         context.Global.ObjectFormFactories.Add(new ValidateObjectOrCollectionForm
@@ -78,14 +86,18 @@ public class FormCreationContextFactory(IWorkspaceLogic workspaceLogic, IScopeSt
         // Build up the TableForm Queue
         context.Global.TableFormFactories.Add(new EmptyTableFormFactory()
             { Priority = FormFactoryPriorities.Preparation });
-        if (viewMode != ViewModes.AutoGenerate)
+        if (viewMode is not ViewModes.AutoGenerate and not ViewModes.ByProperties)
         {
             context.Global.TableFormFactories.Add(new FormFinderFactory(workspaceLogic)
                 { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
 
-        context.Global.TableFormFactories.Add(new TableFormForMetaClass(workspaceLogic)
-            { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
+        if (viewMode is not ViewModes.ByProperties)
+        {
+            context.Global.TableFormFactories.Add(new TableFormForMetaClass(workspaceLogic)
+                { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
+        }
+        
         context.Global.TableFormFactories.Add(new TableFormFromData(workspaceLogic)
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.TableFormFactories.Add(new ExpandDropDownOfValueReference());
@@ -97,21 +109,29 @@ public class FormCreationContextFactory(IWorkspaceLogic workspaceLogic, IScopeSt
         // Build up the RowForm Queue
         context.Global.RowFormFactories.Add(new EmptyRowFormFactory()
             { Priority = FormFactoryPriorities.Preparation });
-        if (viewMode != ViewModes.AutoGenerate)
+        if (viewMode is not ViewModes.AutoGenerate and not ViewModes.ByProperties)
         {
             context.Global.RowFormFactories.Add(new FormFinderFactory(workspaceLogic)
                 { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
 
+        if (viewMode is not ViewModes.ByProperties)
+        {
+            context.Global.RowFormFactories.Add(new RowFormFromMetaClass(workspaceLogic)
+                { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
+        }
+
         context.Global.RowFormFactories.Add(new RowFormFromData(workspaceLogic)
-            { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
-        context.Global.RowFormFactories.Add(new RowFormFromMetaClass(workspaceLogic)
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.RowFormFactories.Add(new AddMetaClassField());
         context.Global.RowFormFactories.Add(new ExpandDropDownOfValueReference());
 
         // Build up the FieldForm Queue
-        context.Global.FieldFormFactories.Add(new FieldFromPropertyType(workspaceLogic));
+        if (viewMode is not ViewModes.ByProperties)
+        {
+            context.Global.FieldFormFactories.Add(new FieldFromPropertyType(workspaceLogic));
+        }
+        
         context.Global.FieldFormFactories.Add(new FieldFromPropertyValue());
         context.Global.FieldFormFactories.Add(new FieldAnyFieldData());
 

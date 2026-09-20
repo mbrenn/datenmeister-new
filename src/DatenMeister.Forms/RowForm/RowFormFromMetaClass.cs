@@ -14,7 +14,6 @@ public class RowFormFromMetaClass(IWorkspaceLogic workspaceLogic) : FormFactoryB
         if (result.IsMainContentCreated || parameter.MetaClass == null)
             return;
         
-        var element = parameter.Element;
         var parameterMetaClass = parameter.MetaClass;
 
         if (!result.Forms.Any())
@@ -33,12 +32,10 @@ public class RowFormFromMetaClass(IWorkspaceLogic workspaceLogic) : FormFactoryB
             result.AddToFormCreationProtocol(
                 "[FormCreator.CreateRowFormByMetaClass]: " + NamedElementMethods.GetName(parameterMetaClass));
 
-            if (!FieldCreationHelper.AddFieldsToRowOrTableFormByMetaClass(
-                    workspaceLogic,
-                    createdForm, parameterMetaClass, parameter, context))
-            {
-                createdForm.set(_Forms._FormTypes._RowForm.allowNewProperties, true);
-            }
+            FieldCreationHelper.AddFieldsToRowOrTableFormByMetaClass(
+                workspaceLogic, createdForm, parameterMetaClass, parameter, context);
+            
+            createdForm.set(_Forms._FormTypes._RowForm.allowNewProperties, false);
 
             result.IsManaged = result.IsMainContentCreated = true;
         }

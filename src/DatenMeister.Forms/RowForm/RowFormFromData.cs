@@ -32,7 +32,8 @@ public class RowFormFromData(IWorkspaceLogic workspaceLogic) : FormFactoryBase, 
                 itemAsAllProperties,
                 parameter,
                 context);
-            createdForm.set(_Forms._FormTypes._RowForm.allowNewProperties, true);
         }
+        
+        createdForm.set(_Forms._FormTypes._RowForm.allowNewProperties, true);
     }
 }

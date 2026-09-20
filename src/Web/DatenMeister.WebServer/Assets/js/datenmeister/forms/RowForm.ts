@@ -9,6 +9,8 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import {SubmitMethod} from "./Forms.js";
 import * as ClientItem from "../client/Items.js";
 import * as ClientAction from "../client/Actions.js";
+import {_Actions} from "../models/DatenMeister.class.js";
+import _Forms = _Actions._Forms;
 
 class FieldInForm {
     fieldElement: InterfacesFields.IFormField;
@@ -120,9 +122,9 @@ export class RowForm implements InterfacesForms.IObjectForm {
             this.configuration.isReadOnly = true;
         }
 
-        if (this.configuration.allowAddingNewProperties === undefined) {
-            this.configuration.allowAddingNewProperties = false;
-        }
+        this.configuration.allowAddingNewProperties ??=
+            this.formElement.get(_DatenMeister._Forms._FormTypes._RowForm.allowNewProperties, Mof.ObjectType.Boolean);
+        this.configuration.allowAddingNewProperties ??= false;
 
         // Creates the table itself
         let tr;
@@ -252,7 +254,7 @@ export class RowForm implements InterfacesForms.IObjectForm {
 
                             innerFieldInForm.addChangeCallbackToFieldElement(() => {
                                 innerFieldInForm.setCheckboxState(true);
-                            })
+                            });
                         }
                     });
                 })(tr, htmlElement, fieldInForm);
@@ -260,7 +262,7 @@ export class RowForm implements InterfacesForms.IObjectForm {
 
             tableBody.append(tr);
         }
-
+        
         // Checks, if user may add additional properties, if yes, include a button and create the corresponding
         // logic
         if (!this.configuration.isReadOnly && this.configuration.allowAddingNewProperties) {
@@ -269,7 +271,12 @@ export class RowForm implements InterfacesForms.IObjectForm {
 
             const button = $("button", tr);
             button.on('click', () => {
-                const newRow = $("<tr><td><input class='dm-textfield-key' type='text' /></td><td class='dm-row-value'></td></tr>");
+                const newRow = $("<tr>" +
+                    "<td><input class='dm-textfield-key' type='text' /></td>" +
+                    "<td class='dm-row-value'></td>" +
+                    "<td><input type='checkbox' class='checkbox_isset' /></td>" +
+                    "</tr>");
+                const checkbox = $(".checkbox_isset", newRow);
                 const rowValue = $(".dm-row-value", newRow);
                 const propertyTextField = $(".dm-textfield-key", newRow);
                 const textField = new TextField.Field({
@@ -279,6 +286,7 @@ export class RowForm implements InterfacesForms.IObjectForm {
                     itemUrl: itemUri,
                     configuration: this.configuration
                 });
+                
                 textField.OverridePropertyValue =
                     () => {
                         return propertyTextField.val()?.toString() ?? "";
@@ -292,6 +300,12 @@ export class RowForm implements InterfacesForms.IObjectForm {
                 const fieldInformation = new FieldInForm();
                 fieldInformation.fieldElement = textField;
                 fieldInformation.field = textField.field;
+                fieldInformation.checkbox = checkbox;
+
+                fieldInformation.addChangeCallbackToFieldElement(() => {
+                    fieldInformation.setCheckboxState(true);
+                });
+                
                 tthis.fieldElements.push(fieldInformation);
                 
                 newRow.insertBefore($('.dm-row-newproperty'));

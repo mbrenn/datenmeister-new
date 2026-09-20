@@ -394,7 +394,7 @@ export async function getProperty(
     if(workspaceId === undefined)
     {
         throw new Error("Workspace is undefined");
-    }
+    }    
     if(itemUrl === undefined) {
         throw new Error("ItemUrl is undefined");
     }

@@ -1,3 +1,4 @@
+using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
@@ -26,9 +27,9 @@ public class AddTableFormForPackagedElements : FormFactoryBase, IObjectFormFacto
         }
 
         var factory = context.Global.Factory;
-        var elementsAsObjects = parameter.Element
-            ?.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement)
-                .OfType<IElement>().ToList()
+        var packagedElements = parameter.Element
+            ?.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
+        var elementsAsObjects = packagedElements?.OfType<IElement>().ToList()
             ?? throw new InvalidOperationException("Element is null");
 
         // We care about the packaged elements
@@ -58,7 +59,7 @@ public class AddTableFormForPackagedElements : FormFactoryBase, IObjectFormFacto
             }
 
             result.AddToFormCreationProtocol(
-                "[FormCreator.CreateObjectFormForItem]: Added specific Sub-TableForm for 'packagedElement'");
+                "[FormCreator.AddTableFormForPackagedElements]: Added specific Sub-TableForm for 'packagedElement'");
 
             result.Form.AddCollectionItem(_Forms._FormTypes._ObjectForm.tab, form);
         }
@@ -72,7 +73,8 @@ public class AddTableFormForPackagedElements : FormFactoryBase, IObjectFormFacto
                 {
                     MetaClass = metaClass,
                     Extent = parameter.Extent,
-                    ExtentTypes = parameter.ExtentTypes
+                    ExtentTypes = parameter.ExtentTypes,
+                    Collection = packagedElements.WhenMetaClassIs(metaClass),
                 },
                 innerContext);
 
@@ -82,7 +84,7 @@ public class AddTableFormForPackagedElements : FormFactoryBase, IObjectFormFacto
                 form.set(_Forms._FormTypes._TableForm.property, _UML._Packages._Package.packagedElement);
                 
                 result.AddToFormCreationProtocol(
-                    "[FormCreator.CreateObjectFormForItem]: Add Table Form for metaclass:" +
+                    "[FormCreator.AddTableFormForPackagedElements]: Add Table Form for metaclass: " +
                     NamedElementMethods.GetName(metaClass));
                 
                 result.Form.AddCollectionItem(_Forms._FormTypes._ObjectForm.tab, form);

@@ -80,19 +80,19 @@ public class RowFilterOnMetaClass : ProxyReflectiveCollection
     private bool IsInList(IElement valueAsObject)
     {
         var isIn = false;
+        
+        // Checks the uris
         if (_filteredMetaClassUris != null && valueAsObject is MofObject valueAsMofObject)
         {
             isIn = _filteredMetaClassUris.Any(x => x.Equals(valueAsMofObject.ProviderObject.MetaclassUri));
         }
-        else
-        {
-            var metaClass = valueAsObject.getMetaClass();
 
-            if (metaClass == null && (_filteredMetaClass == null || _filteredMetaClass.Length == 0)
-                || metaClass != null && _filteredMetaClass?.Any(x => x.equals(metaClass)) == true)
-            {
-                isIn = true;
-            }
+        // Checks the metaclass instances themselves
+        var metaClass = valueAsObject.getMetaClass();
+        if (metaClass == null && (_filteredMetaClass == null || _filteredMetaClass.Length == 0)
+            || metaClass != null && _filteredMetaClass?.Any(x => x.equals(metaClass)) == true)
+        {
+            isIn = true;
         }
 
         return isIn;

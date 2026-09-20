@@ -167,14 +167,14 @@ public class ExtentTypeFormModification
                         if (foundListMetaClasses.Contains(resolvedMetaClass))
                         {
                             result.AddToFormCreationProtocol(
-                                $"ExtentTypeFormsPlugin: Did not add {NamedElementMethods.GetName(resolvedMetaClass)} for ExtentType '{foundExtentType.name}' since it already got a listform");
+                                $"IncludeCreationButtonsInTableFormForClassifierOfExtentType: Did not add {NamedElementMethods.GetName(resolvedMetaClass)} for ExtentType '{foundExtentType.name}' since it already got a listform");
                             continue;
                         }
 
                         AddDefaultTypeForMetaClassOfForm.AddDefaultTypeIfNotExists(context, result, resolvedMetaClass);
 
                         result.AddToFormCreationProtocol(
-                            $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}'");
+                            $"IncludeCreationButtonsInTableFormForClassifierOfExtentType: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}'");
                     }
                 }
             }
@@ -260,7 +260,7 @@ public class ExtentTypeFormModification
                             defaultTypesForNewElements.add(defaultTypeInstance);
 
                             result.AddToFormCreationProtocol(
-                                $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}' to PackagedElement");
+                                $"IncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}' to PackagedElement");
                         }
                     }
                 }

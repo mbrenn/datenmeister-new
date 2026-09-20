@@ -91,6 +91,10 @@ public class PackageFormModificationPlugin : FormFactoryBase, IObjectFormFactory
                     {
                         var preferredTypes2 = PackageMethods.GetPackagedObjects(preferredPackage);
                         AddPreferredTypes(result, context.Global.Factory, preferredTypes2, defaultTypes);
+                        
+                        result.AddToFormCreationProtocol(
+                            "[PackageFormModificationPlugin]: Add DefaultType by preferred Packges: " +
+                            NamedElementMethods.GetName(preferredPackage));
                     }
                 }
             }

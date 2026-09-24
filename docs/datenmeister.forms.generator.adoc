@@ -1,22 +1,276 @@
-= Form Generators
+= Form Generators and the Form Factory Pipeline
 
-The following form generators exist:
+== Overview
 
-. For a single element: GetExtentFormForItem
-. For a single element as DetailForm: GetDetailFormForItem
-. For a non-existent object of a specific metaclass: GetExtentFormForItemsMetaClass
-. For a list of items: GetListFormForCollection
-. For a list of root elements: GetExtentFormForExtent
-. For a list of elements of a property: GetListFormForPropertyValues
+In DatenMeister, user interface forms are not static artifacts hard-coded to specific models or views. Instead, forms and their constituent elements (`CollectionForm`, `ObjectForm`, `TableForm`, `RowForm`, and `FieldData` controls) are dynamically synthesized by a pluggable, priority-ordered **Form Generator Pipeline**.
 
+The form generation engine is implemented in the `DatenMeister.Forms` module and is responsible for:
 
-== Types of Form Generators
+* Providing unified entry points to request forms for single items, collections, extents, metaclasses, or specific object properties.
+* Coordinating layered factory handlers that evaluate curated definitions (`FormFinder`), MOF/UML metamodel schemas (`MetaClass`), and runtime instance values (`Data`).
+* Cascading form generation down the form hierarchy—from top-level collection and object forms down to tabs, rows, table columns, and individual field inputs.
+* Collecting creation protocol traces for debugging and diagnostic auditing.
 
-There are:
+NOTE: For information on how view modes configure which factories are active in the pipeline, see xref:datenmeister.viewmode.adoc[View Modes].
 
-. FormFinder: Finds the best form from existing definitions via FormAssociation.
-. FormCreator: Creates the best form from available data.
-. FormFactory: First calls the FormFinder, then the FormCreator if the corresponding form was not found.
+== Relationship Between Form Generators and View Modes
 
-Additionally, there are FormModifications, which subsequently change a form that has already been generated.
+A common design consideration is whether **Form Generators** and **View Modes** should be documented together or kept separate. They represent two complementary but distinct architectural layers:
+
+* **View Modes (`datenmeister.viewmode.adoc`)** define **perspective and configuration policy**. They encapsulate *which* factories are enabled in a given session, *what* sources of form definition are prioritized or skipped (e.g., bypassing predefined forms in `AutoGenerate` mode, or bypassing metaclasses in `ByProperties` mode), and how user clients select viewing preferences.
+* **Form Generators (`datenmeister.forms.generator.adoc`)** define **execution mechanics and factory implementations**. They specify *how* forms are constructed, the contract of `FormCreation`, parameter structures, the 5-tier form hierarchy (`CollectionForm` -> `ObjectForm` -> `TableForm` / `RowForm` -> `Field`), recursive tab resolution, and field-level type mapping.
+
+Because view modes configure the pipeline while form generators implement the pipeline's execution engine, keeping these documents distinct maintains a clean separation of concerns while cross-referencing between them.
+
+== The FormCreation Facade
+
+The central entry point for generating forms is the static `DatenMeister.Forms.FormCreation` facade. It provides strongly-typed methods corresponding to each structural level in the form model:
+
+[source,csharp]
+----
+public static class FormCreation
+{
+    // Generates a CollectionForm (e.g. for extents or lists of items)
+    public static FormCreationResultOneForm CreateCollectionForm(
+        CollectionFormFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultOneForm? result = null);
+
+    // Generates an ObjectForm (e.g. for item detail views or composite objects)
+    public static FormCreationResultOneForm CreateObjectForm(
+        ObjectFormFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultOneForm? result = null);
+
+    // Generates TableForms (e.g. for tabular grids, collections, or properties)
+    public static FormCreationResultMultipleForms CreateTableForm(
+        TableFormFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultMultipleForms? result = null);
+
+    // Generates RowForms (e.g. field groups and property input rows)
+    public static FormCreationResultMultipleForms CreateRowForm(
+        RowFormFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultMultipleForms? result = null);
+
+    // Generates an individual Field control (e.g. TextField, DateTimeField, CheckboxField)
+    public static FormCreationResultOneForm CreateField(
+        FieldFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultOneForm? result = null);
+}
+----
+
+=== Pipeline Invocation Loop (`WalkThroughManager`)
+
+When any `Create*` method is called, `FormCreation` processes registered factories via `WalkThroughManager`:
+
+1. Registered factories implementing `IFormFactoryBase` are sorted in descending order by their `Priority`.
+2. Each factory's handler method is invoked within a protected `try-catch` block, isolating exceptions from halting the entire pipeline.
+3. The factory indicates whether it handled the request (`result.IsManaged = true`) and whether the primary form container was created (`result.IsMainContentCreated = true`).
+4. If a factory marks the result as finalized (`result.IsFinalized = true`), the pipeline terminates early.
+5. Every participating manager appends diagnostic messages to the form's `creationProtocol`.
+
+== Request Parameters and Creation Context
+
+=== Parameter Records
+
+All form creation parameters inherit from `FormFactoryParameterBase`:
+
+[cols="1,2,4",options="header"]
+|===
+|Parameter Class |Target Level |Properties & Description
+
+|`FormFactoryParameterBase`
+|Base
+|* `Extent` (`IUriExtent`): The extent associated with the request.
+* `ExtentTypes` (`IEnumerable<string>`): Extent type tags (e.g., `DatenMeister.Forms`).
+* `MetaClass` (`IElement`): Metaclass describing the target element or collection item.
+
+|`CollectionFormFactoryParameter`
+|`CollectionForm`
+|* `Collection` (`IReflectiveCollection`): The target collection to be displayed.
+
+|`ObjectFormFactoryParameter`
+|`ObjectForm`
+|* `Element` (`IObject`): The specific item instance being viewed or edited.
+
+|`TableFormFactoryParameter`
+|`TableForm`
+|* `PropertyName` (`string`): Target property name if rendering a multi-valued property.
+* `Collection` (`IReflectiveCollection`): Target collection if rendering a standalone collection.
+* `ParentMetaClass` (`IElement`): Metaclass of the owning container object.
+* `ParentPropertyName` (`string`): Property on the parent referencing this collection.
+
+|`RowFormFactoryParameter`
+|`RowForm`
+|* `Element` (`IObject`): Target instance whose properties populate the row fields.
+
+|`FieldFactoryParameter`
+|`FieldData`
+|* `PropertyName` (`string`): Name of the attribute.
+* `Property` (`IElement`): Metamodel property definition (`Property` instance).
+* `PropertyValue` (`object`): Runtime value of the property (for data-driven field creation).
+* `IsInTable` (`bool`): Flag indicating if the field serves as a table column or a row field.
+|===
+
+=== FormCreationContext
+
+The `FormCreationContext` maintains the execution environment:
+
+* **Factory Queues**: Strongly-typed lists of registered factories (`CollectionFormFactories`, `ObjectFormFactories`, `TableFormFactories`, `RowFormFactories`, `FieldFormFactories`).
+* **Global Factory**: Model element factory for instantiating form entities (`_Forms.TheOne.FormTypes.*`).
+* **LocalScopeStorage**: Scoped dictionary holding transient state during generation, such as `FormCreatorCache` (tracking visited metaclasses and property names to avoid infinite recursion) and `ExtensionCreationMode`.
+* **Cloning**: When sub-forms or tabs are generated, child contexts are created via `context.Clone()`, preserving global configuration while scoping local state.
+
+=== Result Models and the Creation Protocol
+
+Form generation produces a `FormCreationResult` subclass:
+
+* `FormCreationResultOneForm`: Returns a single `Form` element (used by `CreateCollectionForm`, `CreateObjectForm`, and `CreateField`).
+* `FormCreationResultMultipleForms`: Returns a list of `Forms` elements (used by `CreateTableForm` and `CreateRowForm`).
+
+Each result tracks:
+
+* `IsMainContentCreated`: Indicates whether the primary form structure has been created. Subsequent lower-priority fallback factories check this flag and skip execution if already satisfied.
+* `IsManaged`: Set to `true` whenever a factory contributes modifications or enhancements.
+* `IsFinalized`: Signals a hard stop, preventing subsequent factories from executing.
+* `creationProtocol`: A human-readable diagnostic log attached directly to the form instance under `_Forms._FormTypes._Form.creationProtocol`.
+
+== The Form Hierarchy & Cascading Generation
+
+DatenMeister forms follow a structured hierarchy. `FormCreation` automatically cascades down this hierarchy:
+
+[source]
+----
+CollectionForm / ObjectForm (Top-Level Container)
+   │
+   ├──> Tabs (RowForm or TableForm)
+   │       │
+   │       ├──> RowForm (Property Form Fields)
+   │       │       └──> FieldData (TextField, DateTimeField, CheckboxField, ReferenceField, ...)
+   │       │
+   │       └──> TableForm (Tabular Column Fields & Action Buttons)
+   │               └──> FieldData (Column representations)
+----
+
+=== Recursive Tab Processing
+
+When `CreateCollectionForm` or `CreateObjectForm` finishes creating the main container (`result.IsMainContentCreated = true`), `FormCreation` automatically iterates through all tabs attached to the form:
+
+1. For each tab of type `RowForm`, it invokes `CreateRowForm` with a child parameter and an inner context configured with `ExtensionCreationMode`.
+2. For each tab of type `TableForm`, it invokes `CreateTableForm` with the tab's configured `metaClass` and `ParentMetaClass`.
+3. The row and table factories then invoke `CreateField` to generate the individual field definitions.
+
+== Priority Stages (`FormFactoryPriorities`)
+
+Factories execute in descending order of numeric priority across standardized stages:
+
+[cols="1,2,5",options="header"]
+|===
+|Stage |Priority Value |Standard Role & Behavior
+
+|**Preparation**
+|`Preparation` (500)
+|Instantiates empty form container objects (`EmptyCollectionFormFactory`, `EmptyObjectFormFactory`, `EmptyTableFormFactory`, `EmptyRowFormFactory`) before content populates.
+
+|**Predefined Discovery**
+|`PrimaryBuildUp` (200)
+|Invokes `FormFinderFactory` to locate pre-configured `FormAssociation` definitions matching metaclass, extent type, and view mode.
+
+|**Metaclass Generation**
+|`PrimaryBuildUp - 1` (199)
+|Analyzes the MOF / UML Metaclass attributes, types, and associations (`*FromMetaClass`, `FieldFromPropertyType`).
+
+|**Data Fallback**
+|`PrimaryBuildUp - 2` (198)
+|Introspects runtime properties and CLR types on actual object instances (`*FromData`, `FieldFromPropertyValue`, `FieldAnyFieldData`).
+
+|**Action Buttons**
+|`AdditionalFunctionsPrimary` (100) / `AdditionalFunctionsSecondary` (50)
+|Adds action buttons and navigation commands to forms and lists.
+
+|**Cleanup & Enhancement**
+|`CleanUp` (0) / `Miscellaneous` (-100)
+|Applies post-processing, dropdown list population, column reordering, packaged element views, and structural validation.
+|===
+
+== Standard Factory Catalog
+
+=== 1. Collection Form Factories (`ICollectionFormFactory`)
+
+* **`EmptyCollectionFormFactory` (Priority 500)**: Prepares an empty `CollectionForm` container.
+* **`FormFinderFactory` (Priority 200)**: Searches for pre-defined collection forms via `FormAssociation`.
+* **`CollectionFormFromMetaClass` (Priority 199)**: Creates a `CollectionForm` with tabs for each table view associated with the metaclass.
+* **`CollectionFormFromData` (Priority 198)**: Inspects items in the collection, determines distinct runtime metaclasses, and creates tabs for each type.
+* **`RemovePropertyFromCollectionFormTabs` (Priority -100)**: Removes redundant property tabs from collection views.
+
+=== 2. Object Form Factories (`IObjectFormFactory`)
+
+* **`EmptyObjectFormFactory` (Priority 500)**: Prepares an empty `ObjectForm` container.
+* **`FormFinderFactory` (Priority 200)**: Searches for pre-defined object forms matching the item's metaclass and view mode.
+* **`ObjectFormFromMetaClass` (Priority 199)**: Creates an `ObjectForm` containing a `RowForm` for direct properties and separate `TableForm` tabs for multi-valued collection properties.
+* **`ObjectFormFromData` (Priority 198)**: Reads properties directly from the instance via `IObjectAllProperties` and builds corresponding rows and sub-tables.
+* **`AddTableFormForPackagedElements` (Priority -100)**: If the element is a UML package or composite element, appends table tabs for child elements.
+* **`AddEmptyRowFormInCaseItDoesNotExist` (Priority -100)**: Ensures an object form has at least one valid `RowForm` tab for property viewing.
+* **`ValidateObjectOrCollectionForm` (Priority -100)**: Validates that all tabs and subforms conform to the form metamodel.
+
+=== 3. Table Form Factories (`ITableFormFactory`)
+
+* **`EmptyTableFormFactory` (Priority 500)**: Prepares an empty `TableForm` container.
+* **`FormFinderFactory` (Priority 200)**: Searches for pre-defined table forms via `FormAssociation`.
+* **`TableFormForMetaClass` (Priority 199)**: Populates table columns by introspecting attributes of the target metaclass via `FieldCreationHelper.AddFieldsToRowOrTableFormByMetaClass`.
+* **`TableFormFromData` (Priority 198)**: Populates table columns by collecting property names across all items in the target collection.
+* **`AddDefaultTypeForMetaClassOfForm` (Priority -100)**: Configures `defaultTypesForNewElements` on the table form to allow creating new typed instances.
+* **`ValidateTableOrRowForm` (Priority -100)**: Validates table column configurations.
+
+=== 4. Row Form Factories (`IRowFormFactory`)
+
+* **`EmptyRowFormFactory` (Priority 500)**: Prepares an empty `RowForm` container.
+* **`FormFinderFactory` (Priority 200)**: Searches for pre-defined row forms via `FormAssociation`.
+* **`RowFormFromMetaClass` (Priority 199)**: Generates form fields corresponding to attributes defined on the metaclass.
+* **`RowFormFromData` (Priority 198)**: Generates form fields by reading property values directly from the runtime object.
+* **`ValidateTableOrRowForm` (Priority -100)**: Validates field definitions in the row form.
+
+=== 5. Field Factories (`IFieldFactory`)
+
+Field factories resolve individual attribute definitions or property values into concrete UI field controls:
+
+* **`FieldFromPropertyType` (Priority 199)**: Metamodel-driven field generation. Introspects property types from UML/MOF attribute models:
+** String types -> `TextFieldData`
+** Integer / Real / UnlimitedNatural -> `TextFieldData` (with numeric formatting)
+** Boolean -> `CheckboxFieldData`
+** DateTime -> `DateTimeFieldData`
+** Enumeration -> `DropDownFieldData` (populated with enumeration literals)
+** Reference / Association -> `ReferenceFieldData` (single reference) or `SubElementFieldData` (composite reference)
+* **`FieldFromPropertyValue` (Priority 198)**: Data-driven field generation. Introspects CLR types of runtime values (`string`, `bool`, `DateTime`, `int`, `IElement`, `IReflectiveCollection`).
+* **`FieldAnyFieldData` (Priority 198)**: Fallback generator for generic or untyped property data.
+* **`ExpandDropDownOfValueReference` (Priority -100)**: Post-processor that injects extent lookup queries and candidate lists for reference drop-downs.
+* **`SortFieldsByImportantProperties` (Priority -100)**: Reorders generated fields so that prominent properties (e.g., `id`, `name`, `title`) appear at the top.
+
+== Debugging Form Generation
+
+To inspect how any form was constructed at runtime, developers can examine the `creationProtocol` property on the generated form object.
+
+Example creation protocol output:
+
+[source]
+----
+[EmptyObjectFormFactory]: Initialized empty ObjectForm
+Managed by: DatenMeister.Forms.ObjectForm.EmptyObjectFormFactory
+[ObjectFormFromMetaClass]: Created Object Form for 'Types::Person'
+[FormCreator.AddFieldsToRowOrObjectFormByMetaClass]: Added field by Metaclass 'TextFieldData' for property: name
+[FormCreator.AddFieldsToRowOrObjectFormByMetaClass]: Added field by Metaclass 'DateTimeFieldData' for property: dateOfBirth
+Managed by: DatenMeister.Forms.ObjectForm.ObjectFormFromMetaClass
+[SortFieldsByImportantProperties]: Sorted 2 fields
+Managed by: DatenMeister.Forms.Fields.SortFieldsByImportantProperties
+----
+
+== Related Documentation
+
+* xref:datenmeister.forms.adoc[Forms Architecture]
+* xref:datenmeister.viewmode.adoc[View Modes (ViewMode)]
+* xref:datenmeister.formfinder.adoc[Finding Forms and Form Associations]
+* xref:datenmeister.forms.fields.adoc[Form Fields Specification]
 

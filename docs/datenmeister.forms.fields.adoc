@@ -1,228 +1,798 @@
-= Field Element
+= Form Fields Architecture and Reference (Server & Client)
+:toc:
+:toclevels: 3
+[#dm_form_fields]
 
-The DatenMeister forms support different types of field forms.
-This chapter contains a description of these.
+== Overview
 
+In DatenMeister, **Form Fields** represent the atomic UI and data-binding building blocks used within forms (such as `RowForm`, `TableForm`, and `ObjectForm`). Form fields bridge the semantic MOF/UML metamodel stored on the server with interactive, type-safe user interface controls rendered on the client (Web UI via TypeScript/HTML/jQuery and Desktop UI via WPF).
 
-== FieldData
+The form field architecture consists of two cooperative layers:
 
-This base class provides the generic properties that should be supported by every field.
+1. **Server-Side Generation & Metamodel**: The server analyzes metaclasses or runtime object properties, instantiating MOF form field definitions (`FieldData` specializations) via `IFieldFactory` implementations and `FormCreationContext`.
+2. **Client-Side Rendering & Evaluation**: The client receives field definitions and executes field controllers implementing `IFormField` (extending `BaseField` in TypeScript). The client is responsible for rendering DOM elements (`createDom`) in read-only or edit modes, handling user events, and serializing modified values back to the model (`evaluateDom`).
 
-[%header,cols="1,5"]
+[#dm_form_fields_architecture]
+== Architecture & Lifecycle
+
+=== 1. Server-Side Field Pipeline (`IFieldFactory`)
+
+On the server, fields are created during the execution of form creation passes (e.g., when generating `RowForm` or `TableForm`). The server-side pipeline is driven by `IFieldFactory`:
+
+[source,csharp]
+----
+public interface IFieldFactory : IFormFactoryBase
+{
+    void CreateField(
+        FieldFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultOneForm result);
+}
+----
+
+The `FieldFactoryParameter` encapsulates all metadata required to determine the field type:
+
+* `Property`: The MOF/UML property definition (`IElement`) containing type classifiers, multiplicity (`isMultiple`), and containment semantics (`isComposite`).
+* `PropertyName`: The identifier of the property being mapped.
+* `PropertyValue`: The runtime value of the property (when generating forms data-first).
+* `IsInTable`: Boolean flag indicating whether the field is placed within a table cell (suppressing deep nested forms to prevent recursion).
+* `MetaClass`: The containing classifier.
+
+==== Standard Server-Side Field Factories
+
+[cols="2,2,4",options="header"]
 |===
-|Name|Meaning
-|name|Name of the field and the underlying property of the object
-|title|Title displayed in the form
-|isEnumeration|Flag indicating whether the content behind the property is an enumeration or a single element. This property is used by some field types for automatic design.
-|defaultValue|If the value is not set, the value of the default property can be defined here.
-|isReadOnly|Flag indicating whether the field is not writable.
-|isAttached|Flag indicating whether the field is attached to the object itself rather than being a property of the object.
-|===
+|Factory Class |Priority / Order |Behavior & Creation Logic
 
-== TextFieldData
+|`FieldFromPropertyType`
+|Priority: 1000 (Metaclass-driven)
+|Inspects property types via `TypeIndexLogic`:
+* UML `Enumeration` -> `DropDownFieldData` (populated with `ValuePair` entries)
+* `PrimitiveTypes.Boolean` -> `CheckboxFieldData`
+* `PrimitiveTypes.DateTime` -> `DateTimeFieldData`
+* Primitive types (`String`, `Integer`, `Real`, `UnlimitedNatural`) -> `TextFieldData` (integer fields default to narrower widths)
+* Collection properties (`isMultiple = true`) -> `SubElementFieldData`
+* Non-composite references -> `ReferenceFieldData` (or `DropDownByQueryData` if configured)
+* Composite properties (`isComposite = true`) -> `CompositeFieldData`
 
-This field represents a text input field in which the user can enter free text.
+|`FieldFromPropertyValue`
+|Priority: 500 (Data-driven fallback)
+|Inspects runtime .NET object types when no metamodel property exists:
+* `DotNetHelper.IsEnumeration(type)` -> `SubElementFieldData`
+* `IObject` reference -> `ReferenceFieldData`
+* Primitive / string values -> `TextFieldData`
 
-In addition to the properties of FieldData, the following properties are supported:
-
-[%header,cols="1,5"]
-|===
-|Name|Meaning
-|lineHeight|Number of lines that should be displayed by default. If it is 1 or empty, a simple input field is shown. If it is larger than 1, a textarea is shown.
-|width|Width in logical pixels (size/cols) that the field should have by default.
-|shortenTextLength|If set and greater than 0, the text will be truncated to this length in read-only mode.
-|supportClipboardCopy|If true, a "Copy to Clipboard" button is shown in read-only mode.
-|===
-
-
-== EvalTextFieldData
-
-This extension of the text field supports the dynamic evaluation of content. This is particularly relevant for report creation, as the format and other properties can be evaluated dynamically here.
-
-In addition to the properties of TextFieldData, the following properties are supported:
-[%header,cols="1,5"]
-|===
-|Name|Meaning
-|evalCellProperties a|The script evaluated for creating the cell.
-
-- The variable 'i' describes the element currently being considered.
-
-- The variable 'c' is the current cell. The cell's properties depend on the report used.
-
-- The variable 'r' is the state of the current row, as can be defined in the ListForm in the 'evalRowProperties' property.
-|===
-
-== AnyDataFieldData
-
-A generic field that can display different types of data. It is often used as a fallback.
-
-== CheckboxFieldData
-
-Displays a checkbox for boolean values.
-
-[%header,cols="1,5"]
-|===
-|Name|Meaning
-|lineHeight|Can be used to define the height of the field.
-|===
-
-== ActionFieldData
-
-Displays a button that triggers a specific action when clicked.
-
-[%header,cols="1,5"]
-|===
-|Name|Meaning
-|actionName|Name of the action to be executed.
-|parameter|Parameter passed to the action.
-|buttonText|Text displayed on the button.
+|`FieldAnyFieldData`
+|Priority: 0 (Generic fallback)
+|Provides catch-all field generation producing `SubElementFieldData` (if collection) or `AnyDataFieldData`.
 |===
 
-== DateTimeFieldData
+=== 2. Client-Side Field Architecture (`IFormField` & `BaseField`)
 
-Provides a field to input date and time.
+In the Web UI (`DatenMeister.WebServer`), all fields implement `IFormField` and typically inherit from the abstract base class `BaseField` (defined in `Interfaces.ts`):
 
-[%header,cols="1,5"]
+[source,typescript]
+----
+export interface IFormField {
+    readonly context: IFieldRenderContext;
+    readonly configuration?: IFormConfiguration;
+    readonly field: Mof.DmObject;
+    readonly isReadOnly: boolean;
+    readonly itemUrl: string;
+    readonly form: IFormNavigation;
+
+    createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>>;
+    evaluateDom(dmElement: Mof.DmObject): Promise<void>;
+    showNameField?(): boolean;
+    showValue?(): boolean;
+    callbackUpdateField?: () => void;
+    destroy?(): void;
+}
+----
+
+==== Execution Lifecycle
+
+1. **Registration & Creation (`FieldFactory.ts`)**:
+   Field types register their factory delegates via `registerField(metaClassUri, factoryMethod)`. When rendering a form, `FieldFactory.createField(context)` queries the registry by the field's `metaClass.uri` and returns the matching `IFormField` instance (falling back to `UnknownField` if unregistered).
+2. **DOM Generation (`createDom`)**:
+   Constructs the jQuery HTML representation for the field.
+   * **Read-Only Mode (`isReadOnly === true`)**: Renders static text, hyperlinks, inline reference labels via `injectNameByUri`, badges, or compact lists.
+   * **Edit Mode (`isReadOnly === false`)**: Renders interactive inputs (`<input>`, `<textarea>`, `<select>`, modal pickers, action buttons).
+3. **Data Binding & Sync (`evaluateDom`)**:
+   Extracts user input from the DOM and writes it back into `dmElement` using `dmElement.set(propertyName, value)` or `dmElement.unset(propertyName)`.
+4. **Layout Hints**:
+   * `showNameField()`: If `false`, suppresses the label column in a `RowForm`, allowing the field value to span the full width.
+   * `showValue()`: If `false`, hides the checkbox indicating whether a property is set (used by action buttons and visual separators).
+5. **Change Notification (`callbackUpdateField`)**:
+   Invoked on input/change events to notify parent forms to update validation, enable save buttons, or trigger dependent field recalculations.
+
+=== 3. Desktop Client Counterpart (WPF)
+
+In the WPF desktop client (`DatenMeister.WPF`), fields implement `IDetailField` via `DatenMeister.WPF.Forms.Fields.FieldFactory.CreateField(value, field)`:
+
+* `CreateElement(value, fieldData, detailForm, fieldFlags)`: Generates WPF `UIElement` controls (e.g. `TextBox`, `CheckBox`, `ComboBox`, custom controls).
+* `CallSetAction(element)`: Applies edited values back to the target MOF element.
+
+[#dm_form_fields_reference]
+== Form Field Types Reference
+
+=== Base Type: FieldData
+
+`FieldData` is the abstract base definition for all field elements in DatenMeister. All specialized fields inherit these core properties.
+
+[cols="2,1,1,4",options="header"]
 |===
-|Name|Meaning
-|hideDate|If true, only the time part is shown.
-|hideTime|If true, only the date part is shown.
-|===
+|Property |Type |Default |Description
 
-== DropDownFieldData
+|`name`
+|String
+|`""`
+|Name of the field matching the underlying property name of the MOF element.
 
-Displays a dropdown menu with predefined values.
+|`title`
+|String
+|`""`
+|Human-readable title/label displayed in form headers and row labels.
 
-[%header,cols="1,5"]
-|===
-|Name|Meaning
-|values|A list of ValuePairs (name and value) to be displayed in the dropdown.
-|valuesByEnumeration|An enumeration of values to be used for the dropdown.
-|===
+|`isReadOnly`
+|Boolean
+|`false`
+|When set to `true`, forces the field into read-only display mode regardless of form-level permissions.
 
-== DropDownByCollection
+|`defaultValue`
+|Any
+|`null`
+|Default value populated when creating new items if no value is explicitly supplied.
 
-A dropdown where the options are retrieved from a collection in a workspace.
+|`isEnumeration`
+|Boolean
+|`false`
+|Flag indicating whether the property represents a collection/array of values rather than a scalar value.
 
-[%header,cols="1,5"]
-|===
-|Name|Meaning
-|defaultWorkspace|The ID of the workspace containing the collection.
-|collection|The path or URI to the collection containing the items.
-|===
-
-== DropDownByQueryData
-
-A dropdown where the options are retrieved via a query.
-
-[%header,cols="1,5"]
-|===
-|Name|Meaning
-|query|The query string used to retrieve the options.
-|===
-
-== MetaClassElementFieldData
-
-A field that displays or allows display of a metaclass element.
-
-== ReferenceFieldData
-
-Allows the selection of a reference to another element in the DatenMeister.
-
-[%header,cols="1,5"]
-|===
-|Name|Meaning
-|isSelectionInline|If true, the selection is made inline, e.g., via a dropdown or search field, rather than a separate dialog.
-|defaultWorkspace|Default workspace to search for references.
-|defaultItemUri|Default URI of the item to be referenced.
-|showAllChildren|If true, all children are shown in the selection dialog.
-|showWorkspaceSelection|If true, the user can select the workspace.
-|showExtentSelection|If true, the user can select the extent.
-|metaClassFilter|A filter to restrict the selectable elements to a certain metaclass.
-|===
-
-== UriReferenceFieldData
-
-A field to store a reference as a URI string.
-
-[%header,cols="1,5"]
-|===
-|Name|Meaning
-|defaultWorkspace|Default workspace for the reference.
-|defaultExtent|Default extent for the reference.
-|===
-
-== SubElementFieldData
-
-Through this field element, the user can assign several sub-elements to a property.
-This field expresses a 1:n relationship between the property and its sub-elements.
-
-In addition to the properties of FieldData, the following properties are supported:
-
-[%header,cols="1,5"]
-|===
-|Name|Meaning
-|metaClass|The metaclass of the sub-elements.
-|form|A ListForm used to build the SubForm. If this is empty, the metaclass is used to build the form. If the metaclass is also empty, the form is created depending on the properties contained.
-|allowOnlyExistingElements|True if only references to existing elements should be allowed.
-|defaultTypesForNewElements|Contains a list of metaclasses used to enable easy creation of items.
-|includeSpecializationsForDefaultTypes|If true, specialized types of the default types are also allowed.
-|defaultWorkspaceOfNewElements|Workspace where new elements are created.
-|defaultExtentOfNewElements|Extent where new elements are created.
-|actionName|Name of an action to be executed when a sub-element is manipulated.
+|`isAttached`
+|Boolean
+|`false`
+|Flag indicating whether the property is attached dynamically as an extent annotation rather than stored directly in the object.
 |===
 
+---
 
-== FileSelectionFieldData
+=== TextFieldData
 
-Allows the selection of a file from the file system.
+Represents a text input control for single-line or multi-line strings.
 
-[%header,cols="1,5"]
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData`
+* **TypeScript Implementation**: `TextField.ts`
+* **WPF Implementation**: `TextboxField.cs`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
 |===
-|Name|Meaning
-|defaultExtension|Default file extension (e.g., .txt).
-|isSaving|If true, a "Save As" dialog is shown; otherwise, an "Open" dialog is shown.
-|initialPathToDirectory|The initial directory shown in the dialog.
-|filter|File filter (e.g., "Text files (*.txt)\|*.txt").
-|===
+|Property |Type |Default |Description
 
-== FileNameFieldData
+|`lineHeight`
+|Number
+|`1`
+|Number of visible lines. If `1` or unspecified, renders a single-line `<input class='dm-textfield' />`. If `> 1`, renders a multi-line `<textarea class='dm-textfield' />`.
 
-Similar to FileSelectionFieldData, but specifically for file names.
+|`width`
+|Number
+|`70` (input) / `80` (textarea)
+|Width of the input control in character columns (`size` attribute for inputs, `cols` attribute for textareas).
 
-== FullNameFieldData
+|`shortenTextLength`
+|Number
+|`0` (disabled)
+|If greater than `0`, truncates displayed text to this length in read-only mode using word-boundary truncation. (In table views, `TableForm` automatically truncates long text).
 
-Displays the full name of an element.
-
-== CheckboxListTaggingFieldData
-
-Displays a list of checkboxes to tag an element with multiple values.
-
-[%header,cols="1,5"]
-|===
-|Name|Meaning
-|values|Possible values for tagging.
-|separator|Separator used when storing multiple values in a single string property.
-|containsFreeText|If true, the user can also enter free text tags.
-|===
-
-== NumberFieldData
-
-A field for numeric input.
-
-[%header,cols="1,5"]
-|===
-|Name|Meaning
-|format|The format string for displaying the number.
-|isInteger|If true, only integer values are allowed.
+|`supportClipboardCopy`
+|Boolean
+|`false`
+|When `true`, renders a "Copy to Clipboard" button in read-only mode, with automatic fallback for non-secure browser contexts.
 |===
 
-== SeparatorLineFieldData
+==== Client-Side Behavior
+* **Read-only**: Formats empty/null values as `<em class='dm-undefined'>undefined</em>`. If the property name is `name`, automatically enriches the text with item links using `injectNameByUri`. If an array of strings is passed, renders an unstyled list (`<ul>`).
+* **Edit**: Captures `input` and `change` events, writing string values back via `evaluateDom`.
 
-Displays a horizontal separator line in the form.
+---
 
-[%header,cols="1,5"]
+=== EvalTextFieldData
+
+An extension of `TextFieldData` designed for dynamic evaluation of cell content, commonly used in reporting and computational views.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
 |===
-|Name|Meaning
-|Height|The height of the separator line.
+|Property |Type |Default |Description
+
+|`evalCellProperties`
+|String / Script
+|`""`
+|Dynamic expression evaluated during cell creation. Provides access to `i` (current element), `c` (current cell), and `r` (current row state).
 |===
+
+---
+
+=== CheckboxFieldData
+
+Displays a toggle checkbox for boolean properties.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData`
+* **TypeScript Implementation**: `CheckboxField.ts`
+* **WPF Implementation**: `CheckboxField.cs`
+
+==== Properties
+Inherits all properties from `FieldData`.
+
+==== Client-Side Behavior
+* **Read-only**: Renders `<input type='checkbox' disabled />` reflecting the boolean state.
+* **Edit**: Toggles boolean state on click; `evaluateDom` writes `true` or `false` to the target property.
+
+---
+
+=== DateTimeFieldData
+
+Provides date and time input with ISO 8601 UTC synchronization.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData`
+* **TypeScript Implementation**: `DateTimeField.ts`
+* **WPF Implementation**: `DateTimeField.cs`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`hideDate`
+|Boolean
+|`false`
+|When `true`, hides the date picker input and only displays/edits the time component.
+
+|`hideTime`
+|Boolean
+|`false`
+|When `true`, hides the time picker input and only displays/edits the date component.
+|===
+
+==== Client-Side Behavior
+* **Read-only**: Formats parsed ISO date strings as `YYYY-MM-DD HH:mm`.
+* **Edit**: Renders separate HTML5 `<input type='date'>` and `<input type='time'>` controls alongside a convenient **"Now"** button that fills the current local timestamp.
+* **Evaluation**: `evaluateDom` parses date and time inputs into a JavaScript `Date` object and serializes it as an ISO 8601 UTC string (`toISOString()`).
+
+---
+
+=== DropDownFieldData
+
+Renders a dropdown (`<select>`) menu containing predefined static name-value pairs or enumeration literals.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData`
+* **TypeScript Implementation**: `DropDownField.ts` (inherits `DropDownBaseField.ts`)
+* **WPF Implementation**: `DropdownField.cs`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`values`
+|List of `ValuePair`
+|`[]`
+|List of static value objects where each `ValuePair` defines `name` (display label) and `value` (stored value).
+
+|`valuesByEnumeration`
+|Enumeration Element
+|`null`
+|Reference to a UML `Enumeration` metaclass whose literals are dynamically loaded as dropdown options.
+|===
+
+---
+
+=== DropDownByCollection
+
+Renders a dropdown populated dynamically by querying elements from a specified collection extent or package.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection`
+* **TypeScript Implementation**: `DropDownByCollection.ts` (inherits `DropDownBaseField.ts`)
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`defaultWorkspace`
+|String
+|`"Data"`
+|Workspace identifier containing the target collection.
+
+|`collection`
+|String
+|`""`
+|Path or URI identifying the collection within the workspace.
+|===
+
+==== Client-Side Behavior
+Constructs a server query via `QueryBuilder.getElementsByPath` to fetch matching elements, extracting each element's `name` and `uri` as dropdown choices. In edit mode, selecting an option stores an item reference (`Mof.DmObject.createFromReference`).
+
+---
+
+=== DropDownByQueryData
+
+Renders a dropdown populated dynamically from the execution of an arbitrary data query statement.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2`
+* **TypeScript Implementation**: `DropDownByQuery.ts` (inherits `DropDownBaseField.ts`)
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`query`
+|QueryStatement (`IElement`)
+|`null`
+|The composite `QueryStatement` node tree (e.g. `SelectByWorkspaceNode`, `RowFlattenNode`, `RowFilterByMetaclassNode`) defining the query pipeline executed to populate options.
+|===
+
+---
+
+=== ReferenceFieldData
+
+Provides cross-workspace and cross-extent item referencing, linking one MOF element to another.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData`
+* **TypeScript Implementation**: `ReferenceField.ts`
+* **WPF Implementation**: `ReferenceField.cs` / `ReferenceField.Inline.cs`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`isSelectionInline`
+|Boolean
+|`false`
+|When `true`, embeds the item selector directly inside the form container without requiring a button click.
+
+|`defaultWorkspace`
+|String
+|`""`
+|Default workspace pre-selected in the item browser.
+
+|`defaultItemUri`
+|String
+|`""`
+|Default item URI pre-selected in the item browser.
+
+|`metaClassFilter`
+|Array of `IElement`
+|`[]`
+|Restricts the selectable target elements to specific UML metaclasses.
+
+|`showWorkspaceSelection`
+|Boolean
+|`true`
+|Controls whether the workspace navigation dropdown is visible in the selection dialog.
+
+|`showExtentSelection`
+|Boolean
+|`true`
+|Controls whether extent selection is available in the selection dialog.
+
+|`showAllChildren`
+|Boolean
+|`false`
+|When `true`, recursively displays all child elements in the navigation tree.
+|===
+
+==== Client-Side Behavior
+* **Read-Only**: Resolves the referenced URI and renders an active link with the referenced item's name.
+* **Edit**: Renders three primary action buttons:
+  * **Create**: Opens `SIC.selectPackage` and `SIC.selectType` modals to create a new target item in the database and immediately assign it as the reference.
+  * **Change**: Opens `SelectItemControl` allowing the user to browse workspaces, extents, and packages to select an existing item.
+  * **Unset**: Clears the reference via `ClientItem.unsetProperty`.
+
+---
+
+=== UriReferenceFieldData
+
+Stores a reference formatted as an explicit URI string, accompanied by an interactive URI builder utility.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00`
+* **TypeScript Implementation**: `UriReferenceFieldData.ts`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`defaultWorkspace`
+|String
+|`"Data"`
+|Default workspace used when constructing URI strings.
+
+|`defaultExtent`
+|String
+|`""`
+|Default extent URI used when constructing URI strings.
+|===
+
+==== Client-Side Behavior
+Provides an interactive URI builder interface allowing users to select an element via `SelectItemControl` and configure optional URI query parameters:
+* `prop`: Property selector on the target item.
+* `fn`: Full-name identifier filter.
+* `composites`: Inclusion scoping (`includingSelf`, `onlyComposites`, `allReferenced`, `allReferencedIncludingSelf`).
+Clicking **Build Uri** generates the finalized URL string (e.g. `dm:///_internal/types/internal?prop=attributes#MyClass`) and places it into the text input.
+
+---
+
+=== SubElementFieldData
+
+Manages 1:N associations and embedded child collections. Supports tabular preview of subelements, row reordering, row deletion, attaching existing elements, and creating new child elements.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData`
+* **TypeScript Implementation**: `SubElementField.ts`
+* **WPF Implementation**: `SubElementsField.cs`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`metaClass`
+|`IElement`
+|`null`
+|The target metaclass of subelements contained in the collection.
+
+|`form`
+|`TableForm` (`IElement`)
+|`null`
+|Custom table form definition used to render column fields for each row. If omitted, column fields are derived automatically from `metaClass`.
+
+|`allowOnlyExistingElements`
+|Boolean
+|`false`
+|When `true`, hides the "Create" button and only permits attaching existing elements.
+
+|`defaultTypesForNewElements`
+|List of `DefaultTypeForNewElement` / Metaclasses
+|`[]`
+|Defines shortcut buttons rendered in the form toolbar to immediately create child elements of specific specialized metaclasses.
+
+|`includeSpecializationsForDefaultTypes`
+|Boolean
+|`true`
+|Controls whether derived subtypes of the configured default types are included in the type selection dialog.
+
+|`defaultWorkspaceOfNewElements`
+|String
+|`""`
+|Workspace where new subelements are instantiated.
+
+|`defaultExtentOfNewElements`
+|String
+|`""`
+|Extent URI where new subelements are instantiated.
+
+|`actionName`
+|String
+|`""`
+|Name of a custom `FormAction` executed when a user clicks on a subelement row.
+|===
+
+==== Client-Side Behavior
+* **Read-Only**: Renders an unstyled list of links to all subelements.
+* **Edit**:
+  * Displays a full preview table where columns are rendered using nested `FieldFactory` instances.
+  * Provides row action buttons: **Move Up (⬆️)**, **Move Down (⬇️)**, and **Delete** (with two-step confirmation).
+  * Toolbar provides **Attach** (via `SelectItemControl`) and **Create** (via `TypeSelectionControl`), plus custom shortcut buttons configured in `defaultTypesForNewElements`.
+
+---
+
+=== CompositeFieldData
+
+Manages 1:1 containment of embedded composite child elements.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#3769ef41-6cb7-4cc5-99e9-4de89198e644`
+* **TypeScript Implementation**: `CompositeField.ts`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`metaclass`
+|`IElement`
+|`null`
+|Metaclass classifier for the single composite child element.
+|===
+
+==== Client-Side Behavior
+* **If empty**: Renders a **Create** button opening `SelectItemControl` to select the child type, then navigates to the child creation form.
+* **If populated**: Renders the child name link and an **Unset** button.
+
+---
+
+=== ActionFieldData
+
+Renders an executable action button that triggers a registered `FormAction` with optional parameter binding and keyboard shortcuts.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData`
+* **TypeScript Implementation**: `ActionField.ts`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`actionName`
+|String
+|`""`
+|Identifier of the registered form action module (e.g. `NavigateToUrl`, `ExecuteActionDirectly`, `ExportData`).
+
+|`buttonText`
+|String
+|`""`
+|Custom label displayed on the button (falls back to `title` or `actionName`).
+
+|`parameter`
+|`IElement` / Any
+|`null`
+|Configuration parameters passed directly to the action execution handler.
+
+|`bindingKey`
+|String
+|`""`
+|Keyboard key shortcut (e.g. `"s"`, `"Enter"`).
+
+|`bindingKeyModifierCtrl`
+|Boolean
+|`false`
+|Requires Ctrl key modifier for shortcut activation.
+
+|`bindingKeyModifierShift`
+|Boolean
+|`false`
+|Requires Shift key modifier for shortcut activation.
+
+|`bindingKeyModifierAlt`
+|Boolean
+|`false`
+|Requires Alt key modifier for shortcut activation.
+|===
+
+==== Client-Side Behavior
+* Automatically binds keyboard shortcuts using `burnsystems/Events.addKeyBindingEvent`.
+* When clicked:
+  1. Synchronizes uncommitted form values to DOM via `form.storeFormValuesIntoDom()`.
+  2. Syncs modified object properties to the backend via `MofSync.sync()`.
+  3. If the action module requires confirmation, changes button text to *"Are you sure?"* before proceeding on second click.
+  4. Invokes `FormActions.execute(action, form, dmElement, parameter)`.
+
+---
+
+=== MergedFieldsInCellData
+
+A layout meta-field that groups multiple child fields horizontally within a single table cell or row.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#b11ab14e-b620-486e-b795-fb559479674b`
+* **TypeScript Implementation**: `MergedFieldsInCell.ts`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`fields`
+|Array of `FieldData`
+|`[]`
+|List of child form field definitions rendered sequentially inside a flexbox container (`d-flex flex-wrap gap-2`).
+|===
+
+==== Client-Side Behavior
+* Recursively instantiates each child field using `FieldFactory.createField`.
+* `evaluateDom` delegates sequentially to each child field's `evaluateDom` method.
+
+---
+
+=== AnyDataFieldData
+
+A polymorphic field control that enables users to dynamically toggle how a property is stored: as a scalar **Value**, a **Collection**, or a **Reference**.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData`
+* **TypeScript Implementation**: `AnyDataField.ts`
+* **WPF Implementation**: `AnyDataField.cs`
+
+==== Properties
+Inherits all properties from `FieldData`.
+
+==== Client-Side Behavior
+Renders a top toolbar (`Value | Collection | Reference`):
+* **Value Mode**: Renders a standard `<input>` text box for string/primitive input.
+* **Collection Mode**: Instantiates an embedded `SubElementField` controller allowing multiple child items.
+* **Reference Mode**: Instantiates an embedded `ReferenceField` controller allowing item browsing via `SelectItemControl`.
+
+---
+
+=== MetaClassElementFieldData
+
+Specialized field for viewing and modifying the classifier (`metaclass`) of an element.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData`
+* **TypeScript Implementation**: `MetaClassElementField.ts`
+* **WPF Implementation**: `MetaClassElementField.cs`
+
+==== Client-Side Behavior
+* **Read-Only**: Displays the current metaclass identifier and workspace with name enrichment.
+* **Edit**: Provides a **"Change MetaClass"** button that launches `SelectItemControl` pinned to the `Types` workspace (`dm:///_internal/types/internal`). Selecting a new type updates the object classifier via `ClientItems.setMetaclass()` and reloads the active form.
+
+---
+
+=== CheckboxListTaggingFieldData
+
+Renders a multi-checkbox tagging panel where selected tags are concatenated and stored into a single string property using a configurable separator.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData`
+* **TypeScript Implementation**: `CheckboxListTaggingField.ts`
+* **WPF Implementation**: `CheckboxListTaggingField.cs`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`values`
+|List of `ValuePair`
+|`[]`
+|Predefined tag values and display labels.
+
+|`separator`
+|String
+|`","`
+|Character separator used to delimit multiple selected tags in the storage string.
+
+|`containsFreeText`
+|Boolean
+|`false`
+|When `true`, renders an additional *"Other:"* text input allowing users to enter custom tag values not present in the predefined list.
+|===
+
+---
+
+=== SeparatorLineFieldData
+
+A visual layout element that inserts a horizontal rule (`<hr class='dm-separatorline'/>`) into the form.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData`
+* **TypeScript Implementation**: `SeparatorLineField.ts`
+* **WPF Implementation**: `SeparatorLineField.cs`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`Height`
+|Number
+|`1`
+|Height / spacing of the separator line.
+|===
+
+* `showValue()` returns `false` (hiding the "is set" checkbox), while `showNameField()` returns `true`.
+
+---
+
+=== FileSelectionFieldData / FileNameFieldData
+
+Provides file system path selection with native file chooser dialog support.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData`
+* **WPF Implementation**: `FileSelectionField.cs`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`defaultExtension`
+|String
+|`""`
+|Default file extension (e.g. `".txt"`, `".xmi"`).
+
+|`filter`
+|String
+|`""`
+|File dialog filter string (e.g. `"XMI Files (*.xmi)\|*.xmi\|All Files (*.*)\|*.*"`).
+
+|`initialPathToDirectory`
+|String
+|`""`
+|Initial folder directory opened by the picker dialog.
+
+|`isSaving`
+|Boolean
+|`false`
+|When `true`, opens a *Save As* file dialog; when `false`, opens an *Open File* dialog.
+|===
+
+---
+
+=== NumberFieldData
+
+A specialized input field for numeric values with formatting and integer constraints.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData`
+
+==== Properties
+
+[cols="2,1,1,4",options="header"]
+|===
+|Property |Type |Default |Description
+
+|`format`
+|String
+|`""`
+|Formatting pattern applied when rendering numeric values.
+
+|`isInteger`
+|Boolean
+|`false`
+|When `true`, restricts user input and validation strictly to integer values.
+|===
+
+---
+
+=== FullNameFieldData
+
+Specialized text field displaying the fully qualified composite name of an element computed along its ownership path.
+
+* **Metaclass URI**: `dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData`
+
+---
+
+=== UnknownField
+
+Fallback client-side field handler used when an element contains a field metaclass not recognized by `FieldFactory.ts`. Renders the unresolved metaclass URI inside `<em>` tags to aid in debugging missing client plugins.
+
+[#dm_form_fields_extending]
+== Implementing Custom Form Fields
+
+To add a new custom field type to DatenMeister:
+
+1. **Define the Metamodel in MOF / C#**:
+   Create a new class under `_DatenMeister._Forms._FieldTypes` inheriting from `FieldData` and assign a unique Type URI.
+2. **Server-Side Generation**:
+   Implement `IFieldFactory` in C# to automatically construct the field definition during form building, and register it in `FormCreationContext.FieldFormFactories`.
+3. **Client-Side Rendering (TypeScript)**:
+   Create a new class extending `BaseField` in `Assets/js/datenmeister/fields/` implementing `createDom()` and `evaluateDom()`.
+4. **Register in Field Factory**:
+   Register the new TypeScript field in `FieldFactory.ts`:
+   [source,typescript]
+   ----
+   import * as MyCustomField from "../fields/MyCustomField.js";
+
+   registerField("dm:///_internal/types/internal#MyCustomFieldData", ctx => new MyCustomField.Field(ctx));
+   ----
+
+== Related Documentation
+
+* xref:datenmeister.forms.adoc[Forms Architecture and Concepts]
+* xref:datenmeister.forms.generator.adoc[Form Generation Engine and Factory Pipeline]
+* xref:datenmeister.viewmode.adoc[View Mode Configuration and Form Resolution]

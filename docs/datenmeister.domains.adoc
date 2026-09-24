@@ -1,0 +1,185 @@
+= Domains (DatenMeister.Domains)
+
+The `DatenMeister.Domains` project provides the domain foundation infrastructure within DatenMeister. It defines the core data model, plugin integration, and action handlers required to automatically initialize, scaffold, and configure structured modeling domains consisting of type definitions, form management views, and instance data storage.
+
+== Overview
+
+In DatenMeister, a *Domain* represents a self-contained modeling context. A standard domain is partitioned across three core workspaces:
+
+* *Types Workspace (`WorkspaceNames.WorkspaceTypes`)*: Holds UML/MOF classes, packages, and property definitions (ExtentType: `Uml.Classes`).
+* *Management Workspace (`WorkspaceNames.WorkspaceManagement`)*: Holds form descriptions, view definitions, and UI metadata for editing and displaying the domain's entities (ExtentType: `DatenMeister.Forms`).
+* *Data Workspace (`WorkspaceNames.WorkspaceData`)*: Holds actual instance data and business objects created by end users within the domain.
+
+The `DatenMeister.Domains` project automates the creation of these triadic extents using actions, ensuring consistent URI schemes, workspace allocations, and storage configurations.
+
+== Project Structure
+
+The project is structured as follows:
+
+[cols="2,5"]
+|===
+| Component / File | Description
+
+| `DomainPlugin.cs`
+| The plugin entry point implementing `IDatenMeisterPlugin`. It registers embedded XMI resources and the foundation action handler.
+
+| `DomainCreateFoundationActionHandler.cs`
+| The action handler implementing `IActionHandler` that creates the Management, Types, and optional Data extents.
+
+| `Xmi/DatenMeister.Domains.Types.xmi`
+| Embedded UML class model defining the `DomainCreateFoundationAction` metaclass.
+
+| `Xmi/DatenMeister.Domains.Management.xmi`
+| Embedded management configuration defining views and forms for domain elements.
+
+| `Model/DatenMeister.Domains.Types.cs`
+| Generated C# shadow reflection definitions (`_Root._DomainCreateFoundationAction`).
+
+| `Model/DatenMeister.Domains.Types.wrapper.cs`
+| Generated strongly-typed wrapper classes (`Root.DomainCreateFoundationAction_Wrapper`).
+
+| `Model/DatenMeister.Domains.Types.ts`
+| Generated TypeScript definitions for web client integration.
+|===
+
+== Domain Model
+
+The domain model is defined in `Xmi/DatenMeister.Domains.Types.xmi` with extent URI `dm:///intern.types.domains.datenmeister/`.
+
+=== DomainCreateFoundationAction
+
+The `DomainCreateFoundationAction` metaclass inherits from `Actions.Action` (`dm:///_internal/types/internal#Actions.Action`).
+
+* *MetaClass URI*: `dm:///intern.types.domains.datenmeister/#9b040443-4675-42b6-8707-0e42450a2102`
+* *Base Class*: `Actions.Action`
+
+==== Properties
+
+[%header,cols="2,1,5"]
+|===
+| Property | Type | Description
+
+| `name`
+| `String`
+| The identifier/name of the domain to create. Used to construct file paths and extent URIs.
+
+| `filePath`
+| `String`
+| Target directory path on disk where the generated XMI files are stored.
+
+| `extentUriPrefix`
+| `String`
+| Optional prefix prepended to the generated Extent URIs (e.g. `prefix` becomes `dm:///prefix.types.{name}`).
+
+| `extentUriPostfix`
+| `String`
+| Optional postfix appended to the generated Extent URIs (e.g. `postfix` becomes `dm:///types.{name}.postfix`).
+
+| `createDataExtent`
+| `Boolean`
+| Determines whether a dedicated data extent (`_Data.xmi`) should be created in the `Data` workspace.
+
+| `isDisabled`
+| `Boolean`
+| Inherited from `Actions.Action`. If set to true, action execution is skipped.
+|===
+
+== Plugin Integration (`DomainPlugin`)
+
+The `DomainPlugin` class integrates the domain subsystem into the DatenMeister runtime during the extent loading phase:
+
+[source,csharp]
+----
+[PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
+public class DomainPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
+----
+
+=== Registration Process
+
+When initialized via `Start(PluginLoadingPosition position)`:
+
+1. *Types Extent*: Loads `Xmi.DatenMeister.Domains.Types.xmi` as an embedded manifest resource into the Types workspace under URI `dm:///intern.types.domains.datenmeister/`.
+2. *Management Extent*: Loads `Xmi.DatenMeister.Domains.Management.xmi` as an embedded manifest resource into the Management workspace under URI `dm:///intern.management.domains.datenmeister/`.
+3. *Action Handler Registration*: Instantiates and registers `DomainCreateFoundationActionHandler` with the active scope storage.
+
+== Action Handler (`DomainCreateFoundationActionHandler`)
+
+`DomainCreateFoundationActionHandler` implements `IActionHandler` and executes the domain provisioning logic.
+
+=== Responsibility
+
+Matches action nodes whose metaclass equals `_Root.TheOne.__DomainCreateFoundationAction`:
+
+[source,csharp]
+----
+public bool IsResponsible(IElement node)
+{
+    return node.getMetaClass()?.equals(
+        _Root.TheOne.__DomainCreateFoundationAction) == true;
+}
+----
+
+=== Execution Logic
+
+When `Evaluate` is invoked, the handler executes the following steps:
+
+1. *URI Normalization*:
+   * Ensures `extentUriPrefix` ends with a dot (`.`).
+   * Ensures `extentUriPostfix` begins with a dot (`.`).
+
+2. *Path Construction*:
+   * Combines `filePath` and `name` into a base path prefix: `Path.Combine(domainCreate.filePath, domainCreate.name)`.
+
+3. *Management Extent Creation*:
+   * Configures an `XmiStorageLoaderConfig` for workspace `WorkspaceNames.WorkspaceManagement` (`"Management"`).
+   * File path: `{filePathPrefix}_Management.xmi`.
+   * Extent URI: `dm:///{prefix}management.{name}{postfix}`.
+   * Loads or creates extent using `ExtentManager.LoadExtent(..., ExtentCreationFlags.LoadOrCreate)`.
+   * Sets `ExtentType` to `FormMethods.FormExtentType` (`"DatenMeister.Forms"`).
+
+4. *Types Extent Creation*:
+   * Configures an `XmiStorageLoaderConfig` for workspace `WorkspaceNames.WorkspaceTypes` (`"Types"`).
+   * File path: `{filePathPrefix}_Types.xmi`.
+   * Extent URI: `dm:///{prefix}types.{name}{postfix}`.
+   * Loads or creates extent using `ExtentManager.LoadExtent(..., ExtentCreationFlags.LoadOrCreate)`.
+   * Sets `ExtentType` to `Plugin.ExtentType` (`"Uml.Classes"`).
+
+5. *Data Extent Creation (Optional)*:
+   * If `createDataExtent == true`, configures an `XmiStorageLoaderConfig` for workspace `WorkspaceNames.WorkspaceData` (`"Data"`).
+   * File path: `{filePathPrefix}_Data.xmi`.
+   * Extent URI: `dm:///{prefix}data.{name}{postfix}`.
+   * Loads or creates extent using `ExtentManager.LoadExtent(..., ExtentCreationFlags.LoadOrCreate)`.
+
+== Example Usage
+
+The following example demonstrates programmatic domain creation using the generated wrapper:
+
+[source,csharp]
+----
+var domainCreate = new Root.DomainCreateFoundationAction_Wrapper(InMemoryObject.TemporaryFactory)
+{
+    name = "Inventory",
+    filePath = @"C:\Data\Domains\Inventory",
+    createDataExtent = true,
+    extentUriPrefix = "corp",
+    extentUriPostfix = "v1"
+};
+
+var actionHandler = new ActionLogic(workspaceLogic, scopeStorage);
+await actionHandler.ExecuteAction(domainCreate.GetWrappedElement());
+----
+
+This produces:
+
+* File `Inventory_Management.xmi` loaded into workspace `Management` with URI `dm:///corp.management.Inventory.v1` and ExtentType `DatenMeister.Forms`.
+* File `Inventory_Types.xmi` loaded into workspace `Types` with URI `dm:///corp.types.Inventory.v1` and ExtentType `Uml.Classes`.
+* File `Inventory_Data.xmi` loaded into workspace `Data` with URI `dm:///corp.data.Inventory.v1`.
+
+== Testing & Verification
+
+The functionality is tested in the `DatenMeister.Domains.Tests` test project:
+
+* *`CheckThatDomainsAreLoaded`*: Verifies that `DomainPlugin` is loaded and that the internal Types (`dm:///intern.types.domains.datenmeister/`) and Management (`dm:///intern.management.domains.datenmeister/`) extents are present in their respective workspaces.
+* *`CheckThatExtentTypesAreSet`*: Verifies that created Management and Types extents have their `ExtentType` set to `DatenMeister.Forms` and `Uml.Classes`.
+* *`CheckCreationOfDomainWithData`*: Verifies creation of all three extents (Management, Types, Data) on disk and in memory when `createDataExtent` is true.
+* *`CheckCreationOfDomainWithoutData`*: Verifies creation of only Management and Types extents when `createDataExtent` is false.

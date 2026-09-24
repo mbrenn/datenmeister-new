@@ -1,12 +1,183 @@
-= Viewmode (View Mode)
+= View Modes (ViewMode)
 
-Through the view mode, the user can set from which perspective the current form (Form) should be identified and created.
+== Overview
 
-The following standard view modes are generated:
+In DatenMeister, forms and user interface representations are decoupled from the underlying data and metamodels. The **View Mode** mechanism governs the perspective, strategy, and pipeline through which forms (`CollectionForm`, `ObjectForm`, `TableForm`, `RowForm`, and individual `Field` definitions) are discovered, constructed, and rendered for extents, collections, or individual items.
 
-* Default (ViewMode.Default): This is the standard view node and can be overridden by extensions so that special views can be displayed for special objects or extents.
-* Auto Generation (ViewMode.AutoGenerate): This view forces the automatic generation of the form based on the set properties and object types. The search for best-fitting forms is not performed.
-* Data Manipulation (ViewMode.DataManipulation): In contrast to the default view mode, no visual representations of the object are displayed here. Through this view, the user is given the opportunity to manipulate the object itself.
-* Switch to Automatic: This option is only displayed in the graphical representation and is not an actual view mode. By selecting this item, the system attempts to select the best view mode based on the extent type.
+Through the view mode, users and developers can control whether the application:
+
+* Discovers and displays explicitly customized, pre-defined forms associated with specific types or extents.
+* Automatically synthesizes forms directly from MOF/UML metaclass definitions (schemas).
+* Generates forms on-the-fly purely by reflecting over runtime property values present on the data items.
+
+The view mode architecture is implemented in the `DatenMeister.Forms` module, specifically within the `DatenMeister.Forms.ViewModeConfigurators` namespace.
+
+== The Form Factory Pipeline Architecture
+
+When a form is requested (for example, when opening an extent, selecting an item in a tree, or viewing a detail dialog), the form creation engine constructs a `FormCreationContext` using the `FormCreationContextFactory`.
+
+The `FormCreationContext` maintains distinct queues of form factory handlers for each form category:
+
+* `CollectionFormFactories`: Factories responsible for generating collection-level and extent-level navigation forms (`CollectionForm`).
+* `ObjectFormFactories`: Factories responsible for creating item detail and composite object views (`ObjectForm`).
+* `TableFormFactories`: Factories responsible for tabular representations, column definitions, and list views (`TableForm`).
+* `RowFormFactories`: Factories responsible for form field layouts and property editing rows (`RowForm`).
+* `FieldFormFactories`: Factories responsible for mapping properties to specific input/display field controls (such as `TextField`, `DateTimeField`, `CheckboxField`, `ReferenceField`).
+
+=== Pipeline Execution & Priority Stages
+
+Each factory implements `IFormFactoryBase` with a numeric `Priority`. During form generation, `FormCreation` executes registered factories in descending order of priority across five standardized stages:
+
+[cols="1,2,5",options="header"]
+|===
+|Stage |Priority Level |Description & Handlers
+
+|1. Preparation
+|`FormFactoryPriorities.Preparation` (500)
+|Initializes the basic form container structure (e.g. `EmptyCollectionFormFactory`, `EmptyObjectFormFactory`, `EmptyTableFormFactory`, `EmptyRowFormFactory`) before content populates.
+
+|2. Predefined Form Discovery
+|`FormFactoryPriorities.PrimaryBuildUp` (200)
+|Uses `FormFinderFactory` to query workspaces for curated, pre-defined form models matching the object's metaclass, extent type, and view mode ID via `FormAssociation` definitions. If a pre-defined form exists, it is loaded directly.
+
+|3. Metaclass-Based Generation
+|`FormFactoryPriorities.PrimaryBuildUp - 1` (199)
+|Uses schema introspection (`CollectionFormFromMetaClass`, `ObjectFormFromMetaClass`, `TableFormForMetaClass`, `RowFormFromMetaClass`, `FieldFromPropertyType`). Analyzes the MOF / UML Metaclass (attributes, types, multiplicity, generalizations) to automatically generate tabs, table columns, and typed fields.
+
+|4. Data-Driven Fallback
+|`FormFactoryPriorities.PrimaryBuildUp - 2` (198)
+|Uses runtime property reflection (`CollectionFormFromData`, `ObjectFormFromData`, `TableFormFromData`, `RowFormFromData`, `FieldFromPropertyValue`, `FieldAnyFieldData`). When no metaclass exists (or when metaclass mapping is skipped), forms and fields are inferred directly from properties and values physically present on runtime objects.
+
+|5. Enhancement & Cleanup
+|`CleanUp` (0) / `Miscellaneous` (-100)
+|Performs post-processing, validation, and enrichment:
+* `AddTableFormForPackagedElements`: Adds sub-table views for packaged/child elements.
+* `ExpandDropDownOfValueReference`: Injects dropdown lookup lists for reference fields.
+* `SortFieldsByImportantProperties`: Sorts fields and columns so that key attributes (such as `id`, `name`, `title`) appear first.
+* `AddMetaClassField` & `AddDefaultTypeForMetaClassOfForm`: Injects metaclass selection and creation metadata.
+* `ValidateObjectOrCollectionForm` & `AddEmptyRowFormInCaseItDoesNotExist`: Ensures structural integrity and provides fallback editing rows.
+|===
+
+== Standard View Modes
+
+DatenMeister provides three standard view modes implemented via dedicated configurator classes implementing `IViewModeConfigurator`:
+
+=== 1. Default View Mode (`ViewModes.Default`)
+
+* **Identifier:** `ViewMode.Default` (or empty / null string)
+* **Configurator:** `DefaultViewModeConfigurator`
+
+The default view mode executes the full 5-stage pipeline without skipping any steps:
+
+1. **Preparation**: Initializes empty form scaffolding.
+2. **Form Discovery (`FormFinder`)**: Searches workspaces for pre-defined forms configured via `FormAssociation`. If a tailored form is found, it is utilized.
+3. **Metaclass Generation (`MetaClass`)**: If no custom form is defined, synthesizes forms, tabs, and fields from the element's UML/MOF metaclass schema.
+4. **Data Fallback (`Data`)**: If no metaclass is defined, generates fields and columns dynamically from runtime property values.
+5. **Enhancement & Cleanup**: Applies reference dropdown expansion, packaged element tables, property sorting, and structural validation.
+
+**Best Used For:** Standard application usage and normal end-user browsing, ensuring tailored UI views appear whenever available while automatically falling back to schema and runtime data.
+
+=== 2. Auto Generation View Mode (`ViewModes.AutoGenerate`)
+
+* **Identifier:** `ViewMode.AutoGenerate`
+* **Configurator:** `AutoGenerateViewModeConfigurator` (inherits from `DefaultViewModeConfigurator`)
+
+The auto-generation view mode explicitly **bypasses Stage 2 (FormFinder)**:
+
+1. **Preparation**: Initializes empty form scaffolding.
+2. *(Bypassed)*: Predefined form search is skipped.
+3. **Metaclass Generation (`MetaClass`)**: Constructs forms and fields directly from the item's metaclass definition.
+4. **Data Fallback (`Data`)**: Falls back to runtime data properties if no metaclass definition exists.
+5. **Enhancement & Cleanup**: Applies standard post-processing, sorting, and validation.
+
+**Best Used For:** Schema-driven modeling, debugging, and verification where users want to see the pure, unadorned structural view generated strictly from the data model schema, ignoring any bespoke or overridden UI forms.
+
+=== 3. Creation by Properties View Mode (`ViewModes.ByProperties`)
+
+* **Identifier:** `ViewMode.ByProperties`
+* **Configurator:** `ByPropertiesViewModeConfigurator` (inherits from `DefaultViewModeConfigurator`)
+
+The property-driven view mode explicitly **bypasses both Stage 2 (FormFinder) and Stage 3 (Metaclass Generation)**:
+
+1. **Preparation**: Initializes empty form scaffolding.
+2. *(Bypassed)*: Predefined form search is skipped.
+3. *(Bypassed)*: Metaclass schema analysis is skipped.
+4. **Data Generation (`Data`)**: Builds forms, table columns, and editing fields strictly by introspecting the actual properties and values physically present on data instances at runtime.
+5. **Enhancement & Cleanup**: Applies standard post-processing, reference expansion, sorting, and validation.
+
+**Best Used For:** Dynamic, loosely typed, or ad-hoc data structures (such as imported JSON, untyped tables, or raw runtime objects) where formal metaclass definitions do not exist, are incomplete, or should be deliberately ignored.
+
+== Summary & Comparison Matrix
+
+[cols="2,2,1,1,1,3",options="header"]
+|===
+|View Mode |Configurator Class |Predefined Forms |Metaclass Schema |Runtime Properties |Primary Use Case
+
+|**Default** +
+(`ViewMode.Default`)
+|`DefaultViewModeConfigurator`
+|Yes
+|Yes (Fallback)
+|Yes (Fallback)
+|General end-user interaction; prioritizes curated forms with full automatic fallbacks.
+
+|**Auto Generation** +
+(`ViewMode.AutoGenerate`)
+|`AutoGenerateViewModeConfigurator`
+|No
+|Yes
+|Yes (Fallback)
+|Model verification and schema exploration; enforces pure metaclass-based form generation.
+
+|**Creation by Properties** +
+(`ViewMode.ByProperties`)
+|`ByPropertiesViewModeConfigurator`
+|No
+|No
+|Yes
+|Ad-hoc, dynamic, or unstructured data inspection; generates fields solely from existing instance properties.
+|===
+
+== View Mode Selection and Automatic Resolution
+
+In graphical user interfaces (such as the Web client and WPF client), the user can switch view modes dynamically via the UI toolbar or item context menus.
+
+=== "Switch to Automatic"
+
+The user interface also provides a **Switch to Automatic** option. This is not a standalone pipeline configurator, but a client-side selection trigger:
+
+* When activated, the system evaluates the extent's configured `ExtentTypes` using `ViewModeMethods.GetDefaultViewMode(extent)`.
+* It queries the management workspace for `ViewMode` instances registered with matching `defaultExtentType` values.
+* If a matching extent-specific view mode is found, it is activated; otherwise, the system defaults to `ViewModes.Default`.
+
+=== User Preferences Persistence
+
+User selections for view modes per extent or navigation context are stored in user settings via `UserPropertyData` (e.g. `GetViewModeSelection` / `SetViewModeSelection`), allowing user-chosen perspectives to persist across sessions.
+
+== Extensibility
+
+Developers can extend the view mode architecture in two ways:
+
+1. **Custom View Mode Configurators (`IViewModeConfigurator`):**
++
+[source,csharp]
+----
+public interface IViewModeConfigurator
+{
+    bool CanHandle(string viewMode);
+    void Configure(FormCreationContext context, IWorkspaceLogic workspaceLogic);
+}
+----
+Implementing a custom configurator allows registering custom factory queues, introducing new priority stages, or customizing field generation rules for specialized application domains.
+
+2. **Form Modification Plugins (`IFormModificationPlugin`):**
+Registered plugins in `FormsState.FormModificationPlugins` are called during `FormCreationContextFactory.Create(viewMode)` after the configurator executes, enabling fine-grained augmentation of the factory pipeline across all view modes.
+
+== Related Documentation
+
+* xref:datenmeister.forms.adoc[Forms Architecture]
+* xref:datenmeister.formfinder.adoc[Finding Forms and Form Associations]
+* xref:datenmeister.forms.generator.adoc[Form Generators]
+* xref:datenmeister.forms.fields.adoc[Form Fields]
 
 

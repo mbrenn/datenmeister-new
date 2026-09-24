@@ -37,9 +37,9 @@ Each feature is reviewed in relation to these four aspects. Finally, the softwar
 * link:datenmeister.dynamic_runtime_extent.html[Dynamic Runtime Extent] - Guide for implementing programmable providers for dynamic data.
 * link:datenmeister.viewmode.html[View Mode] - Explains how different perspectives affect form identification and creation.
 * link:datenmeister.web.html[Web] - Overview of the web interface and its main navigation points.
-* link:datenmeister.web.load.html[Web Loading] - Specific configurations related to web server startup and layout.
 * link:datenmeister.web-api.html[Web API] - Comprehensive documentation of the web server's REST API.
 * link:datenmeister.stundenmeister.html[Stundenmeister] - Documentation for the hour planning module (StundenplanMeister).
+* link:datenmeister.domains.html[Domains] - Documentation for the domain foundation infrastructure and automatic extent generation.
 * link:datenmeister.massimport.html[Mass Import] - Describes the mass importer for CSV-based data updates.
 
 == Issues and Change Requests

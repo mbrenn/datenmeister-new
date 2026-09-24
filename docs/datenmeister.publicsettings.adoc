@@ -1,88 +1,315 @@
-= Public Settings
-[dm_public_settings]
+= Public Settings and Configuration (DatenMeister.Settings.xmi)
+:toc:
+:toclevels: 3
+[#dm_public_settings]
 
-The public settings (PublicSettings) are configured via the file 'DatenMeister.Settings.xmi', which must be located in the directory of the executable file (.exe).
+== Overview
 
-This file is an XMI file with a settings node and looks like this, for example:
+DatenMeister applications—including the **Web Server (`DatenMeister.WebServer`)**, **Desktop Client (`DatenMeisterWPF`)**, **Action Executor (`DatenMeister.Action.Executor`)**, and console utilities—rely on an external XML/XMI configuration file named `DatenMeister.Settings.xmi` to configure application runtime behavior and environment variables before the core MOF/UML engine initializes.
 
- <xmi>
-     <settings
- 		windowTitle = "The IssueMeister" 
-         databasePath="%LOCALAPPDATA%/IssueMeister">
-         <environmentVariable key="import_path" value="c:\import-folder" />
-     </settings>
- </xmi>
+The configuration subsystem is rooted in two foundational classes:
 
-The following properties are supported:
+* `DatenMeister.Core.ConfigurationLoader`: Responsible for discovering, loading, and parsing XML/XMI configuration files into an in-memory `MofExtent` using `XmiProvider`.
+* `DatenMeister.BootStrap.PublicSettings.PublicSettingHandler`: Responsible for extracting strongly-typed `PublicIntegrationSettings` from the extent, configuring database and storage paths, setting process-level environment variables, and populating logging infrastructure.
 
-[%header,cols="1,5"]
+In addition, specific subsystems (such as the Web Server and Mail services) query the configuration extent directly or retrieve configuration instances stored within `ScopeStorage`.
+
+== File Location and Loading Lifecycle
+
+=== File Resolution
+
+By default, the public settings file is named `DatenMeister.Settings.xmi`. When the application boots, the file path is resolved in the following order:
+
+1. **Explicit Directory / Path**: If a directory or path is passed to `PublicSettingHandler.LoadSettingsFromDirectory(directoryPath, out extent)` or `ConfigurationLoader.LoadSetting(path)`.
+2. **Entry Assembly Directory**: If no path is specified or a relative path is provided, the path is resolved relative to the directory containing the running executable (`Assembly.GetEntryAssembly().Location`).
+
+=== Bootstrapping & ScopeStorage Distribution
+
+During startup:
+
+1. `PublicSettingHandler.LoadExtentFromDirectory()` loads `DatenMeister.Settings.xmi` into a `MofExtent`.
+2. `PublicSettingHandler.ParseSettingsFromFile()` deserializes the root `<settings>` node into `PublicIntegrationSettings` using `DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>()`.
+3. Standard and user-defined environment variables are injected into `System.Environment`.
+4. The logging framework (`BurnSystems.Logging`) initializes based on the configured `logLocation`.
+5. `Integrator.UseDatenMeister()` registers `PublicIntegrationSettings` into `IScopeStorage` (`scopeStorage.Add(_publicSettings)`), and synchronizes settings into `IntegrationSettings` (such as `DatabasePath`, `WindowTitle`, and `IsReadOnly`).
+6. Subsystem loaders (such as `WebServerSettingsLoader`) parse specialized child sections (e.g. `<web>`) and register them into `ScopeStorage` and singleton handlers (`WebServerSettingHandler.TheOne.WebServerSettings`).
+
+== Complete Configuration File Template
+
+Below is a comprehensive example showing all potential XML/XMI configuration nodes and attributes:
+
+[source,xml]
+----
+<xmi>
+    <!-- Core Application & Bootstrap Settings -->
+    <settings 
+        windowTitle="DatenMeister - Enterprise Edition"
+        databasePath="%LOCALAPPDATA%/DatenMeister"
+        isReadOnly="false"
+        logLocation="Application">
+
+        <!-- Custom Environment Variables injected at startup -->
+        <environmentVariable key="dm_ImportPath" value="C:\DatenMeister\Import" />
+        <environmentVariable key="dm_ReportPath" value="C:\DatenMeister\Reports" />
+        <environmentVariable key="dm_ExportPath" value="C:\DatenMeister\Export" />
+        <environmentVariable key="CUSTOM_API_KEY" value="secret-token-value" />
+
+        <!-- Web Server and Web UI Configuration -->
+        <web 
+            designBackgroundColor="#f4f6f9"
+            layoutHideSideToolbar="false"
+            layoutHideTopToolbar="false"
+            startPage="/ItemsOverview/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces"
+            webServerIsPublic="true"
+            webServerUseHttps="false" />
+    </settings>
+
+    <!-- Outbound SMTP Mail Configuration -->
+    <smtp 
+        host="smtp.example.com"
+        port="587"
+        username="smtp-user@example.com"
+        password="smtp-password"
+        sender="DatenMeister Notifier &lt;notifications@example.com&gt;" />
+</xmi>
+----
+
+== Configuration Reference
+
+=== 1. Core Public Settings (`<settings>`)
+
+The root `<settings>` node configures global integration settings mapped to `PublicIntegrationSettings`.
+
+[cols="2,1,1,4",options="header"]
 |===
-|Name|Property
-|windowTitle|Name of the main window. Default is 'DatenMeister'
-|databasePath|Path where the main configuration is stored. These are usually the user-defined types and forms, but also the registration of workspaces.
-|isReadOnly|Flag indicating whether the DatenMeister should be started in read-only mode.
-|logLocation a|Defines where logging should be performed.
+|Attribute / Child Element |Type |Default |Description
 
-* Application: In the application directory (Default)
-* LocalAppData: In the 'DatenMeister' subdirectory of LocalAppData
-* Desktop: Directly on the desktop
-* None: No logging takes place in a file.
-|environmentVariable a|Additional environment variables can be inserted here. These are inserted directly into the process's environment variables without a prefix.
+|`windowTitle`
+|String
+|`"DatenMeister"`
+|Title displayed in the main application window (e.g., WPF desktop client window header).
 
-Several environment variables can be specified, which can have the following properties:
+|`databasePath`
+|String
+|`"DatenMeister"` (relative)
+|Path to the directory containing workspaces (`DatenMeister.Workspaces.xml`) and extents (`DatenMeister.Extents.xml`). Supports embedded environment variables (e.g., `%LOCALAPPDATA%/DatenMeister`, `%USERPROFILE%/data`). Also exported to the `dm_DatabasePath` environment variable.
 
-* key: Name of the variable
-* value: Value of the variable
+|`isReadOnly`
+|Boolean
+|`false`
+|When set to `true`, forces the entire DatenMeister environment into read-only mode. Workspace and extent modifications will not be saved to disk.
+
+|`logLocation`
+|Enum (`LogLocation`)
+|`Application`
+|Defines where file-based logs (`log.txt` or `DatenMeister.log.txt`) are written. Supported values: +
+* `Application`: Writes `log.txt` in the executable folder. +
+* `LocalAppData`: Writes `DatenMeister/log.txt` in `%LOCALAPPDATA%`. +
+* `Desktop`: Writes `DatenMeister.log.txt` directly to the user's desktop. +
+* `None`: Disables file logging (console/debug providers remain active).
+
+|`<environmentVariable>`
+|Element List
+|`[]`
+|Defines custom environment variables to be set into the process environment at startup. Attributes: +
+* `key`: Name of the variable. +
+* `value`: Value of the variable.
 |===
 
-== Environment Variables
+=== 2. Standard Environment Variables
 
-When loading the public settings, the database path is transferred to the environment variable "dm_databasepath" and is thus available for loading the extents.
+During startup, `PublicSettingHandler` automatically evaluates and configures standard environment variables if they are not already set:
 
-Furthermore, the environment variables are transferred according to the properties of 'environmentVariable'.
-
-=== Standard Environment Variables
-
-The following environment variables are supported and set by default:
-
-[%header,cols="1,5,3"]
+[cols="2,2,3",options="header"]
 |===
-|Name|Purpose|Default
-|dm_ImportPath|Suggested import path|{Desktop}/import
-|dm_ReportPath|Suggested report path|{Desktop}/report
-|dm_ExportPath|Suggested export path|{Desktop}/export
-|dm_ApplicationPath|Path in which the application was executed.|---
-|dm_DatabasePath|The path where the database is located|According to the 'databasePath' configuration.
+|Environment Variable |Default Fallback |Purpose
+
+|`dm_DatabasePath`
+|Expanded `databasePath`
+|Location of workspaces and database extent files.
+
+|`dm_ImportPath`
+|`%USERPROFILE%\Desktop\import`
+|Default directory suggested for file imports.
+
+|`dm_ReportPath`
+|`%USERPROFILE%\Desktop\report`
+|Default directory for generated reports.
+
+|`dm_ExportPath`
+|`%USERPROFILE%\Desktop\export`
+|Default directory for exported datasets.
+
+|`dm_ApplicationPath`
+|Directory of entry executable
+|Directory path of the running executable assembly.
 |===
 
-== Web Settings
+=== 3. Web Server Settings (`<settings><web>`)
 
-The settings for the web server are also defined in the 'DatenMeister.Settings.xmi' file mentioned above.
+The `<web>` element is deserialized by `WebServerSettingsLoader` into `WebServerSettings` and managed globally by `WebServerSettingHandler.TheOne`.
 
-To do this, add an XML node 'web' in which the following settings are defined:
-
- <xmi>
-     <settings>        
-        <!-- This is the way to have a public webserver, listening to all IPs 
-        <web webServerIsPublic="true" webServerUseHttps="false" />
-        -->
-        <!-- This is more the 'kiosk' mode in which the user directly gets to a certain page. Be aware that this cannnot
-             be used to hide information since the user has access to everything 
-        <web layoutHideSideToolbar="true" layoutHideTopToolbar="true" startPage="/ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces" designBackgroundColor="#EEEEEE" />
-        -->
-     </settings>
- </xmi>
-
- The following configurations are supported:
-
-[%header,cols="1,5"]
+[cols="2,1,1,4",options="header"]
 |===
-|Key|Description
-|designBackgroundColor|Background color of the web client.
-|layoutHideSideToolbar|Flag indicating whether the left sidebar should be hidden.
-|layoutHideTopToolbar|Flag indicating whether the top toolbar should be hidden.
-|startPage|When navigating to '/', the user is directed to this page.
-|webServerIsPublic|Flag indicating whether the web server should listen on all IPs or only on localhost.
-|webServerUseHttps|Flag indicating whether an HTTPS server should also be opened. Note that the certificate must also be configured via appsettings.json. Otherwise, only a local developer certificate is used.
+|Attribute |Type |Default |Description
+
+|`designBackgroundColor`
+|String
+|`""` (empty)
+|Overrides the background color of the web client by injecting a CSS `style="background-color: ..."` attribute into the `<body>` element in `_Layout.cshtml`. Useful for distinguishing production, staging, and development environments.
+
+|`layoutHideSideToolbar`
+|Boolean
+|`false`
+|When `true`, hides the left sidebar navigation toolbar (`dm-sidebar-container`) across all web pages.
+
+|`layoutHideTopToolbar`
+|Boolean
+|`false`
+|When `true`, hides the top navigation bar (`dm-topbar`) containing workspace navigation, search bar, and action buttons.
+
+|`startPage`
+|String
+|`""` (empty)
+|Specifies a redirect target URL when a user navigates to the root URL (`/`). If set, `Index.cshtml.cs` issues an immediate HTTP 302 redirect to this URL.
+
+|`webServerIsPublic`
+|Boolean
+|`false`
+|When `true`, Kestrel listens on all network interfaces (`http://*:5000` or `https://*:5001`). When `false`, Kestrel binds only to `localhost`.
+
+|`webServerUseHttps`
+|Boolean
+|`false`
+|When `true` and `webServerIsPublic` is enabled, opens an HTTPS listener on port 5001 (`https://*:5001`). Note: SSL certificate binding should be configured in `appsettings.json` or will use the ASP.NET Core development certificate.
 |===
-  
+
+=== 4. Mail and SMTP Settings (`<smtp>`)
+
+Outbound email functionality in `DatenMeister.Mail.SmtpLogic` reads mail settings from the configuration extent by searching for elements with the metaclass prefix `dm:///_xmi/node/smtp`.
+
+[cols="2,1,1,4",options="header"]
+|===
+|Attribute |Type |Default |Description
+
+|`host`
+|String
+|`""` (empty)
+|Hostname or IP address of the SMTP server (e.g. `smtp.office365.com` or `smtp.gmail.com`).
+
+|`port`
+|Integer
+|`0`
+|Port number for the SMTP service (e.g. `587` for STARTTLS, `465` for SSL, `25` for standard SMTP).
+
+|`username`
+|String
+|`""` (empty)
+|Username for SMTP authentication.
+
+|`password`
+|String
+|`""` (empty)
+|Password for SMTP authentication.
+
+|`sender`
+|String
+|`""` (empty)
+|From email address formatted according to RFC 822 (e.g., `DatenMeister <no-reply@example.com>`). Parsed via `MimeKit.MailboxAddress.Parse()`.
+|===
+
+When sending emails, `SmtpLogic.GetConnectedClient()` connects to the host using `SecureSocketOptions.StartTls` and authenticates when credentials are supplied.
+
+== Code Accessors and Subsystem Integration Points
+
+[cols="2,2,3",options="header"]
+|===
+|Subsystem / Class |Method / Accessor |Configuration Point Usage
+
+|`ConfigurationLoader`
+|`LoadSetting(string? path)` +
+`LoadConfigurationByXml(XDocument)`
+|Loads XML/XMI content into a `MofExtent` using `XmiProvider`.
+
+|`PublicSettingHandler`
+|`LoadSettingsFromDirectory()` +
+`ParseSettingsFromFile()`
+|Deserializes `PublicIntegrationSettings`, expands environment variables, and populates `dm_*` variables.
+
+|`WebServerSettingsLoader`
+|`LoadSettingsFromExtent(IExtent)`
+|Extracts the `<web>` element and converts it to `WebServerSettings`.
+
+|`WebServerSettingHandler`
+|`TheOne.WebServerSettings` +
+`TheOne.BodyCssStyle`
+|Global singleton accessor for web layout, background color, and UI flags.
+
+|`Integrator`
+|`PrepareSettings()` +
+`UseDatenMeister()`
+|Transfers `databasePath`, `windowTitle`, and `isReadOnly` into the bootstrap container and `IScopeStorage`.
+
+|`SmtpLogic`
+|`LoadSettings()` +
+`GetConnectedClient()`
+|Loads SMTP credentials and server endpoints from `<smtp>` nodes in `DatenMeister.Settings.xmi`.
+
+|`PublicSettingsCreator`
+|`CreateExampleFile()` +
+`GetPublicSettingsPath()`
+|Provides programmatic and UI generation of example `DatenMeister.Settings.xmi` configuration files.
+|===
+
+== Common Deployment Scenarios
+
+=== Public Production Web Server
+
+Configures the web server to be reachable across the network with a custom corporate branding color and custom storage path:
+
+[source,xml]
+----
+<xmi>
+    <settings databasePath="%PROGRAMDATA%/DatenMeister/Database">
+        <web 
+            webServerIsPublic="true" 
+            webServerUseHttps="true" 
+            designBackgroundColor="#eef2f7" />
+    </settings>
+</xmi>
+----
+
+=== Kiosk / Embedded Display Mode
+
+Hides top and side navigation toolbars, directing the user straight to a specific workspace or view form:
+
+[source,xml]
+----
+<xmi>
+    <settings>
+        <web 
+            layoutHideSideToolbar="true" 
+            layoutHideTopToolbar="true" 
+            startPage="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces%23Data" />
+    </settings>
+</xmi>
+----
+
+=== Isolated Portable / Read-Only Mode
+
+Executes DatenMeister in a portable directory without persisting changes to disk or writing file logs:
+
+[source,xml]
+----
+<xmi>
+    <settings 
+        databasePath="./Data"
+        isReadOnly="true"
+        logLocation="None" />
+</xmi>
+----
+
+== Related Documentation
+
+* xref:datenmeister.web.adoc[Web Interface Architecture]
+* xref:datenmeister.extentloader.adoc[Extent Loaders and Storage]

@@ -12,7 +12,7 @@ namespace DatenMeister.TextTemplates;
 /// </summary>
 public class TemplateDmObject(IObject? value) : ScriptObject
 {
-    public override bool TryGetValue(TemplateContext context, SourceSpan span, string member, out object value1)
+    public override bool TryGetValue(TemplateContext? context, SourceSpan span, string member, out object value1)
     {
         if (value == null)
         {
@@ -51,7 +51,7 @@ public class TemplateDmObject(IObject? value) : ScriptObject
         return false;
     }
 
-    public override bool TrySetValue(TemplateContext context, SourceSpan span, string member, object? value1, bool readOnly)
+    public override bool TrySetValue(TemplateContext? context, SourceSpan span, string member, object? value1, bool readOnly)
     {
         value?.set(member, value1);
         return true;

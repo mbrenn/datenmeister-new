@@ -11,7 +11,7 @@ public class NullDmObject : ScriptObject, IConvertible
         return string.Empty;
     }
 
-    public override bool TryGetValue(TemplateContext context, SourceSpan span, string member, out object value)
+    public override bool TryGetValue(TemplateContext? context, SourceSpan span, string member, out object value)
     {
         value = new NullDmObject();
         return true;

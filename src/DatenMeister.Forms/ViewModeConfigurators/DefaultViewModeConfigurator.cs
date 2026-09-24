@@ -93,7 +93,7 @@ public class DefaultViewModeConfigurator : IViewModeConfigurator
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.TableFormFactories.Add(new TableFormFromData(workspaceLogic)
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
-        context.Global.RowFormFactories.Add(new RowFormFromData(workspaceLogic)
+        context.Global.RowFormFactories.Add(new RowFormFromData()
             { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.FieldFormFactories.Add(new FieldFromPropertyValue());
         context.Global.FieldFormFactories.Add(new FieldAnyFieldData());

@@ -11,6 +11,12 @@ namespace DatenMeister.Forms.Actions;
 
 internal class NavigateToFieldsForTestActionHandler : IActionHandler
 {
+    public bool IsResponsible(IElement node)
+    {
+        return node.getMetaClass()?.equals(
+            _Forms.TheOne.__NavigateToFieldsForTestAction) == true;
+    }
+    
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         // First, create a temporary object
@@ -26,11 +32,5 @@ internal class NavigateToFieldsForTestActionHandler : IActionHandler
         var result = InMemoryObject.CreateEmpty(_Actions.TheOne.__ActionResult);
         result.AddCollectionItem(_Actions._ActionResult.clientActions, navigateToItem);
         return await Task.FromResult<IElement?>(result);
-    }
-
-    public bool IsResponsible(IElement node)
-    {
-        return node.getMetaClass()?.equals(
-            _Forms.TheOne.__NavigateToFieldsForTestAction) == true;
     }
 }

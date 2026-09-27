@@ -52,6 +52,7 @@
       <ProjectReference Include="..\DatenMeister.Uml\DatenMeister.Uml.csproj" />
       <ProjectReference Include="..\DatenMeister.Validators\DatenMeister.Validators.csproj" />
       <ProjectReference Include="..\DatenMeister.Zip\DatenMeister.Zip.csproj" />
+      <ProjectReference Include="..\Web\DatenMeister.Web.StaticPages\DatenMeister.Web.StaticPages.csproj" />
     </ItemGroup>
 
 </Project>

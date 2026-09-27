@@ -5,6 +5,7 @@ using DatenMeister.Plugins.Helper;
 
 namespace DatenMeister.Web.StaticPages;
 
+[PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
 // ReSharper disable once UnusedType.Global
 public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {

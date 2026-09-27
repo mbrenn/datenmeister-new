@@ -36,6 +36,7 @@
     <ProjectReference Include="..\..\DatenMeister.Provider.NumberProvider\DatenMeister.Provider.NumberProvider.csproj" />
     <ProjectReference Include="..\..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj" />
     <ProjectReference Include="..\..\DatenMeister.TemporaryExtent\DatenMeister.TemporaryExtent.csproj" />
+    <ProjectReference Include="..\DatenMeister.Web.StaticPages\DatenMeister.Web.StaticPages.csproj" />
     <ProjectReference Include="..\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj" />
   </ItemGroup>
 

@@ -16,9 +16,8 @@ using DatenMeister.Web.Json;
 using DatenMeister.WebServer.Controller;
 using DatenMeister.WebServer.Library.Helper;
 using IssueMeisterLib.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using System.Text.Json.Nodes;
 
 namespace DatenMeister.Tests.Web;
 
@@ -94,16 +93,16 @@ public class ItemsControllerTests
             
         Assert.That(rootElements, Is.Not.Null);
         Assert.That(rootElements.RootElements, Is.Not.Null);
-        var elements = JsonConvert.DeserializeObject(rootElements.RootElements);
+        var elements = JsonNode.Parse(rootElements.RootElements) as JsonArray;
         Assert.That(elements, Is.Not.Null);
 
-        var asEnumeration = (elements as IEnumerable<object>)?.ToArray();
+        var asEnumeration = elements!.ToArray();
         Assert.That(asEnumeration, Is.Not.Null);
 
         var found = false;
-        foreach (var item in asEnumeration!.OfType<JObject>())
+        foreach (var item in asEnumeration.OfType<JsonObject>())
         {
-            if ((item.GetValue("v") as JObject)?.GetValue("name")?.ToString() == "name1")
+            if ((item["v"] as JsonObject)?["name"]?.ToString() == "name1")
             {
                 found = true;
             }
@@ -189,7 +188,7 @@ public class ItemsControllerTests
         Assert.That(rootElements, Is.Not.Null);
         Assert.That(rootElements.RootElements, Is.Not.Null);
 
-        var elements = JsonConvert.DeserializeObject(rootElements.RootElements);
+        var elements = JsonNode.Parse(rootElements.RootElements);
         Assert.That(elements, Is.Not.Null);
             
         dm.Dispose();

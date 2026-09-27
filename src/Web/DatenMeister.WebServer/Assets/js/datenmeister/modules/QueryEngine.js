@@ -1,6 +1,7 @@
 import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 export class QueryBuilder {
+    queryStatement;
     constructor() {
         this.queryStatement = new Mof.DmObject(_DatenMeister._DataViews.__QueryStatement_Uri);
     }

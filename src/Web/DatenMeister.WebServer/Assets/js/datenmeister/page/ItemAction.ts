@@ -9,7 +9,8 @@ export async function init(actionName: string, metaClass: string, formUri: undef
     const module = await Form.createActionFormForEmptyObject(
         $("#form_view"),
         metaClass,  
-        {isReadOnly: false, allowAddingNewProperties: true, formUri: formUri, formType: FormType.Object },
+        {isReadOnly: false, allowAddingNewProperties: true, formUri: formUri, formType: FormType.Object,
+        overrideIsNewItem: false},
         actionName);
     
     if(module !== undefined) {

@@ -144,6 +144,8 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
             throw "The form for the given metaclass could not be found";
         }
         
+        //form.set(_DatenMeister._Forms._FormTypes._Form.hideReferences, true);
+        
         // Tries to find the first tab and its fields
         const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);
         const firstTab = tabs[0] as Mof.DmObject;

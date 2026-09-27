@@ -41,6 +41,15 @@ export interface IFormConfiguration extends IFormOptions {
     workspace?: string;
     extentUri?: string;
     itemUrl?: string;
+    
+    /**
+     * Override the isNewItem flag in the form. 
+     * This is required to create an action, which is a new item, but we need to include references and other
+     * properties, which are not available by default for new items. 
+     * For the actionhandler, we know that it is just working on the temporary objects and does not 
+     * require copying it into the final object.
+     */
+    overrideIsNewItem? : boolean;
 }
 
 /**

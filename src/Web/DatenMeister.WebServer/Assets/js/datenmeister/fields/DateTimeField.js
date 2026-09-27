@@ -2,8 +2,6 @@ import { BaseField } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 export class Field extends BaseField {
-    _dateInput;
-    _timeInput;
     constructor(context) {
         super(context);
     }

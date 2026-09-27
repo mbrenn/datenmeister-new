@@ -1,0 +1,68 @@
+﻿= Feature: Static Tables
+
+== Use Case and Requirements
+
+The user wants to run the DatenMeister on command line and a single Html file shall be returned which also includes 
+the .css Stylesheet and JavaScript. This allows the user to use the functions of DatenMeister without having to run 
+a full webserver which is not always possible in company infrastructures. The created Html fill shall look like the 
+page rendered by webserver and shall be able to be opened in Microsoft Edge. 
+
+The user wants to run the DatenMeister Webserver and download a single page which can be opened in the browser
+without having the browser running. 
+
+=== The Requirements
+
+* The created page shall be one file embedding all required .html, .css and .js in a compressed form.
+* The required data shall be embedded in the page. 
+* The amount of JavaScript to be rewritten shall be minimal. Existing JavaScript shall be used.
+* The execution of DatenMeister on client shall not be dependent upon npm or other development tools. 
+** It is expected that developer tools are not available on company computer. 
+
+== The Solution
+
+The logic will be implemented in a new Project called 'DatenMeister.Web.StaticPages'.
+
+=== ActionHandlers
+
+Multiple action handlers are to be implemented. These can be called via ActionExecutor to load and transform the data and to create the .html-page itself. 
+
+The MainActionHandler is 'CreateStaticPageActionHandler' which contains a set of requests for the page rendering: 
+
+* The pagetitle and some properties themselves
+* The data to be used
+* A sequence of page content attributes 
+** Headline
+** Paragraphs
+** Dynamic Tables or other visuals showing the data
+
+==== Create a table
+
+* Out of a ReflectiveCollection, a static table according 'TableView' shall be created.
+** The table shall be sortable and filterable
+
+=== Class PageCreator
+
+The page creator is responsible to create and store the actual file. It contains the following functions:
+
+* Creates the file itself
+* Injects the data to be shown
+* Embeds the CSS-Stylesheet
+* Embeds the JavaScript
+* Renders the table 
+
+=== Assets
+
+In the folder 'Assets', the entry point for JavaScript will be implemented which acts as a root for compilation
+of the JavaScript files. It also contains all the entry points which are used to perform all the necessary actions. The assets compilation needs to be configured in a way that the typescript in the DatenMeister.WebServer Asset folder can be imported. 
+
+
+
+== The implementation guideline
+
+The implementation will be done in multiple steps: 
+
+* [ ] We create the table and some empty ActionHandler which just creates an empty .html file
+* [ ] We get a configuration file for the ActionExecutor and enable the debug chain in Visual Studio. 
+* [ ] We get the creation of an empty .html file running which has imported the .css. 
+* [ ] We add the compacted .js which allows to create the table. Here we need to figure out some feasibilities about
+which approach is the best one. 

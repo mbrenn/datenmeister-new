@@ -57,7 +57,7 @@ if(!$onlyOne)
     dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net10.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.DataView.Forms/Xmi/Types.xmi" "./DatenMeister.DataView.Forms/Model" "DatenMeister.DataView.Forms.Model" "dm:///types.forms.dataview.datenmeister/"
 
     Write-Output "-- Creating for DatenMeister.StaticWebPages"
-    dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net10.0/DatenMeister.SourceGeneration.Console.dll "Web/DatenMeister.Web.StaticPages/Xmi/Types.xmi" "./Web/DatenMeister.Web.StaticPages/Model" "DatenMeister.Web.StaticPages.Model" "dm:///types.forms.staticwebpages.datenmeister/"
+    dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net10.0/DatenMeister.SourceGeneration.Console.dll "Web/DatenMeister.Web.StaticPages/Xmi/Types.xmi" "./Web/DatenMeister.Web.StaticPages/Model" "DatenMeister.Web.StaticPages.Model" "dm:///intern.types.staticwebpages.datenmeister/"
 
     Write-Output "-- IssueMeister"
     dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net10.0/DatenMeister.SourceGeneration.Console.dll "Apps/IssueMeister/IssueMeisterLib/Xmi/IssueMeister.Types.xml" "./Apps/IssueMeister/IssueMeisterLib/Models" "IssueMeisterLib.Models" "dm:///intern.types.issues.datenmeister/"

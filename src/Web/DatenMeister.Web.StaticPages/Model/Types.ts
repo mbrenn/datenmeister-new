@@ -6,6 +6,6 @@ export namespace _Root
             static htmlFilename = "htmlFilename";
         }
 
-        export const __CreateStaticWebPageAction_Uri = "dm:///types.forms.staticwebpages.datenmeister/#f63bbf10-19fe-455a-a952-74be1e3d05f6";
+        export const __CreateStaticWebPageAction_Uri = "dm:///intern.types.staticwebpages.datenmeister/#f63bbf10-19fe-455a-a952-74be1e3d05f6";
 }
 

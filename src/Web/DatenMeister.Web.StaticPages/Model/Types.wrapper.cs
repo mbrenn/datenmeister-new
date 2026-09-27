@@ -8,7 +8,7 @@ namespace DatenMeister.Web.StaticPages.Model;
 
 public class Root
 {
-    [TypeUri(Uri = "dm:///types.forms.staticwebpages.datenmeister/#f63bbf10-19fe-455a-a952-74be1e3d05f6",
+    [TypeUri(Uri = "dm:///intern.types.staticwebpages.datenmeister/#f63bbf10-19fe-455a-a952-74be1e3d05f6",
         TypeKind = TypeKind.WrappedClass)]
     public class CreateStaticWebPageAction_Wrapper : IElementWrapper
     {
@@ -26,7 +26,7 @@ public class Root
 
         public IElement GetWrappedElement() => _wrappedElement;
 
-        private static readonly MofObjectShadow _metaClass = new ("dm:///types.forms.staticwebpages.datenmeister/#f63bbf10-19fe-455a-a952-74be1e3d05f6");
+        private static readonly MofObjectShadow _metaClass = new ("dm:///intern.types.staticwebpages.datenmeister/#f63bbf10-19fe-455a-a952-74be1e3d05f6");
 
         public static CreateStaticWebPageAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 

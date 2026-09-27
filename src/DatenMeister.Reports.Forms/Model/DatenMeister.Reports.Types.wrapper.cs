@@ -94,6 +94,14 @@ public class Root
                 _wrappedElement.set("creationProtocol", value);
         }
 
+        public bool @hideReferencingItems
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("hideReferencingItems");
+            set => 
+                _wrappedElement.set("hideReferencingItems", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///_internal/types/internal#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c",

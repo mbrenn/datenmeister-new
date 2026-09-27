@@ -11,6 +11,7 @@ export namespace _Root
             static originalUri = "originalUri";
             static originalWorkspace = "originalWorkspace";
             static creationProtocol = "creationProtocol";
+            static hideReferencingItems = "hideReferencingItems";
         }
 
         export const __ReportForm_Uri = "dm:///_internal/types/internal#89dea433-d199-4889-95eb-7ef30c0b5695";

@@ -159,7 +159,7 @@ export async function createActionFormForEmptyObject(
     creator.extentUri = creator.element.extentUri;
     //configuration.viewMode = "ViewMode.DataManipulation";
     configuration.formType = FormType.Object;
-    configuration.isNewItem = true;
+    configuration.isNewItem = form.get(_DatenMeister._Forms._FormTypes._Form.hideReferencingItems, Mof.ObjectType.Boolean);
     
     configuration.submitName = module.actionVerb;
 

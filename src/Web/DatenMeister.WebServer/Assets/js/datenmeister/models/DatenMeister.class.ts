@@ -1174,6 +1174,7 @@ export namespace _Forms
                     static originalUri = "originalUri";
                     static originalWorkspace = "originalWorkspace";
                     static creationProtocol = "creationProtocol";
+                    static hideReferencingItems = "hideReferencingItems";
                 }
 
                 export const __Form_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form";
@@ -1192,6 +1193,7 @@ export namespace _Forms
                     static originalUri = "originalUri";
                     static originalWorkspace = "originalWorkspace";
                     static creationProtocol = "creationProtocol";
+                    static hideReferencingItems = "hideReferencingItems";
                 }
 
                 export const __RowForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm";
@@ -1221,6 +1223,7 @@ export namespace _Forms
                     static originalUri = "originalUri";
                     static originalWorkspace = "originalWorkspace";
                     static creationProtocol = "creationProtocol";
+                    static hideReferencingItems = "hideReferencingItems";
                 }
 
                 export const __TableForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm";
@@ -1237,6 +1240,7 @@ export namespace _Forms
                     static originalUri = "originalUri";
                     static originalWorkspace = "originalWorkspace";
                     static creationProtocol = "creationProtocol";
+                    static hideReferencingItems = "hideReferencingItems";
                 }
 
                 export const __CollectionForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm";
@@ -1252,6 +1256,7 @@ export namespace _Forms
                     static originalUri = "originalUri";
                     static originalWorkspace = "originalWorkspace";
                     static creationProtocol = "creationProtocol";
+                    static hideReferencingItems = "hideReferencingItems";
                 }
 
                 export const __ObjectForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm";

@@ -2613,6 +2613,9 @@ public class _Forms
             public static readonly string @creationProtocol = "creationProtocol";
             public IElement? @_creationProtocol = null;
 
+            public static readonly string @hideReferencingItems = "hideReferencingItems";
+            public IElement? @_hideReferencingItems = null;
+
         }
 
         public _Form @Form = new ();
@@ -2660,6 +2663,9 @@ public class _Forms
 
             public static readonly string @creationProtocol = "creationProtocol";
             public IElement? @_creationProtocol = null;
+
+            public static readonly string @hideReferencingItems = "hideReferencingItems";
+            public IElement? @_hideReferencingItems = null;
 
         }
 
@@ -2742,6 +2748,9 @@ public class _Forms
             public static readonly string @creationProtocol = "creationProtocol";
             public IElement? @_creationProtocol = null;
 
+            public static readonly string @hideReferencingItems = "hideReferencingItems";
+            public IElement? @_hideReferencingItems = null;
+
         }
 
         public _TableForm @TableForm = new ();
@@ -2784,6 +2793,9 @@ public class _Forms
             public static readonly string @creationProtocol = "creationProtocol";
             public IElement? @_creationProtocol = null;
 
+            public static readonly string @hideReferencingItems = "hideReferencingItems";
+            public IElement? @_hideReferencingItems = null;
+
         }
 
         public _CollectionForm @CollectionForm = new ();
@@ -2822,6 +2834,9 @@ public class _Forms
 
             public static readonly string @creationProtocol = "creationProtocol";
             public IElement? @_creationProtocol = null;
+
+            public static readonly string @hideReferencingItems = "hideReferencingItems";
+            public IElement? @_hideReferencingItems = null;
 
         }
 

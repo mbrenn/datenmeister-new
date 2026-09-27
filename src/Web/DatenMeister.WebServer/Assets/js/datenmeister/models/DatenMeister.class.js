@@ -1036,6 +1036,7 @@ export var _Forms;
             static originalUri = "originalUri";
             static originalWorkspace = "originalWorkspace";
             static creationProtocol = "creationProtocol";
+            static hideReferencingItems = "hideReferencingItems";
         }
         _FormTypes._Form = _Form;
         _FormTypes.__Form_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form";
@@ -1053,6 +1054,7 @@ export var _Forms;
             static originalUri = "originalUri";
             static originalWorkspace = "originalWorkspace";
             static creationProtocol = "creationProtocol";
+            static hideReferencingItems = "hideReferencingItems";
         }
         _FormTypes._RowForm = _RowForm;
         _FormTypes.__RowForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm";
@@ -1081,6 +1083,7 @@ export var _Forms;
             static originalUri = "originalUri";
             static originalWorkspace = "originalWorkspace";
             static creationProtocol = "creationProtocol";
+            static hideReferencingItems = "hideReferencingItems";
         }
         _FormTypes._TableForm = _TableForm;
         _FormTypes.__TableForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm";
@@ -1096,6 +1099,7 @@ export var _Forms;
             static originalUri = "originalUri";
             static originalWorkspace = "originalWorkspace";
             static creationProtocol = "creationProtocol";
+            static hideReferencingItems = "hideReferencingItems";
         }
         _FormTypes._CollectionForm = _CollectionForm;
         _FormTypes.__CollectionForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm";
@@ -1110,6 +1114,7 @@ export var _Forms;
             static originalUri = "originalUri";
             static originalWorkspace = "originalWorkspace";
             static creationProtocol = "creationProtocol";
+            static hideReferencingItems = "hideReferencingItems";
         }
         _FormTypes._ObjectForm = _ObjectForm;
         _FormTypes.__ObjectForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm";

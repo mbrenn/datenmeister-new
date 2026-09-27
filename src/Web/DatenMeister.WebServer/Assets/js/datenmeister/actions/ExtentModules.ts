@@ -143,6 +143,15 @@ class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
         if(form === undefined) {
             throw "The form for the given metaclass could not be found";
         }
+
+        /**
+         * Override the isNewItem flag in the form.
+         * This is required to create an action, which is a new item, but we need to include references and other
+         * properties, which are not available by default for new items.
+         * For the actionhandler, we know that it is just working on the temporary objects and does not
+         * require copying it into the final object.
+         */
+        form.set(_DatenMeister._Forms._FormTypes._Form.hideReferencingItems, true);
         
         // Tries to find the first tab and its fields
         const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);

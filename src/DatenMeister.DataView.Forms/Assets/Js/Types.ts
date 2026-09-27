@@ -19,6 +19,7 @@ export namespace _Root
             static originalUri = "originalUri";
             static originalWorkspace = "originalWorkspace";
             static creationProtocol = "creationProtocol";
+            static hideReferencingItems = "hideReferencingItems";
         }
 
         export const __ViewDataTable_Uri = "dm:///types.forms.dataview.datenmeister/#0e2986e0-2982-426e-8024-71a100f1e7d0";

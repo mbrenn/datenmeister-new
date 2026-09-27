@@ -36,6 +36,9 @@ public class _Root
         public static readonly string @creationProtocol = "creationProtocol";
         public IElement? @_creationProtocol = null;
 
+        public static readonly string @hideReferencingItems = "hideReferencingItems";
+        public IElement? @_hideReferencingItems = null;
+
     }
 
     public _ReportForm @ReportForm = new ();

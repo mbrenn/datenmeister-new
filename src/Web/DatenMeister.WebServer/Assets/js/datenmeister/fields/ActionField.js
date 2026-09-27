@@ -5,6 +5,8 @@ import * as MofSync from "../MofSync.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import { addKeyBindingEvent } from "../../burnsystems/Events.js";
 export class Field extends BaseField {
+    button;
+    inConfirmation;
     constructor(context) {
         super(context);
     }

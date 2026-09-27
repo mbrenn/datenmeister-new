@@ -2,6 +2,7 @@
  * Base class for field implementations, providing the standard properties and defaults
  */
 export class BaseField {
+    context;
     get configuration() {
         return this.context.configuration;
     }

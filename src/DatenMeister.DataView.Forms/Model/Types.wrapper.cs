@@ -181,6 +181,14 @@ public class Root
                 _wrappedElement.set("creationProtocol", value);
         }
 
+        public bool @hideReferencingItems
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("hideReferencingItems");
+            set => 
+                _wrappedElement.set("hideReferencingItems", value);
+        }
+
     }
 
 }

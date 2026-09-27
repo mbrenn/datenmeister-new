@@ -6863,6 +6863,14 @@ public class Forms
                     _wrappedElement.set("creationProtocol", value);
             }
 
+            public bool @hideReferencingItems
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("hideReferencingItems");
+                set => 
+                    _wrappedElement.set("hideReferencingItems", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm",
@@ -7002,6 +7010,14 @@ public class Forms
                     _wrappedElement.getOrDefault<string?>("creationProtocol");
                 set => 
                     _wrappedElement.set("creationProtocol", value);
+            }
+
+            public bool @hideReferencingItems
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("hideReferencingItems");
+                set => 
+                    _wrappedElement.set("hideReferencingItems", value);
             }
 
         }
@@ -7262,6 +7278,14 @@ public class Forms
                     _wrappedElement.set("creationProtocol", value);
             }
 
+            public bool @hideReferencingItems
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("hideReferencingItems");
+                set => 
+                    _wrappedElement.set("hideReferencingItems", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm",
@@ -7400,6 +7424,14 @@ public class Forms
                     _wrappedElement.set("creationProtocol", value);
             }
 
+            public bool @hideReferencingItems
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("hideReferencingItems");
+                set => 
+                    _wrappedElement.set("hideReferencingItems", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm",
@@ -7515,6 +7547,14 @@ public class Forms
                     _wrappedElement.getOrDefault<string?>("creationProtocol");
                 set => 
                     _wrappedElement.set("creationProtocol", value);
+            }
+
+            public bool @hideReferencingItems
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("hideReferencingItems");
+                set => 
+                    _wrappedElement.set("hideReferencingItems", value);
             }
 
         }

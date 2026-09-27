@@ -656,6 +656,7 @@
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7820ec89-9e4a-4566-b47a-85ed529b7aab" name="originalUri" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="16da78a5-22c5-4f8e-90c3-368c3e63ba83" name="originalWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7820ec89-9e4a-4566-b47a-85e3229b7aab" name="creationProtocol" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f03fa0d2-9513-4c53-accc-859498180d31" name="hideReferencingItems" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.RowForm" name="RowForm">
         <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="3902be47-9259-470f-ab52-27e160b071b9" general-ref="#DatenMeister.Models.Forms.Form" />

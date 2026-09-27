@@ -83,12 +83,12 @@ public class DirectJsonDeconverter
                 JsonValueKind.Null => null,
                 JsonValueKind.Undefined => null,
                 JsonValueKind.Object when jsonElement.TryGetProperty("0", out JsonElement _) =>
-                    ConvertFromArray(jsonElement),
+                    ConvertFromIndexedObject(jsonElement),
                 JsonValueKind.Object when !jsonElement.TryGetProperty("0", out JsonElement _) =>
                     ConvertToObjectInternal(
                         JsonSerializer.Deserialize<MofObjectAsJson>(jsonElement.GetRawText())
                         ?? throw new InvalidOperationException("Invalid Json for Conversion to MofObjectAsJson")),
-                JsonValueKind.Array => jsonElement.EnumerateArray().Select(x => ConvertJsonValue(x)).ToList(),
+                JsonValueKind.Array => ConvertFromArray(jsonElement),
                 _ => jsonElement.GetString()
             };
 
@@ -99,13 +99,39 @@ public class DirectJsonDeconverter
     }
 
     /// <summary>
+    /// Converts the given json element being an array to a list
+    /// </summary>
+    /// <param name="jsonElement"></param>
+    /// <returns></returns>
+    private List<object?> ConvertFromArray(JsonElement jsonElement)
+    {
+        var result = new List<object?>();
+        var index = 0;
+        foreach (var element in jsonElement.EnumerateArray())
+        {
+            var lineResult = ConvertJsonValue(element);
+
+            if (lineResult is MofObjectShadow shadow)
+            {
+                var indexInner = index;
+                Shadows.Add(new ShadowInformation(shadow, x => result[indexInner] = x));
+            }
+
+            result.Add(lineResult);
+            index++;
+        }
+
+        return result;
+    }
+
+    /// <summary>
     /// Converts the given json element being an object to an array
     /// </summary>
     /// <param name="jsonElement"></param>
     /// <returns></returns>
-    private List<object> ConvertFromArray(JsonElement jsonElement)
+    private List<object?> ConvertFromIndexedObject(JsonElement jsonElement)
     {
-        var result = new List<object>();
+        var result = new List<object?>();
 
         // Walk through the object by starting at 0 until the last element is retrieved
         var index = 0;
@@ -120,11 +146,7 @@ public class DirectJsonDeconverter
                 Shadows.Add(new ShadowInformation(shadow, x => result[indexInner] = x));
             }
 
-            if (lineResult is not null)
-            {
-                result.Add(lineResult);
-            }
-
+            result.Add(lineResult);
             index++;
         }
 
@@ -203,7 +225,12 @@ public class DirectJsonDeconverter
             if (result == null)
             {
                 // Create a shadow object, so the final object can be resolved later
-                return new MofObjectShadow(jsonObject.r);                    
+                var uri = jsonObject.r;
+                if (uri.StartsWith('#'))
+                {
+                    uri = "#" + _prefixCounter + uri.TrimStart('#');
+                }
+                return new MofObjectShadow(uri);                    
             }
         }
         else
@@ -223,7 +250,7 @@ public class DirectJsonDeconverter
                         }
                         else
                         {
-                            result = MofFactory.CreateElementWithMetaClassUri(
+                            result = DatenMeister.Core.EMOF.Implementation.MofFactory.CreateElementWithMetaClassUri(
                                 temporaryExtentLogic.TemporaryExtent,
                                 jsonObject.m?.uri ?? string.Empty);
                         }
@@ -236,7 +263,7 @@ public class DirectJsonDeconverter
                         throw new InvalidOperationException("MofFactory.Extent is null");
                     }
 
-                    result = MofFactory.CreateElementWithMetaClassUri(
+                    result = DatenMeister.Core.EMOF.Implementation.MofFactory.CreateElementWithMetaClassUri(
                         MofFactory.Extent,
                         jsonObject.m?.uri ?? string.Empty);
                 }
@@ -258,7 +285,7 @@ public class DirectJsonDeconverter
                 
             foreach (var pair in jsonObject.v)
             {
-                var valueObject = (ConvertJsonValue(pair.Value) as IEnumerable<object>)?.ToArray();
+                var valueObject = (ConvertJsonValue(pair.Value) as IEnumerable<object?>)?.ToArray();
                 if (valueObject == null || valueObject.Length != 2)
                 {
                     throw new InvalidOperationException("Value is null or # of items is not two");
@@ -272,7 +299,6 @@ public class DirectJsonDeconverter
                     var value = valueObject[1];
                     if (value is MofObjectShadow shadow)
                     {
-                        shadow.Uri = "#" + _prefixCounter + shadow.Uri.Replace("#", "");
                         Shadows.Add(new ShadowInformation(
                             shadow,
                             x => result.set(pair.Key, x)));

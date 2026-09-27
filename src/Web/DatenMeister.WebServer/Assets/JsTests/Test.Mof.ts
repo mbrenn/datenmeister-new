@@ -175,6 +175,118 @@ export function includeTests() {
             });
         });
 
+        describe('Serialization and Array Handling', function () {
+            it('Serializing array of primitives produces JSON array', () => {
+                const element = new mof.DmObject();
+                element.set('tags', ['alpha', 'beta', 'gamma']);
+
+                const json = mof.createJsonFromObject(element);
+                assert.isTrue(json.v !== undefined, 'values object should be defined');
+                assert.isTrue(json.v.tags !== undefined, 'tags property should be defined');
+                assert.isTrue(json.v.tags[0] === true, 'tags should be marked as set');
+                assert.isTrue(Array.isArray(json.v.tags[1]), 'Serialized array should be a JavaScript Array, not an object');
+                assert.strictEqual(json.v.tags[1].length, 3);
+                assert.strictEqual(json.v.tags[1][0], 'alpha');
+                assert.strictEqual(json.v.tags[1][1], 'beta');
+                assert.strictEqual(json.v.tags[1][2], 'gamma');
+            });
+
+            it('Serializing empty array produces empty JSON array', () => {
+                const element = new mof.DmObject();
+                element.set('emptyList', []);
+
+                const json = mof.createJsonFromObject(element);
+                assert.isTrue(json.v !== undefined, 'values object should be defined');
+                assert.isTrue(json.v.emptyList !== undefined, 'emptyList property should be defined');
+                assert.isTrue(json.v.emptyList[0] === true, 'emptyList should be marked as set');
+                assert.isTrue(Array.isArray(json.v.emptyList[1]), 'Serialized empty array should be a JavaScript Array');
+                assert.strictEqual(json.v.emptyList[1].length, 0);
+            });
+
+            it('Serializing array of DmObjects produces array of serialized objects', () => {
+                const child1 = new mof.DmObject();
+                child1.set('name', 'child1');
+                const child2 = new mof.DmObject();
+                child2.set('name', 'child2');
+
+                const parent = new mof.DmObject();
+                parent.set('children', [child1, child2]);
+
+                const json = mof.createJsonFromObject(parent);
+                assert.isTrue(json.v !== undefined);
+                assert.isTrue(Array.isArray(json.v.children[1]), 'Serialized child DmObjects should be in an array');
+                assert.strictEqual(json.v.children[1].length, 2);
+                assert.strictEqual(json.v.children[1][0].v.name[1], 'child1');
+                assert.strictEqual(json.v.children[1][1].v.name[1], 'child2');
+            });
+
+            it('Deserializing standard JSON array with convertJsonObjectToDmObject', () => {
+                const json = {
+                    id: 'obj1',
+                    v: {
+                        tags: [true, ['item1', 'item2', 'item3']],
+                        empty: [true, []]
+                    }
+                };
+
+                const dmObj = mof.convertJsonObjectToDmObject(json);
+                assert.isTrue(dmObj !== undefined);
+                const tags = dmObj!.get('tags');
+                assert.isTrue(Array.isArray(tags), 'tags should be an Array');
+                assert.strictEqual(tags.length, 3);
+                assert.strictEqual(tags[0], 'item1');
+                assert.strictEqual(tags[1], 'item2');
+                assert.strictEqual(tags[2], 'item3');
+
+                const empty = dmObj!.get('empty');
+                assert.isTrue(Array.isArray(empty), 'empty should be an Array');
+                assert.strictEqual(empty.length, 0);
+            });
+
+            it('Deserializing legacy object-like array with convertJsonObjectToDmObject', () => {
+                const legacyJson = {
+                    id: 'obj2',
+                    v: {
+                        items: [true, { '0': 'first', '1': 'second' }]
+                    }
+                };
+
+                const dmObj = mof.convertJsonObjectToDmObject(legacyJson);
+                assert.isTrue(dmObj !== undefined);
+                const items = dmObj!.get('items');
+                assert.isTrue(Array.isArray(items), 'Legacy indexed object should be converted to an Array');
+                assert.strictEqual(items.length, 2);
+                assert.strictEqual(items[0], 'first');
+                assert.strictEqual(items[1], 'second');
+            });
+
+            it('Round-trip serialization and deserialization with arrays', () => {
+                const original = new mof.DmObject();
+                original.set('tags', ['tag1', 'tag2']);
+                original.set('numbers', [10, 20, 30]);
+                original.set('empty', []);
+
+                const child = new mof.DmObject();
+                child.set('title', 'subItem');
+                original.set('children', [child]);
+
+                const json = mof.createJsonFromObject(original);
+                const jsonString = JSON.stringify(json);
+                const parsedJson = JSON.parse(jsonString);
+                const restored = mof.convertJsonObjectToDmObject(parsedJson);
+
+                assert.isTrue(restored !== undefined);
+                assert.deepEqual(restored!.get('tags'), ['tag1', 'tag2']);
+                assert.deepEqual(restored!.get('numbers'), [10, 20, 30]);
+                assert.isTrue(Array.isArray(restored!.get('empty')));
+                assert.strictEqual(restored!.get('empty').length, 0);
+                const children = restored!.get('children');
+                assert.isTrue(Array.isArray(children));
+                assert.strictEqual(children.length, 1);
+                assert.strictEqual(children[0].get('title'), 'subItem');
+            });
+        });
+
         describe('Element', function () {
             it('Move Item in Array Up', () => {
                 const element1 = mof.DmObject.createFromReference("Data", "#1");

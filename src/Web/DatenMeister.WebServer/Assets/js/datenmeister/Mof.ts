@@ -710,10 +710,10 @@ export function createJsonFromObject(element: DmObject) {
     function convertValue(elementValue) {
         if (Array.isArray(elementValue)) {
             // Convert array elements recursively
-            const value = {};
+            const value: any[] = [];
             for (let n in elementValue) {
                 const childItem = elementValue[n];
-                value[n] = convertValue(childItem);
+                value.push(convertValue(childItem));
             }
 
             return value;
@@ -897,8 +897,23 @@ export function convertJsonObjectToDmObject(
 
                     value = finalValue;
                 } else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
-                    // Convert nested object to DmObject
-                    value = convertJsonObjectToDmObject(value, result.extentUri, result.workspace);
+                    if (value.hasOwnProperty("0") && !value.hasOwnProperty("v") && !value.hasOwnProperty("r")) {
+                        // Handle legacy object-indexed arrays
+                        const finalValue: any[] = [];
+                        let index = 0;
+                        while (value.hasOwnProperty(index.toString())) {
+                            let item = value[index.toString()];
+                            if ((typeof item === "object" || typeof item === "function") && (item !== null)) {
+                                item = convertJsonObjectToDmObject(item, result.extentUri, result.workspace);
+                            }
+                            finalValue.push(item);
+                            index++;
+                        }
+                        value = finalValue;
+                    } else {
+                        // Convert nested object to DmObject
+                        value = convertJsonObjectToDmObject(value, result.extentUri, result.workspace);
+                    }
                 }
 
                 // Store the property value with isSet tracking

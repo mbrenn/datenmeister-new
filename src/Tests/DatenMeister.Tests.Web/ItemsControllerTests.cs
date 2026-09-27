@@ -17,6 +17,7 @@ using DatenMeister.WebServer.Controller;
 using DatenMeister.WebServer.Library.Helper;
 using IssueMeisterLib.Models;
 using NUnit.Framework;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace DatenMeister.Tests.Web;
@@ -523,6 +524,191 @@ public class ItemsControllerTests
             .FirstOrDefault(x => x.getOrDefault<string>(_IssueMeister._Issue.name) == "Year");
         Assert.That(foundElement, Is.Not.Null);
         Assert.That(foundElement!.getOrDefault<string>("id"), Is.Not.Null.Or.Empty);
+    }
+
+    [Test]
+    public async Task TestSetWithStandardJsonArray()
+    {
+        var (dm, example) = await ElementControllerTests.CreateExampleExtent();
+        var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+
+        var json = """
+                   {
+                     "id": "item1",
+                     "v": {
+                       "name": [true, "item1_modified"],
+                       "tags": [true, ["red", "green", "blue"]],
+                       "emptyList": [true, []]
+                     }
+                   }
+                   """;
+
+        var jsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(json)!;
+        var result = itemsController.Set(WorkspaceNames.WorkspaceData, ElementControllerTests.UriTemporaryExtent + "#item1", jsonObject);
+        Assert.That(result.Value?.Success, Is.True);
+
+        var item1 = example.element("#item1");
+        Assert.That(item1, Is.Not.Null);
+        Assert.That(item1!.getOrDefault<string>("name"), Is.EqualTo("item1_modified"));
+
+        var tags = item1.getOrDefault<object>("tags");
+        Assert.That(tags, Is.Not.Null);
+        Assert.That(tags, Is.InstanceOf<System.Collections.IEnumerable>());
+        var tagsList = ((System.Collections.IEnumerable)tags!).OfType<object>().Select(x => x.ToString()).ToList();
+        Assert.That(tagsList, Is.EquivalentTo(new[] { "red", "green", "blue" }));
+
+        var emptyList = item1.getOrDefault<object>("emptyList");
+        Assert.That(emptyList, Is.Not.InstanceOf<IObject>(), "Empty array should not be deserialized as an IObject");
+        if (emptyList != null)
+        {
+            Assert.That(emptyList, Is.InstanceOf<System.Collections.IEnumerable>());
+            var emptyEnumeration = ((System.Collections.IEnumerable)emptyList).OfType<object>().ToList();
+            Assert.That(emptyEnumeration, Is.Empty);
+        }
+
+        dm.Dispose();
+    }
+
+    [Test]
+    public async Task TestDeconverterWithStandardJsonArray()
+    {
+        var dm = await DatenMeisterTests.GetDatenMeisterScope(
+            true,
+            DatenMeisterTests.GetIntegrationSettings());
+        var deconverter = new DirectJsonDeconverter(dm.WorkspaceLogic, dm.ScopeStorage);
+
+        var json = """
+                   {
+                     "id": "item1",
+                     "v": {
+                       "name": [true, "item1"],
+                       "tags": [true, ["red", "green", "blue"]],
+                       "emptyList": [true, []]
+                     }
+                   }
+                   """;
+
+        var jsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(json)!;
+        var deconverted = deconverter.ConvertToObject(jsonObject) as IElement;
+        Assert.That(deconverted, Is.Not.Null);
+        Assert.That(deconverted!.getOrDefault<string>("name"), Is.EqualTo("item1"));
+
+        var tags = deconverted.getOrDefault<object>("tags");
+        Assert.That(tags, Is.Not.Null);
+        Assert.That(tags, Is.InstanceOf<System.Collections.IEnumerable>());
+        var tagsList = ((System.Collections.IEnumerable)tags!).OfType<object>().Select(x => x.ToString()).ToList();
+        Assert.That(tagsList, Is.EquivalentTo(new[] { "red", "green", "blue" }));
+
+        var emptyList = deconverted.getOrDefault<object>("emptyList");
+        Assert.That(emptyList, Is.Not.Null);
+        Assert.That(emptyList, Is.Not.InstanceOf<IObject>(), "Empty array should not be deserialized as an IObject");
+        Assert.That(emptyList, Is.InstanceOf<System.Collections.IEnumerable>());
+        var emptyEnumeration = ((System.Collections.IEnumerable)emptyList!).OfType<object>().ToList();
+        Assert.That(emptyEnumeration, Is.Empty);
+
+        dm.Dispose();
+    }
+
+    [Test]
+    public async Task TestDeconverterWithArrayContainingReferences()
+    {
+        var dm = await DatenMeisterTests.GetDatenMeisterScope(
+            true,
+            DatenMeisterTests.GetIntegrationSettings());
+        var deconverter = new DirectJsonDeconverter(dm.WorkspaceLogic, dm.ScopeStorage);
+
+        var json = """
+                   {
+                     "id": "item1",
+                     "v": {
+                       "name": [true, "Parent"],
+                       "children": [true, [
+                         {
+                           "id": "local_1",
+                           "v": {
+                             "name": [true, "Child 1"],
+                             "refToSibling": [true, {
+                               "r": "#local_2",
+                               "id": "local_2"
+                             }]
+                           }
+                         },
+                         {
+                           "id": "local_2",
+                           "v": {
+                             "name": [true, "Child 2"]
+                           }
+                         }
+                       ]]
+                     }
+                   }
+                   """;
+
+        var jsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(json)!;
+        var deconverted = deconverter.ConvertToObject(jsonObject) as IElement;
+        Assert.That(deconverted, Is.Not.Null);
+
+        var children = deconverted!.getOrDefault<object>("children") as System.Collections.IEnumerable;
+        Assert.That(children, Is.Not.Null);
+        var childList = children!.OfType<IElement>().ToList();
+        Assert.That(childList.Count, Is.EqualTo(2));
+
+        var child1 = childList.FirstOrDefault(x => x.getOrDefault<string>("name") == "Child 1");
+        var child2 = childList.FirstOrDefault(x => x.getOrDefault<string>("name") == "Child 2");
+        Assert.That(child1, Is.Not.Null);
+        Assert.That(child2, Is.Not.Null);
+
+        var refToSibling = child1!.getOrDefault<IElement>("refToSibling");
+        Assert.That(refToSibling, Is.Not.Null);
+        Assert.That(refToSibling!.getOrDefault<string>("name"), Is.EqualTo("Child 2"));
+        Assert.That(refToSibling, Is.EqualTo(child2));
+
+        dm.Dispose();
+    }
+
+    [Test]
+    public async Task TestDeconverterWithArrayContainingNullValues()
+    {
+        var dm = await DatenMeisterTests.GetDatenMeisterScope(
+            true,
+            DatenMeisterTests.GetIntegrationSettings());
+        var deconverter = new DirectJsonDeconverter(dm.WorkspaceLogic, dm.ScopeStorage);
+
+        var json = """
+                   {
+                     "id": "local_root",
+                     "v": {
+                       "name": [true, "Root"],
+                       "items": [true, {
+                         "0": {
+                           "id": "local_1",
+                           "v": { "name": [true, "Item 1"] }
+                         },
+                         "1": null,
+                         "2": {
+                           "id": "local_3",
+                           "v": {
+                             "name": [true, "Item 3"],
+                             "ref": [true, { "r": "#local_1", "id": "local_1" }]
+                           }
+                         }
+                       }]
+                     }
+                   }
+                   """;
+
+        var jsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(json)!;
+        IElement? deconverted = null;
+        Assert.DoesNotThrow(() =>
+        {
+            deconverted = deconverter.ConvertToObject(jsonObject) as IElement;
+        });
+
+        Assert.That(deconverted, Is.Not.Null);
+        var items = deconverted!.getOrDefault<IReflectiveCollection>("items");
+        Assert.That(items, Is.Not.Null);
+
+        dm.Dispose();
     }
 
     public static async Task<(IDatenMeisterScope, IUriExtent)> CreateExampleExtentForSorting()

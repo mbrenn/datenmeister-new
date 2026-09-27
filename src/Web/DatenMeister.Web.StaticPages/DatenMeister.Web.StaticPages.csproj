@@ -13,7 +13,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="xmi\" />
+      <Folder Include="Xmi\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Xmi\Types.xmi" />
+      <EmbeddedResource Include="Xmi\Types.xmi" />
     </ItemGroup>
 
 </Project>

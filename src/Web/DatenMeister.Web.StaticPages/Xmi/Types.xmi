@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xmi>
+  <meta p2:id="a695eea5-b347-4127-a866-6d4a6d235a3f" __uri="dm:///intern.types.staticwebpages.datenmeister/" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" />
+  <item p2:type="dm:///_internal/model/uml#Class" p2:id="f63bbf10-19fe-455a-a952-74be1e3d05f6" name="CreateStaticWebPageAction" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a608f1fe-d70f-47b8-b084-7cbf11190703" name="htmlFilename" type-ref="dm:///_internal/model/primitivetypes#String" />
+  </item>
+</xmi>

@@ -13,12 +13,20 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Assets\Css\" />
       <Folder Include="Xmi\" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="Xmi\Types.xmi" />
       <EmbeddedResource Include="Xmi\Types.xmi" />
+      <None Include=".bsmake\Build.cs" />
+      <None Remove="Assets\Css\datenmeister-web.min.css" />
+      <EmbeddedResource Include="Assets\Css\datenmeister-web.min.css" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include=".bsmake\Build.csproj" />
     </ItemGroup>
 
 </Project>

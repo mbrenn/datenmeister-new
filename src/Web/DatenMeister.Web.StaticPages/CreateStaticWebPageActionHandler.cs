@@ -1,7 +1,7 @@
-﻿using DatenMeister.Actions;
+﻿using BurnSystems;
+using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Extent.Forms.Model;
 using DatenMeister.HtmlEngine;
 
 namespace DatenMeister.Web.StaticPages;
@@ -22,6 +22,14 @@ public class CreateStaticWebPageActionHandler : IActionHandler {
         }
         
         var htmlReport = new HtmlReport(filename);
+        
+        // Now, we need to add the .css file
+        var cssFile = ResourceHelper.LoadStringFromAssembly(
+            typeof(CreateStaticWebPageActionHandler), 
+            "DatenMeister.Web.StaticPages.Assets.Css.datenmeister-web.min.css");
+        htmlReport.CssStyleSheets.Add(cssFile);
+        
+        // Start the report
         htmlReport.StartReport("Static Export");
         
         htmlReport.EndReport();

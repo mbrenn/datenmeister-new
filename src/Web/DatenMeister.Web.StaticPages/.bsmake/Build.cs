@@ -2,6 +2,8 @@
 using BurnSystems.Make.BuildAgent;
 
 await CopyCSS();
+await CompileTS();
+await CompressJS();
 
 return 0;
 
@@ -17,3 +19,29 @@ async Task CopyCSS()
         true);       
 }
 
+async Task CompileTS()
+{
+    Console.WriteLine("Compiling Typescript");
+
+    await ProcessInvoke.Run("npx", ["tsc"]);
+}
+
+
+async Task CompressJS()
+{
+    Console.WriteLine("Minifying TypeScript files");
+
+    await ProcessInvoke.Run("npx",
+        new[]
+        {
+            "esbuild",
+            "Assets/Js/index.js",
+            "--minify",
+            "--tree-shaking=true",
+            "--bundle",
+            "--sourcemap",
+            "--outfile=Assets/Js-Bundled/index.js",
+            "--platform=browser",
+            "--format=esm"
+        });
+}

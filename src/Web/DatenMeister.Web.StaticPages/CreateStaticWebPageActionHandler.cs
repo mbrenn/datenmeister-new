@@ -24,10 +24,24 @@ public class CreateStaticWebPageActionHandler : IActionHandler {
         var htmlReport = new HtmlReport(filename);
         
         // Now, we need to add the .css file
+        var bootstrap = ResourceHelper.LoadStringFromAssembly(
+            typeof(CreateStaticWebPageActionHandler), 
+            "DatenMeister.Web.StaticPages.Assets.Css.bootstrap.min.css");
+        htmlReport.AddCssStyleSheet(bootstrap);
         var cssFile = ResourceHelper.LoadStringFromAssembly(
             typeof(CreateStaticWebPageActionHandler), 
             "DatenMeister.Web.StaticPages.Assets.Css.datenmeister-web.min.css");
-        htmlReport.CssStyleSheets.Add(cssFile);
+        htmlReport.AddCssStyleSheet(cssFile);
+        
+        var jquery = ResourceHelper.LoadStringFromAssembly(
+            typeof(CreateStaticWebPageActionHandler), 
+            "DatenMeister.Web.StaticPages.Assets.Js_Bundled.jquery.min.js");
+        htmlReport.AddJsScriptAtEnd(jquery);
+        
+        var jsFile = ResourceHelper.LoadStringFromAssembly(
+            typeof(CreateStaticWebPageActionHandler), 
+            "DatenMeister.Web.StaticPages.Assets.Js_Bundled.index.js");
+        htmlReport.AddJsScriptAtEnd(jsFile);
         
         // Start the report
         htmlReport.StartReport("Static Export");

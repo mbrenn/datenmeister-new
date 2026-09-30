@@ -23,7 +23,12 @@ public class HtmlReport : IDisposable, IHtmlReport
     /// <summary>
     /// Gets a list of possible CSS Files
     /// </summary>
-    public List<string> CssFiles { get; }= new();
+    public List<string> CssFiles { get; } = new();
+
+    /// <summary>
+    /// Defines the Javascript content itself which is put a the end of the page
+    /// </summary>
+    public List<string> JsScriptAtEnd { get; } = new();
 
     /// <summary>
     /// Initializes a new instance of the HtmlReport class
@@ -48,7 +53,7 @@ public class HtmlReport : IDisposable, IHtmlReport
     /// <summary>
     /// Gets a list of CSS Stylesheets to be used
     /// </summary>
-    public IList<string> CssStyleSheets { get; set; } = new List<string>();
+    public IList<string> CssStyleSheets { get; } = new List<string>();
 
     /// <summary>
     /// Adds the reference to a css 
@@ -66,6 +71,15 @@ public class HtmlReport : IDisposable, IHtmlReport
     public void AddCssStyleSheet(string cssStyleSheet)
     {
         CssStyleSheets.Add(cssStyleSheet);
+    }
+
+    /// <summary>
+    /// Adds a JavaScript file reference to the end of the HTML report.
+    /// </summary>
+    /// <param name="jsScript">The path or content of the JavaScript script to be added at the end of the generated HTML.</param>
+    public void AddJsScriptAtEnd(string jsScript)
+    {
+        JsScriptAtEnd.Add(jsScript);
     }
 
     /// <summary>
@@ -148,6 +162,13 @@ public class HtmlReport : IDisposable, IHtmlReport
         if (_isDisposed || _streamWriter == null)
         {
             throw new InvalidOperationException("The Report is already disposed");
+        }
+
+        foreach (var jsScript in JsScriptAtEnd)
+        {
+            _streamWriter.WriteLine("    <script>");
+            _streamWriter.WriteLine(jsScript);
+            _streamWriter.WriteLine("    </script>");
         }
 
         _streamWriter.WriteLine("  </body>");

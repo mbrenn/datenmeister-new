@@ -28,6 +28,23 @@ public class HtmlReportTests
     }
 
     [Test]
+    public void TestJsScriptAtEnd()
+    {
+        var builder = new StringBuilder();
+        var memory = new StringWriter(builder);
+        var reporter = new HtmlReport(memory);
+
+        reporter.AddJsScriptAtEnd("console.log('hello world');");
+        reporter.StartReport("Test");
+        reporter.EndReport();
+
+        var output = builder.ToString();
+        Assert.That(output.Contains("<script>"), Is.True);
+        Assert.That(output.Contains("console.log('hello world');"), Is.True);
+        Assert.That(output.Contains("</script>"), Is.True);
+    }
+
+    [Test]
     public void TestHtmlParagraphWithProperties()
     {
         var (scopeStorage, workspaceLogic) = PrepareWorkspaceLogic();

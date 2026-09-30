@@ -1,0 +1,29 @@
+import * as Mof from "/js/datenmeister/Mof.js"
+import * as DatenMeister from "/js/datenmeister/models/DatenMeister.class.js"
+import * as TableForm from "/js/datenmeister/forms/TableForm.js"
+import {FormType} from "/js/datenmeister/forms/Interfaces";
+
+const body = $("body");
+body.append("<h1>Hello World</h1>");
+
+const div= $("<div></div>");
+body.append(div);
+
+const tableForm =new TableForm.TableForm( { formType: FormType.Collection, isReadOnly: false});
+
+const item1 = new Mof.DmObject();
+item1.set("name", "Item1");
+
+const item2 = new Mof.DmObject();
+item2.set("name", "Item2");
+
+tableForm.formElement = new Mof.DmObject(DatenMeister._Forms._FormTypes.__TableForm_Uri);
+const field = new Mof.DmObject(DatenMeister._Forms._FieldTypes.__TextFieldData_Uri);
+field.set(DatenMeister._Forms._FieldTypes._TextFieldData._name_, "name");
+field.set(DatenMeister._Forms._FieldTypes._TextFieldData.title, "name");
+tableForm.formElement.set(DatenMeister._Forms._FormTypes._TableForm.field, [field]);
+
+
+tableForm.callbackLoadItems = () => { return Promise.resolve([item1, item2]); };
+
+tableForm.createFormByCollection(div);

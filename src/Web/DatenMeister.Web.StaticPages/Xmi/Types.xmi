@@ -4,4 +4,5 @@
   <item p2:type="dm:///_internal/model/uml#Class" p2:id="f63bbf10-19fe-455a-a952-74be1e3d05f6" name="CreateStaticWebPageAction" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a608f1fe-d70f-47b8-b084-7cbf11190703" name="htmlFilename" type-ref="dm:///_internal/model/primitivetypes#String" />
   </item>
+  <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="b619fa64-3dc3-47c7-886e-1fb3ecdf29b3" name="HtmlElements" xmlns:p2="http://www.omg.org/spec/XMI/20131001" />
 </xmi>

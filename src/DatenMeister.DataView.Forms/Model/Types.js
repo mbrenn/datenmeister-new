@@ -18,7 +18,6 @@ export var _Root;
     _ViewDataTable.originalUri = "originalUri";
     _ViewDataTable.originalWorkspace = "originalWorkspace";
     _ViewDataTable.creationProtocol = "creationProtocol";
-    _ViewDataTable.hideReferencingItems = "hideReferencingItems";
     _Root._ViewDataTable = _ViewDataTable;
     _Root.__ViewDataTable_Uri = "dm:///types.forms.dataview.datenmeister/#0e2986e0-2982-426e-8024-71a100f1e7d0";
 })(_Root || (_Root = {}));

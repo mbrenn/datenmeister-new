@@ -8,6 +8,10 @@ export namespace _Root
         export class _CreateStaticWebPageAction
         {
             static htmlFilename = "htmlFilename";
+            static htmlElements = "htmlElements";
+            static pageTitle = "pageTitle";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __CreateStaticWebPageAction_Uri = "dm:///intern.types.staticwebpages.datenmeister/#f63bbf10-19fe-455a-a952-74be1e3d05f6";

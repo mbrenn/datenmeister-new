@@ -2,6 +2,7 @@
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Plugins;
 using DatenMeister.Plugins.Helper;
+using DatenMeister.Web.StaticPages.HtmlElements;
 
 namespace DatenMeister.Web.StaticPages;
 
@@ -23,12 +24,15 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
                 WorkspaceLogic = workspaceLogic
             });
         
+        var staticPagesData = scopeStorage.Get<StaticPagesData>();
+        staticPagesData.HtmlElements.Add(new HtmlHeadline());
+        staticPagesData.HtmlElements.Add(new HtmlParagraph());
         
         // Adds the extent
         pluginHelper.AddExtentForTypesFromManifest("Xmi.Types.xmi", DmTypesUriReference);
         
         // Adds the action handler
-        pluginHelper.AddActionHandler(new CreateStaticWebPageActionHandler());
+        pluginHelper.AddActionHandler(new CreateStaticWebPageActionHandler(scopeStorage));
         return Task.CompletedTask;
     }
 }

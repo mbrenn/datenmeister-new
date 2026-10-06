@@ -23,10 +23,10 @@
       <None Include=".bsmake\Build.cs" />
       <None Remove="Assets\Css\datenmeister-web.min.css" />
       <EmbeddedResource Include="Assets\Css\datenmeister-web.min.css" />
-        <None Remove="Assets\Css\bootstrap.min.css" />
-        <EmbeddedResource Include="Assets\Css\bootstrap.min.css" />
-      <None Remove="Assets\Js-Bundled\index.js" />
-      <EmbeddedResource Include="Assets\Js-Bundled\index.js" />
+      <None Remove="Assets\Css\bootstrap.min.css" />
+      <EmbeddedResource Include="Assets\Css\bootstrap.min.css" />
+      <None Remove="Assets\Js-Bundled\EntryPoint.js" />
+      <EmbeddedResource Include="Assets\Js-Bundled\EntryPoint.js" />
       <None Remove="Assets\Js-Bundled\jquery.min.js" />
       <EmbeddedResource Include="Assets\Js-Bundled\jquery.min.js" />
     </ItemGroup>

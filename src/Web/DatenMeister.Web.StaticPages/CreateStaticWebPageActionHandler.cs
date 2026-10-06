@@ -1,12 +1,21 @@
 ﻿using BurnSystems;
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
+using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.HtmlEngine;
+using DatenMeister.Web.StaticPages.HtmlElements;
 
 namespace DatenMeister.Web.StaticPages;
 
-public class CreateStaticWebPageActionHandler : IActionHandler {
+public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IActionHandler {
+    /// <summary>
+    /// Determines whether the given element is responsible for handling the "Create Static Web Page" action.
+    /// </summary>
+    /// <param name="node">The element to be evaluated for responsibility.</param>
+    /// <returns>True if the element is responsible for the given action; otherwise, false.</returns>
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
@@ -40,14 +49,43 @@ public class CreateStaticWebPageActionHandler : IActionHandler {
         
         var jsFile = ResourceHelper.LoadStringFromAssembly(
             typeof(CreateStaticWebPageActionHandler), 
-            "DatenMeister.Web.StaticPages.Assets.Js_Bundled.index.js");
+            "DatenMeister.Web.StaticPages.Assets.Js_Bundled.EntryPoint.js");
         htmlReport.AddJsScriptAtEnd(jsFile);
         
         // Start the report
-        htmlReport.StartReport("Static Export");
+        var title= action.getOrDefault<string>(Model._Root._CreateStaticWebPageAction.pageTitle) ?? "Unnamed Page";
+        htmlReport.StartReport(title);
+
+        var elements = action.getOrDefault<IReflectiveCollection>(Model._Root._CreateStaticWebPageAction.htmlElements);
+        foreach (var element in elements.OfType<IElement>())
+        {
+            var htmlElement = FindElement(element);
+            htmlElement.Generate(htmlReport, element);
+        }
         
+        // End the report
         htmlReport.EndReport();
 
         return null;
+    }
+
+    /// <summary>
+    /// Finds the responsible html generator for a specific html element definition
+    /// </summary>
+    /// <param name="htmlElementData">Data element describing the html to be added</param>
+    /// <returns>In case a responsible element is found, it is returned</returns>
+    /// <exception cref="InvalidOperationException">Thrown if no responsible html element found</exception>
+    public IHtmlElement FindElement(IElement htmlElementData)
+    {
+        var pagesData = scopeStorage.Get<StaticPagesData>();
+        var relevant = 
+            pagesData.HtmlElements.FirstOrDefault(x => x.IsResponsible(htmlElementData));
+        if (relevant == null)
+        {
+            throw new InvalidOperationException("No responsible html element found: " +
+                                                NamedElementMethods.GetName(htmlElementData));
+        }
+
+        return relevant;
     }
 }

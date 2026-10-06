@@ -42,6 +42,51 @@ public class Root
                 _wrappedElement.set("htmlFilename", value);
         }
 
+        // DatenMeister.Core.Models.Reports.Elements.ReportElement_Wrapper
+        public DatenMeister.Core.Models.Reports.Elements.ReportElement_Wrapper? @htmlElements
+        {
+            get
+            {
+                var foundElement = _wrappedElement.getOrDefault<IElement?>("htmlElements");
+                return foundElement == null ? null : new DatenMeister.Core.Models.Reports.Elements.ReportElement_Wrapper(foundElement);
+            }
+            set 
+            {
+                if(value is IElementWrapper wrappedElement)
+                {
+                    _wrappedElement.set("htmlElements", wrappedElement.GetWrappedElement());
+                }
+                else
+                {
+                    _wrappedElement.set("htmlElements", value);
+                }
+            }
+        }
+
+        public string? @pageTitle
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("pageTitle");
+            set => 
+                _wrappedElement.set("pageTitle", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
 }

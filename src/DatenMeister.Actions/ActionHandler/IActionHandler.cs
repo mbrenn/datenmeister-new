@@ -23,3 +23,4 @@ public interface IActionHandler
     /// <returns>The result of the action evaluation.</returns>
     public Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb);
 }
+

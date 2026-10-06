@@ -40,12 +40,12 @@ async Task CompressJS()
         new[]
         {
             "esbuild",
-            "Assets/Js/index.js",
+            "Assets/Js/EntryPoint.js",
             "--minify",
             "--tree-shaking=true",
             "--bundle",
             "--sourcemap",
-            "--outfile=Assets/Js-Bundled/index.js",
+            "--outfile=Assets/Js-Bundled/EntryPoint.js",
             "--platform=browser",
             "--format=esm"
         });

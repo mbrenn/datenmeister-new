@@ -6,6 +6,10 @@ using DatenMeister.Core.Interfaces;
 // Created by DatenMeister.SourcecodeGenerator.WrapperTreeGenerator Version 1.3.0.0
 namespace DatenMeister.Web.StaticPages.Model;
 
+public class HtmlElements
+{
+}
+
 public class Root
 {
     [TypeUri(Uri = "dm:///intern.types.staticwebpages.datenmeister/#f63bbf10-19fe-455a-a952-74be1e3d05f6",

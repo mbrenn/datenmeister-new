@@ -6,6 +6,12 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.3.0.0
 namespace DatenMeister.Web.StaticPages.Model;
 
+public class _HtmlElements
+{
+    public static readonly _HtmlElements TheOne = new ();
+
+}
+
 public class _Root
 {
     [TypeUri(Uri = "dm:///intern.types.staticwebpages.datenmeister/#f63bbf10-19fe-455a-a952-74be1e3d05f6",

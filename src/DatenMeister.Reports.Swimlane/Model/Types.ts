@@ -36,6 +36,7 @@ export namespace _Root
             static originalUri = "originalUri";
             static originalWorkspace = "originalWorkspace";
             static creationProtocol = "creationProtocol";
+            static hideReferencingItems = "hideReferencingItems";
         }
 
         export const __SwimlaneForm_Uri = "dm:///intern.types.swimlane.datenmeister/#142cb4a2-9a07-4e63-a212-32b0a1f0a289";

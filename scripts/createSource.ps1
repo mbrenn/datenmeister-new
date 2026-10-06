@@ -7,7 +7,13 @@ $parameter = "/p:Configuration=Release"
 $switches = "-nologo"
 
 $onlyOne = $false;
+$verbosity = "-v:m"
 
+if($args -contains '--debug')
+{
+    $verbosity = "-v:d"
+    Write-Host "Using detailed build output (--debug)"
+}
 
 if($args -contains '--onlyone')
 {
@@ -18,7 +24,14 @@ if($args -contains '--onlyone')
 if(!($args -contains '--nobuild')) {    
     Write-Output "Building DatenMeister (can be skipped with --nobuild)"
     Set-Location DatenMeister.SourceGeneration.Console
-    & dotnet build DatenMeister.SourceGeneration.Console.csproj $switches -v:m $parameter
+    & dotnet build DatenMeister.SourceGeneration.Console.csproj $switches $verbosity $parameter
+    if($LASTEXITCODE -ne 0)
+    {
+        Write-Error "dotnet build failed with exit code $LASTEXITCODE. Aborting."
+        Set-Location ../..
+        Set-Location scripts
+        exit $LASTEXITCODE
+    }
     Set-Location ..
 }
 else

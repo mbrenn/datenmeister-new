@@ -1,4 +1,8 @@
 // Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.3.0.0
+export namespace _HtmlElements
+{
+}
+
 export namespace _Root
 {
         export class _CreateStaticWebPageAction

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Linq;
@@ -148,7 +149,7 @@ public class XmiProviderObject : IProviderObject, IProviderObjectSupportsListMov
 
     /// <inheritdoc />
     [SuppressMessage("ReSharper", "RedundantLogicalConditionalExpressionOperand")]
-    public object? GetProperty(string property, ObjectType objectType)
+    public object? GetProperty(string property, ObjectType objectType = ObjectType.None)
     {
         var value = GetPropertyInternal(property, objectType);
         return ObjectTypeConverter.Convert(value, objectType);
@@ -320,9 +321,47 @@ public class XmiProviderObject : IProviderObject, IProviderObjectSupportsListMov
             }
             else if (value is XmiProviderObject elementAsXml)
             {
-                // Includes the XmiProvider to the node. Will be added to the node
+                // If the element is already attached to another XML parent node, create a clone
+                // to avoid modifying or detaching the original node from its existing parent
+                if (elementAsXml.XmlNode.Parent != null)
+                {
+                    elementAsXml = _xmiProvider.CreateProviderObject(new XElement(elementAsXml.XmlNode));
+                }
+
                 elementAsXml.XmlNode.Name = normalizePropertyName;
                 XmlNode.Add(elementAsXml.XmlNode);
+            }
+            else if (value is IProviderObject otherProviderObject)
+            {
+                // When an IProviderObject from another provider is assigned, convert and clone it
+                // into a new XmiProviderObject within this provider so properties and ID are preserved
+                var newObj = (XmiProviderObject) _xmiProvider.CreateElement(otherProviderObject.MetaclassUri);
+                foreach (var prop in otherProviderObject.GetProperties())
+                {
+                    newObj.SetProperty(prop, otherProviderObject.GetProperty(prop));
+                }
+
+                var id = otherProviderObject.Id;
+                if (!string.IsNullOrEmpty(id))
+                {
+                    XmiId.Set(newObj.XmlNode, id);
+                }
+
+                newObj.XmlNode.Name = normalizePropertyName;
+                XmlNode.Add(newObj.XmlNode);
+            }
+            else if (DotNetHelper.IsOfEnumeration(value))
+            {
+                // When assigning an enumerable collection, clear existing list items and add each element
+                // as a child XML element via AddToProperty to avoid converting the collection to a string attribute
+                EmptyListForProperty(property);
+                foreach (var child in (IEnumerable) value)
+                {
+                    if (child != null)
+                    {
+                        AddToProperty(property, child);
+                    }
+                }
             }
             else
             {
@@ -488,29 +527,39 @@ public class XmiProviderObject : IProviderObject, IProviderObjectSupportsListMov
         }
     }
 
+    /// <summary>
+    ///     Moves an element up (before its previous sibling) within the sequence of elements for the specified property.
+    ///     Traverses only sibling XML elements belonging to the same normalized property name to prevent cross-property boundary pollution.
+    /// </summary>
+    /// <param name="property">The property whose list contains the element</param>
+    /// <param name="value">The element value to move up</param>
+    /// <returns>True if the element was moved or is already at the beginning of the property list; false if the element was not found</returns>
     public bool MoveElementUp(string property, object value)
     {
         lock (_xmiProvider.LockObject)
         {
             ClearPropertyProviderCache();
 
+            var normalizePropertyName = NormalizePropertyName(property);
             var found = FindInPropertyList(property, value);
             if (found == null)
             {
                 return false;
             }
 
-            // Walk backwards until we find an element - ignore text nodes. Also ignore the meta node
+            // Walk backwards until we find an adjacent element belonging to the same property.
+            // Sibling elements of other properties or meta nodes are skipped to ensure boundary isolation.
             var previousNode = found.PreviousNode;
             while (previousNode != null
                    && (previousNode is not XElement element
-                       || element.Name == XmiProvider.XMetaXmlNodeName))
+                       || element.Name != normalizePropertyName))
             {
                 previousNode = previousNode.PreviousNode;
             }
 
             if (previousNode == null)
             {
+                // Element is already at the first position within this property list
                 return true;
             }
 
@@ -521,27 +570,39 @@ public class XmiProviderObject : IProviderObject, IProviderObjectSupportsListMov
         }
     }
 
+    /// <summary>
+    ///     Moves an element down (after its next sibling) within the sequence of elements for the specified property.
+    ///     Traverses only sibling XML elements belonging to the same normalized property name to prevent cross-property boundary pollution.
+    /// </summary>
+    /// <param name="property">The property whose list contains the element</param>
+    /// <param name="value">The element value to move down</param>
+    /// <returns>True if the element was moved or is already at the end of the property list; false if the element was not found</returns>
     public bool MoveElementDown(string property, object value)
     {
         lock (_xmiProvider.LockObject)
         {
             ClearPropertyProviderCache();
 
+            var normalizePropertyName = NormalizePropertyName(property);
             var found = FindInPropertyList(property, value);
             if (found == null)
             {
                 return false;
             }
 
-            // Walk backwards until we find an element - ignore text nodes
+            // Walk forward until we find an adjacent element belonging to the same property.
+            // Sibling elements of other properties are skipped to ensure boundary isolation.
             var nextNode = found.NextNode;
-            while (nextNode != null && !(nextNode is XElement))
+            while (nextNode != null
+                   && (nextNode is not XElement element
+                       || element.Name != normalizePropertyName))
             {
                 nextNode = nextNode.NextNode;
             }
 
             if (nextNode == null)
             {
+                // Element is already at the last position within this property list
                 return true;
             }
 
@@ -662,12 +723,25 @@ public class XmiProviderObject : IProviderObject, IProviderObjectSupportsListMov
                 return valueAsXmlObject.XmlNode;
             }
 
-            /*var valueAsElement = value as IElement;
-            if (valueAsElement != null)
+            if (value is IProviderObject otherProviderObject)
             {
-                var copier = new ObjectCopier(new XmlFactory { Owner = _extent, ElementName = _propertyName });
-                return ((XmlElement) copier.Copy(valueAsElement)).XmlNode;
-            }*/
+                // When an IProviderObject from an external provider is passed, construct a new
+                // XmiProviderObject in this provider and copy over all its properties and identifier
+                var newObj = (XmiProviderObject) _xmiProvider.CreateElement(otherProviderObject.MetaclassUri);
+                foreach (var prop in otherProviderObject.GetProperties())
+                {
+                    newObj.SetProperty(prop, otherProviderObject.GetProperty(prop));
+                }
+
+                var id = otherProviderObject.Id;
+                if (!string.IsNullOrEmpty(id))
+                {
+                    XmiId.Set(newObj.XmlNode, id);
+                }
+
+                newObj.XmlNode.Name = property;
+                return newObj.XmlNode;
+            }
 
             if (DotNetHelper.IsOfPrimitiveType(value)) return new XElement(property, DotNetHelper.AsString(value));
 
@@ -727,24 +801,30 @@ public class XmiProviderObject : IProviderObject, IProviderObjectSupportsListMov
     }
 
     /// <summary>
-    ///     Gets the size of all elements of a value, if that is an enumeration
+    ///     Gets the count of child XML elements stored for the specified property name.
+    ///     Normalizes the property name to match the XML element tag naming (e.g., handling _href or encoded names).
     /// </summary>
     /// <param name="property">Property to be queried</param>
-    /// <returns>The size of the list</returns>
+    /// <returns>The number of matching child elements</returns>
     private int GetSizeOfList(string property)
     {
         lock (_xmiProvider.LockObject)
         {
-            return XmlNode.Elements(property).Count();
+            var normalizePropertyName = NormalizePropertyName(property);
+            return XmlNode.Elements(normalizePropertyName).Count();
         }
     }
 
     /// <summary>
-    ///     Finds a certain list into the property list
+    ///     Finds the corresponding child XML element for a given value within the list of elements for a property.
+    ///     Performs lookups non-destructively:
+    ///     - By XMI ID or href for <see cref="XmiProviderObject"/> instances
+    ///     - By href attribute or XMI ID for <see cref="UriReference"/> instances
+    ///     - By string equality for primitive values without removing the node from the parent
     /// </summary>
-    /// <param name="property">Property, which is selected</param>
-    /// <param name="value">Value, which is required</param>
-    /// <returns>The found element</returns>
+    /// <param name="property">Property name whose elements should be searched</param>
+    /// <param name="value">The value / element to locate</param>
+    /// <returns>The matching <see cref="XElement"/> or null if not found</returns>
     private XElement? FindInPropertyList(string property, object value)
     {
         var normalizePropertyName = NormalizePropertyName(property);
@@ -761,14 +841,24 @@ public class XmiProviderObject : IProviderObject, IProviderObjectSupportsListMov
                              || XmiId.GetHref(subElement) == xmiId))
                 return subElement;
         }
+        else if (value is UriReference uriReference)
+        {
+            // Matches UriReference by checking the href attribute value or xmi:id/href
+            foreach (var subElement in
+                     XmlNode.Elements(normalizePropertyName)
+                         .Where(subElement =>
+                             subElement.Attribute("href")?.Value.Equals(uriReference.Uri) == true
+                             || XmiId.GetHref(subElement) == uriReference.Uri))
+                return subElement;
+        }
         else
         {
+            // Compares primitive / string values by value equality without mutating or removing the XML element
             var valueAsString = ReturnObjectAsString(value);
             foreach (var subElement in
                      XmlNode.Elements(normalizePropertyName)
                          .Where(subElement => subElement.Value.Equals(valueAsString)))
             {
-                subElement.Remove();
                 return subElement;
             }
         }

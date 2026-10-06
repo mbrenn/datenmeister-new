@@ -2,7 +2,10 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces.Provider;
+using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -198,5 +201,103 @@ public class XmiProviderTests
             
         // Checks, that the element2 has been really moved up
         Assert.That(mofExtent.elements().OfType<IElement>().First().get("Name"), Is.EqualTo("Martin2"));
+    }
+
+    [Test]
+    public void TestMoveElementUpAndDownPrimitiveValues()
+    {
+        var provider = new XmiProvider();
+        var root = (XmiProviderObject)provider.CreateElement(null);
+        provider.AddElement(root);
+
+        root.AddToProperty("items", "first");
+        root.AddToProperty("items", "second");
+        root.AddToProperty("items", "third");
+
+        Assert.That(root.GetProperty("items"), Is.EquivalentTo(new[] { "first", "second", "third" }));
+
+        // Move "second" up -> should be "second", "first", "third"
+        var movedUp = root.MoveElementUp("items", "second");
+        Assert.That(movedUp, Is.True);
+        Assert.That(root.GetProperty("items"), Is.EqualTo(new[] { "second", "first", "third" }));
+
+        // Move "second" up again -> already at top, remains unchanged
+        movedUp = root.MoveElementUp("items", "second");
+        Assert.That(movedUp, Is.True);
+        Assert.That(root.GetProperty("items"), Is.EqualTo(new[] { "second", "first", "third" }));
+
+        // Move "second" down -> should be "first", "second", "third"
+        var movedDown = root.MoveElementDown("items", "second");
+        Assert.That(movedDown, Is.True);
+        Assert.That(root.GetProperty("items"), Is.EqualTo(new[] { "first", "second", "third" }));
+
+        // Move "third" down -> already at bottom, remains unchanged
+        movedDown = root.MoveElementDown("items", "third");
+        Assert.That(movedDown, Is.True);
+        Assert.That(root.GetProperty("items"), Is.EqualTo(new[] { "first", "second", "third" }));
+    }
+
+    [Test]
+    public void TestMoveElementBoundariesAcrossMultipleProperties()
+    {
+        var provider = new XmiProvider();
+        var root = (XmiProviderObject)provider.CreateElement(null);
+        provider.AddElement(root);
+
+        root.AddToProperty("propA", "a1");
+        root.AddToProperty("propA", "a2");
+        root.AddToProperty("propB", "b1");
+        root.AddToProperty("propB", "b2");
+
+        // Try moving b1 up in propB - should stay at top of propB and NOT move into propA
+        var movedUp = root.MoveElementUp("propB", "b1");
+        Assert.That(movedUp, Is.True);
+        Assert.That(root.GetProperty("propA"), Is.EqualTo(new[] { "a1", "a2" }));
+        Assert.That(root.GetProperty("propB"), Is.EqualTo(new[] { "b1", "b2" }));
+
+        // Try moving a2 down in propA - should stay at bottom of propA and NOT move past propB
+        var movedDown = root.MoveElementDown("propA", "a2");
+        Assert.That(movedDown, Is.True);
+        Assert.That(root.GetProperty("propA"), Is.EqualTo(new[] { "a1", "a2" }));
+        Assert.That(root.GetProperty("propB"), Is.EqualTo(new[] { "b1", "b2" }));
+    }
+
+    [Test]
+    public void TestMoveElementWithUriReference()
+    {
+        var provider = new XmiProvider();
+        var root = (XmiProviderObject)provider.CreateElement(null);
+        provider.AddElement(root);
+
+        var ref1 = new UriReference("dm:///ref1");
+        var ref2 = new UriReference("dm:///ref2");
+        var ref3 = new UriReference("dm:///ref3");
+
+        root.AddToProperty("refs", ref1);
+        root.AddToProperty("refs", ref2);
+        root.AddToProperty("refs", ref3);
+
+        var movedUp = root.MoveElementUp("refs", ref2);
+        Assert.That(movedUp, Is.True);
+
+        var list = ((IEnumerable<object>)root.GetProperty("refs")!).Cast<UriReference>().Select(r => r.Uri).ToList();
+        Assert.That(list, Is.EqualTo(new[] { "dm:///ref1", "dm:///ref2", "dm:///ref3" }.OrderBy(x => x == "dm:///ref2" ? 0 : 1).ToList()));
+        Assert.That(list[0], Is.EqualTo("dm:///ref2"));
+        Assert.That(list[1], Is.EqualTo("dm:///ref1"));
+        Assert.That(list[2], Is.EqualTo("dm:///ref3"));
+    }
+
+    [Test]
+    public void TestSetCollectionPropertyDirectly()
+    {
+        var provider = new XmiProvider();
+        var root = (XmiProviderObject)provider.CreateElement(null);
+        provider.AddElement(root);
+
+        var items = new List<string> { "item1", "item2", "item3" };
+        root.SetProperty("myList", items);
+
+        var retrieved = root.GetProperty("myList");
+        Assert.That(retrieved, Is.EquivalentTo(items));
     }
 }

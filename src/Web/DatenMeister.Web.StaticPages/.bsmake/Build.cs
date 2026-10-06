@@ -47,6 +47,6 @@ async Task CompressJS()
             "--sourcemap",
             "--outfile=Assets/Js-Bundled/EntryPoint.js",
             "--platform=browser",
-            "--format=esm"
+            "--format=iife"
         });
 }

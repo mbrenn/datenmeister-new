@@ -120,7 +120,7 @@ public class MofJsonConverter
     /// </summary>
     /// <param name="value">Value to be converted</param>
     /// <returns>The converted value</returns>
-    public static string ConvertToJsonStringWithDefaultParameter(IObject value)
+    public static string ConvertToJsonStringWithDefaultParameter(object? value)
     {
         return new MofJsonConverter().ConvertToJsonString(value);
     }

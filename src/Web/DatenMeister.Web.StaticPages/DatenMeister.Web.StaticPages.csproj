@@ -10,6 +10,7 @@
       <ProjectReference Include="..\..\DatenMeister.Actions\DatenMeister.Actions.csproj" />
       <ProjectReference Include="..\..\DatenMeister.Plugins.Helper\DatenMeister.Plugins.Helper.csproj" />
       <ProjectReference Include="..\..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+      <ProjectReference Include="..\DatenMeister.Web.Json\DatenMeister.Web.Json.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,16 +1,39 @@
+using BurnSystems.Logging;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.DataView;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.HtmlEngine;
+using DatenMeister.Web.Json;
 
 namespace DatenMeister.Web.StaticPages.HtmlElements;
 
 public class HtmlDataTable(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IHtmlElement
 {
+    /// <summary>
+    /// Stores the logger for this class
+    /// </summary>
+    private static ILogger logger = new ClassLogger(typeof(HtmlDataTable));
+    
+    /// <summary>
+    /// Stores the number of calls to explicitly name the instances
+    /// </summary>
+    private static uint _currentCall = 0;
+
+    /// <summary>
+    /// Gets the next call id
+    /// </summary>
+    /// <returns>Gets next call id</returns>
+    public uint GetNextCallId()
+    {
+        Interlocked.Increment(ref _currentCall);
+        return _currentCall;
+    }
+    
     public bool IsResponsible(IElement element)
     {
         return element.getMetaClass()?.equals(
@@ -19,11 +42,11 @@ public class HtmlDataTable(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
 
     public void Generate(HtmlReport htmlReport, IElement element)
     {
+        logger.Debug("Generating HTML table");
         var cssClass = element.getOrDefault<string>(_Reports._Elements._ReportTable.cssClass);
         var form = element.getOrDefault<IElement?>(_Reports._Elements._ReportTable.form);
         var viewNode = element.getOrDefault<IElement?>(_Reports._Elements._ReportTable.viewNode)
             ?? throw new InvalidOperationException("View node is not specified");
-
         
         // Gets the data from the view point
         var dataViewEvaluation = new DataViewLogic(workspaceLogic, scopeStorage); 
@@ -32,6 +55,7 @@ public class HtmlDataTable(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
         // Creates the data from the form in case the form is not specified
         if (form == null)
         {
+            logger.Debug("Form is not specified, creating form");
             var formCreationFactory = new FormCreationContextFactory(
                 workspaceLogic,
                 scopeStorage);
@@ -43,11 +67,38 @@ public class HtmlDataTable(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
                 {
                     Collection = elements
                 }, context).Forms.FirstOrDefault();
+            
+            if (form == null)
+            {
+                throw new InvalidOperationException("Form could not be created");
+            }
         }
         
-        // Creates the JavaScript that invokes the table creation
-        var script = new HtmlInlineScript("testEntryPoint();");
-        htmlReport.Add(script);        
+        // Enumerates the objects
+        var elementsAsArray = elements.ToList();
+        string convertedData;
+        var converter = new MofJsonConverter
+        {
+            ResolveReferenceToOtherExtents = false
+        };
 
+        using (new StopWatchLogger(logger, "Enumerating objects"))
+        {
+            // Creates the helper method
+            var data = InMemoryObject.CreateEmpty();
+            data.set("form", form);
+            data.set("cssClass", cssClass);
+
+            convertedData = converter.ConvertToJsonString(data);
+        }
+        
+        var variableName = "data" + GetNextCallId();
+        var cssClassAsJson = converter.ConvertToJsonString(cssClass);
+        var formAsJson = converter.ConvertToJsonString(form);
+        var dataAsJson = converter.ConvertToJsonString(elementsAsArray);
+        var sourceTag = new HtmlInlineScript($"var {variableName} = {{cssClass: {cssClassAsJson}, form: {formAsJson}, data: {dataAsJson}}};");
+        
+        htmlReport.Add(sourceTag);
+        htmlReport.Add(new HtmlInlineScript($"renderStaticDataPage({variableName});"));
     }
 }

@@ -65,7 +65,7 @@ public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T
                 reportNode,
                 _Reports._Elements._ReportTable.viewNode);
 
-        var form = reportNode.getOrDefault<IElement>(_Reports._Elements._ReportTable.form);
+        var form = reportNode.getOrDefault<IElement?>(_Reports._Elements._ReportTable.form);
 
         var dataviewEvaluation = reportLogic.GetDataViewEvaluation();
         var elements = dataviewEvaluation.GetElementsForViewNode(viewNode);

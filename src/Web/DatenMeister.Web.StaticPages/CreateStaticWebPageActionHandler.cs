@@ -45,12 +45,12 @@ public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IAct
         var jquery = ResourceHelper.LoadStringFromAssembly(
             typeof(CreateStaticWebPageActionHandler), 
             "DatenMeister.Web.StaticPages.Assets.Js_Bundled.jquery.min.js");
-        htmlReport.AddJsScriptAtEnd(jquery);
+        htmlReport.Add(new HtmlInlineScript(jquery));
         
         var jsFile = ResourceHelper.LoadStringFromAssembly(
             typeof(CreateStaticWebPageActionHandler), 
             "DatenMeister.Web.StaticPages.Assets.Js_Bundled.EntryPoint.js");
-        htmlReport.AddJsScriptAtEnd(jsFile);
+        htmlReport.Add(new HtmlInlineScript(jsFile));
         
         // Start the report
         var title= action.getOrDefault<string>(Model._Root._CreateStaticWebPageAction.pageTitle) ?? "Unnamed Page";

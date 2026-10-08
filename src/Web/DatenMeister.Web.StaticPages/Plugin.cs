@@ -27,6 +27,7 @@ public class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
         var staticPagesData = scopeStorage.Get<StaticPagesData>();
         staticPagesData.HtmlElements.Add(new HtmlHeadline());
         staticPagesData.HtmlElements.Add(new HtmlParagraph());
+        staticPagesData.HtmlElements.Add(new HtmlDataTable(workspaceLogic, scopeStorage));
         
         // Adds the extent
         pluginHelper.AddExtentForTypesFromManifest("Xmi.Types.xmi", DmTypesUriReference);

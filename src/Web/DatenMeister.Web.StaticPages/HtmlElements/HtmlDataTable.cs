@@ -18,7 +18,7 @@ public class HtmlDataTable(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
     /// Stores the logger for this class
     /// </summary>
     private static ILogger logger = new ClassLogger(typeof(HtmlDataTable));
-    
+
     /// <summary>
     /// Stores the number of calls to explicitly name the instances
     /// </summary>
@@ -33,7 +33,7 @@ public class HtmlDataTable(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
         Interlocked.Increment(ref _currentCall);
         return _currentCall;
     }
-    
+
     public bool IsResponsible(IElement element)
     {
         return element.getMetaClass()?.equals(
@@ -46,12 +46,12 @@ public class HtmlDataTable(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
         var cssClass = element.getOrDefault<string>(_Reports._Elements._ReportTable.cssClass);
         var form = element.getOrDefault<IElement?>(_Reports._Elements._ReportTable.form);
         var viewNode = element.getOrDefault<IElement?>(_Reports._Elements._ReportTable.viewNode)
-            ?? throw new InvalidOperationException("View node is not specified");
-        
+                       ?? throw new InvalidOperationException("View node is not specified");
+
         // Gets the data from the view point
-        var dataViewEvaluation = new DataViewLogic(workspaceLogic, scopeStorage); 
+        var dataViewEvaluation = new DataViewLogic(workspaceLogic, scopeStorage);
         var elements = dataViewEvaluation.GetElementsForViewNode(viewNode);
-        
+
         // Creates the data from the form in case the form is not specified
         if (form == null)
         {
@@ -67,37 +67,49 @@ public class HtmlDataTable(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
                 {
                     Collection = elements
                 }, context).Forms.FirstOrDefault();
-            
+
             if (form == null)
             {
                 throw new InvalidOperationException("Form could not be created");
             }
         }
         
+        // Creates the container
+        var htmlContainer = new HtmlDivElement("Temp");
+        htmlContainer.Id = "dataTable" + GetNextCallId();
+        htmlReport.Add(htmlContainer);
+
         // Enumerates the objects
         var elementsAsArray = elements.ToList();
-        string convertedData;
         var converter = new MofJsonConverter
         {
             ResolveReferenceToOtherExtents = false
         };
 
+        // Creates the helper method
+        var data = InMemoryObject.CreateEmpty();
+        data.set("form", form);
+        data.set("cssClass", cssClass);
+
+        HtmlInlineScript sourceTag;
+        var variableName = "data" + GetNextCallId();
+        
         using (new StopWatchLogger(logger, "Enumerating objects"))
         {
-            // Creates the helper method
-            var data = InMemoryObject.CreateEmpty();
-            data.set("form", form);
-            data.set("cssClass", cssClass);
+            var cssClassAsJson = converter.ConvertToJsonString(cssClass);
+            var formAsJson = converter.ConvertToJsonString(form);
+            var dataAsJson = converter.ConvertToJsonString(elementsAsArray);
+            sourceTag =
+                new HtmlInlineScript(
+                    $"var {variableName} = " +
+                    $"{{cssClass: {cssClassAsJson}, " +
+                    $"form: {formAsJson}, " +
+                    $"data: {dataAsJson}, " +
+                    $"htmlContainer: $('#{htmlContainer.Id}')}}" +
+                    $";");
 
-            convertedData = converter.ConvertToJsonString(data);
         }
-        
-        var variableName = "data" + GetNextCallId();
-        var cssClassAsJson = converter.ConvertToJsonString(cssClass);
-        var formAsJson = converter.ConvertToJsonString(form);
-        var dataAsJson = converter.ConvertToJsonString(elementsAsArray);
-        var sourceTag = new HtmlInlineScript($"var {variableName} = {{cssClass: {cssClassAsJson}, form: {formAsJson}, data: {dataAsJson}}};");
-        
+
         htmlReport.Add(sourceTag);
         htmlReport.Add(new HtmlInlineScript($"renderStaticDataPage({variableName});"));
     }

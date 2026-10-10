@@ -1,8 +1,7 @@
 import * as Mof from "/js/datenmeister/Mof.js"
 import * as TableForm from "/js/datenmeister/forms/TableForm.js"
 import * as FormInterfaces from "/js/datenmeister/forms/Interfaces";
-
-;
+import {filterAndSortTableData} from "/js/datenmeister/forms/TableState.StaticFilter.js";
 
 declare global {
     interface Window {
@@ -53,64 +52,7 @@ export async function renderStaticDataPage(data: IRenderStaticDataPageParams) {
 
     const tableForm = new TableForm.TableForm(formConfiguration);
     tableForm.tableParameter = tableFormParameter;
-    tableForm.callbackLoadItems = async (query: Mof.DmObject) => {
-        const tableState = tableForm.tableState;
-        if (query && tableState) {
-            tableState.queryStatement = query;
-        }
-
-        let result = [...elementsAsDmObject];
-
-        if (!tableState) {
-            return result;
-        }
-
-        // 1. Free-Text Search via tableState.getFreeTextFilter()
-        const freeText = tableState.getFreeTextFilter();
-        if (freeText && freeText.trim().length > 0) {
-            const term = freeText.trim().toLowerCase()
-            result = result.filter((item) => {
-                const propertyValues = item.getPropertyValues();
-                for (let prop in propertyValues) {
-                    if (propertyValues[prop].toLowerCase().includes(term))
-                        return true;
-                }
-
-                return false;
-            });
-        }
-
-        // 2. Property Filtering via tableState.getFilterByProperties()
-        const propertyFilters = tableState.getFilterByProperties();
-        if (propertyFilters) {
-            for (const [prop, filterVal] of Object.entries(propertyFilters)) {
-            }
-        }
-
-        // 3. Sorting via tableState.getOrderBy()
-        const orderBy = tableState.getOrderBy();
-        if (orderBy && orderBy.property) {
-            const prop = orderBy.property;
-            const isDesc = orderBy.descending;
-
-            result.sort((a, b) => { return 0; });
-        }
-
-        // 4. Limiting / Pagination via tableState.getLimit()
-        let limit = tableState.getLimit();
-        if (limit === undefined) {
-            limit = 100;
-            if (result.length > limit) {
-                tableForm.setInfoText("Only " + limit + " items are shown");
-            }
-        }
-        
-        if (limit > 0) {
-            result = result.slice(0, limit);
-        }
-
-        return result;
-    };
+    tableForm.callbackLoadItems = filterAndSortTableData(tableForm, elementsAsDmObject);
     
     await tableForm.createFormByCollection(data.htmlContainer);
 }

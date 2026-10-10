@@ -41,7 +41,7 @@ async Task CompressJS()
         {
             "esbuild",
             "Assets/Js/EntryPoint.js",
-            "--minify",
+            //"--minify",
             "--tree-shaking=true",
             "--bundle",
             "--sourcemap",

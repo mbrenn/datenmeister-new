@@ -43,6 +43,7 @@ export async function renderStaticDataPage(data: IRenderStaticDataPageParams) {
     // Configures the Tableform and sets the callback
     const tableFormParameter = new TableForm.TableFormParameter();
     tableFormParameter.showSettingsButtons = false;
+    tableFormParameter.hideButtonsForNewElements = true;
     
     const formConfiguration = {
         formType: FormInterfaces.FormType.Collection,
@@ -54,6 +55,7 @@ export async function renderStaticDataPage(data: IRenderStaticDataPageParams) {
     tableForm.tableParameter = tableFormParameter;
     tableForm.callbackLoadItems = filterAndSortTableData(tableForm, elementsAsDmObject);
     
+    data.htmlContainer.empty();
     await tableForm.createFormByCollection(data.htmlContainer);
 }
 

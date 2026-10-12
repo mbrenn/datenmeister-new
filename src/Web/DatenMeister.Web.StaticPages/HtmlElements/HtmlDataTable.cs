@@ -75,7 +75,7 @@ public class HtmlDataTable(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
         }
         
         // Creates the container
-        var htmlContainer = new HtmlDivElement("Temp");
+        var htmlContainer = new HtmlDivElement("Loading table...");
         htmlContainer.Id = "dataTable" + GetNextCallId();
         htmlReport.Add(htmlContainer);
 

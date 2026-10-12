@@ -180,7 +180,6 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
      * @return {void}
      */
     setInfoText(message: string) {
-        alert(message);
         if (message === null || message === undefined || message === "") {
             this.tableCache.cacheLoadingInfoText.hide();
         } else {

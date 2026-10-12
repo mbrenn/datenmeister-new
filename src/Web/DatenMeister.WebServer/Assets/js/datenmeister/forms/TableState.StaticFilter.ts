@@ -70,9 +70,10 @@ export function filterAndSortTableData(
         let limit = tableState.getLimit();
         if (limit === undefined) {
             limit = 100;
-            if (result.length > limit) {
-                tableForm.setInfoText("Only " + limit + " items are shown");
-            }
+        }
+
+        if (result.length > limit) {
+            tableForm.setInfoText("Only " + limit + " items are shown");
         }
 
         if (limit > 0) {

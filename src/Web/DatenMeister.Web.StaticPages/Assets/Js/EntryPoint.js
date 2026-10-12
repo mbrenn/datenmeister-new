@@ -22,6 +22,7 @@ export async function renderStaticDataPage(data) {
     // Configures the Tableform and sets the callback
     const tableFormParameter = new TableForm.TableFormParameter();
     tableFormParameter.showSettingsButtons = false;
+    tableFormParameter.hideButtonsForNewElements = true;
     const formConfiguration = {
         formType: FormInterfaces.FormType.Collection,
         formElement: formAsDmObject,
@@ -30,6 +31,7 @@ export async function renderStaticDataPage(data) {
     const tableForm = new TableForm.TableForm(formConfiguration);
     tableForm.tableParameter = tableFormParameter;
     tableForm.callbackLoadItems = filterAndSortTableData(tableForm, elementsAsDmObject);
+    data.htmlContainer.empty();
     await tableForm.createFormByCollection(data.htmlContainer);
 }
 window.testEntryPoint = testEntryPoint;

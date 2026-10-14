@@ -3,10 +3,20 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as QueryEngine from "../modules/QueryEngine.js";
 
 export class TableState {
-    queryStatement: Mof.DmObject = new Mof.DmObject(_DatenMeister._DataViews.__QueryStatement_Uri);
+    queryStatement: Mof.DmObject;
 
     overrideQueryWorkspace: string | undefined = undefined;
     overrideQueryItem: string  | undefined  = undefined;
+    
+    constructor(queryStatement?: Mof.DmObject) {
+        if(queryStatement) {
+            this.queryStatement = queryStatement;
+        }
+        else
+        {
+            this.queryStatement = new Mof.DmObject(_DatenMeister._DataViews.__QueryStatement_Uri);
+        }
+    }
 
     getOrderBy(): { property: string, descending: boolean } | undefined {
         const node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);

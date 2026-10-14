@@ -68,6 +68,8 @@ export function filterAndSortTableData(
 
         // 4. Limiting / Pagination via tableState.getLimit()
         let limit = tableState.getLimit();
+        alert("Limit is " + (limit ?? "undefined"));
+        
         if (limit === undefined) {
             limit = 100;
         }

@@ -20,6 +20,7 @@ import * as ActionField from "../fields/ActionField.js";
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 import _TableForm = _DatenMeister._Forms._FormTypes._TableForm;
+import {TableState} from "./TableState.js";
 
 export class CollectionFormHtmlElements
 {
@@ -351,25 +352,30 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                     parameter.viewNode = viewNodeUrl.uri;
                 }
 
-                const callbackLoadItems = async (query: Mof.DmObject) => {
-
-                    const queryResult: ClientElements.IQueryObjectResult = await ClientElements.queryObject(
-                        query,
-                        {
-                            dynamicSourceViewNodeWorkspace: tthis.formElement.get(_Forms._FormTypes._Form.originalWorkspace, ObjectType.Single),
-                            dynamicSourceViewNode: parameter.viewNode ?? "",
-                            dynamicSourceWorkspaceId: tthis.workspace,
-                            dynamicSourceItemUri: tthis.extentUri
-                        });
-                    return {
-                        message: queryResult.result.length >= 101 ? "Capped to 100 elements" : "",
-                        elements: queryResult.result.slice(0, 100) as Array<Mof.DmObject>
-                    }
-                };
-
                 const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
                 if (formFactory !== undefined) {
                     const tableForm = formFactory(configuration);
+
+                    const callbackLoadItems = async (query: Mof.DmObject) => {
+                        const tableState = new TableState(query);
+                        if(tableState.getLimit() === undefined) {
+                            tableState.setLimit(101);
+                        }
+
+                        const queryResult: ClientElements.IQueryObjectResult = await ClientElements.queryObject(
+                            query,
+                            {
+                                dynamicSourceViewNodeWorkspace: tthis.formElement.get(_Forms._FormTypes._Form.originalWorkspace, ObjectType.Single),
+                                dynamicSourceViewNode: parameter.viewNode ?? "",
+                                dynamicSourceWorkspaceId: tthis.workspace,
+                                dynamicSourceItemUri: tthis.extentUri
+                            });
+                        return {
+                            message: queryResult.result.length >= 101 ? "Capped to 100 elements" : "",
+                            elements: queryResult.result.slice(0, 100) as Array<Mof.DmObject>
+                        }
+                    };
+                    
                     tableForm.pageNavigation = tthis;
                     tableForm.callbackLoadItems = async (x) => {
                         const result = await callbackLoadItems(x);

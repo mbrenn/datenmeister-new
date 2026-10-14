@@ -306,7 +306,7 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
             }
 
             // Initialize the table state by also creating the empty query
-            this.tableState.initialize();
+            this.tableState.initialize(-1);
         }
 
         this.elements = await this.callbackLoadItems(this.tableState.queryStatement);

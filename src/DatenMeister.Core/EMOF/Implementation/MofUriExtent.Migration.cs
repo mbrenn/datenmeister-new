@@ -7,8 +7,10 @@ public partial class MofUriExtent
         /// <summary>
         /// Stores a list of migration helpers supporting the move of namespaces and classed
         /// </summary>
-        public static List<Func<string, string?>> MigrationHelpers { get; set; } = [MigrateDatenMeisterToDm, IgnoreMofTags];
+        private static List<Func<string, string?>> MigrationHelpers { get; set; } = [MigrateDatenMeisterToDm, IgnoreMofTags];
         
+        private static ReaderWriterLockSlim _lockSlim = new ReaderWriterLockSlim();
+
         /// <summary> 
         /// Performs the migration for the resolving
         /// </summary>
@@ -16,15 +18,24 @@ public partial class MofUriExtent
         /// <returns>The migrated uri</returns>
         public static string? MigrateUriForResolver(string? uri)
         {
-            if(uri == null) return null;
+            if (uri == null) return null;
 
-            foreach (var migrationHelper in MigrationHelpers)
+            try
             {
-                uri = migrationHelper(uri);
-                if (uri == null) return null;
-            }
+                _lockSlim.EnterReadLock();
 
-            return uri;
+                foreach (var migrationHelper in MigrationHelpers)
+                {
+                    uri = migrationHelper(uri);
+                    if (uri == null) return null;
+                }
+
+                return uri;
+            }
+            finally
+            {
+                _lockSlim.ExitReadLock();
+            }
         }
 
         /// <summary>
@@ -65,7 +76,15 @@ public partial class MofUriExtent
         /// <param name="to">The uri to be converted to</param>
         public static void AddConverter(string from, string to)
         {
-            MigrationHelpers.Add(uri => uri == from ? to : uri);
+            try
+            {
+                _lockSlim.EnterWriteLock();
+                MigrationHelpers.Add(uri => uri == from ? to : uri);
+            }
+            finally
+            {
+                _lockSlim.ExitWriteLock();
+            }
         }
     }
 }

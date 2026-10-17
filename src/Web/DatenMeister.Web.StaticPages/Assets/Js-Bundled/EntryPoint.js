@@ -13474,12 +13474,13 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
   };
 
   // ../DatenMeister.WebServer/Assets/js/datenmeister/forms/TableState.StaticFilter.js
-  function filterAndSortTableData(tableForm, elementsAsDmObject) {
+  function filterAndSortTableData(tableForm, elementsAsDmObject, config) {
     return async (query) => {
       const tableState = tableForm.tableState;
       if (query && tableState) {
         tableState.queryStatement = query;
       }
+      const visibleItems = config?.visibleItems ?? 100;
       let result = [...elementsAsDmObject];
       if (!tableState) {
         return result;
@@ -13526,7 +13527,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
       }
       let limit2 = tableState.getLimit();
       if (limit2 === void 0) {
-        limit2 = 100;
+        limit2 = visibleItems;
       }
       if (result.length > limit2) {
         tableForm.setInfoText("Only " + limit2 + " items are shown");
@@ -13546,6 +13547,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     alert("Test entry");
   }
   async function renderStaticDataPage(data) {
+    const configAsDmObject = convertJsonObjectToDmObject(data.config) ?? new DmObject();
     const formAsDmObject = convertJsonObjectToDmObject(data.form);
     const elementsAsDmObject = new Array();
     for (let n in data.data) {
@@ -13564,7 +13566,9 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     };
     const tableForm = new TableForm(formConfiguration);
     tableForm.tableParameter = tableFormParameter;
-    tableForm.callbackLoadItems = filterAndSortTableData(tableForm, elementsAsDmObject);
+    tableForm.callbackLoadItems = filterAndSortTableData(tableForm, elementsAsDmObject, {
+      visibleItems: configAsDmObject.get("visibleItems", ObjectType.Number)
+    });
     data.htmlContainer.empty();
     await tableForm.createFormByCollection(data.htmlContainer);
   }

@@ -1,14 +1,21 @@
 import * as Mof from "../Mof.js";
 import * as TableForm from "./TableForm.js";
 
+export interface IFilterAndSortDataConfig {
+    visibleItems?: number;
+}
+
 export function filterAndSortTableData(
     tableForm: TableForm.TableForm,
-    elementsAsDmObject: Mof.DmObjectWithSync[]) {
+    elementsAsDmObject: Mof.DmObjectWithSync[],
+    config?: IFilterAndSortDataConfig) {
     return async (query: Mof.DmObject) => {
         const tableState = tableForm.tableState;
         if (query && tableState) {
             tableState.queryStatement = query;
         }
+        
+        const visibleItems = config?.visibleItems ?? 100;
 
         let result = [...elementsAsDmObject];
 
@@ -69,7 +76,7 @@ export function filterAndSortTableData(
         // 4. Limiting / Pagination via tableState.getLimit()
         let limit = tableState.getLimit();
         if (limit === undefined) {
-            limit = 100;
+            limit = visibleItems;
         }
 
         if (result.length > limit) {

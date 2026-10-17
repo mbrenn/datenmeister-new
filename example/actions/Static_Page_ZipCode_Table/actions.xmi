@@ -5,7 +5,7 @@
     <action p2:type="dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee" p2:id="3bd87987-a80f-4775-8e3f-e92775b9a6f7" name="Load Excel" configuration-ref="dm:///actions#7cbf2c86-b41d-45ec-8d36-768a993833be" />
     <action p2:type="dm:///intern.types.staticwebpages.datenmeister/#f63bbf10-19fe-455a-a952-74be1e3d05f6" p2:id="0ccac69b-dd1b-416e-acfd-20a52a4abd7d" htmlFilename="test.html" pageTitle="Your personal ZipCode overview" name="Export as 'test.html'">
       <htmlElements p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline" p2:id="b91c3edf-e504-4fd3-ac4b-575347634e30" title="Searchable Zipcode Overview" name="Headline" />
-      <htmlElements p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable" p2:id="40e62ed7-30d9-4134-b5ae-c86b212f21f4" name="ZipCodeTable" viewNode-ref="dm:///actions#aaa25f66-5a31-4d39-bb65-c9d57b0f57af" />
+      <htmlElements p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable" p2:id="40e62ed7-30d9-4134-b5ae-c86b212f21f4" name="ZipCodeTable" viewNode-ref="dm:///actions#aaa25f66-5a31-4d39-bb65-c9d57b0f57af" visibleItems="500" />
     </action>
   </item>
   <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="b60a2b29-70bd-4e03-be80-ff2a15917cbd" name="Data for ZIP Report" xmlns:p2="http://www.omg.org/spec/XMI/20131001">

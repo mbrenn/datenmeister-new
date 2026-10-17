@@ -8,4 +8,8 @@
     <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="ca225d43-4855-45aa-a38d-528f65fc8565" general-ref="dm:///_internal/types/internal#Actions.Action" />
   </item>
   <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="b619fa64-3dc3-47c7-886e-1fb3ecdf29b3" name="HtmlElements" xmlns:p2="http://www.omg.org/spec/XMI/20131001" />
+  <item p2:type="dm:///_internal/model/uml#Class" p2:id="78ed7454-433f-4064-8948-a8389eb0f6fe" name="StaticTableOfDataElement" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c5661963-7017-452e-b53f-26e21e49f67d" name="visibleItems" type-ref="dm:///_internal/model/primitivetypes#Integer" />
+    <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="b64c9faa-f761-4fc1-9772-760f66848ab7" general-ref="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable" />
+  </item>
 </xmi>

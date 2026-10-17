@@ -9,6 +9,7 @@ export function testEntryPoint() {
     alert('Test entry');
 }
 export async function renderStaticDataPage(data) {
+    const configAsDmObject = Mof.convertJsonObjectToDmObject(data.config) ?? new Mof.DmObject();
     // Converts the form as a DmObject
     const formAsDmObject = Mof.convertJsonObjectToDmObject(data.form);
     // Converts the elements as an array of DmObjects
@@ -30,7 +31,9 @@ export async function renderStaticDataPage(data) {
     };
     const tableForm = new TableForm.TableForm(formConfiguration);
     tableForm.tableParameter = tableFormParameter;
-    tableForm.callbackLoadItems = filterAndSortTableData(tableForm, elementsAsDmObject);
+    tableForm.callbackLoadItems = filterAndSortTableData(tableForm, elementsAsDmObject, {
+        visibleItems: configAsDmObject.get("visibleItems", Mof.ObjectType.Number)
+    });
     data.htmlContainer.empty();
     await tableForm.createFormByCollection(data.htmlContainer);
 }

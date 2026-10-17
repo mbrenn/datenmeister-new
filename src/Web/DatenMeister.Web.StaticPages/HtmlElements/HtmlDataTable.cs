@@ -9,6 +9,7 @@ using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.HtmlEngine;
 using DatenMeister.Web.Json;
+using DatenMeister.Web.StaticPages.Model;
 
 namespace DatenMeister.Web.StaticPages.HtmlElements;
 
@@ -43,10 +44,15 @@ public class HtmlDataTable(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
     public void Generate(HtmlReport htmlReport, IElement element)
     {
         logger.Debug("Generating HTML table");
-        var cssClass = element.getOrDefault<string>(_Reports._Elements._ReportTable.cssClass);
-        var form = element.getOrDefault<IElement?>(_Reports._Elements._ReportTable.form);
-        var viewNode = element.getOrDefault<IElement?>(_Reports._Elements._ReportTable.viewNode)
+        var cssClass = element.getOrDefault<string>(_Root._StaticTableOfDataElement.cssClass);
+        var form = element.getOrDefault<IElement?>(_Root._StaticTableOfDataElement.form);
+        var viewNode = element.getOrDefault<IElement?>(_Root._StaticTableOfDataElement.viewNode)
                        ?? throw new InvalidOperationException("View node is not specified");
+        var visibleItems = element.getOrDefault<int>(_Root._StaticTableOfDataElement.visibleItems);
+        if (visibleItems == 0)
+        {
+            visibleItems = 100;
+        }
 
         // Gets the data from the view point
         var dataViewEvaluation = new DataViewLogic(workspaceLogic, scopeStorage);
@@ -63,7 +69,7 @@ public class HtmlDataTable(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
             var context = formCreationFactory.Create(string.Empty);
             // Create form
             form = FormCreation.CreateTableForm(
-                new TableFormFactoryParameter()
+                new TableFormFactoryParameter
                 {
                     Collection = elements
                 }, context).Forms.FirstOrDefault();
@@ -88,26 +94,25 @@ public class HtmlDataTable(IWorkspaceLogic workspaceLogic, IScopeStorage scopeSt
 
         // Creates the helper method
         var data = InMemoryObject.CreateEmpty();
-        data.set("form", form);
         data.set("cssClass", cssClass);
+        data.set("visibleItems", visibleItems);
 
         HtmlInlineScript sourceTag;
         var variableName = "data" + GetNextCallId();
         
         using (new StopWatchLogger(logger, "Enumerating objects"))
         {
-            var cssClassAsJson = converter.ConvertToJsonString(cssClass);
             var formAsJson = converter.ConvertToJsonString(form);
-            var dataAsJson = converter.ConvertToJsonString(elementsAsArray);
+            var elementsAsJson = converter.ConvertToJsonString(elementsAsArray);
+            var configAsJson = converter.ConvertToJsonString(data);
             sourceTag =
                 new HtmlInlineScript(
                     $"var {variableName} = " +
-                    $"{{cssClass: {cssClassAsJson}, " +
+                    $"{{config: {configAsJson}, " +
                     $"form: {formAsJson}, " +
-                    $"data: {dataAsJson}, " +
+                    $"data: {elementsAsJson}, " +
                     $"htmlContainer: $('#{htmlContainer.Id}')}}" +
                     $";");
-
         }
 
         htmlReport.Add(sourceTag);

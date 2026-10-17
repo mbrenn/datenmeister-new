@@ -38,6 +38,33 @@ public class _Root
     public _CreateStaticWebPageAction @CreateStaticWebPageAction = new ();
     public MofObjectShadow @__CreateStaticWebPageAction = new ("dm:///intern.types.staticwebpages.datenmeister/#f63bbf10-19fe-455a-a952-74be1e3d05f6");
 
+    [TypeUri(Uri = "dm:///intern.types.staticwebpages.datenmeister/#78ed7454-433f-4064-8948-a8389eb0f6fe",
+        TypeKind = TypeKind.ClassTree)]
+    public class _StaticTableOfDataElement
+    {
+        public static readonly string @visibleItems = "visibleItems";
+        public IElement? @_visibleItems = null;
+
+        public static readonly string @cssClass = "cssClass";
+        public IElement? @_cssClass = null;
+
+        public static readonly string @viewNode = "viewNode";
+        public IElement? @_viewNode = null;
+
+        public static readonly string @form = "form";
+        public IElement? @_form = null;
+
+        public static readonly string @evalProperties = "evalProperties";
+        public IElement? @_evalProperties = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+    }
+
+    public _StaticTableOfDataElement @StaticTableOfDataElement = new ();
+    public MofObjectShadow @__StaticTableOfDataElement = new ("dm:///intern.types.staticwebpages.datenmeister/#78ed7454-433f-4064-8948-a8389eb0f6fe");
+
     public static readonly _Root TheOne = new ();
 
 }

@@ -12,10 +12,16 @@ declare global {
     
     interface IRenderStaticDataPageParams
     {
+        config: any;
         data: any;
         form: any;
-        cssClass: string;
         htmlContainer: JQuery<HTMLElement>
+    }
+    
+    interface IRenderStaticDataPageParamConfig
+    {
+        cssClass: string;
+        visibleItems: number;
     }
 }
 
@@ -28,6 +34,8 @@ export function testEntryPoint() {
 }
 
 export async function renderStaticDataPage(data: IRenderStaticDataPageParams) {
+    const configAsDmObject = Mof.convertJsonObjectToDmObject(data.config) ?? new Mof.DmObject();
+    
     // Converts the form as a DmObject
     const formAsDmObject = Mof.convertJsonObjectToDmObject(data.form);
 
@@ -44,17 +52,20 @@ export async function renderStaticDataPage(data: IRenderStaticDataPageParams) {
     const tableFormParameter = new TableForm.TableFormParameter();
     tableFormParameter.showSettingsButtons = false;
     tableFormParameter.hideButtonsForNewElements = true;
-    
+
     const formConfiguration = {
         formType: FormInterfaces.FormType.Collection,
         formElement: formAsDmObject,
-        isReadOnly: true
+        isReadOnly: true        
     }
 
     const tableForm = new TableForm.TableForm(formConfiguration);
     tableForm.tableParameter = tableFormParameter;
-    tableForm.callbackLoadItems = filterAndSortTableData(tableForm, elementsAsDmObject);
-    
+    tableForm.callbackLoadItems = filterAndSortTableData(tableForm, elementsAsDmObject,
+        {
+            visibleItems: configAsDmObject.get("visibleItems", Mof.ObjectType.Number)
+        });
+
     data.htmlContainer.empty();
     await tableForm.createFormByCollection(data.htmlContainer);
 }

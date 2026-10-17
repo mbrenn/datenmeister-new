@@ -13525,7 +13525,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
         });
       }
       let limit2 = tableState.getLimit();
-      alert("Limit is " + (limit2 ?? "undefined"));
       if (limit2 === void 0) {
         limit2 = 100;
       }

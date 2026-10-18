@@ -4,10 +4,7 @@
   </PropertyGroup>
 
   <Target Name="RunBSMake"          
-          BeforeTargets="Build;CoreCompile"
-          Condition="Exists('$(MSBuildProjectDirectory)\.bsmake\Build.cs')"
-          Inputs="@(AssetInputs);.bsmake\**\*.cs;.bsmake\Build.csproj"
-          Outputs="@(AssetOutputs)">
+          BeforeTargets="Build;CoreCompile">
     <Exec Command="bsmake build $(MSBuildProjectDirectory)" />
   </Target>
 </Project>

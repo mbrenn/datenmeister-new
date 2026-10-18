@@ -1,6 +1,7 @@
 import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as QueryEngine from "../modules/QueryEngine.js";
+import {createForFilterByMetaClass} from "../modules/QueryEngine.js";
 
 export class TableState {
     queryStatement: Mof.DmObject;
@@ -35,7 +36,7 @@ export class TableState {
             node = QueryEngine.createForOrderByProperty(undefined, property, descending);
             this.addNode(node);
         } else {
-            node.set(_DatenMeister._DataViews._Row._RowOrderByNode.name, "Order by '" + property + "' " + (descending ? "descending" : "ascending"));
+            node.set(_DatenMeister._DataViews._Row._RowOrderByNode._name_, "Order by '" + property + "' " + (descending ? "descending" : "ascending"));
             node.set(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, property);
             node.set(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, descending);
         }
@@ -45,7 +46,7 @@ export class TableState {
         this.removeNodeByMetaClass(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
     }
 
-    getFreeTextFilter(): string | undefined {
+    getFreeTextFilter() {
         const node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
         return node?.get(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, Mof.ObjectType.String);
     }
@@ -56,13 +57,35 @@ export class TableState {
             node = QueryEngine.createForFilterByFreetext(undefined, text);
             this.addNode(node);
         } else {
-            node.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.name, "Filter by free text '" + text + "'");
+            node.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere._name_, "Filter by free text '" + text + "'");
             node.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, text);
         }
     }
     
     removeFreeTextFilter() {
         this.removeNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
+    }
+    
+    getMetaClassFilter() {
+        const node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByMetaclassNode_Uri);
+        return node?.get(_DatenMeister._DataViews._Row._RowFilterByMetaclassNode.metaClass, Mof.ObjectType.Object);
+    }
+    
+    setMetaClassFilter(metaClass: Mof.DmObject, includeInherits?: boolean) {
+        let node = this.findNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByMetaclassNode_Uri);
+        if (!node) {
+            node = QueryEngine.createForFilterByMetaClass(undefined, metaClass, includeInherits);
+            this.addNode(node);
+        } else {
+            node.set(_DatenMeister._DataViews._Row._RowFilterByMetaclassNode._name_, "Filter by metaclass '" + metaClass.uri + "'");
+            node.set(_DatenMeister._DataViews._Row._RowFilterByMetaclassNode.metaClass, metaClass);
+            node.set(_DatenMeister._DataViews._Row._RowFilterByMetaclassNode.includeInherits, includeInherits);
+        }
+    }
+
+    removeMetaClassFilter()
+    {
+        this.removeNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByMetaclassNode_Uri);
     }
 
     getFilterByProperty(property: string): string | undefined {
@@ -78,7 +101,7 @@ export class TableState {
             node = QueryEngine.createForFilterByProperty(undefined, property, value, comparisonMode);
             this.addNode(node);
         } else {
-            node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.name, "Filter by property '" + property + "' " + comparisonMode +  " '" + value + "'");
+            node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode._name_, "Filter by property '" + property + "' " + comparisonMode +  " '" + value + "'");
             node.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, value);
         }
     }
@@ -102,7 +125,7 @@ export class TableState {
             node.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.position, 0);
             this.addNode(node);
         } else {
-            node.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.name, "Limit to " + limit + " items");
+            node.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode._name_, "Limit to " + limit + " items");
             node.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.amount, limit);
         }
     }

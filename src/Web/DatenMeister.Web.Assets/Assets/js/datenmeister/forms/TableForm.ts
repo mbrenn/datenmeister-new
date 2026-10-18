@@ -311,8 +311,7 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
             // Adds the filter on metaclass
             const metaClassFilter = this.formElement?.get(_DatenMeister._Forms._FormTypes._TableForm.metaClass, Mof.ObjectType.Object);
             if (metaClassFilter !== undefined) {
-                //this.tableState.setMetaClassFilter(metaClassFilter);
-                alert('Yeah:' + metaClassFilter)
+                this.tableState.setMetaClassFilter(metaClassFilter);
             }
         }
 

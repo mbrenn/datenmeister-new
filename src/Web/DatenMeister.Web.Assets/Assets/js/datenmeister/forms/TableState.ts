@@ -60,7 +60,7 @@ export class TableState {
             node.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, text);
         }
     }
-
+    
     removeFreeTextFilter() {
         this.removeNodeByMetaClass(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
     }

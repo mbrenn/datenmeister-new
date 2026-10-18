@@ -392,6 +392,10 @@
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7e4e02f7-36ae-48d6-8d91-fd48b0a435a1" name="metaClass" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1df4e655-eb85-4fa2-bec6-adc7383adb2b" name="includeInherits" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       </packagedElement>
+      <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="d709c5c0-6cc4-4405-8682-24328eb0ecab" name="RowFilterByMetaClass">
+        <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="ca180fe9-9daa-4f5e-b9ca-b9839c4c7e6d" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="eb2042bc-bf37-4ea0-a10e-ba6a44d93ffc" name="metaClass" type-ref="dm:///_internal/model/uml#Classifier" lower="1" upper="1" />
+      </packagedElement>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="d3f6fad3-ab8f-4685-a8fd-b0cbe71da519" name="Column">
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="00d223b8-4335-4ee3-9359-92354e2d669d" name="ColumnFilterIncludeOnlyNode">

@@ -307,6 +307,13 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
 
             // Initialize the table state by also creating the empty query
             this.tableState.initialize(-1);
+
+            // Adds the filter on metaclass
+            const metaClassFilter = this.formElement?.get(_DatenMeister._Forms._FormTypes._TableForm.metaClass, Mof.ObjectType.Object);
+            if (metaClassFilter !== undefined) {
+                //this.tableState.setMetaClassFilter(metaClassFilter);
+                alert('Yeah:' + metaClassFilter)
+            }
         }
 
         this.elements = await this.callbackLoadItems(this.tableState.queryStatement);

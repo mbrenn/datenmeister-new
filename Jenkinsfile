@@ -153,7 +153,7 @@ pipeline {
 
                 xunit(
                     tools: [
-                        JUnit(pattern: 'src/Web/DatenMeister.WebServer/jstests.xml'),
+                        JUnit(pattern: 'src/Web/DatenMeister.Web.Assets/jstests.xml'),
                         JUnit(pattern: 'src/DatenMeister.Reports.Swimlane/jstests.xml')
                     ]
                 )

@@ -7,8 +7,14 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <AssetInputs Include="Assets/**" />
-        <AssetOutputs Include="wwwroot/**" />
+      <!-- Include only source files and configuration -->
+      <AssetInputs Include="Assets/**/*.scss" />
+      <AssetInputs Include="Assets/**/*.ts" />
+      <AssetInputs Include="package.json;tsconfig.json" />
+
+      <!-- Specify concrete generated output files or precise globs -->
+      <AssetOutputs Include="wwwroot/css/datenmeister-web.min.css" />
+      <AssetOutputs Include="wwwroot/js/**/*.js" />
     </ItemGroup>
 
     <ItemGroup>

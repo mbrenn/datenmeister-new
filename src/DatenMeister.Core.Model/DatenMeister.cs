@@ -1399,21 +1399,6 @@ public class _DataViews
         public _RowFilterByMetaclassNode @RowFilterByMetaclassNode = new ();
         public MofObjectShadow @__RowFilterByMetaclassNode = new ("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode");
 
-        [TypeUri(Uri = "dm:///_internal/types/internal#d709c5c0-6cc4-4405-8682-24328eb0ecab",
-            TypeKind = TypeKind.ClassTree)]
-        public class _RowFilterByMetaClass
-        {
-            public static readonly string @metaClass = "metaClass";
-            public IElement? @_metaClass = null;
-
-            public static readonly string @name = "name";
-            public IElement? @_name = null;
-
-        }
-
-        public _RowFilterByMetaClass @RowFilterByMetaClass = new ();
-        public MofObjectShadow @__RowFilterByMetaClass = new ("dm:///_internal/types/internal#d709c5c0-6cc4-4405-8682-24328eb0ecab");
-
     }
 
     public _Row Row = new ();

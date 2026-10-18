@@ -637,13 +637,6 @@ export namespace _DataViews
                 }
 
                 export const __RowFilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode";
-                export class _RowFilterByMetaClass
-                {
-                    static metaClass = "metaClass";
-                    static _name_ = "name";
-                }
-
-                export const __RowFilterByMetaClass_Uri = "dm:///_internal/types/internal#d709c5c0-6cc4-4405-8682-24328eb0ecab";
         }
 
         export namespace _Column

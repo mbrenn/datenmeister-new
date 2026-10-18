@@ -3692,59 +3692,6 @@ public class DataViews
 
         }
 
-        [TypeUri(Uri = "dm:///_internal/types/internal#d709c5c0-6cc4-4405-8682-24328eb0ecab",
-            TypeKind = TypeKind.WrappedClass)]
-        public class RowFilterByMetaClass_Wrapper : IElementWrapper
-        {
-            private readonly IElement _wrappedElement;
-
-            public RowFilterByMetaClass_Wrapper(IElement innerDmElement)
-            {
-                _wrappedElement = innerDmElement;
-            }
-
-            public RowFilterByMetaClass_Wrapper(IFactory factory)
-            {
-                _wrappedElement = factory.create(_metaClass);
-            }
-
-            public IElement GetWrappedElement() => _wrappedElement;
-
-            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#d709c5c0-6cc4-4405-8682-24328eb0ecab");
-
-            public static RowFilterByMetaClass_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
-
-            // DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper
-            public DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper? @metaClass
-            {
-                get
-                {
-                    var foundElement = _wrappedElement.getOrDefault<IElement?>("metaClass");
-                    return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper(foundElement);
-                }
-                set 
-                {
-                    if(value is IElementWrapper wrappedElement)
-                    {
-                        _wrappedElement.set("metaClass", wrappedElement.GetWrappedElement());
-                    }
-                    else
-                    {
-                        _wrappedElement.set("metaClass", value);
-                    }
-                }
-            }
-
-            public string? @name
-            {
-                get =>
-                    _wrappedElement.getOrDefault<string?>("name");
-                set => 
-                    _wrappedElement.set("name", value);
-            }
-
-        }
-
     }
 
     public class Column

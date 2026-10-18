@@ -9,7 +9,7 @@ export async function resolve(specifier, context, nextResolve) {
     } else {
       rel = specifier.substring(specifier.indexOf('\\js\\datenmeister\\') + '\\js\\datenmeister\\'.length);
     }
-    const target = path.resolve(import.meta.dirname, '../Web/DatenMeister.WebServer/Assets/js/datenmeister', rel);
+    const target = path.resolve(import.meta.dirname, '../Web/DatenMeister.Web.Assets/Assets/js/datenmeister', rel);
     return {
       format: 'module',
       shortCircuit: true,

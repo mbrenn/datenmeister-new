@@ -75,7 +75,7 @@ pipeline {
                     dotnet tool install BS_Remove_File_Attribute_From_JUnit
                     cd ../..
 
-                    cd src/Web/DatenMeister.WebServer
+                    cd src/Web/DatenMeister.Web.Assets
                     dotnet new tool-manifest --force
                     dotnet tool install BS_Remove_File_Attribute_From_JUnit
                     cd ../../..

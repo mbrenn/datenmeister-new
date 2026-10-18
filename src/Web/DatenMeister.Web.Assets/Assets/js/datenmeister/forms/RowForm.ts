@@ -10,7 +10,6 @@ import {SubmitMethod} from "./Forms.js";
 import * as ClientItem from "../client/Items.js";
 import * as ClientAction from "../client/Actions.js";
 import {_Actions} from "../models/DatenMeister.class.js";
-import _Forms = _Actions._Forms;
 
 class FieldInForm {
     fieldElement: InterfacesFields.IFormField;

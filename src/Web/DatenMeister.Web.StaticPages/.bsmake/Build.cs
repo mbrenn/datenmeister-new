@@ -15,11 +15,11 @@ async Task CopyCSS()
 
     System.IO.Directory.CreateDirectory("Assets/Css/");
     System.IO.File.Copy(
-        "../DatenMeister.WebServer/wwwroot/css/datenmeister-web.min.css", 
+        "../DatenMeister.Web.Assets/wwwroot/css/datenmeister-web.min.css", 
         "Assets/Css/datenmeister-web.min.css",
         true);       
     System.IO.File.Copy(
-        "../DatenMeister.WebServer/wwwroot/css/bootstrap.min.css", 
+        "../DatenMeister.Web.Assets/wwwroot/css/bootstrap.min.css", 
         "Assets/Css/bootstrap.min.css",
         true);   
 }

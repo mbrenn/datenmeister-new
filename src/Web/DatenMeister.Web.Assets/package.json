@@ -1,0 +1,25 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "@types/chai": "^5.2.3",
+    "@types/jquery": "4.0.0",
+    "@types/jquery.fancytree": "^0.0.12",
+    "@types/mocha": "10.0.10",
+    "bootstrap": "5.3.8",
+    "chai": "6.2.2",
+    "clean-css-cli": "5.6.3",
+    "esbuild": "^0.25.0",
+    "jquery": "4.0.0",
+    "sass-embedded": "1.104.0",
+    "typescript": "7.0.2"
+  },
+  "dependencies": {
+    "@mbrenn/burnjspopup": "1.0.0",
+    "amd-loader": "0.0.8",
+    "jquery.fancytree": "^2.38.5",
+    "mocha": "^11.7.5"
+  },
+  "scripts": {
+    "test": "mocha \"Assets/JsTests/TestLibrary.js\" --require node_modules/chai/register-assert.js --require node_modules/chai/register-expect.js --ui bdd --reporter xunit --reporter-option output=jstests.xml"
+  }
+}

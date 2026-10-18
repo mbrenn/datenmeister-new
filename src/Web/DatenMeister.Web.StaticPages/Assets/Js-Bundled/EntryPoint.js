@@ -1,5 +1,5 @@
 (() => {
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/ApiModels.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/ApiModels.js
   var EntentType;
   (function(EntentType2) {
     EntentType2["Item"] = "Item";
@@ -7,7 +7,7 @@
     EntentType2["Workspace"] = "Workspace";
   })(EntentType || (EntentType = {}));
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/Mof.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/Mof.js
   var ObjectType;
   (function(ObjectType2) {
     ObjectType2[ObjectType2["Default"] = 0] = "Default";
@@ -620,7 +620,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     return value;
   }
 
-  // ../DatenMeister.WebServer/Assets/js/burnsystems/Events.js
+  // ../DatenMeister.Web.Assets/Assets/js/burnsystems/Events.js
   function addKeyBindingEvent(button, bindingKey, bindingKeyModifierCtrl = false, bindingKeyModifierShift = false, bindingKeyModifierAlt = false) {
     const parts = [];
     if (bindingKeyModifierCtrl)
@@ -673,14 +673,14 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/Settings.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/Settings.js
   var baseUrl = "/";
   var WorkspaceManagement = "Management";
   var WorkspaceData = "Data";
   var WorkspaceTypes = "Types";
   var UriExtentUserForm = "dm:///_internal/forms/user";
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/ApiConnection.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/ApiConnection.js
   function serverError(x) {
     const error = $("<div></div>").text(x.toString());
     $("#server_errors").append(error);
@@ -711,7 +711,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     });
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/client/Elements.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/client/Elements.js
   function getAllWorkspaces() {
     return load(void 0, void 0);
   }
@@ -764,7 +764,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     };
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/client/Items.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/client/Items.js
   async function addToContainer(workspaceId, itemUri, param) {
     const evaluatedParameter = {
       metaClass: param.metaClass,
@@ -844,7 +844,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     });
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/Navigator.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/Navigator.js
   function getLinkForNavigateToExtentItems(workspace, extentUri, parameter) {
     if (workspace === void 0 || extentUri === void 0) {
       throw new Error("workspace or extentUri is undefined");
@@ -889,7 +889,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     return baseUrl + "ItemAction/Extent.CreateNewItem?workspace=" + encodeURIComponent(workspace) + "&item=" + encodeURIComponent(itemUrl) + "&property=" + encodeURIComponent(propertyName) + (metaclass !== void 0 ? "&metaclass=" + encodeURIComponent(metaclass) : "") + (metaclassWorkspace !== void 0 ? "&metaclassworkspace=" + encodeURIComponent(metaclassWorkspace) : "") + (isList !== void 0 ? isList ? "&islist=true" : "&islist=false" : "");
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/DomHelper.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/DomHelper.js
   async function injectNameByObject(domElement, element, parameter) {
     return injectNameByUri(domElement, element.workspace, element.uri ?? "", parameter);
   }
@@ -1021,7 +1021,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/controls/SelectItemControlHelper.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/controls/SelectItemControlHelper.js
   var SelectItemControlHelperForWorkspaceAndExtent = class {
     constructor(control) {
       this.isDomInitialized = false;
@@ -1179,7 +1179,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/controls/SelectItemControlByBrowsingControl.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/controls/SelectItemControlByBrowsingControl.js
   var ControlSettings = class {
     constructor() {
       this.showBreadcrumb = true;
@@ -1502,7 +1502,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/models/DatenMeister.class.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/models/DatenMeister.class.js
   var _CommonTypes;
   (function(_CommonTypes2) {
     class _DateTime {
@@ -3073,7 +3073,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     _Verifier2.__VerifyEntry_Uri = "dm:///_internal/types/internal#d19d742f-9bba-4bef-b310-05ef96153768";
   })(_Verifier || (_Verifier = {}));
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/modules/QueryEngine.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/modules/QueryEngine.js
   var QueryBuilder = class {
     constructor() {
       this.queryStatement = new DmObject(_DataViews.__QueryStatement_Uri);
@@ -3216,7 +3216,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     return viewNode;
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/controls/SelectItemControlBySearch.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/controls/SelectItemControlBySearch.js
   var ControlSettings2 = class {
     constructor() {
       this.maxItemsPerSearch = 50;
@@ -3346,7 +3346,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/controls/SelectItemControl.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/controls/SelectItemControl.js
   var ContainerSettings = class {
     constructor() {
       this.headline = void 0;
@@ -3563,7 +3563,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     });
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/Interfaces.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/Interfaces.js
   var BaseField = class {
     get configuration() {
       return this.context.configuration;
@@ -3604,7 +3604,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/burnsystems/StringManipulation.js
+  // ../DatenMeister.Web.Assets/Assets/js/burnsystems/StringManipulation.js
   function truncateText(value, parameter) {
     let added = false;
     if (parameter?.maxLength !== void 0) {
@@ -3631,7 +3631,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     return value;
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/TextField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/TextField.js
   var _TextFieldData = _Forms._FieldTypes._TextFieldData;
   var Field = class extends BaseField {
     constructor(context) {
@@ -3737,7 +3737,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/CheckboxField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/CheckboxField.js
   var Field2 = class extends BaseField {
     constructor(context) {
       super(context);
@@ -3766,7 +3766,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/CheckboxListTaggingField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/CheckboxListTaggingField.js
   var Field3 = class extends BaseField {
     constructor(context) {
       super(context);
@@ -3862,7 +3862,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/CompositeField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/CompositeField.js
   var Field4 = class extends BaseField {
     constructor(context) {
       super(context);
@@ -3931,7 +3931,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/DateTimeField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/DateTimeField.js
   var Field5 = class extends BaseField {
     constructor(context) {
       super(context);
@@ -4038,7 +4038,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/DropDownBaseField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/DropDownBaseField.js
   var FieldType;
   (function(FieldType2) {
     FieldType2[FieldType2["Strings"] = 0] = "Strings";
@@ -4163,7 +4163,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/DropDownField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/DropDownField.js
   var Field6 = class extends DropDownBaseField {
     constructor(context) {
       super(context);
@@ -4184,7 +4184,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/MetaClassElementField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/MetaClassElementField.js
   var Field7 = class extends BaseField {
     constructor(context) {
       super(context);
@@ -4233,7 +4233,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/forms/Forms.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/forms/Forms.js
   var FormModel;
   (function(FormModel2) {
     function createEmptyFormObject() {
@@ -4268,7 +4268,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     SubmitMethod2[SubmitMethod2["UserDefined3"] = 4] = "UserDefined3";
   })(SubmitMethod || (SubmitMethod = {}));
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/client/Actions.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/client/Actions.js
   async function executeActionDirectly(actionName, parameter) {
     let url = baseUrl + "api/action/execute_directly/" + encodeURIComponent(actionName);
     const result = await post(url, { parameter: createJsonFromObject(parameter.parameter) });
@@ -4283,7 +4283,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     return resultAsDmObject;
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/FormActions.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/FormActions.js
   var modules = new Array();
   function getModule(actionName) {
     for (let n in modules) {
@@ -4302,7 +4302,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     alert("Unknown action type: " + actionName);
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/MofSync.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/MofSync.js
   async function sync(element) {
     const paras = new Array();
     for (const key in element.propertiesSet) {
@@ -4339,7 +4339,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     element.clearSync();
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/ActionField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/ActionField.js
   var Field8 = class extends BaseField {
     constructor(context) {
       super(context);
@@ -4387,7 +4387,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/MergedFieldsInCell.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/MergedFieldsInCell.js
   var Field9 = class extends BaseField {
     constructor(context) {
       super(context);
@@ -4432,7 +4432,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/MofResolver.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/MofResolver.js
   function resolve(value) {
     return new Promise((resolve2) => {
       if (Array.isArray(value)) {
@@ -4476,7 +4476,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     });
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/client/Types.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/client/Types.js
   async function getPropertyType(workspace, metaClass, propertyName) {
     try {
       return await get(baseUrl + "api/types/propertytype/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(metaClass) + "/" + encodeURIComponent(propertyName));
@@ -4486,14 +4486,14 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/forms/Interfaces.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/forms/Interfaces.js
   var FormType;
   (function(FormType3) {
     FormType3["Object"] = "object";
     FormType3["Collection"] = "collection";
   })(FormType || (FormType = {}));
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/controls/TypeSelectionControl.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/controls/TypeSelectionControl.js
   var TypeSelectionControl = class {
     /**
      * The constructor for this control
@@ -4538,7 +4538,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/client/Actions.Items.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/client/Actions.Items.js
   var _MoveUpDownAction = _Actions._MoveUpDownAction;
   var _MoveDirectionType = _Actions._MoveDirectionType;
   async function moveItemInCollection(workspace, parentUri, propertyName, elementUri, direction) {
@@ -4559,7 +4559,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     await moveItemInCollection(workspace, parentUri, propertyName, elementUri, _MoveDirectionType.Up);
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/models/UML.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/models/UML.js
   var _UML;
   (function(_UML2) {
     let _Activities;
@@ -11580,7 +11580,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     })(_Actions2 = _UML2._Actions || (_UML2._Actions = {}));
   })(_UML || (_UML = {}));
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/SubElementField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/SubElementField.js
   var Control = class {
     /**
      * Initializes the container that holds the rendered subelement list and controls.
@@ -11878,7 +11878,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/ReferenceField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/ReferenceField.js
   var Control2 = class extends BaseField {
     /** Initializes a new instance
      *
@@ -12061,7 +12061,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/AnyDataField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/AnyDataField.js
   var ModeValue;
   (function(ModeValue2) {
     ModeValue2[ModeValue2["Value"] = 0] = "Value";
@@ -12291,7 +12291,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/SeparatorLineField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/SeparatorLineField.js
   var Field13 = class extends BaseField {
     constructor(context) {
       super(context);
@@ -12309,7 +12309,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/DropDownByCollection.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/DropDownByCollection.js
   var Field14 = class extends DropDownBaseField {
     constructor(context) {
       super(context);
@@ -12331,7 +12331,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/DropDownByQuery.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/DropDownByQuery.js
   var Field15 = class extends DropDownBaseField {
     constructor(context) {
       super(context);
@@ -12359,7 +12359,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/UriReferenceFieldData.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/UriReferenceFieldData.js
   var _UriReferenceFieldData = _Forms._FieldTypes._UriReferenceFieldData;
   var Field16 = class extends BaseField {
     constructor(context) {
@@ -12498,7 +12498,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/fields/UnknownField.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/UnknownField.js
   var Field17 = class extends BaseField {
     constructor(unknownFieldUri, context) {
       super(context);
@@ -12513,7 +12513,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/forms/FieldFactory.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/forms/FieldFactory.js
   var registeredFieldFactories = /* @__PURE__ */ new Map();
   function registerField(metaClassFieldData, factoryMethod) {
     registeredFieldFactories.set(metaClassFieldData, factoryMethod);
@@ -12554,7 +12554,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   }
 
-  // ../DatenMeister.WebServer/Assets/js/burnsystems/burnJsPopup.js
+  // ../DatenMeister.Web.Assets/Assets/js/burnsystems/burnJsPopup.js
   var PopupResult = class {
     // Method to close the popup by removing the outer popup window element
     closePopup() {
@@ -12579,7 +12579,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     return result;
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/forms/TableForm.ContextMenus.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/forms/TableForm.ContextMenus.js
   var _FieldData = _Forms._FieldTypes._FieldData;
   var _TableForm = _Forms._FormTypes._TableForm;
   var _NamedElement = _UML._CommonStructure._NamedElement;
@@ -12767,7 +12767,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     };
   }
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/forms/TableState.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/forms/TableState.js
   var TableState = class {
     constructor(queryStatement) {
       this.overrideQueryWorkspace = void 0;
@@ -12952,7 +12952,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/forms/TableForm.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/forms/TableForm.js
   var _FieldData2 = _Forms._FieldTypes._FieldData;
   var TableFormParameter = class {
     constructor() {
@@ -13473,7 +13473,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
 
-  // ../DatenMeister.WebServer/Assets/js/datenmeister/forms/TableState.StaticFilter.js
+  // ../DatenMeister.Web.Assets/Assets/js/datenmeister/forms/TableState.StaticFilter.js
   function filterAndSortTableData(tableForm, elementsAsDmObject, config) {
     return async (query) => {
       const tableState = tableForm.tableState;

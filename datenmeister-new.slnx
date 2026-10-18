@@ -257,6 +257,10 @@
   </Folder>
   <Folder Name="/Web/" />
   <Folder Name="/Web/DatenMeisterWeb/">
+    <Project Path="src/Web/DatenMeister.Web.Assets/DatenMeister.Web.Assets.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
     <Project Path="src/Web/DatenMeister.Web.Json/DatenMeister.Web.Json.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>

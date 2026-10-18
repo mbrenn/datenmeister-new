@@ -26,6 +26,10 @@ pipeline {
                     cd src/Web/DatenMeister.WebServer
                     npm install 
                     cd ../../..
+
+                    cd src/Web/DatenMeister.Web.Assets
+                    npm install 
+                    cd ../../..
                     
                     cd src/DatenMeister.DataView.Forms
                     npm install 
@@ -137,7 +141,7 @@ pipeline {
                     dotnet tool run bs-remove-file-attribute-from-junit ./jstests.xml
                     cd ../..
 
-                    cd src/Web/DatenMeister.WebServer
+                    cd src/Web/DatenMeister.Web.Assets
                     npm test
                     dotnet tool run bs-remove-file-attribute-from-junit ./jstests.xml
                     cd ../../..

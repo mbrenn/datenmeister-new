@@ -9,7 +9,7 @@
     "target": "ES2020",
     "module": "ES2020",
     "paths": {
-      "/js/datenmeister/*": [ "../DatenMeister.WebServer/Assets/js/datenmeister/*" ],
+      "/js/datenmeister/*": [ "../DatenMeister.Web.Assets/Assets/js/datenmeister/*" ],
       "module/*": [ "./Js/*" ]
     },
     "types": ["jquery"]

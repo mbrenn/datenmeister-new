@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.Build.NoTargets/3.7.56">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <AssetInputs Include="Assets/**" />
+        <AssetOutputs Include="wwwroot/**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include=".bsmake\Build.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include=".bsmake\Build.csproj" />
+      <Content Update="tsconfig.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="package.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="wwwroot\css\bootstrap.min.css" />
+    </ItemGroup>
+
+</Project>

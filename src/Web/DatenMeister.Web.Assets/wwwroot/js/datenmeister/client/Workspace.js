@@ -1,0 +1,2 @@
+import*as r from"../Settings.js";import*as p from"../ApiConnection.js";function f(s,e,i){return new Promise(o=>{let t=r.baseUrl+"api/workspace/create";const n={id:s,annotation:e};i?.skipIfExisting!==void 0&&(n.skipIfExisting=i.skipIfExisting),p.put(t,n).then(a=>{o(a)})})}function c(s,e){return new Promise(i=>{let o=r.baseUrl+"api/workspace/delete";const t={id:s};e?.skipIfExisting!==void 0&&(t.skipIfExisting=e.skipIfExisting),p.deleteRequest(o,t).then(n=>{i(n)})})}export{f as createWorkspace,c as deleteWorkspace};
+//# sourceMappingURL=Workspace.js.map

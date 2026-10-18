@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS base
 RUN dotnet tool install --global BurnSystems.Make.Exe --version 1.0.4
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
-RUN apt-get update && apt-get install -y python3 npm && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y python3 npm python-is-python3 && rm -rf /var/lib/apt/lists/*
 RUN npm install -g typescript@6.0.3
 
 # Build stage
@@ -15,6 +15,14 @@ COPY . .
 
 # Take care for all preconditions
 ## NPM
+
+WORKDIR /build/src/Web/DatenMeister.Web.Assets
+RUN npm install && tsc
+WORKDIR /
+
+WORKDIR /build/src/Web/DatenMeister.Web.StaticPages
+RUN npm install && tsc
+WORKDIR /
 
 WORKDIR /build/src/Web/DatenMeister.WebServer
 RUN npm install && tsc

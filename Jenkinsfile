@@ -30,6 +30,10 @@ pipeline {
                     cd src/Web/DatenMeister.Web.Assets
                     npm install 
                     cd ../../..
+
+                    cd src/Web/DatenMeister.Web.StaticPages
+                    npm install 
+                    cd ../../..
                     
                     cd src/DatenMeister.DataView.Forms
                     npm install 

@@ -62,7 +62,6 @@
     <None Remove="Assets\js\datenmeister\test\Test.Client.Forms.js.map" />
     <None Include=".bsmake\Build.cs" />
     <None Include="wwwroot\js\burnsystems\.gitignore" />
-    <None Include="wwwroot\js\datenmeister\.gitignore" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\css\jquery.fancytree\css\" />

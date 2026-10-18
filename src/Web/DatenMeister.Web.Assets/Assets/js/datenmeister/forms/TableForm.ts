@@ -336,6 +336,7 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
         if (this.tableParameter.hideButtonsForNewElements) {
             this.tableCache.cacheButtons.hide();
         } else {
+            this.createRefreshButton();            
             this.createButtonsForNewInstance();
         }
 
@@ -368,7 +369,7 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
         const property = formElement.get('property');
         const tthis = this;
 
-        if (formElement.get(_DatenMeister._Forms._FormTypes._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean) !== true) {
+        if (!formElement.get(_DatenMeister._Forms._FormTypes._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean)) {
             // Creates default unclassified button
             createUnclassifiedButton();
         }
@@ -522,6 +523,21 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
         });
     }
 
+
+    /**
+     * Creates a "Refresh" button and appends it to the cache buttons section of the table.
+     * The button is set with a click event handler to invoke the table reload operation.
+     *
+     * @return {void} Does not return any value.
+     */
+    private createRefreshButton()
+    {
+        const tthis = this;
+        const btn = $("<btn class='btn btn-secondary'>Refresh</btn>");
+        btn.on('click', async() => { await tthis.reloadTable();});
+        tthis.tableCache.cacheButtons.append(btn);
+    }
+
     /**
      * Gets the menu items for the table settings
      * @private
@@ -606,7 +622,7 @@ export class TableForm implements InterfacesForms.ICollectionForm, InterfacesFor
                     configuration: this.configuration,
                     field: field,
                     itemUrl: element.uri,
-                    isReadOnly: this.configuration.isReadOnly === true,
+                    isReadOnly: this.configuration.isReadOnly,
                     form: this
                 });
 

@@ -4389,9 +4389,9 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/MergedFieldsInCell.js
   var Field9 = class extends BaseField {
+    childFields = [];
     constructor(context) {
       super(context);
-      this.childFields = [];
     }
     /**
      * Inhibits the presentation of the checkbox indicating whether the element is set.
@@ -11582,6 +11582,31 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/SubElementField.js
   var Control = class {
+    configuration;
+    isReadOnly;
+    // Is connected to the item url of the element being connected to that element
+    itemUrl;
+    form;
+    /**
+     * Name of the property which contains the subelements
+     */
+    propertyName;
+    /**
+     * The name of the action that shall be executed when the user clicks on the item
+     */
+    itemActionName;
+    /**
+     * Stores the property type. This information is used to pre-select the
+     * SubElementField in which the user can define the metaclass for a element to be created
+     */
+    propertyType;
+    /**
+     * Additional Types to be directly created.
+     * Each of these types will receive a button on which the user can directly
+     * create an object
+     */
+    additionalTypes;
+    _list;
     /**
      * Initializes the container that holds the rendered subelement list and controls.
      */
@@ -11789,7 +11814,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
             const metaClass = await resolve(additionalType.get(_Forms._DefaultTypeForNewElement.metaClass, ObjectType.Object));
             metaClassUri = metaClass.uri;
             metaClassWorkspace = metaClass.workspace;
-            name ?? (name = metaClass.get(_UML._CommonStructure._NamedElement._name_, ObjectType.String));
+            name ??= metaClass.get(_UML._CommonStructure._NamedElement._name_, ObjectType.String);
           } else {
             name = additionalType.get(_UML._CommonStructure._NamedElement._name_, ObjectType.String);
             metaClassUri = additionalType.uri;
@@ -11821,6 +11846,8 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
   var Field10 = class extends Control {
+    _element;
+    context;
     get field() {
       return this.context.field;
     }
@@ -12069,6 +12096,17 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     ModeValue2[ModeValue2["Reference"] = 2] = "Reference";
   })(ModeValue || (ModeValue = {}));
   var Field12 = class extends BaseField {
+    _textBox;
+    // The texts on which the user can click to modify the type of the element
+    _aValue;
+    _aCollection;
+    _aReference;
+    _mode;
+    // This is the element containing the property
+    _element;
+    _domElement;
+    // This is the element describing the property value; the element that shall be shown in this
+    _fieldValue;
     constructor(context) {
       super(context);
     }
@@ -13126,6 +13164,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
       if (this.tableParameter.hideButtonsForNewElements) {
         this.tableCache.cacheButtons.hide();
       } else {
+        this.createRefreshButton();
         this.createButtonsForNewInstance();
       }
       const _ = this.updateFilterQueryText();
@@ -13147,7 +13186,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
       const formElement = this.getFormElement();
       const property = formElement.get("property");
       const tthis = this;
-      if (formElement.get(_Forms._FormTypes._TableForm.inhibitNewUnclassifiedItems, ObjectType.Boolean) !== true) {
+      if (!formElement.get(_Forms._FormTypes._TableForm.inhibitNewUnclassifiedItems, ObjectType.Boolean)) {
         createUnclassifiedButton();
       }
       const defaultTypesForNewElements = formElement.getAsArray("defaultTypesForNewElements");
@@ -13249,6 +13288,20 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
       });
     }
     /**
+     * Creates a "Refresh" button and appends it to the cache buttons section of the table.
+     * The button is set with a click event handler to invoke the table reload operation.
+     *
+     * @return {void} Does not return any value.
+     */
+    createRefreshButton() {
+      const tthis = this;
+      const btn = $("<btn class='btn btn-secondary'>Refresh</btn>");
+      btn.on("click", async () => {
+        await tthis.reloadTable();
+      });
+      tthis.tableCache.cacheButtons.append(btn);
+    }
+    /**
      * Gets the menu items for the table settings
      * @private
      */
@@ -13308,7 +13361,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
             configuration: this.configuration,
             field,
             itemUrl: element.uri,
-            isReadOnly: this.configuration.isReadOnly === true,
+            isReadOnly: this.configuration.isReadOnly,
             form: this
           });
           let dom;

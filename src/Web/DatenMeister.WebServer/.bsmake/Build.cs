@@ -43,18 +43,32 @@ void MoveJS()
 {
     Console.WriteLine("Copying burnJsPopup Files to wwwroot");
 
-    DirectoryHelper.CopyFiles("node_modules/@mbrenn/burnjspopup/dist/js/", "wwwroot/js/burnsystems/");
-    DirectoryHelper.CopyFiles("node_modules/@mbrenn/burnjspopup/dist/css/", "wwwroot/css");
+    CopyFiles("node_modules/@mbrenn/burnjspopup/dist/js/", "wwwroot/js/burnsystems/");
+    CopyFiles("node_modules/@mbrenn/burnjspopup/dist/css/", "wwwroot/css");
 
     Console.WriteLine("Copying JQuery FancyTree");
 
-    DirectoryHelper.CopyFiles("node_modules/jquery.fancytree/dist/", "wwwroot/js", searchPattern: "*.min.js");
-    DirectoryHelper.CopyFiles("node_modules/jquery.fancytree/dist/skin-win8/", "wwwroot/css/jquery.fancytree/css", searchPattern: "*.css");
+    CopyFiles("node_modules/jquery.fancytree/dist/", "wwwroot/js", searchPattern: "*.min.js");
+    CopyFiles("node_modules/jquery.fancytree/dist/skin-win8/", "wwwroot/css/jquery.fancytree/css", searchPattern: "*.css");
+}
+
+void CopyFiles(string sourceDirectory, string targetDirectory, string searchPattern = "*")
+{
+    foreach (var sourceFile in Directory.GetFiles(sourceDirectory, searchPattern, SearchOption.AllDirectories))
+    {
+        var relativePath = Path.GetRelativePath(sourceDirectory, sourceFile);
+        var targetFile = Path.Combine(targetDirectory, relativePath);
+        var targetParentDirectory = Path.GetDirectoryName(targetFile)
+            ?? throw new InvalidOperationException("Target file has no parent directory");
+
+        Directory.CreateDirectory(targetParentDirectory);
+        File.Copy(sourceFile, targetFile, overwrite: true);
+    }
 }
 
 void CopyAssets()
 {
     Console.WriteLine("Copying assets to wwwroot");
 
-    DirectoryHelper.CopyFiles("../DatenMeister.Web.Assets/wwwroot", "wwwroot");
+    CopyFiles("../DatenMeister.Web.Assets/wwwroot/", "wwwroot");
 }

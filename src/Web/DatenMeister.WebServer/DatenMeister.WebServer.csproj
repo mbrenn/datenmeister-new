@@ -62,6 +62,7 @@
     <None Remove="Assets\js\datenmeister\test\Test.Client.Forms.js.map" />
     <None Include=".bsmake\Build.cs" />
     <None Include="wwwroot\js\burnsystems\.gitignore" />
+    <None Include="wwwroot\js\JsTests\.gitignore" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\css\jquery.fancytree\css\" />
@@ -69,6 +70,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".bsmake\Build.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\JsTests\events.test.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\JsTests\events.test.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\JsTests\Test.Mof.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\JsTests\Test.Mof.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\JsTests\Test.StaticObjectQuery.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\JsTests\Test.StaticObjectQuery.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\JsTests\Test.TableState.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\JsTests\Test.TableState.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\JsTests\TestLibrary.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\JsTests\TestLibrary.js.map" />
   </ItemGroup>
     
   <Target Name="CopyIconPngFiles" BeforeTargets="BeforeCompile">

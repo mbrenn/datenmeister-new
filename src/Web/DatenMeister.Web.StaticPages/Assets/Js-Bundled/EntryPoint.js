@@ -3075,7 +3075,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/modules/QueryEngine.js
   var QueryBuilder = class {
-    queryStatement;
     constructor() {
       this.queryStatement = new DmObject(_DataViews.__QueryStatement_Uri);
     }
@@ -3229,16 +3228,16 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/controls/SelectItemControlBySearch.js
   var ControlSettings2 = class {
-    maxItemsPerSearch = 50;
+    constructor() {
+      this.maxItemsPerSearch = 50;
+    }
   };
   var SelectItemControlBySearch = class {
-    itemClicked = new UserEvent();
-    containerDiv;
-    inputBoxDiv;
-    resultsDiv;
-    selectedItem;
-    workspaceAndExtent = new SelectItemControlHelperForWorkspaceAndExtent(this);
-    settings;
+    constructor() {
+      this.itemClicked = new UserEvent();
+      this.workspaceAndExtent = new SelectItemControlHelperForWorkspaceAndExtent(this);
+      this.lastLoadIndex = 0;
+    }
     init(parent, settings) {
       const div = this.initDom(settings ?? new ControlSettings2(), parent);
       const _ = this.workspaceAndExtent.loadWorkspaces();
@@ -3291,8 +3290,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     getSelectedItem() {
       return this.selectedItem;
     }
-    lastLoadIndex = 0;
-    lastSelectedDiv;
     async onInputChanged() {
       const tthis = this;
       this.lastLoadIndex++;
@@ -3361,73 +3358,25 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/controls/SelectItemControl.js
   var ContainerSettings = class {
-    /**
-     * Optional headline rendered in the control's title row. When `undefined`,
-     * the default `"Select item:"` text from the template is used.
-     */
-    headline = void 0;
-    /**
-     * When `true`, the control is created in a hidden state (`display: none`)
-     * and must be made visible by calling {@link SelectItemControlByBrowsingControl.showControl}.
-     */
-    hideAtStartup = false;
-    browseSettings = new ControlSettings();
-    searchSettings = new ControlSettings2();
-    /**
-     * When `true`, a "Cancel" button is rendered next to the "Set" button.
-     * Clicking it removes the control from the DOM (see
-     * {@link SelectItemControlByBrowsingControl.removeControl}). Has no effect when
-     * {@link hideButtonRow} is `true`.
-     */
-    showCancelButton = true;
-    /**
-     * When `true`, the entire button row (Set/Cancel) is omitted from the DOM.
-     * Use this when the host container wants to provide its own confirmation
-     * affordances and read the selection via
-     * {@link SelectItemControlByBrowsingControl.getSelectedItem}.
-     */
-    hideButtonRow = false;
-    /**
-     * Label of the primary confirmation button. Defaults to `"Set"` and can be
-     * overridden to fit the surrounding UI (e.g. `"Choose"`, `"Apply"`).
-     */
-    setButtonText = "Set";
+    constructor() {
+      this.headline = void 0;
+      this.hideAtStartup = false;
+      this.browseSettings = new ControlSettings();
+      this.searchSettings = new ControlSettings2();
+      this.showCancelButton = true;
+      this.hideButtonRow = false;
+      this.setButtonText = "Set";
+    }
   };
   var SelectItemControl = class {
-    /** Root `<table>` of the rendered control; `undefined` after {@link removeControl}. */
-    containerDiv;
-    /**
-     * Stores the settings of the container.
-     * @private
-     */
-    settings;
-    /**
-     * Stores the 'byBrowseControl' instance for browsing functionality.
-     */
-    byBrowseControl = new SelectItemControlByBrowsingControl();
-    /**
-     * Stores the 'bySearch' instance for browsing functionality.
-     */
-    bySearchControl = new SelectItemControlBySearch();
-    /*
-     * Public events that callers can subscribe to.
-     */
-    /**
-     * Fired when the user confirms the selection by clicking the "Set" button.
-     * The payload is the currently selected item or `undefined` if nothing was
-     * selected — listeners must handle the latter case.
-     */
-    itemSelected = new UserEvent();
-    /**
-     * Fired whenever the user clicks an item in the children list. The
-     * selection is updated, but no confirmation has been issued yet. Use this
-     * for live previews; use {@link itemSelected} to react to a final choice.
-     */
-    itemClicked = new UserEvent();
-    selectionCancelled = new UserEvent();
-    currentTab = "byBrowse";
-    byBrowserControlDiv;
-    bySearchControlDiv;
+    constructor() {
+      this.byBrowseControl = new SelectItemControlByBrowsingControl();
+      this.bySearchControl = new SelectItemControlBySearch();
+      this.itemSelected = new UserEvent();
+      this.itemClicked = new UserEvent();
+      this.selectionCancelled = new UserEvent();
+      this.currentTab = "byBrowse";
+    }
     /**
      * Async variant of {@link init}. Renders the control into `parent` and
      * resolves the returned promise once the workspace list (and any
@@ -3626,7 +3575,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/Interfaces.js
   var BaseField = class {
-    context;
     get configuration() {
       return this.context.configuration;
     }
@@ -3696,10 +3644,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/TextField.js
   var _TextFieldData = _Forms._FieldTypes._TextFieldData;
   var Field = class extends BaseField {
-    // Gets or sets the method which allows to override the method to 
-    // retrieve the property key
-    OverridePropertyValue;
-    _textBox;
     constructor(context) {
       super(context);
     }
@@ -3805,7 +3749,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/CheckboxField.js
   var Field2 = class extends BaseField {
-    _checkbox;
     constructor(context) {
       super(context);
     }
@@ -3835,18 +3778,9 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/CheckboxListTaggingField.js
   var Field3 = class extends BaseField {
-    /**
-     * Stores the array of created checkboxes which are used to return back the
-     * value of the selected checkboxes
-     * @private
-     */
-    checkboxes = new Array();
-    freeText;
-    separator;
-    name;
-    isFieldReadOnly;
     constructor(context) {
       super(context);
+      this.checkboxes = new Array();
     }
     async createDom(dmElement) {
       this.name = this.field.get(_Forms._FieldTypes._CheckboxListTaggingFieldData._name_, ObjectType.String);
@@ -3940,10 +3874,59 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/CompositeField.js
   var Field4 = class extends BaseField {
-    element;
-    resultingDom;
     constructor(context) {
       super(context);
+      this.reloadValuesFromServer = async () => {
+        const valueDom = $(".dm-field-composite-value", this.resultingDom);
+        const buttonsDom = $(".dm-field-composite-buttons", this.resultingDom);
+        valueDom.empty();
+        buttonsDom.empty();
+        const propertyName = this.field.get("name");
+        let value = await getProperty(this.element.workspace, this.element.uri, propertyName);
+        if (Array.isArray(value)) {
+          value = value[0];
+        }
+        let isUndefined = false;
+        if (value === void 0 || value === null) {
+          valueDom.append($("<em class='dm-undefined'>undefined</em>"));
+          isUndefined = true;
+        } else {
+          let _ = injectNameByUri(valueDom, value.workspace, value.uri);
+        }
+        const tthis = this;
+        if (!this.isReadOnly) {
+          if (isUndefined) {
+            const createButton = $("<btn class='btn btn-secondary'>Create</btn>");
+            createButton.on("click", async () => {
+              const containerDiv = $(".dm-compositefield-attachitem-box", this.resultingDom);
+              containerDiv.empty();
+              const selectItem2 = new SelectItemControl();
+              const settings = new ContainerSettings();
+              settings.browseSettings.showWorkspaceInBreadcrumb = true;
+              settings.browseSettings.showExtentInBreadcrumb = true;
+              await selectItem2.setWorkspaceById(WorkspaceTypes);
+              selectItem2.itemSelected.addListener((selectedItem) => {
+                if (selectedItem === void 0 || selectedItem.uri === void 0) {
+                  alert("Nothing is selected.");
+                  return;
+                }
+                document.location.href = getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, propertyName, selectedItem.uri, selectedItem.workspace, false);
+              });
+              await selectItem2.initAsync(containerDiv, settings);
+              return false;
+            });
+            buttonsDom.append(createButton);
+          } else {
+            const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
+            unsetCell.on("click", () => {
+              unsetProperty(tthis.form.workspace, tthis.itemUrl, propertyName).then(async () => {
+                await tthis.reloadValuesFromServer();
+              });
+            });
+            buttonsDom.append(unsetCell);
+          }
+        }
+      };
     }
     async createDom(dmElement) {
       if (this.configuration?.isNewItem) {
@@ -3954,65 +3937,12 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
       await this.reloadValuesFromServer();
       return this.resultingDom;
     }
-    reloadValuesFromServer = async () => {
-      const valueDom = $(".dm-field-composite-value", this.resultingDom);
-      const buttonsDom = $(".dm-field-composite-buttons", this.resultingDom);
-      valueDom.empty();
-      buttonsDom.empty();
-      const propertyName = this.field.get("name");
-      let value = await getProperty(this.element.workspace, this.element.uri, propertyName);
-      if (Array.isArray(value)) {
-        value = value[0];
-      }
-      let isUndefined = false;
-      if (value === void 0 || value === null) {
-        valueDom.append($("<em class='dm-undefined'>undefined</em>"));
-        isUndefined = true;
-      } else {
-        let _ = injectNameByUri(valueDom, value.workspace, value.uri);
-      }
-      const tthis = this;
-      if (!this.isReadOnly) {
-        if (isUndefined) {
-          const createButton = $("<btn class='btn btn-secondary'>Create</btn>");
-          createButton.on("click", async () => {
-            const containerDiv = $(".dm-compositefield-attachitem-box", this.resultingDom);
-            containerDiv.empty();
-            const selectItem2 = new SelectItemControl();
-            const settings = new ContainerSettings();
-            settings.browseSettings.showWorkspaceInBreadcrumb = true;
-            settings.browseSettings.showExtentInBreadcrumb = true;
-            await selectItem2.setWorkspaceById(WorkspaceTypes);
-            selectItem2.itemSelected.addListener((selectedItem) => {
-              if (selectedItem === void 0 || selectedItem.uri === void 0) {
-                alert("Nothing is selected.");
-                return;
-              }
-              document.location.href = getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, propertyName, selectedItem.uri, selectedItem.workspace, false);
-            });
-            await selectItem2.initAsync(containerDiv, settings);
-            return false;
-          });
-          buttonsDom.append(createButton);
-        } else {
-          const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
-          unsetCell.on("click", () => {
-            unsetProperty(tthis.form.workspace, tthis.itemUrl, propertyName).then(async () => {
-              await tthis.reloadValuesFromServer();
-            });
-          });
-          buttonsDom.append(unsetCell);
-        }
-      }
-    };
     async evaluateDom(dmElement) {
     }
   };
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/DateTimeField.js
   var Field5 = class extends BaseField {
-    _dateInput;
-    _timeInput;
     constructor(context) {
       super(context);
     }
@@ -4125,17 +4055,12 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     FieldType2[FieldType2["References"] = 1] = "References";
   })(FieldType || (FieldType = {}));
   var DropDownBaseField = class extends BaseField {
-    loadedFields = [];
-    fieldType = FieldType.Strings;
-    _dropDown;
-    /**
-     * Stores the element to which the DOM needs to be created
-     */
-    _element;
-    counter = 0;
-    _loadedFields = [];
     constructor(context) {
       super(context);
+      this.loadedFields = [];
+      this.fieldType = FieldType.Strings;
+      this.counter = 0;
+      this._loadedFields = [];
     }
     async createDom(dmElement) {
       if (this.configuration?.isNewItem) {
@@ -4426,8 +4351,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/ActionField.js
   var Field8 = class extends BaseField {
-    button;
-    inConfirmation;
     constructor(context) {
       super(context);
     }
@@ -4476,9 +4399,9 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/MergedFieldsInCell.js
   var Field9 = class extends BaseField {
-    childFields = [];
     constructor(context) {
       super(context);
+      this.childFields = [];
     }
     /**
      * Inhibits the presentation of the checkbox indicating whether the element is set.
@@ -4582,28 +4505,14 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/controls/TypeSelectionControl.js
   var TypeSelectionControl = class {
-    selectionField;
-    /**
-     * This event is thrown when the user has selected a specific form
-     */
-    typeSelected = new UserEvent();
-    /**
-     * This JQuery element contains the control
-     * @private
-     */
-    _container;
     /**
      * The constructor for this control
      * @param container The element in which the element shall be contained
      */
     constructor(container) {
+      this.typeSelected = new UserEvent();
       this._container = container;
     }
-    /**
-     * Defines the current form url which is used to link the current form
-     * @private
-     */
-    _currentTypeUrl;
     /**
      * Sets the current type url..
      * This method must be called before calling createControl
@@ -11683,31 +11592,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/SubElementField.js
   var Control = class {
-    configuration;
-    isReadOnly;
-    // Is connected to the item url of the element being connected to that element
-    itemUrl;
-    form;
-    /**
-     * Name of the property which contains the subelements
-     */
-    propertyName;
-    /**
-     * The name of the action that shall be executed when the user clicks on the item
-     */
-    itemActionName;
-    /**
-     * Stores the property type. This information is used to pre-select the
-     * SubElementField in which the user can define the metaclass for a element to be created
-     */
-    propertyType;
-    /**
-     * Additional Types to be directly created.
-     * Each of these types will receive a button on which the user can directly
-     * create an object
-     */
-    additionalTypes;
-    _list;
     /**
      * Initializes the container that holds the rendered subelement list and controls.
      */
@@ -11915,7 +11799,7 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
             const metaClass = await resolve(additionalType.get(_Forms._DefaultTypeForNewElement.metaClass, ObjectType.Object));
             metaClassUri = metaClass.uri;
             metaClassWorkspace = metaClass.workspace;
-            name ??= metaClass.get(_UML._CommonStructure._NamedElement._name_, ObjectType.String);
+            name ?? (name = metaClass.get(_UML._CommonStructure._NamedElement._name_, ObjectType.String));
           } else {
             name = additionalType.get(_UML._CommonStructure._NamedElement._name_, ObjectType.String);
             metaClassUri = additionalType.uri;
@@ -11947,8 +11831,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
   var Field10 = class extends Control {
-    _element;
-    context;
     get field() {
       return this.context.field;
     }
@@ -12008,13 +11890,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/ReferenceField.js
   var Control2 = class extends BaseField {
-    propertyName;
-    /** Defines whether the field flag to create the selection fields directly
-     * at form creation shall be skipped, even if isSelectionInline is being set.
-     * This flag will be set when user has clicked on 'Set'.  */
-    inhibitInline;
-    referenceSetCall;
-    _list;
     /** Initializes a new instance
      *
      * @param context The render context according IFieldRenderContext.
@@ -12141,10 +12016,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     }
   };
   var Field11 = class extends Control2 {
-    // The element being shown
-    element;
-    // The name of the field being derived from the field
-    fieldName;
     constructor(context) {
       super(context);
     }
@@ -12208,17 +12079,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
     ModeValue2[ModeValue2["Reference"] = 2] = "Reference";
   })(ModeValue || (ModeValue = {}));
   var Field12 = class extends BaseField {
-    _textBox;
-    // The texts on which the user can click to modify the type of the element
-    _aValue;
-    _aCollection;
-    _aReference;
-    _mode;
-    // This is the element containing the property
-    _element;
-    _domElement;
-    // This is the element describing the property value; the element that shall be shown in this
-    _fieldValue;
     constructor(context) {
       super(context);
     }
@@ -12512,13 +12372,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/UriReferenceFieldData.js
   var _UriReferenceFieldData = _Forms._FieldTypes._UriReferenceFieldData;
   var Field16 = class extends BaseField {
-    _textBox;
-    _elementSelection;
-    _fullNameField;
-    _compositeSelection;
-    _propertyField;
-    _buildUriButton;
-    _selectField;
     constructor(context) {
       super(context);
     }
@@ -12657,8 +12510,6 @@ ${indent}${externalKey}: ${_DmObject.valueToString(value, indent + "  ")}`;
 
   // ../DatenMeister.Web.Assets/Assets/js/datenmeister/fields/UnknownField.js
   var Field17 = class extends BaseField {
-    // Defines the name of the field name which is not known
-    unknownFieldUri;
     constructor(unknownFieldUri, context) {
       super(context);
       this.unknownFieldUri = unknownFieldUri;

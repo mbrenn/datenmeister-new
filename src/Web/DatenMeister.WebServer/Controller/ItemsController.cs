@@ -52,29 +52,25 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var metaClass =
             string.IsNullOrEmpty(createParams.MetaClass)
                 ? null
-                : extent.GetUriResolver().Resolve(createParams.MetaClass, ResolveType.IncludeMetaWorkspaces) as IElement;
+                : extent.GetUriResolver()
+                    .Resolve(createParams.MetaClass, ResolveType.IncludeMetaWorkspaces) as IElement;
 
         var item = factory.create(metaClass);
-        var values = createParams.Properties?.v;
-        if (values != null)
+        var jsonConverter = new DirectJsonDeconverter(workspaceLogic, scopeStorage);
+        if (createParams.Properties == null)
         {
-            var jsonConverter = new DirectJsonDeconverter(workspaceLogic, scopeStorage);
-            foreach (var (key, valueObject) in values)
-            {
-                var valueAsArray = (jsonConverter.ConvertJsonValue(valueObject) as IEnumerable<object?>)?.ToArray();
-                if (valueAsArray == null)
-                {
-                    throw new InvalidOperationException("Value is not an array");
-                }
-                var isSet = DotNetHelper.AsBoolean(valueAsArray[0]);
-                var value = valueAsArray[1];
-                if (isSet)
-                {
-                    var propertyValue = jsonConverter.ConvertJsonValue(value);
+            throw new InvalidOperationException("Properties are not set");
+        }
 
-                    if (propertyValue != null) item.set(key, propertyValue);
-                }
-            }
+        var convertedObject = jsonConverter.ConvertToObject(createParams.Properties);
+        var asAllProperties = convertedObject as IObjectAllProperties
+                              ?? throw new InvalidOperationException(
+                                  "Converted object is not of type IObjectAllProperties");
+
+        foreach (var property in asAllProperties.getPropertiesBeingSet())
+        {
+            var valueObject = convertedObject.get(property);
+            if (valueObject != null) item.set(property, valueObject);
         }
 
         extent.elements().add(item);

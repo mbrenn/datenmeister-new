@@ -1,2 +1,2 @@
-var t;(function(e){class a{static tables="tables"}e._Workbook=a,e.__Workbook_Uri="dm:///_internal/types/internal#DatenMeister.Excel.Models.Workbook";class s{static _name_="name";static items="items"}e._Table=s,e.__Table_Uri="dm:///_internal/types/internal#DatenMeister.Excel.Models.Table"})(t||(t={}));export{t as _ExcelModels};
+var e;(function(t){class a{static{this.tables="tables"}}t._Workbook=a,t.__Workbook_Uri="dm:///_internal/types/internal#DatenMeister.Excel.Models.Workbook";class s{static{this._name_="name"}static{this.items="items"}}t._Table=s,t.__Table_Uri="dm:///_internal/types/internal#DatenMeister.Excel.Models.Table"})(e||(e={}));export{e as _ExcelModels};
 //# sourceMappingURL=ExcelModels.class.js.map

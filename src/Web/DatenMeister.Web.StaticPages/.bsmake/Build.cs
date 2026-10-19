@@ -17,7 +17,11 @@ async Task CopyCSS()
     System.IO.File.Copy(
         "../DatenMeister.Web.Assets/wwwroot/css/datenmeister-web.min.css", 
         "Assets/Css/datenmeister-web.min.css",
-        true);       
+        true);
+    System.IO.File.Copy(
+        "../DatenMeister.Web.Assets/wwwroot/css/datenmeister-web.min.css.map",
+        "Assets/Css/datenmeister-web.min.css.map",
+        true);
     System.IO.File.Copy(
         "../DatenMeister.Web.Assets/wwwroot/css/bootstrap.min.css", 
         "Assets/Css/bootstrap.min.css",

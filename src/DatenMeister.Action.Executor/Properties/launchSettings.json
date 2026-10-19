@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "DatenMeister.Action.Executor": {
+      "commandName": "Project",
+      "commandLineArgs": "actions.xmi Load_and_export",
+      "workingDirectory": "D:\\Projekte\\datenmeister-new\\example\\actions\\Static_Page_ZipCode_Table"
+    }
+  }
+}

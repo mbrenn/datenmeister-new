@@ -199,3 +199,4 @@ Cake.Npm.5.0.0
 example/actions/Executable/*
 
 tsconfig.tsbuildinfo
+/.vs

@@ -151,7 +151,7 @@ function createPopupButton(buttonText: string, container: JQuery, createDom: (jQ
 }
 
 /**
- * Create function to load current view
+ * Create function to load current view 
  * @param tableForm Tableform in which the view shall be added
  */
 export function createFunctionToLoadCurrentView(tableForm: TableForm) {

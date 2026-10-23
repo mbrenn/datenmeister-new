@@ -11,7 +11,7 @@ export const urlParameterName = "executeClientActions"
  * be retrieved by the popup window. 
  * @param clientActions The clientactions to be executed in the popup window.
  */
-export function createPopupWindowWithClientActions (clientActions: Mof.DmObject[]) {
+export function createPopupWindowWithClientActions(clientActions: Mof.DmObject[]) {
     count++;
     globalClientActions[count] = clientActions;    
     

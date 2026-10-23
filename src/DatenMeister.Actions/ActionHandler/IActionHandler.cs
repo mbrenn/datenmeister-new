@@ -24,3 +24,16 @@ public interface IActionHandler
     public Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb);
 }
 
+/// <summary>
+/// Some action handler support multiple verbs.
+/// To allow the automatic offering of these to the enduser, these can be listed. 
+/// </summary>
+public interface IActionHandlerWithVerbs : IActionHandler
+{
+    /// <summary>
+    /// Gets a list of verbs which is supported by that action handler
+    /// </summary>
+    public string[] SupportedVerbs { get; }
+}
+
+

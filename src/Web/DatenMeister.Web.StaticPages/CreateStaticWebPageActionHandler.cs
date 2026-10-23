@@ -10,7 +10,7 @@ using DatenMeister.Web.StaticPages.HtmlElements;
 
 namespace DatenMeister.Web.StaticPages;
 
-public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IActionHandler {
+public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IActionHandlerWithVerbs {
     /// <summary>
     /// Determines whether the given element is responsible for handling the "Create Static Web Page" action.
     /// </summary>
@@ -21,6 +21,11 @@ public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IAct
         return node.getMetaClass()?.equals(
             Model._Root.TheOne.__CreateStaticWebPageAction) == true;
     }
+
+    /// <summary>
+    /// Gets the supported action verbs
+    /// </summary>
+    public string[] SupportedVerbs { get; } = [ActionVerbs.Execute, ActionVerbs.Render];
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
@@ -51,7 +56,7 @@ public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IAct
             "DatenMeister.Web.StaticPages.Assets.Js_Bundled.EntryPoint.js");
         
         // Start the report
-        var title= action.getOrDefault<string>(Model._Root._CreateStaticWebPageAction.pageTitle) ?? "Unnamed Page";
+        var title= action.getOrDefault<string?>(Model._Root._CreateStaticWebPageAction.pageTitle) ?? "Unnamed Page";
         htmlReport.StartReport(title);
         htmlReport.Add(new HtmlInlineScript(jquery));
         htmlReport.Add(new HtmlInlineScript(jsFile));

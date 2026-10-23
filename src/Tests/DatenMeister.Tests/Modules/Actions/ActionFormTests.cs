@@ -45,7 +45,7 @@ public class ActionFormTests
         var actionNon = InMemoryObject.CreateEmpty(_Management.TheOne.__Extent);
         inMemoryExtent.elements().add(actionNon);
 
-        var formHandler = new ActionFormPlugin.ActionFormModificationPlugin();
+        var formHandler = new ActionFormPlugin.ActionFormModification(dm.WorkspaceLogic, dm.ScopeStorage);
         var context = new FormCreationContext
         {
             Global = new FormCreationContext.GlobalContext

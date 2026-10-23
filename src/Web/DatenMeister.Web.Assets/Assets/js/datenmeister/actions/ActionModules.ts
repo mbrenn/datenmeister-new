@@ -56,7 +56,8 @@ class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {
         // Executes the action directly
         const result = await ActionClient.executeAction(
             element.workspace,
-            element.uri
+            element.uri,
+            parameter?.get('verb', Mof.ObjectType.String) ?? "execute"
         );
 
         if (result.success) {

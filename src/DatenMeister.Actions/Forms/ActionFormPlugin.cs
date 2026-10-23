@@ -1,6 +1,9 @@
-﻿using DatenMeister.Core.Helper;
+﻿using System.Diagnostics;
+using DatenMeister.Actions.ActionHandler;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
@@ -15,7 +18,7 @@ namespace DatenMeister.Actions.Forms;
 /// </summary>
 // ReSharper disable once UnusedType.Global
 // ReSharper disable once ClassNeverInstantiated.Global
-public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
+public class ActionFormPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
     public Task Start(PluginLoadingPosition position)
     {
@@ -29,7 +32,7 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                     {
                         Name = "ActionFormPlugin",
                         CreateContext =
-                            context => context.Global.RowFormFactories.Add(new ActionFormModificationPlugin())
+                            context => context.Global.RowFormFactories.Add(new ActionFormModification(workspaceLogic, scopeStorage))
                     });
 
                 break;
@@ -41,7 +44,7 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
     /// <summary>
     /// The helper class which includes the action button into the forms for actions
     /// </summary>
-    public class ActionFormModificationPlugin : FormFactoryBase, IRowFormFactory
+    public class ActionFormModification (IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage): FormFactoryBase, IRowFormFactory
     {
         public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResultMultipleForms result)
         {
@@ -55,6 +58,27 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
             var isAction = ClassifierMethods.IsSpecializedClassifierOf(
                 metaClass, 
                 _Actions.TheOne.__Action);
+            if (!isAction)
+            {
+                return;
+            }
+
+            var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
+            if (parameter.Element == null)
+            {
+                // There is no action to be added
+                return;
+            }
+
+            string[] verbs;
+            if (actionLogic.FindActionHandler(parameter.Element) is IActionHandlerWithVerbs actionHandler)
+            {
+                verbs = actionHandler.SupportedVerbs;
+            }
+            else
+            {
+                verbs = [ActionVerbs.Execute];
+            }
 
             var form = result.Forms.FirstOrDefault();
             if (form == null)
@@ -62,14 +86,17 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                 throw new InvalidOperationException("No rowform has been created");
             }
 
-            if (isAction)
+            foreach(var verb in verbs)
             {
                 // Fitting, create the field
                 var fields = form.get<IReflectiveSequence>(_Forms._FormTypes._RowForm.field);
                 var actionField = context.Global.Factory.create(_Forms.TheOne.FieldTypes.__ActionFieldData);
                 actionField.set(_Forms._FieldTypes._ActionFieldData.actionName, "Action.Execute");
                 actionField.set(_Forms._FieldTypes._ActionFieldData.title, "Execute Action");
-                actionField.set(_Forms._FieldTypes._ActionFieldData.name, "Execute");
+                actionField.set(_Forms._FieldTypes._ActionFieldData.name, verb);
+                var parameter1 = context.Global.Factory.create(null);
+                parameter1.set("verb", verb);
+                actionField.set(_Forms._FieldTypes._ActionFieldData.parameter, parameter1);
                 fields.add(actionField);
 
                 result.IsManaged = true;

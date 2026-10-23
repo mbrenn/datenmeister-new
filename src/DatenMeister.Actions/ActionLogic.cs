@@ -1,4 +1,5 @@
 ﻿using BurnSystems.Logging;
+using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
@@ -8,23 +9,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Actions;
-
-/// <summary>
-/// Defines a default set of action verbs that can be used.
-/// Additional action verbs can be added to this list or directly used without registration
-/// </summary>
-public static class ActionVerbs
-{
-    /// <summary>
-    /// Defines that we need an execution
-    /// </summary>
-    public const string Execute = "execute";
-    
-    /// <summary>
-    /// Defines that we need a rendering
-    /// </summary>
-    public const string Render = "render";
-}
 
 /// <summary>
 /// Defines the execution state for a set of actions.
@@ -91,7 +75,7 @@ public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
         var result = InMemoryObject.CreateEmpty();
             
         var actionSetExecutionState = new ActionSetExecutionState(result);
-        var actions = actionSet.getOrDefault<IReflectiveCollection>(
+        var actions = actionSet.getOrDefault<IReflectiveCollection?>(
             _Actions._ActionSet.action);
         if (actions == null)
         {
@@ -114,6 +98,22 @@ public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
         return result;
     }
 
+    public IActionHandler? FindActionHandler(IObject action)
+    {
+        if (action is IElement actionAsElement)
+        {
+            foreach (var actionHandler in ScopeStorage.Get<ActionLogicState>().ActionHandlers)
+            {
+                if (actionHandler.IsResponsible(actionAsElement))
+                {
+                    return actionHandler;
+                }
+            }
+        }
+
+        return null;
+    }
+
     /// <summary>
     /// Executes a certain action 
     /// </summary>
@@ -123,57 +123,48 @@ public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// is no result</returns>
     public async Task<IElement?> ExecuteAction(IElement action, string? actionVerb = null)
     {
-        IElement? result = null;
-        var found = false;
-        foreach (var actionHandler in ScopeStorage.Get<ActionLogicState>().ActionHandlers)
-        {
-            if (!actionHandler.IsResponsible(action))
-            {
-                continue;
-            }
-                
-            // Defines the action to be executed
-            var fct = new Func<Task<IElement?>>(async () =>
-            {
-                try
-                {
-                    return await actionHandler.Evaluate(this, action, actionVerb);
-                }
-                catch (Exception exc)
-                {
-                    var message =
-                        $"An exception occurred during execution of {action}:\r\n\r\n{exc.Message}";
-                    ClassLogger.Error(exc.ToString());
-                    throw new InvalidOperationException(message, exc);
-                }
-            });
+        IElement? result;
 
-            // ReSharper disable HeuristicUnreachableCode
-#pragma warning disable CS0162
-            if (AsyncExecution)
-            {
-                result = await Task.Run(() => fct());
-            }
-            else
-            {
-                result = await fct();
-            }
-#pragma warning restore CS0162
-            // ReSharper restore HeuristicUnreachableCode
+        var actionHandler = FindActionHandler(action);
 
-            found = true;
-        }
-
-        if (!found)
+        if (actionHandler == null)
         {
             var metaClass = action.metaclass;
             var metaClassName = metaClass == null ? "Unknown Type" : NamedElementMethods.GetFullName(metaClass);
             var message = $"Did not found action handler for {action}: {metaClassName}";
-                
+
             ClassLogger.Warn(message);
             throw new InvalidOperationException(message);
         }
 
+        // Defines the action to be executed
+        var fct = new Func<Task<IElement?>>(async () =>
+        {
+            try
+            {
+                return await actionHandler.Evaluate(this, action, actionVerb);
+            }
+            catch (Exception exc)
+            {
+                var message =
+                    $"An exception occurred during execution of {action}:\r\n\r\n{exc.Message}";
+                ClassLogger.Error(exc.ToString());
+                throw new InvalidOperationException(message, exc);
+            }
+        });
+
+        // ReSharper disable HeuristicUnreachableCode
+#pragma warning disable CS0162
+        if (AsyncExecution)
+        {
+            result = await Task.Run(() => fct());
+        }
+        else
+        {
+            result = await fct();
+        }
+#pragma warning restore CS0162
+        // ReSharper restore HeuristicUnreachableCode
         return result;
     }
 }

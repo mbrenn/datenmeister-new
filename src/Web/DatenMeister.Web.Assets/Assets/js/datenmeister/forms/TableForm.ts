@@ -11,6 +11,7 @@ import * as ContextMenu from "./TableForm.ContextMenus.js"
 import {TableState} from "./TableState.js"
 import _FieldData = _DatenMeister._Forms._FieldTypes._FieldData;
 import {debugElementToDom} from "../DomHelper.js";
+import { Context } from "mocha";
 
 export interface MenuItemData
 {
@@ -55,6 +56,8 @@ export class TableFormParameter {
      * MetaClass that is used to filter only upon the items having that specific metaclass
      */
     metaClass: string; 
+
+    hideButtonForTableExport: boolean = false;
 }
 
 class TableJQueryCaches {

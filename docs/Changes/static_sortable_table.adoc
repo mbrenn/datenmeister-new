@@ -61,8 +61,17 @@ of the JavaScript files. It also contains all the entry points which are used to
 
 The implementation will be done in multiple steps: 
 
-* [ ] We create the table and some empty ActionHandler which just creates an empty .html file
-* [ ] We get a configuration file for the ActionExecutor and enable the debug chain in Visual Studio. 
-* [ ] We get the creation of an empty .html file running which has imported the .css. 
-* [ ] We add the compacted .js which allows to create the table. Here we need to figure out some feasibilities about
+* [x] We create the table and some empty ActionHandler which just creates an empty .html file
+* [x] We get a configuration file for the ActionExecutor and enable the debug chain in Visual Studio. 
+* [x] We get the creation of an empty .html file running which has imported the .css. 
+* [x] We add the compacted .js which allows to create the table. Here we need to figure out some feasibilities about
 which approach is the best one. 
+
+== Addition
+
+We would like to open a page with all the compressed data directly from the website. 
+
+This shall be managed directly from each TableForm as an option within the detailed view. 
+After the user has clicked to create a static view of the table, a new window shall open and the user shall be directly able to save the resuling website in the browser. 
+
+How will this be implemented? 

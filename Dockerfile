@@ -1,7 +1,7 @@
 # Base stage with system dependencies
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS base
 
-RUN dotnet tool install --global BurnSystems.Make.Exe --version 1.0.4
+RUN dotnet tool install --global BurnSystems.Make.Exe --version 1.0.5
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
 RUN apt-get update && apt-get install -y python3 npm && rm -rf /var/lib/apt/lists/*

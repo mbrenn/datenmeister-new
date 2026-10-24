@@ -74,8 +74,6 @@
   <Target Name="CopyIconPngFiles" BeforeTargets="BeforeCompile">
     <Copy SourceFiles="@(IconPngFiles)" DestinationFiles="@(IconPngFiles->'wwwroot/img/%(Filename)%(Extension)')" />
   </Target>
-
-
   
   <Target Name="Update Commit ID" BeforeTargets="BeforeBuild">
     <Exec Command="python ../../../scripts/create_git_commit_file.py" />

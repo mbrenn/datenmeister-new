@@ -5,6 +5,6 @@
 
   <Target Name="RunBSMake"          
           BeforeTargets="Build;CoreCompile">
-    <Exec Command="bsmake build $(MSBuildProjectDirectory)" />
+    <Exec Command="bsmake build $(MSBuildProjectDirectory)  -c $(Configuration)" />
   </Target>
 </Project>

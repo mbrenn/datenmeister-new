@@ -92,8 +92,8 @@ public class ActionFormPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scop
                 var fields = form.get<IReflectiveSequence>(_Forms._FormTypes._RowForm.field);
                 var actionField = context.Global.Factory.create(_Forms.TheOne.FieldTypes.__ActionFieldData);
                 actionField.set(_Forms._FieldTypes._ActionFieldData.actionName, "Action.Execute");
-                actionField.set(_Forms._FieldTypes._ActionFieldData.title, "Execute Action");
-                actionField.set(_Forms._FieldTypes._ActionFieldData.name, verb);
+                actionField.set(_Forms._FieldTypes._ActionFieldData.title, $"{verb} Action");
+                actionField.set(_Forms._FieldTypes._ActionFieldData.name, $"{verb} Action");
                 var parameter1 = context.Global.Factory.create(null);
                 parameter1.set("verb", verb);
                 actionField.set(_Forms._FieldTypes._ActionFieldData.parameter, parameter1);

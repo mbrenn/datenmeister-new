@@ -1,10 +1,12 @@
 // Merge.ts
 using BurnSystems.Make.BuildAgent;
 
+var programArguments = ProgramArguments.Parse(args);
+
 await CompileSass();
 await CompressCSS();
 await CompileTS();
-await CompressJS();
+await CompressJS(programArguments);
 
 return 0;
 
@@ -49,44 +51,103 @@ async Task CompileTS()
     await ProcessInvoke.Run("npx", ["tsc"]);
 }
 
-async Task CompressJS()
+async Task CompressJS(ProgramArguments arguments)
 {
-    Console.WriteLine("Minifying TypeScript files");
+    if (arguments.Configuration == "Debug")
+    {
+        Console.WriteLine("Minifying TypeScript files - Debug");
 
-    await ProcessInvoke.Run("npx",
-        new[]
-        {
-            "esbuild",
-            "Assets/js/burnsystems/**/*.js",
-            "--minify",
-            "--sourcemap",
-            "--outbase=Assets/js/burnsystems",
-            "--outdir=wwwroot/js/burnsystems",
-            "--platform=browser",
-            "--format=esm"
-        });
-    await ProcessInvoke.Run("npx",
-        new[]
-        {
-            "esbuild",
-            "Assets/js/datenmeister/**/*.js",
-            "--minify",
-            "--sourcemap",
-            "--outbase=Assets/js/datenmeister",
-            "--outdir=wwwroot/js/datenmeister",
-            "--platform=browser",
-            "--format=esm"
-        });
-    await ProcessInvoke.Run("npx",
-        new[]
-        {
-            "esbuild",
-            "Assets/JsTests/**/*.js",
-            "--minify",
-            "--sourcemap",
-            "--outbase=Assets/JsTests",
-            "--outdir=wwwroot/js/JsTests",
-            "--platform=browser",
-            "--format=esm"
-        });
+        Console.Write("Version esbuild: ");
+
+        await ProcessInvoke.Run("npx",
+            new[]
+            {
+                "esbuild",
+                "--version"
+            });
+
+        Console.Write("Version tsc: ");
+
+        await ProcessInvoke.Run("tsc",
+            new[]
+            {
+                "-v"
+            });
+
+
+        await ProcessInvoke.Run("npx",
+            new[]
+            {
+                "esbuild",
+                "Assets/js/burnsystems/**/*.js",
+                "--sourcemap",
+                "--outbase=Assets/js/burnsystems",
+                "--outdir=wwwroot/js/burnsystems",
+                "--platform=browser",
+                "--format=esm"
+            });
+        await ProcessInvoke.Run("npx",
+            new[]
+            {
+                "esbuild",
+                "Assets/js/datenmeister/**/*.js",
+                "--sourcemap",
+                "--outbase=Assets/js/datenmeister",
+                "--outdir=wwwroot/js/datenmeister",
+                "--platform=browser",
+                "--format=esm"
+            });
+        await ProcessInvoke.Run("npx",
+            new[]
+            {
+                "esbuild",
+                "Assets/JsTests/**/*.js",
+                "--sourcemap",
+                "--outbase=Assets/JsTests",
+                "--outdir=wwwroot/js/JsTests",
+                "--platform=browser",
+                "--format=esm"
+            });
+    }
+    else
+    {
+        Console.WriteLine("Minifying TypeScript files - Release");
+
+        await ProcessInvoke.Run("npx",
+            new[]
+            {
+                "esbuild",
+                "Assets/js/burnsystems/**/*.js",
+                "--minify",
+                "--sourcemap",
+                "--outbase=Assets/js/burnsystems",
+                "--outdir=wwwroot/js/burnsystems",
+                "--platform=browser",
+                "--format=esm"
+            });
+        await ProcessInvoke.Run("npx",
+            new[]
+            {
+                "esbuild",
+                "Assets/js/datenmeister/**/*.js",
+                "--minify",
+                "--sourcemap",
+                "--outbase=Assets/js/datenmeister",
+                "--outdir=wwwroot/js/datenmeister",
+                "--platform=browser",
+                "--format=esm"
+            });
+        await ProcessInvoke.Run("npx",
+            new[]
+            {
+                "esbuild",
+                "Assets/JsTests/**/*.js",
+                "--minify",
+                "--sourcemap",
+                "--outbase=Assets/JsTests",
+                "--outdir=wwwroot/js/JsTests",
+                "--platform=browser",
+                "--format=esm"
+            });
+    }
 }

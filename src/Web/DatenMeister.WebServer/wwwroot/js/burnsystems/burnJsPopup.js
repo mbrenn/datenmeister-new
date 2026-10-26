@@ -1,2 +1,0 @@
-class t{closePopup(){this.htmlPopupWindow.remove()}}function s(){const e=new t,p=document.createElement("div");p.classList.add("burn-popup"),document.body.appendChild(p);const n=document.createElement("div");n.classList.add("burn-popup-inner"),p.appendChild(n);const o=document.createElement("span");return o.classList.add("burn-popup-close"),o.innerHTML="&times;",o.onclick=()=>e.closePopup(),n.appendChild(o),e.htmlPopupWindow=p,e.htmlContent=n,e}export{t as PopupResult,s as createPopup};
-//# sourceMappingURL=burnJsPopup.js.map

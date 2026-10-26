@@ -1,2 +1,0 @@
-import*as o from"./Settings.js";let e=0,n=[];const i="executeClientActions";function r(t){return e++,n[e]=t,window.open(`${o.baseUrl}ActionPure?${i}=${e}`),e}window.DMgetClientActions=t=>{if(n==null)throw"The variable globalClientActions is not set";return n[t]};function l(t){return window.opener.DMgetClientActions(t)}export{r as createPopupWindowWithClientActions,l as getClientActionsFromOpener,i as urlParameterName};
-//# sourceMappingURL=DomHelper.Popup.js.map

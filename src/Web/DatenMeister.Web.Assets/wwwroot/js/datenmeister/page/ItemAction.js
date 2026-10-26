@@ -1,2 +1,0 @@
-import*as r from"../forms/ActionForm.js";import*as n from"../FormActions.js";import{loadDefaultModules as m}from"../actions/DefaultLoader.js";import{FormType as a}from"../forms/Interfaces.js";async function f(o,t,i){m();const e=await r.createActionFormForEmptyObject($("#form_view"),t,{isReadOnly:!1,allowAddingNewProperties:!0,formUri:i,formType:a.Object},o);e!==void 0?window.document.title="Action - '"+n.getActionHeading(e)+"' - Der DatenMeister":window.document.title="Action - Unknown Action - Der DatenMeister"}export{f as init};
-//# sourceMappingURL=ItemAction.js.map

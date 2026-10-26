@@ -36,6 +36,8 @@
     <None Remove="Xmi\DatenMeister.Reports.Forms.xmi" />
     <None Remove="Xmi\DatenMeister.Reports.Types.xmi" />
     <None Include=".bsmake\Build.cs" />
+    <None Remove="Assets\Js\DatenMeister.Reports.Types.js" />
+    <None Remove="Assets\Js\DatenMeister.Reports.Types.js.map" />
   </ItemGroup>
 
   <ItemGroup>

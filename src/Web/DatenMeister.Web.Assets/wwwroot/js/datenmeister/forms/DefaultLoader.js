@@ -1,2 +1,0 @@
-import*as o from"./FormFactory.js";import*as e from"../models/DatenMeister.class.js";import{RowForm as F}from"./RowForm.js";import t from"./TableForm.js";function i(){o.registerObjectForm(e._Forms._FormTypes.__RowForm_Uri,r=>new F(r)),o.registerObjectForm(e._Forms._FormTypes.__TableForm_Uri,r=>new t(r)),o.registerCollectionForm(e._Forms._FormTypes.__TableForm_Uri,r=>{const m=new t(r);return m.tableParameter.allowSortingOfColumn=!0,m})}export{i as loadDefaultForms};
-//# sourceMappingURL=DefaultLoader.js.map

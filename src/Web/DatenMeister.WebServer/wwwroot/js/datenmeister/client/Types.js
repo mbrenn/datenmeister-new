@@ -1,2 +1,0 @@
-import*as e from"../Settings.js";import*as t from"../ApiConnection.js";async function a(){return await t.get(e.baseUrl+"api/types/all")}async function i(n,o,r){try{return await t.get(e.baseUrl+"api/types/propertytype/"+encodeURIComponent(n)+"/"+encodeURIComponent(o)+"/"+encodeURIComponent(r))}catch(p){console.log(p);return}}export{a as getAllTypes,i as getPropertyType};
-//# sourceMappingURL=Types.js.map

@@ -1,2 +1,0 @@
-import*as t from"../client/Workspace.js";import"../../node_modules/chai/register-assert.js";function c(){describe("Client",function(){describe("Workspace",function(){it("Create and Delete Workspace",function(s){t.deleteWorkspace("Test").then(e=>t.createWorkspace("Test","Annotation")).then(e=>(assert.isTrue(e.success),t.createWorkspace("Test","Annotation"))).then(e=>(assert.isFalse(e.success),t.deleteWorkspace("Test"))).then(e=>{assert.isTrue(e.success),s()}).catch(e=>s(e))})})})}export{c as includeTests};
-//# sourceMappingURL=Test.Client.Workspace.js.map

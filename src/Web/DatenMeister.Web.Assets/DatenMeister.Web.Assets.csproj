@@ -18,11 +18,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include=".bsmake\Build.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include=".bsmake\Build.csproj" />
       <Content Update="tsconfig.json">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -37,6 +32,116 @@
 
     <ItemGroup>
       <EmbeddedResource Include="wwwroot\css\bootstrap.min.css" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include=".bsmake\" />
+      <Folder Include="wwwroot\js\burnsystems\" />
+      <Folder Include="wwwroot\js\datenmeister\fields\" />
+      <Folder Include="wwwroot\js\datenmeister\modules\" />
+      <Folder Include="wwwroot\js\datenmeister\page\" />
+      <Folder Include="wwwroot\js\JsTests\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="wwwroot\js\JsTests\Test.Mof.js.map" />
+      <None Remove="wwwroot\js\JsTests\Test.StaticObjectQuery.js.map" />
+      <None Remove="wwwroot\js\JsTests\Test.TableState.js.map" />
+      <None Remove="wwwroot\js\JsTests\TestLibrary.js.map" />
+      <None Remove="wwwroot\js\JsTests\events.test.js.map" />
+      <None Remove="wwwroot\js\burnsystems\Events.js.map" />
+      <None Remove="wwwroot\js\burnsystems\StringManipulation.js.map" />
+      <None Remove="wwwroot\js\burnsystems\burnJsPopup.js.map" />
+      <None Remove="wwwroot\js\datenmeister\ApiConnection.js.map" />
+      <None Remove="wwwroot\js\datenmeister\ApiModels.js.map" />
+      <None Remove="wwwroot\js\datenmeister\DomHelper.Popup.js.map" />
+      <None Remove="wwwroot\js\datenmeister\DomHelper.js.map" />
+      <None Remove="wwwroot\js\datenmeister\FormActions.js.map" />
+      <None Remove="wwwroot\js\datenmeister\Mof.js.map" />
+      <None Remove="wwwroot\js\datenmeister\MofArray.js.map" />
+      <None Remove="wwwroot\js\datenmeister\MofResolver.js.map" />
+      <None Remove="wwwroot\js\datenmeister\MofSync.js.map" />
+      <None Remove="wwwroot\js\datenmeister\Navigator.js.map" />
+      <None Remove="wwwroot\js\datenmeister\Search.js.map" />
+      <None Remove="wwwroot\js\datenmeister\Settings.js.map" />
+      <None Remove="wwwroot\js\datenmeister\UmlHelper.js.map" />
+      <None Remove="wwwroot\js\datenmeister\actions\ActionModules.js.map" />
+      <None Remove="wwwroot\js\datenmeister\actions\ClientActions.Render.js.map" />
+      <None Remove="wwwroot\js\datenmeister\actions\DefaultLoader.js.map" />
+      <None Remove="wwwroot\js\datenmeister\actions\FormModules.js.map" />
+      <None Remove="wwwroot\js\datenmeister\actions\ItemModules.js.map" />
+      <None Remove="wwwroot\js\datenmeister\actions\NavigationModules.js.map" />
+      <None Remove="wwwroot\js\datenmeister\actions\WorkspaceModules.js.map" />
+      <None Remove="wwwroot\js\datenmeister\actions\ZipCodeModules.js.map" />
+      <None Remove="wwwroot\js\datenmeister\client\Actions.Items.js.map" />
+      <None Remove="wwwroot\js\datenmeister\client\Actions.js.map" />
+      <None Remove="wwwroot\js\datenmeister\client\Elements.js.map" />
+      <None Remove="wwwroot\js\datenmeister\client\Forms.js.map" />
+      <None Remove="wwwroot\js\datenmeister\client\Items.js.map" />
+      <None Remove="wwwroot\js\datenmeister\client\Types.js.map" />
+      <None Remove="wwwroot\js\datenmeister\client\Workspace.js.map" />
+      <None Remove="wwwroot\js\datenmeister\controls\SelectItemControl.js.map" />
+      <None Remove="wwwroot\js\datenmeister\controls\SelectItemControlByBrowsingControl.js.map" />
+      <None Remove="wwwroot\js\datenmeister\controls\SelectItemControlBySearch.js.map" />
+      <None Remove="wwwroot\js\datenmeister\controls\SelectItemControlHelper.js.map" />
+      <None Remove="wwwroot\js\datenmeister\controls\SplitterControl.js.map" />
+      <None Remove="wwwroot\js\datenmeister\controls\TypeSelectionControl.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\ActionField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\AnyDataField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\CheckboxField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\CheckboxListTaggingField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\CompositeField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\DateTimeField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\DropDownBaseField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\DropDownByCollection.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\DropDownByQuery.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\DropDownField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\Interfaces.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\MergedFieldsInCell.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\MetaClassElementField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\ReferenceField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\SeparatorLineField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\SubElementField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\TextField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\UnknownField.js.map" />
+      <None Remove="wwwroot\js\datenmeister\fields\UriReferenceFieldData.js.map" />
+      <None Remove="wwwroot\js\datenmeister\forms\ActionForm.js.map" />
+      <None Remove="wwwroot\js\datenmeister\forms\DefaultLoader.js.map" />
+      <None Remove="wwwroot\js\datenmeister\forms\FieldFactory.js.map" />
+      <None Remove="wwwroot\js\datenmeister\forms\FormFactory.js.map" />
+      <None Remove="wwwroot\js\datenmeister\forms\Forms.js.map" />
+      <None Remove="wwwroot\js\datenmeister\forms\Interfaces.js.map" />
+      <None Remove="wwwroot\js\datenmeister\forms\TableForm.ContextMenus.js.map" />
+      <None Remove="wwwroot\js\datenmeister\forms\TableForm.js.map" />
+      <None Remove="wwwroot\js\datenmeister\forms\TableState.StaticFilter.js.map" />
+      <None Remove="wwwroot\js\datenmeister\forms\TableState.js.map" />
+      <None Remove="wwwroot\js\datenmeister\forms\ViewModeLogic.js.map" />
+      <None Remove="wwwroot\js\datenmeister\init.js.map" />
+      <None Remove="wwwroot\js\datenmeister\models\DatenMeister.class.js.map" />
+      <None Remove="wwwroot\js\datenmeister\models\PrimitiveTypes.js.map" />
+      <None Remove="wwwroot\js\datenmeister\models\UML.js.map" />
+      <None Remove="wwwroot\js\datenmeister\modules\QueryEngine.js.map" />
+      <None Remove="wwwroot\js\datenmeister\modules\StaticObjectQuery.js.map" />
+      <None Remove="wwwroot\js\datenmeister\page\ActionPure.js.map" />
+      <None Remove="wwwroot\js\datenmeister\page\Actions.js.map" />
+      <None Remove="wwwroot\js\datenmeister\page\Item.js.map" />
+      <None Remove="wwwroot\js\datenmeister\page\ItemAction.js.map" />
+      <None Remove="wwwroot\js\datenmeister\page\ItemsOverview.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.Client.Actions.Item.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.Client.Actions.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.Client.Elements.Query.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.Client.Elements.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.Client.Extents.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.Client.Items.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.Client.Sync.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.Client.Types.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.Client.Workspace.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.Controls.SelectItemControl.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.FormActions.ClientActions.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.Forms.ViewModeLogic.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\Test.Forms.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\TestLibrary.js.map" />
+      <None Remove="wwwroot\js\datenmeister\test\setup.js.map" />
     </ItemGroup>
 
 </Project>

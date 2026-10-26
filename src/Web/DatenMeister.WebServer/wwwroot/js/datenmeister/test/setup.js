@@ -1,2 +1,0 @@
-const e={equal:(r,t,s)=>{if(r!==t)throw new Error(s||`Expected ${r} to equal ${t}`)},strictEqual:(r,t,s)=>{if(r!==t)throw new Error(s||`Expected ${r} to strictly equal ${t}`)},isTrue:(r,t)=>{if(!r)throw new Error(t||`Expected ${r} to be truthy`)},isFalse:(r,t)=>{if(r)throw new Error(t||`Expected ${r} to be falsy`)}},i={assert:{equal:(r,t,s)=>e.equal(r,t,s),strictEqual:(r,t,s)=>e.strictEqual(r,t,s),isTrue:(r,t)=>e.strictEqual(!!r,!0,t),isFalse:(r,t)=>e.strictEqual(!!r,!1,t)}};globalThis.chai=i,globalThis.assert=e;
-//# sourceMappingURL=setup.js.map

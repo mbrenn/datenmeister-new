@@ -11,37 +11,8 @@ pipeline {
         {
             steps
             {                    
-                sh """
-     
-                    dotnet tool install --global BurnSystems.Make.Exe
-                           
-                    cd src/DatenMeister.Reports.Forms
-                    npm install
-                    cd ../..
-                    
-                    cd src/DatenMeister.Reports.Swimlane
-                    npm install
-                    cd ../..
-
-                    cd src/Web/DatenMeister.WebServer
-                    npm install 
-                    cd ../../..
-
-                    cd src/Web/DatenMeister.Web.Assets
-                    npm install 
-                    cd ../../..
-
-                    cd src/Web/DatenMeister.Web.StaticPages
-                    npm install 
-                    cd ../../..
-                    
-                    cd src/DatenMeister.DataView.Forms
-                    npm install 
-                    cd ../..
-                    
-                    cd src/Templates/DatenMeister.Templates.TypeScriptAndTypesPlugin
-                    npm install 
-                    cd ../../..
+                sh """     
+                    dotnet tool install --global BurnSystems.Make.Exe                           
                 """
             }
         }

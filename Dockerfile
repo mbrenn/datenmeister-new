@@ -13,34 +13,6 @@ WORKDIR /build
 
 COPY . .
 
-# Take care for all preconditions
-## NPM
-
-WORKDIR /build/src/Web/DatenMeister.Web.Assets
-RUN npm install && tsc
-WORKDIR /
-
-WORKDIR /build/src/Web/DatenMeister.Web.StaticPages
-RUN npm install && tsc
-WORKDIR /
-
-WORKDIR /build/src/Web/DatenMeister.WebServer
-RUN npm install && tsc
-WORKDIR /
-
-WORKDIR /build/src/DatenMeister.Reports.Forms
-RUN npm install && tsc
-
-WORKDIR /build/src/DatenMeister.Reports.Swimlane
-RUN npm install && tsc
-
-WORKDIR /build/src/DatenMeister.DataView.Forms
-RUN npm install && tsc
-
-WORKDIR /build/src/Templates/DatenMeister.Templates.TypeScriptAndTypesPlugin
-RUN npm install && tsc
-
-
 FROM build AS publish-executable
 WORKDIR /build/scripts
 RUN sed -i 's/\r$//' *.sh

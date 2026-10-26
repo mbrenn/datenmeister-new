@@ -26,14 +26,14 @@ public class ActionFormTests
         var dm = await DatenMeisterTests.GetDatenMeisterScope();
         // TODO: Load the full extents
         var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
-        var inMemoryExtent =( await extentManager.LoadExtent(
+        var inMemoryExtent = (await extentManager.LoadExtent(
             new ExtentLoaderConfigs.InMemoryLoaderConfig_Wrapper(InMemoryObject.TemporaryFactory)
             {
                 extentUri = "dm:///test",
                 dropExisting = true
             }.GetWrappedElement()
-            )).Extent ?? throw new InvalidOperationException("Extent was null");
-        
+        )).Extent ?? throw new InvalidOperationException("Extent was null");
+
         var form = InMemoryObject.CreateEmpty(_Forms.TheOne.FormTypes.__Form);
         inMemoryExtent.elements().add(form);
         var actionDirect = InMemoryObject.CreateEmpty(_Actions.TheOne.__Action);
@@ -50,13 +50,13 @@ public class ActionFormTests
         {
             Global = new FormCreationContext.GlobalContext
             {
-                Factory = InMemoryObject.TemporaryFactory, 
+                Factory = InMemoryObject.TemporaryFactory,
                 FactoryForForms = InMemoryObject.TemporaryFactory
             }
         };
 
         context.LocalScopeStorage.Get<ExtensionCreationMode>();
-        
+
         var result = new FormCreationResultMultipleForms
         {
             Forms = [form]
@@ -65,12 +65,12 @@ public class ActionFormTests
         // Test 1 
         formHandler.CreateRowForm(
             new RowFormFactoryParameter
-                {
-                    MetaClass = actionDirect.metaclass!
-                    }, context, result);
+            {
+                MetaClass = actionDirect.metaclass!
+            }, context, result);
         Assert.That(result.IsManaged, Is.True);
         result.IsManaged = false;
-            
+
         // Test 2
         formHandler.CreateRowForm(
             new RowFormFactoryParameter
@@ -79,7 +79,7 @@ public class ActionFormTests
             }, context, result);
         Assert.That(result.IsManaged, Is.True);
         result.IsManaged = false;
-            
+
         // Test 3
         formHandler.CreateRowForm(
             new RowFormFactoryParameter
@@ -88,7 +88,7 @@ public class ActionFormTests
             }, context, result);
         Assert.That(result.IsManaged, Is.True);
         result.IsManaged = false;
-            
+
         // Test 4
         formHandler.CreateRowForm(
             new RowFormFactoryParameter
@@ -98,6 +98,7 @@ public class ActionFormTests
         Assert.That(result.IsManaged, Is.False);
         result.IsManaged = false;
     }
+
     [Test]
     public async Task TestStoreAsElement()
     {

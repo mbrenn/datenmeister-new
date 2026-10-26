@@ -62,22 +62,24 @@ public class ActionFormPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scop
             {
                 return;
             }
+            
+            string[] verbs;
 
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
             if (parameter.Element == null)
             {
-                // There is no action to be added
-                return;
-            }
-
-            string[] verbs;
-            if (actionLogic.FindActionHandler(parameter.Element) is IActionHandlerWithVerbs actionHandler)
-            {
-                verbs = actionHandler.SupportedVerbs;
+                verbs = [ActionVerbs.Execute];
             }
             else
             {
-                verbs = [ActionVerbs.Execute];
+                if (actionLogic.FindActionHandler(parameter.Element) is IActionHandlerWithVerbs actionHandler)
+                {
+                    verbs = actionHandler.SupportedVerbs;
+                }
+                else
+                {
+                    verbs = [ActionVerbs.Execute];
+                }
             }
 
             var form = result.Forms.FirstOrDefault();

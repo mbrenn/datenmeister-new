@@ -1,12 +1,21 @@
 ﻿// Merge.ts
 using BurnSystems.Make.BuildAgent;
 
-var programArguments = ProgramArguments.Parse(args);
+var make = new BsMake(args);
 
-await CompileSass();
-await CompressCSS();
-await CompileTS();
-await CompressJS(programArguments);
+await make.Verb(Verbs.Clean, async () =>
+{
+    await NpmHelper.DeleteNodeModules();
+});
+
+await make.Verb(Verbs.Build, async () =>
+{
+    await NpmHelper.InstallIfNotInstalled();
+    await CompileSass();
+    await CompressCSS();
+    await CompileTS();
+    await CompressJS(make.Arguments);
+});
 
 return 0;
 

@@ -1,9 +1,20 @@
 // Merge.ts
 using BurnSystems.Make.BuildAgent;
 
-CopyNodeModules();
-MoveJS();
-CopyAssets();
+var make = new BsMake(args);
+
+await make.Verb(Verbs.Clean, async () =>
+{
+    await NpmHelper.DeleteNodeModules();
+});
+
+await make.Verb(Verbs.Build, async () =>
+{
+    await NpmHelper.InstallIfNotInstalled();
+    CopyNodeModules();
+    MoveJS();
+    CopyAssets();
+});
 
 return 0;
 

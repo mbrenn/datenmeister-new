@@ -1,7 +1,7 @@
 import * as Mof from "/js/datenmeister/Mof.js";
 import {buildSwimlaneData, cellKey, _Root} from "../Js/DatenMeister.Reports.Swimlane.js";
 
-import '../../../Web/DatenMeister.WebServer/node_modules/chai/register-expect.js';
+import '../../../Web/DatenMeister.Web.Assets/node_modules/chai/register-expect.js';
 declare var expect: Chai.ExpectStatic;
 
 export function includeTests() {

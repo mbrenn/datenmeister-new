@@ -8,6 +8,7 @@
     <ItemGroup>
         <ProjectReference Include="..\DatenMeister.Plugins.Helper\DatenMeister.Plugins.Helper.csproj" />    
         <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+        <ProjectReference Include="..\DatenMeister.Web.Assets\DatenMeister.Web.Assets.csproj" ReferenceOutputAssembly="false" />
     </ItemGroup>
     <ItemGroup>
         <TypeScriptConfigFile Include="tsconfig.json" />

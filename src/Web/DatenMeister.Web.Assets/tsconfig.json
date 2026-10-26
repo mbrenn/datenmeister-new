@@ -8,6 +8,7 @@
     "target": "ES2022",
     "module": "Node16",
     "moduleResolution": "node16",
+    "useDefineForClassFields": false,
     "strictPropertyInitialization": false,
     "types": [ "chai", "mocha", "jquery", "jquery.fancytree" ],
     "rootDirs": [

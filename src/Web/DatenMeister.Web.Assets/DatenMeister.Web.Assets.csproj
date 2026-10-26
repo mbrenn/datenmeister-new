@@ -28,6 +28,7 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </Content>
+      <Content Include=".bsmake\Build.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -35,11 +36,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include=".bsmake\" />
-      <Folder Include="wwwroot\js\burnsystems\" />
-      <Folder Include="wwwroot\js\datenmeister\fields\" />
-      <Folder Include="wwwroot\js\datenmeister\modules\" />
-      <Folder Include="wwwroot\js\datenmeister\page\" />
       <Folder Include="wwwroot\js\JsTests\" />
     </ItemGroup>
 
@@ -142,6 +138,10 @@
       <None Remove="wwwroot\js\datenmeister\test\Test.Forms.js.map" />
       <None Remove="wwwroot\js\datenmeister\test\TestLibrary.js.map" />
       <None Remove="wwwroot\js\datenmeister\test\setup.js.map" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include=".bsmake\Build.cs" />
     </ItemGroup>
 
 </Project>

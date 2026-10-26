@@ -63,6 +63,7 @@
     <None Include=".bsmake\Build.cs" />
     <None Include="wwwroot\js\burnsystems\.gitignore" />
     <None Include="wwwroot\js\JsTests\.gitignore" />
+    <None Remove="test.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\css\jquery.fancytree\css\" />
@@ -265,6 +266,35 @@
     <Content Remove="wwwroot\js\datenmeister\test\TestLibrary.js.map" />
     <Content Remove="wwwroot\js\datenmeister\test\setup.js" />
     <Content Remove="wwwroot\js\datenmeister\test\setup.js.map" />
+    <Content Include=".bsmake\Build.csproj" />
+    <Content Remove="wwwroot\js\datenmeister\actions\ExtentModules.js" />
+    <Content Remove="wwwroot\js\datenmeister\actions\ExtentModules.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\client\Extents.js" />
+    <Content Remove="wwwroot\js\datenmeister\client\Extents.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\controls\ElementBreadcrumb.js" />
+    <Content Remove="wwwroot\js\datenmeister\controls\ElementBreadcrumb.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\controls\ElementsTreeView.js" />
+    <Content Remove="wwwroot\js\datenmeister\controls\ElementsTreeView.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\controls\FormSelectionControl.js" />
+    <Content Remove="wwwroot\js\datenmeister\controls\FormSelectionControl.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\controls\PathQueryDebugControl.js" />
+    <Content Remove="wwwroot\js\datenmeister\controls\PathQueryDebugControl.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\controls\StatusFieldControl.js" />
+    <Content Remove="wwwroot\js\datenmeister\controls\StatusFieldControl.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\controls\ViewModeSelectionControl.js" />
+    <Content Remove="wwwroot\js\datenmeister\controls\ViewModeSelectionControl.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\forms\ObjectForm.js" />
+    <Content Remove="wwwroot\js\datenmeister\forms\ObjectForm.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\forms\RowForm.js" />
+    <Content Remove="wwwroot\js\datenmeister\forms\RowForm.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\models\ExcelModels.class.js" />
+    <Content Remove="wwwroot\js\datenmeister\models\ExcelModels.class.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\models\MOF.js" />
+    <Content Remove="wwwroot\js\datenmeister\models\MOF.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\test\Test.Client.Forms.js" />
+    <Content Remove="wwwroot\js\datenmeister\test\Test.Client.Forms.js.map" />
+    <Content Remove="wwwroot\js\datenmeister\forms\CollectionForm.js" />
+    <Content Remove="wwwroot\js\datenmeister\forms\CollectionForm.js.map" />
   </ItemGroup>
     
   <Target Name="CopyIconPngFiles" BeforeTargets="BeforeCompile">

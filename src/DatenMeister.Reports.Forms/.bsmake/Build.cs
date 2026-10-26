@@ -25,8 +25,8 @@ async Task CompileJs()
     await ProcessInvoke.Run("npx",
     [
         "esbuild", 
-        "Assets/Js/DatenMeister.Reports.Forms.js",
-        "Assets/Js/DatenMeister.Reports.Types.js",
+        "./Assets/Js/DatenMeister.Reports.Forms.js",
+        "./Assets/Js/DatenMeister.Reports.Types.js",
         "--minify", 
         "--sourcemap", 
         "--outdir=Js",

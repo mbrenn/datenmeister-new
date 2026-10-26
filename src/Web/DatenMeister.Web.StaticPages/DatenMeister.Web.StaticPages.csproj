@@ -29,6 +29,8 @@
       <EmbeddedResource Include="Assets\Css\bootstrap.min.css" />
       <None Remove="Assets\Js-Bundled\EntryPoint.js" />
       <EmbeddedResource Include="Assets\Js-Bundled\EntryPoint.js" />
+      <None Remove="Assets\Js-Bundled\EntryPoint.js.map" />
+      <EmbeddedResource Include="Assets\Js-Bundled\EntryPoint.js.map" />
       <None Remove="Assets\Js-Bundled\jquery.min.js" />
       <EmbeddedResource Include="Assets\Js-Bundled\jquery.min.js" />
     </ItemGroup>

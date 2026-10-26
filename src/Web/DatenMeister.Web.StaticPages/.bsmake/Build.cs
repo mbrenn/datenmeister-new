@@ -44,7 +44,7 @@ async Task CompressJS()
         new[]
         {
             "esbuild",
-            "Assets/Js/EntryPoint.js",
+            "./Assets/Js/EntryPoint.js",
             //"--minify",
             "--tree-shaking=true",
             "--bundle",

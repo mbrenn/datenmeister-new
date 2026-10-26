@@ -2,23 +2,9 @@
 dotnet clean ../datenmeister-new.slnx -c Release
 dotnet clean ../datenmeister-new.slnx -c Debug
 
-# NPM Install and all the stuff
-cd ../src/DatenMeister.Reports.Forms
-npm install
-tsc
-cd ../../scripts
-
-
-cd ../src/Web/DatenMeister.WebServer
-npm install
-tsc
-cd ../../../scripts
-
 # Compile 
 dotnet build ../datenmeister-new.slnx -c Release
 dotnet build ../datenmeister-new.slnx -c Debug
-
-
 
 # Copy the Action.Executor to the example directory
 echo Copy Action.Executor to example directory

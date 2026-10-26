@@ -17,24 +17,6 @@ pipeline {
             }
         }
 
-        
-        stage ('Typescript')
-        {   
-            steps{
-                sh """ 
-                    cd src/DatenMeister.Reports.Forms
-                    tsc
-                    cd ../..
-                    cd src/DatenMeister.Reports.Swimlane
-                    tsc
-                    cd ../..
-                    cd src/Web/DatenMeister.WebServer
-                    tsc
-                    cd ../../..
-                """
-            }
-        }
-
 
         stage('Cake Install')
         {

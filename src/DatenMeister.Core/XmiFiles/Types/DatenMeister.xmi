@@ -580,13 +580,13 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="CsvExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig" p1:id="c2ab50c5-c7dd-4a87-ad92-52e96de2b111" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="settings" type-ref="#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings" p1:id="1ca9d5fb-cf1c-4041-8665-a65dcd865516" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="settings" type-ref="#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings" p1:id="1ca9d5fb-cf1c-4041-8665-a65dcd865516" isComposite="true" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="CsvSettings" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="DatenMeister.Models.ExtentLoaderConfigs.CsvSettings">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="encoding" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="0b45f120-58cf-4f36-8611-0ec06fcff84a" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="hasHeader" type-ref="dm:///_internal/model/primitivetypes#Boolean" p1:id="51b2e404-b5ac-422a-9cf7-4cdd3e3b1c2d" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="separator" type-ref="#System.Char" p1:id="ff80eba2-94fb-4175-9b13-6e608a225c23" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="columns" type-ref="dm:///_internal/model/primitivetypes#String" upper="*" p1:id="572ae828-0ad8-4b5c-9710-bf4fd44103ec" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="columns" type-ref="dm:///_internal/model/primitivetypes#String" upper="*" p1:id="572ae828-0ad8-4b5c-9710-bf4fd44103ec" isComposite="true"  />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="metaclassUri" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="2bec6d90-f843-4f14-b59f-614b0dfa2766" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="45a58b8b-6f03-47bf-a490-4f1736bb1cc1" name="trimCells" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
     </packagedElement>
@@ -599,7 +599,7 @@
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="5b9a3c7e-54bd-4e11-95d0-45a2d31250ab" general-ref="dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig">
         <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
       </generalization>
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="12101546-3319-4151-9dc6-d3f73171ac1a" upper="*" name="hierarchicalColumns" type-ref="dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="12101546-3319-4151-9dc6-d3f73171ac1a" upper="*" name="hierarchicalColumns" type-ref="dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition" isComposite="true" />
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="baa26cf4-cab5-4ab2-a805-f2a9e5dfa81b" name="skipElementsForLastLevel" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a" name="ExcelColumn">

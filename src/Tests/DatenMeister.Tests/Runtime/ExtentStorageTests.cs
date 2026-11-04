@@ -117,4 +117,69 @@ public class ExtentStorageTests
             logic.GetLoadConfigurationFor(new MofUriExtent(new InMemoryProvider(), "dm:///temp", null));
         Assert.That(foundConfiguration, Is.Null);
     }
+
+    [Test]
+    public async Task TestSettingsSectionPreservedOnShutdown()
+    {
+        var tempXmlPath = Path.GetTempFileName();
+        var tempCsvPath = Path.GetTempFileName();
+        try
+        {
+            File.WriteAllText(tempCsvPath, "1\t12345\t10.0\t20.0\tCity\r\n");
+
+            var initialXml = $@"<?xml version=""1.0"" encoding=""utf-8""?>
+<xmi:XMI xmlns:xmi=""http://www.omg.org/spec/XMI/20131001"" Version=""1.0"">
+  <item p2:type=""dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig"" p2:id=""0d285a84-6054-480b-8a81-d182315e6852"" extentUri=""dm:///zipcodes/157555861"" filePath=""{tempCsvPath.Replace("\\", "\\\\")}"" workspaceId=""Data"" xmlns:p2=""http://www.omg.org/spec/XMI/20131001"">
+    <settings p2:type=""dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings"" p2:id=""f72d4e29-435d-4651-af86-4fdbf2e53c89"" separator=""&#x9;"" encoding=""UTF-8"" metaclassUri-ref=""dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode"">
+      <columns>id</columns>
+      <columns>zip</columns>
+      <columns>positionLong</columns>
+      <columns>positionLat</columns>
+      <columns>name</columns>
+    </settings>
+  </item>
+</xmi:XMI>";
+            File.WriteAllText(tempXmlPath, initialXml);
+
+            var mapper = new ProviderToProviderLoaderMapper();
+            mapper.AddMapping(
+                _ExtentLoaderConfigs.TheOne.__CsvExtentLoaderConfig,
+                _ => new CsvProviderLoader());
+            var scopeStorage = new ScopeStorage();
+            scopeStorage.Add(new IntegrationSettings());
+            scopeStorage.Add(mapper);
+            scopeStorage.Add(new DatenMeister.Core.TypeIndexAssembly.TypeIndexStore());
+            var extentStorageData = new ExtentStorageData { FilePath = tempXmlPath };
+            scopeStorage.Add(extentStorageData);
+
+            var dataLayers = WorkspaceLogic.InitDefault();
+            var workspaceLogic = WorkspaceLogic.Create(dataLayers, scopeStorage);
+            var typesExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentInternalTypes, null);
+            workspaceLogic.AddExtent(workspaceLogic.GetTypesWorkspace(), typesExtent);
+            DatenMeister.Core.Uml.Helper.PackageMethods.ImportByStream(
+                new ScopeStorage(),
+                DatenMeister.Core.XmiFiles.XmiResources.GetDatenMeisterTypesStream(),
+                null,
+                typesExtent,
+                "DatenMeister");
+
+            var typeIndexLogic = new DatenMeister.Core.TypeIndexAssembly.TypeIndexLogic(workspaceLogic);
+            await typeIndexLogic.CreateIndexFirstTime();
+
+            var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
+            await extentManager.LoadAllExtents();
+
+            // Now shutdown / unload manager
+            await extentManager.UnloadManager(true);
+
+            var savedXml = File.ReadAllText(tempXmlPath);
+            Assert.That(savedXml, Does.Contain("separator"), "Saved XML should contain settings content (separator)");
+            Assert.That(savedXml, Does.Contain("<settings"), "Saved XML should contain <settings tag");
+        }
+        finally
+        {
+            if (File.Exists(tempXmlPath)) File.Delete(tempXmlPath);
+            if (File.Exists(tempCsvPath)) File.Delete(tempCsvPath);
+        }
+    }
 }

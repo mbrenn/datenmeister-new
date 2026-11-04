@@ -409,6 +409,7 @@ export namespace _Actions
                 {
                     static html = "html";
                     static text = "text";
+                    static renderCompletePage = "renderCompletePage";
                     static actionName = "actionName";
                     static element = "element";
                     static parameter = "parameter";

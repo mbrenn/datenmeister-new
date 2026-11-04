@@ -23,10 +23,16 @@ class RenderHtml extends FormActions.ItemFormActionModuleBase {
     }
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        const renderCompletePage = element.get(_DatenMeister._Actions._ClientActions._RenderHtmlClientAction.renderCompletePage, Mof.ObjectType.Boolean);
         const html = element.get(_DatenMeister._Actions._ClientActions._RenderHtmlClientAction.html, Mof.ObjectType.String);
-        if(html !== undefined && html !== "" && html !== null)
-        {
-            $(divIdOfRenderArea).html(html);
+        if(html !== undefined && html !== "" && html !== null) {
+            if (renderCompletePage) {
+                // We replace the full html of the complete page by this content. 
+                // Not only the body element, but also the html element
+                $(document).html(html);
+            } else {
+                $(divIdOfRenderArea).html(html);
+            }
             return;
         }
         

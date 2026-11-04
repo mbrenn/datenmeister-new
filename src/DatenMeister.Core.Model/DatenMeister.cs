@@ -910,6 +910,9 @@ public class _Actions
             public static readonly string @text = "text";
             public IElement? @_text = null;
 
+            public static readonly string @renderCompletePage = "renderCompletePage";
+            public IElement? @_renderCompletePage = null;
+
             public static readonly string @actionName = "actionName";
             public IElement? @_actionName = null;
 

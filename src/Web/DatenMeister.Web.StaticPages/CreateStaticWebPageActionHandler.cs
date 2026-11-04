@@ -1,9 +1,13 @@
-﻿using BurnSystems;
+﻿using System.Buffers.Text;
+using System.Text;
+using BurnSystems;
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.HtmlEngine;
 using DatenMeister.Web.StaticPages.HtmlElements;
@@ -35,7 +39,9 @@ public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IAct
             throw new InvalidOperationException("Filename is not set");
         }
         
-        var htmlReport = new HtmlReport(filename);
+        // Create an InMemoryStream and adds it the the constructor of HtmlReport
+        var stream = new MemoryStream();
+        var htmlReport = new HtmlReport(stream);
         
         // Now, we need to add the .css file
         var bootstrap = ResourceHelper.LoadStringFromAssembly(
@@ -70,8 +76,16 @@ public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IAct
         
         // End the report
         htmlReport.EndReport();
-
-        return null;
+        
+        // Converts the content of the stream to a string
+        var byteBuffer = stream.GetBuffer();
+        var content = Encoding.UTF8.GetString(byteBuffer);
+        
+        var clientResult = InMemoryObject.CreateEmpty(_Actions.TheOne.ClientActions.__RenderHtmlClientAction);
+        clientResult.set(_Actions._ClientActions._RenderHtmlClientAction.html, content);
+        clientResult.set(_Actions._ClientActions._RenderHtmlClientAction.renderCompletePage, true);
+        
+        return ActionModelHelper.CreateActionResult(false, [clientResult]);
     }
 
     /// <summary>

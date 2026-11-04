@@ -2398,6 +2398,14 @@ public class Actions
                     _wrappedElement.set("text", value);
             }
 
+            public string? @renderCompletePage
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("renderCompletePage");
+                set => 
+                    _wrappedElement.set("renderCompletePage", value);
+            }
+
             public string? @actionName
             {
                 get =>

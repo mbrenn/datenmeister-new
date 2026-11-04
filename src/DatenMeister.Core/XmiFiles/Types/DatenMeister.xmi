@@ -264,6 +264,7 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="8efcc0b2-face-4104-8895-916517d6578d" name="html" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="70c295d3-ac2d-40b5-94b7-008107c0e9e4" name="text" type-ref="dm:///_internal/model/primitivetypes#String" />
         <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="42616015-9efa-43af-9ddd-4478f6326d11" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="206a2d48-25c2-4a9e-97b5-543980226b76" name="renderCompletePage" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="97ddd1b8-bd3d-4c43-82ed-5c55abda0929" name="Forms">

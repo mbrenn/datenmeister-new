@@ -15,4 +15,9 @@ public static class ActionVerbs
     /// Defines that we need a rendering
     /// </summary>
     public const string Render = "render";
+    
+    /// <summary>
+    /// Defines that we need a download
+    /// </summary>
+    public const string Download = "download";
 }

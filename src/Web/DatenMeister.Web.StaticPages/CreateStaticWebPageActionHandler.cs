@@ -29,7 +29,7 @@ public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IAct
     /// <summary>
     /// Gets the supported action verbs
     /// </summary>
-    public string[] SupportedVerbs { get; } = [ActionVerbs.Execute, ActionVerbs.Render];
+    public string[] SupportedVerbs { get; } = [ActionVerbs.Execute, ActionVerbs.Render, ActionVerbs.Download];
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
@@ -80,12 +80,33 @@ public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IAct
         // Converts the content of the stream to a string
         var byteBuffer = stream.GetBuffer();
         var content = Encoding.UTF8.GetString(byteBuffer);
-        
-        var clientResult = InMemoryObject.CreateEmpty(_Actions.TheOne.ClientActions.__RenderHtmlClientAction);
-        clientResult.set(_Actions._ClientActions._RenderHtmlClientAction.html, content);
-        clientResult.set(_Actions._ClientActions._RenderHtmlClientAction.renderCompletePage, true);
-        
-        return ActionModelHelper.CreateActionResult(false, [clientResult]);
+
+        switch (actionVerb)
+        {
+            case ActionVerbs.Execute:
+                await File.WriteAllBytesAsync(filename, byteBuffer);
+                return ActionModelHelper.CreateSuccessActionResult();
+            case ActionVerbs.Download:
+            {
+                var clientResult = InMemoryObject.CreateEmpty(_Actions.TheOne.ClientActions.__DownloadHtmlClientAction);
+                clientResult.set(_Actions._ClientActions._DownloadHtmlClientAction.html, content);
+                clientResult.set(_Actions._ClientActions._DownloadHtmlClientAction.filename, Path.GetFileName(filename));
+
+                return ActionModelHelper.CreateActionResult(true, [clientResult]);
+
+            }
+            case ActionVerbs.Render:
+            {
+                var clientResult = InMemoryObject.CreateEmpty(_Actions.TheOne.ClientActions.__RenderHtmlClientAction);
+                clientResult.set(_Actions._ClientActions._RenderHtmlClientAction.html, content);
+                clientResult.set(_Actions._ClientActions._RenderHtmlClientAction.renderCompletePage, true);
+
+                return ActionModelHelper.CreateActionResult(true, [clientResult]);
+            }
+
+            default:
+                return ActionModelHelper.CreateFailedActionResult("Unknown verb: " + actionVerb);
+        }
     }
 
     /// <summary>

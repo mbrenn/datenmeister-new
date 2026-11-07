@@ -198,6 +198,9 @@ public class _Actions
         public static readonly string @clientActions = "clientActions";
         public IElement? @_clientActions = null;
 
+        public static readonly string @reason = "reason";
+        public IElement? @_reason = null;
+
     }
 
     public _ActionResult @ActionResult = new ();
@@ -929,6 +932,33 @@ public class _Actions
 
         public _RenderHtmlClientAction @RenderHtmlClientAction = new ();
         public MofObjectShadow @__RenderHtmlClientAction = new ("dm:///_internal/types/internal#30f7e380-73e1-4ade-b797-1cc948b63c4f");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#7059ce1e-f299-45c5-b536-a7cb22c7225e",
+            TypeKind = TypeKind.ClassTree)]
+        public class _DownloadHtmlClientAction
+        {
+            public static readonly string @html = "html";
+            public IElement? @_html = null;
+
+            public static readonly string @filename = "filename";
+            public IElement? @_filename = null;
+
+            public static readonly string @actionName = "actionName";
+            public IElement? @_actionName = null;
+
+            public static readonly string @element = "element";
+            public IElement? @_element = null;
+
+            public static readonly string @parameter = "parameter";
+            public IElement? @_parameter = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _DownloadHtmlClientAction @DownloadHtmlClientAction = new ();
+        public MofObjectShadow @__DownloadHtmlClientAction = new ("dm:///_internal/types/internal#7059ce1e-f299-45c5-b536-a7cb22c7225e");
 
     }
 

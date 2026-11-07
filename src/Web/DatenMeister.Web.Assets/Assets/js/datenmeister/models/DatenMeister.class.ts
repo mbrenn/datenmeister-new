@@ -93,6 +93,7 @@ export namespace _Actions
         {
             static isSuccess = "isSuccess";
             static clientActions = "clientActions";
+            static reason = "reason";
         }
 
         export const __ActionResult_Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d";
@@ -417,6 +418,17 @@ export namespace _Actions
                 }
 
                 export const __RenderHtmlClientAction_Uri = "dm:///_internal/types/internal#30f7e380-73e1-4ade-b797-1cc948b63c4f";
+                export class _DownloadHtmlClientAction
+                {
+                    static html = "html";
+                    static filename = "filename";
+                    static actionName = "actionName";
+                    static element = "element";
+                    static parameter = "parameter";
+                    static _name_ = "name";
+                }
+
+                export const __DownloadHtmlClientAction_Uri = "dm:///_internal/types/internal#7059ce1e-f299-45c5-b536-a7cb22c7225e";
         }
 
         export namespace _Forms

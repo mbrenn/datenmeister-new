@@ -55,6 +55,7 @@
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="899324b1-85dc-40a1-ba95-dec50509040d" name="ActionResult">
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4b37dc68-3efa-4b43-88ee-3d4caa18ceb9" name="isSuccess" type-ref="dm:///_internal/model/primitivetypes#_package_PrimitiveTypes" />
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dea3245e-f59d-48a3-a75d-a38f8a0bec95" isComposite="true" name="clientActions" lower="0" upper="*" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="459e2620-3d6f-4fa9-8ba1-c545bbb4483a" name="reason" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.LoggingWriterAction" name="LoggingWriterAction">
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="3e7091d0-19db-450c-8aec-11e0abd9a651" general-ref="dm:///_internal/types/internal#Actions.Action">
@@ -265,6 +266,11 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="70c295d3-ac2d-40b5-94b7-008107c0e9e4" name="text" type-ref="dm:///_internal/model/primitivetypes#String" />
         <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="42616015-9efa-43af-9ddd-4478f6326d11" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="206a2d48-25c2-4a9e-97b5-543980226b76" name="renderCompletePage" type-ref="dm:///_internal/model/primitivetypes#String" />
+      </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="7059ce1e-f299-45c5-b536-a7cb22c7225e" name="DownloadHtmlClientAction">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1eafb68b-5091-4e64-8276-74d478e5e9b5" name="html" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c81b6fb3-ec8a-4f92-afdf-b90276ece2c4" name="filename" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="61ce09b3-f3a8-4802-81be-55388bcca3bf" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
       </packagedElement>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="97ddd1b8-bd3d-4c43-82ed-5c55abda0929" name="Forms">

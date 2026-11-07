@@ -520,6 +520,14 @@ public class Actions
                 _wrappedElement.set("clientActions", value);
         }
 
+        public string? @reason
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("reason");
+            set => 
+                _wrappedElement.set("reason", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///_internal/types/internal#Actions.LoggingWriterAction",
@@ -2404,6 +2412,80 @@ public class Actions
                     _wrappedElement.getOrDefault<string?>("renderCompletePage");
                 set => 
                     _wrappedElement.set("renderCompletePage", value);
+            }
+
+            public string? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionName");
+                set => 
+                    _wrappedElement.set("actionName", value);
+            }
+
+            // Not found
+            public object? @element
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("element");
+                set => 
+                    _wrappedElement.set("element", value);
+            }
+
+            // Not found
+            public object? @parameter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("parameter");
+                set => 
+                    _wrappedElement.set("parameter", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#7059ce1e-f299-45c5-b536-a7cb22c7225e",
+            TypeKind = TypeKind.WrappedClass)]
+        public class DownloadHtmlClientAction_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public DownloadHtmlClientAction_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public DownloadHtmlClientAction_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#7059ce1e-f299-45c5-b536-a7cb22c7225e");
+
+            public static DownloadHtmlClientAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @html
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("html");
+                set => 
+                    _wrappedElement.set("html", value);
+            }
+
+            public string? @filename
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("filename");
+                set => 
+                    _wrappedElement.set("filename", value);
             }
 
             public string? @actionName

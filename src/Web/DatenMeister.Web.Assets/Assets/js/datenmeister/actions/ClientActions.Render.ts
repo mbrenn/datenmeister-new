@@ -13,6 +13,7 @@ import * as CollectionForm from "../forms/CollectionForm.js"
 export function loadModules() {
     FormActions.addModule(new RenderHtml());
     FormActions.addModule(new RenderForm());
+    FormActions.addModule(new DownloadHtml());
 }
 
 const divIdOfRenderArea = '#pageContent';
@@ -43,6 +44,45 @@ class RenderHtml extends FormActions.ItemFormActionModuleBase {
         }
         
         $(divIdOfRenderArea).text("ClientActions.RenderHtml: Neither html nor text was set");
+    }
+}
+
+class DownloadHtml extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("DatenMeister.Download.Html", _DatenMeister._Actions._ClientActions.__DownloadHtmlClientAction_Uri);
+    }
+
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        const html = element.get(_DatenMeister._Actions._ClientActions._DownloadHtmlClientAction.html, Mof.ObjectType.String);
+        const filename = element.get(_DatenMeister._Actions._ClientActions._DownloadHtmlClientAction.filename, Mof.ObjectType.String);
+        this.downloadHtml(html, filename);
+    }
+
+    /**
+     * Downloads the HTML as a file
+     * @param html Html of the download
+     * @param fileName Filename of the download
+     */
+    downloadHtml(html: string, fileName: string = "download.html"): void {
+        // 1. Create a Blob with UTF-8 HTML MIME type
+        const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+
+        // 2. Generate a temporary object URL pointing to the Blob
+        const url = URL.createObjectURL(blob);
+
+        // 3. Create a temporary anchor element and configure the download
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName;
+        anchor.style.display = "none";
+
+        // 4. Append to DOM, trigger download, and remove
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
+
+        // 5. Release memory by revoking the Object URL
+        setTimeout(() => URL.revokeObjectURL(url), 100);
     }
 }
 

@@ -48,9 +48,9 @@ class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {
     }
 
     async execute(
-        form: IFormNavigation, 
-        element: Mof.DmObject, 
-        parameter?: Mof.DmObject, 
+        form: IFormNavigation,
+        element: Mof.DmObject,
+        parameter?: Mof.DmObject,
         submitMethod?: SubmitMethod): Promise<void> {
 
         // Executes the action directly
@@ -59,7 +59,7 @@ class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {
             element.uri,
             parameter?.get('verb', Mof.ObjectType.String) ?? "execute"
         );
-        
+
         let managed = false;
         const resultAsMof = result.resultAsDmObject;
         if (resultAsMof !== undefined) {
@@ -73,20 +73,18 @@ class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {
                     const clientAction = clientActions[n] as Mof.DmObject;
                     await FormActions.executeClientAction(clientAction, form);
                 }
-                
+
                 managed = true;
             }
-        } 
-        
+        }
+
         // Give simple result messages in case the action returned no client actions.
-        if(!managed) {
-            if (result.success) {
-                alert('Success: ' + result.result);
-            } else {
-                alert("Unfortunately, the action failed: \n\n" + result.reason);
-            }
+
+        if (!result.success && !managed) {
+            alert('Failed: ' + result.result);
         }
     }
+
 }
 
 class ActionExecuteOnItemAction extends FormActions.ItemFormActionModuleBase {

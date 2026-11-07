@@ -65,9 +65,15 @@ export class Field extends BaseField implements IFormField {
                         await MofSync.sync(mofWithSync);
                     }
 
-                    this.showButtonStatusMessage("Executing action...", false);
-                    await FormActions.execute(action, tthis.form, dmElement, parameter);
-                    this.showButtonStatusMessage("...done", true);
+                    try {
+                        this.showButtonStatusMessage("Executing action...", false);
+                        await FormActions.execute(action, tthis.form, dmElement, parameter);
+                        this.showButtonStatusMessage("...done", true);
+                    }
+                    catch(e)
+                    {
+                        this.showButtonStatusMessage("...failed: " + (e?.toString() ?? "Unknown"), true);
+                    }
                 }
                 
                 if (requireConfirmation && !tthis.inConfirmation) {

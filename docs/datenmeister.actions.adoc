@@ -15,6 +15,7 @@ The following action verbs are standardized
 
 |execute|The standard execution, which is equivalent to non-setting
 |render|In case an action shall provide the necessary clientactions to perform the rendering. 
+|download|In case an action shall provide the clientaction to download the generated content.
 |=== 
 
 == ImportXmiActionHandler

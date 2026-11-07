@@ -27,6 +27,11 @@ public static class ActionModelHelper
         return actionResult;
     }
 
+    /// <summary>
+    /// Creates a successful action result.
+    /// </summary>
+    /// <param name="factory">Factory to be used, if null, the internal TemporaryFactory is used.</param>
+    /// <returns>The returned successful action result.</returns>
     public static IElement CreateSuccessActionResult(IFactory? factory = null)
     {
         factory ??= InMemoryObject.TemporaryFactory;
@@ -35,6 +40,12 @@ public static class ActionModelHelper
         return actionResult;
     }
 
+    /// <summary>
+    /// Creates a failed action result with a given reason.
+    /// </summary>
+    /// <param name="reason">The failure reason message.</param>
+    /// <param name="factory">Factory to be used, if null, the internal TemporaryFactory is used.</param>
+    /// <returns>The returned failed action result.</returns>
     public static IElement CreateFailedActionResult(string reason, IFactory? factory = null)
     {
         factory ??= InMemoryObject.TemporaryFactory;

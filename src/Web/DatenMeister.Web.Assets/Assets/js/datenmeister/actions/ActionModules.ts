@@ -81,7 +81,7 @@ class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {
         // Give simple result messages in case the action returned no client actions.
 
         if (!result.success && !managed) {
-            alert('Failed: ' + result.result);
+            alert('Failed: ' + (result.reason ?? "Unknown reason"));
         }
     }
 

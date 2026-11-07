@@ -14,6 +14,10 @@ using DatenMeister.Web.StaticPages.HtmlElements;
 
 namespace DatenMeister.Web.StaticPages;
 
+/// <summary>
+/// Action handler responsible for creating, downloading, or rendering static HTML web pages.
+/// </summary>
+/// <param name="scopeStorage">The scope storage providing static page element registrations.</param>
 public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IActionHandlerWithVerbs {
     /// <summary>
     /// Determines whether the given element is responsible for handling the "Create Static Web Page" action.
@@ -31,13 +35,16 @@ public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IAct
     /// </summary>
     public string[] SupportedVerbs { get; } = [ActionVerbs.Execute, ActionVerbs.Render, ActionVerbs.Download];
 
+    /// <summary>
+    /// Evaluates the Create Static Web Page action based on the specified action verb.
+    /// </summary>
+    /// <param name="actionLogic">The action logic context.</param>
+    /// <param name="action">The action element containing page configuration and HTML element definitions.</param>
+    /// <param name="actionVerb">The verb under which to evaluate: execute (write to file), render (browser render), or download (browser download).</param>
+    /// <returns>The action result containing client actions or success/failure indicator.</returns>
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action, string? actionVerb)
     {
         var filename = action.getOrDefault<string>(Model._Root._CreateStaticWebPageAction.htmlFilename);
-        if(string.IsNullOrEmpty(filename))
-        {
-            throw new InvalidOperationException("Filename is not set");
-        }
         
         // Create an InMemoryStream and adds it the the constructor of HtmlReport
         var stream = new MemoryStream();
@@ -78,16 +85,25 @@ public class CreateStaticWebPageActionHandler(IScopeStorage scopeStorage) : IAct
         htmlReport.EndReport();
         
         // Converts the content of the stream to a string
-        var byteBuffer = stream.GetBuffer();
+        var byteBuffer = stream.ToArray();
         var content = Encoding.UTF8.GetString(byteBuffer);
 
         switch (actionVerb)
         {
             case ActionVerbs.Execute:
+                if(string.IsNullOrEmpty(filename))
+                {
+                    throw new InvalidOperationException("Filename is not set");
+                }
                 await File.WriteAllBytesAsync(filename, byteBuffer);
                 return ActionModelHelper.CreateSuccessActionResult();
             case ActionVerbs.Download:
             {
+                if(string.IsNullOrEmpty(filename))
+                {
+                    throw new InvalidOperationException("Filename is not set");
+                }
+                
                 var clientResult = InMemoryObject.CreateEmpty(_Actions.TheOne.ClientActions.__DownloadHtmlClientAction);
                 clientResult.set(_Actions._ClientActions._DownloadHtmlClientAction.html, content);
                 clientResult.set(_Actions._ClientActions._DownloadHtmlClientAction.filename, Path.GetFileName(filename));

@@ -11,6 +11,14 @@ export class Field extends BaseField implements IFormField {
     button: JQuery;
 
     private inConfirmation: boolean;
+    /**
+     * Stores the currently active status message element displayed next to the button.
+     */
+    private statusElement?: JQuery;
+    /**
+     * Stores the timeout identifier for automatically hiding the status message.
+     */
+    private statusTimeout?: number;
 
     constructor(context: IFieldRenderContext) {
         super(context);
@@ -57,7 +65,9 @@ export class Field extends BaseField implements IFormField {
                         await MofSync.sync(mofWithSync);
                     }
 
+                    this.showButtonStatusMessage("Executing action...", false);
                     await FormActions.execute(action, tthis.form, dmElement, parameter);
+                    this.showButtonStatusMessage("...done", true);
                 }
                 
                 if (requireConfirmation && !tthis.inConfirmation) {
@@ -67,6 +77,38 @@ export class Field extends BaseField implements IFormField {
             });
 
         return this.button;
+    }
+    
+    /**
+     * Displays a status message next to the action button, replacing any existing status message.
+     * @param text The status message text to display.
+     * @param autoHide If true, the message will fade out and be removed after 1 second.
+     */
+    showButtonStatusMessage(text: string, autoHide: boolean = false) {
+        if (this.statusTimeout !== undefined) {
+            window.clearTimeout(this.statusTimeout);
+            this.statusTimeout = undefined;
+        }
+
+        if (this.statusElement) {
+            this.statusElement.remove();
+            this.statusElement = undefined;
+        }
+
+        const status = $("<span class='ms-2'></span>").text(text);
+        this.button.after(status);
+        this.statusElement = status;
+
+        if (autoHide) {
+            this.statusTimeout = window.setTimeout(() => {
+                status.fadeOut('slow', () => {
+                    status.remove();
+                    if (this.statusElement === status) {
+                        this.statusElement = undefined;
+                    }
+                });
+            }, 1000);
+        }
     }
 
     async evaluateDom(dmElement: Mof.DmObject) : Promise<void> {

@@ -59,11 +59,32 @@ class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {
             element.uri,
             parameter?.get('verb', Mof.ObjectType.String) ?? "execute"
         );
+        
+        let managed = false;
+        const resultAsMof = result.resultAsDmObject;
+        if (resultAsMof !== undefined) {
 
-        if (result.success) {
-            alert('Success: ' + result.result);
-        } else {
-            alert("Unfortunately, the action failed: \n\n" + result.reason);
+            // Checks, if we are having a client-actions responded back from the server            
+            const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, Mof.ObjectType.Array);
+
+            if (clientActions !== undefined) {
+                for (let n in clientActions) {
+                    // Try to find the module and execute the client action
+                    const clientAction = clientActions[n] as Mof.DmObject;
+                    await FormActions.executeClientAction(clientAction, form);
+                }
+                
+                managed = true;
+            }
+        } 
+        
+        // Give simple result messages in case the action returned no client actions.
+        if(!managed) {
+            if (result.success) {
+                alert('Success: ' + result.result);
+            } else {
+                alert("Unfortunately, the action failed: \n\n" + result.reason);
+            }
         }
     }
 }

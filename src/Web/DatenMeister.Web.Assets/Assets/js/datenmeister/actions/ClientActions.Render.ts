@@ -27,9 +27,8 @@ class RenderHtml extends FormActions.ItemFormActionModuleBase {
         const html = element.get(_DatenMeister._Actions._ClientActions._RenderHtmlClientAction.html, Mof.ObjectType.String);
         if(html !== undefined && html !== "" && html !== null) {
             if (renderCompletePage) {
-                // We replace the full html of the complete page by this content. 
-                // Not only the body element, but also the html element
-                $(document).html(html);
+                const blob = new Blob([html], { type: "text/html" });
+                window.location.href = URL.createObjectURL(blob);
             } else {
                 $(divIdOfRenderArea).html(html);
             }

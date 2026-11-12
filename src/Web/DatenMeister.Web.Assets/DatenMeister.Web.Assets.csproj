@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Include=".bsmake\Build.cs" />
       <Content Update="tsconfig.json">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

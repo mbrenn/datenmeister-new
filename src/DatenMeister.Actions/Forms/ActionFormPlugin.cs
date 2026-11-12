@@ -32,7 +32,8 @@ public class ActionFormPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scop
                     {
                         Name = "ActionFormPlugin",
                         CreateContext =
-                            context => context.Global.RowFormFactories.Add(new ActionFormModification(workspaceLogic, scopeStorage))
+                            context => context.Global.RowFormFactories.Add(
+                                new ActionFormModification(workspaceLogic, scopeStorage))
                     });
 
                 break;
@@ -44,25 +45,27 @@ public class ActionFormPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scop
     /// <summary>
     /// The helper class which includes the action button into the forms for actions
     /// </summary>
-    public class ActionFormModification (IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage): FormFactoryBase, IRowFormFactory
+    public class ActionFormModification(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        : FormFactoryBase, IRowFormFactory
     {
-        public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResultMultipleForms result)
+        public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context,
+            FormCreationResultMultipleForms result)
         {
             if (!context.IsInExtensionCreationMode())
                 return;
-            
+
             var metaClass = parameter.MetaClass;
             if (metaClass == null)
                 return;
-            
+
             var isAction = ClassifierMethods.IsSpecializedClassifierOf(
-                metaClass, 
+                metaClass,
                 _Actions.TheOne.__Action);
             if (!isAction)
             {
                 return;
             }
-            
+
             string[] verbs;
 
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
@@ -88,14 +91,16 @@ public class ActionFormPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scop
                 throw new InvalidOperationException("No rowform has been created");
             }
 
-            foreach(var verb in verbs)
+            foreach (var verb in verbs)
             {
+                var capitalizedVerb = StringHelper.CapitalizeFirstLetter(verb);
+
                 // Fitting, create the field
                 var fields = form.get<IReflectiveSequence>(_Forms._FormTypes._RowForm.field);
                 var actionField = context.Global.Factory.create(_Forms.TheOne.FieldTypes.__ActionFieldData);
                 actionField.set(_Forms._FieldTypes._ActionFieldData.actionName, "Action.Execute");
-                actionField.set(_Forms._FieldTypes._ActionFieldData.title, $"{verb} Action");
-                actionField.set(_Forms._FieldTypes._ActionFieldData.name, $"{verb} Action");
+                actionField.set(_Forms._FieldTypes._ActionFieldData.title, $"{capitalizedVerb} Action");
+                actionField.set(_Forms._FieldTypes._ActionFieldData.name, $"{capitalizedVerb} Action");
                 var parameter1 = context.Global.Factory.create(null);
                 parameter1.set("verb", verb);
                 actionField.set(_Forms._FieldTypes._ActionFieldData.parameter, parameter1);
@@ -105,5 +110,4 @@ public class ActionFormPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scop
             }
         }
     }
-
 }

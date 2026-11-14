@@ -1,0 +1,149 @@
+= Compare Extent Objects
+
+== Use Case
+
+The user has two extents (either flat or recursive) and wants to verify data integrity
+against a set of criteria. The extent containing the authoritative data is called the
+*golden master*. All other extents are called *derivatives*.
+
+=== Identity Check
+
+* All items in the golden master are also present in the derivative.
+* All items in the derivative are also present in the golden master.
+
+Consistency can be checked using the `id` of each item, or a custom property can be
+designated as the resolution key.
+
+=== Property Value Check
+
+When an element exists in both extents (matched by `id` or a designated property), the
+value of a specified property is compared to ensure it is identical in both extents.
+
+=== Reporting
+
+The results are reported as an extent, which can be built up and exported through
+different channels:
+
+* XML
+* Excel
+* HTML Report
+
+== Requirements
+
+=== Functional Requirements
+
+* The comparison shall support at least two extents: one golden master and one or more derivatives.
+* The user shall be able to choose between identity-based matching and property-based matching.
+* The user shall be able to configure multiple checkers within a single comparison action.
+* The result of the comparison shall be stored as an extent containing all findings and issues.
+* The result extent shall be exportable to XML, Excel, and HTML formats.
+
+=== Non-Functional Requirements
+
+* The comparison shall handle large extents efficiently (consider incremental processing).
+* The reporting mechanism shall be reusable by other tools, not limited to this comparison feature.
+
+== Solution
+
+A new assembly will be created, called `DatenMeister.Actions.dll`, in the namespace
+`DatenMeister.Actions.ActionHandler.CompareExtent`. The comparison is implemented as an
+action (via `IActionHandler`).
+
+=== Data Structure
+
+One action triggers the comparison of extents, and multiple checkers can be added. This
+action executes the checkers and creates a resulting extent that contains the findings
+and issues of the comparison.
+
+By adding another action within an action set, the result can also be exported. This
+mechanism ensures that only standard routines are used.
+
+The data structure:
+
+* `CompareExtentsAction`
+** `masterUrl`: URL of the golden master extent.
+** `derivedUrl`: URL of the derivative extent.
+** `checkers`: List of checkers to be used for the comparison.
+** `masterId`: Property used to identify master elements. May be `null`; in that case, the default `id` is used.
+** `derivedId`: Property used to identify derived elements. May be `null`; in that case, the default `id` is used.
+
+* `MasterIsCompleteChecker`: Verifies that all elements in the derivative are also present in the master.
+* `DerivedIsCompleteChecker`: Verifies that all elements in the master are also present in the derivative.
+* `PropertyIsEqualChecker`: Verifies that a specified property of each matched pair of items (master and derivative) is equal.
+** `masterPropertyId`: ID of the property in the master to be compared. Must be a string.
+** `derivedPropertyId`: ID of the property in the derivative to be compared. Must be a string.
+
+Each checker also has the following properties:
+
+* `importance`: Defines the criticality of the item. This information is used in the report.
+* `name`: Name of the checker.
+
+* `ReportEntry`: Contains one finding or issue.
+** `checkerName`: Name of the checker which found the issue.
+** `important`: Enumeration of `Low`, `Medium`, `High`, `Critical`.
+** `masterObject`: ID or link to the element in the master database having the issue.
+** `derivativeObject`: ID or link to the element in the derivative database which is connected to the issue (as far as possible).
+** `message`: The message of the checker.
+** `issueType`: A key which defines the type of the issue. This can be used for subsequent exports.
+
+
+The checkers are implemented by having a special interface with the following functions:
+
+* `Check(CheckerParameters parameters)`
+
+* `CheckerParameters`
+** `masterExtent`: The URL of the master Extent.
+** `derivativeExtent`: The URL of the derivative Extent.
+** `reportExtent`: The URL of the extent in which the report items are created.
+
+=== Reporting Engine
+
+A reporting engine is needed to which multiple tools can store findings and information
+in a database that is then presented to the user. No special-purpose routine should be
+created within this context that cannot also be used by other extent export features.
+All reporting means must be included and available for all other data.
+
+For HTML reporting, a default format for the full resulting HTML page is implemented in
+the assembly and can be referenced directly. If the user wishes to define a custom
+design, this shall also be supported.
+
+== Example Usage
+
+[example]
+----
+ActionSet:
+  1. CompareExtentsAction:
+     masterUrl: "dm:///master"
+     derivedUrl: "dm:///derived"
+     checkers:
+       - MasterIsCompleteChecker:
+           name: "Master Completeness Check"
+           importance: "High"
+       - DerivedIsCompleteChecker:
+           name: "Derivative Completeness Check"
+           importance: "High"
+       - PropertyIsEqualChecker:
+           name: "Name Property Comparison"
+           importance: "Medium"
+           masterPropertyId: "Name"
+           derivedPropertyId: "Name"
+----
+
+== Implementation
+
+* [ ] Port all 'DatenMeister.Action'-related items to its own extent
+* [ ] Implement `CompareExtentsAction` and checker classes as datastructure in xmi
+* [ ] Implement the ActionHandler itself
+* [ ] Define helper methods for the Reports 
+* [ ] Implement MasterIsCompleteChecker as a derived CheckerInterface
+* [ ] Test Xmi export
+* [ ] Test Excel export
+* [ ] Define default implementation of reporting page in Html
+* [ ] Test Html Export
+
+== Verification
+
+* [ ] Verify identity check with a small test extent.
+* [ ] Verify property value check with mismatched values.
+* [ ] Test HTML export of the result extent.
+* [ ] Test with large extents for performance.

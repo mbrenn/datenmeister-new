@@ -1,0 +1,22 @@
+= Diverse Improvements
+
+== Dropdown Default Value Behavior
+
+For all dropdown field types (`DropDownFieldData`, `DropDownByCollection`, `DropDownByQueryData`) that use string-type values (`FieldType.Strings`), the client-side behavior has changed:
+
+When a dropdown field has no current value, the first available option is now automatically selected and applied to the model. This means the field will never appear empty in edit mode when options are available — the first option serves as the implicit default.
+
+== Dropdown isNewItem Handling
+
+The "new item" guard behavior has been differentiated by field type:
+
+* **Reference-type dropdowns** (`FieldType.References`): When creating a new item, reference-type dropdowns now display a placeholder message ("New item, content can only be set after saving") instead of attempting to load options. This prevents unnecessary API calls during item creation.
+* **String-type dropdowns** (`FieldType.Strings`): String-type dropdowns (such as enumerations) now render normally during item creation, loading and displaying their options so the user can select a value immediately.
+
+== Action Button Title Capitalization
+
+Action buttons that are auto-generated on Action forms now display capitalized titles. For example, the verb `execute` produces the button title "Execute Action" instead of "execute Action". This applies to all standardized action verbs (`execute`, `render`, `download`) as well as custom verbs supported by action handlers.
+
+== StringHelper Utility
+
+A new utility class `StringHelper` has been added to `DatenMeister.Core.Helper`. It provides the `CapitalizeFirstLetter` method, which capitalizes the first letter of a string using invariant culture. It is used internally by the action button title generation.

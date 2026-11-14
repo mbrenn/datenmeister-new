@@ -275,6 +275,13 @@ Renders a dropdown (`<select>`) menu containing predefined static name-value pai
 * **TypeScript Implementation**: `DropDownField.ts` (inherits `DropDownBaseField.ts`)
 * **WPF Implementation**: `DropdownField.cs`
 
+==== Client-Side Behavior
+
+This field type uses `FieldType.Strings` in the base class (`DropDownBaseField.ts`).
+
+* **Default value auto-selection**: When the dropdown field has no current value and options are available, the first option is automatically selected and applied to the model (`dmElement.set`). This means the field will never appear empty in edit mode — the first option serves as the implicit default.
+* **New item handling**: String-type dropdowns (such as enumerations) render normally during item creation. Options are loaded and displayed so the user can select a value immediately, without the "new item" placeholder guard.
+
 ==== Properties
 
 [cols="2,1,1,4",options="header"]
@@ -319,7 +326,12 @@ Renders a dropdown populated dynamically by querying elements from a specified c
 |===
 
 ==== Client-Side Behavior
+
+This field type uses `FieldType.References` in the base class (`DropDownBaseField.ts`).
+
 Constructs a server query via `QueryBuilder.getElementsByPath` to fetch matching elements, extracting each element's `name` and `uri` as dropdown choices. In edit mode, selecting an option stores an item reference (`Mof.DmObject.createFromReference`).
+
+* **New item handling**: When creating a new item, reference-type dropdowns display a placeholder message ("New item, content can only be set after saving") instead of attempting to load options. This prevents unnecessary API calls during item creation. The dropdown becomes available after the item is saved.
 
 ---
 
@@ -329,6 +341,12 @@ Renders a dropdown populated dynamically from the execution of an arbitrary data
 
 * **Metaclass URI**: `dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2`
 * **TypeScript Implementation**: `DropDownByQuery.ts` (inherits `DropDownBaseField.ts`)
+
+==== Client-Side Behavior
+
+This field type uses `FieldType.References` in the base class (`DropDownBaseField.ts`).
+
+* **New item handling**: When creating a new item, reference-type dropdowns display a placeholder message ("New item, content can only be set after saving") instead of attempting to load options. This prevents unnecessary API calls during item creation. The dropdown becomes available after the item is saved.
 
 ==== Properties
 

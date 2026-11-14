@@ -96,10 +96,10 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
                 if (Array.isArray(this._loadedFields)) {
                     this._dropDown = $("<select></select>");
                     for (const field of this._loadedFields) {
-                        if(field.value === undefined) {
+                        if (field.value === undefined) {
                             continue;
                         }
-                        
+
                         const option = $("<option></option>");
                         option.text(field.title);
                         option.val(field.value);
@@ -108,6 +108,10 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
 
                     if (value !== undefined) {
                         this._dropDown.val(value);
+                    } else if (this._loadedFields.length > 0 && this._loadedFields[0].value !== undefined) {
+                        // In case no value is selected, we select the first one
+                        this._dropDown.val(this._loadedFields[0].value);
+                        dmElement.set(fieldName, this._loadedFields[0].value);
                     }
 
                     this._dropDown.on('change', () => {

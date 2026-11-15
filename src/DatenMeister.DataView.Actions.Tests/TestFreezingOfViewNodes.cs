@@ -30,7 +30,7 @@ public class TestFreezingOfViewNodes
         var actionLogic = dm.Resolve<ActionLogic>();
         var action = InMemoryObject.TemporaryFactory.create(_Actions.TheOne.Data.__FreezeViewResultInMemory);
         action.set(_Actions._Data._FreezeViewResultInMemory.extentUri, "dm:///all_umlclasses");
-        action.set("viewNode", classes); // TODO: Fix with right variable
+        action.set(_Actions._Data._FreezeViewResultInMemory.viewNode, classes);
 
         await actionLogic.ExecuteAction(action);
         
@@ -68,7 +68,7 @@ public class TestFreezingOfViewNodes
         // Now we got everything and we can create the action...
         var actionLogic = dm.Resolve<ActionLogic>();
         var action = tempFactory.create(_Actions.TheOne.Data.__FreezeViewResultInExtent);
-        action.set("viewNode", classes); // TODO: Fix with right variable
+        action.set(_Actions._Data._FreezeViewResultInMemory.viewNode, classes);
         tempExtent.elements().add(action);
         action.set(_Actions._Data._FreezeViewResultInExtent.extentLoaderConfig, newExtentLoaderConfig);
 

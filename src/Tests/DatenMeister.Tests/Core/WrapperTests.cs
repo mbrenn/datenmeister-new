@@ -39,11 +39,6 @@ public class WrapperTests
         var extent = new MofUriExtent(new InMemoryProvider(), "dm:///a", null);
         var factory = new MofFactory(extent);
         var variable = factory.create(_Actions.TheOne.__ActionSet);
-        /*
-         * TODO: Reimport
-         */
-        
-        /*
         var wrapper = new Actions.Model.Actions.ActionSet_Wrapper(variable)
         {
             name = "Test"
@@ -53,7 +48,7 @@ public class WrapperTests
         wrapper.isDisabled = true;
 
         Assert.That(wrapper.name, Is.EqualTo("Test"));
-        Assert.That(wrapper.isDisabled, Is.True);*/
+        Assert.That(wrapper.isDisabled, Is.True);
     }
 
     [Test]
@@ -70,10 +65,7 @@ public class WrapperTests
             };
 
         var variable = factory.create(_Actions.TheOne.Reports.__SimpleReportAction);
-        
-        // TODO: Reimport
-        /*
-        var wrapper = new DatenMeister.Core.Models.Actions.Reports.SimpleReportAction_Wrapper(variable)
+        var wrapper = new Actions.Model.Actions.Reports.SimpleReportAction_Wrapper(variable)
         {
             isDisabled = true
         };
@@ -91,7 +83,6 @@ public class WrapperTests
         Assert.That(wrapper.configuration, Is.Not.Null);
         Assert.That(wrapper.configuration.name, Is.EqualTo("Test"));
         Assert.That(wrapper.configuration.showDescendents, Is.True);
-        */
     }
 
     [Test]

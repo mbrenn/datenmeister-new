@@ -53,7 +53,7 @@ public class FreezeViewResultInMemoryHandler: IActionHandler
         IScopeStorage scopeStorage, IElement extentLoaderConfig, IElement action)
     {
         // TODO: Replace with proper action name
-        var viewNode = action.getOrDefault<IElement>("viewNode"/*_Actions._Data._FreezeViewResultInMemory.viewNode*/);
+        var viewNode = action.getOrDefault<IElement>(_Actions._Data._FreezeViewResultInMemory.viewNode);
         if (viewNode == null)
         {
             throw new InvalidOperationException("viewNode is null");

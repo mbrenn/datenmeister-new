@@ -1,6 +1,5 @@
-using DatenMeister.Actions;
+using DatenMeister.Actions.Model;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Reports.Swimlane;
 using DatenMeister.Reports.Swimlane.Model;
@@ -30,7 +29,7 @@ public class SwimlaneActionTests
         var result = await handler.Evaluate(actionLogic, viewDef, "render");
         Assert.That(result, Is.Not.Null);
 
-        var actionResultWrapper = new DatenMeister.Core.Models.Actions.ActionResult_Wrapper(result!);
+        var actionResultWrapper = new DatenMeister.Actions.Model.Actions.ActionResult_Wrapper(result!);
         var clientActionList = (actionResultWrapper.clientActions as IEnumerable<object>)?.ToList();
         Assert.That(clientActionList, Is.Not.Null);
         Assert.That(clientActionList!.Count, Is.EqualTo(1));
@@ -71,7 +70,7 @@ public class SwimlaneActionTests
         var result = await handler.Evaluate(actionLogic, renderAction, "render");
         Assert.That(result, Is.Not.Null);
 
-        var actionResultWrapper = new DatenMeister.Core.Models.Actions.ActionResult_Wrapper(result!);
+        var actionResultWrapper = new DatenMeister.Actions.Model.Actions.ActionResult_Wrapper(result!);
         var clientActionList = (actionResultWrapper.clientActions as IEnumerable<object>)?.ToList();
         Assert.That(clientActionList, Is.Not.Null);
         Assert.That(clientActionList!.Count, Is.EqualTo(1));
@@ -105,7 +104,7 @@ public class SwimlaneActionTests
         var result = await handler.Evaluate(actionLogic, viewDef, "execute");
         Assert.That(result, Is.Not.Null);
 
-        var actionResultWrapper = new DatenMeister.Core.Models.Actions.ActionResult_Wrapper(result!);
+        var actionResultWrapper = new DatenMeister.Actions.Model.Actions.ActionResult_Wrapper(result!);
         var clientActionList = (actionResultWrapper.clientActions as IEnumerable<object>)?.ToList();
         Assert.That(clientActionList, Is.Not.Null);
         Assert.That(clientActionList!.Count, Is.EqualTo(1));

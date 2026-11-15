@@ -116,6 +116,9 @@ Move-Item src/DatenMeister.Core.Model/EMOF/MOF.ts src/Web/DatenMeister.Web.Asset
 Move-Item src/DatenMeister.Core.Model/EMOF/UML.ts src/Web/DatenMeister.Web.Assets/Assets/js/datenmeister/models/UML.ts -Force
 Move-Item src/DatenMeister.Core.Model/EMOF/PrimitiveTypes.ts src/Web/DatenMeister.Web.Assets/Assets/js/datenmeister/models/PrimitiveTypes.ts -Force
 
+# Copy the TS file from actions to the Web
+Move-Item src/DatenMeister.Actions/Model/DatenMeister.Actions.Types.ts src/Web/DatenMeister.Web.Assets/Assets/js/datenmeister/models/DatenMeister.Actions.Types.ts -Force
+
 Set-Location scripts
 
 

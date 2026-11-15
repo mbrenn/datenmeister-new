@@ -10,6 +10,7 @@ import * as ClientItems from '../client/Items.js'
 import * as MofSync from "../MofSync.js"
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
 import {FormType} from "./Interfaces.js";
 
 export async function createActionFormForEmptyObject(
@@ -76,7 +77,7 @@ export async function createActionFormForEmptyObject(
 
             // Checks, if we are having a client-actions responded back from the server
             const resultAsMof = result as Mof.DmObject;
-            const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, Mof.ObjectType.Array);
+            const clientActions = resultAsMof.get(_Actions._ActionResult.clientActions, Mof.ObjectType.Array);
             if (clientActions !== undefined) {
 
                 for (let n in clientActions) {

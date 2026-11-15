@@ -5,7 +5,8 @@ import * as ClientItems from "../client/Items.js"
 import * as Mof from "../Mof.js";
 import {EntentType} from "../ApiModels.js";
 import * as DatenMeister from "../models/DatenMeister.class.js"
-import {_Actions, _CommonTypes} from "../models/DatenMeister.class.js"
+import {_CommonTypes} from "../models/DatenMeister.class.js"
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
 
 
 import '../../node_modules/chai/register-assert.js';

@@ -6,6 +6,7 @@ import {IFormNavigation} from "../forms/Interfaces.js";
 import {SubmitMethod} from "../forms/Forms.js";
 import * as Settings from "../Settings.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
 import * as ItemClient from "../client/Items.js";
 import * as FormClient from "../client/Forms.js";
 import * as Navigator from "../Navigator.js";
@@ -103,7 +104,7 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
         const extentCreationParameter = new Mof.DmObject();
         extentCreationParameter.set('configuration', element);
         extentCreationParameter.setMetaClassByUri(
-            _DatenMeister._Actions.__LoadExtentAction_Uri, 
+            _Actions.__LoadExtentAction_Uri, 
             'Types'
         );
 
@@ -144,7 +145,7 @@ class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBas
         const extentCreationParameter = new Mof.DmObject();
         extentCreationParameter.set('configuration', element);
         extentCreationParameter.setMetaClassByUri(
-            _DatenMeister._Actions.__LoadExtentAction_Uri,'Types');
+            _Actions.__LoadExtentAction_Uri,'Types');
 
         const result = await ActionClient.executeActionDirectly(
             "Execute",

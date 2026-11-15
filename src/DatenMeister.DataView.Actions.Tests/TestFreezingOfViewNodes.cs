@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using DatenMeister.Actions;
+using DatenMeister.Actions.Model;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
@@ -29,7 +30,7 @@ public class TestFreezingOfViewNodes
         var actionLogic = dm.Resolve<ActionLogic>();
         var action = InMemoryObject.TemporaryFactory.create(_Actions.TheOne.Data.__FreezeViewResultInMemory);
         action.set(_Actions._Data._FreezeViewResultInMemory.extentUri, "dm:///all_umlclasses");
-        action.set(_Actions._Data._FreezeViewResultInMemory.viewNode, classes);
+        action.set("viewNode", classes); // TODO: Fix with right variable
 
         await actionLogic.ExecuteAction(action);
         
@@ -67,7 +68,7 @@ public class TestFreezingOfViewNodes
         // Now we got everything and we can create the action...
         var actionLogic = dm.Resolve<ActionLogic>();
         var action = tempFactory.create(_Actions.TheOne.Data.__FreezeViewResultInExtent);
-        action.set(_Actions._Data._FreezeViewResultInExtent.viewNode, classes);
+        action.set("viewNode", classes); // TODO: Fix with right variable
         tempExtent.elements().add(action);
         action.set(_Actions._Data._FreezeViewResultInExtent.extentLoaderConfig, newExtentLoaderConfig);
 

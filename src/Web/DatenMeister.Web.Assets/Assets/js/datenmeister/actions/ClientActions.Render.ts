@@ -4,6 +4,7 @@ import * as Mof from "../Mof.js";
 import {SubmitMethod} from "../forms/Forms.js";
 import * as FormFactory from "../forms/FormFactory.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
 import * as ClientForm from "../client/Forms.js"
 import * as ClientItem from "../client/Items.js"
 import * as ViewModeLogic from "../forms/ViewModeLogic.js"
@@ -20,12 +21,12 @@ const divIdOfRenderArea = '#pageContent';
 
 class RenderHtml extends FormActions.ItemFormActionModuleBase {
     constructor() {
-        super("DatenMeister.Render.Html", _DatenMeister._Actions._ClientActions.__RenderHtmlClientAction_Uri);
+        super("DatenMeister.Render.Html", _Actions._ClientActions.__RenderHtmlClientAction_Uri);
     }
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        const renderCompletePage = element.get(_DatenMeister._Actions._ClientActions._RenderHtmlClientAction.renderCompletePage, Mof.ObjectType.Boolean);
-        const html = element.get(_DatenMeister._Actions._ClientActions._RenderHtmlClientAction.html, Mof.ObjectType.String);
+        const renderCompletePage = element.get(_Actions._ClientActions._RenderHtmlClientAction.renderCompletePage, Mof.ObjectType.Boolean);
+        const html = element.get(_Actions._ClientActions._RenderHtmlClientAction.html, Mof.ObjectType.String);
         if(html !== undefined && html !== "" && html !== null) {
             if (renderCompletePage) {
                 const blob = new Blob([html], { type: "text/html" });
@@ -36,7 +37,7 @@ class RenderHtml extends FormActions.ItemFormActionModuleBase {
             return;
         }
         
-        const text = element.get(_DatenMeister._Actions._ClientActions._RenderHtmlClientAction.text, Mof.ObjectType.String);
+        const text = element.get(_Actions._ClientActions._RenderHtmlClientAction.text, Mof.ObjectType.String);
         if(text !== undefined && text !== "" && text !== null)
         {
             $(divIdOfRenderArea).text(text);
@@ -49,12 +50,12 @@ class RenderHtml extends FormActions.ItemFormActionModuleBase {
 
 class DownloadHtml extends FormActions.ItemFormActionModuleBase {
     constructor() {
-        super("DatenMeister.Download.Html", _DatenMeister._Actions._ClientActions.__DownloadHtmlClientAction_Uri);
+        super("DatenMeister.Download.Html", _Actions._ClientActions.__DownloadHtmlClientAction_Uri);
     }
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        const html = element.get(_DatenMeister._Actions._ClientActions._DownloadHtmlClientAction.html, Mof.ObjectType.String);
-        const filename = element.get(_DatenMeister._Actions._ClientActions._DownloadHtmlClientAction.filename, Mof.ObjectType.String);
+        const html = element.get(_Actions._ClientActions._DownloadHtmlClientAction.html, Mof.ObjectType.String);
+        const filename = element.get(_Actions._ClientActions._DownloadHtmlClientAction.filename, Mof.ObjectType.String);
         this.downloadHtml(html, filename);
     }
 
@@ -89,15 +90,15 @@ class DownloadHtml extends FormActions.ItemFormActionModuleBase {
 class RenderForm extends FormActions.ItemFormActionModuleBase
 {
     constructor() {
-        super("DatenMeister.Render.Form", _DatenMeister._Actions._ClientActions.__RenderFormClientAction_Uri);
+        super("DatenMeister.Render.Form", _Actions._ClientActions.__RenderFormClientAction_Uri);
     }
     
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        const dataWorkspace = element.get(_DatenMeister._Actions._ClientActions._RenderFormClientAction.dataWorkspaceId, Mof.ObjectType.String);
-        const dataUri = element.get(_DatenMeister._Actions._ClientActions._RenderFormClientAction.dataUri, Mof.ObjectType.String);
-        const formAutogenerate = element.get(_DatenMeister._Actions._ClientActions._RenderFormClientAction.formAutoGenerate, Mof.ObjectType.Boolean);
-        const formType = element.get(_DatenMeister._Actions._ClientActions._RenderFormClientAction.formType, Mof.ObjectType.String);
-        const detailForm = element.get(_DatenMeister._Actions._ClientActions._RenderFormClientAction.form, Mof.ObjectType.Object);
+        const dataWorkspace = element.get(_Actions._ClientActions._RenderFormClientAction.dataWorkspaceId, Mof.ObjectType.String);
+        const dataUri = element.get(_Actions._ClientActions._RenderFormClientAction.dataUri, Mof.ObjectType.String);
+        const formAutogenerate = element.get(_Actions._ClientActions._RenderFormClientAction.formAutoGenerate, Mof.ObjectType.Boolean);
+        const formType = element.get(_Actions._ClientActions._RenderFormClientAction.formType, Mof.ObjectType.String);
+        const detailForm = element.get(_Actions._ClientActions._RenderFormClientAction.form, Mof.ObjectType.Object);
 
         // Ok, we have consolidated the information. 
         if (formAutogenerate && detailForm !== undefined) {

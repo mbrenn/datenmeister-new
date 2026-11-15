@@ -5,6 +5,7 @@ import * as Mof from "/js/datenmeister/Mof.js";
 import {DmObject} from "/js/datenmeister/Mof.js";
 import {SubmitMethod} from "/js/datenmeister/forms/Forms.js";
 import * as DmModel from '/js/datenmeister/models/DatenMeister.class.js';
+import { _Actions } from "/js/datenmeister/models/DatenMeister.Actions.Types.js"
 import * as FormInterfaces from '/js/datenmeister/forms/Interfaces.js';
 import * as FormFactory from "/js/datenmeister/forms/FormFactory.js";
 import {IDecoupledFormConfiguration} from "/js/datenmeister/forms/IFormConfiguration.js";
@@ -40,10 +41,10 @@ class SwimlaneRenderAction
             });
             
         // Now open the popup window
-        const createWindow = new DmObject(DmModel._Actions._ClientActions.__NavigateOpenActionInWindow_Uri);
-        createWindow.set(DmModel._Actions._ClientActions._NavigateOpenActionInWindow.context, "render");
-        createWindow.set(DmModel._Actions._ClientActions._NavigateOpenActionInWindow.actionUrl, temporaryItemResult.uri);
-        createWindow.set(DmModel._Actions._ClientActions._NavigateOpenActionInWindow.workspaceId, temporaryItemResult.workspace);        
+        const createWindow = new DmObject(_Actions._ClientActions.__NavigateOpenActionInWindow_Uri);
+        createWindow.set(_Actions._ClientActions._NavigateOpenActionInWindow.context, "render");
+        createWindow.set(_Actions._ClientActions._NavigateOpenActionInWindow.actionUrl, temporaryItemResult.uri);
+        createWindow.set(_Actions._ClientActions._NavigateOpenActionInWindow.workspaceId, temporaryItemResult.workspace);        
 
         await FormActions.executeClientAction(createWindow);
         return Promise.resolve(undefined);

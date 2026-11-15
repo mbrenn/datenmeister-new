@@ -25,7 +25,7 @@ public class ViewNodeRenderActionHandler : IActionHandler
         if (actionVerb != "render")
         {
             // The alert result
-            var result = Core.Models.Actions.ClientActions.AlertClientAction_Wrapper.Create(InMemoryObject.TemporaryFactory);
+            var result = Actions.Model.Actions.ClientActions.AlertClientAction_Wrapper.Create(InMemoryObject.TemporaryFactory);
             result.messageText = "ActionHandler 'ViewNodeRenderActionHandler' just supports rendering";
             result.name = "Information";
         
@@ -33,7 +33,7 @@ public class ViewNodeRenderActionHandler : IActionHandler
         }
 
         var clientAction =
-            DatenMeister.Core.Models.Actions.ClientActions.RenderFormClientAction_Wrapper.Create(InMemoryObject
+            Actions.Model.Actions.ClientActions.RenderFormClientAction_Wrapper.Create(InMemoryObject
                 .TemporaryFactory);
         clientAction.formType = _Forms._FormTypes.___FormType.Decoupled;
             

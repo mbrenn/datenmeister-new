@@ -2,9 +2,8 @@
 import * as Mof from "../Mof.js";
 import { IFormNavigation, IPageForm } from "../forms/Interfaces.js";
 import { SubmitMethod } from "../forms/Forms.js";
-import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as Navigation from "../Navigator.js";
-import {_Actions} from "../models/DatenMeister.class.js";
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
 import * as Settings from "../Settings.js";
 
 export function loadModules() {
@@ -139,9 +138,9 @@ class CreateAction extends FormActions.ItemFormActionModuleBase {
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         if(parameter === undefined) throw new Error("Parameter is undefined");
-        const actionType = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.actionName, Mof.ObjectType.String);
-        const formUrl = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.formUrl, Mof.ObjectType.String);
-        const metaClassUrl = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.metaClassUrl, Mof.ObjectType.String);
+        const actionType = parameter.get(_Actions._ParameterTypes._NavigationDefineActionParameter.actionName, Mof.ObjectType.String);
+        const formUrl = parameter.get(_Actions._ParameterTypes._NavigationDefineActionParameter.formUrl, Mof.ObjectType.String);
+        const metaClassUrl = parameter.get(_Actions._ParameterTypes._NavigationDefineActionParameter.metaClassUrl, Mof.ObjectType.String);
 
         Navigation.navigateToAction(actionType, formUrl, { workspace: element.workspace, itemUri: element.uri, metaClass: metaClassUrl });
     }
@@ -151,14 +150,14 @@ class NavigateToExtent extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super(
             "DatenMeister.Navigation.ToExtent",
-            _DatenMeister._Actions._ClientActions.__NavigateToExtentClientAction_Uri);
+            _Actions._ClientActions.__NavigateToExtentClientAction_Uri);
         this.skipSaving = true;
     }
     
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         Navigation.navigateToExtentProperties(
-            element.get(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId),
-            element.get(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri)
+            element.get(_Actions._ClientActions._NavigateToExtentClientAction.workspaceId),
+            element.get(_Actions._ClientActions._NavigateToExtentClientAction.extentUri)
         );
     }
 }

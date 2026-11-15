@@ -1,7 +1,7 @@
-﻿using DatenMeister.Actions.Transformations;
+﻿using DatenMeister.Actions.Model;
+using DatenMeister.Actions.Transformations;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using NUnit.Framework;
 

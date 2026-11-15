@@ -2,6 +2,7 @@
 import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
 import {SubmitMethod} from "../forms/Forms.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
 import * as ActionClient from "../client/Actions.js";
@@ -17,15 +18,15 @@ export function loadModules() {
 
 class AlertClientAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
-        super("Alert", _DatenMeister._Actions._ClientActions.__AlertClientAction_Uri);
+        super("Alert", _Actions._ClientActions.__AlertClientAction_Uri);
         this.actionVerb = "Alert";
         this.skipSaving = true;
     }
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         alert(
-            element?.get(_DatenMeister._Actions._ClientActions._AlertClientAction.messageText, Mof.ObjectType.String)
-            ?? parameter?.get(_DatenMeister._Actions._ClientActions._AlertClientAction.messageText, Mof.ObjectType.String)
+            element?.get(_Actions._ClientActions._AlertClientAction.messageText, Mof.ObjectType.String)
+            ?? parameter?.get(_Actions._ClientActions._AlertClientAction.messageText, Mof.ObjectType.String)
             ?? "Invalid alert text");
     }
 }
@@ -65,7 +66,7 @@ class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {
         if (resultAsMof !== undefined) {
 
             // Checks, if we are having a client-actions responded back from the server            
-            const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, Mof.ObjectType.Array);
+            const clientActions = resultAsMof.get(_Actions._ActionResult.clientActions, Mof.ObjectType.Array);
 
             if (clientActions !== undefined) {
                 for (let n in clientActions) {

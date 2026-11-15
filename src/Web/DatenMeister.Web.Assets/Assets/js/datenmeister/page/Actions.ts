@@ -1,6 +1,7 @@
 ﻿import * as SIC from '../controls/SelectItemControl.js'
 import * as Mof from '../Mof.js'
 import * as _DatenMeister from '../models/DatenMeister.class.js'
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
 import * as FormActions from '../FormActions.js'
 import { loadDefaultModules } from "../actions/DefaultLoader.js"
 import * as PathQueryDebugControl from "../controls/PathQueryDebugControl.js"
@@ -92,9 +93,9 @@ export async function pageOpenSelectItemControlWithItem() {
 
 export async function openNavigateToExtentPropertiesViaClientNavigation() {
     const navigate = new Mof.DmObject();
-    navigate.setMetaClassByUri(_DatenMeister._Actions._ClientActions.__NavigateToExtentClientAction_Uri);
-    navigate.set(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId, "TemporaryData");
-    navigate.set(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri, "dm:///_internal/temp");
+    navigate.setMetaClassByUri(_Actions._ClientActions.__NavigateToExtentClientAction_Uri);
+    navigate.set(_Actions._ClientActions._NavigateToExtentClientAction.workspaceId, "TemporaryData");
+    navigate.set(_Actions._ClientActions._NavigateToExtentClientAction.extentUri, "dm:///_internal/temp");
 
     await FormActions.executeClientAction(navigate);
 }

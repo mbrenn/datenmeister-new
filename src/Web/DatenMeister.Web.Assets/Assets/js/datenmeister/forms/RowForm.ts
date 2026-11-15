@@ -9,7 +9,7 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 import {SubmitMethod} from "./Forms.js";
 import * as ClientItem from "../client/Items.js";
 import * as ClientAction from "../client/Actions.js";
-import {_Actions} from "../models/DatenMeister.class.js";
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
 
 class FieldInForm {
     fieldElement: InterfacesFields.IFormField;
@@ -471,10 +471,10 @@ export class RowForm implements InterfacesForms.IObjectForm {
         const tthis = this;
         $(".dm-rowform-infocell", tr).on('click', async event => {
             const infoCell = $(event.currentTarget);
-            const action = new Mof.DmObject(_DatenMeister._Actions._Forms.__GetAttributeOfItem_Uri);
-            action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.propertyName, name);
-            action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.itemUri, tthis.itemUrl);
-            action.set(_DatenMeister._Actions._Forms._GetAttributeOfItem.workspace, tthis.workspace);
+            const action = new Mof.DmObject(_Actions._Forms.__GetAttributeOfItem_Uri);
+            action.set(_Actions._Forms._GetAttributeOfItem.propertyName, name);
+            action.set(_Actions._Forms._GetAttributeOfItem.itemUri, tthis.itemUrl);
+            action.set(_Actions._Forms._GetAttributeOfItem.workspace, tthis.workspace);
             const result = await ClientAction.executeActionDirectly(
                 "Execute",
                 {
@@ -487,9 +487,9 @@ export class RowForm implements InterfacesForms.IObjectForm {
                     showRowFormInfoPopup(infoCell, 'No metadata could be retrieved for that property');
                 } else {
                     const resultText =
-                        "isComposite: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.isComposite, Mof.ObjectType.Boolean) ? "true" : "false")
-                        + "\r\nisMultiple: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.isMultiple, Mof.ObjectType.Boolean) ? "true" : "false")
-                        + "\r\nmetaClass: " + (result.resultAsDmObject.get(_DatenMeister._Actions._Forms._GetAttributeOfItemResult.metaClassUri, Mof.ObjectType.String));
+                        "isComposite: " + (result.resultAsDmObject.get(_Actions._Forms._GetAttributeOfItemResult.isComposite, Mof.ObjectType.Boolean) ? "true" : "false")
+                        + "\r\nisMultiple: " + (result.resultAsDmObject.get(_Actions._Forms._GetAttributeOfItemResult.isMultiple, Mof.ObjectType.Boolean) ? "true" : "false")
+                        + "\r\nmetaClass: " + (result.resultAsDmObject.get(_Actions._Forms._GetAttributeOfItemResult.metaClassUri, Mof.ObjectType.String));
 
                     showRowFormInfoPopup(infoCell, resultText);
                 }

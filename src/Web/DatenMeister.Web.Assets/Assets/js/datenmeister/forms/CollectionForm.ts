@@ -15,7 +15,8 @@ import {ObjectType} from "../Mof.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Navigator from "../Navigator.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-import {_Actions, _Forms} from "../models/DatenMeister.class.js";
+import {_Forms} from "../models/DatenMeister.class.js";
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
 import * as ActionField from "../fields/ActionField.js";
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";

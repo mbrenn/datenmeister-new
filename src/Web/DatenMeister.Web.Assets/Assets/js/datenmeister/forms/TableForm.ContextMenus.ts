@@ -1,5 +1,6 @@
 ﻿import * as burnJsPopup from "../../burnsystems/burnJsPopup.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
 import * as Actions from "../client/Actions.js";
 import _FieldData = _DatenMeister._Forms._FieldTypes._FieldData;
 import _TableForm = _DatenMeister._Forms._FormTypes._TableForm;
@@ -29,9 +30,9 @@ export function createFunctionToRemoveAllProperties(tableForm: TableForm, field:
                 const dataUrl = tableForm.getFormElement().get(_TableForm.dataUrl, Mof.ObjectType.String);
 
                 // Creates the action
-                const action = new Mof.DmObject(_DatenMeister._Actions.__DeletePropertyFromCollectionAction_Uri);
-                action.set(_DatenMeister._Actions._DeletePropertyFromCollectionAction.collectionUrl, dataUrl);
-                action.set(_DatenMeister._Actions._DeletePropertyFromCollectionAction.propertyName, propertyName);
+                const action = new Mof.DmObject(_Actions.__DeletePropertyFromCollectionAction_Uri);
+                action.set(_Actions._DeletePropertyFromCollectionAction.collectionUrl, dataUrl);
+                action.set(_Actions._DeletePropertyFromCollectionAction.propertyName, propertyName);
 
                 const parameter: Actions.ExecuteActionParams = {
                     parameter: action
@@ -247,18 +248,18 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                     }
 
                     // Prepare the action to store the current viewset into the selected package
-                    const actionParameter = new Mof.DmObject(_DatenMeister._Actions.__StoreElementAction_Uri);
+                    const actionParameter = new Mof.DmObject(_Actions.__StoreElementAction_Uri);
                     actionParameter.set(
-                        _DatenMeister._Actions._StoreElementAction.name, name);
+                        _Actions._StoreElementAction.name, name);
                     actionParameter.set(
-                        _DatenMeister._Actions._StoreElementAction.url, packageUrl.uri);
+                        _Actions._StoreElementAction.url, packageUrl.uri);
                     actionParameter.set(
-                        _DatenMeister._Actions._StoreElementAction.workspace, packageUrl.workspace);
+                        _Actions._StoreElementAction.workspace, packageUrl.workspace);
 
                     const queryBuilder = tableForm.tableState.queryStatement;
                     queryBuilder.set(_NamedElement._name_, name);
                     actionParameter.set(
-                        _DatenMeister._Actions._StoreElementAction.element, queryBuilder);
+                        _Actions._StoreElementAction.element, queryBuilder);
 
                     const result =
                         await Actions.executeActionDirectly("Execute", {
@@ -267,10 +268,10 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                     
                     if(result.resultAsDmObject === undefined) throw Error("Result is not set");
                     const uri = result.resultAsDmObject.get(
-                        _DatenMeister._Actions._TargetReferenceResult.targetUrl,
+                        _Actions._TargetReferenceResult.targetUrl,
                         Mof.ObjectType.String);
                     const workspace = result.resultAsDmObject.get(
-                        _DatenMeister._Actions._TargetReferenceResult.targetWorkspace,
+                        _Actions._TargetReferenceResult.targetWorkspace,
                         Mof.ObjectType.String);
 
                     // If we have the result, we show it with a link to navigate

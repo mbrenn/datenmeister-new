@@ -1,8 +1,8 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
+﻿using DatenMeister.Actions.Model;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime;
 using NUnit.Framework;

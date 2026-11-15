@@ -2,7 +2,7 @@ import * as FormActions from '/js/datenmeister/FormActions.js';
 import * as Mof from "/js/datenmeister/Mof.js";
 import * as ClientElements from "/js/datenmeister/client/Elements.js";
 import * as ClientItems from "/js/datenmeister/client/Items.js";
-import * as DmModel from '/js/datenmeister/models/DatenMeister.class.js';
+import { _Actions } from "/js/datenmeister/models/DatenMeister.Actions.Types.js";
 import * as FormInterfaces from '/js/datenmeister/forms/Interfaces.js';
 import * as FormFactory from "/js/datenmeister/forms/FormFactory.js";
 import * as QueryEngine from "/js/datenmeister/modules/QueryEngine.js";
@@ -27,10 +27,10 @@ class ViewNodeRenderAction extends FormActions.ItemFormActionModuleBase {
             referenceUri: element.uri
         });
         // Now open the popup window
-        const createWindow = new Mof.DmObject(DmModel._Actions._ClientActions.__NavigateOpenActionInWindow_Uri);
-        createWindow.set(DmModel._Actions._ClientActions._NavigateOpenActionInWindow.context, "render");
-        createWindow.set(DmModel._Actions._ClientActions._NavigateOpenActionInWindow.actionUrl, temporaryItemResult.uri);
-        createWindow.set(DmModel._Actions._ClientActions._NavigateOpenActionInWindow.workspaceId, temporaryItemResult.workspace);
+        const createWindow = new Mof.DmObject(_Actions._ClientActions.__NavigateOpenActionInWindow_Uri);
+        createWindow.set(_Actions._ClientActions._NavigateOpenActionInWindow.context, "render");
+        createWindow.set(_Actions._ClientActions._NavigateOpenActionInWindow.actionUrl, temporaryItemResult.uri);
+        createWindow.set(_Actions._ClientActions._NavigateOpenActionInWindow.workspaceId, temporaryItemResult.workspace);
         await FormActions.executeClientAction(createWindow);
         return Promise.resolve(undefined);
     }

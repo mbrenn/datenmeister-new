@@ -2,6 +2,7 @@
 import * as ClientExtent from "../client/Extents.js"
 import * as Mof from "../Mof.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
 import * as ClientWorkspace from "../client/Workspace.js";
 import * as ClientItems from "../client/Items.js";
 import {_UML} from "../models/UML.js";
@@ -68,14 +69,14 @@ export function includeTests() {
                 assert.isTrue(!success.exists, "dm:///unittestaction may not exist");
 
                 const parameter = new Mof.DmObject();
-                parameter.setMetaClassByUri(_DatenMeister._Actions.__LoadExtentAction_Uri, 'Types');
+                parameter.setMetaClassByUri(_Actions.__LoadExtentAction_Uri, 'Types');
 
                 const configuration = new Mof.DmObject();
                 configuration.setMetaClassByUri(_DatenMeister._ExtentLoaderConfigs.__InMemoryLoaderConfig_Uri, 'Types');
                 configuration.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///unittestaction");
                 configuration.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId, "Test");
                 configuration.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig._name_, "UnitTest");
-                parameter.set(_DatenMeister._Actions._LoadExtentAction.configuration, configuration);
+                parameter.set(_Actions._LoadExtentAction.configuration, configuration);
 
                 await ClientActions.executeActionDirectly("Execute", {parameter: parameter});
 
@@ -83,9 +84,9 @@ export function includeTests() {
                 assert.isTrue(success.exists, "dm:///unittestaction should exist");
 
                 const drop = new Mof.DmObject();
-                drop.setMetaClassByUri(_DatenMeister._Actions.__DropExtentAction_Uri, 'Types');
-                drop.set(_DatenMeister._Actions._DropExtentAction.workspaceId, "Test");
-                drop.set(_DatenMeister._Actions._DropExtentAction.extentUri, "dm:///unittestaction");
+                drop.setMetaClassByUri(_Actions.__DropExtentAction_Uri, 'Types');
+                drop.set(_Actions._DropExtentAction.workspaceId, "Test");
+                drop.set(_Actions._DropExtentAction.extentUri, "dm:///unittestaction");
 
                 await ClientActions.executeActionDirectly("Execute", {parameter: drop});
 
@@ -119,24 +120,24 @@ export function includeTests() {
 
                 // Now create the copy action to copy the child 1 to parent2
                 const action = new Mof.DmObject();
-                action.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri, 'Types');
-                action.set(_DatenMeister._Actions._MoveOrCopyAction.source,
+                action.setMetaClassByUri(_Actions.__MoveOrCopyAction_Uri, 'Types');
+                action.set(_Actions._MoveOrCopyAction.source,
                     Mof.DmObject.createFromReference("Test", child1.itemUri));
-                action.set(_DatenMeister._Actions._MoveOrCopyAction.target,
+                action.set(_Actions._MoveOrCopyAction.target,
                     Mof.DmObject.createFromReference("Test", parent2.itemUrl));
-                action.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Copy);
+                action.set(_Actions._MoveOrCopyAction.copyMode, _Actions._MoveOrCopyType.Copy);
 
                 const copyResult = await ClientActions.executeActionDirectly("Execute", {parameter: action});
                 assert.isTrue(copyResult !== undefined, "Copy Result should have a return");
                 assert.isTrue(copyResult.resultAsDmObject !== undefined,"Copy Result should have a result");
                 const copyResultUri =
                     copyResult.resultAsDmObject!.get(
-                        _DatenMeister._Actions._TargetReferenceResult.targetUrl,
+                        _Actions._TargetReferenceResult.targetUrl,
                         Mof.ObjectType.String
                     );
                 const copyResultWorkspace =
                     copyResult.resultAsDmObject!.get(
-                        _DatenMeister._Actions._TargetReferenceResult.targetWorkspace,
+                        _Actions._TargetReferenceResult.targetWorkspace,
                         Mof.ObjectType.String
                     );
                 
@@ -193,24 +194,24 @@ export function includeTests() {
 
                 // Now create the copy action to copy the child 1 to parent2
                 const action = new Mof.DmObject();
-                action.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri, 'Types');
-                action.set(_DatenMeister._Actions._MoveOrCopyAction.source,
+                action.setMetaClassByUri(_Actions.__MoveOrCopyAction_Uri, 'Types');
+                action.set(_Actions._MoveOrCopyAction.source,
                     Mof.DmObject.createFromReference("Test", child1.itemUri));
-                action.set(_DatenMeister._Actions._MoveOrCopyAction.target,
+                action.set(_Actions._MoveOrCopyAction.target,
                     Mof.DmObject.createFromReference("Test", parent2.itemUrl)); 
-                action.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Move);
+                action.set(_Actions._MoveOrCopyAction.copyMode, _Actions._MoveOrCopyType.Move);
 
                 const copyResult = await ClientActions.executeActionDirectly("Execute", {parameter: action});
                 assert.isTrue(copyResult !== undefined);
                 assert.isTrue(copyResult.resultAsDmObject !== undefined);
                 const copyResultUri =
                     copyResult.resultAsDmObject!.get(
-                        _DatenMeister._Actions._TargetReferenceResult.targetUrl,
+                        _Actions._TargetReferenceResult.targetUrl,
                         Mof.ObjectType.String
                     );
                 const copyResultWorkspace =
                     copyResult.resultAsDmObject!.get(
-                        _DatenMeister._Actions._TargetReferenceResult.targetWorkspace,
+                        _Actions._TargetReferenceResult.targetWorkspace,
                         Mof.ObjectType.String
                     );
 

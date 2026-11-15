@@ -69,6 +69,16 @@ public class Actions
         private static readonly MofObjectShadow _metaClass = new ("dm:///intern.types.actions.datenmeister/#Actions.ActionSet");
 
         public static ActionSet_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+        // Not found
+        public object? @action
+        {
+            get =>
+                _wrappedElement.getOrDefault<object?>("action");
+            set => 
+                _wrappedElement.set("action", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#899324b1-85dc-40a1-ba95-dec50509040d",

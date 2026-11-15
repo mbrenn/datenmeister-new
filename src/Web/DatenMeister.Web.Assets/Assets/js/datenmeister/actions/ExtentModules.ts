@@ -13,15 +13,14 @@ import * as MofArray from "../MofArray.js";
 import * as MofSync from "../MofSync.js";
 import * as Navigator from "../Navigator.js";
 import * as Settings from "../Settings.js";
-import _StoreExtentAction = _DatenMeister._Actions._StoreExtentAction;
+import _StoreExtentAction = _Actions._StoreExtentAction;
 import _ObjectForm = _DatenMeister._Forms._FormTypes._ObjectForm;
 import _RowForm = _DatenMeister._Forms._FormTypes._RowForm;
 import _ActionFieldData = _DatenMeister._Forms._FieldTypes._ActionFieldData;
 import TableForm from "../forms/TableForm.js";
-import * as NavigationActions from "./NavigationModules.js"
 import * as DomPopup from "../DomHelper.Popup.js"
-import {_Actions, _Forms} from "../models/DatenMeister.class.js";
-import _AlertClientAction = _Actions._ClientActions._AlertClientAction;
+import {_Forms} from "../models/DatenMeister.class.js";
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
 import _FormTypes = _Forms._FormTypes;
 
 export function loadModules() {
@@ -321,11 +320,11 @@ class ExtentNavigateInPopupAction extends FormActions.ItemFormActionModuleBase {
         let extentUri = element.get('uri');
         let workspaceId = element.get('workspaceId');
         
-        const clientAction1 = new Mof.DmObject(_DatenMeister._Actions._ClientActions.__RenderFormClientAction_Uri);
-        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.dataUri, extentUri);
-        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.dataWorkspaceId, workspaceId);
-        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.formAutoGenerate, true);
-        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.formType, _FormTypes._FormType.Collection);
+        const clientAction1 = new Mof.DmObject(_Actions._ClientActions.__RenderFormClientAction_Uri);
+        clientAction1.set(_Actions._ClientActions._RenderFormClientAction.dataUri, extentUri);
+        clientAction1.set(_Actions._ClientActions._RenderFormClientAction.dataWorkspaceId, workspaceId);
+        clientAction1.set(_Actions._ClientActions._RenderFormClientAction.formAutoGenerate, true);
+        clientAction1.set(_Actions._ClientActions._RenderFormClientAction.formType, _FormTypes._FormType.Collection);
                 
         DomPopup.createPopupWindowWithClientActions([clientAction1]);
     }
@@ -443,7 +442,7 @@ class ExtentsStoreAction extends FormActions.ItemFormActionModuleBase{
     }
     
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        const action = new Mof.DmObject(_DatenMeister._Actions.__StoreExtentAction_Uri);
+        const action = new Mof.DmObject(_Actions.__StoreExtentAction_Uri);
         action.set(_StoreExtentAction.workspaceId, element.get(_DatenMeister._Management._Extent.workspaceId));
         action.set(_StoreExtentAction.extentUri, element.get(_DatenMeister._Management._Extent.uri));
 

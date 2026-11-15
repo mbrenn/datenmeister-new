@@ -14,6 +14,8 @@ import * as ClientElements from "../client/Elements.js";
 import * as DomPopup from "../DomHelper.Popup.js";
 import {_Forms} from "../models/DatenMeister.class.js";
 import _FormTypes = _Forms._FormTypes;
+import { _Actions } from "../models/DatenMeister.Actions.Types.js"
+
 
 export function loadModules() {   
     FormActions.addModule(new ItemMoveOrCopyActionNavigate());
@@ -52,7 +54,7 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
 
         let p = new URLSearchParams(window.location.search);
 
-        const result = await MofSync.createTemporaryDmObject(_DatenMeister._Actions.__MoveOrCopyAction_Uri);
+        const result = await MofSync.createTemporaryDmObject(_Actions.__MoveOrCopyAction_Uri);
 
         // TODO: Set Result
         const sourceWorkspace = p.get('workspaceId');
@@ -62,7 +64,7 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         }
 
         const source = Mof.DmObject.createFromReference(sourceWorkspace, sourceItemUri);
-        result.set(_DatenMeister._Actions._MoveOrCopyAction.source, source);
+        result.set(_Actions._MoveOrCopyAction.source, source);
 
         const container = await ItemClient.getContainer(sourceWorkspace, sourceItemUri);
         if (container.length > 0) {
@@ -72,10 +74,10 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
             }
             
             const target = Mof.DmObject.createFromReference(workspace, container[0].uri);
-            result.set(_DatenMeister._Actions._MoveOrCopyAction.target, target);
+            result.set(_Actions._MoveOrCopyAction.target, target);
         }
 
-        result.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Move);
+        result.set(_Actions._MoveOrCopyAction.copyMode, _Actions._MoveOrCopyType.Move);
 
         return Promise.resolve(result);
     }
@@ -94,8 +96,8 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
 
         if (result.success) {
             if(result.resultAsDmObject === undefined) throw Error("Result is not set");
-            const itemUrl = result.resultAsDmObject.get(_DatenMeister._Actions._TargetReferenceResult.targetUrl, Mof.ObjectType.String);
-            const workspace = result.resultAsDmObject.get(_DatenMeister._Actions._TargetReferenceResult.targetWorkspace, Mof.ObjectType.String);
+            const itemUrl = result.resultAsDmObject.get(_Actions._TargetReferenceResult.targetUrl, Mof.ObjectType.String);
+            const workspace = result.resultAsDmObject.get(_Actions._TargetReferenceResult.targetWorkspace, Mof.ObjectType.String);
             Navigator.navigateToItemByUrl(workspace, itemUrl);
         } else {
             alert('Failure: \r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
@@ -169,11 +171,11 @@ class ItemNavigateInPopupAction extends FormActions.ItemFormActionModuleBase {
         let extentUri = element.uri;
         let workspaceId = element.workspace;
 
-        const clientAction1 = new Mof.DmObject(_DatenMeister._Actions._ClientActions.__RenderFormClientAction_Uri);
-        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.dataUri, extentUri);
-        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.dataWorkspaceId, workspaceId);
-        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.formAutoGenerate, true);
-        clientAction1.set(_DatenMeister._Actions._ClientActions._RenderFormClientAction.formType, _FormTypes._FormType.Object);
+        const clientAction1 = new Mof.DmObject(_Actions._ClientActions.__RenderFormClientAction_Uri);
+        clientAction1.set(_Actions._ClientActions._RenderFormClientAction.dataUri, extentUri);
+        clientAction1.set(_Actions._ClientActions._RenderFormClientAction.dataWorkspaceId, workspaceId);
+        clientAction1.set(_Actions._ClientActions._RenderFormClientAction.formAutoGenerate, true);
+        clientAction1.set(_Actions._ClientActions._RenderFormClientAction.formType, _FormTypes._FormType.Object);
 
         DomPopup.createPopupWindowWithClientActions([clientAction1]);
     }

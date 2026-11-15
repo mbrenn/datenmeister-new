@@ -6,7 +6,7 @@ using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.Models;
+using DatenMeister.Actions.Model;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.HtmlEngine;

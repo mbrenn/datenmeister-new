@@ -3,6 +3,7 @@ using System.Text.Json;
 using Autofac;
 using DatenMeister.Actions;
 using DatenMeister.Actions.Forms;
+using DatenMeister.Actions.Model;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
@@ -124,7 +125,7 @@ public class ActionFormTests
             }.GetWrappedElement())).Extent;
         Assert.That(loadedExtent, Is.Not.Null);
 
-        var action = new DatenMeister.Core.Models.Actions.StoreElementAction_Wrapper(
+        var action = new DatenMeister.Actions.Model.Actions.StoreElementAction_Wrapper(
             new MofFactory(loadedExtent!))
         {
             element = 
@@ -138,7 +139,7 @@ public class ActionFormTests
         MofJsonTests.ValidateQueryProperties(asElement!);
 
         var result =
-            new DatenMeister.Core.Models.Actions.TargetReferenceResult_Wrapper(
+            new DatenMeister.Actions.Model.Actions.TargetReferenceResult_Wrapper(
                 await actionHandler.ExecuteAction(action.GetWrappedElement())
                 ?? throw new InvalidOperationException("Result was null"));
 

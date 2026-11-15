@@ -6,7 +6,6 @@ using DatenMeister.Forms.FormFinder;
 using DatenMeister.Forms.ObjectForm;
 using DatenMeister.Forms.RowForm;
 using DatenMeister.Forms.TableForms;
-using DatenMeister.Forms.ViewModeConfigurators;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.Forms;

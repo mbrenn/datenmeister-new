@@ -2,6 +2,7 @@
 import * as IIForms from "./forms/Interfaces.js";
 import { SubmitMethod } from "./forms/Forms.js";
 import * as _DatenMeister from "./models/DatenMeister.class.js"
+import { _Actions } from "./models/DatenMeister.Actions.Types.js"
 import * as ActionClient from "./client/Actions.js"
 
 /**
@@ -222,7 +223,7 @@ export async function executeClientAction(
 
     submitMethod ??= SubmitMethod.Save;
 
-    const moduleName = clientAction.get(_DatenMeister._Actions._ClientActions._ClientAction.actionName);
+    const moduleName = clientAction.get(_Actions._ClientActions._ClientAction.actionName);
     let module = getModule(moduleName);
 
     if (module === undefined) {
@@ -245,14 +246,14 @@ export async function executeClientActionResult(actionResult: Mof.DmObject | und
         return;
     }
 
-    if(actionResult.metaClass.uri !== _DatenMeister._Actions.__ActionResult_Uri)
+    if(actionResult.metaClass.uri !== _Actions.__ActionResult_Uri)
     {
         console.log("The action result is not of type ActionResult");
         return;
     }
 
     const clientActions = actionResult.get(
-        _DatenMeister._Actions._ActionResult.clientActions,
+        _Actions._ActionResult.clientActions,
         Mof.ObjectType.Array);
 
     if (clientActions === undefined || clientActions.length === 0) {
@@ -295,7 +296,7 @@ export async function executeAction(
 
         // Checks, if we are having a client-actions responded back from the server
         const resultAsMof = result as Mof.DmObject;
-        const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, Mof.ObjectType.Array);
+        const clientActions = resultAsMof.get(_Actions._ActionResult.clientActions, Mof.ObjectType.Array);
         if (clientActions !== undefined) {
 
             for (let n in clientActions) {
@@ -327,7 +328,7 @@ export async function executeActionOnServer(
         // Checks, if we are having a client-actions responded back from the server
         const resultAsMof = result.resultAsDmObject;
         if (resultAsMof !== undefined) {
-            const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, Mof.ObjectType.Array);
+            const clientActions = resultAsMof.get(_Actions._ActionResult.clientActions, Mof.ObjectType.Array);
             if (clientActions !== undefined) {
 
                 for (let n in clientActions) {

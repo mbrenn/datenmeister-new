@@ -1,5 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Models;
+﻿using DatenMeister.Actions.Model;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Runtime.Proxies;
 using NUnit.Framework;
 

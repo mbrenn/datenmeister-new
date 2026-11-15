@@ -51,3 +51,4 @@ Each feature is reviewed in relation to these four aspects. Finally, the softwar
 * link:Changes/create_source_for_factory_support.html[Create Source for Factory Support] - Enhancing source code generation for typed wrapper elements.
 * link:Changes/issue117.html[Issue 117 - Add Action to Index Page] - Adding a "Create Action" button to the dashboard.
 * link:Changes/issue119.html[Issue 119] - Requirements and implementation plan for the DateTime field.
+* link:Changes/compare_extent_objects.html[Compare Extent Objects] - Compares elements between extents and generates reports upon differences.

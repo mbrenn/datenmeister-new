@@ -48,7 +48,7 @@ The domain model is defined in `Xmi/DatenMeister.Domains.Types.xmi` with extent 
 
 === DomainCreateFoundationAction
 
-The `DomainCreateFoundationAction` metaclass inherits from `Actions.Action` (`dm:///_internal/types/internal#Actions.Action`).
+The `DomainCreateFoundationAction` metaclass inherits from `Actions.Action` (`dm:///intern.types.actions.datenmeister/#Actions.Action`).
 
 * *MetaClass URI*: `dm:///intern.types.domains.datenmeister/#9b040443-4675-42b6-8707-0e42450a2102`
 * *Base Class*: `Actions.Action`

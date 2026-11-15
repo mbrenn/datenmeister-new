@@ -131,7 +131,7 @@ ActionSet:
 
 == Implementation
 
-* [ ] Port all 'DatenMeister.Action'-related items to its own extent
+* [x] Port all 'DatenMeister.Action'-related items to its own extent
 * [ ] Implement `CompareExtentsAction` and checker classes as datastructure in xmi
 * [ ] Implement the ActionHandler itself
 * [ ] Define helper methods for the Reports 

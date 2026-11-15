@@ -7,6 +7,23 @@ This document describes the various action handlers available in DatenMeister. E
 Each Action is called under a so-called action verb which describes the intention of the action to be performed.
 Usually, it is not set, which describes the default action request.
 
+=== Type Model and Extent Structure
+
+Action types and their associated metadata are defined in an independent XMI type extent:
+
+* **Extent URI**: `dm:///intern.types.actions.datenmeister/`
+* **C# Shadow Namespace**: `DatenMeister.Actions.Model` (`_Actions`)
+* **C# Wrapper Namespace**: `DatenMeister.Actions.Model.Actions`
+* **TypeScript Types**: `_Actions` in `models/DatenMeister.Actions.Types.js`
+
+Action types are organized hierarchically into categories:
+
+* **Core Actions**: Base `Action`, `ActionSet`, `LoggingWriterAction`, `LoadExtentAction`, `DropExtentAction`, `StoreExtentAction`, `DropWorkspaceAction`, `CreateWorkspaceAction`, `EchoAction`, `OpenDocumentAction`, `MoveOrCopyAction`, `CopyElementsAction`, `MoveUpDownAction`, `ClearCollectionAction`, `DeletePropertyFromCollectionAction`, `StoreElementAction`, `RefreshTypeIndexAction`
+* **OS Integration (`OSIntegration`)**: `CommandExecutionAction`, `PowershellExecutionAction`, `ConsoleWriteAction`
+* **Data Actions (`Data`)**: `FreezeViewResultAction`, `FreezeViewResultInMemory`, `FreezeViewResultInExtent`
+* **Client Actions (`ClientActions`)**: `ClientAction`, `RenderHtmlClientAction`, `DownloadHtmlClientAction`, `RenderFormClientAction`, `NavigateToExtentClientAction`, `NavigateToItemClientAction`
+* **Reporting Actions (`Reports`)**: `SimpleReportAction`, `AdocReportAction`, `HtmlReportAction`
+
 The following action verbs are standardized
 
 [cols="1,3"]

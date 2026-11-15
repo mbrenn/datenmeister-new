@@ -19,8 +19,6 @@ export namespace _Root
         {
             static workspace = "workspace";
             static itemUri = "itemUri";
-            static _name_ = "name";
-            static isDisabled = "isDisabled";
         }
 
         export const __RequestReportAction_Uri = "dm:///_internal/types/internal#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c";

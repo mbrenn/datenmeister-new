@@ -345,7 +345,7 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5f7cc38f-6431-4103-b7d1-fa60720178a6" name="defaultExtentType" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="ba1403c9-20cd-487d-8147-3937889deeb0" name="NavigateToFieldsForTestAction">
-      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="58beb095-b794-4d67-97dc-c890b80fd22a" general-ref="dm:///_internal/types/internal#Actions.Action" />
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="58beb095-b794-4d67-97dc-c890b80fd22a" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="7590f73e-8058-4d58-88d6-0aa0ab36ae09" name="FormTypes">
       <packagedElement p1:type="dm:///_internal/model/uml#Enumeration" p1:id="DatenMeister.Models.Forms.FormType" name="FormType">

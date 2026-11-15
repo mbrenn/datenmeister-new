@@ -47,7 +47,6 @@ public class ActionTests
 
         var domainCreate = new Root.DomainCreateFoundationAction_Wrapper(InMemoryObject.TemporaryFactory)
         {
-            name = "Test",
             filePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DatenMeister", "Domains",
                 "Test"),
@@ -55,6 +54,7 @@ public class ActionTests
             extentUriPrefix = "prefix",
             extentUriPostfix = "postfix"
         };
+        domainCreate.GetWrappedElement().set("name", "Test");
 
         var managementFilePath = Path.Combine(domainCreate.filePath, "Test_Management.xmi");
         var typesFilePath = Path.Combine(domainCreate.filePath, "Test_Types.xmi");
@@ -92,13 +92,13 @@ public class ActionTests
 
         var domainCreate = new Root.DomainCreateFoundationAction_Wrapper(InMemoryObject.TemporaryFactory)
         {
-            name = "Test",
             filePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DatenMeister", "Domains", "Test"),
             createDataExtent = true,
             extentUriPrefix = "prefix",
             extentUriPostfix = "postfix"
         };
+        domainCreate.GetWrappedElement().set("name", "Test");
         
         var managementFilePath = Path.Combine(domainCreate.filePath, "Test_Management.xmi");
         var typesFilePath = Path.Combine(domainCreate.filePath, "Test_Types.xmi");
@@ -145,13 +145,13 @@ public class ActionTests
 
         var domainCreate = new Root.DomainCreateFoundationAction_Wrapper(InMemoryObject.TemporaryFactory)
         {
-            name = "Test",
             filePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DatenMeister", "Domains", "Test"),
             createDataExtent = false,
             extentUriPrefix = "prefix",
             extentUriPostfix = "postfix"
         };
+        domainCreate.GetWrappedElement().set("name", "Test");
         
         var managementFilePath = Path.Combine(domainCreate.filePath, "Test_Management.xmi");
         var typesFilePath = Path.Combine(domainCreate.filePath, "Test_Types.xmi");

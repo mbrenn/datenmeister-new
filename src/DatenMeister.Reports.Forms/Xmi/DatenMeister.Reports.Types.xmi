@@ -5,7 +5,7 @@
     <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a2884e45-3957-475a-8e77-66823611b621" general-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" isSubstitutable="false" />
   </item>
   <item p2:type="dm:///_internal/model/uml#Class" p2:id="a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c" name="RequestReportAction" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
-    <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="90c99d80-f64e-412d-851b-d9697ebb2aff" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
+    <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="90c99d80-f64e-412d-851b-d9697ebb2aff" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action" isSubstitutable="false" />
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="09f468b0-2f88-40cb-8960-fe8a3e1f8dc2" type-ref="dm:///_internal/model/primitivetypes#String" name="workspace" isID="true" isComposite="true" />
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="09671348-3765-4559-8f77-de64af9d6d5d" name="itemUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
   </item>

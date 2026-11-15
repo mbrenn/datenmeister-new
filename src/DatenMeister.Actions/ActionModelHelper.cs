@@ -19,11 +19,11 @@ public static class ActionModelHelper
     public static IElement CreateActionResult(bool success, IElement [] actionResultElements, IFactory? factory = null)
     {
         factory ??= InMemoryObject.TemporaryFactory;
-        var actionResult = factory.create(_Actions.TheOne.__ActionResult);
-        actionResult.set(_Actions._ActionResult.isSuccess, success);
+        var actionResult = factory.create(Model._Actions.TheOne.__ActionResult);
+        actionResult.set(Model._Actions._ActionResult.isSuccess, success);
         
         // Now consolidating all the information
-        actionResult.set(_Actions._ActionResult.clientActions, actionResultElements);
+        actionResult.set(Model._Actions._ActionResult.clientActions, actionResultElements);
         return actionResult;
     }
 
@@ -35,8 +35,8 @@ public static class ActionModelHelper
     public static IElement CreateSuccessActionResult(IFactory? factory = null)
     {
         factory ??= InMemoryObject.TemporaryFactory;
-        var actionResult = factory.create(_Actions.TheOne.__ActionResult);
-        actionResult.set(_Actions._ActionResult.isSuccess, true);
+        var actionResult = factory.create(Model._Actions.TheOne.__ActionResult);
+        actionResult.set(Model._Actions._ActionResult.isSuccess, true);
         return actionResult;
     }
 
@@ -49,9 +49,9 @@ public static class ActionModelHelper
     public static IElement CreateFailedActionResult(string reason, IFactory? factory = null)
     {
         factory ??= InMemoryObject.TemporaryFactory;
-        var actionResult = factory.create(_Actions.TheOne.__ActionResult);
-        actionResult.set(_Actions._ActionResult.isSuccess, false);
-        actionResult.set(_Actions._ActionResult.reason, reason);
+        var actionResult = factory.create(Model._Actions.TheOne.__ActionResult);
+        actionResult.set(Model._Actions._ActionResult.isSuccess, false);
+        actionResult.set(Model._Actions._ActionResult.reason, reason);
         return actionResult;
     }
 }

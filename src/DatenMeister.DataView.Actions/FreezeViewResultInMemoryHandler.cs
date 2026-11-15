@@ -1,5 +1,6 @@
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
+using DatenMeister.Actions.Model;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
@@ -51,7 +52,8 @@ public class FreezeViewResultInMemoryHandler: IActionHandler
     public static async Task<IElement?> TransferElementsFromViewNodeToExtent(IWorkspaceLogic workspaceLogic,
         IScopeStorage scopeStorage, IElement extentLoaderConfig, IElement action)
     {
-        var viewNode = action.getOrDefault<IElement>(_Actions._Data._FreezeViewResultInMemory.viewNode);
+        // TODO: Replace with proper action name
+        var viewNode = action.getOrDefault<IElement>("viewNode"/*_Actions._Data._FreezeViewResultInMemory.viewNode*/);
         if (viewNode == null)
         {
             throw new InvalidOperationException("viewNode is null");

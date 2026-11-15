@@ -5,6 +5,6 @@
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="0d8d861e-8cdb-4df0-8528-493b3bcb02d5" isComposite="false" isID="false" name="item" />
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="872c71b6-21c0-4b0c-892d-9ee94d710b71" name="text" lower="1" upper="1" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">g
       </ownedAttribute>
-    <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="dec692aa-1926-4dc4-9aa4-05860cbc00d4" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
+    <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="dec692aa-1926-4dc4-9aa4-05860cbc00d4" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action" isSubstitutable="false" />
   </item>
 </xmi>

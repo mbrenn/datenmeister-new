@@ -5,7 +5,7 @@
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a608f1fe-d70f-47b8-b084-7cbf11190703" name="htmlFilename" type-ref="dm:///_internal/model/primitivetypes#String" />
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4d6ac3cf-07d3-42fc-b570-f5eb79561308" name="htmlElements" upper="*" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportElement" />
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c4f319be-bf74-499d-818e-8c89776acf5e" name="pageTitle" type-ref="dm:///_internal/model/primitivetypes#String" />
-    <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="ca225d43-4855-45aa-a38d-528f65fc8565" general-ref="dm:///_internal/types/internal#Actions.Action" />
+    <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="ca225d43-4855-45aa-a38d-528f65fc8565" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action" />
   </item>
   <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="b619fa64-3dc3-47c7-886e-1fb3ecdf29b3" name="HtmlElements" xmlns:p2="http://www.omg.org/spec/XMI/20131001" />
   <item p2:type="dm:///_internal/model/uml#Class" p2:id="78ed7454-433f-4064-8948-a8389eb0f6fe" name="StaticTableOfDataElement" xmlns:p2="http://www.omg.org/spec/XMI/20131001">

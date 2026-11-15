@@ -28,6 +28,7 @@ public class DomainCreateFoundationActionHandler(IWorkspaceLogic workspaceLogic,
     {
         var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
         var domainCreate = new Root.DomainCreateFoundationAction_Wrapper(action);
+        var name = action.getOrDefault<string>("name");
         
         // Cleans up the pre- and postfixes
         var prefix = domainCreate.extentUriPrefix ?? string.Empty;
@@ -43,7 +44,7 @@ public class DomainCreateFoundationActionHandler(IWorkspaceLogic workspaceLogic,
         }
         
         var filePathPrefix = 
-            Path.Combine(domainCreate.filePath ?? string.Empty, domainCreate.name ?? string.Empty);
+            Path.Combine(domainCreate.filePath ?? string.Empty, name ?? string.Empty);
 
         // We have to do the following tasks
         // 1. Create an empty Xmi-Extent into the specified folder with the name {Domain}_Management
@@ -58,7 +59,7 @@ public class DomainCreateFoundationActionHandler(IWorkspaceLogic workspaceLogic,
                 {
                     workspaceId = WorkspaceNames.WorkspaceManagement,
                     filePath = filePathPrefix + "_Management.xmi",
-                    extentUri = $"dm:///{prefix}management.{domainCreate.name}{postfix}"
+                    extentUri = $"dm:///{prefix}management.{name}{postfix}"
                 };
 
         var loadedManagementExtent = 
@@ -78,7 +79,7 @@ public class DomainCreateFoundationActionHandler(IWorkspaceLogic workspaceLogic,
                 {
                     workspaceId = WorkspaceNames.WorkspaceTypes,
                     filePath = filePathPrefix + "_Types.xmi",
-                    extentUri = $"dm:///{prefix}types.{domainCreate.name}{postfix}"
+                    extentUri = $"dm:///{prefix}types.{name}{postfix}"
                 };
         var loadedTypesExtent = 
             await extentManager.LoadExtent(typesConfiguration.GetWrappedElement(), ExtentCreationFlags.LoadOrCreate);
@@ -99,7 +100,7 @@ public class DomainCreateFoundationActionHandler(IWorkspaceLogic workspaceLogic,
                     {
                         workspaceId = WorkspaceNames.WorkspaceData,
                         filePath = filePathPrefix + "_Data.xmi",
-                        extentUri = $"dm:///{prefix}data.{domainCreate.name}{postfix}"
+                        extentUri = $"dm:///{prefix}data.{name}{postfix}"
                     };
             var loadedDataExtent =
                 await extentManager.LoadExtent(dataConfiguration.GetWrappedElement(), ExtentCreationFlags.LoadOrCreate);

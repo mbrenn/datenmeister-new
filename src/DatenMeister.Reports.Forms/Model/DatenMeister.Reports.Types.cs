@@ -54,6 +54,12 @@ public class _Root
         public static readonly string @itemUri = "itemUri";
         public IElement? @_itemUri = null;
 
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
     }
 
     public _RequestReportAction @RequestReportAction = new ();

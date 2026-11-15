@@ -71,6 +71,22 @@ public class Root
                 _wrappedElement.set("pageTitle", value);
         }
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///intern.types.staticwebpages.datenmeister/#78ed7454-433f-4064-8948-a8389eb0f6fe",

@@ -142,6 +142,22 @@ public class Root
                 _wrappedElement.set("itemUri", value);
         }
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///_internal/types/internal#75aaa247-9e5d-4f8c-ad11-8ba43d996684",

@@ -40,7 +40,7 @@
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e6938d8f-0fd8-445e-ac90-c0182d98fc7b" name="value" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
     </packagedElement>
-  </item>  
+  </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DataView" name="DataView">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="27f753a7-a663-48cb-8c17-dbd01edf3f08" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />

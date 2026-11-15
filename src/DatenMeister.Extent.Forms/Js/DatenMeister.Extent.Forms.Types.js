@@ -5,6 +5,8 @@ export var _Root;
     }
     _MassImportDefinitionAction.item = "item";
     _MassImportDefinitionAction.text = "text";
+    _MassImportDefinitionAction._name_ = "name";
+    _MassImportDefinitionAction.isDisabled = "isDisabled";
     _Root._MassImportDefinitionAction = _MassImportDefinitionAction;
     _Root.__MassImportDefinitionAction_Uri = "dm:///_internal/types/internal#b5e9f945-6c33-4b26-837b-38a5ad2f65fc";
 })(_Root || (_Root = {}));

@@ -4029,6 +4029,22 @@ public class Forms
 
         public static NavigateToFieldsForTestAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
     public class FormTypes

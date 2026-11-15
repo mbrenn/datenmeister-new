@@ -5,6 +5,8 @@ export namespace _Root
         {
             static item = "item";
             static text = "text";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __MassImportDefinitionAction_Uri = "dm:///_internal/types/internal#b5e9f945-6c33-4b26-837b-38a5ad2f65fc";

@@ -26,9 +26,12 @@ public class TestUpdateModelsOnChange
         var typeExtent =
             dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceTypes, WorkspaceNames.UriExtentInternalTypes);
         Assert.That(typeExtent, Is.Not.Null);
+        var typesWorkspace = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceTypes);
+        Assert.That(typesWorkspace, Is.Not.Null);
 
         // Now change the type
-        var element = typeExtent!.element("#DatenMeister.Models.Actions.CreateFormByMetaclass");
+        var element = typesWorkspace!.FindObject("#DatenMeister.Models.Actions.CreateFormByMetaclass");
+        
         Assert.That(element, Is.Not.Null);
         element!.set(_UML._StructuredClassifiers._Class.isAbstract, true);
         
@@ -53,9 +56,12 @@ public class TestUpdateModelsOnChange
         var typeExtent =
             dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceTypes, WorkspaceNames.UriExtentInternalTypes);
         Assert.That(typeExtent, Is.Not.Null);
+        
+        var typesWorkspace = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceTypes);
+        Assert.That(typesWorkspace, Is.Not.Null);
 
         // Now change the type
-        var element = typeExtent!.element("#DatenMeister.Models.Actions.CreateFormByMetaclass");
+        var element = typesWorkspace!.FindObject("#DatenMeister.Models.Actions.CreateFormByMetaclass");
         Assert.That(element, Is.Not.Null);
         element!.set(_UML._StructuredClassifiers._Class.name, "CreateUpdatedFormByMetaclass");
         
@@ -91,9 +97,11 @@ public class TestUpdateModelsOnChange
         var typeExtent =
             dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceTypes, WorkspaceNames.UriExtentInternalTypes);
         Assert.That(typeExtent, Is.Not.Null);
+        var typesWorkspace = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceTypes);
+        Assert.That(typesWorkspace, Is.Not.Null);
 
         // Now change the type
-        var element = typeExtent!.element("#DatenMeister.Models.Actions.CreateFormByMetaclass");
+        var element = typesWorkspace!.FindObject("#DatenMeister.Models.Actions.CreateFormByMetaclass");
         Assert.That(element, Is.Not.Null);
         element!.set(_UML._StructuredClassifiers._Class.name, "CreateUpdatedFormByMetaclass");
         element!.set(_UML._StructuredClassifiers._Class.name, "CreateUpdatedFormByMetaclass1");
@@ -129,9 +137,12 @@ public class TestUpdateModelsOnChange
         var typeExtent =
             dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceTypes, WorkspaceNames.UriExtentInternalTypes);
         Assert.That(typeExtent, Is.Not.Null);
+        var typesWorkspace = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceTypes);
+        Assert.That(typesWorkspace, Is.Not.Null);
 
         // Now change the type
-        var element = typeExtent!.element("#DatenMeister.Models.Actions.CreateFormByMetaclass");
+        var element = typesWorkspace!.FindObject("#DatenMeister.Models.Actions.CreateFormByMetaclass");
+
         Assert.That(element, Is.Not.Null);
         element!.set(_UML._StructuredClassifiers._Class.name, "CreateUpdatedFormByMetaclass");
         await Task.Delay(TimeSpan.FromMilliseconds(400));

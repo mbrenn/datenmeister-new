@@ -674,6 +674,8 @@ export namespace _Forms
         export const __ViewMode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode";
         export class _NavigateToFieldsForTestAction
         {
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __NavigateToFieldsForTestAction_Uri = "dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0";

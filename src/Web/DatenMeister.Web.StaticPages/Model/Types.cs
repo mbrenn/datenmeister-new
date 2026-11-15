@@ -27,6 +27,12 @@ public class _Root
         public static readonly string @pageTitle = "pageTitle";
         public IElement? @_pageTitle = null;
 
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
     }
 
     public _CreateStaticWebPageAction @CreateStaticWebPageAction = new ();

@@ -24,4 +24,9 @@
       <Folder Include="Xmi\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Xmi\DatenMeister.Actions.Types.xmi" />
+      <EmbeddedResource Include="Xmi\DatenMeister.Actions.Types.xmi" />
+    </ItemGroup>
+
 </Project>

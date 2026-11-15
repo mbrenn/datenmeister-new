@@ -58,7 +58,10 @@ if(!$onlyOne)
     dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net10.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Reports.Forms/Xmi/DatenMeister.Reports.Types.xmi" "./DatenMeister.Reports.Forms/Model" "DatenMeister.Reports.Forms.Model" "dm:///_internal/types/internal"
 
     Write-Output "-- Creating for DatenMeister.Extent.Forms"
-    dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net10.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Extent.Forms/Xmi/DatenMeister.Extent.Forms.Types.xmi" "./DatenMeister.Extent.Forms/Model" "DatenMeister.Extent.Forms.Model" "dm:///_internal/types/internal" 
+    dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net10.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Extent.Forms/Xmi/DatenMeister.Extent.Forms.Types.xmi" "./DatenMeister.Extent.Forms/Model" "DatenMeister.Extent.Forms.Model" "dm:///_internal/types/internal"
+
+    Write-Output "-- Creating for DatenMeister.Actions"
+    dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net10.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Actions/Xmi/DatenMeister.Actions.Types.xmi" "./DatenMeister.Actions/Model" "DatenMeister.Actions.Model" "dm:///intern.types.actions.datenmeister/"
 
     Write-Output "-- Creating for DatenMeister.Domains"
     dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net10.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Domains/Xmi/DatenMeister.Domains.Types.xmi" "./DatenMeister.Domains/Model" "DatenMeister.Domains.Model" "dm:///intern.types.domains.datenmeister/"

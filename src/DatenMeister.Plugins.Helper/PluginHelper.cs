@@ -25,6 +25,7 @@ public class PluginHelper(PluginHelperConfiguration configuration)
     {
         LoadExtentFromManifest(manifestPath, extentName, WorkspaceNames.WorkspaceTypes);
     }
+    
     /// <summary>
     /// Loads an adds an extent from the manifest. It used the configuration to identify the assembly
     /// </summary>

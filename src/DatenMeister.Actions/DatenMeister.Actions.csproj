@@ -19,4 +19,8 @@
       <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Xmi\" />
+    </ItemGroup>
+
 </Project>

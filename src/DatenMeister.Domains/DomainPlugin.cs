@@ -1,9 +1,5 @@
-﻿using DatenMeister.Actions;
-using DatenMeister.Core.Interfaces;
+﻿using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.Workspace;
-using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Extent.Manager;
-using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 using DatenMeister.Plugins.Helper;
 

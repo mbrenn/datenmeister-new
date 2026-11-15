@@ -116,7 +116,7 @@ public static class ClassifierMethods
             var generalizations = classifier.getOrDefault<IReflectiveCollection>(propertyGeneralization);
             foreach (var generalization in generalizations.Cast<IElement>())
             {
-                var general = generalization.getOrDefault<IElement>(propertyGeneral);
+                var general = generalization.getOrDefault<IElement?>(propertyGeneral);
                 if (general == null)
                 {
                     var generalAsString = generalization.getOrDefault<string>(propertyGeneral);
@@ -134,12 +134,10 @@ public static class ClassifierMethods
                     throw new InvalidOperationException(innerText);
                 }
 
-                if (alreadyVisited.Contains(general))
+                if (!alreadyVisited.Add(general))
                 {
                     continue;
                 }
-
-                alreadyVisited.Add(general);
 
                 yield return general;
 

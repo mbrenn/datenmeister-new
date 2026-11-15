@@ -113,16 +113,14 @@ internal class Program
             System.Console.WriteLine();
             return false;
         }
-        else
-        {
-            System.Console.WriteLine($"Total Items: {generator.TotalWalked}, " +
-                                     $"Packages: {generator.PackagesWalked}, " +
-                                     $"Classes: {generator.ClassesWalked}, " +
-                                     $"Properties: {generator.PropertiesWalked}, " +
-                                     $"Enums: {generator.EnumWalked}, " +
-                                     $"Literals: {generator.LiteralWalked}");
-            System.Console.WriteLine();
-        }
+
+        System.Console.WriteLine($"Total Items: {generator.TotalWalked}, " +
+                                 $"Packages: {generator.PackagesWalked}, " +
+                                 $"Classes: {generator.ClassesWalked}, " +
+                                 $"Properties: {generator.PropertiesWalked}, " +
+                                 $"Enums: {generator.EnumWalked}, " +
+                                 $"Literals: {generator.LiteralWalked}");
+        System.Console.WriteLine();
 
         if (!Directory.Exists(pathTarget))
         {

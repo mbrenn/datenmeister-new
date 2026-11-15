@@ -11,6 +11,8 @@ export namespace _Actions
         export class _ActionSet
         {
             static action = "action";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __ActionSet_Uri = "dm:///intern.types.actions.datenmeister/#Actions.ActionSet";
@@ -25,6 +27,8 @@ export namespace _Actions
         export class _LoggingWriterAction
         {
             static message = "message";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __LoggingWriterAction_Uri = "dm:///intern.types.actions.datenmeister/#Actions.LoggingWriterAction";
@@ -32,6 +36,8 @@ export namespace _Actions
         {
             static configuration = "configuration";
             static dropExisting = "dropExisting";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __LoadExtentAction_Uri = "dm:///intern.types.actions.datenmeister/#241b550d-835a-41ea-a32a-bea5d388c6ee";
@@ -39,6 +45,8 @@ export namespace _Actions
         {
             static workspaceId = "workspaceId";
             static extentUri = "extentUri";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __DropExtentAction_Uri = "dm:///intern.types.actions.datenmeister/#c870f6e8-2b70-415c-afaf-b78776b42a09";
@@ -46,12 +54,16 @@ export namespace _Actions
         {
             static workspaceId = "workspaceId";
             static annotation = "annotation";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __CreateWorkspaceAction_Uri = "dm:///intern.types.actions.datenmeister/#1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe";
         export class _DropWorkspaceAction
         {
             static workspaceId = "workspaceId";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __DropWorkspaceAction_Uri = "dm:///intern.types.actions.datenmeister/#db6cc8eb-011c-43e5-b966-cc0e3a1855e8";
@@ -63,6 +75,8 @@ export namespace _Actions
             static sourceWorkspace = "sourceWorkspace";
             static targetWorkspace = "targetWorkspace";
             static emptyTarget = "emptyTarget";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __CopyElementsAction_Uri = "dm:///intern.types.actions.datenmeister/#8b576580-0f75-4159-ad16-afb7c2268aed";
@@ -71,6 +85,8 @@ export namespace _Actions
             static sourcePath = "sourcePath";
             static filePath = "filePath";
             static sourceWorkspaceId = "sourceWorkspaceId";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __ExportToXmiAction_Uri = "dm:///intern.types.actions.datenmeister/#3c3595a4-026e-4c07-83ec-8a90607b8863";
@@ -78,6 +94,8 @@ export namespace _Actions
         {
             static workspaceId = "workspaceId";
             static path = "path";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __ClearCollectionAction_Uri = "dm:///intern.types.actions.datenmeister/#b70b736b-c9b0-4986-8d92-240fcabc95ae";
@@ -88,18 +106,24 @@ export namespace _Actions
             static workspaceId = "workspaceId";
             static path = "path";
             static excludeDescendents = "excludeDescendents";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __TransformItemsAction_Uri = "dm:///intern.types.actions.datenmeister/#Actions.ItemTransformationActionHandler";
         export class _EchoAction
         {
             static shallSuccess = "shallSuccess";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __EchoAction_Uri = "dm:///intern.types.actions.datenmeister/#DatenMeister.Actions.EchoAction";
         export class _DocumentOpenAction
         {
             static filePath = "filePath";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __DocumentOpenAction_Uri = "dm:///intern.types.actions.datenmeister/#04878741-802e-4b7f-8003-21d25f38ac74";
@@ -111,6 +135,8 @@ export namespace _Actions
                     static configuration = "configuration";
                     static workspaceId = "workspaceId";
                     static filePath = "filePath";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __SimpleReportAction_Uri = "dm:///intern.types.actions.datenmeister/#Actions.SimpleReportAction";
@@ -118,6 +144,8 @@ export namespace _Actions
                 {
                     static filePath = "filePath";
                     static reportInstance = "reportInstance";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __AdocReportAction_Uri = "dm:///intern.types.actions.datenmeister/#Actions.AdocReportAction";
@@ -125,6 +153,8 @@ export namespace _Actions
                 {
                     static filePath = "filePath";
                     static reportInstance = "reportInstance";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __HtmlReportAction_Uri = "dm:///intern.types.actions.datenmeister/#Actions.HtmlReportAction";
@@ -175,6 +205,8 @@ export namespace _Actions
         {
             static workspaceId = "workspaceId";
             static extentUri = "extentUri";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __StoreExtentAction_Uri = "dm:///intern.types.actions.datenmeister/#43b0764e-b70f-42bb-b37d-ae8586ec45f1";
@@ -268,6 +300,10 @@ export namespace _Actions
                 {
                     static url = "url";
                     static isAbsoluteUrl = "isAbsoluteUrl";
+                    static actionName = "actionName";
+                    static element = "element";
+                    static parameter = "parameter";
+                    static _name_ = "name";
                 }
 
                 export const __NavigateOpenWindow_Uri = "dm:///intern.types.actions.datenmeister/#746ecf7c-63d6-4fdf-95ae-837a13a032ed";
@@ -276,6 +312,10 @@ export namespace _Actions
                     static context = "context";
                     static actionUrl = "actionUrl";
                     static workspaceId = "workspaceId";
+                    static actionName = "actionName";
+                    static element = "element";
+                    static parameter = "parameter";
+                    static _name_ = "name";
                 }
 
                 export const __NavigateOpenActionInWindow_Uri = "dm:///intern.types.actions.datenmeister/#77ff9c01-0651-4657-823a-ce41bbe0e5e5";
@@ -286,6 +326,10 @@ export namespace _Actions
                     static formAutoGenerate = "formAutoGenerate";
                     static formType = "formType";
                     static form = "form";
+                    static actionName = "actionName";
+                    static element = "element";
+                    static parameter = "parameter";
+                    static _name_ = "name";
                 }
 
                 export const __RenderFormClientAction_Uri = "dm:///intern.types.actions.datenmeister/#ffa8c9f8-9454-423d-882d-a44b98eaf4ea";
@@ -294,6 +338,10 @@ export namespace _Actions
                     static html = "html";
                     static text = "text";
                     static renderCompletePage = "renderCompletePage";
+                    static actionName = "actionName";
+                    static element = "element";
+                    static parameter = "parameter";
+                    static _name_ = "name";
                 }
 
                 export const __RenderHtmlClientAction_Uri = "dm:///intern.types.actions.datenmeister/#30f7e380-73e1-4ade-b797-1cc948b63c4f";
@@ -301,6 +349,10 @@ export namespace _Actions
                 {
                     static html = "html";
                     static filename = "filename";
+                    static actionName = "actionName";
+                    static element = "element";
+                    static parameter = "parameter";
+                    static _name_ = "name";
                 }
 
                 export const __DownloadHtmlClientAction_Uri = "dm:///intern.types.actions.datenmeister/#7059ce1e-f299-45c5-b536-a7cb22c7225e";
@@ -313,6 +365,8 @@ export namespace _Actions
                     static metaClass = "metaClass";
                     static creationMode = "creationMode";
                     static targetContainer = "targetContainer";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __CreateFormByMetaClass_Uri = "dm:///intern.types.actions.datenmeister/#DatenMeister.Models.Actions.CreateFormByMetaclass";
@@ -321,6 +375,8 @@ export namespace _Actions
                     static itemUri = "itemUri";
                     static workspace = "workspace";
                     static propertyName = "propertyName";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __GetAttributeOfItem_Uri = "dm:///intern.types.actions.datenmeister/#d9838e98-fd94-4dc1-883a-4362a2d732d3";
@@ -341,6 +397,8 @@ export namespace _Actions
                     static command = "command";
                     static _arguments_ = "arguments";
                     static workingDirectory = "workingDirectory";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __CommandExecutionAction_Uri = "dm:///intern.types.actions.datenmeister/#6f2ea2cd-6218-483c-90a3-4db255e84e82";
@@ -348,12 +406,16 @@ export namespace _Actions
                 {
                     static script = "script";
                     static workingDirectory = "workingDirectory";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __PowershellExecutionAction_Uri = "dm:///intern.types.actions.datenmeister/#4090ce13-6718-466c-96df-52d51024aadb";
                 export class _ConsoleWriteAction
                 {
                     static text = "text";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __ConsoleWriteAction_Uri = "dm:///intern.types.actions.datenmeister/#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a";
@@ -370,6 +432,8 @@ export namespace _Actions
             static workspace = "workspace";
             static url = "url";
             static element = "element";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __StoreElementAction_Uri = "dm:///intern.types.actions.datenmeister/#c7dcb24c-e53c-46f9-9e8a-3704095193a8";
@@ -378,18 +442,26 @@ export namespace _Actions
                 export class _FreezeViewResultAction
                 {
                     static viewNode = "viewNode";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __FreezeViewResultAction_Uri = "dm:///intern.types.actions.datenmeister/#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171";
                 export class _FreezeViewResultInMemory
                 {
                     static extentUri = "extentUri";
+                    static viewNode = "viewNode";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __FreezeViewResultInMemory_Uri = "dm:///intern.types.actions.datenmeister/#1286c17c-3286-4e8c-93fc-1a4c3e6df48a";
                 export class _FreezeViewResultInExtent
                 {
                     static extentLoaderConfig = "extentLoaderConfig";
+                    static viewNode = "viewNode";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
                 }
 
                 export const __FreezeViewResultInExtent_Uri = "dm:///intern.types.actions.datenmeister/#45cd9f30-fdfa-4f1b-a87c-24c088c075be";

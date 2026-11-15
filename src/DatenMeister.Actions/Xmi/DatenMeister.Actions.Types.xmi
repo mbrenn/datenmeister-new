@@ -7,8 +7,8 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="127bd072-3a79-41e1-b343-dbef1dcdf2cf" name="isDisabled" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.ActionSet" name="ActionSet">
-        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d688f145-d02e-4052-be12-0d06cec9853b" name="action" type-ref="dm:///_internal/types/internal#Actions.Action" upper="*" isComposite="true" />
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="9951a2cd-b072-4cba-9c19-4b9118368e8e" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d688f145-d02e-4052-be12-0d06cec9853b" name="action" type-ref="dm:///intern.types.actions.datenmeister/#Actions.Action" upper="*" isComposite="true" />
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="9951a2cd-b072-4cba-9c19-4b9118368e8e" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
       </packagedElement>
@@ -18,27 +18,27 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="459e2620-3d6f-4fa9-8ba1-c545bbb4483a" name="reason" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.LoggingWriterAction" name="LoggingWriterAction">
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="3e7091d0-19db-450c-8aec-11e0abd9a651" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="3e7091d0-19db-450c-8aec-11e0abd9a651" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="5506180f-2158-423f-a290-ef929e4f956c" lower="0" upper="1" name="message" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="241b550d-835a-41ea-a32a-bea5d388c6ee" name="LoadExtentAction">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="da06a7c7-86a6-44a6-9075-9e7a5f9d58ab" name="configuration" type-ref="dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="abe39d1e-e793-4f46-9410-3eed2615ee08" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="abe39d1e-e793-4f46-9410-3eed2615ee08" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c1753150-4870-49ed-8a05-95a3b94455ce" name="dropExisting" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="c870f6e8-2b70-415c-afaf-b78776b42a09" name="DropExtentAction">
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="69194c8c-afba-43c4-b471-4744cd4cb0c0" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="69194c8c-afba-43c4-b471-4744cd4cb0c0" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="403d30e2-0477-4e2b-a691-acbef368536c" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="95e1aa96-e6c9-46cb-9b57-bdbd5c173df1" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe" name="CreateWorkspaceAction">
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="331c6772-2852-4796-a690-1d9be6255d75" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="331c6772-2852-4796-a690-1d9be6255d75" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="5985c8d8-29c0-4639-9933-a425f17b47cb" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
@@ -46,12 +46,12 @@
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="db6cc8eb-011c-43e5-b966-cc0e3a1855e8" name="DropWorkspaceAction">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="194d3e9b-a47f-4b10-96a7-17c13c8cfe79" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="922772b6-055f-40ed-a19a-f744bd7b5ffa" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="922772b6-055f-40ed-a19a-f744bd7b5ffa" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="8b576580-0f75-4159-ad16-afb7c2268aed" name="CopyElementsAction">
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="9d1cdc36-da3f-4f93-921a-8b55ca68440b" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="9d1cdc36-da3f-4f93-921a-8b55ca68440b" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="298e38a0-2527-47b3-abde-9945c97d9cc7" name="sourcePath" type-ref="dm:///_internal/model/primitivetypes#String" />
@@ -62,7 +62,7 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="99c5113b-af42-4199-b82b-dab3915bcd59" name="emptyTarget" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="3c3595a4-026e-4c07-83ec-8a90607b8863" name="ExportToXmiAction">
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="beabfb92-64f5-4417-a4fd-b575ee3226f7" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="beabfb92-64f5-4417-a4fd-b575ee3226f7" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="98273377-6c71-441c-b409-26f1c65341f3" name="sourcePath" type-ref="dm:///_internal/model/primitivetypes#String" />
@@ -70,14 +70,14 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="84228bf4-c05f-4d8b-8201-47ee9592b366" name="sourceWorkspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="b70b736b-c9b0-4986-8d92-240fcabc95ae" name="ClearCollectionAction">
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="4ad4065a-4fcb-4380-9e77-a347adfba6d4" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="4ad4065a-4fcb-4380-9e77-a347adfba6d4" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="eacb8aaa-f0da-45a7-9700-65af0192e22d" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="70b5a635-0204-47ac-b548-0ceab1ce523b" name="path" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.ItemTransformationActionHandler" name="TransformItemsAction">
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="090afa07-714b-4b97-883f-687c9e226b39" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="090afa07-714b-4b97-883f-687c9e226b39" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="79224370-2164-4c3f-81a6-9cde7d60d5cc" name="metaClass" type-ref="dm:///_internal/model/uml#Class" />
@@ -87,20 +87,20 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="2143c846-3e3c-4a19-9b36-e5528d09e000" name="excludeDescendents" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DatenMeister.Actions.EchoAction" name="EchoAction">
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="55233f60-c637-410f-ba32-84ffe3ec8752" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="55233f60-c637-410f-ba32-84ffe3ec8752" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b8a3ea8f-b505-46bc-ab43-1bed0922e2f4" name="shallSuccess" type-ref="dm:///_internal/model/primitivetypes#String"></ownedAttribute>
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="04878741-802e-4b7f-8003-21d25f38ac74" name="DocumentOpenAction">
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="45233f60-c637-410f-ba32-84ffe3ec8752" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="45233f60-c637-410f-ba32-84ffe3ec8752" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
           <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
         </generalization>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a8a3ea8f-b505-46bc-ab43-1bed0922e2f4" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="f77015a8-1d70-4f09-beb3-1e20e6303d40" name="Reports">
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.SimpleReportAction" name="SimpleReportAction">
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="cf1cf780-d423-4f1b-b3b4-2c28f549d7a7" general-ref="dm:///_internal/types/internal#Actions.Action">
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="cf1cf780-d423-4f1b-b3b4-2c28f549d7a7" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
             <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
           </generalization>
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c6392082-5dee-49a7-894f-586bd8e04898" name="path" type-ref="dm:///_internal/model/primitivetypes#String" />
@@ -110,14 +110,14 @@
         </packagedElement>
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.AdocReportAction" name="AdocReportAction">
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="77ed1394-7627-43bc-bc18-4b8a322266a2" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="cee66e75-0554-44e3-9965-3adb082951ca" general-ref="dm:///_internal/types/internal#Actions.Action">
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="cee66e75-0554-44e3-9965-3adb082951ca" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
             <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
           </generalization>
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="65032f6d-6df5-4896-ab11-0ae19f9ec2cc" name="reportInstance" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance" isComposite="true" />
         </packagedElement>
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.HtmlReportAction" name="HtmlReportAction">
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="acdd6f04-6d1a-4f5b-9ea8-5f1be0d1b4a3" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="d74a7d31-afd2-4587-a193-c0ea73ba2c19" general-ref="dm:///_internal/types/internal#Actions.Action">
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="d74a7d31-afd2-4587-a193-c0ea73ba2c19" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
             <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
           </generalization>
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6d207082-2e93-4223-8ed9-efaf06a37ac3" name="reportInstance" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance" isComposite="true" />
@@ -145,7 +145,7 @@
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="43b0764e-b70f-42bb-b37d-ae8586ec45f1" name="StoreExtentAction">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="990dafb5-a2cc-4d6e-ba0b-4b1fb7b40cdd" type-ref="dm:///_internal/model/primitivetypes#String" name="workspaceId" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="ddb2ec7e-3f41-413a-b3d5-e8173b71e1ce" type-ref="dm:///_internal/model/primitivetypes#String" name="extentUri" />
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="f71dd2c1-8b7c-4076-8b0f-92435fd81916" isSubstitutable="True" general-ref="dm:///_internal/types/internal#Actions.Action" />
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="f71dd2c1-8b7c-4076-8b0f-92435fd81916" isSubstitutable="True" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d" name="ImportXmiAction">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d7d4d1c9-075e-4abc-9d00-a227def28777" type-ref="dm:///_internal/model/primitivetypes#String" name="workspaceId" isComposite="True" />
@@ -204,12 +204,12 @@
         </packagedElement>
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="746ecf7c-63d6-4fdf-95ae-837a13a032ed" name="NavigateOpenWindow">
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7c6ef401-ea78-4e29-980a-ba0e60ddcb70" name="url" />
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="2c39f0b7-bdcf-4567-9343-3d011262b52f" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="2c39f0b7-bdcf-4567-9343-3d011262b52f" general-ref="dm:///intern.types.actions.datenmeister/#e07ca80e-2540-4f91-8214-60dbd464e998" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="875a8dad-b32f-4356-b0d3-6498b6e80ccd" name="isAbsoluteUrl" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
         </packagedElement>
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="77ff9c01-0651-4657-823a-ce41bbe0e5e5" name="NavigateOpenActionInWindow">
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="5035490f-7be6-4593-8387-cc99728259cc" type-ref="dm:///_internal/model/primitivetypes#String" name="context" />
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="bc1e9dbb-69a4-401d-a190-e49ddceadb56" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="bc1e9dbb-69a4-401d-a190-e49ddceadb56" general-ref="dm:///intern.types.actions.datenmeister/#e07ca80e-2540-4f91-8214-60dbd464e998" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4035dd12-ed77-4514-a5ce-b0e957097e73" name="actionUrl" type-ref="dm:///_internal/model/primitivetypes#String" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="e371d3c6-a33f-40c9-9691-947e309e7a2f" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
         </packagedElement>
@@ -218,24 +218,24 @@
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="3478161c-8da6-43ac-ab7b-e7358490ec9c" name="dataUri" type-ref="dm:///_internal/model/primitivetypes#String" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="552ffc3f-0025-4e5a-b878-6edc36226339" name="formAutoGenerate" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a715203c-154c-41cf-872c-5253e30c4366" name="formType" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType" />
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="4e164393-ada5-4e4d-bd33-746723d327cf" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="4e164393-ada5-4e4d-bd33-746723d327cf" general-ref="dm:///intern.types.actions.datenmeister/#e07ca80e-2540-4f91-8214-60dbd464e998" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="eaa6bd87-c5ed-4767-9e7f-cf80afdbf9b1" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" name="form" isComposite="true" />
         </packagedElement>
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="30f7e380-73e1-4ade-b797-1cc948b63c4f" name="RenderHtmlClientAction">
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="8efcc0b2-face-4104-8895-916517d6578d" name="html" type-ref="dm:///_internal/model/primitivetypes#String" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="70c295d3-ac2d-40b5-94b7-008107c0e9e4" name="text" type-ref="dm:///_internal/model/primitivetypes#String" />
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="42616015-9efa-43af-9ddd-4478f6326d11" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="42616015-9efa-43af-9ddd-4478f6326d11" general-ref="dm:///intern.types.actions.datenmeister/#e07ca80e-2540-4f91-8214-60dbd464e998" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="206a2d48-25c2-4a9e-97b5-543980226b76" name="renderCompletePage" type-ref="dm:///_internal/model/primitivetypes#String" />
         </packagedElement>
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="7059ce1e-f299-45c5-b536-a7cb22c7225e" name="DownloadHtmlClientAction">
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1eafb68b-5091-4e64-8276-74d478e5e9b5" name="html" type-ref="dm:///_internal/model/primitivetypes#String" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c81b6fb3-ec8a-4f92-afdf-b90276ece2c4" name="filename" type-ref="dm:///_internal/model/primitivetypes#String" />
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="61ce09b3-f3a8-4802-81be-55388bcca3bf" general-ref="dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998" />
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="61ce09b3-f3a8-4802-81be-55388bcca3bf" general-ref="dm:///intern.types.actions.datenmeister/#e07ca80e-2540-4f91-8214-60dbd464e998" />
         </packagedElement>
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="97ddd1b8-bd3d-4c43-82ed-5c55abda0929" name="Forms">
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DatenMeister.Models.Actions.CreateFormByMetaclass" name="CreateFormByMetaClass">
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="d7342d31-afd2-4587-a193-c0ea73ba2c19" general-ref="dm:///_internal/types/internal#Actions.Action"></generalization>
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="d7342d31-afd2-4587-a193-c0ea73ba2c19" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action"></generalization>
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7e4e02f7-1111-48d6-8d91-fd48b0a435a1" name="metaClass" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1df4e655-2222-4fa2-bec6-adc7383adb2b" name="creationMode" type-ref="dm:///_internal/model/primitivetypes#String" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7e4e02f7-1111-48d6-8d91-4d48b0a435a1" name="targetContainer" />
@@ -244,7 +244,7 @@
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="ffe6783e-3d86-46f1-b896-cd17b2c08e41" name="itemUri" type-ref="dm:///_internal/model/primitivetypes#String" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="e81ce864-b736-481b-8240-77b2c47ce471" name="workspace" type-ref="dm:///_internal/model/primitivetypes#String" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="cd0ef75e-b104-473c-9dac-05028a6aaf42" name="propertyName" type-ref="dm:///_internal/model/primitivetypes#String" />
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="4635097a-01b5-4f3e-9ac7-6d6397077309" general-ref="dm:///_internal/types/internal#Actions.Action" />
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="4635097a-01b5-4f3e-9ac7-6d6397077309" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action" />
         </packagedElement>
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="e144d177-70e2-4418-991a-8262523c62b7" name="GetAttributeOfItemResult">
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="2ac68fdd-313b-4aae-a1e9-f9cc03c4309e" name="isComposite" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
@@ -254,7 +254,7 @@
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="46691df7-5235-4517-b942-be984c908768" name="OSIntegration">
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="6f2ea2cd-6218-483c-90a3-4db255e84e82" name="CommandExecutionAction">
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="31f4108b-326f-4162-baae-5a3d9cb77d98" general-ref="dm:///_internal/types/internal#Actions.Action">
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="31f4108b-326f-4162-baae-5a3d9cb77d98" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
             <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
           </generalization>
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="19163eb9-9701-4071-a421-54bf19cc062e" name="command" type-ref="dm:///_internal/model/primitivetypes#String" />
@@ -263,13 +263,13 @@
         </packagedElement>
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="4090ce13-6718-466c-96df-52d51024aadb" name="PowershellExecutionAction">
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="03921ba2-05c4-40bc-96d0-74c25c2061f7" name="script" type-ref="dm:///_internal/model/primitivetypes#String" />
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="220f8111-03cd-4b19-aa8c-a260bca9c320" general-ref="dm:///_internal/types/internal#Actions.Action">
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="220f8111-03cd-4b19-aa8c-a260bca9c320" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action">
             <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
           </generalization>
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d054662d-cd63-42b3-915c-59ea623152d8" name="workingDirectory" type-ref="dm:///_internal/model/primitivetypes#String" />
         </packagedElement>
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="82f46dd7-b61b-4bc1-b25c-d5d3d244c35a" name="ConsoleWriteAction">
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a65703b5-654a-4b42-81de-14595a7b7b62" general-ref="dm:///_internal/types/internal#Actions.Action" />
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a65703b5-654a-4b42-81de-14595a7b7b62" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action" />
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="04e791c9-1316-4777-afc0-afb30d294530" name="text" type-ref="dm:///_internal/model/primitivetypes#String" />
         </packagedElement>
       </packagedElement>
@@ -280,19 +280,19 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c84275a5-b7f8-4dac-94cd-ae2d4f250e8a" type-ref="dm:///_internal/model/primitivetypes#String" name="workspace" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b94eb150-78dd-4d2b-aea6-12b9bf579acc" type-ref="dm:///_internal/model/primitivetypes#String" name="url" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4445ee8d-eb54-4318-8f5b-117fd2cd5a4d" name="element" isComposite="true" />/&gt;
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="265754ea-f3cd-48b8-a4c6-daf6c0c2941e" general-ref="dm:///_internal/types/internal#Actions.Action" /></packagedElement>
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="265754ea-f3cd-48b8-a4c6-daf6c0c2941e" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action" /></packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="4b93f824-87a4-4471-aa80-63e5d5d1accb" name="Data">
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="fb1fcea9-c1d5-489d-9bd1-f64c6b71a171" name="FreezeViewResultAction">
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6cea8a17-c1d7-4a2b-af82-d3964b2043f4" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" name="viewNode" />
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="4c8e75e8-e0c4-4590-b143-df7f10829163" general-ref="dm:///_internal/types/internal#Actions.Action" />
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="4c8e75e8-e0c4-4590-b143-df7f10829163" general-ref="dm:///intern.types.actions.datenmeister/#Actions.Action" />
         </packagedElement>
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="1286c17c-3286-4e8c-93fc-1a4c3e6df48a" name="FreezeViewResultInMemory">
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="e029922e-13ee-4cf6-90a7-bb73046115cc" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" />
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="0328e747-a42f-4bfe-b5e7-1ddd71da3366" general-ref="dm:///_internal/types/internal#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171" />
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="0328e747-a42f-4bfe-b5e7-1ddd71da3366" general-ref="dm:///intern.types.actions.datenmeister/#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171" />
         </packagedElement>
         <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="45cd9f30-fdfa-4f1b-a87c-24c088c075be" name="FreezeViewResultInExtent">
           <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="990158e7-5875-471a-83fe-758e70fbc2d0" name="extentLoaderConfig" type-ref="dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" isComposite="true" />
-          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="86dd10d7-9b42-4678-bc0b-5d5e9613ec5e" general-ref="dm:///_internal/types/internal#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171" />
+          <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="86dd10d7-9b42-4678-bc0b-5d5e9613ec5e" general-ref="dm:///intern.types.actions.datenmeister/#fb1fcea9-c1d5-489d-9bd1-f64c6b71a171" />
         </packagedElement>
       </packagedElement>
     </item>

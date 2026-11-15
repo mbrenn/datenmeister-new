@@ -30,6 +30,12 @@ public class _Actions
         public static readonly string @action = "action";
         public IElement? @_action = null;
 
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
     }
 
     public _ActionSet @ActionSet = new ();
@@ -60,6 +66,12 @@ public class _Actions
         public static readonly string @message = "message";
         public IElement? @_message = null;
 
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
     }
 
     public _LoggingWriterAction @LoggingWriterAction = new ();
@@ -74,6 +86,12 @@ public class _Actions
 
         public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
 
     }
 
@@ -90,6 +108,12 @@ public class _Actions
         public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
     }
 
     public _DropExtentAction @DropExtentAction = new ();
@@ -105,6 +129,12 @@ public class _Actions
         public static readonly string @annotation = "annotation";
         public IElement? @_annotation = null;
 
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
     }
 
     public _CreateWorkspaceAction @CreateWorkspaceAction = new ();
@@ -116,6 +146,12 @@ public class _Actions
     {
         public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
 
     }
 
@@ -144,6 +180,12 @@ public class _Actions
         public static readonly string @emptyTarget = "emptyTarget";
         public IElement? @_emptyTarget = null;
 
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
     }
 
     public _CopyElementsAction @CopyElementsAction = new ();
@@ -162,6 +204,12 @@ public class _Actions
         public static readonly string @sourceWorkspaceId = "sourceWorkspaceId";
         public IElement? @_sourceWorkspaceId = null;
 
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
     }
 
     public _ExportToXmiAction @ExportToXmiAction = new ();
@@ -176,6 +224,12 @@ public class _Actions
 
         public static readonly string @path = "path";
         public IElement? @_path = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
 
     }
 
@@ -201,6 +255,12 @@ public class _Actions
         public static readonly string @excludeDescendents = "excludeDescendents";
         public IElement? @_excludeDescendents = null;
 
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
     }
 
     public _TransformItemsAction @TransformItemsAction = new ();
@@ -213,6 +273,12 @@ public class _Actions
         public static readonly string @shallSuccess = "shallSuccess";
         public IElement? @_shallSuccess = null;
 
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
     }
 
     public _EchoAction @EchoAction = new ();
@@ -224,6 +290,12 @@ public class _Actions
     {
         public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
 
     }
 
@@ -248,6 +320,12 @@ public class _Actions
             public static readonly string @filePath = "filePath";
             public IElement? @_filePath = null;
 
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
         }
 
         public _SimpleReportAction @SimpleReportAction = new ();
@@ -263,6 +341,12 @@ public class _Actions
             public static readonly string @reportInstance = "reportInstance";
             public IElement? @_reportInstance = null;
 
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
         }
 
         public _AdocReportAction @AdocReportAction = new ();
@@ -277,6 +361,12 @@ public class _Actions
 
             public static readonly string @reportInstance = "reportInstance";
             public IElement? @_reportInstance = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
 
         }
 
@@ -373,6 +463,12 @@ public class _Actions
 
         public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
 
     }
 
@@ -577,6 +673,18 @@ public class _Actions
             public static readonly string @isAbsoluteUrl = "isAbsoluteUrl";
             public IElement? @_isAbsoluteUrl = null;
 
+            public static readonly string @actionName = "actionName";
+            public IElement? @_actionName = null;
+
+            public static readonly string @element = "element";
+            public IElement? @_element = null;
+
+            public static readonly string @parameter = "parameter";
+            public IElement? @_parameter = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
         }
 
         public _NavigateOpenWindow @NavigateOpenWindow = new ();
@@ -594,6 +702,18 @@ public class _Actions
 
             public static readonly string @workspaceId = "workspaceId";
             public IElement? @_workspaceId = null;
+
+            public static readonly string @actionName = "actionName";
+            public IElement? @_actionName = null;
+
+            public static readonly string @element = "element";
+            public IElement? @_element = null;
+
+            public static readonly string @parameter = "parameter";
+            public IElement? @_parameter = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
 
         }
 
@@ -619,6 +739,18 @@ public class _Actions
             public static readonly string @form = "form";
             public IElement? @_form = null;
 
+            public static readonly string @actionName = "actionName";
+            public IElement? @_actionName = null;
+
+            public static readonly string @element = "element";
+            public IElement? @_element = null;
+
+            public static readonly string @parameter = "parameter";
+            public IElement? @_parameter = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
         }
 
         public _RenderFormClientAction @RenderFormClientAction = new ();
@@ -637,6 +769,18 @@ public class _Actions
             public static readonly string @renderCompletePage = "renderCompletePage";
             public IElement? @_renderCompletePage = null;
 
+            public static readonly string @actionName = "actionName";
+            public IElement? @_actionName = null;
+
+            public static readonly string @element = "element";
+            public IElement? @_element = null;
+
+            public static readonly string @parameter = "parameter";
+            public IElement? @_parameter = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
         }
 
         public _RenderHtmlClientAction @RenderHtmlClientAction = new ();
@@ -651,6 +795,18 @@ public class _Actions
 
             public static readonly string @filename = "filename";
             public IElement? @_filename = null;
+
+            public static readonly string @actionName = "actionName";
+            public IElement? @_actionName = null;
+
+            public static readonly string @element = "element";
+            public IElement? @_element = null;
+
+            public static readonly string @parameter = "parameter";
+            public IElement? @_parameter = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
 
         }
 
@@ -676,6 +832,12 @@ public class _Actions
             public static readonly string @targetContainer = "targetContainer";
             public IElement? @_targetContainer = null;
 
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
         }
 
         public _CreateFormByMetaClass @CreateFormByMetaClass = new ();
@@ -693,6 +855,12 @@ public class _Actions
 
             public static readonly string @propertyName = "propertyName";
             public IElement? @_propertyName = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
 
         }
 
@@ -736,6 +904,12 @@ public class _Actions
             public static readonly string @workingDirectory = "workingDirectory";
             public IElement? @_workingDirectory = null;
 
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
         }
 
         public _CommandExecutionAction @CommandExecutionAction = new ();
@@ -751,6 +925,12 @@ public class _Actions
             public static readonly string @workingDirectory = "workingDirectory";
             public IElement? @_workingDirectory = null;
 
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
         }
 
         public _PowershellExecutionAction @PowershellExecutionAction = new ();
@@ -762,6 +942,12 @@ public class _Actions
         {
             public static readonly string @text = "text";
             public IElement? @_text = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
 
         }
 
@@ -797,6 +983,12 @@ public class _Actions
         public static readonly string @element = "element";
         public IElement? @_element = null;
 
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
     }
 
     public _StoreElementAction @StoreElementAction = new ();
@@ -811,6 +1003,12 @@ public class _Actions
             public static readonly string @viewNode = "viewNode";
             public IElement? @_viewNode = null;
 
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
         }
 
         public _FreezeViewResultAction @FreezeViewResultAction = new ();
@@ -823,6 +1021,15 @@ public class _Actions
             public static readonly string @extentUri = "extentUri";
             public IElement? @_extentUri = null;
 
+            public static readonly string @viewNode = "viewNode";
+            public IElement? @_viewNode = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
         }
 
         public _FreezeViewResultInMemory @FreezeViewResultInMemory = new ();
@@ -834,6 +1041,15 @@ public class _Actions
         {
             public static readonly string @extentLoaderConfig = "extentLoaderConfig";
             public IElement? @_extentLoaderConfig = null;
+
+            public static readonly string @viewNode = "viewNode";
+            public IElement? @_viewNode = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
 
         }
 

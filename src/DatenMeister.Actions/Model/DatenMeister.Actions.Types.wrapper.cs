@@ -70,13 +70,41 @@ public class Actions
 
         public static ActionSet_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
-        // Not found
-        public object? @action
+        // DatenMeister.Actions.Model.Actions.Action_Wrapper
+        public DatenMeister.Actions.Model.Actions.Action_Wrapper? @action
+        {
+            get
+            {
+                var foundElement = _wrappedElement.getOrDefault<IElement?>("action");
+                return foundElement == null ? null : new DatenMeister.Actions.Model.Actions.Action_Wrapper(foundElement);
+            }
+            set 
+            {
+                if(value is IElementWrapper wrappedElement)
+                {
+                    _wrappedElement.set("action", wrappedElement.GetWrappedElement());
+                }
+                else
+                {
+                    _wrappedElement.set("action", value);
+                }
+            }
+        }
+
+        public string? @name
         {
             get =>
-                _wrappedElement.getOrDefault<object?>("action");
+                _wrappedElement.getOrDefault<string?>("name");
             set => 
-                _wrappedElement.set("action", value);
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
         }
 
     }
@@ -161,6 +189,22 @@ public class Actions
                 _wrappedElement.set("message", value);
         }
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#241b550d-835a-41ea-a32a-bea5d388c6ee",
@@ -214,6 +258,22 @@ public class Actions
                 _wrappedElement.set("dropExisting", value);
         }
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#c870f6e8-2b70-415c-afaf-b78776b42a09",
@@ -252,6 +312,22 @@ public class Actions
                 _wrappedElement.getOrDefault<string?>("extentUri");
             set => 
                 _wrappedElement.set("extentUri", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
         }
 
     }
@@ -294,6 +370,22 @@ public class Actions
                 _wrappedElement.set("annotation", value);
         }
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#db6cc8eb-011c-43e5-b966-cc0e3a1855e8",
@@ -324,6 +416,22 @@ public class Actions
                 _wrappedElement.getOrDefault<string?>("workspaceId");
             set => 
                 _wrappedElement.set("workspaceId", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
         }
 
     }
@@ -398,6 +506,22 @@ public class Actions
                 _wrappedElement.set("emptyTarget", value);
         }
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#3c3595a4-026e-4c07-83ec-8a90607b8863",
@@ -446,6 +570,22 @@ public class Actions
                 _wrappedElement.set("sourceWorkspaceId", value);
         }
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#b70b736b-c9b0-4986-8d92-240fcabc95ae",
@@ -484,6 +624,22 @@ public class Actions
                 _wrappedElement.getOrDefault<string?>("path");
             set => 
                 _wrappedElement.set("path", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
         }
 
     }
@@ -563,6 +719,22 @@ public class Actions
                 _wrappedElement.set("excludeDescendents", value);
         }
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#DatenMeister.Actions.EchoAction",
@@ -595,6 +767,22 @@ public class Actions
                 _wrappedElement.set("shallSuccess", value);
         }
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
     [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#04878741-802e-4b7f-8003-21d25f38ac74",
@@ -625,6 +813,22 @@ public class Actions
                 _wrappedElement.getOrDefault<string?>("filePath");
             set => 
                 _wrappedElement.set("filePath", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
         }
 
     }
@@ -698,6 +902,22 @@ public class Actions
                     _wrappedElement.set("filePath", value);
             }
 
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#Actions.AdocReportAction",
@@ -751,6 +971,22 @@ public class Actions
                 }
             }
 
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#Actions.HtmlReportAction",
@@ -802,6 +1038,22 @@ public class Actions
                         _wrappedElement.set("reportInstance", value);
                     }
                 }
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
             }
 
         }
@@ -953,6 +1205,22 @@ public class Actions
                 _wrappedElement.getOrDefault<string?>("extentUri");
             set => 
                 _wrappedElement.set("extentUri", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
         }
 
     }
@@ -1499,6 +1767,40 @@ public class Actions
                     _wrappedElement.set("isAbsoluteUrl", value);
             }
 
+            public string? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionName");
+                set => 
+                    _wrappedElement.set("actionName", value);
+            }
+
+            // Not found
+            public object? @element
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("element");
+                set => 
+                    _wrappedElement.set("element", value);
+            }
+
+            // Not found
+            public object? @parameter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("parameter");
+                set => 
+                    _wrappedElement.set("parameter", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#77ff9c01-0651-4657-823a-ce41bbe0e5e5",
@@ -1545,6 +1847,40 @@ public class Actions
                     _wrappedElement.getOrDefault<string?>("workspaceId");
                 set => 
                     _wrappedElement.set("workspaceId", value);
+            }
+
+            public string? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionName");
+                set => 
+                    _wrappedElement.set("actionName", value);
+            }
+
+            // Not found
+            public object? @element
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("element");
+                set => 
+                    _wrappedElement.set("element", value);
+            }
+
+            // Not found
+            public object? @parameter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("parameter");
+                set => 
+                    _wrappedElement.set("parameter", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
             }
 
         }
@@ -1625,6 +1961,40 @@ public class Actions
                 }
             }
 
+            public string? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionName");
+                set => 
+                    _wrappedElement.set("actionName", value);
+            }
+
+            // Not found
+            public object? @element
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("element");
+                set => 
+                    _wrappedElement.set("element", value);
+            }
+
+            // Not found
+            public object? @parameter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("parameter");
+                set => 
+                    _wrappedElement.set("parameter", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#30f7e380-73e1-4ade-b797-1cc948b63c4f",
@@ -1673,6 +2043,40 @@ public class Actions
                     _wrappedElement.set("renderCompletePage", value);
             }
 
+            public string? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionName");
+                set => 
+                    _wrappedElement.set("actionName", value);
+            }
+
+            // Not found
+            public object? @element
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("element");
+                set => 
+                    _wrappedElement.set("element", value);
+            }
+
+            // Not found
+            public object? @parameter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("parameter");
+                set => 
+                    _wrappedElement.set("parameter", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#7059ce1e-f299-45c5-b536-a7cb22c7225e",
@@ -1711,6 +2115,40 @@ public class Actions
                     _wrappedElement.getOrDefault<string?>("filename");
                 set => 
                     _wrappedElement.set("filename", value);
+            }
+
+            public string? @actionName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("actionName");
+                set => 
+                    _wrappedElement.set("actionName", value);
+            }
+
+            // Not found
+            public object? @element
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("element");
+                set => 
+                    _wrappedElement.set("element", value);
+            }
+
+            // Not found
+            public object? @parameter
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("parameter");
+                set => 
+                    _wrappedElement.set("parameter", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
             }
 
         }
@@ -1767,6 +2205,22 @@ public class Actions
                     _wrappedElement.set("targetContainer", value);
             }
 
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#d9838e98-fd94-4dc1-883a-4362a2d732d3",
@@ -1813,6 +2267,22 @@ public class Actions
                     _wrappedElement.getOrDefault<string?>("propertyName");
                 set => 
                     _wrappedElement.set("propertyName", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
             }
 
         }
@@ -1915,6 +2385,22 @@ public class Actions
                     _wrappedElement.set("workingDirectory", value);
             }
 
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#4090ce13-6718-466c-96df-52d51024aadb",
@@ -1955,6 +2441,22 @@ public class Actions
                     _wrappedElement.set("workingDirectory", value);
             }
 
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a",
@@ -1985,6 +2487,22 @@ public class Actions
                     _wrappedElement.getOrDefault<string?>("text");
                 set => 
                     _wrappedElement.set("text", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
             }
 
         }
@@ -2070,6 +2588,22 @@ public class Actions
                 _wrappedElement.set("element", value);
         }
 
+        public string? @name
+        {
+            get =>
+                _wrappedElement.getOrDefault<string?>("name");
+            set => 
+                _wrappedElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                _wrappedElement.getOrDefault<bool>("isDisabled");
+            set => 
+                _wrappedElement.set("isDisabled", value);
+        }
+
     }
 
     public class Data
@@ -2117,6 +2651,22 @@ public class Actions
                 }
             }
 
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
+            }
+
         }
 
         [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#1286c17c-3286-4e8c-93fc-1a4c3e6df48a",
@@ -2147,6 +2697,43 @@ public class Actions
                     _wrappedElement.getOrDefault<string?>("extentUri");
                 set => 
                     _wrappedElement.set("extentUri", value);
+            }
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @viewNode
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("viewNode");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("viewNode", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("viewNode", value);
+                    }
+                }
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
             }
 
         }
@@ -2192,6 +2779,43 @@ public class Actions
                         _wrappedElement.set("extentLoaderConfig", value);
                     }
                 }
+            }
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @viewNode
+            {
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("viewNode");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("viewNode", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("viewNode", value);
+                    }
+                }
+            }
+
+            public string? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    _wrappedElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    _wrappedElement.set("isDisabled", value);
             }
 
         }

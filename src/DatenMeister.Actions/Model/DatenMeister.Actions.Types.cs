@@ -1060,6 +1060,102 @@ public class _Actions
 
     public _Data Data = new ();
 
+    public class _Checker
+    {
+        [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#bdceba1d-61b4-42c4-bbfa-2411dd78462b",
+            TypeKind = TypeKind.ClassTree)]
+        public class _CheckExtentsAction
+        {
+            public static readonly string @masterUrl = "masterUrl";
+            public IElement? @_masterUrl = null;
+
+            public static readonly string @derivedUrl = "derivedUrl";
+            public IElement? @_derivedUrl = null;
+
+            public static readonly string @checkers = "checkers";
+            public IElement? @_checkers = null;
+
+            public static readonly string @masterId = "masterId";
+            public IElement? @_masterId = null;
+
+            public static readonly string @derivedId = "derivedId";
+            public IElement? @_derivedId = null;
+
+        }
+
+        public _CheckExtentsAction @CheckExtentsAction = new ();
+        public MofObjectShadow @__CheckExtentsAction = new ("dm:///intern.types.actions.datenmeister/#bdceba1d-61b4-42c4-bbfa-2411dd78462b");
+
+        [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#dc63ddca-6294-4fbe-b61c-fc6cc598ac9e",
+            TypeKind = TypeKind.ClassTree)]
+        public class _MasterIsCompleteChecker
+        {
+            public static readonly string @importance = "importance";
+            public IElement? @_importance = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _MasterIsCompleteChecker @MasterIsCompleteChecker = new ();
+        public MofObjectShadow @__MasterIsCompleteChecker = new ("dm:///intern.types.actions.datenmeister/#dc63ddca-6294-4fbe-b61c-fc6cc598ac9e");
+
+        [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#9182a6da-5b7f-4229-a619-740056befbf5",
+            TypeKind = TypeKind.ClassTree)]
+        public class _DerivedIsCompleteChecker
+        {
+            public static readonly string @importance = "importance";
+            public IElement? @_importance = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _DerivedIsCompleteChecker @DerivedIsCompleteChecker = new ();
+        public MofObjectShadow @__DerivedIsCompleteChecker = new ("dm:///intern.types.actions.datenmeister/#9182a6da-5b7f-4229-a619-740056befbf5");
+
+        [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#2b4b897e-584a-4346-a870-458337b22339",
+            TypeKind = TypeKind.ClassTree)]
+        public class _PropertyIsEqualChecker
+        {
+            public static readonly string @masterPropertyId = "masterPropertyId";
+            public IElement? @_masterPropertyId = null;
+
+            public static readonly string @derivedPropertyId = "derivedPropertyId";
+            public IElement? @_derivedPropertyId = null;
+
+            public static readonly string @importance = "importance";
+            public IElement? @_importance = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _PropertyIsEqualChecker @PropertyIsEqualChecker = new ();
+        public MofObjectShadow @__PropertyIsEqualChecker = new ("dm:///intern.types.actions.datenmeister/#2b4b897e-584a-4346-a870-458337b22339");
+
+        [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#62187ee8-e236-4748-8b47-e621d29b3f24",
+            TypeKind = TypeKind.ClassTree)]
+        public class _CheckerBase
+        {
+            public static readonly string @importance = "importance";
+            public IElement? @_importance = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _CheckerBase @CheckerBase = new ();
+        public MofObjectShadow @__CheckerBase = new ("dm:///intern.types.actions.datenmeister/#62187ee8-e236-4748-8b47-e621d29b3f24");
+
+    }
+
+    public _Checker Checker = new ();
+
     public static readonly _Actions TheOne = new ();
 
 }

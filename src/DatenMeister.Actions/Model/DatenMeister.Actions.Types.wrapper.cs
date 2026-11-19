@@ -2822,5 +2822,256 @@ public class Actions
 
     }
 
+    public class Checker
+    {
+        [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#bdceba1d-61b4-42c4-bbfa-2411dd78462b",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CheckExtentsAction_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public CheckExtentsAction_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public CheckExtentsAction_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///intern.types.actions.datenmeister/#bdceba1d-61b4-42c4-bbfa-2411dd78462b");
+
+            public static CheckExtentsAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @masterUrl
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("masterUrl");
+                set => 
+                    _wrappedElement.set("masterUrl", value);
+            }
+
+            public string? @derivedUrl
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("derivedUrl");
+                set => 
+                    _wrappedElement.set("derivedUrl", value);
+            }
+
+            // Not found
+            public object? @checkers
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("checkers");
+                set => 
+                    _wrappedElement.set("checkers", value);
+            }
+
+            public string? @masterId
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("masterId");
+                set => 
+                    _wrappedElement.set("masterId", value);
+            }
+
+            public string? @derivedId
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("derivedId");
+                set => 
+                    _wrappedElement.set("derivedId", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#dc63ddca-6294-4fbe-b61c-fc6cc598ac9e",
+            TypeKind = TypeKind.WrappedClass)]
+        public class MasterIsCompleteChecker_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public MasterIsCompleteChecker_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public MasterIsCompleteChecker_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///intern.types.actions.datenmeister/#dc63ddca-6294-4fbe-b61c-fc6cc598ac9e");
+
+            public static MasterIsCompleteChecker_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @importance
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("importance");
+                set => 
+                    _wrappedElement.set("importance", value);
+            }
+
+            // Not found
+            public object? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#9182a6da-5b7f-4229-a619-740056befbf5",
+            TypeKind = TypeKind.WrappedClass)]
+        public class DerivedIsCompleteChecker_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public DerivedIsCompleteChecker_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public DerivedIsCompleteChecker_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///intern.types.actions.datenmeister/#9182a6da-5b7f-4229-a619-740056befbf5");
+
+            public static DerivedIsCompleteChecker_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @importance
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("importance");
+                set => 
+                    _wrappedElement.set("importance", value);
+            }
+
+            // Not found
+            public object? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#2b4b897e-584a-4346-a870-458337b22339",
+            TypeKind = TypeKind.WrappedClass)]
+        public class PropertyIsEqualChecker_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public PropertyIsEqualChecker_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public PropertyIsEqualChecker_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///intern.types.actions.datenmeister/#2b4b897e-584a-4346-a870-458337b22339");
+
+            public static PropertyIsEqualChecker_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            // Not found
+            public object? @masterPropertyId
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("masterPropertyId");
+                set => 
+                    _wrappedElement.set("masterPropertyId", value);
+            }
+
+            // Not found
+            public object? @derivedPropertyId
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("derivedPropertyId");
+                set => 
+                    _wrappedElement.set("derivedPropertyId", value);
+            }
+
+            public string? @importance
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("importance");
+                set => 
+                    _wrappedElement.set("importance", value);
+            }
+
+            // Not found
+            public object? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#62187ee8-e236-4748-8b47-e621d29b3f24",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CheckerBase_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public CheckerBase_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public CheckerBase_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///intern.types.actions.datenmeister/#62187ee8-e236-4748-8b47-e621d29b3f24");
+
+            public static CheckerBase_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @importance
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("importance");
+                set => 
+                    _wrappedElement.set("importance", value);
+            }
+
+            // Not found
+            public object? @name
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("name");
+                set => 
+                    _wrappedElement.set("name", value);
+            }
+
+        }
+
+    }
+
 }
 

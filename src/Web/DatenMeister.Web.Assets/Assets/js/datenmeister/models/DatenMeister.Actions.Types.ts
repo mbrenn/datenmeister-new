@@ -467,5 +467,49 @@ export namespace _Actions
                 export const __FreezeViewResultInExtent_Uri = "dm:///intern.types.actions.datenmeister/#45cd9f30-fdfa-4f1b-a87c-24c088c075be";
         }
 
+        export namespace _Checker
+        {
+                export class _CheckExtentsAction
+                {
+                    static masterUrl = "masterUrl";
+                    static derivedUrl = "derivedUrl";
+                    static checkers = "checkers";
+                    static masterId = "masterId";
+                    static derivedId = "derivedId";
+                }
+
+                export const __CheckExtentsAction_Uri = "dm:///intern.types.actions.datenmeister/#bdceba1d-61b4-42c4-bbfa-2411dd78462b";
+                export class _MasterIsCompleteChecker
+                {
+                    static importance = "importance";
+                    static _name_ = "name";
+                }
+
+                export const __MasterIsCompleteChecker_Uri = "dm:///intern.types.actions.datenmeister/#dc63ddca-6294-4fbe-b61c-fc6cc598ac9e";
+                export class _DerivedIsCompleteChecker
+                {
+                    static importance = "importance";
+                    static _name_ = "name";
+                }
+
+                export const __DerivedIsCompleteChecker_Uri = "dm:///intern.types.actions.datenmeister/#9182a6da-5b7f-4229-a619-740056befbf5";
+                export class _PropertyIsEqualChecker
+                {
+                    static masterPropertyId = "masterPropertyId";
+                    static derivedPropertyId = "derivedPropertyId";
+                    static importance = "importance";
+                    static _name_ = "name";
+                }
+
+                export const __PropertyIsEqualChecker_Uri = "dm:///intern.types.actions.datenmeister/#2b4b897e-584a-4346-a870-458337b22339";
+                export class _CheckerBase
+                {
+                    static importance = "importance";
+                    static _name_ = "name";
+                }
+
+                export const __CheckerBase_Uri = "dm:///intern.types.actions.datenmeister/#62187ee8-e236-4748-8b47-e621d29b3f24";
+        }
+
 }
 

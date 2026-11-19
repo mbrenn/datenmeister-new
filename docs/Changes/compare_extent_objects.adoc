@@ -60,7 +60,7 @@ mechanism ensures that only standard routines are used.
 
 The data structure:
 
-* `CompareExtentsAction`
+* `CheckExtentsAction`
 ** `masterUrl`: URL of the golden master extent.
 ** `derivedUrl`: URL of the derivative extent.
 ** `checkers`: List of checkers to be used for the comparison.
@@ -132,7 +132,7 @@ ActionSet:
 == Implementation
 
 * [x] Port all 'DatenMeister.Action'-related items to its own extent
-* [ ] Implement `CompareExtentsAction` and checker classes as datastructure in xmi
+* [x] Implement `CompareExtentsAction` and checker classes as datastructure in xmi
 * [ ] Implement the ActionHandler itself
 * [ ] Define helper methods for the Reports 
 * [ ] Implement MasterIsCompleteChecker as a derived CheckerInterface

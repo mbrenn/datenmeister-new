@@ -236,6 +236,10 @@
     <File Path="src/.editorconfig" />
   </Folder>
   <Folder Name="/Tests/">
+    <Project Path="src/Tests/DatenMeister.Actions.Tests/DatenMeister.Actions.Tests.csproj">
+      <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
+      <BuildType Solution="WPF|*" Project="Debug" />
+    </Project>
     <Project Path="src/Tests/DatenMeister.Benchmark/DatenMeister.Benchmark.csproj">
       <BuildType Solution="ViewLogicAdditionalInfo|*" Project="Debug" />
     </Project>

@@ -1081,6 +1081,9 @@ public class _Actions
             public static readonly string @derivedId = "derivedId";
             public IElement? @_derivedId = null;
 
+            public static readonly string @reportUrl = "reportUrl";
+            public IElement? @_reportUrl = null;
+
         }
 
         public _CheckExtentsAction @CheckExtentsAction = new ();
@@ -1151,6 +1154,61 @@ public class _Actions
 
         public _CheckerBase @CheckerBase = new ();
         public MofObjectShadow @__CheckerBase = new ("dm:///intern.types.actions.datenmeister/#62187ee8-e236-4748-8b47-e621d29b3f24");
+
+        [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#1d76c31e-0384-4230-b7cc-0913f1c3b379",
+            TypeKind = TypeKind.ClassTree)]
+        public class _ReportEntry
+        {
+            public static readonly string @checkerName = "checkerName";
+            public IElement? @_checkerName = null;
+
+            public static readonly string @importance = "importance";
+            public IElement? @_importance = null;
+
+            public static readonly string @masterObject = "masterObject";
+            public IElement? @_masterObject = null;
+
+            public static readonly string @derivedObject = "derivedObject";
+            public IElement? @_derivedObject = null;
+
+            public static readonly string @message = "message";
+            public IElement? @_message = null;
+
+            public static readonly string @issueType = "issueType";
+            public IElement? @_issueType = null;
+
+            public static readonly string @created = "created";
+            public IElement? @_created = null;
+
+        }
+
+        public _ReportEntry @ReportEntry = new ();
+        public MofObjectShadow @__ReportEntry = new ("dm:///intern.types.actions.datenmeister/#1d76c31e-0384-4230-b7cc-0913f1c3b379");
+
+        public class _ReportEntryImportance
+        {
+            public static string @Low = "Low";
+            public IElement? @__Low = null;
+            public static string @Medium = "Medium";
+            public IElement? @__Medium = null;
+            public static string @High = "High";
+            public IElement? @__High = null;
+            public static string @Critical = "Critical";
+            public IElement? @__Critical = null;
+
+        }
+
+        public _ReportEntryImportance @ReportEntryImportance = new _ReportEntryImportance();
+        public IElement @__ReportEntryImportance = new MofObjectShadow("dm:///intern.types.actions.datenmeister/#d86c3add-aec7-4578-b479-1bba1086b516");
+
+
+        public enum ___ReportEntryImportance
+        {
+            @Low,
+            @Medium,
+            @High,
+            @Critical
+        }
 
     }
 

@@ -476,6 +476,7 @@ export namespace _Actions
                     static checkers = "checkers";
                     static masterId = "masterId";
                     static derivedId = "derivedId";
+                    static reportUrl = "reportUrl";
                 }
 
                 export const __CheckExtentsAction_Uri = "dm:///intern.types.actions.datenmeister/#bdceba1d-61b4-42c4-bbfa-2411dd78462b";
@@ -509,6 +510,34 @@ export namespace _Actions
                 }
 
                 export const __CheckerBase_Uri = "dm:///intern.types.actions.datenmeister/#62187ee8-e236-4748-8b47-e621d29b3f24";
+                export class _ReportEntry
+                {
+                    static checkerName = "checkerName";
+                    static importance = "importance";
+                    static masterObject = "masterObject";
+                    static derivedObject = "derivedObject";
+                    static message = "message";
+                    static issueType = "issueType";
+                    static created = "created";
+                }
+
+                export const __ReportEntry_Uri = "dm:///intern.types.actions.datenmeister/#1d76c31e-0384-4230-b7cc-0913f1c3b379";
+                export namespace _ReportEntryImportance
+                {
+                    export const Low = "Low";
+                    export const Medium = "Medium";
+                    export const High = "High";
+                    export const Critical = "Critical";
+                }
+
+                export enum ___ReportEntryImportance
+                {
+                    Low,
+                    Medium,
+                    High,
+                    Critical
+                }
+
         }
 
 }

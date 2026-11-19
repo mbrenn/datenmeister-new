@@ -2862,13 +2862,25 @@ public class Actions
                     _wrappedElement.set("derivedUrl", value);
             }
 
-            // Not found
-            public object? @checkers
+            // DatenMeister.Actions.Model.Actions.Checker.CheckerBase_Wrapper
+            public DatenMeister.Actions.Model.Actions.Checker.CheckerBase_Wrapper? @checkers
             {
-                get =>
-                    _wrappedElement.getOrDefault<object?>("checkers");
-                set => 
-                    _wrappedElement.set("checkers", value);
+                get
+                {
+                    var foundElement = _wrappedElement.getOrDefault<IElement?>("checkers");
+                    return foundElement == null ? null : new DatenMeister.Actions.Model.Actions.Checker.CheckerBase_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        _wrappedElement.set("checkers", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        _wrappedElement.set("checkers", value);
+                    }
+                }
             }
 
             public string? @masterId
@@ -2885,6 +2897,14 @@ public class Actions
                     _wrappedElement.getOrDefault<string?>("derivedId");
                 set => 
                     _wrappedElement.set("derivedId", value);
+            }
+
+            public string? @reportUrl
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("reportUrl");
+                set => 
+                    _wrappedElement.set("reportUrl", value);
             }
 
         }
@@ -3067,6 +3087,89 @@ public class Actions
                     _wrappedElement.getOrDefault<object?>("name");
                 set => 
                     _wrappedElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///intern.types.actions.datenmeister/#1d76c31e-0384-4230-b7cc-0913f1c3b379",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ReportEntry_Wrapper : IElementWrapper
+        {
+            private readonly IElement _wrappedElement;
+
+            public ReportEntry_Wrapper(IElement innerDmElement)
+            {
+                _wrappedElement = innerDmElement;
+            }
+
+            public ReportEntry_Wrapper(IFactory factory)
+            {
+                _wrappedElement = factory.create(_metaClass);
+            }
+
+            public IElement GetWrappedElement() => _wrappedElement;
+
+            private static readonly MofObjectShadow _metaClass = new ("dm:///intern.types.actions.datenmeister/#1d76c31e-0384-4230-b7cc-0913f1c3b379");
+
+            public static ReportEntry_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
+            public string? @checkerName
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("checkerName");
+                set => 
+                    _wrappedElement.set("checkerName", value);
+            }
+
+            // Not found
+            public object? @importance
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("importance");
+                set => 
+                    _wrappedElement.set("importance", value);
+            }
+
+            public string? @masterObject
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("masterObject");
+                set => 
+                    _wrappedElement.set("masterObject", value);
+            }
+
+            public string? @derivedObject
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("derivedObject");
+                set => 
+                    _wrappedElement.set("derivedObject", value);
+            }
+
+            public string? @message
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("message");
+                set => 
+                    _wrappedElement.set("message", value);
+            }
+
+            // Not found
+            public object? @issueType
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("issueType");
+                set => 
+                    _wrappedElement.set("issueType", value);
+            }
+
+            // Not found
+            public object? @created
+            {
+                get =>
+                    _wrappedElement.getOrDefault<object?>("created");
+                set => 
+                    _wrappedElement.set("created", value);
             }
 
         }

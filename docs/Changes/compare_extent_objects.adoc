@@ -63,6 +63,7 @@ The data structure:
 * `CheckExtentsAction`
 ** `masterUrl`: URL of the golden master extent.
 ** `derivedUrl`: URL of the derivative extent.
+** `reportUrl`: URL of the reporting extent.
 ** `checkers`: List of checkers to be used for the comparison.
 ** `masterId`: Property used to identify master elements. May be `null`; in that case, the default `id` is used.
 ** `derivedId`: Property used to identify derived elements. May be `null`; in that case, the default `id` is used.
@@ -80,11 +81,12 @@ Each checker also has the following properties:
 
 * `ReportEntry`: Contains one finding or issue.
 ** `checkerName`: Name of the checker which found the issue.
-** `important`: Enumeration of `Low`, `Medium`, `High`, `Critical`.
+** `importance`: Enumeration of `Low`, `Medium`, `High`, `Critical`.
 ** `masterObject`: ID or link to the element in the master database having the issue.
-** `derivativeObject`: ID or link to the element in the derivative database which is connected to the issue (as far as possible).
+** `derivedObject`: ID or link to the element in the derivative database which is connected to the issue (as far as possible).
 ** `message`: The message of the checker.
 ** `issueType`: A key which defines the type of the issue. This can be used for subsequent exports.
+** `created`: Time, when the report has been created
 
 
 The checkers are implemented by having a special interface with the following functions:
@@ -112,7 +114,7 @@ design, this shall also be supported.
 [example]
 ----
 ActionSet:
-  1. CompareExtentsAction:
+  1. CheckerExtentsAction:
      masterUrl: "dm:///master"
      derivedUrl: "dm:///derived"
      checkers:

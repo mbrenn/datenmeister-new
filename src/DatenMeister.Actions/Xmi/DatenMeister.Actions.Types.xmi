@@ -302,6 +302,7 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f0a56bfd-bc64-4cf4-af4b-ffdbdfe40887" name="checkers" type-ref="dm:///intern.types.actions.datenmeister/#62187ee8-e236-4748-8b47-e621d29b3f24" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="96179aaf-4417-48cd-b3d2-eb28243265f1" name="masterId" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dce3e7ad-f641-4ffc-9956-3d68132b035a" name="derivedId" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="74c08462-c64c-4ad6-96ad-70e408927ff5" name="reportUrl" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="dc63ddca-6294-4fbe-b61c-fc6cc598ac9e" name="MasterIsCompleteChecker">
         <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="bbc415ff-c44e-46a0-911c-14c910f99122" general-ref="dm:///intern.types.actions.datenmeister/#62187ee8-e236-4748-8b47-e621d29b3f24" />
@@ -317,6 +318,21 @@
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="62187ee8-e236-4748-8b47-e621d29b3f24" name="CheckerBase">
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="5218813e-16e7-4b31-93a4-86b37b8e0d75" name="importance" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="538ea99a-e171-4d45-97b6-73b1ea7aa68c" name="name" />
+      </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="1d76c31e-0384-4230-b7cc-0913f1c3b379" name="ReportEntry">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="68bb9c02-76ad-40d1-a37e-040d70fe4975" name="checkerName" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="df303ebb-870b-473e-8339-bbed101254d4" name="importance" type-ref="dm:///intern.types.actions.datenmeister/#d86c3add-aec7-4578-b479-1bba1086b516" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="351e67f1-a90a-4727-96a5-ec4ccb6847de" name="masterObject" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="5e95ceaa-3f15-4d90-a2e7-20d33b7baaa0" name="derivedObject" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="3febbc00-efb3-4ca4-aab5-2138a7759e95" name="message" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="91e8fadf-c318-4354-90aa-a60b2ca74897" name="issueType" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a613d283-dae2-4119-9174-40f68b287250" name="created" type-ref="dm:///_internal/types/internal#PrimitiveTypes.DateTime" />
+      </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Enumeration" p2:id="d86c3add-aec7-4578-b479-1bba1086b516" name="ReportEntryImportance">
+        <ownedLiteral p2:type="dm:///_internal/model/uml#EnumerationLiteral" p2:id="8e201805-1c99-4977-9deb-913f1b8899fc" name="Low" />
+        <ownedLiteral p2:type="dm:///_internal/model/uml#EnumerationLiteral" p2:id="6dd1ae10-ff1c-4e25-9956-efd7362f9956" name="Medium" />
+        <ownedLiteral p2:type="dm:///_internal/model/uml#EnumerationLiteral" p2:id="ae5ec1be-9026-4640-9589-24a9b4c87dd0" name="High" />
+        <ownedLiteral p2:type="dm:///_internal/model/uml#EnumerationLiteral" p2:id="a6a280be-513f-41b0-aa78-25b9ed47fd14" name="Critical" />
       </packagedElement>
     </packagedElement>
   </item>

@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Actions.ActionHandler;
+using DatenMeister.Actions.ActionHandler.Checker;
 using DatenMeister.Actions.ActionHandler.Reports;
 
 namespace DatenMeister.Actions;
@@ -57,6 +58,7 @@ public class ActionLogicState
         logicState.AddActionHandler(new SimpleReportActionHandler());
         logicState.AddActionHandler(new StoreElementActionHandler());
         logicState.AddActionHandler(new StoreExtentActionHandler());
+        logicState.AddActionHandler(new CheckExtentsActionHandler());
         return logicState;
     }
 }

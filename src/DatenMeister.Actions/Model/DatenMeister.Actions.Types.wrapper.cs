@@ -2846,12 +2846,28 @@ public class Actions
 
             public static CheckExtentsAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
+            public string? @masterWorkspace
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("masterWorkspace");
+                set => 
+                    _wrappedElement.set("masterWorkspace", value);
+            }
+
             public string? @masterUrl
             {
                 get =>
                     _wrappedElement.getOrDefault<string?>("masterUrl");
                 set => 
                     _wrappedElement.set("masterUrl", value);
+            }
+
+            public string? @derivedWorkspace
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("derivedWorkspace");
+                set => 
+                    _wrappedElement.set("derivedWorkspace", value);
             }
 
             public string? @derivedUrl
@@ -2897,6 +2913,14 @@ public class Actions
                     _wrappedElement.getOrDefault<string?>("derivedId");
                 set => 
                     _wrappedElement.set("derivedId", value);
+            }
+
+            public string? @reportWorkspace
+            {
+                get =>
+                    _wrappedElement.getOrDefault<string?>("reportWorkspace");
+                set => 
+                    _wrappedElement.set("reportWorkspace", value);
             }
 
             public string? @reportUrl

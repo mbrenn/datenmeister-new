@@ -131,6 +131,14 @@ ActionSet:
            derivedPropertyId: "Name"
 ----
 
+=== Checkers
+
+The Checkers are implemented in the IChecker instance implementation. 
+They just walk through the 'flat' list of elements without performing a recursive search.
+
+The potential findings are reported with the importance of the CheckerParameter
+into the ReportEntrys.
+
 == Implementation
 
 * [x] Port all 'DatenMeister.Action'-related items to its own extent

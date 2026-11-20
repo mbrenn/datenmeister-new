@@ -1066,8 +1066,14 @@ public class _Actions
             TypeKind = TypeKind.ClassTree)]
         public class _CheckExtentsAction
         {
+            public static readonly string @masterWorkspace = "masterWorkspace";
+            public IElement? @_masterWorkspace = null;
+
             public static readonly string @masterUrl = "masterUrl";
             public IElement? @_masterUrl = null;
+
+            public static readonly string @derivedWorkspace = "derivedWorkspace";
+            public IElement? @_derivedWorkspace = null;
 
             public static readonly string @derivedUrl = "derivedUrl";
             public IElement? @_derivedUrl = null;
@@ -1080,6 +1086,9 @@ public class _Actions
 
             public static readonly string @derivedId = "derivedId";
             public IElement? @_derivedId = null;
+
+            public static readonly string @reportWorkspace = "reportWorkspace";
+            public IElement? @_reportWorkspace = null;
 
             public static readonly string @reportUrl = "reportUrl";
             public IElement? @_reportUrl = null;

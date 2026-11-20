@@ -297,11 +297,14 @@
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="147ae699-2b23-4017-a7ac-75c8d37f2e35" name="Checker">
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="bdceba1d-61b4-42c4-bbfa-2411dd78462b" name="CheckExtentsAction">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c949bc93-93cb-4f7f-8801-0d82b55ebe29" name="masterWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="884f2199-af44-4e9b-bcd0-a005daea2a5d" name="masterUrl" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="eb6b1bcd-e468-4c93-8652-64813e241a87" name="derivedWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="e003d9fb-b7e2-4c3c-abbd-6ee8d103e2d2" name="derivedUrl" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f0a56bfd-bc64-4cf4-af4b-ffdbdfe40887" name="checkers" type-ref="dm:///intern.types.actions.datenmeister/#62187ee8-e236-4748-8b47-e621d29b3f24" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="96179aaf-4417-48cd-b3d2-eb28243265f1" name="masterId" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dce3e7ad-f641-4ffc-9956-3d68132b035a" name="derivedId" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1419d473-36a4-4ddd-b8c5-bc9fd8f2a3b8" name="reportWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="74c08462-c64c-4ad6-96ad-70e408927ff5" name="reportUrl" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="dc63ddca-6294-4fbe-b61c-fc6cc598ac9e" name="MasterIsCompleteChecker">

@@ -2,6 +2,10 @@
 
 namespace DatenMeister.Reports;
 
+/// <summary>
+/// Provides utility methods for report generation, such as creating temporary
+/// files for HTML output.
+/// </summary>
 public class ReportHelper
 {
     /// <summary>

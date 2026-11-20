@@ -471,11 +471,14 @@ export namespace _Actions
         {
                 export class _CheckExtentsAction
                 {
+                    static masterWorkspace = "masterWorkspace";
                     static masterUrl = "masterUrl";
+                    static derivedWorkspace = "derivedWorkspace";
                     static derivedUrl = "derivedUrl";
                     static checkers = "checkers";
                     static masterId = "masterId";
                     static derivedId = "derivedId";
+                    static reportWorkspace = "reportWorkspace";
                     static reportUrl = "reportUrl";
                 }
 
